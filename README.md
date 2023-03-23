@@ -1,4 +1,4 @@
-[![GitHub](https://img.shields.io/github/license/h-chauvet/RISU)](https://img.shields.io/github/license/h-chauvet/RISU)
+[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
 
 ## RISU
 
