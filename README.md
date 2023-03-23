@@ -32,7 +32,7 @@ organization of your outdoor day. Enjoy your activities at any time with our inn
 Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 
 <div align="center">
-## Collaborators
+# Collaborators
 
 [Henri Chauvet](https://github.com/h-chauvet)<br>
 [Cédric Corge](https://github.com/CedricCORGE)<br>
