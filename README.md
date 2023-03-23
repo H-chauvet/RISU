@@ -1,5 +1,13 @@
+<div align="center">
+
+# RISU <br>
+
+> The location for everyone !
+
 [![GitHub version](https://img.shields.io/github/tag/h-chauvet/RISU?include_prereleases=&sort=semver&color=blue)](https://github.com/h-chauvet/RISU/releases/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+
+</div>
 
 ## RISU
 
