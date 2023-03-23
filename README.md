@@ -31,6 +31,7 @@ organization of your outdoor day. Enjoy your activities at any time with our inn
 
 Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 
+<div align="center">
 ## Collaborators
 
 [Henri Chauvet](https://github.com/h-chauvet)<br>
@@ -39,3 +40,4 @@ Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 [Tanguy Bellicha](https://github.com/tbellicha)<br>
 [Louis Maestre](https://github.com/Louismaestre)<br>
 [Quentin Leroueil](https://github.com/invpuppet)
+</div>
