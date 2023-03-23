@@ -6,8 +6,6 @@
 
 [![Version](https://img.shields.io/github/tag/h-chauvet/RISU?include_prereleases=&sort=semver&color=blue)](https://github.com/h-chauvet/RISU/releases/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](#license)
-[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/risu_off/)
-
 
 </div>
 
@@ -43,4 +41,10 @@ Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 [Tanguy Bellicha](https://github.com/tbellicha) <br>
 [Louis Maestre](https://github.com/Louismaestre) <br>
 [Quentin Leroueil](https://github.com/invpuppet)
+</div>
+
+<div align="center">
+  
+# Social Networks <br>
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://instagram.com/risu_off/)
 </div>
