@@ -32,12 +32,13 @@ organization of your outdoor day. Enjoy your activities at any time with our inn
 Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 
 <div align="center">
-# Collaborators
+  
+# Collaborators <br>
 
-[Henri Chauvet](https://github.com/h-chauvet)<br>
-[Cédric Corge](https://github.com/CedricCORGE)<br>
-[Arthur Richard](https://github.com/Kuma45)<br>
-[Tanguy Bellicha](https://github.com/tbellicha)<br>
-[Louis Maestre](https://github.com/Louismaestre)<br>
+[Henri Chauvet](https://github.com/h-chauvet) <br>
+[Cédric Corge](https://github.com/CedricCORGE) <br>
+[Arthur Richard](https://github.com/Kuma45) <br>
+[Tanguy Bellicha](https://github.com/tbellicha) <br>
+[Louis Maestre](https://github.com/Louismaestre) <br>
 [Quentin Leroueil](https://github.com/invpuppet)
 </div>
