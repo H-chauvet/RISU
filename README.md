@@ -37,7 +37,7 @@ Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 
 [Henri Chauvet](https://github.com/h-chauvet) <br>
 [Cédric Corge](https://github.com/CedricCORGE) <br>
-[Arthur Richard](https://github.com/Kuma45) <br>
+[Hugo Lopes-Pinto](https://github.com/hugolopespinto) <br>
 [Tanguy Bellicha](https://github.com/tbellicha) <br>
 [Louis Maestre](https://github.com/Louismaestre) <br>
 [Quentin Leroueil](https://github.com/invpuppet)
