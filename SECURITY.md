@@ -8,6 +8,6 @@ Security is a top priority for us, and we take measures to protect our users' da
 - The lockers are equipped with secure electronic locks.
 - User data is stored securely and is only accessible to authorized individuals.
 
-If you find a security flaw or vulnerability in our system, please contact us immediately at the following email address: contact@risu.com.
+If you find a security flaw or vulnerability in our system, please contact us immediately at the following email address: risu_2025@labeip.epitech.eu
 
 We are committed to working quickly to fix any security issues that may be identified.
