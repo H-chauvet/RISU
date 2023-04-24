@@ -1,5 +1,9 @@
 # How to contribute
 
+## Documentation
+
+The documentation is mandatory for every function corresponding to the code rules. Everyone must be able to understand the utility of the function just by reading the function’s documentation.
+
 ## Issue Rules
 
 ### When creating an issue, you must follow the given format :
@@ -14,21 +18,24 @@
 
 ## Branch Rules
 
-The branch name should consider the issue title and the issue number in its name. The issue's number must come first.
+The branch name must have a keyword before
+  - feature -> `For a new feature / functionnality`
+  - fix -> `For a bug resolution`
+  - refacto -> `For a refactorization of code`
+  - 
+
+The branch name should consider the issue title and the issue number in its name. The issue's number must come first, after the keyword.
+Every single word must be in lowercase.
 
 Example:
 
-    `git checkout -b 2-Create-The-Contributing.md`
+    `git checkout -b feature/2-create-the-contributing.md`
 
 You must make one branch per issue.
 
 Try to push as regularly as possible so everyone can see where you are at. When first committing to a branch, it is recommended to open a PR draft, so it will be easier for your mates to see where you are at.
 
-## Documentation
-
-The documentation is mandatory for every function corresponding to the code rules. Everyone must be able to understand the utility of the function just by reading the function’s documentation.
-
-### Commit Rules
+## Commit Rules
 
 They should always look like the following description:
 
@@ -48,7 +55,7 @@ You should always commit frequently and based on the given example.
 
 If possible, please certify your commits (-S).
 
-### Pull Request Rules
+## Pull Request Rules
 
 /!\ Make sure to respect the order when merge : (Test -> Prod -> Main)
 
