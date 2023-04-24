@@ -29,7 +29,7 @@ Every single word must be in lowercase.
 
 Example:
 
-    `git checkout -b feature/2-create-the-contributing.md`
+    git checkout -b feature/2-create-the-contributing.md
 
 You must make one branch per issue.
 
@@ -39,9 +39,9 @@ Try to push as regularly as possible so everyone can see where you are at. When 
 
 They should always look like the following description:
 
-    - Add a new feature -> `[ADD] Commit message`
-    - Fix a bug -> [FIX] `Commit message`
-    - Remove code -> [REMOVE] `Commit message`
+    - Add a new feature -> [ADD] Commit message
+    - Fix a bug -> [FIX] Commit message
+    - Remove code -> [REMOVE] Commit message
 
 Please specify shortly (in english) what your commit is doing (this will be useful for the reviews).
 
