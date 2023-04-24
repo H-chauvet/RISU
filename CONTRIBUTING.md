@@ -50,6 +50,11 @@ If possible, please certify your commits (-S).
 
 ### Pull Request Rules
 
+/!\ Make sure to respect the order when merge : (Test -> Prod -> Main)
+
+- Work on `Test` has to be tested before merged on `Prod`
+- Work on `Prod` has to be deployed before merged on `Main`
+
 When your work is done on a branch, you must make a pull request.
 
 The name is the same for the branch. However, you must write a description as a reminder of what you have done. It may be all about the issue, but often you have unexpected fixes.
