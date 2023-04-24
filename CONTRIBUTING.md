@@ -45,14 +45,6 @@ They should always look like the following description :
   - Remove code -> `[REMOVE] Commit message`
   - Update code -> `[UPDATE] Commit message`
 
-Please specify shortly (in english) what your commit is doing (this will be useful for the reviews).
-
-This should look like this:
-
-    `git commit -m "Add new rules to the CONTRIBUTING.md`
-
-    `Add Committing Rules"`
-
 You should always commit frequently and based on the given example.
 
 If possible, please certify your commits (-S).
