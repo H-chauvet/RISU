@@ -22,7 +22,7 @@ The branch name must have a keyword before
   - feature -> `For a new feature / functionnality`
   - fix -> `For a bug resolution`
   - refacto -> `For a refactorization of code`
-  - test -> `For tests of code (Unit tests, functional tests etc..)
+  - test -> `For tests of code (Unit tests, functional tests etc..)`
   - docs -> `For documentation of code`
 
 The branch name should consider the issue title and the issue number in its name. The issue's number must come first, after the keyword.
