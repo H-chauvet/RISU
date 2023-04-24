@@ -22,7 +22,8 @@ The branch name must have a keyword before
   - feature -> `For a new feature / functionnality`
   - fix -> `For a bug resolution`
   - refacto -> `For a refactorization of code`
-  - 
+  - test -> `For tests of code (Unit tests, functional tests etc..)
+  - docs -> `For documentation of code`
 
 The branch name should consider the issue title and the issue number in its name. The issue's number must come first, after the keyword.
 Every single word must be in lowercase.
@@ -37,11 +38,12 @@ Try to push as regularly as possible so everyone can see where you are at. When 
 
 ## Commit Rules
 
-They should always look like the following description:
+They should always look like the following description :
 
-    - Add a new feature -> [ADD] Commit message
-    - Fix a bug -> [FIX] Commit message
-    - Remove code -> [REMOVE] Commit message
+  - Add a new feature -> `[ADD] Commit message`
+  - Fix a bug -> `[FIX] Commit message`
+  - Remove code -> `[REMOVE] Commit message`
+  - Update code -> `[UPDATE] Commit message`
 
 Please specify shortly (in english) what your commit is doing (this will be useful for the reviews).
 
