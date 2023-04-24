@@ -4,8 +4,13 @@
 
 > The location for everyone !
 
-[![Version](https://img.shields.io/github/tag/h-chauvet/RISU?include_prereleases=&sort=semver&color=blue)](https://github.com/h-chauvet/RISU/releases/)
-[![License](https://img.shields.io/badge/License-MIT-blue)](#license)
+[![VERSION](https://img.shields.io/github/tag/h-chauvet/RISU?include_prereleases=&sort=semver&color=blue)](https://github.com/h-chauvet/RISU/releases/)
+[![LICENSE](https://img.shields.io/badge/License-MIT-blue)](#license)
+![SECURITY](https://img.shields.io/badge/Security-up%20to%20date-brightgreen.svg)
+![README](https://img.shields.io/badge/README-up%20to%20date-brightgreen.svg)
+![CODE_OF_CONDUCT](https://img.shields.io/badge/Code%20of%20Conduct-up%20to%20date-brightgreen.svg)
+![CONTRIBUTING](https://img.shields.io/badge/Contributing-up%20to%20date-brightgreen.svg)
+
 
 </div>
 
