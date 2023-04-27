@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  server:
+    build:
+      context: ./back
+    ports:
+      - 3000:3000
+  web_app:
+    build:
+      context: ./front
+    ports:
+      - 80:5000
