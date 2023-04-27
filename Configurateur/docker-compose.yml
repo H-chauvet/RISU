@@ -1,13 +1,35 @@
 version: '3'
 
 services:
+  database:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: database
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+    restart: always
+
   server:
     build:
       context: ./back
+    container_name: server
+    depends_on:
+      - database
     ports:
       - 3000:3000
+    restart: always
   web_app:
     build:
       context: ./front
     ports:
       - 80:5000
+
+volumes:
+  mysql-data:
