@@ -1,21 +1,17 @@
 name: Build
 
 on:
+  push:
+    branches:
+      - dev
   pull_request:
     branches:
       - dev
       - main
-  push:
-    branches:
-      - dev
-  pull_request_target:
-    branches:
-      - dev
 
 jobs:
-  test:
+  WEB:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.base.ref == 'dev'
     steps:
       - uses: actions/checkout@v2
       - name: Install Docker Compose
