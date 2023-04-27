@@ -31,6 +31,13 @@ Every single word must be in lowercase.
 Example:
 
     git checkout -b feature/2-create-the-contributing.md
+Where :
+2 is the id of the issue on linear 
+"create-the-contributing.md" is the title (name) of the issue on linear
+
+To easily get the name of the branch, there is a button when you're on linear, at the top-right of your screen.
+For an issue named "Dockerize application web", the result will be "feature/ris-15-dockerize-application-web"
+Keep all the name except the "ris-", useless.
 
 You must make one branch per issue.
 
