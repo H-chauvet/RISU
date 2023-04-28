@@ -1,0 +1,39 @@
+version: "2.2"
+services:
+  database:
+    build: ./server/database
+    env_file:
+      - ./server/application.env
+    environment:
+      MYSQL_ROOT_PASSWORD: $${password}
+      MYSQL_DATABASE: $${database}
+    volumes:
+      - .:/code
+    healthcheck:
+      test: mysqladmin ping -h 127.0.0.1 -u $${user} --password=$${password}
+      interval: 5s
+      timeout: 45s
+      retries: 40
+
+  server:
+    build: ./server
+    ports:
+      - "8080:8080"
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - IS_MIGRATION=true
+    volumes:
+      - .:/code
+    stdin_open: true
+    tty: true
+
+  client_mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    volumes:
+      - common:/apk
+volumes:
+  common:
