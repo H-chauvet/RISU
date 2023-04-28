@@ -65,7 +65,7 @@ lint/tmp/
 # lint/reports/
 
 # .env secret
-./server/database.env
+./server/application.env
 
 # python
 __py*
