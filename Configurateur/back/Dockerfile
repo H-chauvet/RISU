@@ -1,19 +1,10 @@
-FROM node:16
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-COPY prisma ./prisma/
-
-COPY .env ./
-
-RUN npm install
+FROM node:latest
 
 COPY . .
-
+RUN npm install
 RUN npx prisma generate
-
 EXPOSE 3000
+RUN npm install -g dotenv-cli
+RUN ["chmod", "+x", "./start.sh"]
 
-CMD ["node", "index.js"]
+ENTRYPOINT [ "./start.sh"]

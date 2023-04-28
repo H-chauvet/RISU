@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migration": "dotenv -e application.env -- prisma migrate reset --force && dotenv -e application.env -- npx prisma migrate dev --name init"
   },
   "author": "",
   "license": "ISC",
