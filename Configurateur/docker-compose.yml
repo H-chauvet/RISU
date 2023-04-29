@@ -7,6 +7,8 @@ services:
     hostname: mysql
     ports:
       - 3306:3306
+    env_file:
+      - back/.env
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: configurateur_db
@@ -24,6 +26,8 @@ services:
       - database
     ports:
       - 3000:3000
+    env_file:
+      - back/.env
     stdin_open: true
     tty: true
     restart: always

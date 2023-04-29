@@ -1,9 +1,32 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 
-const userCtrl = require('../controllers/user');
+const userCtrl = require('../controllers/user')
+const jwtMiddleware = require('../middleware/jwt')
 
-router.post('/signup', userCtrl.signup);
-router.post('/login', userCtrl.login);
+router.post('/register', async function (req, res, next) {
+  try {
+    const { email, password } = req.body
+    if (!email || !password) {
+      res.status(400)
+      throw new Error('Email and password are required')
+    }
 
-module.exports = router;
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (existingUser) {
+      res.status(400)
+      throw new Error('Email already exists')
+    }
+
+    const user = await userCtrl.registerByEmail({ email, password })
+    const accessToken = jwtMiddleware.generateAccessToken(user)
+
+    res.json({
+      accessToken
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
+module.exports = router
