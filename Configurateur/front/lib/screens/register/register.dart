@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sign_button/sign_button.dart';
+import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -108,6 +108,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                           if (value == null || value.isEmpty) {
                             return 'Veuillez remplir ce champ';
                           }
+                          if (value != password) {
+                            return 'Les mots de passe ne correspondent pas';
+                          }
                           return null;
                         },
                       ),
@@ -117,7 +120,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                         width: 200,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (formKey.currentState!.validate()) {
+                            if (formKey.currentState!.validate() &&
+                                password == validedPassword) {
                               debugPrint('$mail, $password, $validedPassword');
                               http.post(
                                 Uri.parse(
@@ -132,6 +136,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   'password': password,
                                 }),
                               );
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MyHomePage(title: 'tile')));
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -154,33 +163,23 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   builder: (context) =>
                                       const MyHomePage(title: 'tile')));
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text("Déja un compte ? Connectez-vous."),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const <Widget>[
+                                Text("Déja un compte ? "),
+                                Text(
+                                  'Connectez-vous.',
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ]),
                         ),
                       ),
-                      Container(
-                        width: 200,
-                        height: 40,
-                        decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 214, 214, 214),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(30.0))),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Container(
-                                // decoration: BoxDecoration(color: Colors.blue),
-                                child: Image.asset('google-logo.png',
-                                    fit: BoxFit.cover)),
-                            const SizedBox(
-                              width: 5.0,
-                            ),
-                            const Text('Sign-in with Google')
-                          ],
-                        ),
-                      )
+                      const SizedBox(height: 20),
+                      const Text("S'inscrire avec :"),
+                      const SizedBox(height: 10),
+                      const GoogleLogo(),
                     ])))));
   }
 }
