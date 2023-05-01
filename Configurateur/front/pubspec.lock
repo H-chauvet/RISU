@@ -70,6 +70,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.1"
+  flutter_signin_button:
+    dependency: "direct main"
+    description:
+      name: flutter_signin_button
+      sha256: a063ecc5d5308377e103c9c3a89084abf15fca4440636233af6a13abacd5dcae
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -80,6 +88,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  font_awesome_flutter:
+    dependency: transitive
+    description:
+      name: font_awesome_flutter
+      sha256: "1f93e5799f0e6c882819e8393a05c6ca5226010f289190f2242ec19f3f0fdba5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.2.0"
   http:
     dependency: "direct main"
     description:
@@ -152,6 +168,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  sign_button:
+    dependency: "direct main"
+    description:
+      name: sign_button
+      sha256: "11ea0a70dd78f5f2eddde7fa7655821fa802224eb4f0e3def51574a57364122a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
+  size_config:
+    dependency: "direct main"
+    description:
+      name: size_config
+      sha256: "912d8e55bb563a71e30f66be0719d2a6437c3500adb01b9e52681dc2362d62e0"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.3"
   sky_engine:
     dependency: transitive
     description: flutter
