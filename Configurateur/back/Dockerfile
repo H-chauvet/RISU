@@ -5,6 +5,6 @@ RUN npm install
 RUN npx prisma generate
 EXPOSE 3000
 RUN npm install -g dotenv-cli
-RUN ["chmod", "+x", "./start.sh"]
+COPY start.sh .
 
-ENTRYPOINT [ "./start.sh"]
+CMD [ "bash", "start.sh"]

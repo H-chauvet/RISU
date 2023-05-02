@@ -1,14 +1,14 @@
-version: '3'
+version: "3"
 
 services:
   database:
     image: mysql:latest
     container_name: mysql
     hostname: mysql
-    ports:
-      - 3306:3306
     env_file:
       - back/.env
+    ports:
+      - 3306:3306
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: configurateur_db
@@ -22,12 +22,12 @@ services:
     build:
       context: ./back
     container_name: server
+    env_file:
+      - back/.env
     depends_on:
       - database
     ports:
       - 3000:3000
-    env_file:
-      - back/.env
     stdin_open: true
     tty: true
     restart: always

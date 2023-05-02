@@ -21,12 +21,15 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
-RUN flutter build web
 
 # Record the exposed port
 EXPOSE 5000
 
-# make server startup script executable and start the web server
-RUN ["chmod", "+x", "/app/server/server.sh"]
+COPY server/server.sh .
 
-ENTRYPOINT [ "/app/server/server.sh"]
+CMD ["bash", "server/server.sh"]
+
+# make server startup script executable and start the web server
+#RUN ["chmod", "+x", "/app/server/server.sh"]
+
+#CMD [ "/app/server/server.sh"]
