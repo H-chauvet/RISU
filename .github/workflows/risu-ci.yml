@@ -1,22 +1,3 @@
-name: Create envfile
-
-on: [ push ]
-
-jobs:
-
-  create-envfile:
- 
-    runs-on: ubuntu-latest
- 
-    steps:
-    - name: Make envfile
-      uses: SpicyPizza/create-envfile@v1.3
-      with:
-        envkey_DEBUG: false
-        directory: Configurateur/back/
-        file_name: .env
-        fail_on_empty: false
-
 name: Build
 
 on:
