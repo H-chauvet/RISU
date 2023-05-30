@@ -24,7 +24,7 @@ class GoogleLogo extends StatelessWidget {
           const SizedBox(
             width: 5.0,
           ),
-          const Text('Sign-in with Google')
+          const Text('Google')
         ],
       ),
     );
