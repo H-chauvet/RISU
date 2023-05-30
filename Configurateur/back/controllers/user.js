@@ -38,3 +38,15 @@ exports.loginByEmail = user => {
     return findUser
   })
 }
+
+exports.updatePassword = user => {
+  user.password = bcrypt.hashSync(user.password, 12)
+  return db.User.update({
+    where: {
+      email: user.email
+    },
+    data: {
+      password: user.password
+    }
+  })
+}

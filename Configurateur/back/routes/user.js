@@ -15,7 +15,7 @@ router.post('/login', async function (req, res, next) {
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
       res.status(400)
-      throw new Error("Email don't exists")
+      throw new Error("Email don't exist")
     }
 
     const user = await userCtrl.loginByEmail({ email, password })
@@ -49,6 +49,28 @@ router.post('/register', async function (req, res, next) {
     res.json({
       accessToken
     })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/update-password', async function (req, res, next) {
+  try {
+    const { email, password } = req.body
+
+    if (!email || !password) {
+      res.status(400)
+      throw new Error('Email and password are required')
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error("Email don't exist")
+    }
+
+    const ret = await userCtrl.updatePassword({ email, password })
+    res.json(ret)
   } catch (err) {
     next(err)
   }
