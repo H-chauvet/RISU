@@ -34,7 +34,6 @@ passport.use(
       }
       const user = await database.prisma.User.create({
         data: {
-          username: req.body.username,
           email: email,
           password: await hash(password)
         }
