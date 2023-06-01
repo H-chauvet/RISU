@@ -57,7 +57,6 @@ app.get('/', (req, res) => {
 
 /**
  * Post request to signup a new user in the database.
- * body.username -> User name
  * body.email -> User mail
  * body.password -> User password
  * An e-mail is now send to the user.
@@ -89,6 +88,29 @@ app.post('/api/signup', (req, res, next) => {
       })
     }
   )(req, res, next)
+})
+
+app.post('/api/login', (req, res, next) => {
+  passport.authenticate('login', { session: false }, (err, user, info) => {
+    if (err) throw new Error(err)
+    if (user == false) return res.json(info)
+    const token = utils.generateToken(user.id)
+    return res.status(201).json({
+      status: 'success',
+      data: { message: 'Welcome back.', user, token },
+      statusCode: res.statusCode
+    })
+  })(req, res, next)
+})
+
+app.get('/api/dev/user/listall', async (req, res) => {
+  try {
+    const users = await database.prisma.User.findMany()
+    return res.json(users)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
 })
 
 app.listen(PORT, HOST, () => {
