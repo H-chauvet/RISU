@@ -37,7 +37,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Image.asset("logo.png"),
+              icon: Image.asset("assets/logo.png"),
               iconSize: 80,
               onPressed: () {
                 Navigator.push(
