@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
+import 'package:front/components/custom_app_bar.dart';
 import 'dart:convert';
 
 class PasswordRecuperation extends StatefulWidget {
@@ -31,32 +31,9 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
     String mail = '';
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Inscription',
-            style: TextStyle(fontSize: 40),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4682B4),
-          toolbarHeight: MediaQuery.of(context).size.height / 8,
-          leading: Container(),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.elliptical(1920, 56.0),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Image.asset("logo.png"),
-              iconSize: 80,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MyHomePage(title: 'tile')));
-              },
-            ),
-          ],
+        appBar: CustomAppBar(
+          'Récupération du mot de passe',
+          context: context,
         ),
         body: Center(
             child: FractionallySizedBox(
