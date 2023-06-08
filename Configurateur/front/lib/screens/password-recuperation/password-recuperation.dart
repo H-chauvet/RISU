@@ -62,16 +62,32 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      LocalCaptcha(
-                        key: ValueKey(configFormData.toString()),
-                        controller: captchaController,
-                        height: 100,
-                        width: 200,
-                        backgroundColor: Colors.grey[100]!,
-                        chars: configFormData.chars,
-                        length: configFormData.length,
-                        caseSensitive: true,
-                        codeExpireAfter: const Duration(minutes: 10),
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LocalCaptcha(
+                              key: ValueKey(configFormData.toString()),
+                              controller: captchaController,
+                              height: 100,
+                              width: 200,
+                              backgroundColor: Colors.grey[100]!,
+                              chars: configFormData.chars,
+                              length: configFormData.length,
+                              caseSensitive: true,
+                              codeExpireAfter: const Duration(minutes: 10),
+                            ),
+                            const SizedBox(width: 10.0),
+                            SizedBox(
+                              height: 20.0,
+                              width: 20.0,
+                              child: InkWell(
+                                child: const Icon(Icons.refresh, size: 18.0),
+                                onTap: () => captchaController.refresh(),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 20.0),
                       TextFormField(
@@ -106,17 +122,6 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         onSaved: (value) => inputCode = value ?? '',
                       ),
                       const SizedBox(height: 20.0),
-                      SizedBox(
-                        height: 40.0,
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () => captchaController.refresh(),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blueGrey,
-                          ),
-                          child: const Text('Refresh'),
-                        ),
-                      ),
                       SizedBox(
                         height: 40,
                         width: 200,
