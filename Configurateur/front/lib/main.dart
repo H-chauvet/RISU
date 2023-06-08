@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/register/register.dart';
+import 'screens/register-confirmation/register_confirmation.dart';
 
 void main() {
   runApp(const MyApp());
@@ -86,6 +87,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               child: const Text('Register'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterConfirmation(),
+                  ),
+                );
+              },
+              child: const Text('Test'),
             )
           ]),
       body: Center(
