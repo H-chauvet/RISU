@@ -29,4 +29,36 @@ router.post('/register', async function (req, res, next) {
   }
 })
 
+router.post('/register-confirmation', async function (req, res, next) {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      res.status(400)
+      throw new Error('Email is required')
+    }
+
+    userCtrl.registerConfirmation(email)
+    res.json('ok')
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/confirmed-register', async function (req, res, next) {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      res.status(400)
+      throw new Error('Email is required')
+    }
+
+    await userCtrl.confirmedRegister(email)
+    res.json('user confirmed')
+  } catch (err) {
+    next(err)
+  }
+})
+
 module.exports = router
