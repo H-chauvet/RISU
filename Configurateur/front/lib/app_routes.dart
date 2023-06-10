@@ -14,6 +14,12 @@ class AppRouter {
     navigatorKey: _rootNavigatorKey,
     routes: [
       GoRoute(
+        path: '/',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: MyHomePage(title: 'home'),
+        ),
+      ),
+      GoRoute(
         path: '/home',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: MyHomePage(title: 'home'),

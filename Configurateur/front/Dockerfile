@@ -21,6 +21,7 @@ RUN flutter config --enable-web
 RUN mkdir /app/
 COPY . /app/
 WORKDIR /app/
+RUN flutter build web
 
 # Record the exposed port
 EXPOSE 5000

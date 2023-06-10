@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/main.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});
@@ -11,6 +13,21 @@ class ConfirmedUser extends StatefulWidget {
 }
 
 class ConfirmedUserState extends State<ConfirmedUser> {
+  @override
+  void initState() {
+    http.post(
+      Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: jsonEncode(<String, String>{
+        'uuid': widget.params,
+      }),
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

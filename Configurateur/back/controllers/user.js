@@ -38,7 +38,7 @@ exports.registerConfirmation = email => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://localhost:80/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://localhost:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         '</p>'
@@ -47,10 +47,10 @@ exports.registerConfirmation = email => {
   })
 }
 
-exports.confirmedRegister = email => {
+exports.confirmedRegister = uuid => {
   return db.User.update({
     where: {
-      email: email
+      uuid: uuid
     },
     data: {
       confirmed: true

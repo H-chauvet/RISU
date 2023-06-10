@@ -47,14 +47,14 @@ router.post('/register-confirmation', async function (req, res, next) {
 
 router.post('/confirmed-register', async function (req, res, next) {
   try {
-    const { email } = req.body
+    const { uuid } = req.body
 
-    if (!email) {
+    if (!uuid) {
       res.status(400)
-      throw new Error('Email is required')
+      throw new Error('uuid is required')
     }
 
-    await userCtrl.confirmedRegister(email)
+    await userCtrl.confirmedRegister(uuid)
     res.json('user confirmed')
   } catch (err) {
     next(err)
