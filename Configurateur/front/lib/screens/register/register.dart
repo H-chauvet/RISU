@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
+import 'package:front/screens/login/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -36,7 +37,7 @@ class RegisterScreenState extends State<RegisterScreen> {
           ),
           actions: <Widget>[
             IconButton(
-              icon: Image.asset("logo.png"),
+              icon: Image.asset("assets/logo.png"),
               iconSize: 80,
               onPressed: () {
                 Navigator.push(
@@ -151,8 +152,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyHomePage(title: 'tile')));
+                                      builder: (context) => const MyHomePage(
+                                          title: 'register success')));
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -172,8 +173,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MyHomePage(title: 'tile')));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),

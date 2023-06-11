@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'screens/register/register.dart';
-import 'screens/register-confirmation/register_confirmation.dart';
 import './app_routes.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
+import 'screens/login/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -96,11 +96,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const RegisterConfirmation(),
+                    builder: (context) => const LoginScreen(),
                   ),
                 );
               },
-              child: const Text('Test'),
+              child: const Text('Login'),
             )
           ]),
       body: Center(

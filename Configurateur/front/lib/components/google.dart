@@ -18,13 +18,13 @@ class GoogleLogo extends StatelessWidget {
           Container(
               // decoration: BoxDecoration(color: Colors.blue),
               child: Image.asset(
-            'google-logo.png',
+            'assets/google-logo.png',
             height: 20,
           )),
           const SizedBox(
             width: 5.0,
           ),
-          const Text('Sign-in with Google')
+          const Text('Google')
         ],
       ),
     );
