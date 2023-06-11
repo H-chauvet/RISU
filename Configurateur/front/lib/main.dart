@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'screens/register/register.dart';
+import './app_routes.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'screens/login/login.dart';
 
 void main() {
@@ -13,7 +15,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routeInformationProvider: AppRouter.router.routeInformationProvider,
+      routeInformationParser: AppRouter.router.routeInformationParser,
+      routerDelegate: AppRouter.router.routerDelegate,
       title: 'Risu',
       theme: ThemeData(
         // This is the theme of your application.
@@ -27,7 +32,6 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

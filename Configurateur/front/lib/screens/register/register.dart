@@ -120,12 +120,25 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              http.post(
+                              await http.post(
                                 Uri.parse(
                                     'http://localhost:3000/api/auth/register'),
+                                headers: <String, String>{
+                                  'Content-Type':
+                                      'application/json; charset=UTF-8',
+                                  'Access-Control-Allow-Origin': '*',
+                                },
+                                body: jsonEncode(<String, String>{
+                                  'email': mail,
+                                  'password': password,
+                                }),
+                              );
+                              await http.post(
+                                Uri.parse(
+                                    'http://localhost:3000/api/auth/register-confirmation'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
