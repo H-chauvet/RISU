@@ -24,3 +24,17 @@ exports.registerByEmail = user => {
     data: user
   })
 }
+
+exports.loginByEmail = user => {
+  return db.User.findUnique({
+    where: {
+      email: user.email
+    }
+  }).then(findUser => {
+    if (!bcrypt.compareSync(user.password, findUser.password)) {
+      throw new Error('Invalid password')
+    }
+
+    return findUser
+  })
+}
