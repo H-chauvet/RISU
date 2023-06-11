@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/main.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
 

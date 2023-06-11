@@ -3,28 +3,28 @@ import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/screens/login/login.dart';
-import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class PasswordChange extends StatefulWidget {
+  const PasswordChange({super.key, required this.params});
+
+  final String params;
 
   @override
-  State<RegisterScreen> createState() => RegisterScreenState();
+  State<PasswordChange> createState() => PasswordChangeState();
 }
 
-class RegisterScreenState extends State<RegisterScreen> {
+class PasswordChangeState extends State<PasswordChange> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String mail = '';
     String password = '';
     String validedPassword = '';
 
     return Scaffold(
         appBar: CustomAppBar(
-          'Inscription',
+          'Nouveau mot de passe',
           context: context,
         ),
         body: Center(
@@ -35,25 +35,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                     key: formKey,
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
-                      TextFormField(
-                        decoration: InputDecoration(
-                          hintText: 'Entrez votre email',
-                          labelText: 'Adresse e-mail',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        onChanged: (String? value) {
-                          mail = value!;
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez remplir ce champ';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
                       TextFormField(
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
@@ -97,43 +78,29 @@ class RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       SizedBox(
                         height: 40,
-                        width: 200,
+                        width: 300,
                         child: ElevatedButton(
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
                               await http.post(
                                 Uri.parse(
-                                    'http://localhost:3000/api/auth/register'),
+                                    'http://localhost:3000/api/auth/update-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
                                   'Access-Control-Allow-Origin': '*',
                                 },
                                 body: jsonEncode(<String, String>{
-                                  'email': mail,
+                                  'uuid': widget.params,
                                   'password': password,
                                 }),
                               );
-                              await http.post(
-                                Uri.parse(
-                                    'http://localhost:3000/api/auth/register-confirmation'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                  'Access-Control-Allow-Origin': '*',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  'email': mail,
-                                  'password': password,
-                                }),
-                              );
-                              // ignore: use_build_context_synchronously
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          RegisterConfirmation(params: mail)));
+                                      builder: (context) => const MyHomePage(
+                                          title: 'register success')));
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -143,35 +110,11 @@ class RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           child: const Text(
-                            "S'inscrire",
+                            "Changer le mot de passe",
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Text("Déja un compte ? "),
-                                Text(
-                                  'Connectez-vous.',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                              ]),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text("S'inscrire avec :"),
-                      const SizedBox(height: 10),
-                      const GoogleLogo(),
                     ])))));
   }
 }

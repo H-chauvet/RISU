@@ -54,22 +54,38 @@ router.post('/register', async function (req, res, next) {
   }
 })
 
+router.post('/forgot-password', async function (req, res, next) {
+  try {
+    const { email } = req.body
+
+    if (!email) {
+      res.status(400)
+      throw new Error('Email is required')
+    }
+
+    userCtrl.forgotPassword(email)
+    res.json('ok')
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/update-password', async function (req, res, next) {
   try {
-    const { email, password } = req.body
+    const { uuid, password } = req.body
 
-    if (!email || !password) {
+    if (!uuid || !password) {
       res.status(400)
       throw new Error('Email and password are required')
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email)
+    const existingUser = await userCtrl.findUserByUuid(uuid)
     if (!existingUser) {
       res.status(400)
-      throw new Error("Email don't exist")
+      throw new Error("Account don't exist")
     }
 
-    const ret = await userCtrl.updatePassword({ email, password })
+    const ret = await userCtrl.updatePassword({ uuid, password })
     res.json(ret)
   } catch (err) {
     next(err)

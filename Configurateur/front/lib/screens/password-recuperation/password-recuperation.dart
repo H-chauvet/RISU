@@ -130,7 +130,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                             if (formKey.currentState!.validate()) {
                               http.post(
                                 Uri.parse(
-                                    'http://localhost:3000/api/auth/update-password'),
+                                    'http://localhost:3000/api/auth/forgot-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
