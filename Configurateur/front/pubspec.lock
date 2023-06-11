@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
+  binding:
+    dependency: "direct main"
+    description:
+      name: binding
+      sha256: ce975d2823b618f5eac12c48b2128f454fb50959da224fdeecb191b0523a5cd4
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -96,6 +104,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.2.0"
+  go_router:
+    dependency: "direct main"
+    description:
+      name: go_router
+      sha256: "9235e40f7a917c22830b64a8b3185dd4e0e2fd558b6394fa2d93dd1feb884c5c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.0.1"
   http:
     dependency: "direct main"
     description:
@@ -136,6 +152,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.0"
   matcher:
     dependency: transitive
     description:

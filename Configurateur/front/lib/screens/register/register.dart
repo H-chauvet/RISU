@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/screens/login/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -97,13 +98,25 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              debugPrint('$mail, $password, $validedPassword');
-                              http.post(
+                              await http.post(
                                 Uri.parse(
                                     'http://localhost:3000/api/auth/register'),
+                                headers: <String, String>{
+                                  'Content-Type':
+                                      'application/json; charset=UTF-8',
+                                  'Access-Control-Allow-Origin': '*',
+                                },
+                                body: jsonEncode(<String, String>{
+                                  'email': mail,
+                                  'password': password,
+                                }),
+                              );
+                              await http.post(
+                                Uri.parse(
+                                    'http://localhost:3000/api/auth/register-confirmation'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
@@ -117,8 +130,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyHomePage(title: 'tile')));
+                                      builder: (context) => const MyHomePage(
+                                          title: 'register success')));
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -138,8 +151,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const MyHomePage(title: 'tile')));
+                                  builder: (context) => const LoginScreen()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
