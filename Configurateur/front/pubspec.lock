@@ -9,14 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.10.0"
-  binding:
-    dependency: "direct main"
-    description:
-      name: binding
-      sha256: ce975d2823b618f5eac12c48b2128f454fb50959da224fdeecb191b0523a5cd4
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
