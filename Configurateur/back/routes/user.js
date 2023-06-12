@@ -63,6 +63,12 @@ router.post('/forgot-password', async function (req, res, next) {
       throw new Error('Email is required')
     }
 
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error('Invalid email')
+    }
+
     userCtrl.forgotPassword(email)
     res.json('ok')
   } catch (err) {
@@ -99,6 +105,12 @@ router.post('/register-confirmation', async function (req, res, next) {
     if (!email) {
       res.status(400)
       throw new Error('Email is required')
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error('Invalid email')
     }
 
     userCtrl.registerConfirmation(email)
