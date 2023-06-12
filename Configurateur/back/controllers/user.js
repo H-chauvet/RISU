@@ -28,6 +28,14 @@ exports.findUserById = id => {
   })
 }
 
+exports.deleteUser = email => {
+  return db.User.delete({
+    where: {
+      email
+    }
+  })
+}
+
 exports.registerByEmail = user => {
   user.password = bcrypt.hashSync(user.password, 12)
   user.uuid = uuid.v4()

@@ -46,7 +46,7 @@ router.post('/register', async function (req, res, next) {
     const user = await userCtrl.registerByEmail({ email, password })
     const accessToken = jwtMiddleware.generateAccessToken(user)
 
-    res.json({
+    res.status(200).json({
       accessToken
     })
   } catch (err) {
@@ -121,6 +121,17 @@ router.post('/confirmed-register', async function (req, res, next) {
     res.json('user confirmed')
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/delete', async function (req, res, next) {
+  const { email } = req.body
+
+  try {
+    await userCtrl.deleteUser(email)
+    res.json('ok')
+  } catch (err) {
+    res.json('ok')
   }
 })
 
