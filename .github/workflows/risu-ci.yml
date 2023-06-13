@@ -32,10 +32,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v1
-      - name: Run unit tests
+      - name: Run unit tests (WEB)
         working-directory: ./Configurateur/front
         run: flutter test
-  MOBILE:
+  MOBILE-BUILD:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
