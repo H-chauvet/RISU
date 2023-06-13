@@ -65,7 +65,7 @@ jobs:
         - name: Set up emulator
           uses: actions/setup-java@v2
           with:
-            java-version: '12.x'
+            distribution: openjdk
         - name: AVD Manager
           run: sdkmanager --list
         - name: Create Android emulator
