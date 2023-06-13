@@ -23,6 +23,7 @@
         "jwt-simple": "^0.5.6",
         "mocha": "^10.2.0",
         "mysql": "^2.18.1",
+        "nodemailer": "^6.9.3",
         "passport": "^0.6.0",
         "passport-jwt": "^4.0.1",
         "passport-local": "^1.0.0",
