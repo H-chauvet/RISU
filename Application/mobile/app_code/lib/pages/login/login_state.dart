@@ -83,11 +83,7 @@ class LoginPageState extends State<LoginPage> {
       },
       body: jsonEncode(<String, String>{'email': _email!}),
     );
-    try {
-      return jsonDecode(response.body);
-    } catch (err) {
-      return 'Invalid e-mail address. Please check it !';
-    }
+    return jsonDecode(response.body)['message'].toString();
   }
 
   /// Initialization function for the api answer
