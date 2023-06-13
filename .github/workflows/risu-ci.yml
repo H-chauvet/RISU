@@ -60,6 +60,7 @@ jobs:
         - name: Check out code
           uses: actions/checkout@v2
         - name: Get dependencies
+          working-directory: ./Application/mobile/app_code
           run: flutter pub get
         - name: Set up emulator
           uses: actions/setup-java@v2
