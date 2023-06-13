@@ -16,14 +16,14 @@ class SignupPageState extends State<SignupPage> {
   String? _password;
 
   /// password to signup
-  String? _confirmation_password;
+  String? _confirmationPassword;
 
   /// future api answer
   late Future<String> _futureSignup;
 
   /// Network function calling the api to signup
   Future<String> apiAskForSignup() async {
-    if (_email == null || _password == null || _confirmation_password == null) {
+    if (_email == null || _password == null || _confirmationPassword == null) {
       return 'Please fill all the field !';
     }
     final response = await http.post(
@@ -36,7 +36,7 @@ class SignupPageState extends State<SignupPage> {
     );
 
     if (response.statusCode == 201) {
-      return 'Signup succeed ! Check your email and go to Login page';
+      return 'A confirmation e-mail has been sent to you !';
     } else {
       return 'Invalid e-mail address !';
     }
@@ -45,24 +45,6 @@ class SignupPageState extends State<SignupPage> {
   /// Initialization function for the api answer
   Future<String> getAFirstSignupAnswer() async {
     return '';
-  }
-
-  /// This function display the login and the name of our project
-  Widget displayAreaLoginSentence() {
-    return const Text('Risu',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
-  }
-
-  /// This function display our logo and the login name of our project
-  Widget displayLogoAndName() {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          const Text(""),
-          // displayLogo(90),
-          displayAreaLoginSentence()
-        ]);
   }
 
   @override
@@ -77,19 +59,31 @@ class SignupPageState extends State<SignupPage> {
         resizeToAvoidBottomInset: false,
         body: Center(
             child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
+                margin: const EdgeInsets.symmetric(horizontal: 32),
                 child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        displayLogoAndName(),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: const <Widget>[
+                              Text(""),
+                              Text('Risu',
+                                  key: Key('title-text'),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 42))
+                            ]),
                         const Text(
                           'Création d\'un compte',
+                          key: Key('subtitle-text'),
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         TextFormField(
+                          key: const Key('email-text_input'),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'E-mail...',
@@ -106,6 +100,7 @@ class SignupPageState extends State<SignupPage> {
                           },
                         ),
                         TextFormField(
+                          key: const Key('password-text_input'),
                           obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -121,6 +116,7 @@ class SignupPageState extends State<SignupPage> {
                           },
                         ),
                         TextFormField(
+                          key: const Key('password_confirmation-text_input'),
                           obscureText: true,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -134,7 +130,7 @@ class SignupPageState extends State<SignupPage> {
                             if (value != _password) {
                               return 'Les mots de passe ne correspondent pas.';
                             }
-                            _confirmation_password = value;
+                            _confirmationPassword = value;
                             return null;
                           },
                         ),
@@ -152,15 +148,18 @@ class SignupPageState extends State<SignupPage> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            materialElevatedButtonArea(
+                            materialElevatedButton(
                               ElevatedButton(
-                                key: const Key('SendSignupButton'),
+                                key: const Key('send_signup-button'),
                                 onPressed: () {
                                   setState(() {
                                     _futureSignup = apiAskForSignup();
                                   });
                                 },
-                                child: const Text('Inscription'),
+                                child: const Text(
+                                  'Inscription',
+                                  key: Key('title-text'),
+                                ),
                               ),
                               context,
                               primaryColor: getOurPrimaryColor(100),
@@ -170,7 +169,7 @@ class SignupPageState extends State<SignupPage> {
                               isShadowNeeded: true,
                             ),
                             TextButton(
-                              key: const Key('GoLoginButton'),
+                              key: const Key('go_login-button'),
                               onPressed: () {
                                 goToLoginPage(context, false);
                               },
