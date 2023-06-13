@@ -38,6 +38,7 @@ class HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text('HomePage')],
               ),
             ),
           ))));
