@@ -53,10 +53,29 @@ jobs:
         working-directory: ./Application
         run: docker-compose down
   MOBILE-TEST:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - name: Run unit tests (MOBILE)
-        working-directory: ./Application/mobile/app_code
-        run: ./run it
+      runs-on: ubuntu-latest
+      steps:
+        - name: Set up Flutter
+          uses: subosito/flutter-action@v2
+          with:
+            flutter-version: stable
+        - name: Check out code
+          uses: actions/checkout@v2
+        - name: Get dependencies
+          run: flutter pub get
+        - name: Set up emulator
+          uses: actions/setup-java@v2
+          with:
+            java-version: '12.x'
+        - name: AVD Manager
+          run: sdkmanager --list
+        - name: Create Android emulator
+          run: echo no | avdmanager create avd -f -n test -k "system-images;android-30;google_apis;x86"
+        - name: Start emulator
+          run: $ANDROID_HOME/emulator/emulator -avd test -no-window -no-audio &
+        - name: Wait for emulator to start
+          run: android-wait-for-emulator
+        - name: Unlock emulator screen
+          run: adb shell input keyevent 82
+        - name: Run integration tests
+          run: ./run it
