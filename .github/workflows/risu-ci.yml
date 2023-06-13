@@ -66,6 +66,7 @@ jobs:
           with:
             channel: stable
         - name: Install Flutter dependencies
+          working-directory: ./Application/mobile/app_code
           run: flutter pub get
         - name: Run integration tests
           uses: reactivecircus/android-emulator-runner@v2
