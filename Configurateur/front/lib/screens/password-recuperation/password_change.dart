@@ -36,6 +36,7 @@ class PasswordChangeState extends State<PasswordChange> {
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
                       TextFormField(
+                        key: const Key('password'),
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -55,6 +56,7 @@ class PasswordChangeState extends State<PasswordChange> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('confirm-password'),
                         decoration: InputDecoration(
                           hintText: 'Validation du mot de passe',
                           labelText: 'Valider le mot de passe',
@@ -80,6 +82,7 @@ class PasswordChangeState extends State<PasswordChange> {
                         height: 40,
                         width: 300,
                         child: ElevatedButton(
+                          key: const Key('change-password'),
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
