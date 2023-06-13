@@ -7,9 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:front/main.dart';
-import 'package:front/screens/register/register.dart';
+import 'package:front/screens/login/login.dart';
+import 'package:front/screens/register-confirmation/confirmed_user.dart';
 
 void main() {
   Widget createWidgetForTesting({required Widget child}) {
@@ -20,16 +19,22 @@ void main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Confirmed user screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    tester.binding.window.physicalSizeTestValue = Size(2500, 1080);
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    await tester
-        .pumpWidget(createWidgetForTesting(child: new RegisterScreen()));
+    await tester.pumpWidget(
+        createWidgetForTesting(child: const ConfirmedUser(params: 'uuid')));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('Inscription'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    expect(
+        find.text(
+            'Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application'),
+        findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('go-home')));
+    await tester.pumpAndSettle();
   });
 }
