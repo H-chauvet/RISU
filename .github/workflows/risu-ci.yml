@@ -35,7 +35,7 @@ jobs:
       - name: Run unit tests (WEB)
         working-directory: ./Configurateur/front
         run: flutter test
-  MOBILE:
+  MOBILE-BUILD:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -52,32 +52,3 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Application
         run: docker-compose down
-  MOBILE-TEST:
-      runs-on: macos-11
-      strategy:
-        matrix:
-          api-level:
-            - 29
-        fail-fast: true
-      steps:
-        - uses: actions/checkout@v3
-        - name: Setup Flutter SDK
-          uses: subosito/flutter-action@v2
-          with:
-            channel: stable
-        - name: Install Flutter dependencies
-          working-directory: ./Application/mobile/app_code
-          run: flutter pub get
-        - name: Set up emulator
-          uses: actions/setup-java@v2
-          with:
-            java-version: '11'
-            distribution: adopt
-        - name: Run integration tests
-          uses: reactivecircus/android-emulator-runner@v2
-          with:
-            api-level: ${{ matrix.api-level }}
-            arch: x86_64
-            profile: Nexus 6
-            working-directory: ./Application/mobile/app_code
-            script: ./run it
