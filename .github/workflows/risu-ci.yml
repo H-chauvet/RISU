@@ -74,4 +74,5 @@ jobs:
             api-level: ${{ matrix.api-level }}
             arch: x86_64
             profile: Nexus 6
+            working-directory: ./Application/mobile/app_code
             script: ./run it
