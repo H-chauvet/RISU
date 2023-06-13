@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  database:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    env_file:
+      - back/.env
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: configurateur_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - "mysql-data:/var/lib/mysql"
+    restart: always
+
+  server:
+    build:
+      context: ./back
+    container_name: server
+    env_file:
+      - back/.env
+    depends_on:
+      - database
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+    restart: always
+  web_app:
+    build:
+      context: ./front
+    ports:
+      - 80:5000
+
+volumes:
+  mysql-data:

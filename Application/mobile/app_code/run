@@ -1,0 +1,62 @@
+#!/bin/bash
+
+run ()
+{
+  flutter run
+}
+
+android ()
+{
+  flutter build apk
+  flutter install
+}
+
+ios ()
+{
+  flutter build ipa --obfuscate
+}
+
+unit_tests ()
+{
+    flutter test test/models
+}
+
+widget_tests ()
+{
+    # shellcheck disable=SC2044
+    for file in $(find test/ -type f ! -path "test/models/*"); do
+        flutter test "$file"
+    done
+}
+
+integration_tests ()
+{
+  flutter test integration_test/login.dart integration_test/signup.dart integration_test/main.dart --coverage
+}
+
+show_tests_html ()
+{
+  genhtml coverage/lcov.info -o coverage/html
+  xdg-open coverage/html/index.html
+}
+
+if [ "$1" == "" ]; then
+    run
+elif [ "$1" == "unit_tests" ] || [ "$1" == "ut" ]; then
+    unit_tests
+elif [ "$1" == "widget_tests" ] || [ "$1" == "wt" ]; then
+    widget_tests
+elif [ "$1" == "integration_tests" ] || [ "$1" == "it" ]; then
+    integration_tests
+elif [ "$1" == "it_cov" ]; then
+    integration_tests
+    show_tests_html
+elif [ "$1" == "html" ]; then
+    show_tests_html
+elif [ "$1" == "android" ]; then
+    android
+elif [ "$1" == "ios" ]; then
+    ios
+else
+    echo "Unknown command."
+fi
