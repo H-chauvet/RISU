@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 /// This function display our logo
 Widget displayLogo(double size) {
   return Column(
-    children: <Widget>[Image.asset('assets/icons/risu/logo_noir.png')],
+    children: <Widget>[Image.asset('assets/logo_noir.png')],
   );
 }
 
-/// Return our blue color Hex : 06A1E4
 Color getOurPrimaryColor(double opacity) {
   return Color.fromRGBO(6, 161, 228, opacity);
 }
 
-/// Return our green color Hex : 16FCBC
 Color getOurSecondaryColor(double opacity) {
   return Color.fromRGBO(22, 252, 188, opacity);
 }
