@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,32 +20,9 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     DateTime lastClicked = DateTime.parse("1969-07-20 20:18:04Z");
     DateTime now = DateTime.now();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Confirmation d'inscription",
-            style: TextStyle(fontSize: 40),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4682B4),
-          toolbarHeight: MediaQuery.of(context).size.height / 8,
-          leading: Container(),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.elliptical(1920, 56.0),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Image.asset("logo.png"),
-              iconSize: 80,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MyHomePage(title: 'tile')));
-              },
-            ),
-          ],
+        appBar: CustomAppBar(
+          "Confirmation d'inscription",
+          context: context,
         ),
         body: Center(
             child: FractionallySizedBox(
@@ -71,6 +49,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                       height: 40,
                       width: 400,
                       child: ElevatedButton(
+                        key: const Key('send-mail'),
                         onPressed: () async {
                           now = DateTime.now();
                           final difference =
@@ -107,6 +86,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                       height: 20.0,
                     ),
                     InkWell(
+                      key: const Key('go-home'),
                       onTap: () {
                         Navigator.push(
                             context,

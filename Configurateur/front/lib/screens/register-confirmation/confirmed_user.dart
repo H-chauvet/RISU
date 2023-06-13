@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -31,32 +32,9 @@ class ConfirmedUserState extends State<ConfirmedUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            "Confirmation d'inscription",
-            style: TextStyle(fontSize: 40),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4682B4),
-          toolbarHeight: MediaQuery.of(context).size.height / 8,
-          leading: Container(),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.elliptical(1920, 56.0),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Image.asset("logo.png"),
-              iconSize: 80,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MyHomePage(title: 'tile')));
-              },
-            ),
-          ],
+        appBar: CustomAppBar(
+          "Confirmation d'inscription",
+          context: context,
         ),
         body: Center(
             child: FractionallySizedBox(
@@ -73,6 +51,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                       height: 80.0,
                     ),
                     InkWell(
+                      key: const Key('go-home'),
                       onTap: () {
                         Navigator.push(
                             context,

@@ -36,6 +36,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
                       TextFormField(
+                        key: const Key('email'),
                         decoration: InputDecoration(
                           hintText: 'Entrez votre email',
                           labelText: 'Adresse e-mail',
@@ -55,6 +56,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('password'),
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -74,6 +76,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('confirm-password'),
                         decoration: InputDecoration(
                           hintText: 'Validation du mot de passe',
                           labelText: 'Valider le mot de passe',
@@ -99,6 +102,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
+                          key: const Key('register'),
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
@@ -149,6 +153,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       InkWell(
+                        key: const Key('login'),
                         onTap: () {
                           Navigator.push(
                               context,
