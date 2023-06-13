@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/home/home_functional.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:http/http.dart' as http;
 
 import '../../flutter_objects/user_data.dart';
@@ -95,8 +96,9 @@ class LoginPageState extends State<LoginPage> {
   }
 
   /// This function display the login name of our project
-  Widget displayAreaName() {
+  Widget displayAppName() {
     return const Text('Se connecter à RISU',
+        key: Key('title-text'),
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
   }
@@ -104,14 +106,15 @@ class LoginPageState extends State<LoginPage> {
   /// This function display our logo and the login name of our project
   Widget displayLogoAndName() {
     return Column(
+        key: const Key('logo_name-column'),
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[displayLogo(90), displayAreaName()]);
+        children: <Widget>[displayLogo(90), displayAppName()]);
   }
 
   /// This function display the button for create a new account
   Widget displayButtonRequestANewAccount() {
     return TextButton(
-      key: const Key('GoSignupButton'),
+      key: const Key('goto_signup-button'),
       onPressed: () {
         goToSignupPage(context);
       },
@@ -127,15 +130,16 @@ class LoginPageState extends State<LoginPage> {
     return Column(
       children: <Widget>[
         SizedBox(
-          child: materialElevatedButtonArea(
+          child: materialElevatedButton(
             ElevatedButton(
-              key: const Key('SendLoginButton'),
+              key: const Key('continue_email-button'),
               onPressed: () {
                 setState(() {
                   _isConnexionWithEmail = true;
                 });
               },
               child: const Text('Continuer avec un e-mail',
+                  key: Key('subtitle-text'),
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -158,9 +162,9 @@ class LoginPageState extends State<LoginPage> {
   Widget displayInputForEmailConnexion(snapshot) {
     return Column(children: <Widget>[
       SizedBox(
-          child: materialElevatedButtonArea(
+          child: materialElevatedButton(
         ElevatedButton(
-          key: const Key('SendLoginButton'),
+          key: const Key('login-button'),
           onPressed: () {
             setState(() {
               _futureLogin = apiAskForLogin();
@@ -182,6 +186,36 @@ class LoginPageState extends State<LoginPage> {
     ]);
   }
 
+  /// This function displays the button for requesting a new password
+  Widget displayResetAndForgotPassword() {
+    bool isButtonDisabled = false;
+    return Column(
+      children: <Widget>[
+        TextButton(
+          key: const Key('reset_password-button'),
+          // ignore: dead_code
+          onPressed: isButtonDisabled
+              ? null
+              : () {
+                  setState(() {
+                    _futureLogin = apiAskForResetPassword();
+                    isButtonDisabled = true;
+                    Timer(const Duration(seconds: 5), () {
+                      setState(() {
+                        isButtonDisabled = false;
+                      });
+                    });
+                  });
+                },
+          child: Text(
+            'Mot de passe oublié ?',
+            style: TextStyle(fontSize: 12, color: getOurPrimaryColor(100)),
+          ),
+        ),
+      ],
+    );
+  }
+
   /// This function display input for email login (input mail and password)
   Widget displayInputForEmailLogin(snapshot) {
     return Column(
@@ -189,6 +223,7 @@ class LoginPageState extends State<LoginPage> {
       children: <Widget>[
         /// Put Login with Gmail or an other login
         TextFormField(
+          key: const Key('email-text_input'),
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.all(20),
             border: OutlineInputBorder(
@@ -215,6 +250,7 @@ class LoginPageState extends State<LoginPage> {
           Column(
             children: [
               TextFormField(
+                key: const Key('password-text_input'),
                 obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -228,6 +264,12 @@ class LoginPageState extends State<LoginPage> {
                   _password = value;
                   return null;
                 },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  displayResetAndForgotPassword(),
+                ],
               ),
             ],
           ),
@@ -254,49 +296,62 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-          child: FutureBuilder<String>(
-            future: _futureLogin,
-            builder: (context, snapshot) {
+      resizeToAvoidBottomInset: false,
+      body: Center(
+        child: FutureBuilder<String>(
+          future: _futureLogin,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              // Show a loading indicator while waiting for the future to complete
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              // Handle the error state
+              return Text('Error: ${snapshot.error}');
+            } else {
+              // Display the UI based on the future result
               logout = false;
               return Center(
-                  child: Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 12),
-                      child: SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                displayLogoAndName(),
-                                const SizedBox(
-                                  height: 20,
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        displayLogoAndName(),
+                        const SizedBox(height: 20),
+                        if (_isConnexionWithEmail)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isConnexionWithEmail = false;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: getOurPrimaryColor(100),
                                 ),
-                                if (_isConnexionWithEmail)
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      IconButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              _isConnexionWithEmail = false;
-                                            });
-                                          },
-                                          icon: Icon(
-                                            Icons.arrow_back_ios,
-                                            color: getOurPrimaryColor(100),
-                                          ))
-                                    ],
-                                  ),
-                                displayInputForEmailLogin(snapshot),
-                                if (_isConnexionWithEmail == false)
-                                  displayButtonRequestForEmailLogin(),
-                                if (_isConnexionWithEmail)
-                                  displayInputForEmailConnexion(snapshot),
-                              ]))));
-            },
-          ),
-        ));
+                              ),
+                            ],
+                          ),
+                        displayInputForEmailLogin(snapshot),
+                        if (_isConnexionWithEmail == false)
+                          displayButtonRequestForEmailLogin(),
+                        if (_isConnexionWithEmail)
+                          displayInputForEmailConnexion(snapshot),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
+        ),
+      ),
+    );
   }
 }
