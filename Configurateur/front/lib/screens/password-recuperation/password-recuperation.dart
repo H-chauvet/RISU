@@ -92,10 +92,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       ),
                       const SizedBox(height: 20.0),
                       TextFormField(
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Enter code',
                           hintText: 'Enter code',
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                         ),
                         validator: (value) {
                           if (value != null && value.isNotEmpty) {
