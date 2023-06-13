@@ -67,7 +67,9 @@ jobs:
           with:
             java-version: '12.x'
             distribution: adopt
-            add-path: ${{ env.ANDROID_HOME }}/cmdline-tools/latest/bin
+        - name: Install Android SDK
+          run: |
+            echo "y" | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "emulator"
         - name: AVD Manager
           run: sdkmanager --list
         - name: Create Android emulator
