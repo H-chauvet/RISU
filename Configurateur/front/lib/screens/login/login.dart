@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
+import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
@@ -55,6 +56,7 @@ class LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       TextFormField(
                         key: const Key('password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -78,7 +80,7 @@ class LoginScreenState extends State<LoginScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      const MyHomePage(title: 'recup mdp')));
+                                      const PasswordRecuperation()));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),

@@ -37,13 +37,15 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.2,
+                widthFactor: 0.4,
                 heightFactor: 0.7,
                 child: Form(
                     key: formKey,
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
-                      TextFormField(
+                      SizedBox(
+                        width: 350,
+                        child: TextFormField(
                         key: const Key('email'),
                         decoration: InputDecoration(
                           hintText: 'Entrez votre email',
@@ -62,6 +64,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           return null;
                         },
                       ),
+                      ),
+                      
                       const SizedBox(height: 20),
                       Center(
                         child: Row(
@@ -91,11 +95,15 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      TextFormField(
-                        decoration: const InputDecoration(
+                      SizedBox(
+                        width: 350,
+                        child: TextFormField(
+                        decoration: InputDecoration(
                           labelText: 'Enter code',
                           hintText: 'Enter code',
-                          border: OutlineInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
                         ),
                         validator: (value) {
                           if (value != null && value.isNotEmpty) {
@@ -121,10 +129,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         },
                         onSaved: (value) => inputCode = value ?? '',
                       ),
+                      ),
+                      
                       const SizedBox(height: 20.0),
                       SizedBox(
                         height: 40,
-                        width: 400,
+                        width: 300,
                         child: ElevatedButton(
                           key: const Key('submit'),
                           onPressed: () {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -37,6 +35,7 @@ class PasswordChangeState extends State<PasswordChange> {
                       const SizedBox(height: 10),
                       TextFormField(
                         key: const Key('password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -57,6 +56,7 @@ class PasswordChangeState extends State<PasswordChange> {
                       const SizedBox(height: 20),
                       TextFormField(
                         key: const Key('confirm-password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Validation du mot de passe',
                           labelText: 'Valider le mot de passe',
@@ -103,7 +103,7 @@ class PasswordChangeState extends State<PasswordChange> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const MyHomePage(
-                                          title: 'register success')));
+                                          title: 'update password success')));
                             }
                           },
                           style: ElevatedButton.styleFrom(

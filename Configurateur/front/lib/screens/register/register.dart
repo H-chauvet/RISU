@@ -57,6 +57,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       TextFormField(
                         key: const Key('password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -77,6 +78,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       TextFormField(
                         key: const Key('confirm-password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Validation du mot de passe',
                           labelText: 'Valider le mot de passe',
