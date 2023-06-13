@@ -27,3 +27,20 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Configurateur
         run: docker-compose down
+  MOBILE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker-compose
+      - name: Start Docker Compose
+        working-directory: ./Application
+        run: docker-compose up -d
+      - name: Verify Docker Compose
+        working-directory: ./Application
+        run: docker-compose ps
+      - name: Stop Docker Compose
+        working-directory: ./Application
+        run: docker-compose down
