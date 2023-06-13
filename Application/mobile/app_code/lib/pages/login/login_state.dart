@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 import '../../flutter_objects/user_data.dart';
 import '../../material_lib_functions/material_functions.dart';
+import '../home/home_page.dart';
 import '../signup/signup_functional.dart';
 import 'login_page.dart';
 
@@ -279,6 +280,9 @@ class LoginPageState extends State<LoginPage> {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
+              if (userInformation != null) {
+                return const HomePage();
+              }
               logout = false;
               return Center(
                 child: Container(
@@ -311,8 +315,7 @@ class LoginPageState extends State<LoginPage> {
                         displayEmailConnexionInputs(snapshot),
                         if (_isConnexionWithEmail == false)
                           displayContinueEmail(),
-                        if (_isConnexionWithEmail)
-                          displayLoginButton(snapshot),
+                        if (_isConnexionWithEmail) displayLoginButton(snapshot),
                       ],
                     ),
                   ),
