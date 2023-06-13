@@ -120,14 +120,14 @@ const transporter = nodemailer.createTransport({
   port: 587,
   secure: false,
   auth: {
-    user: 'risu.epitech@gmail.com',
-    pass: 'xojjtrvrcfwnlmln'
+    user: process.env.SMTP_EMAIL,
+    pass: process.env.SMTP_PASSWORD
   }
 })
 
 async function sendResetPasswordEmail (email, newPassword) {
   const mailOptions = {
-    from: 'risu.epitech@gmail.com',
+    from: process.env.SMTP_EMAIL,
     to: email,
     subject: 'Reset Your Password',
     text: `Your new password is: ${newPassword}`
@@ -135,7 +135,7 @@ async function sendResetPasswordEmail (email, newPassword) {
 
   try {
     const info = await transporter.sendMail(mailOptions)
-    console.log('Email sent to ' + email + ' (' + info.response + ')')
+    console.log('Reset email sent to ' + email + ' (' + info.response + ')')
   } catch (error) {
     console.error('Error sending reset password email:', error)
   }
@@ -158,14 +158,14 @@ app.post('/api/user/resetPassword', async (req, res) => {
   try {
     const user = await database.prisma.User.findUnique({ where: { email } })
     if (!user) {
-      return res.status(404).json({ error: 'User not found' })
+      return res.status(404).json({ message: 'User not found' })
     }
 
     const newPassword = generateRandomPassword(8)
 
     await database.prisma.User.update({
       where: { id: user.id },
-      data: { password: newPassword }
+      data: { password: await utils.hash(newPassword) }
     })
 
     await sendResetPasswordEmail(email, newPassword)
@@ -173,13 +173,13 @@ app.post('/api/user/resetPassword', async (req, res) => {
     return res.status(200).json({ message: 'Reset password email sent' })
   } catch (error) {
     console.error('Failed to reset password:', error)
-    return res.status(500).json({ error: 'Failed to reset password' })
+    return res.status(500).json({ message: 'Failed to reset password' })
   }
 })
 
 async function sendAccountConfirmationEmail (email, token) {
   const mailOptions = {
-    from: 'risu.epitech@gmail.com',
+    from: process.env.SMTP_EMAIL,
     to: email,
     subject: 'Confirm your account',
     text:
@@ -189,7 +189,9 @@ async function sendAccountConfirmationEmail (email, token) {
 
   try {
     const info = await transporter.sendMail(mailOptions)
-    console.log('Email sent to ' + email + ' (' + info.response + ')')
+    console.log(
+      'Confirmation email sent to ' + email + ' (' + info.response + ')'
+    )
     console.log(mailOptions.text)
   } catch (error) {
     console.error('Error sending reset password email:', error)
