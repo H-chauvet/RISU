@@ -13,9 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Risu',
       theme: ThemeData(
-          fontFamily: 'Roboto-Bold',
-          brightness: Brightness.dark,
-          secondaryHeaderColor: Colors.white),
+          fontFamily: 'Roboto-Bold', secondaryHeaderColor: Colors.white),
       routeInformationProvider: router.routeInformationProvider,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
