@@ -8,24 +8,17 @@ import 'package:http/http.dart' as http;
 
 import '../../flutter_objects/user_data.dart';
 import '../../material_lib_functions/material_functions.dart';
+import '../home/home_page.dart';
 import '../signup/signup_functional.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
-  /// email to login with
   String? _email;
-
-  /// password to login with
   String? _password;
-
-  /// To know if an user connect himself with email method
   bool _isConnexionWithEmail = false;
-
-  /// future api answer
   late Future<String> _futureLogin;
 
-  /// Network function calling the API to login
-  Future<String> apiAskForLogin() async {
+  Future<String> apiLogin() async {
     if (_email == null || _password == null) {
       return 'Please fill all the fields!';
     }
@@ -71,8 +64,7 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  /// Network function calling the API to reset password
-  Future<String> apiAskForResetPassword() async {
+  Future<String> apiResetPassword() async {
     if (_email == null) {
       return 'Please provide a valid email !';
     }
@@ -86,12 +78,6 @@ class LoginPageState extends State<LoginPage> {
     return jsonDecode(response.body)['message'].toString();
   }
 
-  /// Initialization function for the api answer
-  Future<String> getAFirstLoginAnswer() async {
-    return '';
-  }
-
-  /// This function display the login name of our project
   Widget displayAppName() {
     return const Text('Se connecter à RISU',
         key: Key('title-text'),
@@ -99,7 +85,6 @@ class LoginPageState extends State<LoginPage> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
   }
 
-  /// This function display our logo and the login name of our project
   Widget displayLogoAndName() {
     return Column(
         key: const Key('logo_name-column'),
@@ -107,8 +92,7 @@ class LoginPageState extends State<LoginPage> {
         children: <Widget>[displayLogo(90), displayAppName()]);
   }
 
-  /// This function display the button for create a new account
-  Widget displayButtonRequestANewAccount() {
+  Widget displayGoToSignup() {
     return TextButton(
       key: const Key('goto_signup-button'),
       onPressed: () {
@@ -121,8 +105,7 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// This function display all widget for the login with an email
-  Widget displayButtonRequestForEmailLogin() {
+  Widget displayContinueEmail() {
     return Column(
       children: <Widget>[
         SizedBox(
@@ -149,13 +132,12 @@ class LoginPageState extends State<LoginPage> {
             isShadowNeeded: true,
           ),
         ),
-        displayButtonRequestANewAccount()
+        displayGoToSignup()
       ],
     );
   }
 
-  /// This function display widgets for connexion password with an email
-  Widget displayInputForEmailConnexion(snapshot) {
+  Widget displayLoginButton(snapshot) {
     return Column(children: <Widget>[
       SizedBox(
           child: materialElevatedButton(
@@ -163,7 +145,7 @@ class LoginPageState extends State<LoginPage> {
           key: const Key('login-button'),
           onPressed: () {
             setState(() {
-              _futureLogin = apiAskForLogin();
+              _futureLogin = apiLogin();
             });
           },
           child: const Text(
@@ -178,23 +160,21 @@ class LoginPageState extends State<LoginPage> {
         sizeOfButton: 1.8,
         isShadowNeeded: true,
       )),
-      displayButtonRequestANewAccount()
+      displayGoToSignup()
     ]);
   }
 
-  /// This function displays the button for requesting a new password
-  Widget displayResetAndForgotPassword() {
+  Widget displayResetPassword() {
     bool isButtonDisabled = false;
     return Column(
       children: <Widget>[
         TextButton(
           key: const Key('reset_password-button'),
-          // ignore: dead_code
           onPressed: isButtonDisabled
               ? null
               : () {
                   setState(() {
-                    _futureLogin = apiAskForResetPassword();
+                    _futureLogin = apiResetPassword();
                     isButtonDisabled = true;
                     Timer(const Duration(seconds: 5), () {
                       setState(() {
@@ -212,12 +192,10 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 
-  /// This function display input for email login (input mail and password)
-  Widget displayInputForEmailLogin(snapshot) {
+  Widget displayEmailConnexionInputs(snapshot) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        /// Put Login with Gmail or an other login
         TextFormField(
           key: const Key('email-text_input'),
           decoration: InputDecoration(
@@ -264,7 +242,7 @@ class LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  displayResetAndForgotPassword(),
+                  displayResetPassword(),
                 ],
               ),
             ],
@@ -286,7 +264,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _futureLogin = getAFirstLoginAnswer();
+    _futureLogin = Future<String>.value('');
   }
 
   @override
@@ -298,13 +276,13 @@ class LoginPageState extends State<LoginPage> {
           future: _futureLogin,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              // Show a loading indicator while waiting for the future to complete
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
-              // Handle the error state
               return Text('Error: ${snapshot.error}');
             } else {
-              // Display the UI based on the future result
+              if (userInformation != null) {
+                return const HomePage();
+              }
               logout = false;
               return Center(
                 child: Container(
@@ -334,11 +312,10 @@ class LoginPageState extends State<LoginPage> {
                               ),
                             ],
                           ),
-                        displayInputForEmailLogin(snapshot),
+                        displayEmailConnexionInputs(snapshot),
                         if (_isConnexionWithEmail == false)
-                          displayButtonRequestForEmailLogin(),
-                        if (_isConnexionWithEmail)
-                          displayInputForEmailConnexion(snapshot),
+                          displayContinueEmail(),
+                        if (_isConnexionWithEmail) displayLoginButton(snapshot),
                       ],
                     ),
                   ),

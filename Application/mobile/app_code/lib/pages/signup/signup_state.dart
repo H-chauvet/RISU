@@ -9,20 +9,12 @@ import '../login/login_functional.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
-  /// email to signup
   String? _email;
-
-  /// password to signup
   String? _password;
-
-  /// password to signup
   String? _confirmationPassword;
-
-  /// future api answer
   late Future<String> _futureSignup;
 
-  /// Network function calling the api to signup
-  Future<String> apiAskForSignup() async {
+  Future<String> apiSignup() async {
     if (_email == null || _password == null || _confirmationPassword == null) {
       return 'Please fill all the field !';
     }
@@ -42,15 +34,10 @@ class SignupPageState extends State<SignupPage> {
     }
   }
 
-  /// Initialization function for the api answer
-  Future<String> getAFirstSignupAnswer() async {
-    return '';
-  }
-
   @override
   void initState() {
     super.initState();
-    _futureSignup = getAFirstSignupAnswer();
+    _futureSignup = Future<String>.value('');
   }
 
   @override
@@ -68,7 +55,6 @@ class SignupPageState extends State<SignupPage> {
                         Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: const <Widget>[
-                              Text(""),
                               Text('Risu',
                                   key: Key('title-text'),
                                   textAlign: TextAlign.center,
@@ -153,7 +139,7 @@ class SignupPageState extends State<SignupPage> {
                                 key: const Key('send_signup-button'),
                                 onPressed: () {
                                   setState(() {
-                                    _futureSignup = apiAskForSignup();
+                                    _futureSignup = apiSignup();
                                   });
                                 },
                                 child: const Text(
