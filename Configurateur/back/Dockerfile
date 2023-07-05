@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts
 
 COPY . .
 RUN npm install
