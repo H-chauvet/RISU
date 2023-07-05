@@ -1,7 +1,7 @@
 FROM ubuntu:20.04
 
 RUN apt-get update 
-RUN apt-get install -y curl git unzip libglu1-mesa lib32stdc++6 wget libstdc++6 fonts-droid-fallback python3
+RUN apt-get install -y curl git unzip libglu1-mesa wget libstdc++6 fonts-droid-fallback python3
 RUN apt-get clean
 
 # download Flutter SDK from Flutter Github repo
