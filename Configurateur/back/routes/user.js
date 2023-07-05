@@ -54,6 +54,8 @@ router.post('/register', async function (req, res, next) {
   }
 })
 
+
+
 router.post('/register-confirmation', async function (req, res, next) {
   try {
     const { email } = req.body

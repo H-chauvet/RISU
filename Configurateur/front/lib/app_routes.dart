@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register/register.dart';
@@ -47,6 +48,12 @@ class AppRouter {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/landingPage',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: LandingPage(),
+        ),
       ),
     ],
   );
