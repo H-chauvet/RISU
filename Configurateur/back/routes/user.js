@@ -65,14 +65,14 @@ router.post('/forgot-password', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
-      res.status(400)
-      throw new Error('Invalid email')
+      res.status(401)
+      throw new Error("L'email n'existe pas")
     }
 
     userCtrl.forgotPassword(email)
-    res.json('ok')
+    res.status(200).json('ok')
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 
@@ -87,14 +87,14 @@ router.post('/update-password', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByUuid(uuid)
     if (!existingUser) {
-      res.status(400)
-      throw new Error("Account don't exist")
+      res.status(401)
+      throw new Error("L'utilisateur n'existe pas")
     }
 
     const ret = await userCtrl.updatePassword({ uuid, password })
-    res.json(ret)
+    res.status(200).json(ret)
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 
@@ -109,14 +109,14 @@ router.post('/register-confirmation', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
-      res.status(400)
-      throw new Error('Invalid email')
+      res.status(401)
+      throw new Error("L'email n'existe pas")
     }
 
     userCtrl.registerConfirmation(email)
-    res.json('ok')
+    res.status(200).json('ok')
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 
@@ -129,10 +129,16 @@ router.post('/confirmed-register', async function (req, res, next) {
       throw new Error('uuid is required')
     }
 
+    const existingUser = await userCtrl.findUserByUuid(uuid)
+    if (!existingUser) {
+      res.status(401)
+      throw new Error("L'utilisateur n'existe pas")
+    }
+
     await userCtrl.confirmedRegister(uuid)
-    res.json('user confirmed')
+    res.status(200).json('user confirmed')
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 

@@ -3,6 +3,7 @@ import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PasswordChange extends StatefulWidget {
   const PasswordChange({super.key, required this.params});
@@ -86,24 +87,43 @@ class PasswordChangeState extends State<PasswordChange> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              await http.post(
-                                Uri.parse(
-                                    'http://localhost:3000/api/auth/update-password'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                  'Access-Control-Allow-Origin': '*',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  'uuid': widget.params,
-                                  'password': password,
-                                }),
-                              );
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MyHomePage(
-                                          title: 'update password success')));
+                              await http
+                                  .post(
+                                    Uri.parse(
+                                        'http://localhost:3000/api/auth/update-password'),
+                                    headers: <String, String>{
+                                      'Content-Type':
+                                          'application/json; charset=UTF-8',
+                                      'Access-Control-Allow-Origin': '*',
+                                    },
+                                    body: jsonEncode(<String, String>{
+                                      'uuid': widget.params,
+                                      'password': password,
+                                    }),
+                                  )
+                                  .then((value) => {
+                                        if (value.statusCode == 200)
+                                          {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MyHomePage(
+                                                            title:
+                                                                'update password success'))),
+                                          }
+                                        else
+                                          {
+                                            Fluttertoast.showToast(
+                                                msg: value.body,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 4,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0)
+                                          }
+                                      });
                             }
                           },
                           style: ElevatedButton.styleFrom(

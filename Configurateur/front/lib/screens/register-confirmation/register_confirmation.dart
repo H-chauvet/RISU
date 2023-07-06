@@ -4,6 +4,7 @@ import 'package:front/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
@@ -56,18 +57,32 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                               now.difference(lastClicked).inMinutes;
                           if (difference >= 1) {
                             lastClicked = DateTime.now();
-                            await http.post(
-                              Uri.parse(
-                                  'http://localhost:3000/api/auth/register-confirmation'),
-                              headers: <String, String>{
-                                'Content-Type':
-                                    'application/json; charset=UTF-8',
-                                'Access-Control-Allow-Origin': '*',
-                              },
-                              body: jsonEncode(<String, String>{
-                                'email': widget.params,
-                              }),
-                            );
+                            await http
+                                .post(
+                                  Uri.parse(
+                                      'http://localhost:3000/api/auth/register-confirmation'),
+                                  headers: <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
+                                    'Access-Control-Allow-Origin': '*',
+                                  },
+                                  body: jsonEncode(<String, String>{
+                                    'email': widget.params,
+                                  }),
+                                )
+                                .then((value) => {
+                                      if (value.statusCode != 200)
+                                        {
+                                          Fluttertoast.showToast(
+                                              msg: value.body,
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIosWeb: 4,
+                                              backgroundColor: Colors.red,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0)
+                                        }
+                                    });
                           }
                         },
                         style: ElevatedButton.styleFrom(

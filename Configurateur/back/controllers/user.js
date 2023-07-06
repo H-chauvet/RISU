@@ -47,7 +47,6 @@ exports.registerByEmail = user => {
 exports.registerConfirmation = email => {
   let generatedUuid = ''
   this.findUserByEmail(email).then(user => {
-    console.log(user)
     generatedUuid = user.uuid
     let mail = {
       from: 'risu.epitech@gmail.com',
