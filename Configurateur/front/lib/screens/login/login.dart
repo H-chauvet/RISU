@@ -6,6 +6,7 @@ import 'package:front/screens/register/register.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -129,6 +130,17 @@ class LoginScreenState extends State<LoginScreen> {
                                                               title:
                                                                   'login success')))
                                             }
+                                          }
+                                        else
+                                          {
+                                            Fluttertoast.showToast(
+                                                msg: value.body,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.CENTER,
+                                                timeInSecForIosWeb: 4,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0)
                                           }
                                       });
                             }

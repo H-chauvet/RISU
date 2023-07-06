@@ -14,8 +14,8 @@ router.post('/login', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
-      res.status(400)
-      throw new Error("Email don't exist")
+      res.status(401)
+      throw new Error("L'email n'existe pas")
     }
 
     const user = await userCtrl.loginByEmail({ email, password })
@@ -25,7 +25,7 @@ router.post('/login', async function (req, res, next) {
       accessToken
     })
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 

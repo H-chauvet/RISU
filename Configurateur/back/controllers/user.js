@@ -81,7 +81,7 @@ exports.loginByEmail = user => {
     }
   }).then(findUser => {
     if (!bcrypt.compareSync(user.password, findUser.password)) {
-      throw new Error('Invalid password')
+      throw new Error('Mot de passe incorrect')
     }
 
     return findUser
