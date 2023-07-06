@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/learn-more-about/learn-more-about.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
@@ -73,6 +74,12 @@ class AppRouter {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/learn-more-about',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: LearnMoreAboutPage(),
+        ),
       ),
     ],
   );
