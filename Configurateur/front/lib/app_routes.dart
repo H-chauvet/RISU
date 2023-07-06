@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/connected-home/connected-home.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
@@ -73,6 +74,12 @@ class AppRouter {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/connected-home',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: ConnectedHome(),
+        ),
       ),
     ],
   );
