@@ -10,6 +10,12 @@ let transporter = nodemailer.createTransport({
   }
 })
 
+/**
+ *
+ * Send email
+ *
+ * @param {*} mail mail object
+ */
 function sendMail (mail) {
   transporter.sendMail(mail, (error, info) => {
     if (error) {

@@ -23,6 +23,7 @@
     "nodemailer": "^6.9.3",
     "prisma": "^4.13.0",
     "supertest": "^6.3.3",
+    "swagger-ui-express": "^4.6.3",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },
