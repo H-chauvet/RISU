@@ -12,6 +12,11 @@ class PasswordRecuperation extends StatefulWidget {
   State<PasswordRecuperation> createState() => PasswordRecuperationState();
 }
 
+///
+/// Password recuperation screen
+///
+/// page d'information pour la recuperation de mot de passe
+///
 class PasswordRecuperationState extends State<PasswordRecuperation> {
   final captchaController = LocalCaptchaController();
   var inputCode = '';
@@ -46,26 +51,25 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
-                        key: const Key('email'),
-                        decoration: InputDecoration(
-                          hintText: 'Entrez votre email',
-                          labelText: 'Adresse e-mail',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                          key: const Key('email'),
+                          decoration: InputDecoration(
+                            hintText: 'Entrez votre email',
+                            labelText: 'Adresse e-mail',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
+                          onChanged: (String? value) {
+                            mail = value!;
+                          },
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez remplir ce champ';
+                            }
+                            return null;
+                          },
                         ),
-                        onChanged: (String? value) {
-                          mail = value!;
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez remplir ce champ';
-                          }
-                          return null;
-                        },
                       ),
-                      ),
-                      
                       const SizedBox(height: 20),
                       Center(
                         child: Row(
@@ -98,39 +102,38 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Enter code',
-                          hintText: 'Enter code',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+                          decoration: InputDecoration(
+                            labelText: 'Enter code',
+                            hintText: 'Enter code',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
+                          validator: (value) {
+                            if (value != null && value.isNotEmpty) {
+                              if (value.length != configFormData.length) {
+                                return '* Code must be length of ${configFormData.length}.';
+                              }
+
+                              final validation =
+                                  captchaController.validate(value);
+
+                              switch (validation) {
+                                case LocalCaptchaValidation.invalidCode:
+                                  return '* Invalid code.';
+                                case LocalCaptchaValidation.codeExpired:
+                                  return '* Code expired.';
+                                case LocalCaptchaValidation.valid:
+                                default:
+                                  return null;
+                              }
+                            }
+
+                            return '* Required field.';
+                          },
+                          onSaved: (value) => inputCode = value ?? '',
                         ),
-                        validator: (value) {
-                          if (value != null && value.isNotEmpty) {
-                            if (value.length != configFormData.length) {
-                              return '* Code must be length of ${configFormData.length}.';
-                            }
-
-                            final validation =
-                                captchaController.validate(value);
-
-                            switch (validation) {
-                              case LocalCaptchaValidation.invalidCode:
-                                return '* Invalid code.';
-                              case LocalCaptchaValidation.codeExpired:
-                                return '* Code expired.';
-                              case LocalCaptchaValidation.valid:
-                              default:
-                                return null;
-                            }
-                          }
-
-                          return '* Required field.';
-                        },
-                        onSaved: (value) => inputCode = value ?? '',
                       ),
-                      ),
-                      
                       const SizedBox(height: 20.0),
                       SizedBox(
                         height: 40,

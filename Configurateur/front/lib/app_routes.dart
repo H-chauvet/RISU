@@ -8,6 +8,10 @@ import 'package:front/screens/register/register.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
 
+///
+/// App router
+///
+/// Gestion des routes de l'application
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
