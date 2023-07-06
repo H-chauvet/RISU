@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/register/register.dart';
 import './app_routes.dart';
 import 'screens/login/login.dart';
+import './contact_form/contact_form.dart';
 
 void main() {
   runApp(const MyApp());
@@ -100,7 +101,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               child: const Text('Login'),
-            )
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ContactPage(),
+                  ),
+                );
+              },
+              child: const Text('Contact'),
+            ),
           ]),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
