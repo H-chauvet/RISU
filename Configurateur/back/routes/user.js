@@ -39,8 +39,8 @@ router.post('/register', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (existingUser) {
-      res.status(400)
-      throw new Error('Email already exists')
+      res.status(401)
+      throw new Error("L'email existe déjà")
     }
 
     const user = await userCtrl.registerByEmail({ email, password })
@@ -50,7 +50,7 @@ router.post('/register', async function (req, res, next) {
       accessToken
     })
   } catch (err) {
-    next(err)
+    res.status(402).json(err.message)
   }
 })
 

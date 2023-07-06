@@ -6,6 +6,7 @@ import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -108,38 +109,82 @@ class RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              await http.post(
-                                Uri.parse(
-                                    'http://localhost:3000/api/auth/register'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                  'Access-Control-Allow-Origin': '*',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  'email': mail,
-                                  'password': password,
-                                }),
-                              );
-                              await http.post(
-                                Uri.parse(
-                                    'http://localhost:3000/api/auth/register-confirmation'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                  'Access-Control-Allow-Origin': '*',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  'email': mail,
-                                  'password': password,
-                                }),
-                              );
-                              // ignore: use_build_context_synchronously
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          RegisterConfirmation(params: mail)));
+                              await http
+                                  .post(
+                                    Uri.parse(
+                                        'http://localhost:3000/api/auth/register'),
+                                    headers: <String, String>{
+                                      'Content-Type':
+                                          'application/json; charset=UTF-8',
+                                      'Access-Control-Allow-Origin': '*',
+                                    },
+                                    body: jsonEncode(<String, String>{
+                                      'email': mail,
+                                      'password': password,
+                                    }),
+                                  )
+                                  .then((value) async => {
+                                        if (value.statusCode != 200)
+                                          {
+                                            Fluttertoast.showToast(
+                                                msg: value.body,
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIosWeb: 1,
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0)
+                                          }
+                                        else
+                                          {
+                                            await http
+                                                .post(
+                                                  Uri.parse(
+                                                      'http://localhost:3000/api/auth/register-confirmation'),
+                                                  headers: <String, String>{
+                                                    'Content-Type':
+                                                        'application/json; charset=UTF-8',
+                                                    'Access-Control-Allow-Origin':
+                                                        '*',
+                                                  },
+                                                  body: jsonEncode(<String,
+                                                      String>{
+                                                    'email': mail,
+                                                    'password': password,
+                                                  }),
+                                                )
+                                                .then((value) => {
+                                                      if (value.statusCode ==
+                                                          200)
+                                                        {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (context) =>
+                                                                      RegisterConfirmation(
+                                                                          params:
+                                                                              mail)))
+                                                        }
+                                                      else
+                                                        {
+                                                          Fluttertoast.showToast(
+                                                              msg: value.body,
+                                                              toastLength: Toast
+                                                                  .LENGTH_SHORT,
+                                                              gravity:
+                                                                  ToastGravity
+                                                                      .BOTTOM,
+                                                              timeInSecForIosWeb:
+                                                                  1,
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              textColor:
+                                                                  Colors.white,
+                                                              fontSize: 16.0)
+                                                        }
+                                                    })
+                                          }
+                                      });
                             }
                           },
                           style: ElevatedButton.styleFrom(
