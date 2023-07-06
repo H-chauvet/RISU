@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
+import 'package:front/screens/policy/policy.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
@@ -73,6 +74,12 @@ class AppRouter {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/policy',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: PolicyPage(),
+        ),
       ),
     ],
   );
