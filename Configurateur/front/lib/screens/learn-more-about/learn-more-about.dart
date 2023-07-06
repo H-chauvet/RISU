@@ -131,7 +131,6 @@ class LearnMoreAboutPage extends StatelessWidget {
                     padding: EdgeInsets.only(top: 30.0, left: 100.0, right: 100.0, bottom: 30.0),
                     child: Text(
                       "Risu est une appli qui permet la location de materiel de plage. L’entreprise a été créer en 2022 avec l’aide de 6 personnes. Le premier casier risu a vu le jour le XX/XX/XXXX",
-
                     ),
                   ),
                 ),
