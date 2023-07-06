@@ -147,4 +147,16 @@ router.post('/delete', async function (req, res, next) {
   }
 })
 
+router.get('/privacy', async function (req, res, next) {
+  try {
+    const privacyDetails = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+
+    res.send(privacyDetails);
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+
 module.exports = router
