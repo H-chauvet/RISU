@@ -64,6 +64,7 @@ class AppRouter {
           child: LandingPage(),
         ),
       ),
+      GoRoute(
         path: '/password-recuperation',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: PasswordRecuperation(),
