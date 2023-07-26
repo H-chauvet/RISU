@@ -1,0 +1,20 @@
+!! PLEASE REVIEW THIS LOG FOR SENSITIVE INFORMATION BEFORE SHARING !!
+
+Dart Code extension: 3.60.1
+Flutter extension: 3.60.0 (not activated)
+
+App: Visual Studio Code
+Version: 1.74.2
+Platform: mac
+
+HTTP_PROXY: undefined
+NO_PROXY: undefined
+
+Logging Categories:
+    DevTools
+
+Wed Jul 05 2023 [09:44:49 GMT+0200 (Central European Summer Time)] Log file started
+[9:44:49 AM] [DevTools] [Info] Spawning /opt/homebrew/Caskroom/flutter/3.10.2/flutter/bin/cache/dart-sdk/bin/dart with args ["devtools","--machine","--try-ports","10","--allow-embedding","--port","3306"]
+[9:44:49 AM] [DevTools] [Info] ..  with {"toolEnv":{"FLUTTER_HOST":"VSCode","PUB_ENVIRONMENT":"vscode.dart-code"}}
+[9:44:49 AM] [DevTools] [Info]     PID: 3993
+[9:44:49 AM] [DevTools] [Info] <== {"event":"server.started","method":"server.started","params":{"host":"127.0.0.1","port":3307,"pid":4060,"protocolVersion":"1.1.0"}}
