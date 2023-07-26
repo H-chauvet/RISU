@@ -4,18 +4,6 @@
 
 The documentation is mandatory for every function corresponding to the code rules. Everyone must be able to understand the utility of the function just by reading the function’s documentation.
 
-## Issue Rules
-
-### When creating an issue, you must follow the given format :
-
-- The issue name must be as clear and understandable as possible :
-
-  `Create the Contributing.md`
-
-- Describing the issue is mandatory and useful for everyone. Using a template for your issue is recommended.
-- Add corresponding labels to clarify the issue. If there is no label existing or corresponding to your issue, create one and describe it.
-- Take a moment to link the issue with the project, if it hasn't been done automatically.
-
 ## Branch Rules
 
 The branch name must have a keyword before
@@ -30,19 +18,12 @@ Every single word must be in lowercase.
 
 Example:
 
-    git checkout -b feature/2-create-the-contributing.md
+    git checkout -b feature/2
 Where :
 
-`2` is the id of the issue on linear
+`2` is the id of the User-Story on Taiga
 
-`"create-the-contributing.md"` is the title (name) of the issue on linear
-
-To easily get the name of the branch, there is a button when you're on linear, at the top-right of your screen.<br>
-For an issue named `"Dockerize application web"` the result will be `"feature/ris-15-dockerize-application-web"`
-
-Keep all the name except the `"ris-"`, useless.
-
-You must make one branch per issue.
+You must make one branch per User-Story, not per task linked to User-Story.
 
 Try to push as regularly as possible so everyone can see where you are at. When first committing to a branch, it is recommended to open a PR draft, so it will be easier for your mates to see where you are at.
 
@@ -61,10 +42,13 @@ If possible, please certify your commits (-S).
 
 ## Pull Request Rules
 
-/!\ Make sure to respect the order when merge : (Test -> Prod -> Main)
+/!\ Make sure to respect the order when merge : (Your branch -> dev -> Main)
 
-- Work on `Test` has to be tested before merged on `Prod`
-- Work on `Prod` has to be deployed before merged on `Main`
+- Work on `Your branch` then, when it's done, Pull-Request to `dev`
+- When CI passed on the Pull-Request from `Your branch` to `dev`, merge the work on `Main`
+
+- If you want to deploy the work on `dev`, open a Pull-Request from `dev` to `main`
+- When CI passed on the Pull-Request from `dev` to `main`, merge the work on `Main`, and the deployement will be done.
 
 When your work is done on a branch, you must make a pull request.
 

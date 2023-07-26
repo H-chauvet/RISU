@@ -12,10 +12,26 @@ exports.findUserByEmail = email => {
   })
 }
 
+exports.findUserByUuid = uuid => {
+  return db.User.findUnique({
+    where: {
+      uuid
+    }
+  })
+}
+
 exports.findUserById = id => {
   return db.User.findUnique({
     where: {
       id
+    }
+  })
+}
+
+exports.deleteUser = email => {
+  return db.User.delete({
+    where: {
+      email
     }
   })
 }
@@ -69,5 +85,36 @@ exports.loginByEmail = user => {
     }
 
     return findUser
+  })
+}
+
+exports.updatePassword = user => {
+  user.password = bcrypt.hashSync(user.password, 12)
+  return db.User.update({
+    where: {
+      uuid: user.uuid
+    },
+    data: {
+      password: user.password
+    }
+  })
+}
+
+exports.forgotPassword = email => {
+  let generatedUuid = ''
+  this.findUserByEmail(email).then(user => {
+    console.log(user)
+    generatedUuid = user.uuid
+    let mail = {
+      from: 'risu.epitech@gmail.com',
+      to: email,
+      subject: 'Réinitialisation de mot de passe',
+      html:
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://localhost:80/#/password-change/' +
+        generatedUuid +
+        '">Réinitialiser le mot de passe</a>' +
+        '</p>'
+    }
+    transporter.sendMail(mail)
   })
 }

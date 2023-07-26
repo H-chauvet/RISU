@@ -15,7 +15,7 @@ router.post('/login', async function (req, res, next) {
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
       res.status(400)
-      throw new Error("Email don't exists")
+      throw new Error("Email don't exist")
     }
 
     const user = await userCtrl.loginByEmail({ email, password })
@@ -46,7 +46,7 @@ router.post('/register', async function (req, res, next) {
     const user = await userCtrl.registerByEmail({ email, password })
     const accessToken = jwtMiddleware.generateAccessToken(user)
 
-    res.json({
+    res.status(200).json({
       accessToken
     })
   } catch (err) {
@@ -54,7 +54,49 @@ router.post('/register', async function (req, res, next) {
   }
 })
 
+router.post('/forgot-password', async function (req, res, next) {
+  try {
+    const { email } = req.body
 
+    if (!email) {
+      res.status(400)
+      throw new Error('Email is required')
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error('Invalid email')
+    }
+
+    userCtrl.forgotPassword(email)
+    res.json('ok')
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.post('/update-password', async function (req, res, next) {
+  try {
+    const { uuid, password } = req.body
+
+    if (!uuid || !password) {
+      res.status(400)
+      throw new Error('Email and password are required')
+    }
+
+    const existingUser = await userCtrl.findUserByUuid(uuid)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error("Account don't exist")
+    }
+
+    const ret = await userCtrl.updatePassword({ uuid, password })
+    res.json(ret)
+  } catch (err) {
+    next(err)
+  }
+})
 
 router.post('/register-confirmation', async function (req, res, next) {
   try {
@@ -63,6 +105,12 @@ router.post('/register-confirmation', async function (req, res, next) {
     if (!email) {
       res.status(400)
       throw new Error('Email is required')
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email)
+    if (!existingUser) {
+      res.status(400)
+      throw new Error('Invalid email')
     }
 
     userCtrl.registerConfirmation(email)
@@ -85,6 +133,17 @@ router.post('/confirmed-register', async function (req, res, next) {
     res.json('user confirmed')
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/delete', async function (req, res, next) {
+  const { email } = req.body
+
+  try {
+    await userCtrl.deleteUser(email)
+    res.json('ok')
+  } catch (err) {
+    res.json('ok')
   }
 })
 

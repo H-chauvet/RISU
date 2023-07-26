@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'screens/register/register.dart';
 import './app_routes.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 import 'screens/login/login.dart';
 
 void main() {

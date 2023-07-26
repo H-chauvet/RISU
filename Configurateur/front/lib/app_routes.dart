@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/screens/password-recuperation/password-recuperation.dart';
+import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
+import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
@@ -39,6 +42,12 @@ class AppRouter {
         ),
       ),
       GoRoute(
+        path: '/register-confirmation',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: RegisterConfirmation(params: ''),
+        ),
+      ),
+      GoRoute(
         path: '/confirmed-user/:id',
         pageBuilder: (context, state) {
           final param = state.pathParameters['id'].toString();
@@ -54,6 +63,22 @@ class AppRouter {
         pageBuilder: (context, state) => NoTransitionPage(
           child: LandingPage(),
         ),
+      ),
+        path: '/password-recuperation',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: PasswordRecuperation(),
+        ),
+      ),
+      GoRoute(
+        path: '/password-change/:id',
+        pageBuilder: (context, state) {
+          final param = state.pathParameters['id'].toString();
+          return NoTransitionPage(
+            child: PasswordChange(
+              params: param,
+            ),
+          );
+        },
       ),
     ],
   );

@@ -7,9 +7,7 @@ PORT=5000
 echo 'preparing port' $PORT '...'
 fuser -k 5000/tcp
 
-# switch directories
 #flutter build web
-
 cd build/web/
 
 # Start the server

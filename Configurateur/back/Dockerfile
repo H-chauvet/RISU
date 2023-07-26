@@ -7,4 +7,4 @@ EXPOSE 3000
 RUN npm install -g dotenv-cli
 COPY start.sh .
 
-CMD [ "bash", "start.sh"]
+CMD [ "bash", "-c", "npm run migration; npm start"]

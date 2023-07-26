@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
+import 'package:front/components/custom_app_bar.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,32 +23,9 @@ class RegisterScreenState extends State<RegisterScreen> {
     String validedPassword = '';
 
     return Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Inscription',
-            style: TextStyle(fontSize: 40),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color(0xff4682B4),
-          toolbarHeight: MediaQuery.of(context).size.height / 8,
-          leading: Container(),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.elliptical(1920, 56.0),
-            ),
-          ),
-          actions: <Widget>[
-            IconButton(
-              icon: Image.asset("assets/logo.png"),
-              iconSize: 80,
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MyHomePage(title: 'tile')));
-              },
-            ),
-          ],
+        appBar: CustomAppBar(
+          'Inscription',
+          context: context,
         ),
         body: Center(
             child: FractionallySizedBox(
@@ -57,6 +36,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
                       TextFormField(
+                        key: const Key('email'),
                         decoration: InputDecoration(
                           hintText: 'Entrez votre email',
                           labelText: 'Adresse e-mail',
@@ -76,6 +56,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Entrez votre mot de passe',
                           labelText: 'Mot de passe',
@@ -95,6 +77,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('confirm-password'),
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Validation du mot de passe',
                           labelText: 'Valider le mot de passe',
@@ -120,6 +104,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
+                          key: const Key('register'),
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
@@ -149,11 +134,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   'password': password,
                                 }),
                               );
+                              // ignore: use_build_context_synchronously
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const MyHomePage(
-                                          title: 'register success')));
+                                      builder: (context) =>
+                                          RegisterConfirmation(params: mail)));
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -169,6 +155,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       InkWell(
+                        key: const Key('login'),
                         onTap: () {
                           Navigator.push(
                               context,
