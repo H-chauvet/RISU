@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
@@ -57,6 +58,12 @@ class AppRouter {
             ),
           );
         },
+      ),
+      GoRoute(
+        path: '/landingPage',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: LandingPage(),
+        ),
       ),
       GoRoute(
         path: '/password-recuperation',
