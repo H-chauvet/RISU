@@ -7,6 +7,7 @@ import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
+import './contact_form/contact_form.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -74,6 +75,12 @@ class AppRouter {
           );
         },
       ),
+      // GoRoute(
+      //   path: '/contact',
+      //   pageBuilder: (context, state) => MaterialPage(
+      //     child: ContactPage(),
+      //   ),
+      // ),
     ],
   );
 
