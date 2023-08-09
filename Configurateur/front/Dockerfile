@@ -1,17 +1,18 @@
 FROM ubuntu:20.04
 
-RUN apt-get update 
-RUN apt-get install -y curl git unzip libglu1-mesa lib32stdc++6 wget libstdc++6 fonts-droid-fallback python3
-RUN apt-get clean
+# Install required packages and clean up
+RUN apt-get update && \
+    apt-get install -y curl unzip git libstdc++6 fonts-droid-fallback python3 && \
+    apt-get clean
 
-# download Flutter SDK from Flutter Github repo
+# Download Flutter SDK from Flutter Github repo
 RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
-# Set flutter environment path
+# Set Flutter environment path
 ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
-# Run flutter doctor
-RUN flutter doctor
+# Accept Android licenses automatically
+RUN yes | flutter doctor --android-licenses
 
 # Enable flutter web
 RUN flutter upgrade
@@ -29,8 +30,3 @@ EXPOSE 5000
 COPY server/server.sh .
 
 CMD ["bash", "server/server.sh"]
-
-# make server startup script executable and start the web server
-#RUN ["chmod", "+x", "/app/server/server.sh"]
-
-#CMD [ "/app/server/server.sh"]

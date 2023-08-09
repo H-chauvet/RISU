@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
@@ -7,6 +8,7 @@ import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
+import './contact_form/contact_form.dart';
 
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -58,6 +60,12 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '/landingPage',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: LandingPage(),
+        ),
+      ),
+      GoRoute(
         path: '/password-recuperation',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: PasswordRecuperation(),
@@ -74,6 +82,12 @@ class AppRouter {
           );
         },
       ),
+      // GoRoute(
+      //   path: '/contact',
+      //   pageBuilder: (context, state) => MaterialPage(
+      //     child: ContactPage(),
+      //   ),
+      // ),
     ],
   );
 
