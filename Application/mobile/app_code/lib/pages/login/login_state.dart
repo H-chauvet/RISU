@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:risu/flutter_objects/alert_dialog.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/home/home_functional.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +76,10 @@ class LoginPageState extends State<LoginPage> {
       },
       body: jsonEncode(<String, String>{'email': _email!}),
     );
+    await MyAlertDialog.showInfoAlertDialog(
+        context: context,
+        title: 'Email',
+        message: 'A reset password has been sent to your email box.');
     return jsonDecode(response.body)['message'].toString();
   }
 
@@ -174,7 +179,7 @@ class LoginPageState extends State<LoginPage> {
               ? null
               : () {
                   setState(() {
-                    _futureLogin = apiResetPassword();
+                    apiResetPassword();
                     isButtonDisabled = true;
                     Timer(const Duration(seconds: 5), () {
                       setState(() {
