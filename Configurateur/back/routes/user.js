@@ -29,6 +29,30 @@ router.post('/login', async function (req, res, next) {
   }
 })
 
+router.post('/google-login', async function (req, res, next) {
+  try {
+    const { email } = req.body
+    if (!email) {
+      res.status(400)
+      throw new Error('Email and password are required')
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email)
+    let user = null
+    if (!existingUser) {
+      user = await userCtrl.registerByEmail({ email, password: '' }) // TODO: generate random password
+    }
+
+    const accessToken = jwtMiddleware.generateAccessToken(user)
+
+    res.json({
+      accessToken
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.post('/register', async function (req, res, next) {
   try {
     const { email, password } = req.body
@@ -149,12 +173,13 @@ router.post('/delete', async function (req, res, next) {
 
 router.get('/privacy', async function (req, res, next) {
   try {
-    const privacyDetails = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    const privacyDetails =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 
-    res.send(privacyDetails);
+    res.send(privacyDetails)
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
+})
 
 module.exports = router

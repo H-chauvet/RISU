@@ -178,7 +178,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       const Text("S'inscrire avec :"),
                       const SizedBox(height: 10),
-                      const GoogleLogo(),
+                      GoogleLogo(),
                     ])))));
   }
 }
