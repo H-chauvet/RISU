@@ -4,11 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../network/informations.dart';
 import '../home/home_functional.dart';
 
-void goToLoginPage(BuildContext context, bool fromSettings) {
-  userInformation = null;
+void goToLoginPage(BuildContext context) {
   logout = true;
-  if (updatePage != null && fromSettings) {
-    updatePage!();
-  }
-  context.go('/');
+  userInformation = null;
+  context.go('/login');
 }

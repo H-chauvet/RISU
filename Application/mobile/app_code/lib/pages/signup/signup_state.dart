@@ -162,7 +162,7 @@ class SignupPageState extends State<SignupPage> {
                             TextButton(
                               key: const Key('go_login-button'),
                               onPressed: () {
-                                goToLoginPage(context, false);
+                                goToLoginPage(context);
                               },
                               child: Text(
                                 'Retour à l\'écran de connexion...',
