@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../utils/colors.dart';
+
 class MyAlertDialog {
   static Future<void> showErrorAlertDialog({
     required BuildContext context,
@@ -13,7 +15,7 @@ class MyAlertDialog {
             title: Text(title),
             titlePadding: const EdgeInsets.all(16.0),
             titleTextStyle: const TextStyle(
-              color: Colors.red,
+              color: MyColors.alertDialogErrorTitle,
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
             ),
@@ -40,7 +42,7 @@ class MyAlertDialog {
             title: Text(title),
             titlePadding: const EdgeInsets.all(16.0),
             titleTextStyle: const TextStyle(
-              color: Colors.black,
+              color: MyColors.alertDialogInfoTitle,
               fontWeight: FontWeight.bold,
               fontSize: 20.0,
             ),
