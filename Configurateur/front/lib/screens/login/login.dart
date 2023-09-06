@@ -175,7 +175,7 @@ class LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       const Text("Se connecter avec :"),
                       const SizedBox(height: 10),
-                      const GoogleLogo(),
+                      GoogleLogo(),
                     ])))));
   }
 }
