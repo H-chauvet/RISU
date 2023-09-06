@@ -4,6 +4,7 @@ import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -21,6 +22,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     String mail = '';
     String password = '';
     String validedPassword = '';
+    dynamic response;
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -108,19 +110,29 @@ class RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              await http.post(
-                                Uri.parse(
-                                    'http://localhost:3000/api/auth/register'),
-                                headers: <String, String>{
-                                  'Content-Type':
-                                      'application/json; charset=UTF-8',
-                                  'Access-Control-Allow-Origin': '*',
-                                },
-                                body: jsonEncode(<String, String>{
-                                  'email': mail,
-                                  'password': password,
-                                }),
-                              );
+                              await http
+                                  .post(
+                                    Uri.parse(
+                                        'http://localhost:3000/api/auth/register'),
+                                    headers: <String, String>{
+                                      'Content-Type':
+                                          'application/json; charset=UTF-8',
+                                      'Access-Control-Allow-Origin': '*',
+                                    },
+                                    body: jsonEncode(<String, String>{
+                                      'email': mail,
+                                      'password': password,
+                                    }),
+                                  )
+                                  .then((value) => {
+                                        if (value.statusCode == 200)
+                                          {
+                                            response = jsonDecode(value.body),
+                                            StorageService().writeStorage(
+                                                'token',
+                                                response['accessToken']),
+                                          }
+                                      });
                               await http.post(
                                 Uri.parse(
                                     'http://localhost:3000/api/auth/register-confirmation'),
