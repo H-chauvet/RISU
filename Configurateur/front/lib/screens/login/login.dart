@@ -4,6 +4,7 @@ import 'package:front/main.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,6 +21,7 @@ class LoginScreenState extends State<LoginScreen> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String mail = '';
     String password = '';
+    dynamic response;
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -120,15 +122,17 @@ class LoginScreenState extends State<LoginScreen> {
                                   .then((value) => {
                                         if (value.statusCode == 200)
                                           {
-                                            {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          const MyHomePage(
-                                                              title:
-                                                                  'login success')))
-                                            }
+                                            response = jsonDecode(value.body),
+                                            StorageService().writeStorage(
+                                                'token',
+                                                response['accessToken']),
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const MyHomePage(
+                                                            title:
+                                                                'login success')))
                                           }
                                       });
                             }

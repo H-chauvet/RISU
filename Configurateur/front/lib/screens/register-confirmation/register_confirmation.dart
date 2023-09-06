@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
+import 'package:front/screens/login/login.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:intl/intl.dart';
 
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
@@ -15,6 +16,19 @@ class RegisterConfirmation extends StatefulWidget {
 }
 
 class RegisterConfirmationState extends State<RegisterConfirmation> {
+  @override
+  void initState() {
+    StorageService().readStorage('token').then((value) => {
+          debugPrint(value),
+          if (value == null)
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()))
+            }
+        });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime lastClicked = DateTime.parse("1969-07-20 20:18:04Z");
