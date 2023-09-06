@@ -14,6 +14,10 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => RegisterScreenState();
 }
 
+///
+/// Register screen
+///
+/// page d'inscription pour le configurateur
 class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {

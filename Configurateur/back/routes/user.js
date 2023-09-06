@@ -14,7 +14,7 @@ router.post('/login', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
-      res.status(400)
+      res.status(401)
       throw new Error("Email don't exist")
     }
 
@@ -87,7 +87,7 @@ router.post('/update-password', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByUuid(uuid)
     if (!existingUser) {
-      res.status(400)
+      res.status(401)
       throw new Error("Account don't exist")
     }
 

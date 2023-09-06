@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+///
+/// Google button
+/// 
 class GoogleLogo extends StatelessWidget {
   const GoogleLogo({super.key});
 
