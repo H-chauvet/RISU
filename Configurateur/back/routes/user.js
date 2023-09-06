@@ -100,6 +100,12 @@ router.post('/update-password', async function (req, res, next) {
 
 router.post('/register-confirmation', async function (req, res, next) {
   try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
+  try {
     const { email } = req.body
 
     if (!email) {
@@ -121,6 +127,12 @@ router.post('/register-confirmation', async function (req, res, next) {
 })
 
 router.post('/confirmed-register', async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { uuid } = req.body
 
@@ -149,12 +161,13 @@ router.post('/delete', async function (req, res, next) {
 
 router.get('/privacy', async function (req, res, next) {
   try {
-    const privacyDetails = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
+    const privacyDetails =
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 
-    res.send(privacyDetails);
+    res.send(privacyDetails)
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
+})
 
 module.exports = router
