@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:risu/flutter_objects/alert_dialog.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/home/home_functional.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 
+import '../../flutter_objects/filled_button.dart';
 import '../../flutter_objects/user_data.dart';
 import '../../material_lib_functions/material_functions.dart';
 import '../home/home_page.dart';
@@ -75,6 +77,10 @@ class LoginPageState extends State<LoginPage> {
       },
       body: jsonEncode(<String, String>{'email': _email!}),
     );
+    await MyAlertDialog.showInfoAlertDialog(
+        context: context,
+        title: 'Email',
+        message: 'A reset password has been sent to your email box.');
     return jsonDecode(response.body)['message'].toString();
   }
 
@@ -83,13 +89,6 @@ class LoginPageState extends State<LoginPage> {
         key: Key('title-text'),
         textAlign: TextAlign.center,
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
-  }
-
-  Widget displayLogoAndName() {
-    return Column(
-        key: const Key('logo_name-column'),
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[displayLogo(90), displayAppName()]);
   }
 
   Widget displayGoToSignup() {
@@ -107,29 +106,16 @@ class LoginPageState extends State<LoginPage> {
 
   Widget displayContinueEmail() {
     return Column(
-      children: <Widget>[
+      children: [
         SizedBox(
-          child: materialElevatedButton(
-            ElevatedButton(
-              key: const Key('continue_email-button'),
-              onPressed: () {
-                setState(() {
-                  _isConnexionWithEmail = true;
-                });
-              },
-              child: const Text('Continuer avec un e-mail',
-                  key: Key('subtitle-text'),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontFamily: 'Roboto-Black')),
-            ),
-            context,
-            primaryColor: getOurPrimaryColor(100),
-            borderWith: 1,
-            borderColor: getOurPrimaryColor(100),
-            sizeOfButton: 1.8,
-            isShadowNeeded: true,
+          child: MyButton(
+            key: const Key('continue_email-button'),
+            onPressed: () {
+              setState(() {
+                _isConnexionWithEmail = true;
+              });
+            },
+            text: 'Continuer avec un e-mail',
           ),
         ),
         displayGoToSignup()
@@ -138,28 +124,18 @@ class LoginPageState extends State<LoginPage> {
   }
 
   Widget displayLoginButton(snapshot) {
-    return Column(children: <Widget>[
+    return Column(children: [
       SizedBox(
-          child: materialElevatedButton(
-        ElevatedButton(
+        child: MyButton(
           key: const Key('login-button'),
+          text: 'Se connecter',
           onPressed: () {
             setState(() {
               _futureLogin = apiLogin();
             });
           },
-          child: const Text(
-            'Se connecter',
-            style: TextStyle(color: Colors.white),
-          ),
         ),
-        context,
-        primaryColor: getOurPrimaryColor(100),
-        borderWith: 1,
-        borderColor: getOurPrimaryColor(100),
-        sizeOfButton: 1.8,
-        isShadowNeeded: true,
-      )),
+      ),
       displayGoToSignup()
     ]);
   }
@@ -167,14 +143,14 @@ class LoginPageState extends State<LoginPage> {
   Widget displayResetPassword() {
     bool isButtonDisabled = false;
     return Column(
-      children: <Widget>[
+      children: [
         TextButton(
           key: const Key('reset_password-button'),
           onPressed: isButtonDisabled
               ? null
               : () {
                   setState(() {
-                    _futureLogin = apiResetPassword();
+                    apiResetPassword();
                     isButtonDisabled = true;
                     Timer(const Duration(seconds: 5), () {
                       setState(() {
@@ -194,8 +170,7 @@ class LoginPageState extends State<LoginPage> {
 
   Widget displayEmailConnexionInputs(snapshot) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
+      children: [
         TextFormField(
           key: const Key('email-text_input'),
           decoration: InputDecoration(
@@ -217,9 +192,7 @@ class LoginPageState extends State<LoginPage> {
             return null;
           },
         ),
-        const SizedBox(
-          height: 20,
-        ),
+        const SizedBox(height: 8),
         if (_isConnexionWithEmail == true)
           Column(
             children: [
@@ -284,40 +257,38 @@ class LoginPageState extends State<LoginPage> {
                 return const HomePage();
               }
               logout = false;
-              return Center(
+              return Align(
+                alignment: Alignment.center,
                 child: Container(
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        displayLogoAndName(),
-                        const SizedBox(height: 20),
-                        if (_isConnexionWithEmail)
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    _isConnexionWithEmail = false;
-                                  });
-                                },
-                                icon: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: getOurPrimaryColor(100),
-                                ),
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      displayLogo(90),
+                      const SizedBox(height: 20),
+                      if (_isConnexionWithEmail)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isConnexionWithEmail = false;
+                                });
+                              },
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                color: getOurPrimaryColor(100),
                               ),
-                            ],
-                          ),
-                        displayEmailConnexionInputs(snapshot),
-                        if (_isConnexionWithEmail == false)
-                          displayContinueEmail(),
-                        if (_isConnexionWithEmail) displayLoginButton(snapshot),
-                      ],
-                    ),
+                            ),
+                          ],
+                        ),
+                      displayEmailConnexionInputs(snapshot),
+                      if (_isConnexionWithEmail == false)
+                        displayContinueEmail(),
+                      if (_isConnexionWithEmail) displayLoginButton(snapshot),
+                    ],
                   ),
                 ),
               );
