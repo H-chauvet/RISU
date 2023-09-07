@@ -14,6 +14,5 @@ void main() {
 
         await tester.pumpWidget(MaterialApp(home: ProfilePage()));
         await tester.pumpAndSettle();
-''
       });
 }
