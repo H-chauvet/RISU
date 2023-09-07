@@ -14,6 +14,10 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => RegisterScreenState();
 }
 
+///
+/// Register screen
+///
+/// page d'inscription pour le configurateur
 class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
@@ -178,7 +182,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       const SizedBox(height: 20),
                       const Text("S'inscrire avec :"),
                       const SizedBox(height: 10),
-                      const GoogleLogo(),
+                      GoogleLogo(),
                     ])))));
   }
 }

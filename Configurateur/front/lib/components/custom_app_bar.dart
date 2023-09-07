@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/main.dart';
 
+///
+/// Custom rounded AppBar
+///
+/// @param title: title of the page
+///
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;

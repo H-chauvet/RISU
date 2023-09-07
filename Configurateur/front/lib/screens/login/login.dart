@@ -14,6 +14,11 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => LoginScreenState();
 }
 
+///
+/// Login screen
+///
+/// page de connexion pour le configurateur
+///
 class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
@@ -170,7 +175,7 @@ class LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 20),
                       const Text("Se connecter avec :"),
                       const SizedBox(height: 10),
-                      const GoogleLogo(),
+                      GoogleLogo(),
                     ])))));
   }
 }
