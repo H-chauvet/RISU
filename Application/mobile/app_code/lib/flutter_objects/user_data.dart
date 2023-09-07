@@ -15,7 +15,7 @@ class UserData {
   /// Function to display user email
   Widget? displayUserEmail() {
     return Column(
-      children: <Widget>[
+      children: [
         Text(email),
       ],
     );
