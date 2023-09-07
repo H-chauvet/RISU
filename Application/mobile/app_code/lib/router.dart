@@ -35,6 +35,7 @@ final GoRouter router = GoRouter(
             return const ProfilePage();
           },
         ),
+        GoRoute(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginPage();
