@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/profile/profile_page.dart';
+import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
@@ -89,8 +90,14 @@ class AppRouter {
       ),
       GoRoute(
         path: '/profile',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: ProfilePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/recap-config',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: RecapConfigPage(),
         ),
       ),
       // GoRoute(
