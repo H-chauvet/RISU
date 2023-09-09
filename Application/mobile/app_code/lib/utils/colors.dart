@@ -29,3 +29,13 @@ class MyColors {
   static const Color iconButtonBackgroundUnavailable = Color(0xFFE5E5E5);
   static const Color containerBackgroundSettingsAppointment = Color(0xFFE5E5E5);
 }
+
+final lightTheme = ThemeData(
+  brightness: Brightness.light,
+  primaryColor: MyColors.secondary,
+);
+
+final darkTheme = ThemeData(
+  brightness: Brightness.dark,
+  primaryColor: MyColors.primary,
+);
