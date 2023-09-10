@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/components/recap_panel.dart';
 
 import 'screens/register/register.dart';
 import './app_routes.dart';
@@ -145,6 +146,10 @@ class _MyHomePageState extends State<MyHomePage> {
               progress: 1,
               previous: 'Previous',
               next: 'Next',
+            ),
+            const RecapPanel(
+              price: 100,
+              articles: ['Article 1', 'Article 2'],
             )
           ],
         ),
