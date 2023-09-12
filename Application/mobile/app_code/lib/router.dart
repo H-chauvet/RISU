@@ -2,6 +2,7 @@ import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/history_location/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,7 +14,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const PreAuthPage();
+        return PreAuthPage();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -32,6 +33,12 @@ final GoRouter router = GoRouter(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
             return const LoginPage();
+          },
+        ),
+        GoRoute(
+          path: 'history-location',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HistoryLocationPage();
           },
         ),
       ],
