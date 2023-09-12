@@ -232,12 +232,6 @@ class LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.lightbulb_outline),
-                        onPressed: () {
-                          context.read<ThemeProvider>().toggleTheme();
-                        },
-                      ),
                       displayLogo(90),
                       const SizedBox(height: 20),
                       displayEmailConnexionInputs(snapshot, context),

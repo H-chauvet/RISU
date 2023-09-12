@@ -29,12 +29,6 @@ class PreAuthState extends State<PreAuthPage> {
               alignment: Alignment.center,
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.lightbulb_outline),
-            onPressed: () {
-              context.read<ThemeProvider>().toggleTheme();
-            },
-          ),
           Padding(
             padding: const EdgeInsets.all(32.0),
             child: Column(
