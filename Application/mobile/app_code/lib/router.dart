@@ -2,6 +2,7 @@ import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/parameters/parameters_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
