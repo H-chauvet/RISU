@@ -16,7 +16,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return PreAuthPage();
+        return const PreAuthPage();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -52,7 +52,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'history-location',
           builder: (BuildContext context, GoRouterState state) {
-            return const HistoryLocationPage();
+            return HistoryLocationPage();
           },
         ),
       ],
