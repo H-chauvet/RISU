@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cubixd/cubixd.dart';
+import 'package:vector_math/vector_math_64.dart' as math;
 
 void main() {
   runApp(const MyApp());
@@ -71,56 +72,152 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: AnimatedCubixD(
-          onSelected: ((SelectedSide opt) =>
-              opt == SelectedSide.bottom ? false : true),
-          size: 200.0,
-          left: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/troll.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          front: Container(
-            color: Colors.blue,
-          ),
-          back: Container(
-            color: Colors.red,
-          ),
-          top: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/troll.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          bottom: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/troll.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          right: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/troll.png"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
         ),
-      ),
-    );
+        body: Center(
+          child: Row(children: [
+            CubixD(
+              size: 200,
+              onSelected: ((SelectedSide opt, math.Vector2 test) =>
+                  opt == SelectedSide.bottom ? false : true),
+              left: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              front: Container(
+                color: Colors.blue,
+              ),
+              back: Container(
+                color: Colors.red,
+              ),
+              top: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              bottom: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              right: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              delta: math.Vector2(2, 2),
+            ),
+            const SizedBox(
+              width: 100,
+            ),
+            CubixD(
+              size: 200,
+              onSelected: ((SelectedSide opt, math.Vector2 test) =>
+                  opt == SelectedSide.bottom ? false : true),
+              left: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              front: Container(
+                color: Colors.blue,
+              ),
+              back: Container(
+                color: Colors.red,
+              ),
+              top: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              bottom: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              right: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              delta: math.Vector2(2, 2),
+            ),
+            const SizedBox(
+              width: 100,
+            ),
+            CubixD(
+              size: 200,
+              onSelected: ((SelectedSide opt, math.Vector2 test) =>
+                  opt == SelectedSide.bottom ? false : true),
+              left: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              front: Container(
+                color: Colors.blue,
+              ),
+              back: Container(
+                color: Colors.red,
+              ),
+              top: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              bottom: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              right: Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/troll.png"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              delta: math.Vector2(2, 2),
+            ),
+          ]),
+        ));
   }
 }
