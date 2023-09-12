@@ -4,11 +4,13 @@ import 'package:risu/router.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+late bool isDarkTheme;
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
-  final isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+  isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
 
   runApp(
     ChangeNotifierProvider(
