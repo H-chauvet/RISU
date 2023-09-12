@@ -1,15 +1,19 @@
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
 import 'package:risu/flutter_objects/alert_dialog.dart';
+import 'package:risu/flutter_objects/text_input.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/home/home_functional.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:risu/utils/validators.dart';
 
 import '../../flutter_objects/filled_button.dart';
 import '../../flutter_objects/user_data.dart';
 import '../../material_lib_functions/material_functions.dart';
+import '../../utils/theme.dart';
 import '../home/home_page.dart';
 import '../signup/signup_functional.dart';
 import 'login_page.dart';
@@ -17,8 +21,8 @@ import 'login_page.dart';
 class LoginPageState extends State<LoginPage> {
   String? _email;
   String? _password;
-  bool _isConnexionWithEmail = false;
   late Future<String> _futureLogin;
+  bool _isPasswordVisible = false;
 
   Future<String> apiLogin() async {
     if (_email == null || _password == null) {
@@ -66,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
     }
   }
 
-  Future<String> apiResetPassword() async {
+  Future<String> apiResetPassword(BuildContext context) async {
     if (_email == null) {
       return 'Please provide a valid email !';
     }
@@ -91,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
   }
 
-  Widget displayGoToSignup() {
+  Widget displayGoToSignup(BuildContext context) {
     return TextButton(
       key: const Key('goto_signup-button'),
       onPressed: () {
@@ -99,31 +103,14 @@ class LoginPageState extends State<LoginPage> {
       },
       child: Text(
         'Pas de compte ? S\'inscrire',
-        style: TextStyle(color: getOurPrimaryColor(100)),
+        style: TextStyle(
+            color: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.secondaryHeaderColor)),
       ),
     );
   }
 
-  Widget displayContinueEmail() {
-    return Column(
-      children: [
-        SizedBox(
-          child: MyButton(
-            key: const Key('continue_email-button'),
-            onPressed: () {
-              setState(() {
-                _isConnexionWithEmail = true;
-              });
-            },
-            text: 'Continuer avec un e-mail',
-          ),
-        ),
-        displayGoToSignup()
-      ],
-    );
-  }
-
-  Widget displayLoginButton(snapshot) {
+  Widget displayLoginButton(snapshot, BuildContext context) {
     return Column(children: [
       SizedBox(
         child: MyButton(
@@ -136,11 +123,11 @@ class LoginPageState extends State<LoginPage> {
           },
         ),
       ),
-      displayGoToSignup()
+      displayGoToSignup(context)
     ]);
   }
 
-  Widget displayResetPassword() {
+  Widget displayResetPassword(BuildContext context) {
     bool isButtonDisabled = false;
     return Column(
       children: [
@@ -150,7 +137,7 @@ class LoginPageState extends State<LoginPage> {
               ? null
               : () {
                   setState(() {
-                    apiResetPassword();
+                    apiResetPassword(context);
                     isButtonDisabled = true;
                     Timer(const Duration(seconds: 5), () {
                       setState(() {
@@ -161,66 +148,45 @@ class LoginPageState extends State<LoginPage> {
                 },
           child: Text(
             'Mot de passe oublié ?',
-            style: TextStyle(fontSize: 12, color: getOurPrimaryColor(100)),
+            style: TextStyle(
+                fontSize: 12,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor)),
           ),
         ),
       ],
     );
   }
 
-  Widget displayEmailConnexionInputs(snapshot) {
+  Widget displayEmailConnexionInputs(snapshot, BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          key: const Key('email-text_input'),
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(20),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            labelText: 'E-mail',
-          ),
-          initialValue: _email,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (String? value) {
-            if (value != null &&
-                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-              return 'Doit être une adresse e-mail valide.';
-            }
-            _email = value;
-            return null;
-          },
+        const MyTextInput(
+          hintText: "Email",
+          labelText: "Email",
+          keyboardType: TextInputType.emailAddress,
+          icon: Icons.email_outlined,
         ),
         const SizedBox(height: 8),
-        if (_isConnexionWithEmail == true)
-          Column(
-            children: [
-              TextFormField(
-                key: const Key('password-text_input'),
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Mot de passe',
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (String? value) {
-                  if (value != null && value.length <= 7) {
-                    return 'Le mot de passe doit contenir au moins 8 caractères.';
-                  }
-                  _password = value;
-                  return null;
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  displayResetPassword(),
-                ],
-              ),
-            ],
-          ),
-        if (_isConnexionWithEmail == true && snapshot.hasError)
+        MyTextInput(
+            hintText: "Mot de passe",
+            labelText: "Mot de passe",
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: !_isPasswordVisible,
+            icon: Icons.lock_outline,
+            rightIcon:
+                _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
+            rightIconOnPressed: () {
+              setState(() {
+                _isPasswordVisible = !_isPasswordVisible;
+              });
+            },
+            validator: (value) => Validators().notEmpty(context, value)),
+        Align(
+          alignment: Alignment.centerRight,
+          child: displayResetPassword(context),
+        ),
+        if (snapshot.hasError)
           Text(
             '{$snapshot.error}',
             style: const TextStyle(fontSize: 12),
@@ -243,7 +209,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
       body: Center(
         child: FutureBuilder<String>(
           future: _futureLogin,
@@ -265,29 +232,16 @@ class LoginPageState extends State<LoginPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      IconButton(
+                        icon: const Icon(Icons.lightbulb_outline),
+                        onPressed: () {
+                          context.read<ThemeProvider>().toggleTheme();
+                        },
+                      ),
                       displayLogo(90),
                       const SizedBox(height: 20),
-                      if (_isConnexionWithEmail)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isConnexionWithEmail = false;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: getOurPrimaryColor(100),
-                              ),
-                            ),
-                          ],
-                        ),
-                      displayEmailConnexionInputs(snapshot),
-                      if (_isConnexionWithEmail == false)
-                        displayContinueEmail(),
-                      if (_isConnexionWithEmail) displayLoginButton(snapshot),
+                      displayEmailConnexionInputs(snapshot, context),
+                      displayLoginButton(snapshot, context),
                     ],
                   ),
                 ),
