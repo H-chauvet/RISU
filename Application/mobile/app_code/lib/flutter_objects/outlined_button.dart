@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../utils/colors.dart';
+import '../utils/theme.dart';
 
 class MyOutlinedButton extends StatelessWidget {
   final String text;
@@ -22,8 +23,9 @@ class MyOutlinedButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        side: const BorderSide(
-          color: MyColors.buttonBackground,
+        side: BorderSide(
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.buttonTheme.colorScheme!.secondary),
           width: 2.0,
         ),
         padding: EdgeInsets.symmetric(
@@ -34,7 +36,8 @@ class MyOutlinedButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: MyColors.buttonText,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
           fontWeight: FontWeight.bold,
           fontSize: 16.0 * sizeCoefficient,
         ),
