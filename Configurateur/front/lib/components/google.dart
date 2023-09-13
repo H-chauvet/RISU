@@ -5,7 +5,7 @@ import 'dart:convert';
 
 ///
 /// Google button
-/// 
+///
 class GoogleLogo extends StatelessWidget {
   GoogleLogo({super.key});
 
