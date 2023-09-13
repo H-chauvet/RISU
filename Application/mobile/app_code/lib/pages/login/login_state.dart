@@ -21,12 +21,16 @@ import 'login_page.dart';
 class LoginPageState extends State<LoginPage> {
   String? _email;
   String? _password;
-  late Future<String> _futureLogin;
   bool _isPasswordVisible = false;
 
-  Future<String> apiLogin() async {
+  void apiLogin() async {
     if (_email == null || _password == null) {
-      return 'Please fill all the fields!';
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Please fill all the fields!');
+      }
     }
 
     late http.Response response;
@@ -40,7 +44,12 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err) {
-      return 'Connection refused.';
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Connection refused.');
+      }
     }
 
     if (response.statusCode == 201) {
@@ -48,24 +57,48 @@ class LoginPageState extends State<LoginPage> {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('data')) {
           userInformation = UserData.fromJson(jsonData['data']);
-          return 'Login succeeded!';
         } else {
-          return 'Invalid token... Please retry (data not found)';
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: 'Invalid token... Please retry (data not found)');
+          }
         }
       } catch (err) {
         debugPrint(err.toString());
-        return 'Invalid token... Please retry';
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Connexion',
+              message: 'Invalid token... Please retry.');
+        }
       }
     } else {
       try {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('message')) {
-          return jsonData['message'];
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: jsonData['message']);
+          }
         } else {
-          return 'Invalid credentials.';
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: 'Invalid credentials.');
+          }
         }
       } catch (err) {
-        return 'Invalid credentials.';
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Connexion',
+              message: 'Invalid credentials.');
+        }
       }
     }
   }
@@ -81,18 +114,13 @@ class LoginPageState extends State<LoginPage> {
       },
       body: jsonEncode(<String, String>{'email': _email!}),
     );
-    await MyAlertDialog.showInfoAlertDialog(
-        context: context,
-        title: 'Email',
-        message: 'A reset password has been sent to your email box.');
+    if (context.mounted) {
+      await MyAlertDialog.showInfoAlertDialog(
+          context: context,
+          title: 'Email',
+          message: 'A reset password has been sent to your email box.');
+    }
     return jsonDecode(response.body)['message'].toString();
-  }
-
-  Widget displayAppName() {
-    return const Text('Se connecter à RISU',
-        key: Key('title-text'),
-        textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
   }
 
   Widget displayGoToSignup(BuildContext context) {
@@ -112,16 +140,14 @@ class LoginPageState extends State<LoginPage> {
 
   Widget displayLoginButton(snapshot, BuildContext context) {
     return Column(children: [
-      SizedBox(
-        child: MyButton(
-          key: const Key('login-button'),
-          text: 'Se connecter',
-          onPressed: () {
-            setState(() {
-              _futureLogin = apiLogin();
-            });
-          },
-        ),
+      MyButton(
+        key: const Key('login-button'),
+        text: 'Se connecter',
+        onPressed: () {
+          setState(() {
+            apiLogin();
+          });
+        },
       ),
       displayGoToSignup(context)
     ]);
@@ -161,13 +187,14 @@ class LoginPageState extends State<LoginPage> {
   Widget displayEmailConnexionInputs(snapshot, BuildContext context) {
     return Column(
       children: [
-        const MyTextInput(
+        MyTextInput(
           hintText: "Email",
           labelText: "Email",
           keyboardType: TextInputType.emailAddress,
           icon: Icons.email_outlined,
+          onChanged: (value) => _email = value,
         ),
-        const SizedBox(height: 8),
+        const SizedBox(height: 16),
         MyTextInput(
             hintText: "Mot de passe",
             labelText: "Mot de passe",
@@ -181,6 +208,7 @@ class LoginPageState extends State<LoginPage> {
                 _isPasswordVisible = !_isPasswordVisible;
               });
             },
+            onChanged: (value) => _password = value,
             validator: (value) => Validators().notEmpty(context, value)),
         Align(
           alignment: Alignment.centerRight,
@@ -203,17 +231,16 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _futureLogin = Future<String>.value('');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       body: Center(
         child: FutureBuilder<String>(
-          future: _futureLogin,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
@@ -233,7 +260,18 @@ class LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       displayLogo(90),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Connexion à mon compte',
+                        key: Key('subtitle-text'),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.secondaryHeaderColor)),
+                      ),
+                      const SizedBox(height: 8),
                       displayEmailConnexionInputs(snapshot, context),
                       displayLoginButton(snapshot, context),
                     ],
