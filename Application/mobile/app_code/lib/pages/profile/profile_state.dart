@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../network/informations.dart';
+import '../../utils/theme.dart';
 import '../login/login_page.dart';
 import 'profile_functional.dart';
 import 'profile_page.dart';
@@ -29,7 +31,9 @@ class ProfilePageState extends State<ProfilePage> {
       return const LoginPage();
     } else {
       return Scaffold(
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.colorScheme.background),
         body: SingleChildScrollView(
           child: Center(
             child: Container(
@@ -52,7 +56,8 @@ class ProfilePageState extends State<ProfilePage> {
                           size: 30.0, // Taille du chevron
                         ),
                       ),
-                      SizedBox(width: 20), // Espacement entre le chevron et le logo
+                      SizedBox(width: 20),
+                      // Espacement entre le chevron et le logo
 
                       // Logo RISU
                       Expanded(
@@ -66,13 +71,13 @@ class ProfilePageState extends State<ProfilePage> {
                     ],
                   ),
                   SizedBox(height: 20),
-
                   buildButton('Informations', route: '/profile/informations'),
                   buildButton('Paramètres', route: '/profile/settings'),
                   buildButton('Ajouter une carte', route: '/profile/add_card'),
                   buildButton('Ajouter un rib', route: '/profile/add_rib'),
                   SizedBox(height: 10),
-                  buildButton('Déconnexion', isLogoutButton: true, route: '/logout'),
+                  buildButton('Déconnexion',
+                      isLogoutButton: true, route: '/logout'),
                 ],
               ),
             ),
@@ -83,12 +88,12 @@ class ProfilePageState extends State<ProfilePage> {
   }
 
   Widget buildButton(
-      String text, {
-        double fontSize = 18,
-        double width = double.infinity,
-        bool isLogoutButton = false,
-        String route = '',
-      }) {
+    String text, {
+    double fontSize = 18,
+    double width = double.infinity,
+    bool isLogoutButton = false,
+    String route = '',
+  }) {
     final textColor = isLogoutButton ? Colors.black : Color(0xFF4682B4);
 
     return Container(
