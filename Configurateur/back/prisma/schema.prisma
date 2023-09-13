@@ -19,3 +19,10 @@ model User {
   confirmed Boolean  @default(false)
   createdAt DateTime  @default(now())
 }
+
+model Container {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    Int
+  containerMapping String
+}
