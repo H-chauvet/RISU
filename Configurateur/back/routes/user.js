@@ -124,6 +124,12 @@ router.post('/update-password', async function (req, res, next) {
 
 router.post('/register-confirmation', async function (req, res, next) {
   try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
+  try {
     const { email } = req.body
 
     if (!email) {
@@ -145,6 +151,12 @@ router.post('/register-confirmation', async function (req, res, next) {
 })
 
 router.post('/confirmed-register', async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { uuid } = req.body
 

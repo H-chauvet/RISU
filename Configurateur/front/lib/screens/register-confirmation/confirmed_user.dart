@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
+import 'package:front/screens/login/login.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -20,6 +22,14 @@ class ConfirmedUser extends StatefulWidget {
 class ConfirmedUserState extends State<ConfirmedUser> {
   @override
   void initState() {
+    StorageService().readStorage('token').then((value) => {
+          debugPrint(value),
+          if (value == null)
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()))
+            }
+        });
     http.post(
       Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
       headers: <String, String>{
