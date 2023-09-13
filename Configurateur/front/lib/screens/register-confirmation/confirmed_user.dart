@@ -15,6 +15,10 @@ class ConfirmedUser extends StatefulWidget {
   State<ConfirmedUser> createState() => ConfirmedUserState();
 }
 
+///
+/// Password change screen
+///
+/// page de confirmation d'enregistrement pour le configurateur
 class ConfirmedUserState extends State<ConfirmedUser> {
   @override
   void initState() {

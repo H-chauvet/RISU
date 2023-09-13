@@ -13,6 +13,10 @@ class PasswordChange extends StatefulWidget {
   State<PasswordChange> createState() => PasswordChangeState();
 }
 
+///
+/// Password change screen
+///
+/// page de changement de mot de passe pour le configurateur
 class PasswordChangeState extends State<PasswordChange> {
   @override
   Widget build(BuildContext context) {

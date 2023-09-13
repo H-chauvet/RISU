@@ -15,6 +15,10 @@ class RegisterConfirmation extends StatefulWidget {
   State<RegisterConfirmation> createState() => RegisterConfirmationState();
 }
 
+///
+/// Register confirmation screen
+///
+/// page de confirmation d'inscription pour le configurateur
 class RegisterConfirmationState extends State<RegisterConfirmation> {
   @override
   void initState() {

@@ -1,16 +1,23 @@
-# front
+# Front du configurateur
 
-A new Flutter project.
+## Description
+Application front du configurateur, permettant de créer son conteneur
 
-## Getting Started
+## Prérequis
+* flutter
+* git
 
-This project is a starting point for a Flutter application.
+## Lancer l'application sans docker
+```bash
+git clone git@github.com:H-chauvet/RISU.git
+cd Configurateur/front/
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Lancer l'application avec docker
+```bash
+git clone git@github.com:H-chauvet/RISU.git
+cd Configurateur/front/
+docker build -t configurateur-front .
+docker run -d -p 5000:5080 --name configurateur-app configurateur-front
+```

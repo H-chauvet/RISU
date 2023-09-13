@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-import '../../flutter_objects/filled_button.dart';
+import 'package:risu/flutter_objects/filled_button.dart';
 import '../../flutter_objects/outlined_button.dart';
 import '../../utils/colors.dart';
 import '../login/login_functional.dart';
 import '../signup/signup_functional.dart';
 
 class PreAuthState extends State<PreAuthPage> {
+  void _signInWithGoogle() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +39,14 @@ class PreAuthState extends State<PreAuthPage> {
                   style: TextStyle(fontSize: 12.0, color: MyColors.textPrimary),
                 ),
                 const SizedBox(height: 32.0),
+                SignInButton(
+                  Buttons.Google,
+                  text: "Se connecter avec Google",
+                  onPressed: () {
+                    _signInWithGoogle();
+                  },
+                ),
+                const SizedBox(height: 16.0),
                 Row(
                   children: [
                     Expanded(

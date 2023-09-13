@@ -20,7 +20,7 @@ class MyAlertDialog {
               fontSize: 20.0,
             ),
             content: Text(message),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 child: const Text('OK'),
                 onPressed: () => Navigator.pop(context, 'OK'),
@@ -47,7 +47,7 @@ class MyAlertDialog {
               fontSize: 20.0,
             ),
             content: Text(message),
-            actions: <Widget>[
+            actions: [
               TextButton(
                 child: const Text('OK'),
                 onPressed: () => Navigator.pop(context, 'OK'),
