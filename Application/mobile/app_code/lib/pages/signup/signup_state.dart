@@ -19,28 +19,38 @@ class SignupPageState extends State<SignupPage> {
   String? _password;
   bool _isPasswordVisible = false;
 
-  void apiSignup() async {
+  Future<bool> apiSignup() async {
     if (_email == null || _password == null) {
       await MyAlertDialog.showInfoAlertDialog(
           context: context,
           title: 'Creation de compte',
           message: 'Please fill all the field !');
     }
-    final response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/signup'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-          <String, String>{'email': _email!, 'password': _password!}),
-    );
-
+    late http.Response response;
+    try {
+      response = await http.post(
+        Uri.parse('http://$serverIp:8080/api/signup'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+            <String, String>{'email': _email!, 'password': _password!}),
+      );
+    } catch (err) {
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Connection refused.');
+      }
+    }
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Email',
             message: 'A confirmation e-mail has been sent to you.');
+        return true;
       }
     } else {
       if (context.mounted) {
@@ -50,6 +60,7 @@ class SignupPageState extends State<SignupPage> {
             message: 'Invalid e-mail address !');
       }
     }
+    return false;
   }
 
   @override
@@ -131,7 +142,12 @@ class SignupPageState extends State<SignupPage> {
               key: const Key('send_signup-button'),
               text: 'Inscription',
               onPressed: () {
-                apiSignup();
+                apiSignup().then((value) => {
+                      if (value)
+                        {
+                          goToLoginPage(context),
+                        }
+                    });
               },
             ),
             TextButton(
