@@ -95,7 +95,6 @@ class SignupPageState extends State<SignupPage> {
             Column(
               children: [
                 MyTextInput(
-                  hintText: "Email",
                   labelText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.email_outlined,
@@ -103,7 +102,6 @@ class SignupPageState extends State<SignupPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                    hintText: "Mot de passe",
                     labelText: "Mot de passe",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: !_isPasswordVisible,

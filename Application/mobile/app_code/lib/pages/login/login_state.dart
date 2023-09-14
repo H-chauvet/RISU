@@ -156,7 +156,6 @@ class LoginPageState extends State<LoginPage> {
             Column(
               children: [
                 MyTextInput(
-                  hintText: "Email",
                   labelText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.email_outlined,
@@ -164,7 +163,6 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                    hintText: "Mot de passe",
                     labelText: "Mot de passe",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: !_isPasswordVisible,

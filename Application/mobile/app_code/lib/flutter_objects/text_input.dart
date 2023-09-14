@@ -5,7 +5,6 @@ import '../utils/theme.dart';
 import '../utils/validators.dart';
 
 class MyTextInput extends StatefulWidget {
-  final String hintText;
   final String? labelText;
   final TextInputType keyboardType;
   final bool obscureText;
@@ -20,7 +19,6 @@ class MyTextInput extends StatefulWidget {
 
   const MyTextInput({
     Key? key,
-    required this.hintText,
     this.labelText,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
