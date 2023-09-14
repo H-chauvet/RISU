@@ -27,8 +27,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Risu',
-      theme: ThemeData(
-          fontFamily: 'Roboto-Bold', secondaryHeaderColor: Colors.white),
+      theme: context
+          .select((ThemeProvider themeProvider) => themeProvider.currentTheme),
       routeInformationProvider: router.routeInformationProvider,
       routeInformationParser: router.routeInformationParser,
       routerDelegate: router.routerDelegate,
