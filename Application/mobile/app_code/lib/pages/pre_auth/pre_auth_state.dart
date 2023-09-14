@@ -17,7 +17,7 @@ class PreAuthState extends State<PreAuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.primaryColor),
+          themeProvider.currentTheme.colorScheme.background),
       body: Stack(
         alignment: AlignmentDirectional.center,
         children: [
