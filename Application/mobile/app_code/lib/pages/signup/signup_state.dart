@@ -17,7 +17,6 @@ import 'signup_page.dart';
 class SignupPageState extends State<SignupPage> {
   String? _email;
   String? _password;
-  late Future<String> _futureSignup;
   bool _isPasswordVisible = false;
 
   void apiSignup() async {
@@ -56,99 +55,103 @@ class SignupPageState extends State<SignupPage> {
   @override
   void initState() {
     super.initState();
-    _futureSignup = Future<String>.value('');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.background),
-        body: Center(
-            child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [displayLogo(90)]),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Création de mon compte',
-                      key: const Key('subtitle-text'),
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor)),
-                    ),
-                    const SizedBox(height: 8),
-                    MyTextInput(
-                      hintText: "Email",
-                      labelText: "Email",
-                      keyboardType: TextInputType.emailAddress,
-                      icon: Icons.email_outlined,
-                      onChanged: (value) => _email = value,
-                    ),
-                    const SizedBox(height: 16),
-                    MyTextInput(
-                        hintText: "Mot de passe",
-                        labelText: "Mot de passe",
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: !_isPasswordVisible,
-                        icon: Icons.lock_outline,
-                        rightIcon: _isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        rightIconOnPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        onChanged: (value) => _password = value,
-                        validator: (value) =>
-                            Validators().notEmpty(context, value)),
-                    FutureBuilder<String>(
-                      future: _futureSignup,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(snapshot.data!);
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MyButton(
-                          key: const Key('send_signup-button'),
-                          text: 'Inscription',
-                          onPressed: () {
-                            apiSignup();
-                          },
-                        ),
-                        TextButton(
-                          key: const Key('go_login-button'),
-                          onPressed: () {
-                            goToLoginPage(context);
-                          },
-                          child: Text(
-                            'Retour à l\'écran de connexion...',
-                            style: TextStyle(
-                                color: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider.currentTheme
-                                            .secondaryHeaderColor)),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        transformAlignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            displayLogo(90),
+            const SizedBox(height: 8),
+            Text(
+              'Création de mon compte',
+              key: const Key('subtitle-text'),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor)),
+            ),
+            const SizedBox(height: 16),
+            Column(
+              children: [
+                MyTextInput(
+                  hintText: "Email",
+                  labelText: "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  icon: Icons.email_outlined,
+                  onChanged: (value) => _email = value,
+                ),
+                const SizedBox(height: 16),
+                MyTextInput(
+                    hintText: "Mot de passe",
+                    labelText: "Mot de passe",
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: !_isPasswordVisible,
+                    icon: Icons.lock_outline,
+                    rightIcon: _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    rightIconOnPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    onChanged: (value) => _password = value,
+                    validator: (value) =>
+                        Validators().notEmpty(context, value)),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Column(
+                    children: const [
+                      TextButton(
+                        key: Key('reset_password-button'),
+                        onPressed: null,
+                        child: Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 12,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ))));
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            MyButton(
+              key: const Key('send_signup-button'),
+              text: 'Inscription',
+              onPressed: () {
+                apiSignup();
+              },
+            ),
+            TextButton(
+              key: const Key('go_login-button'),
+              onPressed: () {
+                goToLoginPage(context);
+              },
+              child: Text(
+                'Retour à l\'écran de connexion...',
+                style: TextStyle(
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
