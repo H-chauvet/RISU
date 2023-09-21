@@ -22,6 +22,7 @@ final lightTheme = ThemeData(
   ),
   inputDecorationTheme: const InputDecorationTheme(
     filled: false,
+    fillColor: Color(0xFFE5E5E5),
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.all(
@@ -71,6 +72,7 @@ final darkTheme = ThemeData(
   ),
   inputDecorationTheme: const InputDecorationTheme(
     filled: false,
+    fillColor: Color(0xFF1E1E1E),
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
       borderRadius: BorderRadius.all(

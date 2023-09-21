@@ -1,21 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:provider/provider.dart';
-import 'package:risu/flutter_objects/alert_dialog.dart';
-import 'package:risu/flutter_objects/text_input.dart';
-import 'package:risu/network/informations.dart';
-import 'package:risu/pages/home/home_functional.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/text_input.dart';
+import 'package:risu/network/informations.dart';
+import 'package:risu/pages/history_location/history_functional.dart';
+import 'package:risu/pages/signup/signup_functional.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../../flutter_objects/filled_button.dart';
-import '../../flutter_objects/user_data.dart';
-import '../../material_lib_functions/material_functions.dart';
-import '../../utils/theme.dart';
-import '../home/home_page.dart';
-import '../signup/signup_functional.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -23,7 +21,7 @@ class LoginPageState extends State<LoginPage> {
   String? _password;
   bool _isPasswordVisible = false;
 
-  void apiLogin() async {
+  Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
@@ -57,6 +55,7 @@ class LoginPageState extends State<LoginPage> {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('data')) {
           userInformation = UserData.fromJson(jsonData['data']);
+          return true;
         } else {
           if (context.mounted) {
             await MyAlertDialog.showInfoAlertDialog(
@@ -101,6 +100,7 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     }
+    return false;
   }
 
   Future<String> apiResetPassword(BuildContext context) async {
@@ -123,111 +123,6 @@ class LoginPageState extends State<LoginPage> {
     return jsonDecode(response.body)['message'].toString();
   }
 
-  Widget displayGoToSignup(BuildContext context) {
-    return TextButton(
-      key: const Key('goto_signup-button'),
-      onPressed: () {
-        goToSignupPage(context);
-      },
-      child: Text(
-        'Pas de compte ? S\'inscrire',
-        style: TextStyle(
-            color: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.secondaryHeaderColor)),
-      ),
-    );
-  }
-
-  Widget displayLoginButton(snapshot, BuildContext context) {
-    return Column(children: [
-      MyButton(
-        key: const Key('login-button'),
-        text: 'Se connecter',
-        onPressed: () {
-          setState(() {
-            apiLogin();
-          });
-        },
-      ),
-      displayGoToSignup(context)
-    ]);
-  }
-
-  Widget displayResetPassword(BuildContext context) {
-    bool isButtonDisabled = false;
-    return Column(
-      children: [
-        TextButton(
-          key: const Key('reset_password-button'),
-          onPressed: isButtonDisabled
-              ? null
-              : () {
-                  setState(() {
-                    apiResetPassword(context);
-                    isButtonDisabled = true;
-                    Timer(const Duration(seconds: 5), () {
-                      setState(() {
-                        isButtonDisabled = false;
-                      });
-                    });
-                  });
-                },
-          child: Text(
-            'Mot de passe oublié ?',
-            style: TextStyle(
-                fontSize: 12,
-                color: context.select((ThemeProvider themeProvider) =>
-                    themeProvider.currentTheme.secondaryHeaderColor)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget displayEmailConnexionInputs(snapshot, BuildContext context) {
-    return Column(
-      children: [
-        MyTextInput(
-          hintText: "Email",
-          labelText: "Email",
-          keyboardType: TextInputType.emailAddress,
-          icon: Icons.email_outlined,
-          onChanged: (value) => _email = value,
-        ),
-        const SizedBox(height: 16),
-        MyTextInput(
-            hintText: "Mot de passe",
-            labelText: "Mot de passe",
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: !_isPasswordVisible,
-            icon: Icons.lock_outline,
-            rightIcon:
-                _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
-            rightIconOnPressed: () {
-              setState(() {
-                _isPasswordVisible = !_isPasswordVisible;
-              });
-            },
-            onChanged: (value) => _password = value,
-            validator: (value) => Validators().notEmpty(context, value)),
-        Align(
-          alignment: Alignment.centerRight,
-          child: displayResetPassword(context),
-        ),
-        if (snapshot.hasError)
-          Text(
-            '{$snapshot.error}',
-            style: const TextStyle(fontSize: 12),
-          )
-        else
-          Text(
-            snapshot.data!,
-            style: const TextStyle(fontSize: 12),
-          ),
-      ],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -239,47 +134,140 @@ class LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: Center(
-        child: FutureBuilder<String>(
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              if (userInformation != null) {
-                return const HomePage();
-              }
-              logout = false;
-              return Align(
-                alignment: Alignment.center,
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      appBar: CustomShapedAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        transformAlignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Connexion',
+              key: const Key('subtitle-text'),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor),
+                shadows: [
+                  Shadow(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    blurRadius: 24,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            Column(
+              children: [
+                MyTextInput(
+                  labelText: "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  icon: Icons.email_outlined,
+                  onChanged: (value) => _email = value,
+                ),
+                const SizedBox(height: 16),
+                MyTextInput(
+                    labelText: "Mot de passe",
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: !_isPasswordVisible,
+                    icon: Icons.lock_outline,
+                    rightIcon: _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    rightIconOnPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    onChanged: (value) => _password = value,
+                    validator: (value) =>
+                        Validators().notEmpty(context, value)),
+                Align(
+                  alignment: Alignment.centerRight,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      displayLogo(90),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Connexion à mon compte',
-                        key: Key('subtitle-text'),
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      TextButton(
+                        key: const Key('reset_password-button'),
+                        onPressed: () {
+                          setState(() {
+                            apiResetPassword(context);
+                          });
+                        },
+                        child: Text(
+                          'Mot de passe oublié ?',
+                          style: TextStyle(
+                            fontSize: 12,
+                            decoration: TextDecoration.underline,
                             color: context.select(
                                 (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor)),
+                                    .currentTheme.secondaryHeaderColor),
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      displayEmailConnexionInputs(snapshot, context),
-                      displayLoginButton(snapshot, context),
                     ],
                   ),
                 ),
-              );
-            }
-          },
+              ],
+            ),
+            OutlinedButton(
+              key: const Key('login-button'),
+              onPressed: () {
+                apiLogin().then((value) => {
+                      if (value)
+                        {
+                          goToHomePage(context),
+                        }
+                    });
+              },
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                side: BorderSide(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  width: 3.0,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48.0,
+                  vertical: 16.0,
+                ),
+              ),
+              child: Text(
+                'Se connecter',
+                style: TextStyle(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            TextButton(
+              key: const Key('goto_signup-button'),
+              onPressed: () {
+                goToSignupPage(context);
+              },
+              child: Text(
+                'Pas de compte ? S\'inscrire',
+                style: TextStyle(
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

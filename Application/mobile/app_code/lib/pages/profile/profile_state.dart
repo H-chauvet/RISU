@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../network/informations.dart';
-import '../../utils/theme.dart';
-import '../login/login_page.dart';
+import 'package:risu/network/informations.dart';
+import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/utils/theme.dart';
+
 import 'profile_functional.dart';
 import 'profile_page.dart';
 
@@ -50,13 +51,13 @@ class ProfilePageState extends State<ProfilePage> {
                           // Naviguer vers la route "/home"
                           context.go('/home');
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.chevron_left,
                           color: Colors.blue, // Couleur du chevron
                           size: 30.0, // Taille du chevron
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       // Espacement entre le chevron et le logo
 
                       // Logo RISU
@@ -70,12 +71,12 @@ class ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   buildButton('Informations', route: '/profile/informations'),
                   buildButton('Paramètres', route: '/profile/settings'),
                   buildButton('Ajouter une carte', route: '/profile/add_card'),
                   buildButton('Ajouter un rib', route: '/profile/add_rib'),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   buildButton('Déconnexion',
                       isLogoutButton: true, route: '/logout'),
                 ],
@@ -94,10 +95,10 @@ class ProfilePageState extends State<ProfilePage> {
     bool isLogoutButton = false,
     String route = '',
   }) {
-    final textColor = isLogoutButton ? Colors.black : Color(0xFF4682B4);
+    final textColor = isLogoutButton ? Colors.black : const Color(0xFF4682B4);
 
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       width: width,
       child: ElevatedButton(
         onPressed: () {
@@ -108,7 +109,7 @@ class ProfilePageState extends State<ProfilePage> {
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
           onPrimary: textColor,
-          side: BorderSide(color: Color(0xFF4682B4)),
+          side: const BorderSide(color: Color(0xFF4682B4)),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),

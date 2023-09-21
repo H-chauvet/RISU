@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:risu/pages/history_location/history_page.dart';
 import 'package:risu/pages/history_location/article_location.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-
-import 'package:risu/flutter_objects/filled_button.dart';
-import '../../flutter_objects/outlined_button.dart';
-import '../../utils/colors.dart';
+import 'package:risu/pages/history_location/history_page.dart';
 
 class HistoryLocationState extends State<HistoryLocationPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            margin: EdgeInsets.only(left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+            margin: EdgeInsets.only(
+                left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
