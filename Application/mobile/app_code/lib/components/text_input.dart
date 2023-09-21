@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../utils/theme.dart';
-import '../utils/validators.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/validators.dart';
 
 class MyTextInput extends StatefulWidget {
   final String? labelText;
