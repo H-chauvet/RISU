@@ -1,20 +1,20 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:provider/provider.dart';
-import 'package:risu/flutter_objects/alert_dialog.dart';
-import 'package:risu/flutter_objects/text_input.dart';
-import 'package:risu/network/informations.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/text_input.dart';
+import 'package:risu/network/informations.dart';
 import 'package:risu/pages/history_location/history_functional.dart';
+import 'package:risu/pages/signup/signup_functional.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../../flutter_objects/filled_button.dart';
-import '../../flutter_objects/user_data.dart';
-import '../../material_lib_functions/material_functions.dart';
-import '../../utils/theme.dart';
-import '../signup/signup_functional.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -135,24 +135,39 @@ class LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
+      appBar: CustomShapedAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         transformAlignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            displayLogo(90),
-            const SizedBox(height: 8),
             Text(
-              'Connexion à mon compte',
+              'Connexion',
               key: const Key('subtitle-text'),
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor)),
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor),
+                shadows: [
+                  Shadow(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    blurRadius: 24,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             Column(
               children: [
                 MyTextInput(
