@@ -24,6 +24,7 @@ class PreAuthState extends State<PreAuthPage> {
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(32, 64, 32, 64),
             child: Image.asset(
+              key: const Key('pre_auth-risu_logo'),
               'assets/logo_noir.png',
               fit: BoxFit.cover,
               alignment: Alignment.center,
@@ -37,7 +38,7 @@ class PreAuthState extends State<PreAuthPage> {
               children: [
                 Text(
                   "Voici quelques informations sur l'application.",
-                  key: const Key('subtitle-text'),
+                  key: const Key('pre_auth-subtitle_text'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 12.0,
@@ -57,6 +58,7 @@ class PreAuthState extends State<PreAuthPage> {
                   children: [
                     Expanded(
                       child: MyButton(
+                        key: const Key('pre_auth-button_go_to_login'),
                         onPressed: () {
                           goToLoginPage(context);
                         },
@@ -66,6 +68,7 @@ class PreAuthState extends State<PreAuthPage> {
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: MyOutlinedButton(
+                        key: const Key('pre_auth-button_go_to_signup'),
                         onPressed: () {
                           goToSignupPage(context);
                         },
