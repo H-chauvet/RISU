@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/network/informations.dart';
@@ -11,7 +12,6 @@ import 'package:risu/pages/login/login_functional.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../../components/appbar.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
