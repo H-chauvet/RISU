@@ -4,9 +4,9 @@ import 'package:risu/router.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-late bool isDarkTheme;
+bool isDarkTheme = false;
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final prefs = await SharedPreferences.getInstance();
