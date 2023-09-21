@@ -6,12 +6,12 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/text_input.dart';
-import 'package:risu/material_lib_functions/material_functions.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/login/login_functional.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/validators.dart';
 
+import '../../components/appbar.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
@@ -74,24 +74,39 @@ class SignupPageState extends State<SignupPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
+      appBar: CustomShapedAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         transformAlignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            displayLogo(90),
-            const SizedBox(height: 8),
             Text(
-              'Création de mon compte',
+              'Création de compte',
               key: const Key('subtitle-text'),
               style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor)),
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor),
+                shadows: [
+                  Shadow(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    blurRadius: 24,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 32),
             Column(
               children: [
                 MyTextInput(
@@ -154,7 +169,7 @@ class SignupPageState extends State<SignupPage> {
                 goToLoginPage(context);
               },
               child: Text(
-                'Retour à l\'écran de connexion...',
+                'Déjà inscrit ? Se connecter',
                 style: TextStyle(
                   fontSize: 14,
                   decoration: TextDecoration.underline,
