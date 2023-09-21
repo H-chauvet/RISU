@@ -8,6 +8,6 @@ Function? updatePage;
 bool logout = false;
 
 /// Navigation function -> Go to Home page
-void goToHomePage(BuildContext context) {
-  context.go('/');
+void goToHistoryPage(BuildContext context) {
+  context.go('/history-location');
 }
