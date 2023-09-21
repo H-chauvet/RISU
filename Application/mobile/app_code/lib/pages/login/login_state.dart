@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/history_location/history_functional.dart';
@@ -220,9 +219,8 @@ class LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            MyButton(
+            OutlinedButton(
               key: const Key('login-button'),
-              text: 'Se connecter',
               onPressed: () {
                 apiLogin().then((value) => {
                       if (value)
@@ -231,6 +229,28 @@ class LoginPageState extends State<LoginPage> {
                         }
                     });
               },
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                side: BorderSide(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  width: 3.0,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48.0,
+                  vertical: 16.0,
+                ),
+              ),
+              child: Text(
+                'Se connecter',
+                style: TextStyle(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  fontSize: 16.0,
+                ),
+              ),
             ),
             TextButton(
               key: const Key('goto_signup-button'),
