@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-
-import 'package:risu/flutter_objects/filled_button.dart';
-import '../../flutter_objects/outlined_button.dart';
-import '../../main.dart';
-import '../../utils/theme.dart';
-import '../login/login_functional.dart';
-import '../signup/signup_functional.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/outlined_button.dart';
+import 'package:risu/main.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/login/login_functional.dart';
+import 'package:risu/pages/signup/signup_functional.dart';
 
 class PreAuthState extends State<PreAuthPage> {
   void _signInWithGoogle() {}

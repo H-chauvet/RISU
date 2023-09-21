@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/flutter_objects/alert_dialog.dart';
-import 'package:risu/flutter_objects/text_input.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/text_input.dart';
+import 'package:risu/material_lib_functions/material_functions.dart';
+import 'package:risu/network/informations.dart';
+import 'package:risu/pages/login/login_functional.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/validators.dart';
 
-import '../../flutter_objects/filled_button.dart';
-import '../../material_lib_functions/material_functions.dart';
-import '../../network/informations.dart';
-import '../../utils/theme.dart';
-import '../../utils/validators.dart';
-import '../login/login_functional.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
@@ -117,10 +117,10 @@ class SignupPageState extends State<SignupPage> {
                     onChanged: (value) => _password = value,
                     validator: (value) =>
                         Validators().notEmpty(context, value)),
-                Align(
+                const Align(
                   alignment: Alignment.centerRight,
                   child: Column(
-                    children: const [
+                    children: [
                       TextButton(
                         key: Key('reset_password-button'),
                         onPressed: null,
