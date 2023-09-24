@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../utils/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/theme.dart';
 
 class MyAlertDialog {
   static Future<void> showErrorAlertDialog({
@@ -14,11 +14,10 @@ class MyAlertDialog {
         return AlertDialog(
             title: Text(title),
             titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: const TextStyle(
-              color: MyColors.alertDialogErrorTitle,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+            titleTextStyle: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.dialogTheme.titleTextStyle),
+            backgroundColor: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.dialogTheme.backgroundColor),
             content: Text(message),
             actions: [
               TextButton(
@@ -41,11 +40,10 @@ class MyAlertDialog {
         return AlertDialog(
             title: Text(title),
             titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: const TextStyle(
-              color: MyColors.alertDialogInfoTitle,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+            titleTextStyle: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.dialogTheme.titleTextStyle),
+            backgroundColor: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.dialogTheme.backgroundColor),
             content: Text(message),
             actions: [
               TextButton(

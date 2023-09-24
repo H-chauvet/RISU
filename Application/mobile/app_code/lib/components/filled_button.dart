@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../utils/colors.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/theme.dart';
 
 class MyButton extends StatelessWidget {
   final String text;
@@ -22,8 +22,8 @@ class MyButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        foregroundColor: MyColors.buttonText,
-        backgroundColor: MyColors.buttonBackground,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.buttonTheme.colorScheme!.secondary),
         padding: EdgeInsets.symmetric(
           horizontal: 32.0 * sizeCoefficient,
           vertical: 16.0 * sizeCoefficient,
@@ -33,7 +33,8 @@ class MyButton extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          color: MyColors.buttonText,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.primaryColor),
           fontWeight: FontWeight.bold,
           fontSize: 16.0 * sizeCoefficient,
         ),

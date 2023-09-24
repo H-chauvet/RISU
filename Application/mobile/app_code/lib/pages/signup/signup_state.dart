@@ -2,162 +2,205 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:risu/flutter_objects/alert_dialog.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/text_input.dart';
+import 'package:risu/network/informations.dart';
+import 'package:risu/pages/login/login_functional.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/validators.dart';
 
-import '../../flutter_objects/filled_button.dart';
-import '../../material_lib_functions/material_functions.dart';
-import '../../network/informations.dart';
-import '../login/login_functional.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
   String? _email;
   String? _password;
-  String? _confirmationPassword;
-  late Future<String> _futureSignup;
+  bool _isPasswordVisible = false;
 
-  Future<String> apiSignup() async {
-    if (_email == null || _password == null || _confirmationPassword == null) {
-      return 'Please fill all the field !';
-    }
-    final response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/signup'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-          <String, String>{'email': _email!, 'password': _password!}),
-    );
-
-    if (response.statusCode == 201) {
+  Future<bool> apiSignup() async {
+    if (_email == null || _password == null) {
       await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Email',
-          message: 'A confirmation e-mail has been sent to you.');
-      return 'A confirmation e-mail has been sent to you !';
-    } else {
-      return 'Invalid e-mail address !';
+          title: 'Creation de compte',
+          message: 'Please fill all the field !');
     }
+    late http.Response response;
+    try {
+      response = await http.post(
+        Uri.parse('http://$serverIp:8080/api/signup'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(
+            <String, String>{'email': _email!, 'password': _password!}),
+      );
+    } catch (err) {
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Connection refused.');
+      }
+    }
+    if (response.statusCode == 201) {
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Email',
+            message: 'A confirmation e-mail has been sent to you.');
+        return true;
+      }
+    } else {
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Creation de compte',
+            message: 'Invalid e-mail address !');
+      }
+    }
+    return false;
   }
 
   @override
   void initState() {
     super.initState();
-    _futureSignup = Future<String>.value('');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Center(
-            child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [displayLogo(90)]),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Création d\'un compte',
-                      key: Key('subtitle-text'),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      key: const Key('email-text_input'),
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'E-mail...',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value != null &&
-                            !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) {
-                          return 'Doit être une adresse e-mail valide.';
-                        }
-                        _email = value;
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      key: const Key('password-text_input'),
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Mot de passe...',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value != null && value.length <= 7) {
-                          return 'Le mot de passe doit contenir au moins 8 caractères.';
-                        }
-                        _password = value;
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 8),
-                    TextFormField(
-                      key: const Key('password_confirmation-text_input'),
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Confirmer mot de passe...',
-                      ),
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (String? value) {
-                        if (value != null && value.length <= 7) {
-                          return 'Le mot de passe doit contenir au moins 8 caractères.';
-                        }
-                        if (value != _password) {
-                          return 'Les mots de passe ne correspondent pas.';
-                        }
-                        _confirmationPassword = value;
-                        return null;
-                      },
-                    ),
-                    FutureBuilder<String>(
-                      future: _futureSignup,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(snapshot.data!);
-                        } else if (snapshot.hasError) {
-                          return Text('${snapshot.error}');
-                        }
-                        return const CircularProgressIndicator();
-                      },
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MyButton(
-                          key: const Key('send_signup-button'),
-                          text: 'Inscription',
-                          onPressed: () {
-                            setState(() {
-                              apiSignup();
-                            });
-                          },
-                        ),
-                        TextButton(
-                          key: const Key('go_login-button'),
-                          onPressed: () {
-                            goToLoginPage(context);
-                          },
-                          child: Text(
-                            'Retour à l\'écran de connexion...',
-                            style: TextStyle(color: getOurPrimaryColor(100)),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      appBar: CustomShapedAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        transformAlignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Création de compte',
+              key: const Key('subtitle-text'),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor),
+                shadows: [
+                  Shadow(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    blurRadius: 24,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            Column(
+              children: [
+                MyTextInput(
+                  labelText: "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  icon: Icons.email_outlined,
+                  onChanged: (value) => _email = value,
+                ),
+                const SizedBox(height: 16),
+                MyTextInput(
+                    labelText: "Mot de passe",
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: !_isPasswordVisible,
+                    icon: Icons.lock_outline,
+                    rightIcon: _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    rightIconOnPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    onChanged: (value) => _password = value,
+                    validator: (value) =>
+                        Validators().notEmpty(context, value)),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Column(
+                    children: [
+                      TextButton(
+                        key: const Key('reset_password-button'),
+                        onPressed: () {},
+                        child: const Text(
+                          '',
+                          style: TextStyle(
+                            fontSize: 12,
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ))));
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            OutlinedButton(
+              key: const Key('send_signup-button'),
+              onPressed: () {
+                apiSignup().then((value) => {
+                      if (value)
+                        {
+                          goToLoginPage(context),
+                        }
+                    });
+              },
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                side: BorderSide(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  width: 3.0,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48.0,
+                  vertical: 16.0,
+                ),
+              ),
+              child: Text(
+                'Créer un compte',
+                style: TextStyle(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            TextButton(
+              key: const Key('go_login-button'),
+              onPressed: () {
+                goToLoginPage(context);
+              },
+              child: Text(
+                'Déjà inscrit ? Se connecter',
+                style: TextStyle(
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

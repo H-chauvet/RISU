@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:risu/network/informations.dart';
+import 'package:risu/pages/login/login_page.dart';
 
-import '../../network/informations.dart';
-import '../login/login_page.dart';
 import 'home_functional.dart';
 import 'home_page.dart';
 
@@ -38,7 +39,16 @@ class HomePageState extends State<HomePage> {
               width: MediaQuery.of(context).size.width,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text('HomePage')],
+                children: [
+                  const Text('HomePage'),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Rediriger vers la route /profile
+                      context.go('/profile');
+                    },
+                    child: const Text('Aller au profil'),
+                  ),
+                ],
               ),
             ),
           ))));

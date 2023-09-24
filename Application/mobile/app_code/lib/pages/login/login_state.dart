@@ -1,28 +1,34 @@
+import 'dart:async';
 import 'dart:convert';
 
-import 'package:risu/flutter_objects/alert_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/text_input.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/home/home_functional.dart';
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
+import 'package:risu/pages/signup/signup_functional.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/user_data.dart';
+import 'package:risu/utils/validators.dart';
 
-import '../../flutter_objects/filled_button.dart';
-import '../../flutter_objects/user_data.dart';
-import '../../material_lib_functions/material_functions.dart';
-import '../home/home_page.dart';
-import '../signup/signup_functional.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
   String? _email;
   String? _password;
-  bool _isConnexionWithEmail = false;
-  late Future<String> _futureLogin;
+  bool _isPasswordVisible = false;
 
-  Future<String> apiLogin() async {
+  Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
-      return 'Please fill all the fields!';
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Please fill all the fields!');
+      }
     }
 
     late http.Response response;
@@ -36,7 +42,12 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err) {
-      return 'Connection refused.';
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Connexion',
+            message: 'Connection refused.');
+      }
     }
 
     if (response.statusCode == 201) {
@@ -44,29 +55,55 @@ class LoginPageState extends State<LoginPage> {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('data')) {
           userInformation = UserData.fromJson(jsonData['data']);
-          return 'Login succeeded!';
+          return true;
         } else {
-          return 'Invalid token... Please retry (data not found)';
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: 'Invalid token... Please retry (data not found)');
+          }
         }
       } catch (err) {
         debugPrint(err.toString());
-        return 'Invalid token... Please retry';
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Connexion',
+              message: 'Invalid token... Please retry.');
+        }
       }
     } else {
       try {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('message')) {
-          return jsonData['message'];
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: jsonData['message']);
+          }
         } else {
-          return 'Invalid credentials.';
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Connexion',
+                message: 'Invalid credentials.');
+          }
         }
       } catch (err) {
-        return 'Invalid credentials.';
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Connexion',
+              message: 'Invalid credentials.');
+        }
       }
     }
+    return false;
   }
 
-  Future<String> apiResetPassword() async {
+  Future<String> apiResetPassword(BuildContext context) async {
     if (_email == null) {
       return 'Please provide a valid email !';
     }
@@ -77,223 +114,160 @@ class LoginPageState extends State<LoginPage> {
       },
       body: jsonEncode(<String, String>{'email': _email!}),
     );
-    await MyAlertDialog.showInfoAlertDialog(
-        context: context,
-        title: 'Email',
-        message: 'A reset password has been sent to your email box.');
+    if (context.mounted) {
+      await MyAlertDialog.showInfoAlertDialog(
+          context: context,
+          title: 'Email',
+          message: 'A reset password has been sent to your email box.');
+    }
     return jsonDecode(response.body)['message'].toString();
-  }
-
-  Widget displayAppName() {
-    return const Text('Se connecter à RISU',
-        key: Key('title-text'),
-        textAlign: TextAlign.center,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42));
-  }
-
-  Widget displayGoToSignup() {
-    return TextButton(
-      key: const Key('goto_signup-button'),
-      onPressed: () {
-        goToSignupPage(context);
-      },
-      child: Text(
-        'Pas de compte ? S\'inscrire',
-        style: TextStyle(color: getOurPrimaryColor(100)),
-      ),
-    );
-  }
-
-  Widget displayContinueEmail() {
-    return Column(
-      children: [
-        SizedBox(
-          child: MyButton(
-            key: const Key('continue_email-button'),
-            onPressed: () {
-              setState(() {
-                _isConnexionWithEmail = true;
-              });
-            },
-            text: 'Continuer avec un e-mail',
-          ),
-        ),
-        displayGoToSignup()
-      ],
-    );
-  }
-
-  Widget displayLoginButton(snapshot) {
-    return Column(children: [
-      SizedBox(
-        child: MyButton(
-          key: const Key('login-button'),
-          text: 'Se connecter',
-          onPressed: () {
-            setState(() {
-              _futureLogin = apiLogin();
-            });
-          },
-        ),
-      ),
-      displayGoToSignup()
-    ]);
-  }
-
-  Widget displayResetPassword() {
-    bool isButtonDisabled = false;
-    return Column(
-      children: [
-        TextButton(
-          key: const Key('reset_password-button'),
-          onPressed: isButtonDisabled
-              ? null
-              : () {
-                  setState(() {
-                    apiResetPassword();
-                    isButtonDisabled = true;
-                    Timer(const Duration(seconds: 5), () {
-                      setState(() {
-                        isButtonDisabled = false;
-                      });
-                    });
-                  });
-                },
-          child: Text(
-            'Mot de passe oublié ?',
-            style: TextStyle(fontSize: 12, color: getOurPrimaryColor(100)),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget displayEmailConnexionInputs(snapshot) {
-    return Column(
-      children: [
-        TextFormField(
-          key: const Key('email-text_input'),
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.all(20),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(5.0),
-            ),
-            labelText: 'E-mail',
-          ),
-          initialValue: _email,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (String? value) {
-            if (value != null &&
-                !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                    .hasMatch(value)) {
-              return 'Doit être une adresse e-mail valide.';
-            }
-            _email = value;
-            return null;
-          },
-        ),
-        const SizedBox(height: 8),
-        if (_isConnexionWithEmail == true)
-          Column(
-            children: [
-              TextFormField(
-                key: const Key('password-text_input'),
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Mot de passe',
-                ),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (String? value) {
-                  if (value != null && value.length <= 7) {
-                    return 'Le mot de passe doit contenir au moins 8 caractères.';
-                  }
-                  _password = value;
-                  return null;
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  displayResetPassword(),
-                ],
-              ),
-            ],
-          ),
-        if (_isConnexionWithEmail == true && snapshot.hasError)
-          Text(
-            '{$snapshot.error}',
-            style: const TextStyle(fontSize: 12),
-          )
-        else
-          Text(
-            snapshot.data!,
-            style: const TextStyle(fontSize: 12),
-          ),
-      ],
-    );
   }
 
   @override
   void initState() {
     super.initState();
-    _futureLogin = Future<String>.value('');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: FutureBuilder<String>(
-          future: _futureLogin,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator();
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              if (userInformation != null) {
-                return const HomePage();
-              }
-              logout = false;
-              return Align(
-                alignment: Alignment.center,
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      appBar: CustomShapedAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        transformAlignment: Alignment.center,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Connexion',
+              key: const Key('subtitle-text'),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 32,
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.secondaryHeaderColor),
+                shadows: [
+                  Shadow(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    blurRadius: 24,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 32),
+            Column(
+              children: [
+                MyTextInput(
+                  labelText: "Email",
+                  keyboardType: TextInputType.emailAddress,
+                  icon: Icons.email_outlined,
+                  onChanged: (value) => _email = value,
+                ),
+                const SizedBox(height: 16),
+                MyTextInput(
+                    labelText: "Mot de passe",
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: !_isPasswordVisible,
+                    icon: Icons.lock_outline,
+                    rightIcon: _isPasswordVisible
+                        ? Icons.visibility_off
+                        : Icons.visibility,
+                    rightIconOnPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                    onChanged: (value) => _password = value,
+                    validator: (value) =>
+                        Validators().notEmpty(context, value)),
+                Align(
+                  alignment: Alignment.centerRight,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      displayLogo(90),
-                      const SizedBox(height: 20),
-                      if (_isConnexionWithEmail)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  _isConnexionWithEmail = false;
-                                });
-                              },
-                              icon: Icon(
-                                Icons.arrow_back_ios,
-                                color: getOurPrimaryColor(100),
-                              ),
-                            ),
-                          ],
+                      TextButton(
+                        key: const Key('reset_password-button'),
+                        onPressed: () {
+                          setState(() {
+                            apiResetPassword(context);
+                          });
+                        },
+                        child: Text(
+                          'Mot de passe oublié ?',
+                          style: TextStyle(
+                            fontSize: 12,
+                            decoration: TextDecoration.underline,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.secondaryHeaderColor),
+                          ),
                         ),
-                      displayEmailConnexionInputs(snapshot),
-                      if (_isConnexionWithEmail == false)
-                        displayContinueEmail(),
-                      if (_isConnexionWithEmail) displayLoginButton(snapshot),
+                      ),
                     ],
                   ),
                 ),
-              );
-            }
-          },
+              ],
+            ),
+            OutlinedButton(
+              key: const Key('login-button'),
+              onPressed: () {
+                apiLogin().then((value) => {
+                      if (value)
+                        {
+                          goToHomePage(context),
+                        }
+                    });
+              },
+              style: OutlinedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+                side: BorderSide(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  width: 3.0,
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48.0,
+                  vertical: 16.0,
+                ),
+              ),
+              child: Text(
+                'Se connecter',
+                style: TextStyle(
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            TextButton(
+              key: const Key('goto_signup-button'),
+              onPressed: () {
+                goToSignupPage(context);
+              },
+              child: Text(
+                'Pas de compte ? S\'inscrire',
+                style: TextStyle(
+                  fontSize: 14,
+                  decoration: TextDecoration.underline,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.secondaryHeaderColor),
+                ),
+              ),
+            )
+          ],
         ),
       ),
     );

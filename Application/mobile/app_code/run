@@ -40,6 +40,12 @@ show_tests_html ()
   xdg-open coverage/html/index.html
 }
 
+run_doc ()
+{
+  dart doc .
+  xdg-open doc/api/index.html
+}
+
 if [ "$1" == "" ]; then
     run
 elif [ "$1" == "unit_tests" ] || [ "$1" == "ut" ]; then
@@ -57,6 +63,8 @@ elif [ "$1" == "android" ]; then
     android
 elif [ "$1" == "ios" ]; then
     ios
+elif [ "$1" == "doc" ]; then
+    run_doc
 else
     echo "Unknown command."
 fi
