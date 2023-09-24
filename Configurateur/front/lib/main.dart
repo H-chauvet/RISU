@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/interactive_panel.dart';
+import 'package:front/components/progress_bar.dart';
+import 'package:front/components/recap_panel.dart';
+import 'package:front/services/storage_service.dart';
 
 import 'screens/register/register.dart';
 import './app_routes.dart';
@@ -56,6 +60,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+
+  @override
+  void initState() {
+    /*StorageService().readStorage('token').then((value) => {
+          if (value == null)
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()))
+            }
+        });*/
+    super.initState();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -132,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
@@ -140,6 +157,16 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const ProgressBar(
+              progress: 1,
+              previous: 'Previous',
+              next: 'Next',
+            ),
+            const RecapPanel(
+              price: 100,
+              articles: ['Article 1', 'Article 2'],
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

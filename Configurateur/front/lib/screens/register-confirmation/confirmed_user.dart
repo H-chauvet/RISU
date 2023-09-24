@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
+import 'package:front/screens/login/login.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -18,11 +20,26 @@ class ConfirmedUser extends StatefulWidget {
 ///
 /// page de confirmation d'enregistrement pour le configurateur
 class ConfirmedUserState extends State<ConfirmedUser> {
+  String jwtToken = '';
+
   @override
   void initState() {
+    StorageService().readStorage('token').then((value) => {
+          debugPrint(value),
+          if (value == null)
+            {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()))
+            }
+          else
+            {
+              jwtToken = value,
+            }
+        });
     http.post(
       Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
       headers: <String, String>{
+        'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },

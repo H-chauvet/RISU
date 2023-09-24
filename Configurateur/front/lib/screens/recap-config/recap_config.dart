@@ -114,7 +114,7 @@ class RecapConfigPage extends StatelessWidget {
                   width: 4.0,
                 ),
               ),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.all(24.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

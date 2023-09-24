@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 
 void main() {
