@@ -9,14 +9,12 @@ jobs:
   DEPLOY:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Install sshpass
-        run: sudo apt-get install -y sshpass
-
-      - name: Execute deploy script with SSH password
-        run: |
-          SSH_PASSWORD="$SSH_PASSWORD"  # Charger le secret en tant que variable d'environnement
-          sshpass -p "$SSH_PASSWORD" ssh ubuntu@193.70.89.108 "cd RISU && bash deploy-risu.sh"
-        env:
-          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+     - name: executing remote ssh commands using password
+       uses: appleboy/ssh-action@v1.0.0
+       with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        script: |
+          whoami
+          ls -la
