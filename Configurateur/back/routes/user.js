@@ -15,7 +15,7 @@ router.post('/login', async function (req, res, next) {
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (!existingUser) {
-      res.status(401)
+      res.status(400)
       throw new Error("Email don't exist")
     }
 

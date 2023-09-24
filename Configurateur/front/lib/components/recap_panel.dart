@@ -12,7 +12,7 @@ class RecapPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 300,
+        //width: 300,
         decoration: BoxDecoration(
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(10),

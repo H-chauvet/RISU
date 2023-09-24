@@ -63,13 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    StorageService().readStorage('token').then((value) => {
+    /*StorageService().readStorage('token').then((value) => {
           if (value == null)
             {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()))
             }
-        });
+        });*/
     super.initState();
   }
 
@@ -148,6 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',
@@ -166,7 +167,6 @@ class _MyHomePageState extends State<MyHomePage> {
               articles: ['Article 1', 'Article 2'],
             ),
             const SizedBox(height: 20),
-            const InteractivePanel()
           ],
         ),
       ),

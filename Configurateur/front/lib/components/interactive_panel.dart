@@ -8,16 +8,12 @@ class InteractivePanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: 300,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10),
-        ),
+    return DecoratedBox(
+        decoration: BoxDecoration(color: Colors.grey[300]),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(children: [
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               SizedBox(
                   width: 250,
                   child: ElevatedButton(
@@ -28,7 +24,7 @@ class InteractivePanel extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
-                          Text('Conteneurs alentours'),
+                          Expanded(child: Text('Conteneurs alentours')),
                           Icon(Icons.chevron_right),
                         ],
                       ))),
@@ -48,8 +44,7 @@ class InteractivePanel extends StatelessWidget {
                         ],
                       ))),
               const SizedBox(height: 20),
-              Container(
-                  child: Column(
+              Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -61,7 +56,7 @@ class InteractivePanel extends StatelessWidget {
                             'assets/google.png',
                           ),
                         ),
-                        const Text('vue 3D'),
+                        Text('vue 3D'),
                       ]),
                       const SizedBox(
                         width: 30,
@@ -73,7 +68,7 @@ class InteractivePanel extends StatelessWidget {
                             'assets/google.png',
                           ),
                         ),
-                        const Text('vue 2D'),
+                        Text('vue 2D'),
                       ]),
                       const SizedBox(
                         width: 30,
@@ -85,7 +80,7 @@ class InteractivePanel extends StatelessWidget {
                             'assets/google.png',
                           ),
                         ),
-                        const Text('vue côté'),
+                        Text('vue côté'),
                       ]),
                     ],
                   ),
@@ -128,9 +123,7 @@ class InteractivePanel extends StatelessWidget {
                     ],
                   ),
                 ],
-              ))
-            ]),
-          ],
-        ));
+              )
+            ]));
   }
 }
