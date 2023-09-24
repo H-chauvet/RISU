@@ -1,0 +1,19 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  DEPLOY:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install sshpass
+        run: sudo apt-get install -y sshpass
+
+      - name: Execute deploy script with SSH password
+        run: |
+          sshpass -p ${{ secrets.PASSWORD_VPS_SSH }} ssh ubuntu@193.70.89.108 "cd RISU/Configurateur/ && bash deploy-risu.sh"
