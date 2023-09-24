@@ -141,6 +141,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 Uri.parse(
                                     'http://localhost:3000/api/auth/register-confirmation'),
                                 headers: <String, String>{
+                                  'Authorization': '${response['accessToken']}',
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
                                   'Access-Control-Allow-Origin': '*',

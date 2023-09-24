@@ -20,6 +20,8 @@ class ConfirmedUser extends StatefulWidget {
 ///
 /// page de confirmation d'enregistrement pour le configurateur
 class ConfirmedUserState extends State<ConfirmedUser> {
+  String jwtToken = '';
+
   @override
   void initState() {
     StorageService().readStorage('token').then((value) => {
@@ -29,10 +31,15 @@ class ConfirmedUserState extends State<ConfirmedUser> {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const LoginScreen()))
             }
+          else
+            {
+              jwtToken = value,
+            }
         });
     http.post(
       Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
       headers: <String, String>{
+        'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },

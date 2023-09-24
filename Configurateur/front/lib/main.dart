@@ -64,7 +64,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     StorageService().readStorage('token').then((value) => {
-          debugPrint(value),
           if (value == null)
             {
               Navigator.push(context,
