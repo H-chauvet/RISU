@@ -16,4 +16,7 @@ jobs:
 
       - name: Execute deploy script with SSH password
         run: |
-          sshpass -p ${{ secrets.PASSWORD_VPS_SSH }} ssh ubuntu@193.70.89.108 "cd RISU && bash deploy-risu.sh"
+          SSH_PASSWORD="$SSH_PASSWORD"  # Charger le secret en tant que variable d'environnement
+          sshpass -p "$SSH_PASSWORD" ssh ubuntu@193.70.89.108 "cd RISU && bash deploy-risu.sh"
+        env:
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
