@@ -16,5 +16,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         script: |
-          whoami
-          ls -la
+          cd RISU
+          ./deploy-risu.sh
