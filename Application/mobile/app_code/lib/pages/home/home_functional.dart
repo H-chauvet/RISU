@@ -9,5 +9,6 @@ bool logout = false;
 
 /// Navigation function -> Go to Home page
 void goToHomePage(BuildContext context) {
+  logout = false;
   context.go('/home');
 }
