@@ -28,6 +28,7 @@ class LoginPageState extends State<LoginPage> {
             context: context,
             title: 'Connexion',
             message: 'Please fill all the fields!');
+        return false;
       }
     }
 
@@ -47,6 +48,7 @@ class LoginPageState extends State<LoginPage> {
             context: context,
             title: 'Connexion',
             message: 'Connection refused.');
+        return false;
       }
     }
 
@@ -62,6 +64,7 @@ class LoginPageState extends State<LoginPage> {
                 context: context,
                 title: 'Connexion',
                 message: 'Invalid token... Please retry (data not found)');
+            return false;
           }
         }
       } catch (err) {
@@ -71,6 +74,7 @@ class LoginPageState extends State<LoginPage> {
               context: context,
               title: 'Connexion',
               message: 'Invalid token... Please retry.');
+          return false;
         }
       }
     } else {
@@ -82,6 +86,7 @@ class LoginPageState extends State<LoginPage> {
                 context: context,
                 title: 'Connexion',
                 message: jsonData['message']);
+            return false;
           }
         } else {
           if (context.mounted) {
@@ -89,6 +94,7 @@ class LoginPageState extends State<LoginPage> {
                 context: context,
                 title: 'Connexion',
                 message: 'Invalid credentials.');
+            return false;
           }
         }
       } catch (err) {
@@ -97,6 +103,7 @@ class LoginPageState extends State<LoginPage> {
               context: context,
               title: 'Connexion',
               message: 'Invalid credentials.');
+          return false;
         }
       }
     }
