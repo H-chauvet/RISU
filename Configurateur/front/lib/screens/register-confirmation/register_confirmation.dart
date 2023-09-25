@@ -82,7 +82,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                             lastClicked = DateTime.now();
                             await http.post(
                               Uri.parse(
-                                  'http://localhost:3000/api/auth/register-confirmation'),
+                                  'http://193.70.89.108:3000/api/auth/register-confirmation'),
                               headers: <String, String>{
                                 'Authorization': jwtToken,
                                 'Content-Type':

@@ -37,7 +37,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
             }
         });
     http.post(
-      Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
+      Uri.parse('http://193.70.89.108:3000/api/auth/confirmed-register'),
       headers: <String, String>{
         'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',

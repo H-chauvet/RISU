@@ -69,7 +69,7 @@ class GoogleLogo extends StatelessWidget {
     dynamic response;
     await http
         .post(
-          Uri.parse('http://localhost:3000/api/auth/google-login'),
+          Uri.parse('http://193.70.89.108:3000/api/auth/google-login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Access-Control-Allow-Origin': '*',
