@@ -1,12 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:risu/network/informations.dart';
-import 'package:risu/pages/login/login_page.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/pages/history_location/history_page.dart';
+import 'package:risu/pages/map/map_page.dart';
 
-import 'home_functional.dart';
+import '../../components/appbar.dart';
+import '../../components/bottomnavbar.dart';
+import '../../network/informations.dart';
+import '../../utils/theme.dart';
+import '../history_location/history_functional.dart';
+import '../login/login_page.dart';
+import '../profile/profile_page.dart';
 import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
+  int _currentIndex = 1;
+  final List<Widget> _pages = [
+    HistoryLocationPage(),
+    const MapPage(),
+    const ProfilePage(),
+  ];
+
   @override
   void initState() {
     super.initState();
@@ -19,28 +32,26 @@ class HomePageState extends State<HomePage> {
       return const LoginPage();
     } else {
       return Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-              child: Center(
-                  child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('HomePage'),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Rediriger vers la route /profile
-                      context.go('/profile');
-                    },
-                    child: const Text('Aller au profil'),
-                  ),
-                ],
-              ),
-            ),
-          ))));
+        resizeToAvoidBottomInset: true,
+        appBar: CustomShapedAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          showLogo: true,
+          showBurgerMenu: true,
+        ),
+        body: _pages[_currentIndex],
+        bottomNavigationBar: BottomNavBar(
+          theme: context.select(
+              (ThemeProvider themeProvider) => themeProvider.currentTheme),
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+        ),
+      );
     }
   }
 }
