@@ -17,7 +17,7 @@ void sendFormData(String name, String email, String message) async {
   };
 
   var response = await http.post(
-    Uri.parse('http://localhost/contact'),
+    Uri.parse('http://193.70.89.108:3000/contact'),
     body: body,
   );
 

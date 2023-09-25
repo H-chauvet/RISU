@@ -92,7 +92,7 @@ class PasswordChangeState extends State<PasswordChange> {
                                 password == validedPassword) {
                               await http.post(
                                 Uri.parse(
-                                    'http://localhost:3000/api/auth/update-password'),
+                                    'http://193.70.89.108:3000/api/auth/update-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',

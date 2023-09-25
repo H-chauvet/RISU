@@ -113,7 +113,7 @@ class LoginScreenState extends State<LoginScreen> {
                               http
                                   .post(
                                     Uri.parse(
-                                        'http://localhost:3000/api/auth/login'),
+                                        'http://193.70.89.108:3000/api/auth/login'),
                                     headers: <String, String>{
                                       'Content-Type':
                                           'application/json; charset=UTF-8',
