@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:front/screens/login/login.dart';
+import 'package:front/screens/register/register.dart';
 
 class LandingPage extends StatelessWidget {
 
@@ -64,7 +66,10 @@ class LandingPage extends StatelessWidget {
               const SizedBox(width: 250),
               ElevatedButton(
                 onPressed: () {
-                  // Actions to perform when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 190, 189, 189),
@@ -78,7 +83,10 @@ class LandingPage extends StatelessWidget {
               SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
-                  // Actions to perform when the button is pressed
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 190, 189, 189),
