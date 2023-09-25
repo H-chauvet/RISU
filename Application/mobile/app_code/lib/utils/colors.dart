@@ -53,6 +53,11 @@ final lightTheme = ThemeData(
       secondary: Color(0xFFA1C1DB),
     ),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: MyColors.secondary,
+    selectedItemColor: MyColors.primary,
+    unselectedItemColor: Colors.white,
+  ),
 );
 
 final darkTheme = ThemeData(
@@ -102,5 +107,10 @@ final darkTheme = ThemeData(
     colorScheme: ColorScheme.dark(
       secondary: Color(0xFFA1C1DB),
     ),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: MyColors.secondary,
+    selectedItemColor: MyColors.primary,
+    unselectedItemColor: Colors.white,
   ),
 );
