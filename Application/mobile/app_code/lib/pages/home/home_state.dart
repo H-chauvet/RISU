@@ -7,20 +7,9 @@ import 'home_functional.dart';
 import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    updatePage = update;
-  }
-
-  /// Re sync all flutter object
-  void homeSync() async {
-    update();
   }
 
   @override
