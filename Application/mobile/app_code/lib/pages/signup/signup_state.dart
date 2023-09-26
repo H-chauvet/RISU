@@ -74,6 +74,7 @@ class SignupPageState extends State<SignupPage> {
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       appBar: MyAppBar(
+        key: const Key('signup-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
@@ -88,7 +89,7 @@ class SignupPageState extends State<SignupPage> {
           children: [
             Text(
               'Création de compte',
-              key: const Key('subtitle-text'),
+              key: const Key('signup-text_title'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
@@ -109,6 +110,7 @@ class SignupPageState extends State<SignupPage> {
             Column(
               children: [
                 MyTextInput(
+                  key: const Key('signup-textinput_email'),
                   labelText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.email_outlined,
@@ -116,6 +118,7 @@ class SignupPageState extends State<SignupPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
+                    key: const Key('signup-textinput_password'),
                     labelText: "Mot de passe",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: !_isPasswordVisible,
@@ -136,7 +139,7 @@ class SignupPageState extends State<SignupPage> {
                   child: Column(
                     children: [
                       TextButton(
-                        key: const Key('reset_password-button'),
+                        key: const Key('signup-textbutton_resetpassword'),
                         onPressed: () {},
                         child: const Text(
                           '',
@@ -151,7 +154,7 @@ class SignupPageState extends State<SignupPage> {
               ],
             ),
             OutlinedButton(
-              key: const Key('send_signup-button'),
+              key: const Key('signup-button_signup'),
               onPressed: () {
                 apiSignup().then((value) => {
                       if (value)
@@ -184,7 +187,7 @@ class SignupPageState extends State<SignupPage> {
               ),
             ),
             TextButton(
-              key: const Key('go_login-button'),
+              key: const Key('signup-textbutton_gotologin'),
               onPressed: () {
                 goToLoginPage(context);
               },
