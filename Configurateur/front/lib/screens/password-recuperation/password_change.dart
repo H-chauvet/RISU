@@ -118,7 +118,7 @@ class PasswordChangeState extends State<PasswordChange> {
                           ),
                           child: const Text(
                             "Changer le mot de passe",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

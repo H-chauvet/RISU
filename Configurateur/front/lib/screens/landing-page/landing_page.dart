@@ -73,7 +73,10 @@ class LandingPage extends StatelessWidget {
                       20.0), // Définit le rayon du bouton arrondi
                 ),
               ),
-              child: const Text('Connexion'),
+              child: const Text(
+                'Connexion',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
             SizedBox(width: 20),
             ElevatedButton(
@@ -88,7 +91,10 @@ class LandingPage extends StatelessWidget {
                       20.0), // Définit le rayon du bouton arrondi
                 ),
               ),
-              child: const Text('Inscription'),
+              child: const Text(
+                'Inscription',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ],
         ),

@@ -169,7 +169,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           ),
                           child: const Text(
                             "Envoyer l'email de récupération",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),
