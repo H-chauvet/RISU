@@ -42,35 +42,6 @@ class ProfilePageState extends State<ProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Chevron bleu pour la navigation vers /home
-                      GestureDetector(
-                        onTap: () {
-                          // Naviguer vers la route "/home"
-                          context.go('/home');
-                        },
-                        child: const Icon(
-                          Icons.chevron_left,
-                          color: Colors.blue, // Couleur du chevron
-                          size: 30.0, // Taille du chevron
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      // Espacement entre le chevron et le logo
-
-                      // Logo RISU
-                      Expanded(
-                        child: Center(
-                          child: Image.asset(
-                            'assets/logo_noir.png',
-                            width: 200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   buildButton('Informations', route: '/profile/informations'),
                   buildButton('Paramètres', route: '/profile/settings'),
