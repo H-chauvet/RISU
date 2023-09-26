@@ -141,7 +141,7 @@ class LoginPageState extends State<LoginPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      appBar: CustomShapedAppBar(
+      appBar: MyAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
