@@ -21,6 +21,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         leading: showBackButton
             ? BackButton(
+                key: const Key('appbar-button_back'),
                 onPressed: () {
                   Navigator.pop(context);
                 },
