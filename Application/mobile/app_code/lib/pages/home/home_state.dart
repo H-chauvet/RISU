@@ -33,9 +33,9 @@ class HomePageState extends State<HomePage> {
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: true,
-        appBar: CustomShapedAppBar(
+        appBar: MyAppBar(
           curveColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor),
+              themeProvider.currentTheme.primaryColor),
           showBackButton: false,
           showLogo: true,
           showBurgerMenu: true,
