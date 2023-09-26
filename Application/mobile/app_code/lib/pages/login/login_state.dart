@@ -24,7 +24,8 @@ class LoginPageState extends State<LoginPage> {
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
+            key: const Key('login-alertdialog_emptyfields'),
             context: context,
             title: 'Connexion',
             message: 'Please fill all the fields!');
@@ -44,7 +45,8 @@ class LoginPageState extends State<LoginPage> {
       );
     } catch (err) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
+            key: const Key('login-alertdialog_connectionrefused'),
             context: context,
             title: 'Connexion',
             message: 'Connection refused.');
@@ -60,7 +62,8 @@ class LoginPageState extends State<LoginPage> {
           return true;
         } else {
           if (context.mounted) {
-            await MyAlertDialog.showInfoAlertDialog(
+            await MyAlertDialog.showErrorAlertDialog(
+                key: const Key('login-alertdialog_invaliddata'),
                 context: context,
                 title: 'Connexion',
                 message: 'Invalid token... Please retry (data not found)');
@@ -68,9 +71,9 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err) {
-        debugPrint(err.toString());
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          await MyAlertDialog.showErrorAlertDialog(
+              key: const Key('login-alertdialog_invalidtoken'),
               context: context,
               title: 'Connexion',
               message: 'Invalid token... Please retry.');
@@ -82,7 +85,8 @@ class LoginPageState extends State<LoginPage> {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('message')) {
           if (context.mounted) {
-            await MyAlertDialog.showInfoAlertDialog(
+            await MyAlertDialog.showErrorAlertDialog(
+                key: const Key('login-alertdialog_invalidresponse'),
                 context: context,
                 title: 'Connexion',
                 message: jsonData['message']);
@@ -90,7 +94,8 @@ class LoginPageState extends State<LoginPage> {
           }
         } else {
           if (context.mounted) {
-            await MyAlertDialog.showInfoAlertDialog(
+            await MyAlertDialog.showErrorAlertDialog(
+                key: const Key('login-alertdialog_invalidcredentials'),
                 context: context,
                 title: 'Connexion',
                 message: 'Invalid credentials.');
@@ -99,10 +104,11 @@ class LoginPageState extends State<LoginPage> {
         }
       } catch (err) {
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          await MyAlertDialog.showErrorAlertDialog(
+              key: const Key('login-alertdialog_error'),
               context: context,
               title: 'Connexion',
-              message: 'Invalid credentials.');
+              message: 'Error while trying to login..');
           return false;
         }
       }
@@ -142,6 +148,7 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       appBar: MyAppBar(
+        key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
@@ -156,7 +163,7 @@ class LoginPageState extends State<LoginPage> {
           children: [
             Text(
               'Connexion',
-              key: const Key('subtitle-text'),
+              key: const Key('login-text_title'),
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 32,
@@ -177,6 +184,7 @@ class LoginPageState extends State<LoginPage> {
             Column(
               children: [
                 MyTextInput(
+                  key: const Key('login-textinput_email'),
                   labelText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.email_outlined,
@@ -184,6 +192,7 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
+                    key: const Key('login-textinput_password'),
                     labelText: "Mot de passe",
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: !_isPasswordVisible,
@@ -204,7 +213,7 @@ class LoginPageState extends State<LoginPage> {
                   child: Column(
                     children: [
                       TextButton(
-                        key: const Key('reset_password-button'),
+                        key: const Key('login-textbutton_resetpassword'),
                         onPressed: () {
                           setState(() {
                             apiResetPassword(context);
@@ -227,7 +236,7 @@ class LoginPageState extends State<LoginPage> {
               ],
             ),
             OutlinedButton(
-              key: const Key('login-button'),
+              key: const Key('login-button_signin'),
               onPressed: () {
                 apiLogin().then((value) => {
                       if (value)
@@ -260,7 +269,7 @@ class LoginPageState extends State<LoginPage> {
               ),
             ),
             TextButton(
-              key: const Key('goto_signup-button'),
+              key: const Key('login-textbutton_gotosignup'),
               onPressed: () {
                 goToSignupPage(context);
               },
