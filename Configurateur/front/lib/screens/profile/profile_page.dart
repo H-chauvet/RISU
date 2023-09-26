@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset(
-              'logo.png',
+              'assets/logo.png',
               width: 150,
               height: 150,
             ),
