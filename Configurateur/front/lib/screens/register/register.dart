@@ -111,7 +111,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
-                          key: const Key('register'),
+                          key: const Key(
+                            'register',
+                          ),
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
@@ -164,7 +166,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

@@ -103,7 +103,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                         ),
                         child: const Text(
                           "Renvoyer le mail de confirmation",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
                     ),

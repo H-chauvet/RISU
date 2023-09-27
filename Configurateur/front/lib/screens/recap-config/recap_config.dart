@@ -16,7 +16,7 @@ class RecapConfigPage extends StatelessWidget {
               padding: const EdgeInsets.only(
                   left: 16.0), // Espacement à gauche du logo
               child: Image.asset(
-                'logo.png',
+                'assets/logo.png',
                 width: 150,
                 height: 150,
               ),
@@ -188,7 +188,7 @@ class RecapConfigPage extends StatelessWidget {
               top: 10,
               left: 20,
               child: Image.asset(
-                'container.png',
+                'assets/container.png',
                 width: 125,
                 height: 125,
               ),
