@@ -17,8 +17,8 @@ class PreAuthState extends State<PreAuthPage> {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        alignment: AlignmentDirectional.center,
         children: [
           Padding(
             padding: const EdgeInsetsDirectional.fromSTEB(32, 64, 32, 64),
@@ -40,10 +40,9 @@ class PreAuthState extends State<PreAuthPage> {
                   key: const Key('pre_auth-text_subtitle'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 12.0,
-                    color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
-                  ),
+                      fontSize: 12.0,
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.secondaryHeaderColor)),
                 ),
                 const SizedBox(height: 32.0),
                 SignInButton(
