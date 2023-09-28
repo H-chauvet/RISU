@@ -25,7 +25,7 @@ void main() {
               create: (_) => ThemeProvider(false),
             ),
           ],
-          child: MaterialApp(
+          child: const MaterialApp(
             home: SignupPage(),
           ),
         ),
@@ -50,7 +50,7 @@ void main() {
               create: (_) => ThemeProvider(false),
             ),
           ],
-          child: MaterialApp(
+          child: const MaterialApp(
             home: SignupPage(),
           ),
         ),

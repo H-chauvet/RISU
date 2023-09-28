@@ -23,6 +23,7 @@ void main() {
     });
 
     Finder goBack = find.byKey(const Key('appbar-button_back'));
+
     testWidgets('Login', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
@@ -40,9 +41,9 @@ void main() {
 
       Finder subTitleFinder = find.byKey(const Key('pre_auth-text_subtitle'));
       Finder goToLoginFinder =
-          find.byKey(const Key('pre_auth-button_gotologin'));
+      find.byKey(const Key('pre_auth-button_gotologin'));
       Finder goToSignupFinder =
-          find.byKey(const Key('pre_auth-button_gotosignup'));
+      find.byKey(const Key('pre_auth-button_gotosignup'));
 
       await tester.pumpAndSettle();
 
@@ -76,9 +77,9 @@ void main() {
 
       Finder subTitleFinder = find.byKey(const Key('pre_auth-text_subtitle'));
       Finder goToLoginFinder =
-          find.byKey(const Key('pre_auth-button_gotologin'));
+      find.byKey(const Key('pre_auth-button_gotologin'));
       Finder goToSignupFinder =
-          find.byKey(const Key('pre_auth-button_gotosignup'));
+      find.byKey(const Key('pre_auth-button_gotosignup'));
 
       await tester.pumpAndSettle();
 
