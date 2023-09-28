@@ -15,6 +15,7 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      key: key,
       currentIndex: currentIndex,
       onTap: onTap,
       items: const [
