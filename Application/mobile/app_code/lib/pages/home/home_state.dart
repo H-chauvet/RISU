@@ -7,6 +7,22 @@ import 'home_functional.dart';
 import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
+
+  // get request to api/user/name
+  /*Future<bool> apiContact(String name, String email, String message) async {
+    late http.Response response;
+    try {
+      response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/user/name'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      )
+    }
+
+    return false;
+  }*/
+
   /// Update state function
   void update() {
     setState(() {});

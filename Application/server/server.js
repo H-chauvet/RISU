@@ -218,6 +218,22 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+/*app.get('/api/user/name', auth_token, async (req, res) => {
+  try {
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id }
+    })
+    const userInfos = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }
+    res.status(200).json(userInfos)
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('No matching user found.')
+  }
+})*/
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
 })
