@@ -218,6 +218,24 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+async function createFixtures() {
+  await database.prisma.user.createMany({
+    data: [
+      {
+        email: 'admin@gmail.com',
+        password: await utils.hash('admin'),
+        mailVerification: true,
+      },
+      {
+        email: 'user@gmail.com',
+        password: await utils.hash('user'),
+        mailVerification: true,
+      }
+    ]
+  })
+}
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
+  createFixtures();
 })
