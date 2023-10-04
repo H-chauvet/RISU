@@ -71,7 +71,7 @@ void main() {
       await tester.tap(buttonSigninFinder);
       await tester.pumpAndSettle();
 
-      await tester.enterText(textInputEmailFinder, 'example@gmail.com');
+      await tester.enterText(textInputEmailFinder, 'admin@gmail.com');
 
       expect(find.byKey(const Key('alertdialog-button_ok')), findsOneWidget);
       await tester.tap(find.byKey(const Key('alertdialog-button_ok')));
@@ -79,7 +79,7 @@ void main() {
       expect(alertdialogEmptyFieldsFinder, findsNothing);
 
       await tester.pumpAndSettle();
-      await tester.enterText(textInputPasswordFinder, '12345678');
+      await tester.enterText(textInputPasswordFinder, 'admin');
       await tester.pumpAndSettle();
       expect(tester.widget<MyTextInput>(textInputPasswordFinder).obscureText,
           true);
