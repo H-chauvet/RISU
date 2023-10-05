@@ -8,6 +8,8 @@ import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
+import 'package:front/screens/container-creation/container_creation.dart';
+import 'package:front/screens/container-creation/design_creation.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
 import './contact_form/contact_form.dart';
@@ -100,6 +102,14 @@ class AppRouter {
           child: RecapConfigPage(),
         ),
       ),
+      GoRoute(
+          path: '/creation',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: ContainerCreation())),
+      GoRoute(
+          path: '/design',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: DesignCreation()))
       // GoRoute(
       //   path: '/contact',
       //   pageBuilder: (context, state) => MaterialPage(

@@ -9,10 +9,14 @@ class InteractivePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-        decoration: BoxDecoration(color: Colors.grey[300]),
+        decoration: BoxDecoration(
+          color: Colors.grey[300],
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                   width: 250,
@@ -24,7 +28,7 @@ class InteractivePanel extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
-                          Expanded(child: Text('Conteneurs alentours')),
+                          Text('Conteneurs alentours'),
                           Icon(Icons.chevron_right),
                         ],
                       ))),
@@ -51,36 +55,36 @@ class InteractivePanel extends StatelessWidget {
                     children: [
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
-                        Text('vue 3D'),
+                        const Text('vue 3D'),
                       ]),
                       const SizedBox(
-                        width: 30,
+                        width: 10,
                       ),
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
-                        Text('vue 2D'),
+                        const Text('vue 2D'),
                       ]),
                       const SizedBox(
-                        width: 30,
+                        width: 10,
                       ),
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
-                        Text('vue côté'),
+                        const Text('vue côté'),
                       ]),
                     ],
                   ),
@@ -89,9 +93,9 @@ class InteractivePanel extends StatelessWidget {
                     children: [
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
                         const Text('zoom avant'),
@@ -101,9 +105,9 @@ class InteractivePanel extends StatelessWidget {
                       ),
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
                         const Text('zoom arrière'),
@@ -113,9 +117,9 @@ class InteractivePanel extends StatelessWidget {
                       ),
                       Column(children: [
                         SizedBox(
-                          width: 50,
+                          width: 80,
                           child: Image.asset(
-                            'assets/google.png',
+                            'assets/3d_logo.png',
                           ),
                         ),
                         const Text('casiers ouverts'),
