@@ -5,6 +5,7 @@ import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/parameters/parameters_page.dart';
 import 'package:risu/pages/history_location/history_page.dart';
+import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,6 +36,12 @@ final GoRouter router = GoRouter(
           path: 'profile',
           builder: (BuildContext context, GoRouterState state) {
             return const ProfilePage();
+          },
+        ),
+        GoRoute(
+          path: 'profile/informations',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ProfileInformationsPage();
           },
         ),
         GoRoute(
