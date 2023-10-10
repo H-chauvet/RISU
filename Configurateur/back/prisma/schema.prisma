@@ -26,3 +26,12 @@ model Container {
   userId    Int
   containerMapping String?
 }
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  prenom    String
+  nom       String
+  email     String   @unique
+  message   String
+  createdAt DateTime  @default(now())
+}
