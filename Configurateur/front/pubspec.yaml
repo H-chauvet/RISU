@@ -46,6 +46,8 @@ dependencies:
   intl: ^0.18.1
   flutter_secure_storage: ^8.1.0
   google_sign_in: ^6.1.4
+  cubixd: ^0.1.1
+  vector_math: ^2.1.4
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +79,7 @@ flutter:
      - assets/iphone.png
      - assets/container.png
      - assets/3d_logo.png
+     - assets/cube.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

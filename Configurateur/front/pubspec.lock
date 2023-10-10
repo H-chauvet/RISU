@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.0"
+  cubixd:
+    dependency: "direct main"
+    description:
+      name: cubixd
+      sha256: "1449eed4e24880e503ed1b737a002998b626b1e8e2f464ce46ba19f93a370bd2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -454,7 +462,7 @@ packages:
     source: hosted
     version: "3.0.6"
   vector_math:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: vector_math
       sha256: "80b3257d1492ce4d091729e3a67a60407d227c27241d6927be0130c98e741803"

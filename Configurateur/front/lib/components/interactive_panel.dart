@@ -33,20 +33,54 @@ class InteractivePanel extends StatelessWidget {
                         ],
                       ))),
               const SizedBox(height: 20),
-              SizedBox(
-                  width: 250,
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text('Kits'),
-                          Icon(Icons.chevron_right),
-                        ],
-                      ))),
+              LongPressDraggable(
+                  feedback: Image.asset(
+                    "assets/cube.png",
+                    width: 40,
+                    height: 40,
+                  ),
+                  child: Column(children: [
+                    const Text("petit casier"),
+                    Image.asset(
+                      "assets/cube.png",
+                      width: 40,
+                      height: 40,
+                    ),
+                  ])),
+              const SizedBox(
+                height: 5,
+              ),
+              LongPressDraggable(
+                  feedback: Image.asset(
+                    "assets/cube.png",
+                    width: 60,
+                    height: 60,
+                  ),
+                  child: Column(children: [
+                    const Text("moyen casier"),
+                    Image.asset(
+                      "assets/cube.png",
+                      width: 60,
+                      height: 60,
+                    ),
+                  ])),
+              const SizedBox(
+                height: 5,
+              ),
+              LongPressDraggable(
+                  feedback: Image.asset(
+                    "assets/cube.png",
+                    width: 80,
+                    height: 80,
+                  ),
+                  child: Column(children: [
+                    const Text("grand casier"),
+                    Image.asset(
+                      "assets/cube.png",
+                      width: 80,
+                      height: 80,
+                    ),
+                  ])),
               const SizedBox(height: 20),
               Column(
                 children: [

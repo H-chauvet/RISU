@@ -5,6 +5,8 @@ import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/container-creation/design_creation.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
+import 'package:cubixd/cubixd.dart';
+import 'package:vector_math/vector_math_64.dart' as math;
 
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
@@ -52,11 +54,11 @@ class ContainerCreationState extends State<ContainerCreation> {
           ],
         ),
         body: Row(
-          children: const [
-            SizedBox(
+          children: [
+            const SizedBox(
               width: 50,
             ),
-            Flexible(
+            const Flexible(
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: FractionallySizedBox(
@@ -65,7 +67,31 @@ class ContainerCreationState extends State<ContainerCreation> {
                     child: InteractivePanel()),
               ),
             ),
-            Flexible(
+            CubixD(
+              size: 200,
+              onSelected: ((SelectedSide opt, math.Vector2 test) =>
+                  opt == SelectedSide.bottom ? false : true),
+              left: Container(
+                color: Colors.black,
+              ),
+              front: Container(
+                color: Colors.blue,
+              ),
+              back: Container(
+                color: Colors.red,
+              ),
+              top: Container(
+                color: Colors.green,
+              ),
+              bottom: Container(
+                color: Colors.yellow,
+              ),
+              right: Container(
+                color: Colors.pink,
+              ),
+              delta: math.Vector2(2, 2),
+            ),
+            const Flexible(
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FractionallySizedBox(
@@ -77,7 +103,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                     )),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 50,
             )
           ],
