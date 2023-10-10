@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/contact_form/contact_form.dart';
+import 'package:front/screens/contact/contact.dart';
 
 void main() {
   testWidgets('no data', (WidgetTester tester) async {
