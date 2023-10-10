@@ -5,7 +5,6 @@ const contactCtrl = require('../controllers/contact')
 router.post('/contact', async function (req, res, next) {
   try {
     const { prenom, nom, email, message } = req.body
-    console.log(prenom, nom, email, message);
     if (!email) {
       res.status(400)
       throw new Error('Email is required')

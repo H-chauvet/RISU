@@ -31,11 +31,11 @@ services:
     stdin_open: true
     tty: true
     restart: always
-  # web_app:
-  #   build:
-  #     context: ./front
-  #   ports:
-  #     - 80:5000
+  web_app:
+    build:
+      context: ./front
+    ports:
+      - 80:5000
 
 volumes:
   mysql-data:
