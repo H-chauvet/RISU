@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 
 
 class ContactPage extends StatefulWidget {
+  const ContactPage({super.key});
+
   @override
   _ContactPageState createState() => _ContactPageState();
 }
@@ -17,7 +19,7 @@ void sendFormData(String name, String email, String message) async {
   };
 
   var response = await http.post(
-    Uri.parse('http://193.70.89.108:3000/contact'),
+    Uri.parse('http://193.70.89.108:3000/api/contact'),
     body: body,
   );
 
@@ -43,7 +45,7 @@ class _ContactPageState extends State<ContactPage> {
           context: context,
         ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -52,7 +54,7 @@ class _ContactPageState extends State<ContactPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: 'Nom Prénom'),
+                      decoration: const InputDecoration(labelText: 'Nom Prénom'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre nom et prénom';
@@ -64,10 +66,10 @@ class _ContactPageState extends State<ContactPage> {
                       },
                     ),
                   ),
-                  SizedBox(width: 16.0),
+                  const SizedBox(width: 16.0),
                   Expanded(
                     child: TextFormField(
-                      decoration: InputDecoration(labelText: 'Email'),
+                      decoration: const InputDecoration(labelText: 'Email'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre email';
@@ -82,10 +84,10 @@ class _ContactPageState extends State<ContactPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Message'),
-                maxLines: 5, // Nombre de lignes à afficher
+                decoration: const InputDecoration(labelText: 'Message'),
+                maxLines: 5,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Veuillez entrer votre message';
@@ -96,9 +98,9 @@ class _ContactPageState extends State<ContactPage> {
                   _message = value!;
                 },
               ),
-              SizedBox(height: 16.0), // Ajout d'espace vertical entre le champ message et le bouton envoyer
+              const SizedBox(height: 16.0), // Ajout d'espace vertical entre le champ message et le bouton envoyer
               ElevatedButton(
-                child: Text('Envoyer'),
+                child: const Text('Envoyer'),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
