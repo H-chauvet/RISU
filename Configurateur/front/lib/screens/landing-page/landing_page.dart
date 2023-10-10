@@ -1,10 +1,66 @@
+import 'dart:html';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register/register.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:flutter/foundation.dart';
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class LandingPage extends StatelessWidget {
+class LandingPage extends StatefulWidget {
+  const LandingPage({Key? key}) : super(key: key);
+
+  @override
+  State<LandingPage> createState() => LandingPageState();
+}
+
+
+class LandingPageState extends State<LandingPage> {
+
+  String connectedButton = '';
+  var connectedFunction;
+  String inscriptionButton = '';
+  var inscriptiondFunction;
+
+  String jwt = '';
+
+  void getJwt(String connectedButton) {
+    var jwtToken;
+    StorageService().readStorage('token').then((value) => {
+        // debugPrint(value),
+        if (value == null) {
+            jwtToken = '',
+            debugPrint('ça passe là'),
+            connectedButton = "Connexion",
+            inscriptionButton = 'Inscription',
+        }
+        else {
+            jwtToken = value,
+            debugPrint('ça c est : ' + jwtToken)
+          }
+      });
+  }
+
+  /// Update state function
+  void update() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getJwt(connectedButton);
+    debugPrint(connectedButton);
+    setState(() {});
+  }
+
+  /// Re sync all flutter object
+  void homeSync() async {
+    update();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,44 +117,15 @@ class LandingPage extends StatelessWidget {
                   decoration: TextDecoration.underline,
                 ),
               ),
-              const SizedBox(width: 250),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Définit le rayon du bouton arrondi
-                    ),
-                  ),
-                child: const Text('Connexion'),
-              ),
-              SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0), // Définit le rayon du bouton arrondi
-                    ),
-                  ),
-                child: const Text('Inscription'),
-              ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 250),
             ElevatedButton(
               onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => connectedFunction,
+                  ),
+                );
                 // Actions to perform when the button is pressed
               },
               style: ElevatedButton.styleFrom(
@@ -109,9 +136,32 @@ class LandingPage extends StatelessWidget {
                       20.0), // Définit le rayon du bouton arrondi
                 ),
               ),
-              child: const Text(
-                'Inscription',
-                style: TextStyle(color: Colors.black),
+              child: Text(
+                connectedButton,
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
+            SizedBox(width: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => inscriptiondFunction,
+                  ),
+                );
+                // Actions to perform when the button is pressed
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                      20.0), // Définit le rayon du bouton arrondi
+                ),
+              ),
+              child: Text(
+                inscriptionButton,
+                style: const TextStyle(color: Colors.black),
               ),
             ),
           ],
