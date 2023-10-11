@@ -158,10 +158,6 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const RecapPanel(
-              price: 100,
-              articles: ['Article 1', 'Article 2'],
-            ),
             const SizedBox(height: 20),
           ],
         ),

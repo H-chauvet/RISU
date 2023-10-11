@@ -34,10 +34,8 @@ class ContainerCreationState extends State<ContainerCreation> {
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.fragments[0].faces[0].materialIndex = 1;
     obj.fragments[0].faces[4].materialIndex = 2;
-    debugPrint(obj.fragments.length.toString());
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    //obj.rotate(Sp3dV3D(0, 1, 0).nor(), 10 * 3.14 / 180);
     objs.add(obj);
     loadImage();
   }
@@ -93,7 +91,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: FractionallySizedBox(
-                    widthFactor: 0.35,
+                    widthFactor: 0.7,
                     heightFactor: 0.7,
                     child: InteractivePanel()),
               ),
@@ -120,15 +118,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                 ],
               ),
             ),
-            const Flexible(
+            Flexible(
               child: Align(
                 alignment: Alignment.centerRight,
                 child: FractionallySizedBox(
-                    widthFactor: 0.35,
+                    widthFactor: 0.7,
                     heightFactor: 0.7,
                     child: RecapPanel(
-                      price: 1000,
-                      articles: ['Casier 1', 'Casier 2'],
+                      articles: [
+                        Locker('Moyen casier', 100),
+                        Locker('Petit casier', 50),
+                        Locker('Grand casier', 150),
+                      ],
                     )),
               ),
             ),

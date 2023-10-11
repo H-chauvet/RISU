@@ -3,6 +3,7 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
+import 'package:go_router/go_router.dart';
 
 class DesignCreation extends StatefulWidget {
   const DesignCreation({super.key});
@@ -17,7 +18,7 @@ class DesignCreation extends StatefulWidget {
 /// page d'inscription pour le configurateur
 class DesignCreationState extends State<DesignCreation> {
   void goNext() {
-    Navigator.pushNamed(context, '/design');
+    context.go("/");
   }
 
   void goPrevious() {
@@ -36,7 +37,7 @@ class DesignCreationState extends State<DesignCreation> {
           children: [
             ProgressBar(
               length: 2,
-              progress: 0,
+              progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,

@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 
+class Locker {
+  String type;
+  int price;
+
+  Locker(this.type, this.price);
+}
+
 ///
 /// RecapPanel
 ///
+// ignore: must_be_immutable
 class RecapPanel extends StatelessWidget {
-  const RecapPanel({super.key, this.price, this.articles});
+  RecapPanel({super.key, this.articles});
 
-  final int? price;
-  final List<String>? articles;
+  int sumPrice() {
+    int price = 0;
+    for (int i = 0; i < articles!.length; i++) {
+      price += articles![i].price;
+    }
+    return price;
+  }
+
+  final List<Locker>? articles;
+  late int? price = sumPrice();
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +54,23 @@ class RecapPanel extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: articles!.length,
                 itemBuilder: (_, i) {
-                  return Text(
-                    articles![i],
-                  );
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            articles![i].type,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10, bottom: 10),
+                          child: Text(
+                            "${articles![i].price.toString()}€",
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ]);
                 }),
             const SizedBox(
               height: 10,
