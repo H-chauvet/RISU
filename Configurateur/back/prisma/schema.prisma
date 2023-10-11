@@ -31,7 +31,7 @@ model Contact {
   id        Int      @id @default(autoincrement())
   prenom    String
   nom       String
-  email     String   @unique
+  email     String
   message   String
   createdAt DateTime  @default(now())
 }
