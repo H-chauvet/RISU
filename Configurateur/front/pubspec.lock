@@ -328,6 +328,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  simple_3d:
+    dependency: "direct main"
+    description:
+      name: simple_3d
+      sha256: b9b665a1a21c93f9cc77daaca2127ea505b5848a2733ef8da88092b91f8dd5ca
+      url: "https://pub.dev"
+    source: hosted
+    version: "12.0.0"
+  simple_3d_renderer:
+    dependency: "direct main"
+    description:
+      name: simple_3d_renderer
+      sha256: b9c5d3cf057559665ca8dd9697f18022d2e99577e1421931fb9891e625085bd0
+      url: "https://pub.dev"
+    source: hosted
+    version: "18.0.0"
   size_config:
     dependency: "direct main"
     description:
@@ -461,6 +477,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.6"
+  util_simple_3d:
+    dependency: "direct main"
+    description:
+      name: util_simple_3d
+      sha256: "751c35e764b9f85c25ba1bacff9a28d8ab6d1a249f3aa70687fb94de779c9220"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.0.0"
   vector_math:
     dependency: "direct main"
     description:

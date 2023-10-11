@@ -5,8 +5,9 @@ import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/container-creation/design_creation.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:cubixd/cubixd.dart';
-import 'package:vector_math/vector_math_64.dart' as math;
+import 'package:simple_3d/simple_3d.dart';
+import 'package:util_simple_3d/util_simple_3d.dart';
+import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
@@ -20,6 +21,36 @@ class ContainerCreation extends StatefulWidget {
 ///
 /// page d'inscription pour le configurateur
 class ContainerCreationState extends State<ContainerCreation> {
+  late List<Sp3dObj> objs = [];
+  late Sp3dWorld world;
+  bool isLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Create Sp3dObj.
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    obj.materials.add(FSp3dMaterial.green.deepCopy());
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.fragments[0].faces[0].materialIndex = 1;
+    obj.fragments[0].faces[4].materialIndex = 2;
+    debugPrint(obj.fragments.length.toString());
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    //obj.rotate(Sp3dV3D(0, 1, 0).nor(), 10 * 3.14 / 180);
+    objs.add(obj);
+    loadImage();
+  }
+
+  void loadImage() async {
+    world = Sp3dWorld(objs);
+    world.initImages().then((List<Sp3dObj> errorObjs) {
+      setState(() {
+        isLoaded = true;
+      });
+    });
+  }
+
   void goNext() {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const DesignCreation()));
@@ -67,29 +98,27 @@ class ContainerCreationState extends State<ContainerCreation> {
                     child: InteractivePanel()),
               ),
             ),
-            CubixD(
-              size: 200,
-              onSelected: ((SelectedSide opt, math.Vector2 test) =>
-                  opt == SelectedSide.bottom ? false : true),
-              left: Container(
-                color: Colors.black,
+            GestureDetector(
+              onTapDown: (TapDownDetails details) {
+                final RenderBox box = context.findRenderObject() as RenderBox;
+                // find the coordinate
+                final Offset localOffset =
+                    box.globalToLocal(details.globalPosition);
+              },
+              child: Column(
+                children: [
+                  Sp3dRenderer(
+                    const Size(800, 800),
+                    const Sp3dV2D(400, 400),
+                    world,
+                    // If you want to reduce distortion, shoot from a distance at high magnification.
+                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                    allowUserWorldRotation: true,
+                    allowUserWorldZoom: false,
+                  ),
+                ],
               ),
-              front: Container(
-                color: Colors.blue,
-              ),
-              back: Container(
-                color: Colors.red,
-              ),
-              top: Container(
-                color: Colors.green,
-              ),
-              bottom: Container(
-                color: Colors.yellow,
-              ),
-              right: Container(
-                color: Colors.pink,
-              ),
-              delta: math.Vector2(2, 2),
             ),
             const Flexible(
               child: Align(
