@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/contact_form/contact_form.dart';
+import 'package:front/screens/contact/contact.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
