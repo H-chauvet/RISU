@@ -3,4 +3,4 @@
 
 // String? serverIp = 'localhost'; // A garder en local
 
-String? serverIp = '193.70.89.108'; // A mettre quand push github
+String? serverIp = '20.111.37.124'; // A mettre quand push github
