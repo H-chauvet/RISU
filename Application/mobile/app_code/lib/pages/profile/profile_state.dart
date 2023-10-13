@@ -75,7 +75,7 @@ class ProfilePageState extends State<ProfilePage> {
                   buildButton('Informations', route: '/profile/informations'),
                   buildButton('Paramètres', route: '/profile/settings'),
                   buildButton('Ajouter une carte', route: '/profile/add_card'),
-                  buildButton('Ajouter un rib', route: '/profile/add_rib'),
+                  buildButton('Ajouter un RIB / IBAN', route: '/profile/add_rib'),
                   const SizedBox(height: 10),
                   buildButton('Déconnexion',
                       isLogoutButton: true, route: '/logout'),
