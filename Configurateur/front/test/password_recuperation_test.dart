@@ -7,9 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
-import 'package:front/screens/password-recuperation/password_change.dart';
 
 void main() {
   Widget createWidgetForTesting({required Widget child}) {

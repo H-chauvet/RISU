@@ -36,7 +36,7 @@ testWidgets('correct data bis', (WidgetTester tester) async {
 
   await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
   await tester.enterText(find.byType(TextFormField).at(1), 'TestNom');
-  await tester.enterText(find.byType(TextFormField).at(2), 'test@test.test');
+  await tester.enterText(find.byType(TextFormField).at(2), 'test@tes');
   await tester.enterText(find.byType(TextFormField).at(3), 'TestMessage');
   await tester.tap(find.text('Envoyer'));
   await tester.pump();
