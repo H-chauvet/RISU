@@ -9,7 +9,7 @@ import './app_routes.dart';
 import 'screens/login/login.dart';
 import 'screens/contact/contact.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
