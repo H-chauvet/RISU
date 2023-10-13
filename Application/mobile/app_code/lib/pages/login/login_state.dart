@@ -24,6 +24,7 @@ class LoginPageState extends State<LoginPage> {
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
       if (context.mounted) {
+        print('http://$serverIp:8080/api/login');
         await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Connexion',

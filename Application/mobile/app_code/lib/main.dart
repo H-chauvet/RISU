@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/router.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 bool isDarkTheme = false;
 
@@ -11,6 +12,8 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+
+  await dotenv.load(fileName: ".env");
 
   runApp(
     ChangeNotifierProvider(
