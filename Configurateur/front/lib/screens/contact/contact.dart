@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/network/informations.dart';
 import 'package:http/http.dart' as http;
 
 class ContactPage extends StatefulWidget {
@@ -19,7 +20,7 @@ void sendFormData(
   };
 
   var response = await http.post(
-    Uri.parse('http://localhost:3000/api/contact'),
+    Uri.parse('http://$serverIp:3000/api/contact'),
     body: body,
   );
 
