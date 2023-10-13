@@ -1,4 +1,6 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Variable globale pour stocker l'adresse IP du serveur
-String? serverIp = dotenv.env['SERVER_IP'];
+
+// String? serverIp = 'localhost'; // A garder en local
+
+String? serverIp = '193.70.89.108'; // A mettre quand push github
