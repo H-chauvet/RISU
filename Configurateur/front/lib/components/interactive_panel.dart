@@ -19,7 +19,6 @@ class InteractivePanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                  width: 250,
                   child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
@@ -28,7 +27,9 @@ class InteractivePanel extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: const [
-                          Text('Conteneurs alentours'),
+                          Text(
+                            'Conteneurs alentours',
+                          ),
                           Icon(Icons.chevron_right),
                         ],
                       ))),

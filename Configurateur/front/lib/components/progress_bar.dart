@@ -47,6 +47,7 @@ class ProgressBar extends StatelessWidget {
         children: [
           for (int i = 0; i < length; i++)
             Container(
+              key: Key("circleShape_$i"),
               height: 10,
               width: 10,
               margin: const EdgeInsets.only(right: 10),

@@ -38,6 +38,10 @@ void main() {
     expect(find.text("Connectez-vous."), findsOneWidget);
     expect(find.text("S'inscrire avec :"), findsOneWidget);
 
+    expect(
+        find.image(const AssetImage("assets/google-logo.png")), findsOneWidget);
+    expect(find.text('Google'), findsOneWidget);
+
     await tester.enterText(find.byKey(const Key('email')), 'test@gmail.com');
     await tester.enterText(find.byKey(const Key('password')), 'password');
     await tester.enterText(
