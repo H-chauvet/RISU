@@ -108,9 +108,9 @@ class ProfilePage extends StatelessWidget {
         child: Center(
           child: Row(
             children: [
-              Expanded(
+              const Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.only(
+                  padding: EdgeInsets.only(
                       bottom:
                           660.0), // Ajuster la valeur top pour déplacer les textes vers le haut
                   child: Column(
@@ -120,7 +120,7 @@ class ProfilePage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment
                             .center, // Centrer l'icône et le texte
-                        children: const [
+                        children: [
                           Text(
                             'Informations personnelles',
                             style: TextStyle(
@@ -134,17 +134,17 @@ class ProfilePage extends StatelessWidget {
                                   255, 65, 69, 71)), // Icône de crayon
                         ],
                       ),
-                      const SizedBox(
+                      SizedBox(
                           height: 50), // Ajouter un espace de 10 pixels
-                      const Text(
+                      Text(
                         'Nom : Chauvet',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(70, 130, 180, 1),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      const Text(
+                      SizedBox(height: 10),
+                      Text(
                         'Prénom : Henri',
                         style: TextStyle(
                           fontSize: 14,
@@ -176,7 +176,7 @@ class ProfilePage extends StatelessWidget {
                 width: 2.0,
                 color: Colors.grey,
               ),
-              Expanded(
+              const Expanded(
                 child: Padding(
                   padding: EdgeInsets.only(
                       bottom:

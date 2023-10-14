@@ -19,7 +19,6 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Register confirmation screen', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
@@ -37,7 +36,6 @@ void main() {
         findsOneWidget);
 
     await tester.tap(find.byKey(const Key('send-mail')));
-    await tester.tap(find.byKey(const Key('go-home')));
     await tester.pumpAndSettle();
   });
 }

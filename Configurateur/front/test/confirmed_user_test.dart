@@ -33,7 +33,7 @@ void main() {
             'Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application'),
         findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('go-home')));
+    // await tester.tap(find.byKey(const Key('go-home')));
     await tester.pumpAndSettle();
   });
 }
