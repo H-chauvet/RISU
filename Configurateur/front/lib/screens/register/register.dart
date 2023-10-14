@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -25,6 +24,9 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    String firstName = '';
+    String lastName = '';
+    String company = '';
     String mail = '';
     String password = '';
     String validedPassword = '';
@@ -52,7 +54,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         onChanged: (String? value) {
-                          mail = value!;
+                          firstName = value!;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -72,7 +74,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         onChanged: (String? value) {
-                          mail = value!;
+                          lastName = value!;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -92,7 +94,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                         ),
                         onChanged: (String? value) {
-                          mail = value!;
+                          company = value!;
                         },
                         validator: (String? value) {
                           if (value == null || value.isEmpty) {
@@ -177,7 +179,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              var body = <String, String>{
+                              var body = {
+                                'firstName': firstName,
+                                'lastName': lastName,
+                                'company': company,
                                 'email': mail,
                                 'password': password,
                               };
