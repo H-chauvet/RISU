@@ -16,6 +16,7 @@ model User {
   uuid                String?       @unique
   firstName           String        @default("")
   lastName            String        @default("")
+  company             String        @default("")
   email               String        @unique
   token               String        @unique
   password            String

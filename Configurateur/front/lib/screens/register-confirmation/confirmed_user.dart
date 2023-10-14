@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -75,19 +75,15 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                     InkWell(
                       key: const Key('go-home'),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const MyHomePage(title: 'tile')));
+                        context.go("/");
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
-                                "Retour à l'acceuil",
+                                "Retour à l'accueil",
                                 style:
                                     TextStyle(color: Colors.blue, fontSize: 16),
                               ),

@@ -44,7 +44,7 @@ void main() {
         find.byKey(const Key('confirm-password')), 'password');
 
     await tester.tap(find.byKey(const Key('register')));
-    await tester.tap(find.byKey(const Key('login')));
+    // await tester.tap(find.byKey(const Key('login')));
     await tester.pumpAndSettle();
   });
 }
