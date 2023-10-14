@@ -50,6 +50,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     try {
       final token = userInformation!.token;
 
+      print('token : $token');
+
       final response = await http.post(
         Uri.parse('http://$serverIp:8080/api/user/firstName'),
         headers: <String, String>{

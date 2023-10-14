@@ -56,3 +56,11 @@ model Comments {
   containerId               String?
   date                      DateTime
 }
+
+model Contact {
+  id                       String                     @id @unique @default(cuid())
+  name                     String
+  email                    String
+  message                  String
+  createdAt                DateTime                   @default(now())
+}
