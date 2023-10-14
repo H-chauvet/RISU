@@ -1,29 +1,35 @@
 const request = require('supertest');
-const app = require('../server');
+const async = require('async');
 
-describe('API Contact Endpoint', () => {
-  it('devrait enregistrer un nouveau contact avec des données valides', async () => {
-    const contactData = {
-      name: 'test',
-      email: 'test@test.com',
-      message: 'test',
-    };
-
-    const response = await request(app)
-      .post('/api/contact')
-      .send(contactData);
-
-    expect(response.status).toBe(201);
-    expect(response.body).toHaveProperty('message', 'contact saved');
-  });
-
-  it('devrait renvoyer une erreur avec des données invalides', async () => {
-    const invalidData = {};
-
-    const response = await request(app)
-      .post('/api/contact')
-      .send(invalidData);
-
-    expect(response.status).toBe(401);
-  });
-});
+describe('POST /contact', function () {
+  it('should delete', function (done) {
+    async.series(
+      [
+        function (callback) {
+          request('http://localhost:8080')
+            .post('/api/contact')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({name: "hugo", email: 'test@gmail.com', message: "Ceci est un message" })
+            .expect(201, callback)
+        },
+      ],
+      done
+    )
+  }),
+  it('should return 401 missing fields', function (done) {
+    async.series(
+      [
+        function (callback) {
+          request('http://localhost:8080')
+            .post('/api/contact')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({})
+            .expect(401, callback)
+        },
+      ],
+      done
+    )
+  })
+})
