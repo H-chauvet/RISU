@@ -160,6 +160,7 @@ class ContactPageState extends State<ContactPage> {
                     keyboardType: TextInputType.multiline,
                     icon: Icons.message_outlined,
                     onChanged: (value) => _message = value,
+                    height: 200,
                   ),
                   const SizedBox(height: 36),
                   OutlinedButton(

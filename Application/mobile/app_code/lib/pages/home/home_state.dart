@@ -48,6 +48,13 @@ class HomePageState extends State<HomePage> {
                     },
                     child: const Text('Aller au profil'),
                   ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Rediriger vers la route /profile
+                      context.go('/contact');
+                    },
+                    child: const Text('Page de contact'),
+                  ),
                 ],
               ),
             ),
