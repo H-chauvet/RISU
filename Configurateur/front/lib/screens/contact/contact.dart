@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:http/http.dart' as http;
 
@@ -145,6 +146,7 @@ class _ContactPageState extends State<ContactPage> {
           ),
         ),
       ),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }
