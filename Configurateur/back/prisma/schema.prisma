@@ -13,11 +13,14 @@ datasource db {
 
 model User {
   id        Int      @id @default(autoincrement())
-  uuid      String? @unique
+  uuid      String?  @unique
+  firstName String   @default("")
+  lastName  String   @default("")
+  company   String   @default("")
   email     String   @unique
   password  String
   confirmed Boolean  @default(false)
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Container {
