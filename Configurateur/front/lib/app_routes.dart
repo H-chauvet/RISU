@@ -9,6 +9,7 @@ import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/screens/contact/contact.dart';
+import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
 
@@ -102,8 +103,14 @@ class AppRouter {
       ),
       GoRoute(
         path: '/contact',
-        pageBuilder: (context, state) => MaterialPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: ContactPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/confidentiality',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ConfidentialityPage(),
         ),
       ),
     ],
