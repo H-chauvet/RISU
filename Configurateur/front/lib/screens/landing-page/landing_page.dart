@@ -1,15 +1,15 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 
 class LandingPage extends StatelessWidget {
+  const LandingPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(70, 130, 180, 1),
+        backgroundColor: const Color.fromRGBO(70, 130, 180, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

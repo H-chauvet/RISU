@@ -218,6 +218,32 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body
+  if (!name || !email || !message) {
+    return res.status(401).send('Missing fields.')
+  }
+  console.log("back-end : ", name, email, message)
+  try {
+    await database.prisma.Contact.create({
+      data: {
+        name: name,
+        email: email,
+        message: message
+      }
+    })
+
+    // get all contacts and print
+    //const contacts = await database.prisma.Contact.findMany()
+    //console.log(contacts)
+
+    res.status(201).json({ message: 'contact saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('Error while saving contact.')
+  }
+})
+
 app.get('/api/user', async (req, res) => {
   try {
     const token = req.headers.authorization;
@@ -237,6 +263,9 @@ app.get('/api/user', async (req, res) => {
 app.post('/api/user/firstName', async (req, res) => {
   try {
     const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
@@ -322,3 +351,5 @@ app.post('/api/user/password', async (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
 })
+
+module.exports = app

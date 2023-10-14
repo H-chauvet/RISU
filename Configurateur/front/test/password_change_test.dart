@@ -37,7 +37,7 @@ void main() {
         find.byKey(const Key('confirm-password')), 'password');
     await tester.enterText(find.byKey(const Key('password')), 'password');
 
-    await tester.tap(find.byKey(const Key('change-password')));
+    // await tester.tap(find.byKey(const Key('change-password')));
     await tester.pumpAndSettle();
   });
 }

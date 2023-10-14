@@ -5,6 +5,7 @@ import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/parameters/parameters_page.dart';
 import 'package:risu/pages/history_location/history_page.dart';
+import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -60,6 +61,12 @@ final GoRouter router = GoRouter(
           path: 'history-location',
           builder: (BuildContext context, GoRouterState state) {
             return HistoryLocationPage();
+          },
+        ),
+        GoRoute(
+          path: 'contact',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ContactPage();
           },
         ),
       ],
