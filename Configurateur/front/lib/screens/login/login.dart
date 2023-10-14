@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -113,7 +114,7 @@ class LoginScreenState extends State<LoginScreen> {
                               http
                                   .post(
                                     Uri.parse(
-                                        'http://193.70.89.108:3000/api/auth/login'),
+                                        'http://$serverIp:3000/api/auth/login'),
                                     headers: <String, String>{
                                       'Content-Type':
                                           'application/json; charset=UTF-8',

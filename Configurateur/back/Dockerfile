@@ -1,4 +1,4 @@
-FROM node:lts
+FROM node:20.2.0
 
 COPY . .
 RUN npm install
