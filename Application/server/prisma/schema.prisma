@@ -26,3 +26,11 @@ model User {
   confirmProcess           String                     @default("")
   createdAt                DateTime                   @default(now())
 }
+
+model Contact {
+  id                       String                     @id @unique @default(cuid())
+  name                     String
+  email                    String
+  message                  String
+  createdAt                DateTime                   @default(now())
+}

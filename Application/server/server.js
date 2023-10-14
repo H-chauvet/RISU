@@ -218,6 +218,32 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body
+  if (!name || !email || !message) {
+    return res.status(401).send('Missing fields.')
+  }
+  console.log("back-end : ", name, email, message)
+  try {
+    await database.prisma.Contact.create({
+      data: {
+        name: name,
+        email: email,
+        message: message
+      }
+    })
+
+    // get all contacts and print
+    //const contacts = await database.prisma.Contact.findMany()
+    //console.log(contacts)
+
+    res.status(201).json({ message: 'contact saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('Error while saving contact.')
+  }
+})
+
 app.get('/api/user', async (req, res) => {
   try {
     const token = req.headers.authorization;
