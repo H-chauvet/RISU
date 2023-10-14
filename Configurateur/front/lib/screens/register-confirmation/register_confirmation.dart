@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
@@ -82,7 +83,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                             lastClicked = DateTime.now();
                             await http.post(
                               Uri.parse(
-                                  'http://localhost:3000/api/auth/register-confirmation'),
+                                  'http://$serverIp:3000/api/auth/register-confirmation'),
                               headers: <String, String>{
                                 'Authorization': jwtToken,
                                 'Content-Type':
@@ -103,7 +104,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                         ),
                         child: const Text(
                           "Renvoyer le mail de confirmation",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
                     ),

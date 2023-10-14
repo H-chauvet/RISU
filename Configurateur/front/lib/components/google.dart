@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/main.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -69,7 +70,7 @@ class GoogleLogo extends StatelessWidget {
     dynamic response;
     await http
         .post(
-          Uri.parse('http://localhost:3000/api/auth/google-login'),
+          Uri.parse('http://$serverIp:3000/api/auth/google-login'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Access-Control-Allow-Origin': '*',

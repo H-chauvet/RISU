@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
@@ -111,7 +112,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                         height: 40,
                         width: 200,
                         child: ElevatedButton(
-                          key: const Key('register'),
+                          key: const Key(
+                            'register',
+                          ),
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
@@ -126,7 +129,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               };
                               await HttpService()
                                   .request(
-                                      'http://localhost:3000/api/auth/register',
+                                      'http://$serverIp:3000/api/auth/register',
                                       header,
                                       body)
                                   .then((value) => {
@@ -145,7 +148,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ]);
                               }
                               await HttpService().request(
-                                  'http://localhost:3000/api/auth/register',
+                                  'http://$serverIp:3000/api/auth/register',
                                   header,
                                   body);
                               // ignore: use_build_context_synchronously
@@ -164,7 +167,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

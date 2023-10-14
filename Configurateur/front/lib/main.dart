@@ -7,9 +7,9 @@ import 'package:front/services/storage_service.dart';
 import 'screens/register/register.dart';
 import './app_routes.dart';
 import 'screens/login/login.dart';
-import './contact_form/contact_form.dart';
+import 'screens/contact/contact.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -97,6 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: Text(widget.title),
+          backgroundColor: Colors.blue,
           actions: <Widget>[
             ElevatedButton(
               onPressed: () {
