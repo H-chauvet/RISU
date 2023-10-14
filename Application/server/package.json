@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node server.js",
         "migration": "dotenv -e application.env -- prisma migrate reset --force && dotenv -e application.env -- npx prisma migrate dev --name init",
-        "test": "mocha --bail --exit tests"
+        "test": "jest"
     },
     "author": "Tanguy Bellicha <tanguy.bellicha@epitech.eu>",
     "license": "ISC",
@@ -21,7 +21,6 @@
         "express-session": "^1.17.3",
         "jsonwebtoken": "^9.0.0",
         "jwt-simple": "^0.5.6",
-        "mocha": "^10.2.0",
         "mysql": "^2.18.1",
         "nodemailer": "^6.9.3",
         "passport": "^0.6.0",
@@ -30,6 +29,7 @@
         "prisma-docs-generator": "^0.7.0"
     },
     "devDependencies": {
+        "jest": "^29.7.0",
         "prisma": "^4.13.0"
     }
 }
