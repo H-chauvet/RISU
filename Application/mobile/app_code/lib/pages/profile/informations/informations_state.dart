@@ -1,11 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/components/text_input.dart';
 import 'informations_functional.dart';
 import 'informations_page.dart';
 import 'package:http/http.dart' as http;
@@ -264,13 +264,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               child: TextFormField(
                                 enabled: false, // Désactivez le champ texte
                                 initialValue: firstName, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Prénom actuel'),
+                                decoration: const InputDecoration(labelText: 'Prénom actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouveau prénom'),
+                                decoration: const InputDecoration(labelText: 'Nouveau prénom'),
                                 onChanged: (value) {
                                   newFirstName = value;
                                 },
@@ -279,7 +279,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ],
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('update_firstName-button'),
                           onPressed: () {
@@ -332,13 +332,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               child: TextFormField(
                                 enabled: false, // Désactivez le champ texte
                                 initialValue: lastName, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Nom actuel'),
+                                decoration: const InputDecoration(labelText: 'Nom actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouveau nom'),
+                                decoration: const InputDecoration(labelText: 'Nouveau nom'),
                                 onChanged: (value) {
                                   newLastName = value;
                                 },
@@ -347,7 +347,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ],
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('update_lastName-button'),
                           onPressed: () {
@@ -401,13 +401,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               child: TextFormField(
                                 enabled: false, // Désactivez le champ texte
                                 initialValue: email, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Email actuel'),
+                                decoration: const InputDecoration(labelText: 'Email actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouvel email'),
+                                decoration: const InputDecoration(labelText: 'Nouvel email'),
                                 onChanged: (value) {
                                   newEmail = value;
                                 },
@@ -416,7 +416,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ],
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('reset-email-button'),
                           onPressed: () {
@@ -464,32 +464,32 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       children: [
                         // Mot de passe actuel
                         TextFormField(
-                          decoration: InputDecoration(labelText: 'Mot de passe actuel'),
+                          decoration: const InputDecoration(labelText: 'Mot de passe actuel'),
                           onChanged: (value) {
                             currentPassword = value;
                           },
                           obscureText: true,
                         ),
-                        SizedBox(height: 10), // Ajout d'un espace vertical
+                        const SizedBox(height: 10), // Ajout d'un espace vertical
                         // Nouveau mot de passe
                         TextField(
-                          decoration: InputDecoration(labelText: 'Nouveau mot de passe'),
+                          decoration: const InputDecoration(labelText: 'Nouveau mot de passe'),
                           onChanged: (value) {
                             newPassword = value;
                           },
                           obscureText: true,
                         ),
-                        SizedBox(height: 10), // Ajout d'un espace vertical
+                        const SizedBox(height: 10), // Ajout d'un espace vertical
                         // Confirmation du nouveau mot de passe
                         TextField(
-                          decoration: InputDecoration(labelText: 'Confirmation du nouveau mot de passe'),
+                          decoration: const InputDecoration(labelText: 'Confirmation du nouveau mot de passe'),
                           onChanged: (value) {
                             newPasswordConfirmation = value;
                           },
                           obscureText: true,
                         ),
 
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('update_password-button'),
                           onPressed: () async {

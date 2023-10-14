@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/login/login_page.dart';
-import 'package:http/http.dart' as http;
-import 'package:risu/utils/user_data.dart';
 import 'package:risu/components/alert_dialog.dart';
 
 import 'home_functional.dart';
 import 'home_page.dart';
 import 'dart:async';
-import 'dart:convert';
 
 class HomePageState extends State<HomePage> {
   bool isProfileConfigured = false;
@@ -22,6 +19,7 @@ class HomePageState extends State<HomePage> {
       print('lastName : $lastName');
       if (firstName.isEmpty && lastName.isEmpty) {
         await Future.delayed(Duration.zero);
+        // ignore: use_build_context_synchronously
         await MyAlertDialog.showChoiceAlertDialog(
             context: context,
             title: 'Profil incomplet',

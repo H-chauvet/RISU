@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/network/informations.dart';
 import 'package:http/http.dart' as http;
 
 // Create a mock HTTP client for testing
@@ -12,7 +11,7 @@ void main() {
   testWidgets('ContactPage widget test', (WidgetTester tester) async {
     // Build our widget and trigger a frame.
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: ContactPage(),
       ),
     );
@@ -21,15 +20,15 @@ void main() {
     expect(find.text('Nous contacter'), findsOneWidget);
 
     // Simulate user input
-    final nameField = find.byKey(Key('name'));
+    final nameField = find.byKey(const Key('name'));
     await tester.enterText(nameField, 'hugo');
-    final emailField = find.byKey(Key('email'));
+    final emailField = find.byKey(const Key('email'));
     await tester.enterText(emailField, 'test@example.com');
-    final messageField = find.byKey(Key('message'));
+    final messageField = find.byKey(const Key('message'));
     await tester.enterText(messageField, 'Hello, World!');
 
     // Simulate button tap
-    final sendButton = find.byKey(Key('new-contact-button'));
+    final sendButton = find.byKey(const Key('new-contact-button'));
     await tester.tap(sendButton);
     await tester.pump();
   });
