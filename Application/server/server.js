@@ -237,6 +237,9 @@ app.get('/api/user', async (req, res) => {
 app.post('/api/user/firstName', async (req, res) => {
   try {
     const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
@@ -322,3 +325,5 @@ app.post('/api/user/password', async (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
 })
+
+module.exports = app
