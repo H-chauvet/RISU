@@ -8,6 +8,8 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'dart:convert';
 
+import 'package:go_router/go_router.dart';
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -231,16 +233,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                       InkWell(
                         key: const Key('login'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
+                          context.go("/login");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text("Déja un compte ? "),
                                 Text(
                                   'Connectez-vous.',
