@@ -220,6 +220,9 @@ app.get('/api/mailVerification', async (req, res) => {
 
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body
+  if (!name || !email || !message) {
+    return res.status(401).send('Missing fields.')
+  }
   console.log("back-end : ", name, email, message)
   try {
     await database.prisma.Contact.create({
