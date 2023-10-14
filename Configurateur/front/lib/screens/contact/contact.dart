@@ -119,7 +119,7 @@ class _ContactPageState extends State<ContactPage> {
               ),
               const SizedBox(
                   height:
-                      16.0), // Ajout d'espace vertical entre le champ message et le bouton envoyer
+                      16.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -134,7 +134,7 @@ class _ContactPageState extends State<ContactPage> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(
-                        20.0), // Définit le rayon du bouton arrondi
+                        20.0),
                   ),
                 ),
                 child: const Text(
