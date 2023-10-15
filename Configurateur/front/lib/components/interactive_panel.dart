@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/container_dialog.dart';
+import 'package:front/services/locker_service.dart';
+
+const List<String> faceList = <String>['Devant', 'Derrière'];
+const List<String> directionList = <String>['Haut', 'Bas'];
+
+class InteractivePanel extends StatefulWidget {
+  const InteractivePanel({super.key, required this.callback});
+
+  final Function(LockerCoordinates) callback;
+
+  @override
+  State<InteractivePanel> createState() => InteractivePanelState();
+}
 
 ///
 /// InteractivePanel
 ///
-class InteractivePanel extends StatelessWidget {
-  const InteractivePanel({super.key});
+class InteractivePanelState extends State<InteractivePanel> {
+  final _formKey = GlobalKey<FormState>();
+
+  String face = faceList.first;
+  String direction = directionList.first;
 
   @override
   Widget build(BuildContext context) {
+    String x = '';
+    String y = '';
+
     return DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.grey[300],
@@ -34,7 +54,27 @@ class InteractivePanel extends StatelessWidget {
                         ],
                       ))),
               const SizedBox(height: 20),
-              LongPressDraggable(
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (context) => ContainerDialog(
+                              callback: widget.callback,
+                              size: 1,
+                            ));
+                  },
+                  child: Column(
+                    children: [
+                      const Text("Petit casier"),
+                      Image.asset(
+                        "assets/cube.png",
+                        width: 40,
+                        height: 40,
+                      ),
+                    ],
+                  )),
+              /*LongPressDraggable(
                   feedback: Image.asset(
                     "assets/cube.png",
                     width: 40,
@@ -47,11 +87,31 @@ class InteractivePanel extends StatelessWidget {
                       width: 40,
                       height: 40,
                     ),
-                  ])),
+                  ])),*/
               const SizedBox(
                 height: 5,
               ),
-              LongPressDraggable(
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (context) => ContainerDialog(
+                              callback: widget.callback,
+                              size: 2,
+                            ));
+                  },
+                  child: Column(
+                    children: [
+                      const Text("Moyen casier"),
+                      Image.asset(
+                        "assets/cube.png",
+                        width: 60,
+                        height: 60,
+                      ),
+                    ],
+                  )),
+              /*LongPressDraggable(
                   feedback: Image.asset(
                     "assets/cube.png",
                     width: 60,
@@ -64,11 +124,31 @@ class InteractivePanel extends StatelessWidget {
                       width: 60,
                       height: 60,
                     ),
-                  ])),
+                  ])),*/
               const SizedBox(
                 height: 5,
               ),
-              LongPressDraggable(
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
+                  onPressed: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (context) => ContainerDialog(
+                              callback: widget.callback,
+                              size: 3,
+                            ));
+                  },
+                  child: Column(
+                    children: [
+                      const Text("Grand casier"),
+                      Image.asset(
+                        "assets/cube.png",
+                        width: 80,
+                        height: 80,
+                      ),
+                    ],
+                  )),
+              /*LongPressDraggable(
                   feedback: Image.asset(
                     "assets/cube.png",
                     width: 80,
@@ -81,7 +161,7 @@ class InteractivePanel extends StatelessWidget {
                       width: 80,
                       height: 80,
                     ),
-                  ])),
+                  ])),*/
               const SizedBox(height: 20),
               Column(
                 children: [
