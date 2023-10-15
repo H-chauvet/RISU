@@ -212,7 +212,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ]);
                               }
                               await HttpService().request(
-                                  'http://$serverIp:3000/api/auth/register',
+                                  'http://$serverIp:3000/api/auth/register-confirmation',
                                   header,
                                   body);
                               // ignore: use_build_context_synchronously

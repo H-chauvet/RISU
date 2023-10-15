@@ -35,13 +35,17 @@ router.delete('/delete', async function (req, res, next) {
 
 router.post('/create', async function (req, res, next) {
   try {
-    const { container } = req.body
+    const { price, containerMapping } = req.body
 
-    if (!container) {
+    if (!price || !containerMapping) {
       res.status(400)
-      throw new Error('userId and name are required')
+      throw new Error('Container object are required')
     }
-    await containerCtrl.createContainer({ container })
+
+    await containerCtrl.createContainer({
+      price,
+      containerMapping
+    })
     res.status(200).json('container created')
   } catch (err) {
     next(err)

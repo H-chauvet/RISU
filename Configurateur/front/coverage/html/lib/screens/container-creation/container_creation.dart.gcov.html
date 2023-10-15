@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2023-10-15 20:15:27</td>
+            <td class="headerValue">2023-10-15 20:53:40</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">0</td>
@@ -102,7 +102,7 @@
 <a name="40"><span class="lineNum">      40 </span><span class="lineCov">          1 :     loadImage();</span></a>
 <a name="41"><span class="lineNum">      41 </span>            :   }</a>
 <a name="42"><span class="lineNum">      42 </span>            : </a>
-<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :   void updateCube(LockerCoordinates coordinates) {</span></a>
+<a name="43"><span class="lineNum">      43 </span><span class="lineNoCov">          0 :   String updateCube(LockerCoordinates coordinates) {</span></a>
 <a name="44"><span class="lineNum">      44 </span><span class="lineNoCov">          0 :     int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;</span></a>
 <a name="45"><span class="lineNum">      45 </span>            :     int increment = 0;</a>
 <a name="46"><span class="lineNum">      46 </span>            :     int color = 0;</a>
@@ -137,7 +137,7 @@
 <a name="75"><span class="lineNum">      75 </span>            : </a>
 <a name="76"><span class="lineNum">      76 </span><span class="lineNoCov">          0 :     for (int i = 0; i &lt; coordinates.size; i++) {</span></a>
 <a name="77"><span class="lineNum">      77 </span><span class="lineNoCov">          0 :       if (objs[0].fragments[fragment].faces[0].materialIndex != 0) {</span></a>
-<a name="78"><span class="lineNum">      78 </span>            :         return;</a>
+<a name="78"><span class="lineNum">      78 </span>            :         return &quot;overwriteError&quot;;</a>
 <a name="79"><span class="lineNum">      79 </span>            :       }</a>
 <a name="80"><span class="lineNum">      80 </span><span class="lineNoCov">          0 :       fragment += increment;</span></a>
 <a name="81"><span class="lineNum">      81 </span>            :     }</a>
@@ -171,97 +171,98 @@
 <a name="109"><span class="lineNum">     109 </span>            :       }</a>
 <a name="110"><span class="lineNum">     110 </span><span class="lineNoCov">          0 :       isLoaded = true;</span></a>
 <a name="111"><span class="lineNum">     111 </span>            :     });</a>
-<a name="112"><span class="lineNum">     112 </span>            :   }</a>
-<a name="113"><span class="lineNum">     113 </span>            : </a>
-<a name="114"><span class="lineNum">     114 </span><span class="lineCov">          1 :   void loadImage() async {</span></a>
-<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          3 :     world = Sp3dWorld(objs);</span></a>
-<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          4 :     world.initImages().then((List&lt;Sp3dObj&gt; errorObjs) {</span></a>
-<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          2 :       setState(() {</span></a>
-<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          1 :         isLoaded = true;</span></a>
-<a name="119"><span class="lineNum">     119 </span>            :       });</a>
-<a name="120"><span class="lineNum">     120 </span>            :     });</a>
-<a name="121"><span class="lineNum">     121 </span>            :   }</a>
-<a name="122"><span class="lineNum">     122 </span>            : </a>
-<a name="123"><span class="lineNum">     123 </span><span class="lineNoCov">          0 :   void goNext() {</span></a>
-<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :     Navigator.push(</span></a>
-<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :         context, MaterialPageRoute(builder: (context) =&gt; const LandingPage()));</span></a>
-<a name="126"><span class="lineNum">     126 </span>            :   }</a>
-<a name="127"><span class="lineNum">     127 </span>            : </a>
-<a name="128"><span class="lineNum">     128 </span><span class="lineNoCov">          0 :   void goPrevious() {</span></a>
-<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :     Navigator.push(</span></a>
-<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :         context, MaterialPageRoute(builder: (context) =&gt; const LandingPage()));</span></a>
-<a name="131"><span class="lineNum">     131 </span>            :   }</a>
-<a name="132"><span class="lineNum">     132 </span>            : </a>
-<a name="133"><span class="lineNum">     133 </span><span class="lineCov">          1 :   @override</span></a>
-<a name="134"><span class="lineNum">     134 </span>            :   Widget build(BuildContext context) {</a>
-<a name="135"><span class="lineNum">     135 </span><span class="lineCov">          1 :     return Scaffold(</span></a>
-<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          1 :         appBar: CustomAppBar(</span></a>
-<a name="137"><span class="lineNum">     137 </span>            :           'Configurateur',</a>
-<a name="138"><span class="lineNum">     138 </span>            :           context: context,</a>
-<a name="139"><span class="lineNum">     139 </span>            :         ),</a>
-<a name="140"><span class="lineNum">     140 </span><span class="lineCov">          1 :         bottomSheet: Row(</span></a>
-<a name="141"><span class="lineNum">     141 </span>            :           mainAxisAlignment: MainAxisAlignment.center,</a>
-<a name="142"><span class="lineNum">     142 </span><span class="lineCov">          1 :           children: [</span></a>
-<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          1 :             ProgressBar(</span></a>
-<a name="144"><span class="lineNum">     144 </span>            :               length: 2,</a>
-<a name="145"><span class="lineNum">     145 </span>            :               progress: 0,</a>
-<a name="146"><span class="lineNum">     146 </span>            :               previous: 'Précédent',</a>
-<a name="147"><span class="lineNum">     147 </span>            :               next: 'Suivant',</a>
-<a name="148"><span class="lineNum">     148 </span><span class="lineCov">          1 :               previousFunc: goPrevious,</span></a>
-<a name="149"><span class="lineNum">     149 </span><span class="lineCov">          1 :               nextFunc: goNext,</span></a>
-<a name="150"><span class="lineNum">     150 </span>            :             ),</a>
-<a name="151"><span class="lineNum">     151 </span>            :             const SizedBox(</a>
-<a name="152"><span class="lineNum">     152 </span>            :               height: 50,</a>
-<a name="153"><span class="lineNum">     153 </span>            :             )</a>
-<a name="154"><span class="lineNum">     154 </span>            :           ],</a>
-<a name="155"><span class="lineNum">     155 </span>            :         ),</a>
-<a name="156"><span class="lineNum">     156 </span><span class="lineCov">          1 :         body: Row(</span></a>
-<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          1 :           children: [</span></a>
-<a name="158"><span class="lineNum">     158 </span>            :             const SizedBox(</a>
-<a name="159"><span class="lineNum">     159 </span>            :               width: 50,</a>
-<a name="160"><span class="lineNum">     160 </span>            :             ),</a>
-<a name="161"><span class="lineNum">     161 </span><span class="lineCov">          1 :             Flexible(</span></a>
-<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          1 :               child: Align(</span></a>
-<a name="163"><span class="lineNum">     163 </span>            :                 alignment: Alignment.centerLeft,</a>
-<a name="164"><span class="lineNum">     164 </span><span class="lineCov">          1 :                 child: FractionallySizedBox(</span></a>
-<a name="165"><span class="lineNum">     165 </span>            :                   widthFactor: 0.7,</a>
-<a name="166"><span class="lineNum">     166 </span>            :                   heightFactor: 0.7,</a>
-<a name="167"><span class="lineNum">     167 </span><span class="lineCov">          2 :                   child: InteractivePanel(callback: updateCube),</span></a>
-<a name="168"><span class="lineNum">     168 </span>            :                 ),</a>
-<a name="169"><span class="lineNum">     169 </span>            :               ),</a>
-<a name="170"><span class="lineNum">     170 </span>            :             ),</a>
-<a name="171"><span class="lineNum">     171 </span><span class="lineCov">          1 :             Column(</span></a>
-<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          1 :               children: [</span></a>
-<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 :                 Sp3dRenderer(</span></a>
-<a name="174"><span class="lineNum">     174 </span>            :                   const Size(800, 800),</a>
-<a name="175"><span class="lineNum">     175 </span>            :                   const Sp3dV2D(400, 400),</a>
-<a name="176"><span class="lineNum">     176 </span><span class="lineCov">          1 :                   world,</span></a>
-<a name="177"><span class="lineNum">     177 </span>            :                   // If you want to reduce distortion, shoot from a distance at high magnification.</a>
-<a name="178"><span class="lineNum">     178 </span><span class="lineCov">          2 :                   Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),</span></a>
-<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :                   Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),</span></a>
-<a name="180"><span class="lineNum">     180 </span>            :                   allowUserWorldRotation: true,</a>
-<a name="181"><span class="lineNum">     181 </span>            :                   allowUserWorldZoom: false,</a>
-<a name="182"><span class="lineNum">     182 </span>            :                 ),</a>
-<a name="183"><span class="lineNum">     183 </span>            :               ],</a>
-<a name="184"><span class="lineNum">     184 </span>            :             ),</a>
-<a name="185"><span class="lineNum">     185 </span><span class="lineCov">          1 :             Flexible(</span></a>
-<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          1 :               child: Align(</span></a>
-<a name="187"><span class="lineNum">     187 </span>            :                 alignment: Alignment.centerRight,</a>
-<a name="188"><span class="lineNum">     188 </span><span class="lineCov">          1 :                 child: FractionallySizedBox(</span></a>
-<a name="189"><span class="lineNum">     189 </span>            :                     widthFactor: 0.7,</a>
-<a name="190"><span class="lineNum">     190 </span>            :                     heightFactor: 0.7,</a>
-<a name="191"><span class="lineNum">     191 </span><span class="lineCov">          1 :                     child: RecapPanel(</span></a>
-<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :                       articles: lockers,</span></a>
-<a name="193"><span class="lineNum">     193 </span>            :                     )),</a>
-<a name="194"><span class="lineNum">     194 </span>            :               ),</a>
-<a name="195"><span class="lineNum">     195 </span>            :             ),</a>
-<a name="196"><span class="lineNum">     196 </span>            :             const SizedBox(</a>
-<a name="197"><span class="lineNum">     197 </span>            :               width: 50,</a>
-<a name="198"><span class="lineNum">     198 </span>            :             )</a>
-<a name="199"><span class="lineNum">     199 </span>            :           ],</a>
-<a name="200"><span class="lineNum">     200 </span>            :         ));</a>
-<a name="201"><span class="lineNum">     201 </span>            :   }</a>
-<a name="202"><span class="lineNum">     202 </span>            : }</a>
+<a name="112"><span class="lineNum">     112 </span>            :     return &quot;&quot;;</a>
+<a name="113"><span class="lineNum">     113 </span>            :   }</a>
+<a name="114"><span class="lineNum">     114 </span>            : </a>
+<a name="115"><span class="lineNum">     115 </span><span class="lineCov">          1 :   void loadImage() async {</span></a>
+<a name="116"><span class="lineNum">     116 </span><span class="lineCov">          3 :     world = Sp3dWorld(objs);</span></a>
+<a name="117"><span class="lineNum">     117 </span><span class="lineCov">          4 :     world.initImages().then((List&lt;Sp3dObj&gt; errorObjs) {</span></a>
+<a name="118"><span class="lineNum">     118 </span><span class="lineCov">          2 :       setState(() {</span></a>
+<a name="119"><span class="lineNum">     119 </span><span class="lineCov">          1 :         isLoaded = true;</span></a>
+<a name="120"><span class="lineNum">     120 </span>            :       });</a>
+<a name="121"><span class="lineNum">     121 </span>            :     });</a>
+<a name="122"><span class="lineNum">     122 </span>            :   }</a>
+<a name="123"><span class="lineNum">     123 </span>            : </a>
+<a name="124"><span class="lineNum">     124 </span><span class="lineNoCov">          0 :   void goNext() {</span></a>
+<a name="125"><span class="lineNum">     125 </span><span class="lineNoCov">          0 :     Navigator.push(</span></a>
+<a name="126"><span class="lineNum">     126 </span><span class="lineNoCov">          0 :         context, MaterialPageRoute(builder: (context) =&gt; const LandingPage()));</span></a>
+<a name="127"><span class="lineNum">     127 </span>            :   }</a>
+<a name="128"><span class="lineNum">     128 </span>            : </a>
+<a name="129"><span class="lineNum">     129 </span><span class="lineNoCov">          0 :   void goPrevious() {</span></a>
+<a name="130"><span class="lineNum">     130 </span><span class="lineNoCov">          0 :     Navigator.push(</span></a>
+<a name="131"><span class="lineNum">     131 </span><span class="lineNoCov">          0 :         context, MaterialPageRoute(builder: (context) =&gt; const LandingPage()));</span></a>
+<a name="132"><span class="lineNum">     132 </span>            :   }</a>
+<a name="133"><span class="lineNum">     133 </span>            : </a>
+<a name="134"><span class="lineNum">     134 </span><span class="lineCov">          1 :   @override</span></a>
+<a name="135"><span class="lineNum">     135 </span>            :   Widget build(BuildContext context) {</a>
+<a name="136"><span class="lineNum">     136 </span><span class="lineCov">          1 :     return Scaffold(</span></a>
+<a name="137"><span class="lineNum">     137 </span><span class="lineCov">          1 :         appBar: CustomAppBar(</span></a>
+<a name="138"><span class="lineNum">     138 </span>            :           'Configurateur',</a>
+<a name="139"><span class="lineNum">     139 </span>            :           context: context,</a>
+<a name="140"><span class="lineNum">     140 </span>            :         ),</a>
+<a name="141"><span class="lineNum">     141 </span><span class="lineCov">          1 :         bottomSheet: Row(</span></a>
+<a name="142"><span class="lineNum">     142 </span>            :           mainAxisAlignment: MainAxisAlignment.center,</a>
+<a name="143"><span class="lineNum">     143 </span><span class="lineCov">          1 :           children: [</span></a>
+<a name="144"><span class="lineNum">     144 </span><span class="lineCov">          1 :             ProgressBar(</span></a>
+<a name="145"><span class="lineNum">     145 </span>            :               length: 2,</a>
+<a name="146"><span class="lineNum">     146 </span>            :               progress: 0,</a>
+<a name="147"><span class="lineNum">     147 </span>            :               previous: 'Précédent',</a>
+<a name="148"><span class="lineNum">     148 </span>            :               next: 'Suivant',</a>
+<a name="149"><span class="lineNum">     149 </span><span class="lineCov">          1 :               previousFunc: goPrevious,</span></a>
+<a name="150"><span class="lineNum">     150 </span><span class="lineCov">          1 :               nextFunc: goNext,</span></a>
+<a name="151"><span class="lineNum">     151 </span>            :             ),</a>
+<a name="152"><span class="lineNum">     152 </span>            :             const SizedBox(</a>
+<a name="153"><span class="lineNum">     153 </span>            :               height: 50,</a>
+<a name="154"><span class="lineNum">     154 </span>            :             )</a>
+<a name="155"><span class="lineNum">     155 </span>            :           ],</a>
+<a name="156"><span class="lineNum">     156 </span>            :         ),</a>
+<a name="157"><span class="lineNum">     157 </span><span class="lineCov">          1 :         body: Row(</span></a>
+<a name="158"><span class="lineNum">     158 </span><span class="lineCov">          1 :           children: [</span></a>
+<a name="159"><span class="lineNum">     159 </span>            :             const SizedBox(</a>
+<a name="160"><span class="lineNum">     160 </span>            :               width: 50,</a>
+<a name="161"><span class="lineNum">     161 </span>            :             ),</a>
+<a name="162"><span class="lineNum">     162 </span><span class="lineCov">          1 :             Flexible(</span></a>
+<a name="163"><span class="lineNum">     163 </span><span class="lineCov">          1 :               child: Align(</span></a>
+<a name="164"><span class="lineNum">     164 </span>            :                 alignment: Alignment.centerLeft,</a>
+<a name="165"><span class="lineNum">     165 </span><span class="lineCov">          1 :                 child: FractionallySizedBox(</span></a>
+<a name="166"><span class="lineNum">     166 </span>            :                   widthFactor: 0.7,</a>
+<a name="167"><span class="lineNum">     167 </span>            :                   heightFactor: 0.7,</a>
+<a name="168"><span class="lineNum">     168 </span><span class="lineCov">          2 :                   child: InteractivePanel(callback: updateCube),</span></a>
+<a name="169"><span class="lineNum">     169 </span>            :                 ),</a>
+<a name="170"><span class="lineNum">     170 </span>            :               ),</a>
+<a name="171"><span class="lineNum">     171 </span>            :             ),</a>
+<a name="172"><span class="lineNum">     172 </span><span class="lineCov">          1 :             Column(</span></a>
+<a name="173"><span class="lineNum">     173 </span><span class="lineCov">          1 :               children: [</span></a>
+<a name="174"><span class="lineNum">     174 </span><span class="lineCov">          1 :                 Sp3dRenderer(</span></a>
+<a name="175"><span class="lineNum">     175 </span>            :                   const Size(800, 800),</a>
+<a name="176"><span class="lineNum">     176 </span>            :                   const Sp3dV2D(400, 400),</a>
+<a name="177"><span class="lineNum">     177 </span><span class="lineCov">          1 :                   world,</span></a>
+<a name="178"><span class="lineNum">     178 </span>            :                   // If you want to reduce distortion, shoot from a distance at high magnification.</a>
+<a name="179"><span class="lineNum">     179 </span><span class="lineCov">          2 :                   Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),</span></a>
+<a name="180"><span class="lineNum">     180 </span><span class="lineCov">          2 :                   Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),</span></a>
+<a name="181"><span class="lineNum">     181 </span>            :                   allowUserWorldRotation: true,</a>
+<a name="182"><span class="lineNum">     182 </span>            :                   allowUserWorldZoom: false,</a>
+<a name="183"><span class="lineNum">     183 </span>            :                 ),</a>
+<a name="184"><span class="lineNum">     184 </span>            :               ],</a>
+<a name="185"><span class="lineNum">     185 </span>            :             ),</a>
+<a name="186"><span class="lineNum">     186 </span><span class="lineCov">          1 :             Flexible(</span></a>
+<a name="187"><span class="lineNum">     187 </span><span class="lineCov">          1 :               child: Align(</span></a>
+<a name="188"><span class="lineNum">     188 </span>            :                 alignment: Alignment.centerRight,</a>
+<a name="189"><span class="lineNum">     189 </span><span class="lineCov">          1 :                 child: FractionallySizedBox(</span></a>
+<a name="190"><span class="lineNum">     190 </span>            :                     widthFactor: 0.7,</a>
+<a name="191"><span class="lineNum">     191 </span>            :                     heightFactor: 0.7,</a>
+<a name="192"><span class="lineNum">     192 </span><span class="lineCov">          1 :                     child: RecapPanel(</span></a>
+<a name="193"><span class="lineNum">     193 </span><span class="lineCov">          1 :                       articles: lockers,</span></a>
+<a name="194"><span class="lineNum">     194 </span>            :                     )),</a>
+<a name="195"><span class="lineNum">     195 </span>            :               ),</a>
+<a name="196"><span class="lineNum">     196 </span>            :             ),</a>
+<a name="197"><span class="lineNum">     197 </span>            :             const SizedBox(</a>
+<a name="198"><span class="lineNum">     198 </span>            :               width: 50,</a>
+<a name="199"><span class="lineNum">     199 </span>            :             )</a>
+<a name="200"><span class="lineNum">     200 </span>            :           ],</a>
+<a name="201"><span class="lineNum">     201 </span>            :         ));</a>
+<a name="202"><span class="lineNum">     202 </span>            :   }</a>
+<a name="203"><span class="lineNum">     203 </span>            : }</a>
 </pre>
       </td>
     </tr>

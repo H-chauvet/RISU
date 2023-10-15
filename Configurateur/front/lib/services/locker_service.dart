@@ -4,10 +4,8 @@ class LockerCoordinates {
   String face;
   String direction;
   int size;
-  String color;
 
-  LockerCoordinates(
-      this.x, this.y, this.face, this.direction, this.size, this.color);
+  LockerCoordinates(this.x, this.y, this.face, this.direction, this.size);
 }
 
 class LockerService {

@@ -37,9 +37,10 @@ model Organization {
 model Container {
   id                  Int           @id @default(autoincrement())
   createdAt           DateTime      @default(now())
-  organization        Organization  @relation(fields: [organizationId], references: [id])
-  organizationId      Int
+  organization        Organization?  @relation(fields: [organizationId], references: [id])
+  organizationId      Int?
   containerMapping    String?
+  price               Float
 }
 
 model Contact {

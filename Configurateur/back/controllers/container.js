@@ -1,3 +1,5 @@
+const { db } = require('../middleware/database')
+
 exports.getContainer = id => {
   return db.Container.findMany({
     where: {
@@ -15,6 +17,7 @@ exports.deleteContainer = id => {
 }
 
 exports.createContainer = container => {
+  container.price = parseFloat(container.price)
   return db.Container.create({
     data: container
   })

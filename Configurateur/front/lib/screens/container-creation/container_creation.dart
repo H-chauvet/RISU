@@ -1,13 +1,16 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
+import 'package:front/network/informations.dart';
 
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
@@ -45,18 +48,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     int increment = 0;
     int color = 0;
 
-    switch (coordinates.color) {
-      case 'Vert':
+    switch (coordinates.size) {
+      case 1:
         color = 1;
         break;
-      case 'Rouge':
+      case 2:
         color = 2;
         break;
-      case 'Bleu':
+      case 3:
         color = 3;
-        break;
-      case 'Noir':
-        color = 4;
         break;
       default:
         color = 1;
@@ -121,7 +121,34 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
+  String getPrice() {
+    int price = 0;
+    for (int i = 0; i < lockers.length; i++) {
+      price += lockers[i].price;
+    }
+    return price.toString();
+  }
+
+  String getContainerMapping() {
+    String mapping = "";
+    for (int i = 0; i < objs[0].fragments.length; i++) {
+      mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
+    }
+    return mapping;
+  }
+
   void goNext() {
+    HttpService().request(
+      'http://$serverIp:3000/api/container/create',
+      <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+      <String, String>{
+        'price': getPrice(),
+        'containerMapping': getContainerMapping(),
+      },
+    );
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
   }
@@ -145,7 +172,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               length: 2,
               progress: 0,
               previous: 'Précédent',
-              next: 'Suivant',
+              next: 'Terminer',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),

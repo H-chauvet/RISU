@@ -3,7 +3,6 @@ import 'package:front/services/locker_service.dart';
 
 const List<String> faceList = <String>['Devant', 'Derrière'];
 const List<String> directionList = <String>['Haut', 'Bas'];
-const List<String> colorList = <String>['Rouge', 'Vert', 'Bleu', 'Noir'];
 
 class ContainerDialog extends StatefulWidget {
   const ContainerDialog(
@@ -26,7 +25,6 @@ class ContainerDialogState extends State<ContainerDialog> {
   String y = '';
   String face = faceList.first;
   String direction = directionList.first;
-  String color = colorList.first;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +84,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                     },
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
-                        if (int.parse(value) <= 0) {
+                        if (int.parse(value) < 0) {
                           return 'Position invalide';
                         }
                         if (direction == 'Haut' &&
@@ -94,7 +92,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                           return 'Position invalide';
                         }
                         if (direction == 'Bas' &&
-                            int.parse(value) - widget.size <= 1) {
+                            int.parse(value) - widget.size < 0) {
                           return 'Position invalide';
                         }
                       }
@@ -140,34 +138,13 @@ class ContainerDialogState extends State<ContainerDialog> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
-                  child: DropdownMenu<String>(
-                    initialSelection: colorList.first,
-                    onSelected: (String? value) {
-                      setState(() {
-                        color = value!;
-                      });
-                    },
-                    dropdownMenuEntries: colorList
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
-                    }).toList(),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
                   child: ElevatedButton(
                     child: const Text('Ajouter'),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        if (widget.callback(LockerCoordinates(
-                                int.parse(x),
-                                int.parse(y),
-                                face,
-                                direction,
-                                widget.size,
-                                color)) ==
+                        if (widget.callback(LockerCoordinates(int.parse(x),
+                                int.parse(y), face, direction, widget.size)) ==
                             'overwriteError') {
                           await showDialog(
                               context: context,
