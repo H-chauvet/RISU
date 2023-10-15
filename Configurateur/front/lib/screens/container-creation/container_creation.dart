@@ -40,7 +40,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
   }
 
-  void updateCube(LockerCoordinates coordinates) {
+  String updateCube(LockerCoordinates coordinates) {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
     int increment = 0;
     int color = 0;
@@ -75,7 +75,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     for (int i = 0; i < coordinates.size; i++) {
       if (objs[0].fragments[fragment].faces[0].materialIndex != 0) {
-        return;
+        return "overwriteError";
       }
       fragment += increment;
     }
@@ -109,6 +109,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       }
       isLoaded = true;
     });
+    return "";
   }
 
   void loadImage() async {
