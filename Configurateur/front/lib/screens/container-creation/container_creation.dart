@@ -25,6 +25,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
   late Sp3dWorld world;
   bool isLoaded = false;
+  List<Locker> lockers = [];
 
   @override
   void initState() {
@@ -74,6 +75,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     for (int i = 0; i < coordinates.size; i++) {
+      if (objs[0].fragments[fragment].faces[0].materialIndex != 0) {
+        return;
+      }
+      fragment += increment;
+    }
+
+    fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
+
+    for (int i = 0; i < coordinates.size; i++) {
       objs[0].fragments[fragment].faces[0].materialIndex = color;
       objs[0].fragments[fragment].faces[1].materialIndex = color;
       objs[0].fragments[fragment].faces[2].materialIndex = color;
@@ -84,6 +94,20 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     setState(() {
+      switch (coordinates.size) {
+        case 1:
+          lockers.add(Locker('Petit casier', 50));
+          break;
+        case 2:
+          lockers.add(Locker('Moyen casier', 100));
+          break;
+        case 3:
+          lockers.add(Locker('Grand casier', 150));
+          break;
+        default:
+          lockers.add(Locker('Petit casier', 50));
+          break;
+      }
       isLoaded = true;
     });
   }
@@ -166,11 +190,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                     widthFactor: 0.7,
                     heightFactor: 0.7,
                     child: RecapPanel(
-                      articles: [
-                        Locker('Moyen casier', 100),
-                        Locker('Petit casier', 50),
-                        Locker('Grand casier', 150),
-                      ],
+                      articles: lockers,
                     )),
               ),
             ),
