@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/main.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';

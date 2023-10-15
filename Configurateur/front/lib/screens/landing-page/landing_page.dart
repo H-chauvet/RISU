@@ -1,14 +1,6 @@
-import 'dart:html';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:front/screens/login/login.dart';
-import 'package:front/screens/register/register.dart';
+import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:flutter/foundation.dart';
-import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -17,9 +9,7 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => LandingPageState();
 }
 
-
 class LandingPageState extends State<LandingPage> {
-
   String connectedButton = '';
   var connectedFunction;
   String inscriptionButton = '';
@@ -30,18 +20,17 @@ class LandingPageState extends State<LandingPage> {
   void getJwt(String connectedButton) {
     var jwtToken;
     StorageService().readStorage('token').then((value) => {
-        // debugPrint(value),
-        if (value == null) {
-            jwtToken = '',
-            debugPrint('ça passe là'),
-            connectedButton = "Connexion",
-            inscriptionButton = 'Inscription',
-        }
-        else {
-            jwtToken = value,
-            debugPrint('ça c est : ' + jwtToken)
-          }
-      });
+          // debugPrint(value),
+          if (value == null)
+            {
+              jwtToken = '',
+              debugPrint('ça passe là'),
+              connectedButton = "Connexion",
+              inscriptionButton = 'Inscription',
+            }
+          else
+            {jwtToken = value, debugPrint('ça c est : ' + jwtToken)}
+        });
   }
 
   /// Update state function
@@ -133,7 +122,8 @@ class LandingPageState extends State<LandingPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
@@ -156,7 +146,8 @@ class LandingPageState extends State<LandingPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
