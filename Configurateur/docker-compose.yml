@@ -1,4 +1,4 @@
-version: "3"
+version: "3.2"
 
 services:
   database:
@@ -17,6 +17,8 @@ services:
     volumes:
       - "mysql-data:/var/lib/mysql"
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -proot"]
 
   server:
     build:
@@ -25,7 +27,8 @@ services:
     env_file:
       - back/.env
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     ports:
       - 3000:3000
     stdin_open: true

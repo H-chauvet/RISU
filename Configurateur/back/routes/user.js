@@ -69,6 +69,7 @@ router.post('/register', async function (req, res, next) {
       res.status(400)
       throw new Error('Email and password are required')
     }
+    console.log(email);
 
     const existingUser = await userCtrl.findUserByEmail(email)
     if (existingUser) {

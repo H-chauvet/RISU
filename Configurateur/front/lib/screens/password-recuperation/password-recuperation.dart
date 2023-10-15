@@ -144,7 +144,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                             if (formKey.currentState!.validate()) {
                               http.post(
                                 Uri.parse(
-                                    'http://193.70.89.108:3000/api/auth/forgot-password'),
+                                    'http://localhost:3000/api/auth/forgot-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',

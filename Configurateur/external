@@ -1,0 +1,22 @@
+!! PLEASE REVIEW THIS LOG FOR SENSITIVE INFORMATION BEFORE SHARING !!
+
+Dart Code extension: 3.60.1
+Flutter extension: 3.60.0 (not activated)
+
+App: Visual Studio Code
+Version: 1.74.2
+Platform: mac
+
+HTTP_PROXY: undefined
+NO_PROXY: undefined
+
+Logging Categories:
+    DevTools
+
+Thu Sep 07 2023 [17:42:31 GMT+0200 (Central European Summer Time)] Log file started
+[5:42:31 PM] [DevTools] [Info] Spawning /opt/homebrew/Caskroom/flutter/3.10.2/flutter/bin/cache/dart-sdk/bin/dart with args ["devtools","--machine","--try-ports","10","--allow-embedding","--port","3306"]
+[5:42:31 PM] [DevTools] [Info] ..  with {"toolEnv":{"FLUTTER_HOST":"VSCode","PUB_ENVIRONMENT":"vscode.dart-code"}}
+[5:42:31 PM] [DevTools] [Info]     PID: 1048
+[5:42:31 PM] [DevTools] [Info] <== {"event":"server.started","method":"server.started","params":{"host":"127.0.0.1","port":3307,"pid":1106,"protocolVersion":"1.1.0"}}
+[6:43:19 PM] [FlutterDaemon] [Error] Error: kill ESRCH
+Sat Sep 09 2023 [18:43:19 GMT+0200 (Central European Summer Time)] Log file ended

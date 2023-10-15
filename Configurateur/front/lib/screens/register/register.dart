@@ -128,7 +128,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               };
                               await HttpService()
                                   .request(
-                                      'http://193.70.89.108:3000/api/auth/register',
+                                      'http://localhost:3000/api/auth/register',
                                       header,
                                       body)
                                   .then((value) => {
@@ -147,7 +147,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ]);
                               }
                               await HttpService().request(
-                                  'http://193.70.89.108:3000/api/auth/register',
+                                  'http://localhost:3000/api/auth/register-confirmation',
                                   header,
                                   body);
                               // ignore: use_build_context_synchronously

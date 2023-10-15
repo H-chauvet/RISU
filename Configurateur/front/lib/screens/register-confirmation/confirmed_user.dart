@@ -25,7 +25,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
   @override
   void initState() {
     StorageService().readStorage('token').then((value) => {
-          debugPrint(value),
+          // debugPrint(value),
           if (value == null)
             {
               Navigator.push(context,
@@ -37,7 +37,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
             }
         });
     http.post(
-      Uri.parse('http://193.70.89.108:3000/api/auth/confirmed-register'),
+      Uri.parse('http://localhost:3000/api/auth/confirmed-register'),
       headers: <String, String>{
         'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',
