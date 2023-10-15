@@ -61,12 +61,13 @@ class LandingPageState extends State<LandingPage> {
   void homeSync() async {
     update();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(70, 130, 180, 1),
+        backgroundColor: const Color.fromRGBO(70, 130, 180, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -80,8 +81,9 @@ class LandingPageState extends State<LandingPage> {
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.hovered))
-                    return Color.fromARGB(255, 199, 199, 199);
+                  if (states.contains(MaterialState.hovered)) {
+                    return const Color.fromARGB(255, 199, 199, 199);
+                  }
                   return const Color.fromARGB(
                       255, 255, 255, 255); // null throus error in flutter 2.2+.
                 }),
@@ -102,8 +104,9 @@ class LandingPageState extends State<LandingPage> {
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.resolveWith<Color>(
                     (Set<MaterialState> states) {
-                  if (states.contains(MaterialState.hovered))
-                    return Color.fromARGB(255, 199, 199, 199);
+                  if (states.contains(MaterialState.hovered)) {
+                    return const Color.fromARGB(255, 199, 199, 199);
+                  }
                   return const Color.fromARGB(
                       255, 255, 255, 255); // null throus error in flutter 2.2+.
                 }),
@@ -130,7 +133,7 @@ class LandingPageState extends State<LandingPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
@@ -141,7 +144,7 @@ class LandingPageState extends State<LandingPage> {
                 style: const TextStyle(color: Colors.black),
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -153,7 +156,7 @@ class LandingPageState extends State<LandingPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
@@ -168,7 +171,7 @@ class LandingPageState extends State<LandingPage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         // color: Color.fromRGBO(r, g, b, 1), // Espacement des bords de l'écran
         child: Center(
             child: Row(
@@ -180,7 +183,7 @@ class LandingPageState extends State<LandingPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
                   // textAlign: TextAlign.left,
                   style: TextStyle(
@@ -189,14 +192,14 @@ class LandingPageState extends State<LandingPage> {
                     fontWeight: FontWeight.bold,
                     shadows: [
                       Shadow(
-                        color: const Color.fromARGB(76, 0, 0, 0),
+                        color: Color.fromARGB(76, 0, 0, 0),
                         offset: Offset(2, 2),
                         blurRadius: 3,
                       ),
                     ],
                   ),
                 ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(
                       top: 15), // Espacement inférieur pour le texte
                   child: Text(
@@ -208,7 +211,7 @@ class LandingPageState extends State<LandingPage> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       top: 35), // Espacement inférieur pour le texte
                   child: ElevatedButton(
                     onPressed: () {
@@ -217,8 +220,8 @@ class LandingPageState extends State<LandingPage> {
                     style: ElevatedButton.styleFrom(
                         backgroundColor:
                             const Color.fromARGB(255, 190, 189, 189),
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(
                               20.0), // Définit le rayon du bouton arrondi
@@ -240,6 +243,7 @@ class LandingPageState extends State<LandingPage> {
           ],
         )),
       ),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

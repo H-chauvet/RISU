@@ -218,6 +218,138 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+app.post('/api/contact', async (req, res) => {
+  const { name, email, message } = req.body
+  if (!name || !email || !message) {
+    return res.status(401).send('Missing fields.')
+  }
+  console.log("back-end : ", name, email, message)
+  try {
+    await database.prisma.Contact.create({
+      data: {
+        name: name,
+        email: email,
+        message: message
+      }
+    })
+
+    // get all contacts and print
+    //const contacts = await database.prisma.Contact.findMany()
+    //console.log(contacts)
+
+    res.status(201).json({ message: 'contact saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('Error while saving contact.')
+  }
+})
+
+app.get('/api/user', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    console.log(decoded);
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    });
+    console.log("user : ", user);
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).send('An error occurred.');
+  }
+});
+
+app.post('/api/user/firstName', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' });
+    }
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    });
+    await database.prisma.User.update({
+      where: { id: decoded.id },
+      data: { firstName: req.body.firstName }
+    });
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).send('An error occurred');
+  }
+});
+
+app.post('/api/user/lastName', async (req, res) => {
+  try {
+    const lastName = req.body.lastName;
+    console.log("lastName : ", lastName);
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    });
+    await database.prisma.User.update({
+      where: { id: decoded.id },
+      data: { lastName: req.body.lastName }
+    });
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).send('An error occurred');
+  }
+});
+
+app.post('/api/user/email', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    });
+    await database.prisma.User.update({
+      where: { id: decoded.id },
+      data: { email: req.body.email }
+    });
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(401).send('An error occurred');
+  }
+});
+
+app.post('/api/user/password', async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    const currentPassword = req.body.currentPassword;
+    console.log("currentPassword : ", currentPassword);
+    const newPassword = req.body.newPassword;
+    console.log("newPassword : ", newPassword);
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    });
+    const isMatch = await utils.compare(currentPassword, user.password);
+    if (!isMatch) {
+      console.log("Incorrect Password")
+      return res.status(401).json({ message: 'Incorrect Password' });
+    }
+    console.log("Password Match")
+    await database.prisma.User.update({
+      where: { id: decoded.id },
+      data: { password: await utils.hash(newPassword) }
+    });
+    console.log('Password updated')
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('An error occurred');
+  }
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
 })
+
+module.exports = app

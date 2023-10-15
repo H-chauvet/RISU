@@ -64,7 +64,7 @@ router.post('/google-login', async function (req, res, next) {
 
 router.post('/register', async function (req, res, next) {
   try {
-    const { email, password } = req.body
+    const { firstName, lastName, company, email, password } = req.body
     if (!email || !password) {
       res.status(400)
       throw new Error('Email and password are required')
@@ -77,7 +77,7 @@ router.post('/register', async function (req, res, next) {
       throw new Error('Email already exists')
     }
 
-    const user = await userCtrl.registerByEmail({ email, password })
+    const user = await userCtrl.registerByEmail({ firstName, lastName, company, email, password })
     const accessToken = jwtMiddleware.generateAccessToken(user)
 
     res.status(200).json({

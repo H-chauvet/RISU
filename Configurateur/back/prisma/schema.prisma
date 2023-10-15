@@ -12,17 +12,41 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  uuid      String? @unique
-  email     String   @unique
-  password  String
-  confirmed Boolean  @default(false)
-  createdAt DateTime  @default(now())
+  id                  Int           @id @default(autoincrement())
+  uuid                String?       @unique
+  firstName           String        @default("")
+  lastName            String        @default("")
+  company             String        @default("")
+  email               String        @unique
+  token               String        @unique
+  password            String
+  organization        Organization  @relation(fields: [organizationId], references: [id])
+  organizationId      Int
+  confirmed           Boolean       @default(false)
+  createdAt           DateTime      @default(now())
+}
+
+model Organization {
+  id                  Int           @id @default(autoincrement())
+  name                String
+  type                String        //Entreprise, Commune, Privé
+  affiliate           User[]
+  containers          Container[]
 }
 
 model Container {
+  id                  Int           @id @default(autoincrement())
+  createdAt           DateTime      @default(now())
+  organization        Organization  @relation(fields: [organizationId], references: [id])
+  organizationId      Int
+  containerMapping    String?
+}
+
+model Contact {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  userId    Int
-  containerMapping String?
+  prenom    String
+  nom       String
+  email     String
+  message   String
+  createdAt DateTime  @default(now())
 }

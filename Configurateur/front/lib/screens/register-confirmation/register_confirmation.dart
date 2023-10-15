@@ -3,7 +3,9 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -28,10 +30,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     StorageService().readStorage('token').then((value) => {
           debugPrint(value),
           if (value == null)
-            {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()))
-            }
+            {context.go("/login")}
           else
             {
               jwtToken = value,
@@ -83,7 +82,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                             lastClicked = DateTime.now();
                             await http.post(
                               Uri.parse(
-                                  'http://localhost:3000/api/auth/register-confirmation'),
+                                  'http://$serverIp:3000/api/auth/register-confirmation'),
                               headers: <String, String>{
                                 'Authorization': jwtToken,
                                 'Content-Type':
@@ -114,17 +113,13 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                     InkWell(
                       key: const Key('go-home'),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    LandingPage()));
+                        context.go("/");
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
                                 "Retour à l'acceuil",
                                 style:
