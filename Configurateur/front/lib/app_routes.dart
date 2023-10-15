@@ -9,11 +9,9 @@ import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
-import 'package:front/screens/container-creation/design_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:go_router/go_router.dart';
-import './main.dart';
 
 ///
 /// App router
@@ -31,12 +29,6 @@ class AppRouter {
         path: '/',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
-        ),
-      ),
-      GoRoute(
-        path: '/home',
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: MyHomePage(title: 'home'),
         ),
       ),
       GoRoute(
@@ -107,10 +99,6 @@ class AppRouter {
           path: '/creation',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ContainerCreation())),
-      GoRoute(
-          path: '/design',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: DesignCreation())),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(

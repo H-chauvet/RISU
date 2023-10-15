@@ -3,7 +3,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
-import 'package:front/screens/container-creation/design_creation.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:simple_3d/simple_3d.dart';
@@ -122,8 +121,8 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goNext() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const DesignCreation()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LandingPage()));
   }
 
   void goPrevious() {

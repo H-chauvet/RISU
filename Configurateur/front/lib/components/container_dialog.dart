@@ -122,6 +122,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                   ),
                 ),
                 Padding(
+                  key: const Key("container-dialog-direction-dropdown"),
                   padding: const EdgeInsets.all(8),
                   child: DropdownMenu<String>(
                     initialSelection: directionList.first,
