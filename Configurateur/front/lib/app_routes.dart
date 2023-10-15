@@ -10,9 +10,10 @@ import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/container-creation/design_creation.dart';
+import 'package:front/screens/contact/contact.dart';
+import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:go_router/go_router.dart';
 import './main.dart';
-import './contact_form/contact_form.dart';
 
 ///
 /// App router
@@ -28,7 +29,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
         ),
       ),
@@ -69,7 +70,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/landingPage',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
         ),
       ),
@@ -109,13 +110,19 @@ class AppRouter {
       GoRoute(
           path: '/design',
           pageBuilder: (context, state) =>
-              const NoTransitionPage(child: DesignCreation()))
-      // GoRoute(
-      //   path: '/contact',
-      //   pageBuilder: (context, state) => MaterialPage(
-      //     child: ContactPage(),
-      //   ),
-      // ),
+              const NoTransitionPage(child: DesignCreation())),
+      GoRoute(
+        path: '/contact',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ContactPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/confidentiality',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ConfidentialityPage(),
+        ),
+      ),
     ],
   );
 

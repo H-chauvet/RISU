@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
-import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/screens/login/login.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:go_router/go_router.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -24,6 +24,9 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    String firstName = '';
+    String lastName = '';
+    String company = '';
     String mail = '';
     String password = '';
     String validedPassword = '';
@@ -37,11 +40,70 @@ class RegisterScreenState extends State<RegisterScreen> {
         body: Center(
             child: FractionallySizedBox(
                 widthFactor: 0.2,
-                heightFactor: 0.7,
+                heightFactor: 0.85,
                 child: Form(
                     key: formKey,
                     child: Column(children: <Widget>[
-                      const SizedBox(height: 10),
+                      TextFormField(
+                        key: const Key('firstname'),
+                        decoration: InputDecoration(
+                          hintText: 'Entrez votre prénom',
+                          labelText: 'Prénom',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          firstName = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('lastname'),
+                        decoration: InputDecoration(
+                          hintText: 'Entrez votre nom',
+                          labelText: 'Nom',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          lastName = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('company'),
+                        decoration: InputDecoration(
+                          hintText: 'Entrez le nom de votre entreprise',
+                          labelText: 'Entreprise',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          company = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
                       TextFormField(
                         key: const Key('email'),
                         decoration: InputDecoration(
@@ -117,7 +179,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              var body = <String, String>{
+                              var body = {
+                                'firstName': firstName,
+                                'lastName': lastName,
+                                'company': company,
                                 'email': mail,
                                 'password': password,
                               };
@@ -128,7 +193,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               };
                               await HttpService()
                                   .request(
-                                      'http://localhost:3000/api/auth/register',
+                                      'http://$serverIp:3000/api/auth/register',
                                       header,
                                       body)
                                   .then((value) => {
@@ -147,7 +212,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ]);
                               }
                               await HttpService().request(
-                                  'http://localhost:3000/api/auth/register-confirmation',
+                                  'http://$serverIp:3000/api/auth/register',
                                   header,
                                   body);
                               // ignore: use_build_context_synchronously
@@ -173,10 +238,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                       InkWell(
                         key: const Key('login'),
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginScreen()));
+                          context.go("/login");
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),

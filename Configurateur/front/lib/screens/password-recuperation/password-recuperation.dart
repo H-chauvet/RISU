@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
+import 'package:front/network/informations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -144,7 +145,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                             if (formKey.currentState!.validate()) {
                               http.post(
                                 Uri.parse(
-                                    'http://193.70.89.108:3000/api/auth/forgot-password'),
+                                    'http://$serverIp:3000/api/auth/forgot-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
@@ -154,11 +155,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                                   'email': mail,
                                 }),
                               );
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MyHomePage(title: 'tile')));
+                              context.go("/");
                             }
                           },
                           style: ElevatedButton.styleFrom(

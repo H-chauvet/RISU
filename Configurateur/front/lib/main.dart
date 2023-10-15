@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
-import 'package:front/services/storage_service.dart';
 
 import 'screens/register/register.dart';
 import './app_routes.dart';
 import 'screens/login/login.dart';
-import './contact_form/contact_form.dart';
+import 'screens/contact/contact.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 

@@ -12,6 +12,7 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
 
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(isDarkTheme),
