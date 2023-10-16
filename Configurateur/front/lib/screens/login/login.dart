@@ -123,6 +123,7 @@ class LoginScreenState extends State<LoginScreen> {
                                         if (value.statusCode == 200)
                                           {
                                             response = jsonDecode(value.body),
+                                            token = response['accessToken'],
                                             /*StorageService().writeStorage(
                                                 'token',
                                                 response['accessToken']),*/

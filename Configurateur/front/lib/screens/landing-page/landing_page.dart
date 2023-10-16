@@ -1,9 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
-class LandingPage extends StatelessWidget {
-  const LandingPage({super.key});
+class LandingPage extends StatefulWidget {
+  const LandingPage({Key? key}) : super(key: key);
+
+  @override
+  State<LandingPage> createState() => LandingPageState();
+}
+
+class LandingPageState extends State<LandingPage> {
+  String connectedButton = '';
+  late Function() connectedFunction;
+  String inscriptionButton = '';
+  late Function() inscriptionFunction;
+
+  @override
+  void initState() {
+    super.initState();
+    if (token != '') {
+      inscriptionButton = 'Déconnexion';
+      inscriptionFunction = () {
+        token = '';
+        inscriptionButton = 'Inscription';
+        inscriptionFunction = () => context.go("/register");
+        connectedButton = 'Connexion';
+        connectedFunction = () => context.go("/login");
+        setState(() {});
+      };
+    } else {
+      inscriptionButton = 'Inscription';
+      inscriptionFunction = () => context.go("/register");
+      connectedButton = 'Connexion';
+      connectedFunction = () => context.go("/login");
+    }
+    setState(() {});
+  }
+
+  List<Widget> buttons() {
+    List<Widget> list = [];
+
+    if (token == '') {
+      list.add(
+        ElevatedButton(
+          onPressed: connectedFunction,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Définit le rayon du bouton arrondi
+            ),
+          ),
+          child: Text(
+            connectedButton,
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+      list.add(const SizedBox(width: 20));
+    }
+
+    list.add(
+      ElevatedButton(
+        onPressed: inscriptionFunction,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // Définit le rayon du bouton arrondi
+          ),
+        ),
+        child: Text(
+          inscriptionButton,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ),
+    );
+
+    return list;
+  }
+
+  void goToCreation() {
+    if (token == '') {
+      context.go("/login");
+    } else {
+      context.go("/creation");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,42 +151,8 @@ class LandingPage extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 250),
-            ElevatedButton(
-              onPressed: () {
-                // Actions to perform when the button is pressed
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0), // Définit le rayon du bouton arrondi
-                ),
-              ),
-              child: const Text(
-                'Connexion',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-            const SizedBox(width: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Actions to perform when the button is pressed
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0), // Définit le rayon du bouton arrondi
-                ),
-              ),
-              child: const Text(
-                'Inscription',
-                style: TextStyle(color: Colors.white),
-              ),
+            Row(
+              children: buttons(),
             ),
           ],
         ),
@@ -185,7 +237,7 @@ class LandingPage extends StatelessWidget {
                                 20.0), // Définit le rayon du bouton arrondi
                           ),
                         ),
-                        onPressed: () => context.go("/creation"),
+                        onPressed: () => goToCreation(),
                         child: const Text(
                           'Créer mon conteneur',
                           style: TextStyle(color: Colors.black),

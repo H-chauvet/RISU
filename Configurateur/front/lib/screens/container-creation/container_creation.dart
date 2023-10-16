@@ -37,7 +37,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (token != "") {
       jwtToken = token;
     } else {
-      context.go("/login");
+      context.go(
+        '/login',
+      );
     }
     /*StorageService().readStorage('token').then((value) => {
           if (value == null)
@@ -244,9 +246,16 @@ class ContainerCreationState extends State<ContainerCreation> {
         'containerMapping': getContainerMapping(),
       },
     );
-    // ignore: use_build_context_synchronously
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LandingPage()));
+    context.go("/");
+  }
+
+  void checkToken() {
+    if (token != "") {
+      jwtToken = token;
+    } else {
+      debugPrint("token is empty");
+      context.go("/login");
+    }
   }
 
   void goPrevious() {

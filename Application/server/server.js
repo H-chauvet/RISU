@@ -223,15 +223,15 @@ async function createFixtures () {
     data: [
       {
         email: 'admin@gmail.com',
-        firstname: 'admin',
-        lastname: 'admin',
+        firstName: 'admin',
+        lastName: 'admin',
         password: await utils.hash('admin'),
         mailVerification: true
       },
       {
         email: 'user@gmail.com',
-        firstname: 'user',
-        lastname: 'user',
+        firstName: 'user',
+        lastName: 'user',
         password: await utils.hash('user'),
         mailVerification: true
       }
