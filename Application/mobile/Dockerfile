@@ -7,7 +7,7 @@ USER root
 
 RUN rm -f .packages
 
-RUN flutter channel stable
+RUN flutter channel master
 RUN flutter upgrade
 RUN flutter pub get
 RUN flutter build apk
