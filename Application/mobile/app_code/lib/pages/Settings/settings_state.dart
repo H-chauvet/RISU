@@ -8,8 +8,6 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:provider/provider.dart';
 
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-
 class SettingsPageState extends State<SettingsPage> {
   /// Update state function
   void update() {
@@ -56,7 +54,7 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -67,8 +65,10 @@ class SettingsPageState extends State<SettingsPage> {
                         color: Color(0xFF4682B4),
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    MyDropdownButton(),
+                    SizedBox(width: 20),
+                    MyDropdownButton(
+                      key: Key('drop_down'),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 20),
@@ -89,13 +89,19 @@ class SettingsPageState extends State<SettingsPage> {
 }
 
 class MyDropdownButton extends StatefulWidget {
+
+  const MyDropdownButton({
+    Key? key,
+  }) : super(key: key);
+
   @override
   _MyDropdownButtonState createState() => _MyDropdownButtonState();
 }
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
+
   String? _selectedItem = 'Clair';
-  List<String> _items = ['Clair', 'Sombre', 'Multicolor'];
+  List<String> _items = ['Clair', 'Sombre'];
 
   @override
   Widget build(BuildContext context) {
