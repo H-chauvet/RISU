@@ -7,7 +7,6 @@ USER root
 
 RUN rm -f .packages
 
-RUN flutter clean
 RUN flutter pub get
 RUN flutter build apk
 
