@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/drop_down_menu.dart';
 
 import 'settings_functional.dart';
 import 'settings_page.dart';
@@ -66,8 +67,13 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     SizedBox(width: 20),
-                    MyDropdownButton(
-                      key: Key('drop_down'),
+                    Center(
+                    child : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          MyDropdownButton(key: Key('drop_down'),),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -75,7 +81,7 @@ class SettingsPageState extends State<SettingsPage> {
                 MyOutlinedButton(
                   key: const Key('settings-button_go_to_parameter_page'),
                   onPressed: () {
-                    goToSettingsPage(context);
+                    print(context);
                   },
                   text: "Modification d'information",
                 ),
@@ -88,43 +94,37 @@ class SettingsPageState extends State<SettingsPage> {
   }
 }
 
-class MyDropdownButton extends StatefulWidget {
+// class MyDropdownButton extends StatefulWidget {
 
-  const MyDropdownButton({
-    Key? key,
-  }) : super(key: key);
+//   const MyDropdownButton({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  _MyDropdownButtonState createState() => _MyDropdownButtonState();
-}
+//   @override
+//   _MyDropdownButtonState createState() => _MyDropdownButtonState();
+// }
 
-class _MyDropdownButtonState extends State<MyDropdownButton> {
+// class _MyDropdownButtonState extends State<MyDropdownButton> {
 
-  String? _selectedItem = 'Clair';
-  List<String> _items = ['Clair', 'Sombre'];
+//   String? _selectedItem = 'Clair';
+//   List<String> _items = ['Clair', 'Sombre'];
 
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          DropdownButton(
-            value: _selectedItem,
-            items: _items.map((String item) {
-              return DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              );
-            }).toList(),
-            onChanged: (String? selectedItem) {
-              setState(() {
-                _selectedItem = selectedItem;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return DropdownButton(
+//             itemHeight: null,
+//             value: _selectedItem,
+//             items: _items.map((String item) {
+//               return DropdownMenuItem(
+//                 value: item,
+//                 child: Text(item),
+//               );
+//             }).toList(),
+//             onChanged: (String? selectedItem) {
+//               setState(() {
+//                 _selectedItem = selectedItem;
+//               });
+//             },
+//           );
+//   }
+// }
