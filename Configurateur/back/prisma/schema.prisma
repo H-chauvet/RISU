@@ -14,14 +14,14 @@ datasource db {
 model User {
   id                  Int           @id @default(autoincrement())
   uuid                String?       @unique
-  firstName           String        @default("")
-  lastName            String        @default("")
-  company             String        @default("")
+  firstName           String?        @default("")
+  lastName            String?        @default("")
+  company             String?        @default("")
   email               String        @unique
-  token               String        @unique
+  token               String?        @unique
   password            String
-  organization        Organization  @relation(fields: [organizationId], references: [id])
-  organizationId      Int
+  organization        Organization?  @relation(fields: [organizationId], references: [id])
+  organizationId      Int?
   confirmed           Boolean       @default(false)
   createdAt           DateTime      @default(now())
 }
@@ -37,9 +37,10 @@ model Organization {
 model Container {
   id                  Int           @id @default(autoincrement())
   createdAt           DateTime      @default(now())
-  organization        Organization  @relation(fields: [organizationId], references: [id])
-  organizationId      Int
+  organization        Organization?  @relation(fields: [organizationId], references: [id])
+  organizationId      Int?
   containerMapping    String?
+  price               Float
 }
 
 model Contact {

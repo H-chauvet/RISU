@@ -4,11 +4,21 @@ import 'package:flutter/material.dart';
 /// Progress bar
 ///
 class ProgressBar extends StatelessWidget {
-  const ProgressBar({super.key, this.progress, this.previous, this.next});
+  const ProgressBar(
+      {super.key,
+      required this.length,
+      required this.progress,
+      required this.previous,
+      required this.next,
+      required this.previousFunc,
+      required this.nextFunc});
 
-  final int? progress;
-  final String? previous;
-  final String? next;
+  final int length;
+  final int progress;
+  final String previous;
+  final String next;
+  final VoidCallback previousFunc;
+  final VoidCallback nextFunc;
 
   Color getCorrectColor(index) {
     if (progress == index) {
@@ -23,62 +33,38 @@ class ProgressBar extends StatelessWidget {
     return SizedBox(
         child: Row(children: [
       ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, previous!);
-          },
+          key: const Key('previous'),
+          onPressed: previousFunc,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
-          child: Text(previous!)),
+          child: Text(previous, style: const TextStyle(color: Colors.white))),
       const SizedBox(
         width: 10,
       ),
-      Container(
-        height: 10,
-        width: 10,
-        decoration:
-            BoxDecoration(color: getCorrectColor(0), shape: BoxShape.circle),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      Container(
-        height: 10,
-        width: 10,
-        decoration:
-            BoxDecoration(color: getCorrectColor(1), shape: BoxShape.circle),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      Container(
-        height: 10,
-        width: 10,
-        decoration:
-            BoxDecoration(color: getCorrectColor(2), shape: BoxShape.circle),
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-      Container(
-        height: 10,
-        width: 10,
-        decoration:
-            BoxDecoration(color: getCorrectColor(3), shape: BoxShape.circle),
-      ),
-      const SizedBox(
-        width: 10,
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          for (int i = 0; i < length; i++)
+            Container(
+              key: Key("circleShape_$i"),
+              height: 10,
+              width: 10,
+              margin: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                  color: getCorrectColor(i), shape: BoxShape.circle),
+            )
+        ],
       ),
       ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, next!);
-          },
+          key: const Key('terminate'),
+          onPressed: nextFunc,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
-          child: Text(next!)),
+          child: Text(next, style: const TextStyle(color: Colors.white))),
     ]));
   }
 }
