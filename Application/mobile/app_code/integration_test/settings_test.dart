@@ -40,31 +40,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.text('Sombre'));
-      // expect(find.text('Clair'), findsOneWidget);
-      // await tester.pumpAndSettle();
-
-      // await tester.tap(find.text('Sombre'));
-      // expect(find.text('Sombre'), findsOneWidget);
-      // await tester.pumpAndSettle();
-
     });
-
-    // testWidgets('Settings_Drop-Down', (WidgetTester tester) async {
-    //   await tester.pumpWidget(
-    //     MultiProvider(
-    //       providers: [
-    //         ChangeNotifierProvider<ThemeProvider>(
-    //           create: (_) =>
-    //               ThemeProvider(false), // Provide a default value for testing.
-    //         ),
-    //       ],
-    //       child: MaterialApp(
-    //         home: MyDropdownButton(),
-    //       ),
-    //     ),
-    //   );
-    //   Finder goToLoginFinder =
-    //       find.byKey(const Key('drop_down'));
-    // });
   });
 }
