@@ -83,6 +83,14 @@ class LandingPageState extends State<LandingPage> {
     return list;
   }
 
+  void goToCreation() {
+    if (token == '') {
+      context.go("/login");
+    } else {
+      context.go("/creation");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -229,7 +237,7 @@ class LandingPageState extends State<LandingPage> {
                                 20.0), // Définit le rayon du bouton arrondi
                           ),
                         ),
-                        onPressed: () => context.go("/creation"),
+                        onPressed: () => goToCreation(),
                         child: const Text(
                           'Créer mon conteneur',
                           style: TextStyle(color: Colors.black),
