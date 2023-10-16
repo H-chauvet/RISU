@@ -35,12 +35,18 @@ class UserData {
       isToken = false;
     }
 
-    var firstname = json['user']['firstname'];
-    var lastname = json['user']['lastname'];
+    print(json['user']);
+    try {
+      json['user']['firstname'];
+      json['user']['lastname'];
+    } catch (err) {
+      print('Error: $err');
+    }
+
     return UserData(
         email: json['user']['email'],
         token: (isToken ? json['token'] : null),
-        firstName: firstname,
-        lastName: lastname);
+        firstName: json['user']['firstname'],
+        lastName: json['user']['lastname']);
   }
 }

@@ -3,6 +3,7 @@ const express = require('express')
 const app = express()
 const userRoutes = require('./routes/user')
 const contactRoutes = require('./routes/contact')
+const containerRoutes = require('./routes/container')
 
 var cors = require('cors')
 var bodyParser = require('body-parser')
@@ -20,5 +21,6 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', userRoutes)
 app.use('/api', contactRoutes)
+app.use('/api/container', containerRoutes)
 
 module.exports = app

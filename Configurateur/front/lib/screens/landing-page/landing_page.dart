@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:go_router/go_router.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -70,7 +71,8 @@ class LandingPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
@@ -88,7 +90,8 @@ class LandingPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       20.0), // Définit le rayon du bouton arrondi
@@ -112,63 +115,85 @@ class LandingPage extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
-                  // textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 40,
-                    color: Color.fromRGBO(70, 130, 180, 1),
-                    fontWeight: FontWeight.bold,
-                    shadows: [
-                      Shadow(
-                        color: Color.fromARGB(76, 0, 0, 0),
-                        offset: Offset(2, 2),
-                        blurRadius: 3,
-                      ),
-                    ],
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(
-                      top: 15), // Espacement inférieur pour le texte
-                  child: Text(
-                    'Des conteneurs disponibles partout en france !',
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
+                    // textAlign: TextAlign.left,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 40,
                       color: Color.fromRGBO(70, 130, 180, 1),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      top: 35), // Espacement inférieur pour le texte
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Actions to perform when the button is pressed
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 190, 189, 189),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              20.0), // Définit le rayon du bouton arrondi
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(
+                          color: Color.fromARGB(76, 0, 0, 0),
+                          offset: Offset(2, 2),
+                          blurRadius: 3,
                         ),
-                        textStyle: const TextStyle(
-                            // fontSize: 13.0,
-                            )),
-                    child: const Text(
-                      'En savoir plus',
-                      style: TextStyle(color: Colors.black),
+                      ],
                     ),
                   ),
-                ),
-              ],
-            ),
+                  const Padding(
+                    padding: EdgeInsets.only(
+                        top: 15), // Espacement inférieur pour le texte
+                    child: Text(
+                      'Des conteneurs disponibles partout en france !',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Color.fromRGBO(70, 130, 180, 1),
+                      ),
+                    ),
+                  ),
+                  Row(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 35), // Espacement inférieur pour le texte
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Actions to perform when the button is pressed
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 190, 189, 189),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  20.0), // Définit le rayon du bouton arrondi
+                            ),
+                            textStyle: const TextStyle(
+                                // fontSize: 13.0,
+                                )),
+                        child: const Text(
+                          'En savoir plus',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 35),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 190, 189, 189),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                20.0), // Définit le rayon du bouton arrondi
+                          ),
+                        ),
+                        onPressed: () => context.go("/creation"),
+                        child: const Text(
+                          'Créer mon conteneur',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    )
+                  ]),
+                ]),
             Image.asset(
               'assets/iphone.png',
             ),

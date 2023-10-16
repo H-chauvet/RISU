@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -81,13 +81,13 @@ class GoogleLogo extends StatelessWidget {
               if (value.statusCode == 200)
                 {
                   response = jsonDecode(value.body),
-                  StorageService()
-                      .writeStorage('token', response['accessToken']),
+                  token = response['accessToken'],
+                  /*StorageService()
+                      .writeStorage('token', response['accessToken']),*/
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const MyHomePage(title: 'login success')))
+                          builder: (context) => const LandingPage()))
                 }
             });
   }

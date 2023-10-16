@@ -110,6 +110,7 @@ class _MyTextInputState extends State<MyTextInput> {
                 : null,
             suffixIcon: widget.rightIcon != null
                 ? IconButton(
+                    key: const Key('textinput-button_righticon'),
                     onPressed: widget.rightIconOnPressed,
                     icon: Icon(widget.rightIcon),
                     color: context.select((ThemeProvider themeProvider) =>

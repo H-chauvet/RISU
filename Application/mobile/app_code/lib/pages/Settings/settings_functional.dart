@@ -14,4 +14,3 @@ void goToSettingsPage(BuildContext context) {
   }
   context.go('/settings');
 }
-

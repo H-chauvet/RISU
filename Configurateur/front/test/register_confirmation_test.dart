@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
+import 'package:front/services/storage_service.dart';
 
 void main() {
   Widget createWidgetForTesting({required Widget child}) {
@@ -21,6 +22,8 @@ void main() {
   testWidgets('Register confirmation screen', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    token = "token";
 
     await tester.pumpWidget(createWidgetForTesting(
         child: const RegisterConfirmation(

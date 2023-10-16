@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 
 ///
 /// Custom rounded AppBar
@@ -36,10 +36,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           icon: Image.asset("assets/logo.png"),
           iconSize: 80,
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const MyHomePage(title: 'tile')));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const LandingPage()));
           },
         ),
       ],

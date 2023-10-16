@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:risu/main.dart';
+import 'package:risu/utils/theme.dart';
 
 void main() {
   group('Test PreAuth', () {
@@ -22,6 +22,8 @@ void main() {
       // This code runs after each test case.
     });
 
+    Finder goBack = find.byKey(const Key('appbar-button_back'));
+
     testWidgets('Login', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
@@ -37,11 +39,11 @@ void main() {
         ),
       );
 
-      Finder subTitleFinder = find.byKey(const Key('pre_auth-subtitle_text'));
+      Finder subTitleFinder = find.byKey(const Key('pre_auth-text_subtitle'));
       Finder goToLoginFinder =
-          find.byKey(const Key('pre_auth-button_go_to_login'));
+      find.byKey(const Key('pre_auth-button_gotologin'));
       Finder goToSignupFinder =
-          find.byKey(const Key('pre_auth-button_go_to_signup'));
+      find.byKey(const Key('pre_auth-button_gotosignup'));
 
       await tester.pumpAndSettle();
 
@@ -52,11 +54,10 @@ void main() {
       await tester.tap(goToLoginFinder);
       await tester.pumpAndSettle();
 
-      /*Finder goBack = find.byKey(const Key('back-button'));
       expect(goBack, findsOneWidget);
 
       await tester.tap(goBack);
-      await tester.pumpAndSettle();*/
+      await tester.pumpAndSettle();
     });
 
     testWidgets('Register', (WidgetTester tester) async {
@@ -74,11 +75,11 @@ void main() {
         ),
       );
 
-      Finder subTitleFinder = find.byKey(const Key('pre_auth-subtitle_text'));
+      Finder subTitleFinder = find.byKey(const Key('pre_auth-text_subtitle'));
       Finder goToLoginFinder =
-          find.byKey(const Key('pre_auth-button_go_to_login'));
+      find.byKey(const Key('pre_auth-button_gotologin'));
       Finder goToSignupFinder =
-          find.byKey(const Key('pre_auth-button_go_to_signup'));
+      find.byKey(const Key('pre_auth-button_gotosignup'));
 
       await tester.pumpAndSettle();
 
@@ -87,6 +88,11 @@ void main() {
       expect(goToSignupFinder, findsOneWidget);
 
       await tester.tap(goToSignupFinder);
+      await tester.pumpAndSettle();
+
+      expect(goBack, findsOneWidget);
+
+      await tester.tap(goBack);
       await tester.pumpAndSettle();
     });
   });

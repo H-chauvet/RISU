@@ -183,7 +183,7 @@ async function sendAccountConfirmationEmail (email, token) {
     to: email,
     subject: 'Confirm your account',
     text:
-      'Please follow the link to confirm your account: http://localhost:8080/api/mailVerification?token=' +
+      'Please follow the link to confirm your account: http://20.111.37.124:8080/api/mailVerification?token=' +
       token
   }
 
@@ -218,12 +218,33 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+async function createFixtures () {
+  await database.prisma.User.createMany({
+    data: [
+      {
+        email: 'admin@gmail.com',
+        firstname: 'admin',
+        lastname: 'admin',
+        password: await utils.hash('admin'),
+        mailVerification: true
+      },
+      {
+        email: 'user@gmail.com',
+        firstname: 'user',
+        lastname: 'user',
+        password: await utils.hash('user'),
+        mailVerification: true
+      }
+    ]
+  })
+}
+
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body
   if (!name || !email || !message) {
     return res.status(401).send('Missing fields.')
   }
-  console.log("back-end : ", name, email, message)
+  console.log('back-end : ', name, email, message)
   try {
     await database.prisma.Contact.create({
       data: {
@@ -246,110 +267,111 @@ app.post('/api/contact', async (req, res) => {
 
 app.get('/api/user', async (req, res) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    console.log(decoded);
+    console.log(decoded)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
-    });
-    console.log("user : ", user);
-    res.json(user);
+    })
+    console.log('user : ', user)
+    res.json(user)
   } catch (err) {
-    console.error(err.message);
-    res.status(401).send('An error occurred.');
+    console.error(err.message)
+    res.status(401).send('An error occurred.')
   }
-});
+})
 
 app.post('/api/user/firstName', async (req, res) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization
     if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' });
+      return res.status(401).json({ message: 'No token, authorization denied' })
     }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
-    });
+    })
     await database.prisma.User.update({
       where: { id: decoded.id },
       data: { firstName: req.body.firstName }
-    });
-    res.json(user);
+    })
+    res.json(user)
   } catch (err) {
-    console.error(err.message);
-    res.status(401).send('An error occurred');
+    console.error(err.message)
+    res.status(401).send('An error occurred')
   }
-});
+})
 
 app.post('/api/user/lastName', async (req, res) => {
   try {
-    const lastName = req.body.lastName;
-    console.log("lastName : ", lastName);
-    const token = req.headers.authorization;
+    const lastName = req.body.lastName
+    console.log('lastName : ', lastName)
+    const token = req.headers.authorization
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
-    });
+    })
     await database.prisma.User.update({
       where: { id: decoded.id },
       data: { lastName: req.body.lastName }
-    });
-    res.json(user);
+    })
+    res.json(user)
   } catch (err) {
-    console.error(err.message);
-    res.status(401).send('An error occurred');
+    console.error(err.message)
+    res.status(401).send('An error occurred')
   }
-});
+})
 
 app.post('/api/user/email', async (req, res) => {
   try {
-    const token = req.headers.authorization;
+    const token = req.headers.authorization
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
-    });
+    })
     await database.prisma.User.update({
       where: { id: decoded.id },
       data: { email: req.body.email }
-    });
-    res.json(user);
+    })
+    res.json(user)
   } catch (err) {
-    console.error(err.message);
-    res.status(401).send('An error occurred');
+    console.error(err.message)
+    res.status(401).send('An error occurred')
   }
-});
+})
 
 app.post('/api/user/password', async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const currentPassword = req.body.currentPassword;
-    console.log("currentPassword : ", currentPassword);
-    const newPassword = req.body.newPassword;
-    console.log("newPassword : ", newPassword);
+    const token = req.headers.authorization
+    const currentPassword = req.body.currentPassword
+    console.log('currentPassword : ', currentPassword)
+    const newPassword = req.body.newPassword
+    console.log('newPassword : ', newPassword)
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
-    });
-    const isMatch = await utils.compare(currentPassword, user.password);
+    })
+    const isMatch = await utils.compare(currentPassword, user.password)
     if (!isMatch) {
-      console.log("Incorrect Password")
-      return res.status(401).json({ message: 'Incorrect Password' });
+      console.log('Incorrect Password')
+      return res.status(401).json({ message: 'Incorrect Password' })
     }
-    console.log("Password Match")
+    console.log('Password Match')
     await database.prisma.User.update({
       where: { id: decoded.id },
       data: { password: await utils.hash(newPassword) }
-    });
+    })
     console.log('Password updated')
-    res.json(user);
+    res.json(user)
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('An error occurred');
+    console.error(err.message)
+    res.status(500).send('An error occurred')
   }
-});
+})
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
+  createFixtures()
 })
 
 module.exports = app
