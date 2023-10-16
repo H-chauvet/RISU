@@ -29,13 +29,13 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomShapedAppBar(
+      /*appBar: CustomShapedAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
         showBurgerMenu: false,
-      ),
+      ),*/
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Center(
