@@ -101,12 +101,12 @@ class RecapConfigPage extends StatelessWidget {
                   width: 4.0,
                 ),
               ),
-              child: const Padding(
-                padding: EdgeInsets.all(24.0),
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                  children: const [
                     Text(
                       'Récapitulatif de commande',
                       style: TextStyle(

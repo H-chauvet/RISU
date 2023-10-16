@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
@@ -86,8 +86,7 @@ class GoogleLogo extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              const MyHomePage(title: 'login success')))
+                          builder: (context) => const LandingPage()))
                 }
             });
   }

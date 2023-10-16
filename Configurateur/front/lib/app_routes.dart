@@ -8,10 +8,10 @@ import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
+import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:go_router/go_router.dart';
-import './main.dart';
 
 ///
 /// App router
@@ -27,14 +27,8 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        pageBuilder: (context, state) => NoTransitionPage(
-          child: LandingPage(),
-        ),
-      ),
-      GoRoute(
-        path: '/home',
         pageBuilder: (context, state) => const NoTransitionPage(
-          child: MyHomePage(title: 'home'),
+          child: LandingPage(),
         ),
       ),
       GoRoute(
@@ -68,7 +62,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/landingPage',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
         ),
       ),
@@ -101,6 +95,10 @@ class AppRouter {
           child: RecapConfigPage(),
         ),
       ),
+      GoRoute(
+          path: '/creation',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: ContainerCreation())),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(

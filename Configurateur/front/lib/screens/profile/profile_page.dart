@@ -108,9 +108,9 @@ class ProfilePage extends StatelessWidget {
         child: Center(
           child: Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       bottom:
                           660.0), // Ajuster la valeur top pour déplacer les textes vers le haut
                   child: Column(
@@ -120,7 +120,7 @@ class ProfilePage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment
                             .center, // Centrer l'icône et le texte
-                        children: [
+                        children: const [
                           Text(
                             'Informations personnelles',
                             style: TextStyle(
@@ -134,33 +134,33 @@ class ProfilePage extends StatelessWidget {
                                   255, 65, 69, 71)), // Icône de crayon
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                           height: 50), // Ajouter un espace de 10 pixels
-                      Text(
+                      const Text(
                         'Nom : Chauvet',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(70, 130, 180, 1),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'Prénom : Henri',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(70, 130, 180, 1),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'E-Mail : henri.chauvet@epitech.eu',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(70, 130, 180, 1),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'Mot de passe : ************',
                         style: TextStyle(
                           fontSize: 14,
@@ -176,9 +176,9 @@ class ProfilePage extends StatelessWidget {
                 width: 2.0,
                 color: Colors.grey,
               ),
-              const Expanded(
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       bottom:
                           710.0), // Ajuster la valeur top pour déplacer les textes vers le haut
                   child: Column(
@@ -188,7 +188,7 @@ class ProfilePage extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment
                             .center, // Centrer l'icône et le texte
-                        children: [
+                        children: const [
                           Text(
                             'Informations bancaires',
                             style: TextStyle(
@@ -202,16 +202,17 @@ class ProfilePage extends StatelessWidget {
                                   255, 65, 69, 71)), // Icône de crayon
                         ],
                       ),
-                      SizedBox(height: 50), // Ajouter un espace de 10 pixels
-                      Text(
+                      const SizedBox(
+                          height: 50), // Ajouter un espace de 10 pixels
+                      const Text(
                         'Type de paiement : Carte Bancaire',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromRGBO(70, 130, 180, 1),
                         ),
                       ),
-                      SizedBox(height: 10),
-                      Text(
+                      const SizedBox(height: 10),
+                      const Text(
                         'N° Carte : 5132 **** **** **78',
                         style: TextStyle(
                           fontSize: 14,
