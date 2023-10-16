@@ -12,6 +12,6 @@ void goToSettingsPage(BuildContext context) {
   if (updatePage != null) {
     updatePage!();
   }
-  context.go('/');
+  context.go('/settings');
 }
 
