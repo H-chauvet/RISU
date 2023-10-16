@@ -5,14 +5,16 @@ import 'package:risu/utils/user_data.dart';
 void main() {
   group('UserData Integration Tests', () {
     test('UserData constructor should create an instance with email', () {
-      final userData = UserData(email: 'test@example.com');
+      final userData = UserData(
+          email: 'test@example.com', firstName: 'Test', lastName: 'Example');
       expect(userData.email, 'test@example.com');
       expect(userData.token, isNull);
     });
 
     test('UserData displayUserEmail should return a Text widget with email',
         () {
-      final userData = UserData(email: 'test@example.com');
+      final userData = UserData(
+          email: 'test@example.com', firstName: 'Test', lastName: 'Example');
       final widget = userData.displayUserEmail();
       expect(widget, isA<Column>());
       final column = widget as Column;

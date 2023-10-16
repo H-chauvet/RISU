@@ -12,7 +12,8 @@ import 'package:risu/utils/user_data.dart';
 void main() {
   testWidgets('Logged in user should see HomePage',
       (WidgetTester tester) async {
-    userInformation = UserData(email: 'example@gmail.com');
+    userInformation = UserData(
+        email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
     await tester.pumpWidget(
       MultiProvider(
         providers: [
