@@ -62,7 +62,6 @@ class MyAlertDialog {
     String onOkName = 'OK',
     required VoidCallback onOk,
     String onCancelName = 'Cancel',
-    required VoidCallback onCancel,
   }) async {
     return showDialog<void>(
       context: context,
@@ -71,22 +70,18 @@ class MyAlertDialog {
           title: Text(title),
           titlePadding: const EdgeInsets.all(16.0),
           titleTextStyle: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.dialogTheme.titleTextStyle),
+              themeProvider.currentTheme.dialogTheme.titleTextStyle),
           backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.dialogTheme.backgroundColor),
+              themeProvider.currentTheme.dialogTheme.backgroundColor),
           content: Text(message),
           actions: [
             TextButton(
               child: Text(onCancelName),
-              onPressed: () {
-                Navigator.pop(context);
-                onCancel();
-              },
+              onPressed: () => Navigator.pop(context, 'Ok'),
             ),
             TextButton(
               child: Text(onOkName),
               onPressed: () {
-                Navigator.pop(context);
                 onOk();
               },
             ),

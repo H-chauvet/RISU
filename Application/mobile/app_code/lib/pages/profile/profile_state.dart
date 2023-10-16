@@ -5,7 +5,6 @@ import 'package:risu/network/informations.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
 
-import 'profile_functional.dart';
 import 'profile_page.dart';
 
 class ProfilePageState extends State<ProfilePage> {
@@ -27,8 +26,7 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    if (logout || userInformation == null) {
-      userInformation = null;
+    if (userInformation == null) {
       return const LoginPage();
     } else {
       return Scaffold(
