@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 class UserData {
   String? token;
   String email;
+  String firstName = '';
+  String lastName = '';
 
   /// Constructor of the UserData class
   UserData({
     required this.email,
     this.token,
+    required this.firstName,
+    required this.lastName,
   });
 
   /// Function to display user email
@@ -31,7 +35,16 @@ class UserData {
       isToken = false;
     }
 
+    try {
+      json['user']['firstName'];
+      json['user']['lastName'];
+    } catch (err) {
+      print('Error: $err');
+    }
+
     return UserData(
-        email: json['user']['email'], token: (isToken ? json['token'] : null));
+        email: json['user']['email'], token: (isToken ? json['token'] : null),
+        firstName: json['user']['firstName'], lastName: json['user']['lastName']
+    );
   }
 }

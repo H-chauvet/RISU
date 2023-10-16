@@ -15,6 +15,7 @@ class MyTextInput extends StatefulWidget {
   final Function()? rightIconOnPressed;
   final String? initialValue;
   final TextEditingController? controller;
+  final double? height;
 
   const MyTextInput({
     Key? key,
@@ -29,6 +30,7 @@ class MyTextInput extends StatefulWidget {
     this.onChanged,
     this.onTap,
     this.controller,
+    this.height,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,7 @@ class _MyTextInputState extends State<MyTextInput> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: widget.height ?? null,
       decoration: BoxDecoration(
         color: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.inputDecorationTheme.fillColor),

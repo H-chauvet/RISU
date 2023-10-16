@@ -241,6 +241,7 @@ class LoginPageState extends State<LoginPage> {
                 apiLogin().then((value) => {
                       if (value)
                         {
+                          logout = false,
                           goToHomePage(context),
                         }
                     });

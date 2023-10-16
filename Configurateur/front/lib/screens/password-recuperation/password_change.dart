@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/network/informations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -92,7 +93,7 @@ class PasswordChangeState extends State<PasswordChange> {
                                 password == validedPassword) {
                               await http.post(
                                 Uri.parse(
-                                    'http://localhost:3000/api/auth/update-password'),
+                                    'http://$serverIp:3000/api/auth/update-password'),
                                 headers: <String, String>{
                                   'Content-Type':
                                       'application/json; charset=UTF-8',
@@ -103,11 +104,8 @@ class PasswordChangeState extends State<PasswordChange> {
                                   'password': password,
                                 }),
                               );
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const MyHomePage(
-                                          title: 'update password success')));
+                              // ignore: use_build_context_synchronously
+                              context.go("/");
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -118,7 +116,7 @@ class PasswordChangeState extends State<PasswordChange> {
                           ),
                           child: const Text(
                             "Changer le mot de passe",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                       ),

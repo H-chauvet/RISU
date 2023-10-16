@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/footer.dart';
 
 class RecapConfigPage extends StatelessWidget {
   const RecapConfigPage({super.key});
@@ -13,52 +14,42 @@ class RecapConfigPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 16.0), // Espacement à gauche du logo
+              padding: const EdgeInsets.only(left: 16.0),
               child: Image.asset(
-                'logo.png',
+                'assets/logo.png',
                 width: 150,
                 height: 150,
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment
-                  .spaceAround, // Espace entre les éléments texte
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.white, // Couleur du texte
+                    primary: Colors.white,
                   ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
+                  onPressed: () {},
                   child: const Text('Accueil'),
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.white, // Couleur du texte
+                    primary: Colors.white,
                   ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
+                  onPressed: () {},
                   child: const Text('Créer un conteneur'),
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.white, // Couleur du texte
+                    primary: Colors.white,
                   ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
+                  onPressed: () {},
                   child: const Text('Nos offres'),
                 ),
                 TextButton(
                   style: TextButton.styleFrom(
-                    primary: Colors.white, // Couleur du texte
+                    primary: Colors.white,
                   ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
+                  onPressed: () {},
                   child: const Text('Nous contacter'),
                 ),
               ],
@@ -66,9 +57,7 @@ class RecapConfigPage extends StatelessWidget {
             Row(
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // Actions à effectuer lorsque le bouton "Mon profil" est pressé
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     primary: const Color.fromARGB(255, 190, 189, 189),
                     padding: const EdgeInsets.symmetric(
@@ -80,11 +69,9 @@ class RecapConfigPage extends StatelessWidget {
                   child: const Text('Mon profil',
                       style: TextStyle(color: Colors.white)),
                 ),
-                const SizedBox(width: 16.0), // Espacement entre les boutons
+                const SizedBox(width: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    // Actions à effectuer lorsque le bouton "Déconnexion" est pressé
-                  },
+                  onPressed: () {},
                   style: ElevatedButton.styleFrom(
                     primary: const Color.fromARGB(255, 190, 189, 189),
                     padding: const EdgeInsets.symmetric(
@@ -114,7 +101,7 @@ class RecapConfigPage extends StatelessWidget {
                   width: 4.0,
                 ),
               ),
-              child: Padding(
+              child: const Padding(
                 padding: EdgeInsets.all(24.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +175,7 @@ class RecapConfigPage extends StatelessWidget {
               top: 10,
               left: 20,
               child: Image.asset(
-                'container.png',
+                'assets/container.png',
                 width: 125,
                 height: 125,
               ),
@@ -197,9 +184,7 @@ class RecapConfigPage extends StatelessWidget {
               bottom: 10,
               left: 10,
               child: ElevatedButton(
-                onPressed: () {
-                  // Actions à effectuer lorsque le bouton "Retour" est pressé
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   primary: const Color.fromARGB(255, 190, 189, 189),
                   padding:
@@ -219,9 +204,7 @@ class RecapConfigPage extends StatelessWidget {
               bottom: 10,
               right: 10,
               child: ElevatedButton(
-                onPressed: () {
-                  // Actions à effectuer lorsque le bouton "Payer" est pressé
-                },
+                onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   primary: const Color.fromARGB(255, 190, 189, 189),
                   padding:
@@ -240,53 +223,7 @@ class RecapConfigPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color.fromRGBO(70, 130, 180, 1),
-        child: Container(
-          height: 45.0, // Hauteur de la barre de navigation
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Politique de confidentialité
-                },
-                child: const Text(
-                  'Politique de confidentialité',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Conditions générales d'utilisation
-                },
-                child: const Text(
-                  'Conditions générales d\'utilisation',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Contact
-                },
-                child: const Text(
-                  'Contact',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }

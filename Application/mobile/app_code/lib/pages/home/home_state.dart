@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/history_location/history_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 
+import '../../components/alert_dialog.dart';
 import '../../components/appbar.dart';
 import '../../components/bottomnavbar.dart';
 import '../../network/informations.dart';
@@ -19,6 +21,38 @@ class HomePageState extends State<HomePage> {
     const MapPage(),
     const ProfilePage(),
   ];
+  bool isProfileConfigured = false;
+
+  void configProfile() async {
+    try {
+      final firstName = userInformation!.firstName;
+      final lastName = userInformation!.lastName;
+      print('firstName : $firstName');
+      print('lastName : $lastName');
+      if (firstName.isEmpty && lastName.isEmpty) {
+        await MyAlertDialog.showChoiceAlertDialog(
+            context: context,
+            title: 'Profil incomplet',
+            message: 'Veuillez compléter votre profil avant de continuer.',
+            onOkName: 'Compléter le profil',
+            onOk: () {
+              context.go('/profile');
+            },
+            onCancelName: 'Annuler',
+            onCancel: () {});
+      }
+      setState(() {
+        isProfileConfigured = true;
+      });
+    } catch (e) {
+      print('Error configProfile(): $e');
+    }
+  }
+
+  /// Update state function
+  void update() {
+    setState(() {});
+  }
 
   @override
   void initState() {
@@ -31,6 +65,9 @@ class HomePageState extends State<HomePage> {
       userInformation = null;
       return const LoginPage();
     } else {
+      if (!isProfileConfigured) {
+        configProfile();
+      }
       return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
