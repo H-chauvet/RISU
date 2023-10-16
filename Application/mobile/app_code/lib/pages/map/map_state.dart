@@ -35,16 +35,17 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
-      body: GoogleMap(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.colorScheme.background),
+        body:
+            Container() /*GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
-      ),
-    );
+      ),*/
+        );
   }
 }
