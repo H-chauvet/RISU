@@ -77,7 +77,13 @@ router.post('/register', async function (req, res, next) {
       throw new Error('Email already exists')
     }
 
-    const user = await userCtrl.registerByEmail({ firstName, lastName, company, email, password })
+    const user = await userCtrl.registerByEmail({
+      firstName,
+      lastName,
+      company,
+      email,
+      password
+    })
     const accessToken = jwtMiddleware.generateAccessToken(user)
 
     res.status(200).json({
@@ -181,9 +187,9 @@ router.post('/delete', async function (req, res, next) {
 
   try {
     await userCtrl.deleteUser(email)
-    res.json('ok')
+    res.json('ok').status(200)
   } catch (err) {
-    res.json('ok')
+    res.json('ok').status(200)
   }
 })
 
@@ -193,66 +199,6 @@ router.get('/privacy', async function (req, res, next) {
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
 
     res.send(privacyDetails)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.get('/container', async function (req, res, next) {
-  try {
-    const { userId } = req.query
-
-    if (!userId) {
-      res.status(400)
-      throw new Error('userId is required')
-    }
-    const container = await userCtrl.getContainer(parseInt(userId))
-    res.status(200).json(container)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.delete('/container', async function (req, res, next) {
-  try {
-    const { id } = req.body
-
-    if (!id) {
-      res.status(400)
-      throw new Error('userId is required')
-    }
-    await userCtrl.deleteContainer(id)
-    res.status(200).json('container deleted')
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.post('/container', async function (req, res, next) {
-  try {
-    const { userId } = req.body
-
-    if (!userId) {
-      res.status(400)
-      throw new Error('userId and name are required')
-    }
-    await userCtrl.createContainer({ userId })
-    res.status(200).json('container created')
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.put('/container', async function (req, res, next) {
-  try {
-    const { id } = req.body
-
-    if (!id) {
-      res.status(400)
-      throw new Error('id and name are required')
-    }
-    await userCtrl.updateContainer({ id })
-    res.status(200).json('container updated')
   } catch (err) {
     next(err)
   }

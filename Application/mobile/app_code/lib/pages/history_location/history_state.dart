@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:risu/pages/history_location/article_location.dart';
 import 'package:risu/pages/history_location/history_page.dart';
 
@@ -15,36 +14,6 @@ class HistoryLocationState extends State<HistoryLocationPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Chevron bleu pour la navigation vers /home
-                    GestureDetector(
-                      onTap: () {
-                        // Naviguer vers la route "/home"
-                        context.go('/home');
-                      },
-                      child: Icon(
-                        Icons.chevron_left,
-                        color: Colors.blue, // Couleur du chevron
-                        size: 30.0, // Taille du chevron
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ), // Espacement entre le chevron et le logo
-
-                    // Logo RISU
-                    Expanded(
-                      child: Center(
-                        child: Image.asset(
-                          'assets/logo_noir.png',
-                          width: 200,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
                 SizedBox(height: 30), // Espace ajouté
                 Text(
                   'Historique de locations', // Texte "Paramètres"

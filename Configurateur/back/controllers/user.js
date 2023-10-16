@@ -95,7 +95,7 @@ exports.registerConfirmation = email => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://localhost:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://20.111.37.124:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         '</p>'
@@ -178,44 +178,11 @@ exports.forgotPassword = email => {
       to: email,
       subject: 'Réinitialisation de mot de passe',
       html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://localhost:80/#/password-change/' +
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://20.111.37.124:80/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
         '</p>'
     }
     transporter.sendMail(mail)
-  })
-}
-
-exports.getContainer = userId => {
-  return db.Container.findMany({
-    where: {
-      userId: userId
-    }
-  })
-}
-
-exports.deleteContainer = id => {
-  return db.Container.delete({
-    where: {
-      id: id
-    }
-  })
-}
-
-exports.createContainer = container => {
-  return db.Container.create({
-    data: container
-  })
-}
-
-exports.updateContainer = container => {
-  return db.Container.update({
-    where: {
-      id: container.id
-    },
-    data: {
-      name: container.name
-    }
   })
 }

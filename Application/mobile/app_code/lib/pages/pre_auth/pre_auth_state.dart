@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:provider/provider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/main.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:risu/pages/login/login_functional.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/signup/signup_functional.dart';
+import 'package:risu/utils/theme.dart';
 
 class PreAuthState extends State<PreAuthPage> {
   void _signInWithGoogle() {}
@@ -37,7 +37,7 @@ class PreAuthState extends State<PreAuthPage> {
               children: [
                 Text(
                   "Voici quelques informations sur l'application.",
-                  key: const Key('pre_auth-subtitle_text'),
+                  key: const Key('pre_auth-text_subtitle'),
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 12.0,
@@ -57,7 +57,7 @@ class PreAuthState extends State<PreAuthPage> {
                   children: [
                     Expanded(
                       child: MyButton(
-                        key: const Key('pre_auth-button_go_to_login'),
+                        key: const Key('pre_auth-button_gotologin'),
                         onPressed: () {
                           goToLoginPage(context);
                         },
@@ -67,7 +67,7 @@ class PreAuthState extends State<PreAuthPage> {
                     const SizedBox(width: 16.0),
                     Expanded(
                       child: MyOutlinedButton(
-                        key: const Key('pre_auth-button_go_to_signup'),
+                        key: const Key('pre_auth-button_gotosignup'),
                         onPressed: () {
                           goToSignupPage(context);
                         },

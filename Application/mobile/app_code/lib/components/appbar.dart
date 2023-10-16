@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomShapedAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final bool showLogo;
   final bool showBurgerMenu;
   final Color curveColor;
 
-  const CustomShapedAppBar({
+  const MyAppBar({
     Key? key,
     required this.curveColor,
     this.showBackButton = true,
@@ -22,6 +21,7 @@ class CustomShapedAppBar extends StatelessWidget
       child: AppBar(
         leading: showBackButton
             ? BackButton(
+                key: const Key('appbar-button_back'),
                 onPressed: () {
                   Navigator.pop(context);
                 },

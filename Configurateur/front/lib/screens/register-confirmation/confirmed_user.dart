@@ -25,8 +25,13 @@ class ConfirmedUserState extends State<ConfirmedUser> {
 
   @override
   void initState() {
-    StorageService().readStorage('token').then((value) => {
-          // debugPrint(value),
+    if (token != "") {
+      jwtToken = token;
+    } else {
+      context.go("/login");
+    }
+    /*StorageService().readStorage('token').then((value) => {
+          debugPrint(value),
           if (value == null)
             {
               Navigator.push(context,
@@ -36,7 +41,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
             {
               jwtToken = value,
             }
-        });
+        });*/
     http.post(
       Uri.parse('http://$serverIp:3000/api/auth/confirmed-register'),
       headers: <String, String>{
@@ -77,11 +82,11 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                       onTap: () {
                         context.go("/");
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Text(
                                 "Retour à l'accueil",
                                 style:
