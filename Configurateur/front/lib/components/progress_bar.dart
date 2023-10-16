@@ -33,6 +33,7 @@ class ProgressBar extends StatelessWidget {
     return SizedBox(
         child: Row(children: [
       ElevatedButton(
+          key: const Key('previous'),
           onPressed: previousFunc,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey,
@@ -57,6 +58,7 @@ class ProgressBar extends StatelessWidget {
         ],
       ),
       ElevatedButton(
+          key: const Key('terminate'),
           onPressed: nextFunc,
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.grey,

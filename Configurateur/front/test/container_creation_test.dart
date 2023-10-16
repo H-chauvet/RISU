@@ -14,6 +14,92 @@ void main() {
     expect(find.text('Terminer'), findsOneWidget);
   });
 
+  testWidgets('Container Creation progress bar 2', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('terminate')));
+  });
+
+  testWidgets('Container Creation progress bar 3', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('previous')));
+  });
+
+  testWidgets('Container Creation back view panel from front',
+      (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('back-view')));
+  });
+
+  testWidgets('Container Creation back view panel from left',
+      (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('left-view')));
+    await tester.tap(find.byKey(const Key('back-view')));
+    await tester.tap(find.byKey(const Key('right-view')));
+    await tester.tap(find.byKey(const Key('front-view')));
+  });
+
+  testWidgets('Container Creation back view panel 2',
+      (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('right-view')));
+    await tester.tap(find.byKey(const Key('back-view')));
+    await tester.tap(find.byKey(const Key('front-view')));
+    await tester.tap(find.byKey(const Key('left-view')));
+  });
+
+  testWidgets('Container Creation back view panel 3',
+      (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.pumpWidget(const MaterialApp(
+      home: ContainerCreation(),
+    ));
+
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key('back-view')));
+    await tester.tap(find.byKey(const Key('left-view')));
+    await tester.tap(find.byKey(const Key('right-view')));
+    await tester.tap(find.byKey(const Key('left-view')));
+    await tester.tap(find.byKey(const Key('front-view')));
+  });
+
   /*testWidgets('updateCube', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;

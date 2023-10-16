@@ -187,6 +187,7 @@ class InteractivePanelState extends State<InteractivePanel> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                        key: const Key('front-view'),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
@@ -207,6 +208,7 @@ class InteractivePanelState extends State<InteractivePanel> {
                         width: 10,
                       ),
                       ElevatedButton(
+                        key: const Key('back-view'),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
@@ -230,6 +232,7 @@ class InteractivePanelState extends State<InteractivePanel> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton(
+                        key: const Key('left-view'),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
@@ -250,6 +253,7 @@ class InteractivePanelState extends State<InteractivePanel> {
                         width: 10,
                       ),
                       ElevatedButton(
+                        key: const Key('right-view'),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.grey,
                             shape: RoundedRectangleBorder(
