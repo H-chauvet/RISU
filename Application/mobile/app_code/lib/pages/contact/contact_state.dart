@@ -1,16 +1,15 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/text_input.dart';
+
 import '../../network/informations.dart';
 import '../../utils/theme.dart';
-import '../login/login_page.dart';
-import 'contact_functional.dart';
 import 'contact_page.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/network/informations.dart';
-import 'package:http/http.dart' as http;
-import 'package:risu/components/alert_dialog.dart';
-import 'dart:convert';
 
 
 class ContactPageState extends State<ContactPage> {
@@ -26,7 +25,8 @@ class ContactPageState extends State<ContactPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{'name': name, 'email': email, 'message': message}),
+        body: jsonEncode(
+            <String, String>{'name': name, 'email': email, 'message': message}),
       );
     } catch (err) {
       if (context.mounted) {
@@ -58,20 +58,9 @@ class ContactPageState extends State<ContactPage> {
     return false;
   }
 
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    updatePage = update;
-  }
-
-  /// Re sync all flutter object
-  void homeSync() async {
-    update();
   }
 
   @override
@@ -170,7 +159,8 @@ class ContactPageState extends State<ContactPage> {
                       print('Email : $_email');
                       print('Message : $_message');
                       if (_name != "" && _email != "" && _message != "") {
-                        apiContact(_name!, _email!, _message!).then((value) => {
+                        apiContact(_name!, _email!, _message!).then((value) =>
+                        {
                         });
                       } else {
                         MyAlertDialog.showInfoAlertDialog(
