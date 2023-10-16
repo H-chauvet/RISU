@@ -45,9 +45,12 @@ class AppRouter {
       ),
       GoRoute(
         path: '/register-confirmation',
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: RegisterConfirmation(params: ''),
-        ),
+        builder: (BuildContext context, GoRouterState state) {
+          final mail = state.extra! as String;
+          return RegisterConfirmation(
+            params: mail,
+          );
+        },
       ),
       GoRoute(
         path: '/confirmed-user/:id',

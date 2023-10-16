@@ -217,11 +217,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   header,
                                   body);
                               // ignore: use_build_context_synchronously
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          RegisterConfirmation(params: mail)));
+                              context.go("/register-confirmation", extra: mail);
                             }
                           },
                           style: ElevatedButton.styleFrom(

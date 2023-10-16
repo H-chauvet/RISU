@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -10,44 +12,75 @@ class LandingPage extends StatefulWidget {
 
 class LandingPageState extends State<LandingPage> {
   String connectedButton = '';
-  var connectedFunction;
+  late Function() connectedFunction;
   String inscriptionButton = '';
-  var inscriptiondFunction;
-
-  String jwt = '';
-
-  void getJwt(String connectedButton) {
-    var jwtToken;
-    StorageService().readStorage('token').then((value) => {
-          // debugPrint(value),
-          if (value == null)
-            {
-              jwtToken = '',
-              debugPrint('ça passe là'),
-              connectedButton = "Connexion",
-              inscriptionButton = 'Inscription',
-            }
-          else
-            {jwtToken = value, debugPrint('ça c est : ' + jwtToken)}
-        });
-  }
-
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
+  late Function() inscriptionFunction;
 
   @override
   void initState() {
     super.initState();
-    getJwt(connectedButton);
-    debugPrint(connectedButton);
+    if (token != '') {
+      inscriptionButton = 'Déconnexion';
+      inscriptionFunction = () {
+        token = '';
+        inscriptionButton = 'Inscription';
+        inscriptionFunction = () => context.go("/register");
+        connectedButton = 'Connexion';
+        connectedFunction = () => context.go("/login");
+        setState(() {});
+      };
+    } else {
+      inscriptionButton = 'Inscription';
+      inscriptionFunction = () => context.go("/register");
+      connectedButton = 'Connexion';
+      connectedFunction = () => context.go("/login");
+    }
     setState(() {});
   }
 
-  /// Re sync all flutter object
-  void homeSync() async {
-    update();
+  List<Widget> buttons() {
+    List<Widget> list = [];
+
+    if (token == '') {
+      list.add(
+        ElevatedButton(
+          onPressed: connectedFunction,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  20.0), // Définit le rayon du bouton arrondi
+            ),
+          ),
+          child: Text(
+            connectedButton,
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+      list.add(const SizedBox(width: 20));
+    }
+
+    list.add(
+      ElevatedButton(
+        onPressed: inscriptionFunction,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // Définit le rayon du bouton arrondi
+          ),
+        ),
+        child: Text(
+          inscriptionButton,
+          style: const TextStyle(color: Colors.black),
+        ),
+      ),
+    );
+
+    return list;
   }
 
   @override
@@ -110,52 +143,8 @@ class LandingPageState extends State<LandingPage> {
               ),
             ),
             const SizedBox(width: 250),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => connectedFunction,
-                  ),
-                );
-                // Actions to perform when the button is pressed
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0), // Définit le rayon du bouton arrondi
-                ),
-              ),
-              child: Text(
-                connectedButton,
-                style: const TextStyle(color: Colors.black),
-              ),
-            ),
-            const SizedBox(width: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => inscriptiondFunction,
-                  ),
-                );
-                // Actions to perform when the button is pressed
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(
-                      20.0), // Définit le rayon du bouton arrondi
-                ),
-              ),
-              child: Text(
-                inscriptionButton,
-                style: const TextStyle(color: Colors.black),
-              ),
+            Row(
+              children: buttons(),
             ),
           ],
         ),
