@@ -18,15 +18,13 @@ datasource db {
 
 model User {
   id                        String          @id @unique @default(cuid())
-  uuid                      String          @unique
   email                     String          @unique
-  name                      String
-  surname                   String
+  firstname                 String
+  lastname                  String
   password                  String
   mailVerification          Boolean         @default(false)
   confirmProcess            String          @default("")
   createdAt                 DateTime        @default(now())
-  comments                  Comments[]
 }
 
 model Containers {
@@ -48,7 +46,6 @@ model Items {
 
 model Comments {
   id                        String          @id @unique @default(cuid())
-  user                      User            @relation(fields: [userId], references: [id])
   userId                    String
   item                      Items?          @relation(fields: [itemId], references: [id])
   itemId                    String?
