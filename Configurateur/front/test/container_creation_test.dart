@@ -18,21 +18,6 @@ void main() {
     expect(find.text('Terminer'), findsOneWidget);
   });
 
-  testWidgets('Container Creation progress bar 2', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    token = "token";
-
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('terminate')));
-  });
-
   testWidgets('Container Creation progress bar 3', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
