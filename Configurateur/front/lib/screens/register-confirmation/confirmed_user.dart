@@ -25,7 +25,12 @@ class ConfirmedUserState extends State<ConfirmedUser> {
 
   @override
   void initState() {
-    StorageService().readStorage('token').then((value) => {
+    if (token != "") {
+      jwtToken = token;
+    } else {
+      context.go("/login");
+    }
+    /*StorageService().readStorage('token').then((value) => {
           debugPrint(value),
           if (value == null)
             {
@@ -36,7 +41,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
             {
               jwtToken = value,
             }
-        });
+        });*/
     http.post(
       Uri.parse('http://$serverIp:3000/api/auth/confirmed-register'),
       headers: <String, String>{
