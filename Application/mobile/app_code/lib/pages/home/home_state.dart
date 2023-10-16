@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/history_location/history_page.dart';
 import 'package:risu/pages/map/map_page.dart';
@@ -21,16 +20,26 @@ class HomePageState extends State<HomePage> {
     const MapPage(),
     const ProfilePage(),
   ];
-  bool isProfileConfigured = false;
+  bool didAskForProfile = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!didAskForProfile) {
+        configProfile();
+      }
+    });
+  }
 
   void configProfile() async {
     try {
-      final firstName = userInformation!.firstName;
-      final lastName = userInformation!.lastName;
-      print('firstName : $firstName');
-      print('lastName : $lastName');
-      if (firstName.isEmpty && lastName.isEmpty) {
-        await MyAlertDialog.showChoiceAlertDialog(
+      String? firstName = userInformation?.firstName;
+      String? lastName = userInformation?.lastName;
+      print('firstName: $firstName');
+      if (firstName == null || lastName == null) {
+        await Future.delayed(Duration.zero, () {
+          MyAlertDialog.showChoiceAlertDialog(
             context: context,
             title: 'Profil incomplet',
             message: 'Veuillez compléter votre profil avant de continuer.',
@@ -42,7 +51,8 @@ class HomePageState extends State<HomePage> {
               });
             },
             onCancelName: 'Annuler',
-            onCancel: () {});
+          );
+        });
       }
       setState(() {
         didAskForProfile = true;
@@ -52,18 +62,9 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    print(didAskForProfile);
     if (logout || userInformation == null) {
       userInformation = null;
       return const LoginPage();
