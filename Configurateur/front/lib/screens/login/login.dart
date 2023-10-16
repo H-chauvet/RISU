@@ -84,11 +84,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/password-recuperation");
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   'Mot de passe oublié ?',
                                   style: TextStyle(color: Colors.blue),
@@ -148,11 +148,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/register");
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text("Nouveau sur la plateforme ? "),
                                 Text(
                                   'Créer un compte.',

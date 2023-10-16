@@ -112,11 +112,11 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                       onTap: () {
                         context.go("/");
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                            children: const <Widget>[
                               Text(
                                 "Retour à l'acceuil",
                                 style:

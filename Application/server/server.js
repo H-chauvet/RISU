@@ -218,6 +218,27 @@ app.get('/api/mailVerification', async (req, res) => {
   }
 })
 
+async function createFixtures() {
+  await database.prisma.User.createMany({
+    data: [
+      {
+        email: 'admin@gmail.com',
+        firstname: 'admin',
+        lastname: 'admin',
+        password: await utils.hash('admin'),
+        mailVerification: true
+      },
+      {
+        email: 'user@gmail.com',
+        firstname: 'user',
+        lastname: 'user',
+        password: await utils.hash('user'),
+        mailVerification: true
+      }
+    ]
+  });
+}
+
 app.post('/api/contact', async (req, res) => {
   const { name, email, message } = req.body
   if (!name || !email || !message) {
@@ -350,6 +371,7 @@ app.post('/api/user/password', async (req, res) => {
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
+  createFixtures();
 })
 
 module.exports = app

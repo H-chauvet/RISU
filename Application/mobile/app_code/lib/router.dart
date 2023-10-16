@@ -1,14 +1,15 @@
-import 'package:risu/pages/login/login_page.dart';
-import 'package:risu/pages/signup/signup_page.dart';
-import 'package:risu/pages/home/home_page.dart';
-import 'package:risu/pages/profile/profile_page.dart';
-import 'package:risu/pages/pre_auth/pre_auth_page.dart';
-import 'package:risu/pages/parameters/parameters_page.dart';
-import 'package:risu/pages/history_location/history_page.dart';
-import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:risu/pages/Settings/settings_page.dart';
+import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/pages/history_location/history_page.dart';
+import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/parameters/parameters_page.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/profile/profile_page.dart';
+import 'package:risu/pages/signup/signup_page.dart';
 
 /// The project router.
 /// When you want to add a new page, please refer his url here.
@@ -67,6 +68,12 @@ final GoRouter router = GoRouter(
           path: 'contact',
           builder: (BuildContext context, GoRouterState state) {
             return const ContactPage();
+          },
+        ),
+        GoRoute(
+          path: 'settings',
+          builder: (BuildContext context, GoRouterState state) {
+            return const SettingsPage();
           },
         ),
       ],
