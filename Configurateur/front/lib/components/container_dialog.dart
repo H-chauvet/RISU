@@ -106,6 +106,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: DropdownMenu<String>(
+                    hintText: 'Face du casier',
+                    label: const Text('Face du casier'),
                     initialSelection: faceList.first,
                     onSelected: (String? value) {
                       setState(() {
@@ -123,6 +125,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                   key: const Key("container-dialog-direction-dropdown"),
                   padding: const EdgeInsets.all(8),
                   child: DropdownMenu<String>(
+                    hintText: 'Direction du casier',
+                    label: const Text('Direction du casier'),
                     initialSelection: directionList.first,
                     onSelected: (String? value) {
                       setState(() {
@@ -139,7 +143,14 @@ class ContainerDialogState extends State<ContainerDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: ElevatedButton(
-                    child: const Text('Ajouter'),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0))),
+                    child: const Text(
+                      'Ajouter',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();

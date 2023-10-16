@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/components/container_dialog.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
-import 'package:front/services/locker_service.dart';
-import 'package:util_simple_3d/util_simple_3d.dart';
-import 'package:simple_3d/simple_3d.dart';
 
 void main() {
   testWidgets('Container Creation progress bar', (WidgetTester tester) async {
@@ -15,7 +11,7 @@ void main() {
     ));
 
     expect(find.text('Précédent'), findsOneWidget);
-    expect(find.text('Suivant'), findsOneWidget);
+    expect(find.text('Terminer'), findsOneWidget);
   });
 
   /*testWidgets('updateCube', (WidgetTester tester) async {

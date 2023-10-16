@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
@@ -7,6 +6,8 @@ import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -28,9 +29,19 @@ class ContainerCreationState extends State<ContainerCreation> {
   late Sp3dWorld world;
   bool isLoaded = false;
   List<Locker> lockers = [];
+  double actualRotationDegree = 0.0;
+  String jwtToken = '';
 
   @override
   void initState() {
+    StorageService().readStorage('token').then((value) => {
+          if (value == null)
+            {context.go("/login")}
+          else
+            {
+              jwtToken = value,
+            }
+        });
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -80,7 +91,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       fragment += increment;
     }
 
-    fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
+    fragment -= coordinates.size * increment;
 
     for (int i = 0; i < coordinates.size; i++) {
       objs[0].fragments[fragment].faces[0].materialIndex = color;
@@ -112,6 +123,84 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "";
   }
 
+  void handleFloatingPoint() {
+    if (actualRotationDegree != 180 * 3.14 / 180 &&
+        actualRotationDegree != 0 &&
+        actualRotationDegree != 90 * 3.14 / 180 &&
+        actualRotationDegree != 270 * 3.14 / 180) {
+      actualRotationDegree =
+          double.parse(actualRotationDegree.toStringAsFixed(2));
+    }
+  }
+
+  void rotateBack() {
+    if (actualRotationDegree == 180 * 3.14 / 180) {
+      return;
+    } else if (actualRotationDegree == 90 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
+      actualRotationDegree += 90 * 3.14 / 180;
+    } else if (actualRotationDegree == 0) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
+      actualRotationDegree += 180 * 3.14 / 180;
+    } else if (actualRotationDegree == 270 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
+      actualRotationDegree += -90 * 3.14 / 180;
+    }
+
+    handleFloatingPoint();
+  }
+
+  void rotateFront() {
+    if (actualRotationDegree == 0) {
+      return;
+    } else if (actualRotationDegree == 90 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
+      actualRotationDegree += -90 * 3.14 / 180;
+    } else if (actualRotationDegree == 180 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
+      actualRotationDegree += -180 * 3.14 / 180;
+    } else if (actualRotationDegree == 270 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -270 * 3.14 / 180);
+      actualRotationDegree += -270 * 3.14 / 180;
+    }
+
+    handleFloatingPoint();
+  }
+
+  void rotateLeftSide() {
+    if (actualRotationDegree == 90 * 3.14 / 180) {
+      return;
+    } else if (actualRotationDegree == 0) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
+      actualRotationDegree += 90 * 3.14 / 180;
+    } else if (actualRotationDegree == 180 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
+      actualRotationDegree += -90 * 3.14 / 180;
+    } else if (actualRotationDegree == 270 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
+      actualRotationDegree += -180 * 3.14 / 180;
+    }
+
+    handleFloatingPoint();
+  }
+
+  void rotateRightSide() {
+    if (actualRotationDegree == 270 * 3.14 / 180) {
+      return;
+    } else if (actualRotationDegree == 0) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 270 * 3.14 / 180);
+      actualRotationDegree += 270 * 3.14 / 180;
+    } else if (actualRotationDegree == 180 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
+      actualRotationDegree += 90 * 3.14 / 180;
+    } else if (actualRotationDegree == 90 * 3.14 / 180) {
+      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
+      actualRotationDegree += 180 * 3.14 / 180;
+    }
+
+    handleFloatingPoint();
+  }
+
   void loadImage() async {
     world = Sp3dWorld(objs);
     world.initImages().then((List<Sp3dObj> errorObjs) {
@@ -137,10 +226,11 @@ class ContainerCreationState extends State<ContainerCreation> {
     return mapping;
   }
 
-  void goNext() {
+  void goNext() async {
     HttpService().request(
       'http://$serverIp:3000/api/container/create',
       <String, String>{
+        'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },
@@ -149,6 +239,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         'containerMapping': getContainerMapping(),
       },
     );
+    // ignore: use_build_context_synchronously
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
   }
@@ -169,7 +260,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 1,
               progress: 0,
               previous: 'Précédent',
               next: 'Terminer',
@@ -192,7 +283,13 @@ class ContainerCreationState extends State<ContainerCreation> {
                 child: FractionallySizedBox(
                   widthFactor: 0.7,
                   heightFactor: 0.7,
-                  child: InteractivePanel(callback: updateCube),
+                  child: InteractivePanel(
+                    callback: updateCube,
+                    rotateFrontCallback: rotateFront,
+                    rotateBackCallback: rotateBack,
+                    rotateLeftCallback: rotateLeftSide,
+                    rotateRightCallback: rotateRightSide,
+                  ),
                 ),
               ),
             ),
@@ -205,7 +302,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                   // If you want to reduce distortion, shoot from a distance at high magnification.
                   Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
                   Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                  allowUserWorldRotation: true,
+                  allowUserWorldRotation: false,
                   allowUserWorldZoom: false,
                 ),
               ],
@@ -218,6 +315,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
+                      onSaved: goNext,
                     )),
               ),
             ),

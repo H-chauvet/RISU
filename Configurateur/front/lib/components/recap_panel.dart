@@ -12,7 +12,7 @@ class Locker {
 ///
 // ignore: must_be_immutable
 class RecapPanel extends StatelessWidget {
-  RecapPanel({super.key, this.articles});
+  RecapPanel({super.key, this.articles, required this.onSaved});
 
   int sumPrice() {
     int price = 0;
@@ -24,6 +24,7 @@ class RecapPanel extends StatelessWidget {
 
   final List<Locker>? articles;
   late int? price = sumPrice();
+  final Function() onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -95,13 +96,15 @@ class RecapPanel extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: onSaved,
                   style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
-                  child: const Text('Sauvegarde'),
+                  child: const Text('Sauvegarde',
+                      style: TextStyle(color: Colors.white)),
                 ),
-                const SizedBox(
+                /*const SizedBox(
                   width: 20,
                 ),
                 ElevatedButton(
@@ -110,7 +113,7 @@ class RecapPanel extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   child: const Text('Imprimer'),
-                ),
+                ),*/
               ],
             )
           ],

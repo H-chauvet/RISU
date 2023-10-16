@@ -38,7 +38,7 @@ class ProgressBar extends StatelessWidget {
               backgroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
-          child: Text(previous)),
+          child: Text(previous, style: const TextStyle(color: Colors.white))),
       const SizedBox(
         width: 10,
       ),
@@ -62,7 +62,7 @@ class ProgressBar extends StatelessWidget {
               backgroundColor: Colors.grey,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0))),
-          child: Text(next)),
+          child: Text(next, style: const TextStyle(color: Colors.white))),
     ]));
   }
 }

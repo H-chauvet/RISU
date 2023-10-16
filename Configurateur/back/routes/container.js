@@ -2,8 +2,15 @@ const express = require('express')
 const router = express.Router()
 
 const containerCtrl = require('../controllers/container')
+const jwtMiddleware = require('../middleware/jwt')
 
 router.get('/get', async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { id } = req.query
 
@@ -20,6 +27,12 @@ router.get('/get', async function (req, res, next) {
 
 router.delete('/delete', async function (req, res, next) {
   try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
+  try {
     const { id } = req.body
 
     if (!id) {
@@ -34,6 +47,13 @@ router.delete('/delete', async function (req, res, next) {
 })
 
 router.post('/create', async function (req, res, next) {
+  try {
+    console.log(req.headers.authorization)
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { price, containerMapping } = req.body
 
@@ -53,6 +73,12 @@ router.post('/create', async function (req, res, next) {
 })
 
 router.put('/update', async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { id } = req.body
 
