@@ -18,7 +18,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return SettingsPage();
+        return PreAuthPage();
       },
       routes: <RouteBase>[
         GoRoute(
