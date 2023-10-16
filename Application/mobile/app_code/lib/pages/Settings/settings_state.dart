@@ -1,37 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:risu/components/outlined_button.dart';
-import 'package:risu/components/drop_down_menu.dart';
-
-import 'settings_functional.dart';
-import 'settings_page.dart';
-import 'package:risu/components/appbar.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/drop_down_menu.dart';
+import 'package:risu/components/outlined_button.dart';
+import 'package:risu/utils/theme.dart';
+
+import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    updatePage = update;
-  }
-
-  /// Re sync all flutter object
-  void homeSync() async {
-    update();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomShapedAppBar(
+      appBar: MyAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.secondaryHeaderColor),
+            themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
         showBurgerMenu: false,
@@ -59,8 +41,8 @@ class SettingsPageState extends State<SettingsPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        'Thème : ',
-                        style: TextStyle(
+                      'Thème : ',
+                      style: TextStyle(
                         fontSize: 20, // Taille de la police
                         fontWeight: FontWeight.bold, // Gras
                         color: Color(0xFF4682B4),
@@ -68,10 +50,12 @@ class SettingsPageState extends State<SettingsPage> {
                     ),
                     SizedBox(width: 20),
                     Center(
-                    child : Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          MyDropdownButton(key: Key('drop_down'),),
+                          MyDropdownButton(
+                            key: Key('drop_down'),
+                          ),
                         ],
                       ),
                     ),
@@ -93,38 +77,3 @@ class SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
-// class MyDropdownButton extends StatefulWidget {
-
-//   const MyDropdownButton({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   _MyDropdownButtonState createState() => _MyDropdownButtonState();
-// }
-
-// class _MyDropdownButtonState extends State<MyDropdownButton> {
-
-//   String? _selectedItem = 'Clair';
-//   List<String> _items = ['Clair', 'Sombre'];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DropdownButton(
-//             itemHeight: null,
-//             value: _selectedItem,
-//             items: _items.map((String item) {
-//               return DropdownMenuItem(
-//                 value: item,
-//                 child: Text(item),
-//               );
-//             }).toList(),
-//             onChanged: (String? selectedItem) {
-//               setState(() {
-//                 _selectedItem = selectedItem;
-//               });
-//             },
-//           );
-//   }
-// }
