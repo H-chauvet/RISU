@@ -1,6 +1,7 @@
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/parameters/parameters_page.dart';
 import 'package:risu/pages/history_location/history_page.dart';
@@ -18,7 +19,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return PreAuthPage();
+        return const PreAuthPage();
       },
       routes: <RouteBase>[
         GoRoute(
@@ -31,6 +32,12 @@ final GoRouter router = GoRouter(
           path: 'home',
           builder: (BuildContext context, GoRouterState state) {
             return const HomePage();
+          },
+        ),
+        GoRoute(
+          path: 'profile',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ProfilePage();
           },
         ),
         GoRoute(
