@@ -31,7 +31,7 @@ class SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: CustomShapedAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.secondaryHeaderColor),
+            themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
         showBurgerMenu: false,
@@ -55,23 +55,25 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                        'Thème : ',
-                        style: TextStyle(
+                    const Text(
+                      'Thème : ',
+                      style: TextStyle(
                         fontSize: 20, // Taille de la police
                         fontWeight: FontWeight.bold, // Gras
                         color: Color(0xFF4682B4),
                       ),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     Center(
-                    child : Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          MyDropdownButton(key: Key('drop_down'),),
+                        children: const <Widget>[
+                          MyDropdownButton(
+                            key: Key('drop_down'),
+                          ),
                         ],
                       ),
                     ),
