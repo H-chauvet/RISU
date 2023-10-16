@@ -24,7 +24,12 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
 
   @override
   void initState() {
-    StorageService().readStorage('token').then((value) => {
+    if (token != "") {
+      jwtToken = token;
+    } else {
+      context.go("/login");
+    }
+    /*StorageService().readStorage('token').then((value) => {
           debugPrint(value),
           if (value == null)
             {context.go("/login")}
@@ -32,7 +37,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
             {
               jwtToken = value,
             }
-        });
+        });*/
     super.initState();
   }
 

@@ -81,8 +81,9 @@ class GoogleLogo extends StatelessWidget {
               if (value.statusCode == 200)
                 {
                   response = jsonDecode(value.body),
-                  StorageService()
-                      .writeStorage('token', response['accessToken']),
+                  token = response['accessToken'],
+                  /*StorageService()
+                      .writeStorage('token', response['accessToken']),*/
                   Navigator.push(
                       context,
                       MaterialPageRoute(
