@@ -80,13 +80,13 @@ router.put('/update', async function (req, res, next) {
     throw new Error('Unauthorized')
   }
   try {
-    const { id } = req.body
+    const { id, price, containerMapping } = req.body
 
     if (!id) {
       res.status(400)
       throw new Error('id and name are required')
     }
-    await containerCtrl.updateContainer({ id })
+    await containerCtrl.updateContainer(id, { price, containerMapping })
     res.status(200).json('container updated')
   } catch (err) {
     next(err)

@@ -23,13 +23,12 @@ exports.createContainer = container => {
   })
 }
 
-exports.updateContainer = container => {
+exports.updateContainer = (id, container) => {
+  container.price = parseFloat(container.price)
   return db.Container.update({
     where: {
-      id: container.id
+      id: id
     },
-    data: {
-      name: container.name
-    }
+    data: container
   })
 }

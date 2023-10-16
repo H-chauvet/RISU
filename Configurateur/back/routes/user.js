@@ -186,9 +186,9 @@ router.post('/delete', async function (req, res, next) {
 
   try {
     await userCtrl.deleteUser(email)
-    res.json('ok')
+    res.json('ok').status(200)
   } catch (err) {
-    res.json('ok')
+    res.json('ok').status(200)
   }
 })
 
