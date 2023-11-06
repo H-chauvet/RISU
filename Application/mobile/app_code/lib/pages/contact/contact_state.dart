@@ -11,7 +11,6 @@ import '../../network/informations.dart';
 import '../../utils/theme.dart';
 import 'contact_page.dart';
 
-
 class ContactPageState extends State<ContactPage> {
   String? _name;
   String? _email;
@@ -31,9 +30,7 @@ class ContactPageState extends State<ContactPage> {
     } catch (err) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Connection refused.');
+            context: context, title: 'Contact', message: 'Connection refused.');
         print(err);
         print(response.statusCode);
       }
@@ -41,9 +38,7 @@ class ContactPageState extends State<ContactPage> {
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Message envoyé.');
+            context: context, title: 'Contact', message: 'Message envoyé.');
         return true;
       }
     } else {
@@ -73,7 +68,7 @@ class ContactPageState extends State<ContactPage> {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.colorScheme.background),
+            themeProvider.currentTheme.colorScheme.background),
         body: SingleChildScrollView(
           child: Center(
             child: Container(
@@ -117,11 +112,11 @@ class ContactPageState extends State<ContactPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
                       color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                          themeProvider.currentTheme.secondaryHeaderColor),
                       shadows: [
                         Shadow(
                           color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
+                              themeProvider.currentTheme.secondaryHeaderColor),
                           blurRadius: 24,
                           offset: const Offset(0, 4),
                         ),
@@ -131,6 +126,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 42),
                   MyTextInput(
+                    key: const Key('name'),
                     labelText: "Nom",
                     keyboardType: TextInputType.name,
                     icon: Icons.person,
@@ -138,6 +134,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
+                    key: const Key('email'),
                     labelText: "Email",
                     keyboardType: TextInputType.emailAddress,
                     icon: Icons.email_outlined,
@@ -145,6 +142,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
+                    key: const Key('message'),
                     labelText: "Message",
                     keyboardType: TextInputType.multiline,
                     icon: Icons.message_outlined,
@@ -159,14 +157,14 @@ class ContactPageState extends State<ContactPage> {
                       print('Email : $_email');
                       print('Message : $_message');
                       if (_name != "" && _email != "" && _message != "") {
-                        apiContact(_name!, _email!, _message!).then((value) =>
-                        {
-                        });
+                        apiContact(_name!, _email!, _message!)
+                            .then((value) => {});
                       } else {
                         MyAlertDialog.showInfoAlertDialog(
                             context: context,
                             title: 'champs invalides',
-                            message: 'Veuillez entrer des informations valides.');
+                            message:
+                                'Veuillez entrer des informations valides.');
                       }
                     },
                     style: OutlinedButton.styleFrom(
@@ -175,7 +173,7 @@ class ContactPageState extends State<ContactPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.secondaryHeaderColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -187,7 +185,7 @@ class ContactPageState extends State<ContactPage> {
                       'Envoyer',
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.secondaryHeaderColor),
                         fontSize: 16.0,
                       ),
                     ),
