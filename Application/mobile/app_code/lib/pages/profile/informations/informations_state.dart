@@ -1,17 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/components/text_input.dart';
-import 'informations_functional.dart';
-import 'informations_page.dart';
-import 'package:http/http.dart' as http;
 import 'package:risu/utils/user_data.dart';
-import 'dart:convert';
-import 'package:risu/components/alert_dialog.dart';
+
+import 'informations_page.dart';
 
 String firstName = '';
 String lastName = '';
@@ -24,8 +23,7 @@ Future<void> fetchUserData() async {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': '$token',
-        }
-    );
+        });
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
       print('userData : $userData');
@@ -45,7 +43,6 @@ Future<void> fetchUserData() async {
 }
 
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
-
   Future<void> updateFirstName(String newFirstName) async {
     try {
       final token = userInformation!.token;
@@ -136,7 +133,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
-  Future<void> updatePassword(String currentPassword, String newPassword) async {
+  Future<void> updatePassword(
+      String currentPassword, String newPassword) async {
     try {
       final token = userInformation!.token;
       print('currentPassword : $currentPassword');
@@ -180,21 +178,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
-  /// Update state function
-  void update() {
-    setState(() {});
-  }
-
   @override
   void initState() {
     super.initState();
-    updatePage = update;
     fetchUserData();
-  }
-
-  /// Re sync all flutter object
-  void homeSync() async {
-    update();
   }
 
   @override
@@ -207,15 +194,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     String newPassword = '';
     String newPasswordConfirmation = '';
 
-
-    if (logout || userInformation == null) {
-      userInformation = null;
+    if (userInformation == null) {
       return const LoginPage();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.colorScheme.background),
+            themeProvider.currentTheme.colorScheme.background),
         body: SingleChildScrollView(
           child: Center(
             child: Container(
@@ -262,15 +247,19 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             // Champ texte désactivé pour le prénom actuel
                             Expanded(
                               child: TextFormField(
-                                enabled: false, // Désactivez le champ texte
-                                initialValue: firstName, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Prénom actuel'),
+                                enabled: false,
+                                // Désactivez le champ texte
+                                initialValue: firstName,
+                                // Utilisez la valeur actuelle comme valeur initiale
+                                decoration:
+                                    InputDecoration(labelText: 'Prénom actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouveau prénom'),
+                                decoration: InputDecoration(
+                                    labelText: 'Nouveau prénom'),
                                 onChanged: (value) {
                                   newFirstName = value;
                                 },
@@ -278,7 +267,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('update_firstName-button'),
@@ -286,7 +274,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             if (newFirstName.isEmpty) {
                               MyAlertDialog.showInfoAlertDialog(
                                   context: context,
-                                  title: 'Impossible de mettre à jour le prénom',
+                                  title:
+                                      'Impossible de mettre à jour le prénom',
                                   message: 'Veuillez remplir le champ');
                               return;
                             }
@@ -297,8 +286,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               borderRadius: BorderRadius.circular(32.0),
                             ),
                             side: BorderSide(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               width: 3.0,
                             ),
                             padding: const EdgeInsets.symmetric(
@@ -309,8 +299,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           child: Text(
                             'Mettre à jour le prénom',
                             style: TextStyle(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               fontSize: 16.0,
                             ),
                           ),
@@ -330,15 +321,19 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             // Champ texte désactivé pour le nom actuel
                             Expanded(
                               child: TextFormField(
-                                enabled: false, // Désactivez le champ texte
-                                initialValue: lastName, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Nom actuel'),
+                                enabled: false,
+                                // Désactivez le champ texte
+                                initialValue: lastName,
+                                // Utilisez la valeur actuelle comme valeur initiale
+                                decoration:
+                                    InputDecoration(labelText: 'Nom actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouveau nom'),
+                                decoration:
+                                    InputDecoration(labelText: 'Nouveau nom'),
                                 onChanged: (value) {
                                   newLastName = value;
                                 },
@@ -346,7 +341,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('update_lastName-button'),
@@ -366,8 +360,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               borderRadius: BorderRadius.circular(32.0),
                             ),
                             side: BorderSide(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               width: 3.0,
                             ),
                             padding: const EdgeInsets.symmetric(
@@ -378,8 +373,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           child: Text(
                             'Mettre à jour le nom',
                             style: TextStyle(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               fontSize: 16.0,
                             ),
                           ),
@@ -399,15 +395,19 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             // Champ texte désactivé pour l'email actuel
                             Expanded(
                               child: TextFormField(
-                                enabled: false, // Désactivez le champ texte
-                                initialValue: email, // Utilisez la valeur actuelle comme valeur initiale
-                                decoration: InputDecoration(labelText: 'Email actuel'),
+                                enabled: false,
+                                // Désactivez le champ texte
+                                initialValue: email,
+                                // Utilisez la valeur actuelle comme valeur initiale
+                                decoration:
+                                    InputDecoration(labelText: 'Email actuel'),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextField(
-                                decoration: InputDecoration(labelText: 'Nouvel email'),
+                                decoration:
+                                    InputDecoration(labelText: 'Nouvel email'),
                                 onChanged: (value) {
                                   newEmail = value;
                                 },
@@ -415,7 +415,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             ),
                           ],
                         ),
-
                         SizedBox(height: 20),
                         OutlinedButton(
                           key: const Key('reset-email-button'),
@@ -435,8 +434,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               borderRadius: BorderRadius.circular(32.0),
                             ),
                             side: BorderSide(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               width: 3.0,
                             ),
                             padding: const EdgeInsets.symmetric(
@@ -447,8 +447,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           child: Text(
                             'Mettre à jour l\'email',
                             style: TextStyle(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               fontSize: 16.0,
                             ),
                           ),
@@ -464,7 +465,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       children: [
                         // Mot de passe actuel
                         TextFormField(
-                          decoration: InputDecoration(labelText: 'Mot de passe actuel'),
+                          decoration:
+                              InputDecoration(labelText: 'Mot de passe actuel'),
                           onChanged: (value) {
                             currentPassword = value;
                           },
@@ -473,7 +475,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         SizedBox(height: 10), // Ajout d'un espace vertical
                         // Nouveau mot de passe
                         TextField(
-                          decoration: InputDecoration(labelText: 'Nouveau mot de passe'),
+                          decoration: InputDecoration(
+                              labelText: 'Nouveau mot de passe'),
                           onChanged: (value) {
                             newPassword = value;
                           },
@@ -482,7 +485,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         SizedBox(height: 10), // Ajout d'un espace vertical
                         // Confirmation du nouveau mot de passe
                         TextField(
-                          decoration: InputDecoration(labelText: 'Confirmation du nouveau mot de passe'),
+                          decoration: InputDecoration(
+                              labelText:
+                                  'Confirmation du nouveau mot de passe'),
                           onChanged: (value) {
                             newPasswordConfirmation = value;
                           },
@@ -495,11 +500,15 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           onPressed: () async {
                             print('currentPassword : $currentPassword');
                             print('newPassword : $newPassword');
-                            print('newPasswordConfirmation : $newPasswordConfirmation');
-                            if (currentPassword.isEmpty || newPassword.isEmpty || newPasswordConfirmation.isEmpty) {
+                            print(
+                                'newPasswordConfirmation : $newPasswordConfirmation');
+                            if (currentPassword.isEmpty ||
+                                newPassword.isEmpty ||
+                                newPasswordConfirmation.isEmpty) {
                               await MyAlertDialog.showInfoAlertDialog(
                                   context: context,
-                                  title: 'Impossible de mettre à jour le mot de passe',
+                                  title:
+                                      'Impossible de mettre à jour le mot de passe',
                                   message: 'Veuillez remplir tous les champs');
                               return;
                             }
@@ -509,8 +518,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             } else {
                               await MyAlertDialog.showInfoAlertDialog(
                                   context: context,
-                                  title: 'Les mots de passe ne correspondent pas',
-                                  message: 'Veuillez choisir le même mot de passe pour le mot de passe et la confirmation du mot de passe');
+                                  title:
+                                      'Les mots de passe ne correspondent pas',
+                                  message:
+                                      'Veuillez choisir le même mot de passe pour le mot de passe et la confirmation du mot de passe');
                             }
                           },
                           style: OutlinedButton.styleFrom(
@@ -518,8 +529,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               borderRadius: BorderRadius.circular(32.0),
                             ),
                             side: BorderSide(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               width: 3.0,
                             ),
                             padding: const EdgeInsets.symmetric(
@@ -530,8 +542,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           child: Text(
                             'Mettre à jour le mot de passe',
                             style: TextStyle(
-                              color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme.secondaryHeaderColor),
                               fontSize: 16.0,
                             ),
                           ),
@@ -539,8 +552,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ],
                     ),
                   ),
-
-
                 ],
               ),
             ),
@@ -551,12 +562,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   }
 
   Widget buildButton(
-      String text, {
-        double fontSize = 18,
-        double width = double.infinity,
-        bool isLogoutButton = false,
-        String route = '',
-      }) {
+    String text, {
+    double fontSize = 18,
+    double width = double.infinity,
+    bool isLogoutButton = false,
+    String route = '',
+  }) {
     final textColor = isLogoutButton ? Colors.black : const Color(0xFF4682B4);
 
     return Container(
