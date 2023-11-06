@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/main.dart';
-import 'package:risu/pages/login/login_functional.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
-import 'package:risu/pages/signup/signup_functional.dart';
 import 'package:risu/utils/theme.dart';
+
+import '../login/login_page.dart';
+import '../signup/signup_page.dart';
 
 class PreAuthState extends State<PreAuthPage> {
   void _signInWithGoogle() {}
@@ -59,7 +60,14 @@ class PreAuthState extends State<PreAuthPage> {
                       child: MyButton(
                         key: const Key('pre_auth-button_gotologin'),
                         onPressed: () {
-                          goToLoginPage(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const LoginPage();
+                              },
+                            ),
+                          );
                         },
                         text: "Connexion",
                       ),
@@ -69,7 +77,14 @@ class PreAuthState extends State<PreAuthPage> {
                       child: MyOutlinedButton(
                         key: const Key('pre_auth-button_gotosignup'),
                         onPressed: () {
-                          goToSignupPage(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const SignupPage();
+                              },
+                            ),
+                          );
                         },
                         text: "Inscription",
                       ),
