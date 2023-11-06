@@ -36,6 +36,8 @@ class ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 16),
                   buildButton('Paramètres', route: '/settings'),
                   const SizedBox(height: 16),
+                  buildButton('Nous contacter', route: '/contact'),
+                  const SizedBox(height: 16),
                   buildButton('Déconnexion', route: '/login'),
                 ],
               ),
