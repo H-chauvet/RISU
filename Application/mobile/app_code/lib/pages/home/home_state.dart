@@ -8,7 +8,6 @@ import '../../components/appbar.dart';
 import '../../components/bottomnavbar.dart';
 import '../../network/informations.dart';
 import '../../utils/theme.dart';
-import '../history_location/history_functional.dart';
 import '../login/login_page.dart';
 import '../profile/profile_page.dart';
 import 'home_page.dart';
@@ -65,15 +64,14 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print(didAskForProfile);
-    if (logout || userInformation == null) {
-      userInformation = null;
+    if (userInformation != null) {
       return const LoginPage();
     } else {
       return Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
           curveColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.primaryColor),
+              themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           showLogo: true,
           showBurgerMenu: true,
