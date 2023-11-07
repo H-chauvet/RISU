@@ -64,7 +64,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     print(didAskForProfile);
-    if (userInformation != null) {
+    if (userInformation == null) {
       return const LoginPage();
     } else {
       return Scaffold(
