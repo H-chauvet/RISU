@@ -24,6 +24,8 @@ class SettingsPageState extends State<SettingsPage> {
         showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: true,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -42,7 +44,7 @@ class SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
