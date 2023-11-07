@@ -24,6 +24,7 @@ class SignupPageState extends State<SignupPage> {
           context: context,
           title: 'Creation de compte',
           message: 'Please fill all the field !');
+      return false;
     }
     late http.Response response;
     try {
@@ -42,6 +43,7 @@ class SignupPageState extends State<SignupPage> {
             title: 'Connexion',
             message: 'Connection refused.');
       }
+      return false;
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -58,6 +60,7 @@ class SignupPageState extends State<SignupPage> {
             title: 'Creation de compte',
             message: 'Invalid e-mail address !');
       }
+      return false;
     }
     return false;
   }
