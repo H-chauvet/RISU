@@ -37,21 +37,22 @@ class HomePageState extends State<HomePage> {
       String? lastName = userInformation?.lastName;
       print('firstName: $firstName');
       if (firstName == null || lastName == null) {
-        await Future.delayed(Duration.zero, () {
-          MyAlertDialog.showChoiceAlertDialog(
-            context: context,
-            title: 'Profil incomplet',
-            message: 'Veuillez compléter votre profil avant de continuer.',
-            onOkName: 'Compléter le profil',
-            onOk: () {
-              Navigator.pop(context, 'OK');
-              setState(() {
-                _currentIndex = 2;
-              });
-            },
-            onCancelName: 'Annuler',
-          );
-        });
+        await MyAlertDialog.showChoiceAlertDialog(
+          context: context,
+          title: 'Profil incomplet',
+          message: 'Veuillez compléter votre profil avant de continuer.',
+          onOkName: 'Compléter le profil',
+          onCancelName: 'Annuler',
+        ).then(
+          (value) => {
+            if (value)
+              {
+                setState(() {
+                  _currentIndex = 2;
+                }),
+              }
+          },
+        );
       }
       setState(() {
         didAskForProfile = true;
@@ -61,31 +62,44 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  Future<bool> _onWillPop() async {
+    bool response = false;
+    await MyAlertDialog.showChoiceAlertDialog(
+      context: context,
+      title: "Confirmation",
+      message: "Voulez-vous vraiment quitter l'application ?",
+    ).then((value) => response = value);
+    return response;
+  }
+
   @override
   Widget build(BuildContext context) {
     print(didAskForProfile);
     if (userInformation == null) {
       return const LoginPage();
     } else {
-      return Scaffold(
-        resizeToAvoidBottomInset: true,
-        appBar: MyAppBar(
-          curveColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor),
-          showBackButton: false,
-          showLogo: true,
-          showBurgerMenu: true,
-        ),
-        body: _pages[_currentIndex],
-        bottomNavigationBar: BottomNavBar(
-          theme: context.select(
-              (ThemeProvider themeProvider) => themeProvider.currentTheme),
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
-          },
+      return WillPopScope(
+        onWillPop: _onWillPop,
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: MyAppBar(
+            curveColor: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.secondaryHeaderColor),
+            showBackButton: false,
+            showLogo: true,
+            showBurgerMenu: true,
+          ),
+          body: _pages[_currentIndex],
+          bottomNavigationBar: BottomNavBar(
+            theme: context.select(
+                (ThemeProvider themeProvider) => themeProvider.currentTheme),
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+          ),
         ),
       );
     }
