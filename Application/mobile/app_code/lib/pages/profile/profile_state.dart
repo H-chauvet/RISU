@@ -4,6 +4,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/network/informations.dart';
 import 'package:risu/pages/Settings/settings_page.dart';
 import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -72,11 +73,11 @@ class ProfilePageState extends State<ProfilePage> {
                       text: 'Déconnexion',
                       onPressed: () {
                         userInformation = null;
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return const LoginPage();
+                              return const PreAuthPage();
                             },
                           ),
                         );
