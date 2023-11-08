@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/utils/theme.dart';
 
-import '../../network/informations.dart';
-import '../../utils/theme.dart';
 import 'contact_page.dart';
 
 class ContactPageState extends State<ContactPage> {
