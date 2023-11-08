@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/pages/Settings/settings_page.dart';
-import 'package:risu/pages/Settings/settings_state.dart';
-import 'package:risu/components/drop_down_menu.dart';
+import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/main.dart';
 
 void main() {
   group('Test Settings', () {
@@ -34,8 +31,7 @@ void main() {
       await tester.tap(goToLoginFinder);
       await tester.pumpAndSettle();
 
-      Finder dropDown =
-          find.byKey(const Key('drop_down'));
+      Finder dropDown = find.byKey(const Key('drop_down'));
       await tester.tap(dropDown);
       await tester.pumpAndSettle();
 
