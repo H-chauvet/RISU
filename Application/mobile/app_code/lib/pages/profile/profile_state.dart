@@ -7,6 +7,7 @@ import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 
 import 'profile_page.dart';
 
