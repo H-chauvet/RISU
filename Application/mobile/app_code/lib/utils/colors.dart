@@ -54,7 +54,7 @@ final lightTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.primary,
+    backgroundColor: MyColors.secondary,
     selectedItemColor: Colors.white,
     unselectedItemColor: Colors.white54,
   ),
@@ -109,7 +109,7 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.secondary,
+    backgroundColor: MyColors.primary,
     selectedItemColor: Colors.white,
     unselectedItemColor: Colors.white54,
   ),

@@ -34,14 +34,14 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : null,
         centerTitle: true,
-        actions: showBurgerMenu
+        /*actions: showBurgerMenu
             ? [
                 IconButton(
                   icon: const Icon(Icons.menu),
                   onPressed: () {},
                 ),
               ]
-            : null,
+            : null,*/
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,
         elevation: 0,

@@ -42,6 +42,20 @@ case "$command" in
     sudo docker-compose up --remove-orphans
     ;;
 
+  "ds")
+    echo "Executing command Docker + server..."
+    sudo service docker start
+    sudo docker-compose build
+    sudo docker-compose up --remove-orphans
+    ;;
+
+  "fud")
+    echo "Executing command fud..."
+    sudo docker-compose down
+    sudo docker volume rm $(sudo docker volume ls -q)
+    sudo docker rmi -f $(docker images -f "dangling=true" -q)
+    ;;
+
   "mobile")
     echo "Executing command mobile"
     cd mobile/app_code

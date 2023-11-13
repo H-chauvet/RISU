@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/theme.dart';
@@ -61,15 +63,15 @@ class MyAlertDialog {
     );
   }
 
-  static Future<void> showChoiceAlertDialog({
+  static Future<bool> showChoiceAlertDialog({
     required BuildContext context,
     required String title,
     required String message,
     String onOkName = 'OK',
-    required VoidCallback onOk,
     String onCancelName = 'Cancel',
-  }) async {
-    return showDialog<void>(
+  }) {
+    Completer<bool> completer = Completer<bool>();
+    showDialog<void>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -83,17 +85,22 @@ class MyAlertDialog {
           actions: [
             TextButton(
               child: Text(onCancelName),
-              onPressed: () => Navigator.pop(context, 'Ok'),
+              onPressed: () {
+                Navigator.pop(context, false);
+                completer.complete(false);
+              },
             ),
             TextButton(
               child: Text(onOkName),
               onPressed: () {
-                onOk();
+                Navigator.pop(context, true);
+                completer.complete(true);
               },
             ),
           ],
         );
       },
     );
+    return completer.future;
   }
 }
