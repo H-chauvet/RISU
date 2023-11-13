@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/components/appbar.dart';
 
 import '../../network/informations.dart';
 import '../../utils/theme.dart';
@@ -66,6 +68,13 @@ class ContactPageState extends State<ContactPage> {
     } else {*/
     if (true) {
       return Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          showLogo: true,
+          showBurgerMenu: true,
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.colorScheme.background),
@@ -76,34 +85,6 @@ class ContactPageState extends State<ContactPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Chevron bleu pour la navigation vers /home
-                      GestureDetector(
-                        onTap: () {
-                          // Naviguer vers la route "/home"
-                          context.go('/home');
-                        },
-                        child: const Icon(
-                          Icons.chevron_left,
-                          color: Colors.blue, // Couleur du chevron
-                          size: 30.0, // Taille du chevron
-                        ),
-                      ),
-                      // Espacement entre le chevron et le logo
-
-                      // Logo RISU
-                      Expanded(
-                        child: Center(
-                          child: Image.asset(
-                            'assets/logo_noir.png',
-                            width: 200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 30),
                   Text(
                     'Nous contacter',
