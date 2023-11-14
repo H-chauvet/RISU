@@ -203,36 +203,35 @@ class ContainerCreationState extends State<ContainerCreation> {
     int height = 5;
     Tuple2<int, int> ret = const Tuple2<int, int>(0, 0);
 
-    //for (int i = 1; i < width; i++) {
-    int i = 0;
-    for (int j = 0; j < height;) {
-      int counter = 0;
-      if (objs[0].fragments[j * width + i].faces[0].materialIndex == 0) {
-        int k = 0;
-        for (k = j * width + i;
-            counter + j < height &&
-                objs[0].fragments[k].faces[0].materialIndex == 0;
-            k += width, counter++) {}
-        freeSpace.add("$i,$j,$counter");
-      }
-      if (objs[0].fragments[j * width + i].faces[0].materialIndex != 0) {
-        int size = objs[0].fragments[j * width + i].faces[0].materialIndex!;
-        if (freeSpace.isNotEmpty) {
-          ret = handleMoveLocker(freeSpace, i, j, size);
-          if (ret.item1 != -1) {
-            i = ret.item1;
-            j = ret.item2;
-          }
+    for (int i = 0; i < width; i++) {
+      for (int j = 0; j < height;) {
+        int counter = 0;
+        if (objs[0].fragments[j * width + i].faces[0].materialIndex == 0) {
+          int k = 0;
+          for (k = j * width + i;
+              counter + j < height &&
+                  objs[0].fragments[k].faces[0].materialIndex == 0;
+              k += width, counter++) {}
+          freeSpace.add("$i,$j,$counter");
         }
-        j += size;
-      } else {
-        j += counter;
-      }
-      if (j == height) {
-        break;
+        if (objs[0].fragments[j * width + i].faces[0].materialIndex != 0) {
+          int size = objs[0].fragments[j * width + i].faces[0].materialIndex!;
+          if (freeSpace.isNotEmpty) {
+            ret = handleMoveLocker(freeSpace, i, j, size);
+            if (ret.item1 != -1) {
+              i = ret.item1;
+              j = ret.item2;
+            }
+          }
+          j += size;
+        } else {
+          j += counter;
+        }
+        if (j == height) {
+          break;
+        }
       }
     }
-    //}
   }
 
   void rotateBack() {
