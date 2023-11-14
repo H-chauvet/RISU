@@ -9,6 +9,7 @@ import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_3d/simple_3d.dart';
+import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:front/network/informations.dart';
@@ -138,6 +139,100 @@ class ContainerCreationState extends State<ContainerCreation> {
       actualRotationDegree =
           double.parse(actualRotationDegree.toStringAsFixed(2));
     }
+  }
+
+  void moveLocker(int x, int y, int size, int oldX, int oldY) {
+    for (int i = 0; i < size; i++) {
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[0].materialIndex = 0;
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[1].materialIndex = 0;
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[2].materialIndex = 0;
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[3].materialIndex = 0;
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[4].materialIndex = 0;
+      objs[0].fragments[oldX + (oldY + i) * 12].faces[5].materialIndex = 0;
+      objs[0].fragments[x + (y + i) * 12].faces[0].materialIndex = size;
+      objs[0].fragments[x + (y + i) * 12].faces[1].materialIndex = size;
+      objs[0].fragments[x + (y + i) * 12].faces[2].materialIndex = size;
+      objs[0].fragments[x + (y + i) * 12].faces[3].materialIndex = size;
+      objs[0].fragments[x + (y + i) * 12].faces[4].materialIndex = size;
+      objs[0].fragments[x + (y + i) * 12].faces[5].materialIndex = size;
+    }
+  }
+
+  void moveWholeLine(int x, int y, int counter) {
+    for (int i = y; i < 5; i++) {
+      int size = objs[0].fragments[x + i * 12].faces[0].materialIndex!;
+      objs[0].fragments[x + i * 12].faces[0].materialIndex = 0;
+      objs[0].fragments[x + i * 12].faces[1].materialIndex = 0;
+      objs[0].fragments[x + i * 12].faces[2].materialIndex = 0;
+      objs[0].fragments[x + i * 12].faces[3].materialIndex = 0;
+      objs[0].fragments[x + i * 12].faces[4].materialIndex = 0;
+      objs[0].fragments[x + i * 12].faces[5].materialIndex = 0;
+      objs[0].fragments[x + (i - counter) * 12].faces[0].materialIndex = size;
+      objs[0].fragments[x + (i - counter) * 12].faces[1].materialIndex = size;
+      objs[0].fragments[x + (i - counter) * 12].faces[2].materialIndex = size;
+      objs[0].fragments[x + (i - counter) * 12].faces[3].materialIndex = size;
+      objs[0].fragments[x + (i - counter) * 12].faces[4].materialIndex = size;
+      objs[0].fragments[x + (i - counter) * 12].faces[5].materialIndex = size;
+    }
+  }
+
+  Tuple2<int, int> handleMoveLocker(
+      List<String> freeSpace, int i, int j, int size) {
+    for (int k = 0; k < freeSpace.length; k++) {
+      List<String> coordinates = freeSpace[k].split(',');
+      int x = int.parse(coordinates[0]);
+      int y = int.parse(coordinates[1]);
+      int counter = int.parse(coordinates[2]);
+      if (x == i) {
+        moveWholeLine(i, j, counter);
+        freeSpace.removeAt(k);
+        return Tuple2(x, y);
+      }
+      if (counter >= size) {
+        moveLocker(x, y, size, i, j);
+        freeSpace.removeAt(k);
+        return Tuple2(x, y);
+      }
+    }
+    return const Tuple2(-1, -1);
+  }
+
+  void autoFillContainer(String face) {
+    List<String> freeSpace = [];
+    int width = 12;
+    int height = 5;
+    Tuple2<int, int> ret = const Tuple2<int, int>(0, 0);
+
+    //for (int i = 1; i < width; i++) {
+    int i = 0;
+    for (int j = 0; j < height;) {
+      int counter = 0;
+      if (objs[0].fragments[j * width + i].faces[0].materialIndex == 0) {
+        int k = 0;
+        for (k = j * width + i;
+            counter + j < height &&
+                objs[0].fragments[k].faces[0].materialIndex == 0;
+            k += width, counter++) {}
+        freeSpace.add("$i,$j,$counter");
+      }
+      if (objs[0].fragments[j * width + i].faces[0].materialIndex != 0) {
+        int size = objs[0].fragments[j * width + i].faces[0].materialIndex!;
+        if (freeSpace.isNotEmpty) {
+          ret = handleMoveLocker(freeSpace, i, j, size);
+          if (ret.item1 != -1) {
+            i = ret.item1;
+            j = ret.item2;
+          }
+        }
+        j += size;
+      } else {
+        j += counter;
+      }
+      if (j == height) {
+        break;
+      }
+    }
+    //}
   }
 
   void rotateBack() {
@@ -316,7 +411,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                       child: Container(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            autoFillContainer('');
+                          },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               shape: RoundedRectangleBorder(
