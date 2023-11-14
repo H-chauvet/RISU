@@ -286,57 +286,115 @@ class ContainerCreationState extends State<ContainerCreation> {
             )
           ],
         ),
-        body: Row(
-          children: [
-            const SizedBox(
-              width: 50,
-            ),
-            Flexible(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: FractionallySizedBox(
-                  widthFactor: 0.7,
-                  heightFactor: 0.7,
-                  child: InteractivePanel(
-                    callback: updateCube,
-                    rotateFrontCallback: rotateFront,
-                    rotateBackCallback: rotateBack,
-                    rotateLeftCallback: rotateLeftSide,
-                    rotateRightCallback: rotateRightSide,
+        body: Stack(children: [
+          Row(
+            children: [
+              const SizedBox(
+                width: 50,
+              ),
+              Flexible(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: 0.7,
+                    heightFactor: 0.7,
+                    child: InteractivePanel(
+                      callback: updateCube,
+                      rotateFrontCallback: rotateFront,
+                      rotateBackCallback: rotateBack,
+                      rotateLeftCallback: rotateLeftSide,
+                      rotateRightCallback: rotateRightSide,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Column(
-              children: [
-                Sp3dRenderer(
-                  const Size(800, 800),
-                  const Sp3dV2D(400, 400),
-                  world,
-                  // If you want to reduce distortion, shoot from a distance at high magnification.
-                  Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                  Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                  allowUserWorldRotation: false,
-                  allowUserWorldZoom: false,
-                ),
-              ],
-            ),
-            Flexible(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.7,
-                    child: RecapPanel(
-                      articles: lockers,
-                      onSaved: goNext,
-                    )),
+              Column(
+                children: [
+                  Flexible(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text('Remplissage',
+                                  style: TextStyle(color: Colors.white)),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              IconButton(
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.only(bottom: 3.0),
+                                onPressed: () {
+                                  // Action à effectuer lors du clic sur l'icône
+                                },
+                                icon: const Icon(Icons.info),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        /*ElevatedButton(
+                          onPressed: () {
+                            debugPrint("remplissage");
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Text('Remplissage',
+                                    style: TextStyle(color: Colors.white)),
+                                IconButton(
+                                    onPressed: () {
+                                      debugPrint("icon");
+                                    },
+                                    icon: const Icon(Icons.info))
+                              ]),
+                        ),*/
+                      ),
+                    ),
+                  ),
+                  Sp3dRenderer(
+                    const Size(800, 800),
+                    const Sp3dV2D(400, 400),
+                    world,
+                    // If you want to reduce distortion, shoot from a distance at high magnification.
+                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                    allowUserWorldRotation: false,
+                    allowUserWorldZoom: false,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(
-              width: 50,
-            )
-          ],
-        ));
+              Flexible(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FractionallySizedBox(
+                      widthFactor: 0.7,
+                      heightFactor: 0.7,
+                      child: RecapPanel(
+                        articles: lockers,
+                        onSaved: goNext,
+                      )),
+                ),
+              ),
+              const SizedBox(
+                width: 50,
+              )
+            ],
+          )
+        ]));
   }
 }
