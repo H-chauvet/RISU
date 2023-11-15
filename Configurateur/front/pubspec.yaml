@@ -84,6 +84,13 @@ flutter:
      - assets/container.png
      - assets/3d_logo.png
      - assets/cube.png
+     - assets/henri.png
+     - assets/louis.png
+     - assets/hugo.png
+     - assets/quentin.png
+     - assets/tanguy.png
+     - assets/cédric.png
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
