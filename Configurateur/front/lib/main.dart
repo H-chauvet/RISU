@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/progress_bar.dart';
-import 'package:front/components/recap_panel.dart';
-
-import 'screens/register/register.dart';
+import 'package:provider/provider.dart';
 import './app_routes.dart';
-import 'screens/login/login.dart';
-import 'screens/contact/contact.dart';
+import 'styles/colors.dart';
+import 'services/theme_service.dart';
 
 void main() async {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider<ThemeService>(
+      create: (context) => ThemeService(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,18 +24,7 @@ class MyApp extends StatelessWidget {
       routeInformationParser: AppRouter.router.routeInformationParser,
       routerDelegate: AppRouter.router.routerDelegate,
       title: 'Risu',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
+      theme: Provider.of<ThemeService>(context).isDark ? darkTheme : lightTheme,
     );
   }
 }
