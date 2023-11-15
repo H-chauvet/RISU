@@ -12,7 +12,11 @@ import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
+import 'package:front/components/dialog/container_dialog.dart';
+
 import 'package:front/network/informations.dart';
+
+import '../../components/dialog/autofill_dialog.dart';
 
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
@@ -141,56 +145,116 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void moveLocker(int x, int y, int size, int oldX, int oldY) {
+  void moveLocker(
+      int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[0].materialIndex = 0;
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[1].materialIndex = 0;
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[2].materialIndex = 0;
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[3].materialIndex = 0;
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[4].materialIndex = 0;
-      objs[0].fragments[oldX + (oldY + i) * 12].faces[5].materialIndex = 0;
-      objs[0].fragments[x + (y + i) * 12].faces[0].materialIndex = size;
-      objs[0].fragments[x + (y + i) * 12].faces[1].materialIndex = size;
-      objs[0].fragments[x + (y + i) * 12].faces[2].materialIndex = size;
-      objs[0].fragments[x + (y + i) * 12].faces[3].materialIndex = size;
-      objs[0].fragments[x + (y + i) * 12].faces[4].materialIndex = size;
-      objs[0].fragments[x + (y + i) * 12].faces[5].materialIndex = size;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[0]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[1]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[2]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[3]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[4]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .faces[5]
+          .materialIndex = 0;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[0]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[1]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[2]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[3]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[4]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .faces[5]
+          .materialIndex = size;
     }
   }
 
-  void moveWholeLine(int x, int y, int counter) {
+  void moveWholeLine(int x, int y, int counter, int fragmentIncrement) {
     for (int i = y; i < 5; i++) {
       int size = objs[0].fragments[x + i * 12].faces[0].materialIndex!;
-      objs[0].fragments[x + i * 12].faces[0].materialIndex = 0;
-      objs[0].fragments[x + i * 12].faces[1].materialIndex = 0;
-      objs[0].fragments[x + i * 12].faces[2].materialIndex = 0;
-      objs[0].fragments[x + i * 12].faces[3].materialIndex = 0;
-      objs[0].fragments[x + i * 12].faces[4].materialIndex = 0;
-      objs[0].fragments[x + i * 12].faces[5].materialIndex = 0;
-      objs[0].fragments[x + (i - counter) * 12].faces[0].materialIndex = size;
-      objs[0].fragments[x + (i - counter) * 12].faces[1].materialIndex = size;
-      objs[0].fragments[x + (i - counter) * 12].faces[2].materialIndex = size;
-      objs[0].fragments[x + (i - counter) * 12].faces[3].materialIndex = size;
-      objs[0].fragments[x + (i - counter) * 12].faces[4].materialIndex = size;
-      objs[0].fragments[x + (i - counter) * 12].faces[5].materialIndex = size;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[0].materialIndex =
+          0;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[1].materialIndex =
+          0;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[2].materialIndex =
+          0;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[3].materialIndex =
+          0;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[4].materialIndex =
+          0;
+      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[5].materialIndex =
+          0;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[0]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[1]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[2]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[3]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[4]
+          .materialIndex = size;
+      objs[0]
+          .fragments[x + (i - counter) * 12 + fragmentIncrement]
+          .faces[5]
+          .materialIndex = size;
     }
   }
 
   Tuple2<int, int> handleMoveLocker(
-      List<String> freeSpace, int i, int j, int size) {
+      List<String> freeSpace, int i, int j, int fragmentIncrement, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
-      debugPrint("freeSpace $freeSpace");
       List<String> coordinates = freeSpace[k].split(',');
       int x = int.parse(coordinates[0]);
       int y = int.parse(coordinates[1]);
       int counter = int.parse(coordinates[2]);
       if (x == i) {
-        moveWholeLine(i, j, counter);
+        moveWholeLine(i, j, fragmentIncrement, counter);
         freeSpace.removeAt(k);
         return Tuple2(x, y);
       }
       if (counter >= size) {
-        moveLocker(x, y, size, i, j);
+        moveLocker(x, y, size, i, j, fragmentIncrement);
         freeSpace.clear();
         return const Tuple2(0, 0);
       }
@@ -198,7 +262,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return const Tuple2(-1, -1);
   }
 
-  void autoFillContainer(String face) {
+  void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
     int width = 12;
     int height = 5;
@@ -206,20 +270,30 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height;) {
-        debugPrint("i: $i, j: $j");
         int counter = 0;
-        if (objs[0].fragments[j * width + i].faces[0].materialIndex == 0) {
+        if (objs[0]
+                .fragments[j * width + i + fragmentIncrement]
+                .faces[0]
+                .materialIndex ==
+            0) {
           int k = 0;
-          for (k = j * width + i;
+          for (k = j * width + i + fragmentIncrement;
               counter + j < height &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
               k += width, counter++) {}
           freeSpace.add("$i,$j,$counter");
         }
-        if (objs[0].fragments[j * width + i].faces[0].materialIndex != 0) {
-          int size = objs[0].fragments[j * width + i].faces[0].materialIndex!;
+        if (objs[0]
+                .fragments[j * width + i + fragmentIncrement]
+                .faces[0]
+                .materialIndex !=
+            0) {
+          int size = objs[0]
+              .fragments[j * width + i + fragmentIncrement]
+              .faces[0]
+              .materialIndex!;
           if (freeSpace.isNotEmpty) {
-            ret = handleMoveLocker(freeSpace, i, j, size);
+            ret = handleMoveLocker(freeSpace, i, j, fragmentIncrement, size);
             if (ret.item1 != -1) {
               i = ret.item1;
               j = ret.item2;
@@ -234,6 +308,24 @@ class ContainerCreationState extends State<ContainerCreation> {
         }
       }
     }
+  }
+
+  void autoFillContainer(String face) {
+    int fragmentIncrement = 0;
+
+    if (face == 'Derrière') {
+      fragmentIncrement = 60;
+    }
+
+    autoFilling(fragmentIncrement);
+
+    if (face == "Toutes") {
+      fragmentIncrement = 60;
+      autoFilling(fragmentIncrement);
+    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   void rotateBack() {
@@ -412,55 +504,20 @@ class ContainerCreationState extends State<ContainerCreation> {
                       child: Container(
                         padding: const EdgeInsets.only(top: 20.0),
                         child: ElevatedButton(
-                          onPressed: () {
-                            autoFillContainer('');
+                          onPressed: () async {
+                            String face = await showDialog(
+                                context: context,
+                                builder: (context) => AutoFillDialog(
+                                    callback: autoFillContainer));
+                            autoFillContainer(face);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0))),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Remplissage',
-                                  style: TextStyle(color: Colors.white)),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              IconButton(
-                                alignment: Alignment.center,
-                                padding: const EdgeInsets.only(bottom: 3.0),
-                                onPressed: () {
-                                  // Action à effectuer lors du clic sur l'icône
-                                },
-                                icon: const Icon(Icons.info),
-                              ),
-                            ],
-                          ),
+                          child: const Text('Remplissage',
+                              style: TextStyle(color: Colors.white)),
                         ),
-
-                        /*ElevatedButton(
-                          onPressed: () {
-                            debugPrint("remplissage");
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text('Remplissage',
-                                    style: TextStyle(color: Colors.white)),
-                                IconButton(
-                                    onPressed: () {
-                                      debugPrint("icon");
-                                    },
-                                    icon: const Icon(Icons.info))
-                              ]),
-                        ),*/
                       ),
                     ),
                   ),
@@ -471,7 +528,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                     // If you want to reduce distortion, shoot from a distance at high magnification.
                     Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
                     Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: false,
+                    allowUserWorldRotation: true,
                     allowUserWorldZoom: false,
                   ),
                 ],
