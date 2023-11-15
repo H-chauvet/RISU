@@ -179,6 +179,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   Tuple2<int, int> handleMoveLocker(
       List<String> freeSpace, int i, int j, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
+      debugPrint("freeSpace $freeSpace");
       List<String> coordinates = freeSpace[k].split(',');
       int x = int.parse(coordinates[0]);
       int y = int.parse(coordinates[1]);
@@ -190,8 +191,8 @@ class ContainerCreationState extends State<ContainerCreation> {
       }
       if (counter >= size) {
         moveLocker(x, y, size, i, j);
-        freeSpace.removeAt(k);
-        return Tuple2(x, y);
+        freeSpace.clear();
+        return const Tuple2(0, 0);
       }
     }
     return const Tuple2(-1, -1);
@@ -205,6 +206,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     for (int i = 0; i < width; i++) {
       for (int j = 0; j < height;) {
+        debugPrint("i: $i, j: $j");
         int counter = 0;
         if (objs[0].fragments[j * width + i].faces[0].materialIndex == 0) {
           int k = 0;
