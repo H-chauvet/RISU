@@ -11,6 +11,7 @@ import 'package:front/screens/register/register.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
+import 'package:front/screens/company/company.dart';
 import 'package:go_router/go_router.dart';
 
 ///
@@ -112,6 +113,12 @@ class AppRouter {
         path: '/confidentiality',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ConfidentialityPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/company',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyPage(),
         ),
       ),
     ],

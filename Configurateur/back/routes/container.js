@@ -46,6 +46,19 @@ router.delete('/delete', async function (req, res, next) {
   }
 })
 
+router.post('/create-ctn', async (req, res, next) => {
+  try {
+    const { containerMapping } = req.body
+    const container = await containerCtrl.createContainer2(
+      { containerMapping,
+    })
+    res.status(200).json('container created')
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
+})
+
 router.post('/create', async function (req, res, next) {
   try {
     console.log(req.headers.authorization)
@@ -90,6 +103,17 @@ router.put('/update', async function (req, res, next) {
     res.status(200).json('container updated')
   } catch (err) {
     next(err)
+  }
+})
+
+router.get('/list-container', async (req, res) => {
+  try {
+    // const container = await containerCtrl.()
+    const container = await containerCtrl.getAllContainer()
+    return res.json(container)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
   }
 })
 
