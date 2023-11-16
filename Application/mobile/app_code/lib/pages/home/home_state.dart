@@ -84,7 +84,7 @@ class HomePageState extends State<HomePage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           showLogo: true,
-          showBurgerMenu: true,
+          showBurgerMenu: false,
         ),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
