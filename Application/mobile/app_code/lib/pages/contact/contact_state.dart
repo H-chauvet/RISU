@@ -5,12 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/components/appbar.dart';
 
 import '../../network/informations.dart';
 import '../../utils/theme.dart';
 import 'contact_page.dart';
-
 
 class ContactPageState extends State<ContactPage> {
   String? _name;
@@ -31,9 +32,7 @@ class ContactPageState extends State<ContactPage> {
     } catch (err) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Connection refused.');
+            context: context, title: 'Contact', message: 'Connection refused.');
         print(err);
         print(response.statusCode);
       }
@@ -41,9 +40,7 @@ class ContactPageState extends State<ContactPage> {
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Message envoyé.');
+            context: context, title: 'Contact', message: 'Message envoyé.');
         return true;
       }
     } else {
@@ -71,9 +68,16 @@ class ContactPageState extends State<ContactPage> {
     } else {*/
     if (true) {
       return Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          showLogo: true,
+          showBurgerMenu: true,
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.colorScheme.background),
+            themeProvider.currentTheme.colorScheme.background),
         body: SingleChildScrollView(
           child: Center(
             child: Container(
@@ -81,34 +85,6 @@ class ContactPageState extends State<ContactPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Chevron bleu pour la navigation vers /home
-                      GestureDetector(
-                        onTap: () {
-                          // Naviguer vers la route "/home"
-                          context.go('/home');
-                        },
-                        child: const Icon(
-                          Icons.chevron_left,
-                          color: Colors.blue, // Couleur du chevron
-                          size: 30.0, // Taille du chevron
-                        ),
-                      ),
-                      // Espacement entre le chevron et le logo
-
-                      // Logo RISU
-                      Expanded(
-                        child: Center(
-                          child: Image.asset(
-                            'assets/logo_noir.png',
-                            width: 200,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 30),
                   Text(
                     'Nous contacter',
@@ -117,11 +93,11 @@ class ContactPageState extends State<ContactPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
                       color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                          themeProvider.currentTheme.secondaryHeaderColor),
                       shadows: [
                         Shadow(
                           color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
+                              themeProvider.currentTheme.secondaryHeaderColor),
                           blurRadius: 24,
                           offset: const Offset(0, 4),
                         ),
@@ -131,6 +107,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 42),
                   MyTextInput(
+                    key: const Key('name'),
                     labelText: "Nom",
                     keyboardType: TextInputType.name,
                     icon: Icons.person,
@@ -138,6 +115,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
+                    key: const Key('email'),
                     labelText: "Email",
                     keyboardType: TextInputType.emailAddress,
                     icon: Icons.email_outlined,
@@ -145,6 +123,7 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
+                    key: const Key('message'),
                     labelText: "Message",
                     keyboardType: TextInputType.multiline,
                     icon: Icons.message_outlined,
@@ -159,14 +138,14 @@ class ContactPageState extends State<ContactPage> {
                       print('Email : $_email');
                       print('Message : $_message');
                       if (_name != "" && _email != "" && _message != "") {
-                        apiContact(_name!, _email!, _message!).then((value) =>
-                        {
-                        });
+                        apiContact(_name!, _email!, _message!)
+                            .then((value) => {});
                       } else {
                         MyAlertDialog.showInfoAlertDialog(
                             context: context,
                             title: 'champs invalides',
-                            message: 'Veuillez entrer des informations valides.');
+                            message:
+                                'Veuillez entrer des informations valides.');
                       }
                     },
                     style: OutlinedButton.styleFrom(
@@ -175,7 +154,7 @@ class ContactPageState extends State<ContactPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.secondaryHeaderColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -187,7 +166,7 @@ class ContactPageState extends State<ContactPage> {
                       'Envoyer',
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.secondaryHeaderColor),
                         fontSize: 16.0,
                       ),
                     ),

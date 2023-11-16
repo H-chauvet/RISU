@@ -3,8 +3,12 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/network/informations.dart';
+import 'package:risu/pages/Settings/settings_page.dart';
 import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/contact/contact_page.dart';
 
 import 'profile_page.dart';
 
@@ -30,13 +34,75 @@ class ProfilePageState extends State<ProfilePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  /*! DONT USE ROUTES LIKE THIS */
                   const SizedBox(height: 16),
-                  buildButton('Informations', route: '/profile/informations'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Informations',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const ProfileInformationsPage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 16),
-                  buildButton('Paramètres', route: '/settings'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Paramètres',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const SettingsPage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 16),
-                  buildButton('Déconnexion', route: '/login'),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Nous Contacter',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const ContactPage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Déconnexion',
+                      onPressed: () {
+                        userInformation = null;
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const PreAuthPage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  )
                 ],
               ),
             ),
@@ -44,24 +110,5 @@ class ProfilePageState extends State<ProfilePage> {
         ),
       );
     }
-  }
-
-  Widget buildButton(
-    String text, {
-    double fontSize = 18,
-    double width = double.infinity,
-    String route = '',
-  }) {
-    return Container(
-      width: width,
-      child: MyOutlinedButton(
-        text: text,
-        onPressed: () {
-          if (route.isNotEmpty) {
-            context.go(route);
-          }
-        },
-      ),
-    );
   }
 }

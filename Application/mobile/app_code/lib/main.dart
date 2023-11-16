@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/router.dart';
+import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +11,6 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
-
 
   runApp(
     ChangeNotifierProvider(
@@ -26,13 +25,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Risu',
       theme: context
           .select((ThemeProvider themeProvider) => themeProvider.currentTheme),
-      routeInformationProvider: router.routeInformationProvider,
-      routeInformationParser: router.routeInformationParser,
-      routerDelegate: router.routerDelegate,
+      home: const PreAuthPage(),
     );
   }
 }

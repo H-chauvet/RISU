@@ -8,12 +8,12 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/network/informations.dart';
-import 'package:risu/pages/home/home_functional.dart';
-import 'package:risu/pages/signup/signup_functional.dart';
+import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
 
+import '../home/home_page.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -241,8 +241,14 @@ class LoginPageState extends State<LoginPage> {
                 apiLogin().then((value) => {
                       if (value)
                         {
-                          logout = false,
-                          goToHomePage(context),
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const HomePage();
+                              },
+                            ),
+                          ),
                         }
                     });
               },
@@ -272,7 +278,14 @@ class LoginPageState extends State<LoginPage> {
             TextButton(
               key: const Key('login-textbutton_gotosignup'),
               onPressed: () {
-                goToSignupPage(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const SignupPage();
+                    },
+                  ),
+                );
               },
               child: Text(
                 'Pas de compte ? S\'inscrire',
