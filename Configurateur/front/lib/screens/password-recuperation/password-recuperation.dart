@@ -77,18 +77,16 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Expanded(
-                              child: LocalCaptcha(
-                                key: ValueKey(configFormData.toString()),
-                                controller: captchaController,
-                                height: 50,
-                                width: 350,
-                                backgroundColor: Colors.grey[100]!,
-                                chars: configFormData.chars,
-                                length: configFormData.length,
-                                caseSensitive: true,
-                                codeExpireAfter: const Duration(minutes: 10),
-                              ),
+                            LocalCaptcha(
+                              key: ValueKey(configFormData.toString()),
+                              controller: captchaController,
+                              height: 50,
+                              width: 350,
+                              backgroundColor: Colors.grey[100]!,
+                              chars: configFormData.chars,
+                              length: configFormData.length,
+                              caseSensitive: true,
+                              codeExpireAfter: const Duration(minutes: 10),
                             ),
                             const SizedBox(width: 10.0),
                             SizedBox(
