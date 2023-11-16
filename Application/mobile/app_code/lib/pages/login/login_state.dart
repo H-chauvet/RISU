@@ -44,6 +44,7 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err) {
+      print(err);
       if (context.mounted) {
         await MyAlertDialog.showErrorAlertDialog(
             key: const Key('login-alertdialog_connectionrefused'),
@@ -71,6 +72,7 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err) {
+        print(err);
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
               key: const Key('login-alertdialog_invalidtoken'),
@@ -103,6 +105,7 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err) {
+        print(err);
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
               key: const Key('login-alertdialog_error'),

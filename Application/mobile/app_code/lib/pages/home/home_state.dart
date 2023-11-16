@@ -91,10 +91,10 @@ class HomePageState extends State<HomePage> {
           theme: context.select(
               (ThemeProvider themeProvider) => themeProvider.currentTheme),
           currentIndex: _currentIndex,
-          onTap: (index) {
+          onTap: (index) async {
             if (index == 2) {
-              bool signIn = checkSignin(context);
-              if (signIn == false) {
+              bool signIn = await checkSignin(context);
+              if (!signIn) {
                 return;
               }
             }
