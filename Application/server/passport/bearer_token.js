@@ -1,7 +1,7 @@
 const { Strategy, ExtractJwt } = require('passport-jwt')
 const passport = require('passport')
 const database = require('../database_init')
-require('dotenv').config({ path: '../application.env' })
+require('dotenv').config({ path: '../.env' })
 
 /**
  * Strategy options needed by passport
