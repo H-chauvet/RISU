@@ -244,13 +244,14 @@ class LoginPageState extends State<LoginPage> {
                 apiLogin().then((value) => {
                       if (value)
                         {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
                                 return const HomePage();
                               },
                             ),
+                            (route) => false,
                           ),
                         }
                     });
