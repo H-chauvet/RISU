@@ -75,8 +75,9 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            /*LocalCaptcha(
+                            LocalCaptcha(
                               key: ValueKey(configFormData.toString()),
                               controller: captchaController,
                               height: 50,
@@ -86,7 +87,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                               length: configFormData.length,
                               caseSensitive: true,
                               codeExpireAfter: const Duration(minutes: 10),
-                            ),*/
+                            ),
                             const SizedBox(width: 10.0),
                             SizedBox(
                               height: 20.0,
