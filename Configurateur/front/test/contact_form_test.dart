@@ -4,6 +4,8 @@ import 'package:front/screens/contact/contact.dart';
 
 void main() {
   testWidgets('no data', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(const MaterialApp(home: ContactPage()));
 
     await tester.tap(find.text('Envoyer'));
@@ -16,6 +18,8 @@ void main() {
   });
 
   testWidgets('correct data', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(const MaterialApp(home: ContactPage()));
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
@@ -32,6 +36,8 @@ void main() {
   });
 
   testWidgets('correct data bis', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(MaterialApp(home: ContactPage()));
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
