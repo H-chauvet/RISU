@@ -3,10 +3,12 @@ services:
   database:
     build: ./server/database
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - .:/code
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     networks:
@@ -25,10 +27,9 @@ services:
       database:
         condition: service_healthy
     env_file:
-      - server/application.env
+      - .env
     environment:
       - IS_MIGRATION=true #SET TO true when a migration needed
-      - DATABASE_URL=mysql://root:password@database:3306/test
     volumes:
       - .:/code
     stdin_open: true
@@ -36,12 +37,12 @@ services:
     networks:
       - database_net
 
-  client_mobile:
-    build:
-      context: ./mobile
-      dockerfile: Dockerfile
-    volumes:
-      - common:/apk
+  # client_mobile:
+  #   build:
+  #     context: ./mobile
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - common:/apk
 volumes:
   common:
 

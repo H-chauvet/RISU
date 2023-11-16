@@ -5,7 +5,7 @@
     "main": "server.js",
     "scripts": {
         "start": "node server.js",
-        "migration": "dotenv -e application.env -- prisma migrate reset --force && dotenv -e application.env -- npx prisma migrate dev --name init",
+        "migration": "dotenv -e .env -- prisma migrate reset --force && dotenv -e .env -- npx prisma migrate dev --name init",
         "test": "jest"
     },
     "author": "Tanguy Bellicha <tanguy.bellicha@epitech.eu>",
