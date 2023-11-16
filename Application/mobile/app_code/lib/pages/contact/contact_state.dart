@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
@@ -61,6 +62,13 @@ class ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: false,
+        showLogo: true,
+        showBurgerMenu: true,
+      ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),

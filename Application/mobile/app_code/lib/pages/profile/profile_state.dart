@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
@@ -56,6 +57,23 @@ class ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const SettingsPage();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    text: 'Nous contacter',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const ContactPage();
                           },
                         ),
                       );
