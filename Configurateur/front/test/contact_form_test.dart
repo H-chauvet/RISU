@@ -4,7 +4,7 @@ import 'package:front/screens/contact/contact.dart';
 
 void main() {
   testWidgets('no data', (WidgetTester tester) async {
-    tester.binding.setSurfaceSize(const Size(1920, 1080));
+    await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
     await tester.pumpWidget(const MaterialApp(home: ContactPage()));
 
@@ -15,11 +15,11 @@ void main() {
     expect(find.text('Veuillez entrer votre nom'), findsOneWidget);
     expect(find.text('Veuillez entrer votre email'), findsOneWidget);
     expect(find.text('Veuillez entrer votre message'), findsOneWidget);
-    tester.binding.setSurfaceSize(null);
+    await tester.binding.setSurfaceSize(null);
   });
 
   testWidgets('correct data', (WidgetTester tester) async {
-    tester.binding.setSurfaceSize(const Size(1920, 1080));
+    await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(const MaterialApp(home: ContactPage()));
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
@@ -33,11 +33,11 @@ void main() {
     expect(find.text('Veuillez entrer votre prénom'), findsNothing);
     expect(find.text('Veuillez entrer votre nom'), findsNothing);
     expect(find.text('Veuillez entrer votre message'), findsNothing);
-    tester.binding.setSurfaceSize(null);
+    await tester.binding.setSurfaceSize(null);
   });
 
   testWidgets('correct data bis', (WidgetTester tester) async {
-    tester.binding.setSurfaceSize(const Size(1920, 1080));
+    await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(MaterialApp(home: ContactPage()));
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
@@ -51,6 +51,6 @@ void main() {
     expect(find.text('Veuillez entrer votre prénom'), findsNothing);
     expect(find.text('Veuillez entrer votre nom'), findsNothing);
     expect(find.text('Veuillez entrer votre message'), findsNothing);
-    tester.binding.setSurfaceSize(null);
+    await tester.binding.setSurfaceSize(null);
   });
 }

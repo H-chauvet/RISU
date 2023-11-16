@@ -20,8 +20,7 @@ void main() {
 
   testWidgets('Password recuperation screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    tester.binding.window.physicalSizeTestValue = const Size(5500, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+    await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
     await tester.pumpWidget(
         createWidgetForTesting(child: const PasswordRecuperation()));
@@ -36,5 +35,6 @@ void main() {
     await tester.enterText(find.byKey(const Key('email')), 'test@gmail.com');
     await tester.tap(find.byKey(const Key('submit')));
     await tester.pumpAndSettle();
+    await tester.binding.setSurfaceSize(null);
   });
 }
