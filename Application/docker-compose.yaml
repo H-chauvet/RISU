@@ -36,12 +36,12 @@ services:
     networks:
       - database_net
 
-  # client_mobile:
-  #   build:
-  #     context: ./mobile
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - common:/apk
+  client_mobile:
+    build:
+      context: ./mobile
+      dockerfile: Dockerfile
+    volumes:
+      - common:/apk
 volumes:
   common:
 
