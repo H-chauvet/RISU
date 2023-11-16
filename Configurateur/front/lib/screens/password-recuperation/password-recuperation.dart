@@ -82,7 +82,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                                 key: ValueKey(configFormData.toString()),
                                 controller: captchaController,
                                 height: 50,
-                                width: 200,
+                                width: 350,
                                 backgroundColor: Colors.grey[100]!,
                                 chars: configFormData.chars,
                                 length: configFormData.length,
