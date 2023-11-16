@@ -20,7 +20,7 @@ void main() {
 
   testWidgets('Password recuperation screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    tester.binding.window.physicalSizeTestValue = const Size(8000, 8000);
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     await tester.pumpWidget(
