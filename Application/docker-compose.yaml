@@ -24,8 +24,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     env_file:
       - .env
     environment:
