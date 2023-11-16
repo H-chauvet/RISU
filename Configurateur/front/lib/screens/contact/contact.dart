@@ -103,7 +103,6 @@ class _ContactPageState extends State<ContactPage> {
                   _email = value!;
                 },
               ),
-
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Message'),
                 maxLines: 5,
@@ -117,29 +116,24 @@ class _ContactPageState extends State<ContactPage> {
                   _message = value!;
                 },
               ),
-              const SizedBox(
-                  height:
-                      16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     sendFormData(_surname, _name, _email, _message);
-                  } else {
-                  }
+                  } else {}
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 child: const Text(
                   'Envoyer',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],
