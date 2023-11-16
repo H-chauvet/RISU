@@ -43,7 +43,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.4,
+                widthFactor: 0.5,
                 heightFactor: 0.7,
                 child: Form(
                     key: formKey,
