@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/container_dialog.dart';
+import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/services/locker_service.dart';
 
 class InteractivePanel extends StatefulWidget {

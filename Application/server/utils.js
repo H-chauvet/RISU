@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-require('dotenv').config({ path: 'application.env' })
+require('dotenv').config({ path: '../.env' })
 
 /**
  * A classic function to hash password
