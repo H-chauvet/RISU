@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/utils/colors.dart';
 import 'package:risu/utils/theme.dart';
 
 class MyAlertDialog {
@@ -84,14 +85,23 @@ class MyAlertDialog {
           content: Text(message),
           actions: [
             TextButton(
-              child: Text(onCancelName),
+              child: Text(
+                onCancelName,
+                style: const TextStyle(
+                  color: MyColors.alertDialogChoiceCancel,
+                ),
+              ),
               onPressed: () {
                 Navigator.pop(context, false);
                 completer.complete(false);
               },
             ),
             TextButton(
-              child: Text(onOkName),
+              child: Text(onOkName,
+                  style: TextStyle(
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.dialogTheme.titleTextStyle
+                              ?.color))),
               onPressed: () {
                 Navigator.pop(context, true);
                 completer.complete(true);
