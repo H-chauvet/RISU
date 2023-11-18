@@ -56,7 +56,12 @@ class _ContactPageState extends State<ContactPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Prénom'),
+                      decoration: InputDecoration(
+                        labelText: 'Prénom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre prénom';
@@ -71,7 +76,12 @@ class _ContactPageState extends State<ContactPage> {
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Nom'),
+                      decoration: InputDecoration(
+                        labelText: 'Nom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre nom';
@@ -88,7 +98,12 @@ class _ContactPageState extends State<ContactPage> {
               ),
               const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Veuillez entrer votre email';
@@ -103,8 +118,14 @@ class _ContactPageState extends State<ContactPage> {
                   _email = value!;
                 },
               ),
+              const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Message'),
+                decoration: InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 maxLines: 5,
                 validator: (value) {
                   if (value!.isEmpty) {
