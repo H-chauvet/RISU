@@ -23,7 +23,7 @@ router.post('/login', async function (req, res, next) {
     const accessToken = jwtMiddleware.generateAccessToken(user)
 
     res.json({
-      accessToken,
+      accessToken
     })
   } catch (err) {
     next(err)
