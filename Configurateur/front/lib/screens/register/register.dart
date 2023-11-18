@@ -227,7 +227,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           ),
                           child: const Text(
                             "S'inscrire",
-                            style: TextStyle(fontSize: 18),
+                            //style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ),

@@ -6,6 +6,10 @@ final lightTheme = ThemeData(
   secondaryHeaderColor: const Color(0xff4682B4),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xff4682B4),
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 40,
+    ),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color(0xff4682B4),
@@ -13,13 +17,20 @@ final lightTheme = ThemeData(
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black,
   ),
-  inputDecorationTheme: const InputDecorationTheme(
-    labelStyle: TextStyle(
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: const TextStyle(
       color: Colors.grey,
     ),
-    focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.black,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      borderSide: const BorderSide(
+        color: Color.fromRGBO(126, 132, 138, 1),
+      ),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      borderSide: const BorderSide(
+        color: Color.fromRGBO(126, 132, 138, 1),
       ),
     ),
   ),
@@ -31,9 +42,16 @@ final lightTheme = ThemeData(
     textTheme: ButtonTextTheme.normal,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
-  )),
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all<TextStyle>(
+        const TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+    ),
+  ),
   colorScheme: const ColorScheme.light(
     background: Color.fromARGB(255, 255, 255, 255),
   ),
@@ -45,16 +63,21 @@ final darkTheme = ThemeData(
   secondaryHeaderColor: const Color(0xFF4682B4),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 32, 75, 110),
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 40,
+    ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     labelStyle: const TextStyle(
       color: Colors.grey,
     ),
-    /*focusedBorder: UnderlineInputBorder(
-      borderSide: BorderSide(
-        color: Colors.white70,
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      borderSide: const BorderSide(
+        color: Color.fromRGBO(126, 132, 138, 1),
       ),
-    ),*/
+    ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(30.0),
       borderSide: const BorderSide(
@@ -73,10 +96,16 @@ final darkTheme = ThemeData(
     textTheme: ButtonTextTheme.normal,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ButtonStyle(
-    backgroundColor: MaterialStateProperty.all<Color>(
-        const Color.fromARGB(255, 190, 189, 189)),
-  )),
+    style: ButtonStyle(
+      textStyle: MaterialStateProperty.all<TextStyle>(
+        const TextStyle(
+          color: Colors.black,
+        ),
+      ),
+      backgroundColor: MaterialStateProperty.all<Color>(
+          const Color.fromARGB(255, 190, 189, 189)),
+    ),
+  ),
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color.fromARGB(255, 32, 75, 110),
   ),
