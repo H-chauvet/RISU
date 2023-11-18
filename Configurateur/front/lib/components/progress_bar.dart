@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/services/theme_service.dart';
-import 'package:front/styles/colors.dart';
+import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
 ///

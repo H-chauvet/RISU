@@ -93,8 +93,6 @@ class LandingPageState extends State<LandingPage> {
     }
   }
 
-  bool darkTheme = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,16 +151,23 @@ class LandingPageState extends State<LandingPage> {
               ),
             ),
             const SizedBox(width: 250),
-            Switch(
-                value: darkTheme,
-                activeColor: Colors.blue,
-                onChanged: (bool value) {
-                  Provider.of<ThemeService>(context, listen: false)
-                      .switchTheme();
-                  setState(() {
-                    darkTheme = value;
-                  });
-                }),
+            Row(
+              children: [
+                const Text(
+                  "Mode sombre",
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(width: 5),
+                Switch(
+                    value: Provider.of<ThemeService>(context).isDark,
+                    activeColor: Colors.blue,
+                    onChanged: (bool value) {
+                      Provider.of<ThemeService>(context, listen: false)
+                          .switchTheme();
+                      setState(() {});
+                    }),
+              ],
+            ),
             const SizedBox(width: 20),
             Row(
               children: buttons(),

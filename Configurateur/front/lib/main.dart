@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './app_routes.dart';
-import 'styles/colors.dart';
+import 'styles/themes.dart';
 import 'services/theme_service.dart';
 
 void main() async {
