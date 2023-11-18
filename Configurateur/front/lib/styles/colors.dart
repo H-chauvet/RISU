@@ -113,3 +113,19 @@ final darkTheme = ThemeData(
     background: Color(0xFF1E1E1E),
   ),
 );
+
+final boxDecorationLightTheme = BoxDecoration(
+  color: Colors.grey[300],
+  borderRadius: BorderRadius.circular(10),
+);
+
+final boxDecorationDarkTheme = BoxDecoration(
+  color: Colors.grey[600],
+  borderRadius: BorderRadius.circular(10),
+);
+
+const progressBarCheckedLightTheme = Color(0xFF4682B4);
+const progressBarCheckedDarkTheme = Color.fromARGB(255, 33, 91, 138);
+
+final progressBarUncheckedLightTheme = Colors.grey[300];
+final progressBarUncheckedDarkTheme = Colors.grey[600];

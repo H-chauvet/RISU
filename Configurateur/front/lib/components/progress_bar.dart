@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/colors.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// Progress bar
@@ -20,11 +23,16 @@ class ProgressBar extends StatelessWidget {
   final VoidCallback previousFunc;
   final VoidCallback nextFunc;
 
-  Color getCorrectColor(index) {
+  Color getCorrectColor(index, context) {
     if (progress == index) {
-      return Colors.blue;
+      return Provider.of<ThemeService>(context).isDark
+          ? progressBarCheckedDarkTheme
+          : progressBarCheckedLightTheme;
     } else {
-      return Colors.grey;
+      return Provider.of<ThemeService>(context).isDark
+          ? progressBarUncheckedDarkTheme!
+          : progressBarUncheckedLightTheme!;
+      ;
     }
   }
 
@@ -33,13 +41,13 @@ class ProgressBar extends StatelessWidget {
     return SizedBox(
         child: Row(children: [
       ElevatedButton(
-          key: const Key('previous'),
-          onPressed: previousFunc,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
-          child: Text(previous, style: const TextStyle(color: Colors.white))),
+        key: const Key('previous'),
+        onPressed: previousFunc,
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
+        child: Text(previous),
+      ),
       const SizedBox(
         width: 10,
       ),
@@ -53,18 +61,18 @@ class ProgressBar extends StatelessWidget {
               width: 10,
               margin: const EdgeInsets.only(right: 10),
               decoration: BoxDecoration(
-                  color: getCorrectColor(i), shape: BoxShape.circle),
+                  color: getCorrectColor(i, context), shape: BoxShape.circle),
             )
         ],
       ),
       ElevatedButton(
-          key: const Key('terminate'),
-          onPressed: nextFunc,
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0))),
-          child: Text(next, style: const TextStyle(color: Colors.white))),
+        key: const Key('terminate'),
+        onPressed: nextFunc,
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0))),
+        child: Text(next),
+      ),
     ]));
   }
 }

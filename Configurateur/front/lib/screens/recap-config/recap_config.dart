@@ -7,9 +7,7 @@ class RecapConfigPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(70, 130, 180, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -25,30 +23,18 @@ class RecapConfigPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
                   onPressed: () {},
                   child: const Text('Accueil'),
                 ),
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
                   onPressed: () {},
                   child: const Text('Créer un conteneur'),
                 ),
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
                   onPressed: () {},
                   child: const Text('Nos offres'),
                 ),
                 TextButton(
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  ),
                   onPressed: () {},
                   child: const Text('Nous contacter'),
                 ),
@@ -59,21 +45,20 @@ class RecapConfigPage extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    primary: const Color.fromARGB(255, 190, 189, 189),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text('Mon profil',
-                      style: TextStyle(color: Colors.white)),
+                  child: const Text(
+                    'Mon profil',
+                  ),
                 ),
                 const SizedBox(width: 16.0),
                 ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    primary: const Color.fromARGB(255, 190, 189, 189),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
@@ -97,7 +82,7 @@ class RecapConfigPage extends StatelessWidget {
               height: 450,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromRGBO(70, 130, 180, 1),
+                  color: Theme.of(context).primaryColor,
                   width: 4.0,
                 ),
               ),
@@ -106,64 +91,64 @@ class RecapConfigPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
                       'Récapitulatif de commande',
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     Text(
                       'Nom du produit:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Conteneur classique',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       'Options:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Flocage(Oui) - Logo(Oui) - Couleur personnalisée(Non)',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       'Taille:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Text(
+                    const Text(
                       '8m x 4.50m x 2.50m',
                       style: TextStyle(fontSize: 16),
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       'Prix:',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    Text(
+                    const Text(
                       '6500.00 €',
                       style: TextStyle(fontSize: 16),
                     ),
@@ -186,7 +171,6 @@ class RecapConfigPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
@@ -195,8 +179,7 @@ class RecapConfigPage extends StatelessWidget {
                 ),
                 child: const Text(
                   'Retour',
-                  style: TextStyle(
-                      color: Color.fromRGBO(70, 130, 180, 1), fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
@@ -206,7 +189,6 @@ class RecapConfigPage extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  primary: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
@@ -215,8 +197,7 @@ class RecapConfigPage extends StatelessWidget {
                 ),
                 child: const Text(
                   'Payer',
-                  style: TextStyle(
-                      color: Color.fromRGBO(70, 130, 180, 1), fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
             ),
