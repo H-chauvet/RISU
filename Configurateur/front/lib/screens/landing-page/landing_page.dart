@@ -46,7 +46,7 @@ class LandingPageState extends State<LandingPage> {
   List<Widget> buttons() {
     List<Widget> list = [];
 
-    if (token != '' && userMail == "admin@gmail.com") {
+    if (token != '' && userMail == "risu.admin@gmail.com") {
       
       list.add(
         ElevatedButton(
