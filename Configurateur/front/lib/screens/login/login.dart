@@ -6,6 +6,7 @@ import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,6 +27,7 @@ class LoginScreenState extends State<LoginScreen> {
     String mail = '';
     String password = '';
     dynamic response;
+    Map<String, dynamic> decodedToken;
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -84,11 +86,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/password-recuperation");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text(
                                   'Mot de passe oublié ?',
                                   style: TextStyle(color: Colors.blue),
@@ -124,6 +126,8 @@ class LoginScreenState extends State<LoginScreen> {
                                           {
                                             response = jsonDecode(value.body),
                                             token = response['accessToken'],
+                                            decodedToken = JwtDecoder.decode(token),
+                                            userMail = decodedToken['userMail'],
                                             /*StorageService().writeStorage(
                                                 'token',
                                                 response['accessToken']),*/
@@ -149,11 +153,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/register");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text("Nouveau sur la plateforme ? "),
                                 Text(
                                   'Créer un compte.',
