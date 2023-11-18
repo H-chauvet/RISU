@@ -43,7 +43,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.4,
+                widthFactor: 0.5,
                 heightFactor: 0.7,
                 child: Form(
                     key: formKey,
@@ -75,12 +75,13 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             LocalCaptcha(
                               key: ValueKey(configFormData.toString()),
                               controller: captchaController,
                               height: 50,
-                              width: 200,
+                              width: 350,
                               backgroundColor: Colors.grey[100]!,
                               chars: configFormData.chars,
                               length: configFormData.length,
