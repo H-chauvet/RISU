@@ -20,13 +20,10 @@ class _AdminPageState extends State<AdminPage> {
   Future<void> _checkToken() async {
 
     if (token.isNotEmpty && userMail == "risu.admin@gmail.com") {
-      // Si le token est présent, faites ce que vous devez faire avec le token
-      // Par exemple, attribuez-le à jwtToken
       setState(() {
         print(token);
       });
     } else {
-      // Si le token est absent, redirigez vers la page de connexion
       context.go('/login');
     }
   }
