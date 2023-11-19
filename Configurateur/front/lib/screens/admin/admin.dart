@@ -49,6 +49,7 @@ class _AdminPageState extends State<AdminPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          key: const Key('btn-messages'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 190, 189, 189),
@@ -87,6 +88,7 @@ class _AdminPageState extends State<AdminPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          key: const Key('btn-user'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 190, 189, 189),
@@ -124,6 +126,7 @@ class _AdminPageState extends State<AdminPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ElevatedButton(
+                          key: const Key('btn-article'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
                                 const Color.fromARGB(255, 190, 189, 189),
@@ -142,7 +145,7 @@ class _AdminPageState extends State<AdminPage> {
                         ),
                         const SizedBox(height: 30),
                         const Text(
-                          "Cet onglet permet d'accéder à la liste\ndes conteneurs ayant été créés.",
+                          "Cet onglet permet d'accéder à la liste\ndes articles en service.",
                           softWrap: true,
                           maxLines: 3,
                           textAlign: TextAlign.center,
