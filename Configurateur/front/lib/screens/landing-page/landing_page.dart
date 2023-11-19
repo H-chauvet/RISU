@@ -15,10 +15,15 @@ class LandingPageState extends State<LandingPage> {
   late Function() connectedFunction;
   String inscriptionButton = '';
   late Function() inscriptionFunction;
+  String adminButton = '';
+  late Function() adminFunction;
 
   @override
   void initState() {
     super.initState();
+    adminButton = "Administration";
+    adminFunction = () => context.go("/admin");
+    
     if (token != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
@@ -41,6 +46,28 @@ class LandingPageState extends State<LandingPage> {
   List<Widget> buttons() {
     List<Widget> list = [];
 
+    if (token != '' && userMail == "risu.admin@gmail.com") {
+      
+      list.add(
+        ElevatedButton(
+          onPressed: adminFunction,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+          child: Text(
+            adminButton,
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+    }
+
+    list.add(const SizedBox(width: 20));
+    
     if (token == '') {
       list.add(
         ElevatedButton(

@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 String token = "";
+String userMail = "";
 
 class StorageService {
   /*FlutterSecureStorage storage = const FlutterSecureStorage();
