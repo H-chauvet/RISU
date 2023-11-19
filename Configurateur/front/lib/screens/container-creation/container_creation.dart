@@ -12,7 +12,6 @@ import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
-import 'package:front/components/dialog/container_dialog.dart';
 
 import 'package:front/network/informations.dart';
 
@@ -462,7 +461,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 1,
+              length: 2,
               progress: 0,
               previous: 'Précédent',
               next: 'Terminer',

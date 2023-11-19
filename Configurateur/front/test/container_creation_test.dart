@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   testWidgets('Container Creation progress bar', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
-
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerCreation(),
+        ),
+      ),
     ));
+
+    token = "token";
 
     expect(find.text('Précédent'), findsOneWidget);
     expect(find.text('Terminer'), findsOneWidget);
@@ -24,8 +38,15 @@ void main() {
 
     token = "token";
 
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: const MaterialApp(
+        home: ContainerCreation(),
+      ),
     ));
 
     await tester.pump();
@@ -40,8 +61,18 @@ void main() {
 
     token = "token";
 
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerCreation(),
+        ),
+      ),
     ));
 
     await tester.pump();
@@ -56,8 +87,18 @@ void main() {
 
     token = "token";
 
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerCreation(),
+        ),
+      ),
     ));
 
     await tester.pump();
@@ -75,8 +116,18 @@ void main() {
 
     token = "token";
 
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerCreation(),
+        ),
+      ),
     ));
 
     await tester.pump();
@@ -94,8 +145,18 @@ void main() {
 
     token = "token";
 
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerCreation(),
+        ),
+      ),
     ));
 
     await tester.pump();
