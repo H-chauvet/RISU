@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class ContactPage extends StatefulWidget {
@@ -12,10 +13,12 @@ class ContactPage extends StatefulWidget {
 }
 
 void sendFormData(
-    String surname, String name, String email, String message) async {
+  GlobalKey<FormState> formKey,
+  String surname, String name, String email, String message,
+) async {
   var body = {
-    'prenom': surname,
-    'nom': name,
+    'firstName': surname,
+    'lastName': name,
     'email': email,
     'message': message,
   };
@@ -27,8 +30,19 @@ void sendFormData(
 
   if (response.statusCode == 200) {
     print('Code 200, données envoyées.');
+    Fluttertoast.showToast(
+        msg: 'Message envoyé avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+      formKey.currentState!.reset();
   } else {
     print('Erreur lors de l\'envoi des données : ${response.statusCode}');
+    Fluttertoast.showToast(
+        msg: "Erreur durant l'envoi du message",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
   }
 }
 
@@ -124,7 +138,7 @@ class _ContactPageState extends State<ContactPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    sendFormData(_surname, _name, _email, _message);
+                    sendFormData(_formKey, _surname, _name, _email, _message);
                   } else {
                   }
                 },
