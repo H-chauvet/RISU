@@ -9,7 +9,7 @@ const crypto = require('crypto')
  * @returns generated token
  */
 function generateAccessToken (user) {
-  return jwt.sign({ userId: user.id }, process.env.JWT_ACCESS_SECRET, {
+  return jwt.sign({ userId: user.id, userMail: user.email }, process.env.JWT_ACCESS_SECRET, {
     expiresIn: '15m'
   })
 }

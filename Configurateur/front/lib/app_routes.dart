@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/profile/profile_page.dart';
@@ -112,6 +113,12 @@ class AppRouter {
         path: '/confidentiality',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ConfidentialityPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AdminPage(),
         ),
       ),
     ],

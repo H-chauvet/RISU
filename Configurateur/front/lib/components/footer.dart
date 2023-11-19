@@ -22,6 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 20),
           TextButton(
             onPressed: () {
               context.go("/confidentiality");
@@ -34,16 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               ),
             ),
           ),
-          TextButton(
-            onPressed: () {},
-            child: const Text(
-              'Conditions générales d\'utilisation',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          const SizedBox(width: 20),
           TextButton(
             onPressed: () {
               context.go("/contact");
