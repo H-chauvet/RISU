@@ -8,6 +8,7 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
+import '../knowledge/knowledge_page.dart';
 import 'profile_page.dart';
 
 class ProfilePageState extends State<ProfilePage> {
@@ -74,6 +75,23 @@ class ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const ContactPage();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    text: 'Montée en compétences',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const KnowledgePage();
                           },
                         ),
                       );
