@@ -26,7 +26,8 @@
         "passport": "^0.6.0",
         "passport-jwt": "^4.0.1",
         "passport-local": "^1.0.0",
-        "prisma-docs-generator": "^0.7.0"
+        "prisma-docs-generator": "^0.7.0",
+        "supertest": "^6.3.3"
     },
     "devDependencies": {
         "jest": "^29.7.0",
