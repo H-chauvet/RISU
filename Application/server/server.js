@@ -184,6 +184,28 @@ app.post('/api/user/resetPassword', async (req, res) => {
   }
 })
 
+app.delete('/api/user/:userId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        if (req.user.id !== req.params.userId) {
+            return res.status(401).send('Unauthorized');
+        }
+        const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        await database.prisma.User.delete({ where: { id: req.params.userId } })
+        return res.status(200).send('User deleted');
+    } catch (error) {
+        console.error('Failed to reset password:', error)
+        return res.status(500).json({ message: 'Failed to reset password' })
+    }
+  }
+)
+
 async function sendAccountConfirmationEmail (email, token) {
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
@@ -392,7 +414,7 @@ app.post('/api/user/password', async (req, res) => {
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
-  createFixtures()
+  // createFixtures()
 })
 
 module.exports = app
