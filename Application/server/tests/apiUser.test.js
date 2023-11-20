@@ -11,8 +11,6 @@ describe('POST /api/signup', () => {
 
       userToken = loginResponse.body.data.token;
       userID = loginResponse.body.data.user.id;
-      console.log('_________' + userToken)
-      console.log('_________' + userID)
     });
     it('should connect and get a token', (done) => {
       async.series(
