@@ -190,7 +190,7 @@ app.delete('/api/user/:userId',
         if (!req.user) {
             return res.status(401).send('Invalid token');
         }
-        if (req.user.id !== req.params.userId) {
+        if (req.user.id != req.params.userId) {
             return res.status(401).send('Unauthorized');
         }
         const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
@@ -200,7 +200,7 @@ app.delete('/api/user/:userId',
         await database.prisma.User.delete({ where: { id: req.params.userId } })
         return res.status(200).send('User deleted');
     } catch (error) {
-        console.error('Failed to reset password:', error)
+        console.error('Failed to delete account: ', error)
         return res.status(500).json({ message: 'Failed to reset password' })
     }
   }
