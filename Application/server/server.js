@@ -390,9 +390,56 @@ app.post('/api/user/password', async (req, res) => {
   }
 })
 
+async function createFixturesCtn() {
+  await database.prisma.Containers.createMany({
+    data: [
+      {
+        id: '1',
+        localisation: 'chez moi',
+        owner: 'moi',
+      },
+      {
+        id: '2',
+        localisation: 'chez moi 2 ',
+        owner: 'moi 2 ',
+      }
+    ]
+  })
+}
+
+app.get('/api/container/listall', async (req, res) => {
+  try {
+    const users = await database.prisma.Containers.findMany()
+    res.status(200).json(users)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
+})
+
+app.post('/create-ctn', async (req, res, next) => {
+    try {
+      const { containerMapping } = req.body
+      const tmp = database.prisma.Containers.create({
+        data: {
+          id: "c oui",
+          localisation: "chez moi",
+          items: [],
+          owner: "moi",
+        }
+      })
+      res.status(200).json({tmp})
+    } catch (err) {
+      console.log(err)
+      console.log("je passe là")
+      return res.status(400).json('An error occured.')
+    }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
+  createFixturesCtn()
 })
 
 module.exports = app

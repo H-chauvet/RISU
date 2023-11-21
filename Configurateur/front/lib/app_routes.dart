@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/profile/profile_page.dart';
@@ -119,6 +120,12 @@ class AppRouter {
         path: '/admin',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: AdminPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/containerList',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ContainerPage(),
         ),
       ),
     ],
