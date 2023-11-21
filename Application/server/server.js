@@ -226,24 +226,30 @@ app.get('/api/mailVerification', async (req, res) => {
 })
 
 async function createFixtures () {
-  await database.prisma.User.createMany({
-    data: [
-      {
-        email: 'admin@gmail.com',
-        firstName: 'admin',
-        lastName: 'admin',
-        password: await utils.hash('admin'),
-        mailVerification: true
-      },
-      {
-        email: 'user@gmail.com',
-        firstName: 'user',
-        lastName: 'user',
-        password: await utils.hash('user'),
-        mailVerification: true
-      }
-    ]
-  })
+  try {
+      if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
+          await database.prisma.User.create({
+              data: {
+                  email: 'admin@gmail.com',
+                  firstName: 'admin',
+                  lastName: 'admin',
+                  password: await utils.hash('admin'),
+                  mailVerification: true
+              },
+          })
+      if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
+          await database.prisma.User.create({
+              data: {
+                  email: 'user@gmail.com',
+                  firstName: 'user',
+                  lastName: 'user',
+                  password: await utils.hash('user'),
+                  mailVerification: true
+              }
+          })
+  } catch (err) {
+      console.error(err.message)
+  }
 }
 
 app.post('/api/contact', async (req, res) => {
@@ -393,6 +399,10 @@ app.post('/api/user/password', async (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
+})
+
+app.get('/api/knowledge/skills', (req, res) => {
+  res.status(200).json({message : "Server is working !"})
 })
 
 module.exports = app
