@@ -8,26 +8,68 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/components/appbar.dart';
-
+import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/text_input.dart';
 import '../../network/informations.dart';
 import '../../utils/theme.dart';
-import 'contact_page.dart';
+import 'rent_page.dart';
+import '../../components/alert_dialog.dart';
 
-class ContactPageState extends State<ContactPage> {
-  String? _name;
-  String? _email;
-  String? _message;
+class RentArticlePageState extends State<RentArticlePage> {
+  int _rentalHours = 1;
+  int _rentalPrice = 5;
+  String _articleName = 'Nom de l\'article';
 
-  Future<bool> apiContact(String name, String email, String message) async {
+  void _incrementHours() {
+    setState(() {
+      _rentalHours++;
+    });
+  }
+
+  void _decrementHours() {
+    if (_rentalHours > 1) {
+      setState(() {
+        _rentalHours--;
+      });
+    }
+  }
+
+  void confirmRent() async {
+    await MyAlertDialog.showChoiceAlertDialog(
+      context: context,
+      title: 'Confirmer la location',
+      message: 'Êtes-vous sûr de vouloir louer cet article ?',
+      onOkName: 'Confirmer',
+      onCancelName: 'Annuler',
+    ).then(
+      (value) => {
+        if (value)
+          {
+            rentArticle(),
+          }
+      },
+    );
+  }
+
+  void rentArticle() async {
+    /*print("Renting article");
+    print('_rentalHours: $_rentalHours');
+    print('_rentalPrice: $_rentalPrice');
+    print('_articleName: $_articleName');*/
+    final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
     try {
       response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/contact'),
+        Uri.parse('http://$serverIp:8080/api/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': '$token',
         },
-        body: jsonEncode(
-            <String, String>{'name': name, 'email': email, 'message': message}),
+        body: jsonEncode(<String, String>{
+          'itemId': '1',
+          'duration': _rentalHours.toString(),
+          'price': _rentalPrice.toString(),
+        }),
       );
     } catch (err) {
       if (context.mounted) {
@@ -40,8 +82,9 @@ class ContactPageState extends State<ContactPage> {
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Message envoyé.');
-        return true;
+            context: context,
+            title: 'Contact',
+            message: 'Location enregistrée.');
       }
     } else {
       if (context.mounted) {
@@ -49,10 +92,9 @@ class ContactPageState extends State<ContactPage> {
         await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Contact',
-            message: 'Erreur lors de l\'envoi du message.');
+            message: 'Erreur lors de la location.');
       }
     }
-    return false;
   }
 
   @override
@@ -62,121 +104,203 @@ class ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
-    /*if (logout || userInformation == null) {
-      userInformation = null;
-      return const LoginPage();
-    } else {*/
-    if (true) {
-      return Scaffold(
-        appBar: MyAppBar(
-          curveColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor),
-          showBackButton: false,
-          showLogo: true,
-          showBurgerMenu: true,
-        ),
-        resizeToAvoidBottomInset: false,
-        backgroundColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.background),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 30),
-                  Text(
-                    'Nous contacter',
-                    key: const Key('subtitle-text'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      shadows: [
-                        Shadow(
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
+    return Scaffold(
+      appBar: MyAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: false,
+        showLogo: true,
+        showBurgerMenu: true,
+      ),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Location de l\'article',
+                  style: TextStyle(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF4682B4),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // image
+                Container(
+                  width: 300,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    image: DecorationImage(
+                      image: AssetImage('assets/volley.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                Card(
+                  elevation: 2,
+                  margin: const EdgeInsets.all(16),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: Text(
+                            _articleName,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Container(
+                            color: Colors.white,
+                            child: Table(
+                              columnWidths: const {
+                                0: FlexColumnWidth(1.0),
+                                1: FlexColumnWidth(1.0),
+                              },
+                              children: [
+                                TableRow(
+                                  children: [
+                                    TableCell(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        color: Color(0xFF4682B4),
+                                        child: Text(
+                                          'Prix par heure',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        color: Color(0xFF4682B4),
+                                        child: Text(
+                                          'Coût total',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                TableRow(
+                                  children: [
+                                    TableCell(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        color:
+                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        child: Text(
+                                          _rentalPrice.toString() + ' €',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        color:
+                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        child: Text(
+                                          (_rentalPrice * _rentalHours)
+                                                  .toString() +
+                                              ' €',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    key: Key('decrement-hours-button'),
+                                    icon: Icon(Icons.remove),
+                                    onPressed: _decrementHours,
+                                  ),
+                                  Text('$_rentalHours heures'),
+                                  IconButton(
+                                    key: Key('increment-hours-button'),
+                                    icon: Icon(Icons.add),
+                                    onPressed: _incrementHours,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 42),
-                  MyTextInput(
-                    key: const Key('name'),
-                    labelText: "Nom",
-                    keyboardType: TextInputType.name,
-                    icon: Icons.person,
-                    onChanged: (value) => _name = value,
-                  ),
-                  const SizedBox(height: 16),
-                  MyTextInput(
-                    key: const Key('email'),
-                    labelText: "Email",
-                    keyboardType: TextInputType.emailAddress,
-                    icon: Icons.email_outlined,
-                    onChanged: (value) => _email = value,
-                  ),
-                  const SizedBox(height: 16),
-                  MyTextInput(
-                    key: const Key('message'),
-                    labelText: "Message",
-                    keyboardType: TextInputType.multiline,
-                    icon: Icons.message_outlined,
-                    onChanged: (value) => _message = value,
-                    height: 200,
-                  ),
-                  const SizedBox(height: 36),
-                  OutlinedButton(
-                    key: const Key('new-contact-button'),
+                ),
+
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    key: Key('confirm-rent-button'),
+                    text: 'Louer',
                     onPressed: () {
-                      print('Nom : $_name');
-                      print('Email : $_email');
-                      print('Message : $_message');
-                      if (_name != "" && _email != "" && _message != "") {
-                        apiContact(_name!, _email!, _message!)
-                            .then((value) => {});
-                      } else {
-                        MyAlertDialog.showInfoAlertDialog(
-                            context: context,
-                            title: 'champs invalides',
-                            message:
-                                'Veuillez entrer des informations valides.');
-                      }
+                      confirmRent();
                     },
-                    style: OutlinedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                      side: BorderSide(
-                        color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
-                        width: 3.0,
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 48.0,
-                        vertical: 16.0,
-                      ),
-                    ),
-                    child: Text(
-                      'Envoyer',
-                      style: TextStyle(
-                        color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
-                        fontSize: 16.0,
-                      ),
-                    ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      );
-    }
+      ),
+    );
   }
 }

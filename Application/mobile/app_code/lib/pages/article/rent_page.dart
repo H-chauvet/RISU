@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'contact_state.dart';
+import 'rent_state.dart';
 
-class ContactPage extends StatefulWidget {
-  const ContactPage({Key? key}) : super(key: key);
+class RentArticlePage extends StatefulWidget {
+  const RentArticlePage({Key? key}) : super(key: key);
 
   @override
-  State<ContactPage> createState() => ContactPageState();
+  State<RentArticlePage> createState() => RentArticlePageState();
 }

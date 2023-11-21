@@ -9,6 +9,7 @@ import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/pages/article/rent_page.dart';
 
 import 'profile_page.dart';
 
@@ -79,6 +80,23 @@ class ProfilePageState extends State<ProfilePage> {
                           MaterialPageRoute(
                             builder: (context) {
                               return const ContactPage();
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Louer un article (provisoire)',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return const RentArticlePage();
                             },
                           ),
                         );
