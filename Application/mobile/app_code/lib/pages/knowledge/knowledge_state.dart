@@ -29,13 +29,17 @@ class KnowledgePageState extends State<KnowledgePage> {
   var _index = 0;
 
   Future<String> getApiSimpleResult() async {
-    var response = await http.get(
-      Uri.parse('http://$serverIp:8080/api/knowledge/skills'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    return jsonDecode(response.body)['message'].toString();
+    try {
+      var response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/knowledge/skills'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      return jsonDecode(response.body)['message'].toString();
+    } catch (e) {
+      return 'Server is off';
+    }
   }
 
   @override
@@ -55,6 +59,7 @@ class KnowledgePageState extends State<KnowledgePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MyOutlinedButton(
+            key: const Key('knowledge-button-change_color'),
             text: 'Changer la couleur',
             onPressed: () {
               setState(() {
@@ -64,6 +69,7 @@ class KnowledgePageState extends State<KnowledgePage> {
           ),
           const SizedBox(height: 16),
           MyOutlinedButton(
+            key: const Key('knowledge-button-contact_api'),
             text: 'Contacter l\'API',
             onPressed: () {
               getApiSimpleResult().then((resString) {
