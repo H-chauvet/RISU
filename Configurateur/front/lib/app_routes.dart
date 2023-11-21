@@ -118,7 +118,7 @@ class AppRouter {
       GoRoute(
         path: '/userList',
         pageBuilder: (context, state) => const NoTransitionPage(
-          child: UserListPage(),
+          child: MessagePage(),
         ),
       ),
     ],

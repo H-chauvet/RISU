@@ -204,4 +204,14 @@ router.get('/privacy', async function (req, res, next) {
   }
 })
 
+router.get('/listAll', async function(req, res, next) {
+  try {
+    const user = await userCtrl.getAllUsers();
+
+    res.status(200).json({ user });
+  } catch (err) {
+    next(err);
+  }
+})
+
 module.exports = router
