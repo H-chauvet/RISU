@@ -1,40 +1,44 @@
 import 'package:flutter/material.dart';
 
-class UserMobile {
-  final String id;
-  final String email;
+class User {
+  final int id;
   final String firstName;
   final String lastName;
+  final String company;
+  final String email;
 
-  UserMobile({
+  User({
     required this.id,
-    required this.email,
     required this.firstName,
     required this.lastName,
+    required this.company,
+    required this.email,
   });
 
-  factory UserMobile.fromJson(Map<String, dynamic> json) {
-    return UserMobile(
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
       id: json['id'],
-      email: json['email'],
       firstName: json['firstName'],
       lastName: json['lastName'],
+      company: json['company'],
+      email: json['email'],
     );
   }
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'email': email,
       'firstName': firstName,
       'lastName': lastName,
+      'company': company,
+      'email': email,
     };
   }
 }
 
-class UserMobileCard extends StatelessWidget {
-  final UserMobile user;
+class UserCard extends StatelessWidget {
+  final User user;
 
-  const UserMobileCard({super.key, required this.user});
+  const UserCard({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +47,12 @@ class UserMobileCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(user.firstName),
-            // subtitle: Text(user.email),
+            subtitle: Text(user.email),
             // leading: Row(
             //   mainAxisSize: MainAxisSize.min,
             //   children: [
-            //     Text(userMobile.company),
-            //     Text(userMobile.password),
+            //     Text(user.company),
+            //     Text(user.password),
             //   ],
             // ),
           ),

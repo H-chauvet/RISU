@@ -111,8 +111,8 @@ app.post('/api/login', (req, res, next) => {
 
 app.get('/api/dev/user/listall', async (req, res) => {
   try {
-    const users = await database.prisma.User.findMany()
-    return res.json(users)
+    const user = await database.prisma.User.findMany()
+    res.status(200).json({ user });
   } catch (err) {
     console.log(err)
     return res.status(400).json('An error occured.')
