@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -15,10 +17,15 @@ class LandingPageState extends State<LandingPage> {
   late Function() connectedFunction;
   String inscriptionButton = '';
   late Function() inscriptionFunction;
+  String adminButton = '';
+  late Function() adminFunction;
 
   @override
   void initState() {
     super.initState();
+    adminButton = "Administration";
+    adminFunction = () => context.go("/admin");
+    
     if (token != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
@@ -41,6 +48,28 @@ class LandingPageState extends State<LandingPage> {
   List<Widget> buttons() {
     List<Widget> list = [];
 
+    if (token != '' && userMail == "risu.admin@gmail.com") {
+      
+      list.add(
+        ElevatedButton(
+          onPressed: adminFunction,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+          child: Text(
+            adminButton,
+            style: const TextStyle(color: Colors.black),
+          ),
+        ),
+      );
+    }
+
+    list.add(const SizedBox(width: 20));
+    
     if (token == '') {
       list.add(
         ElevatedButton(
@@ -94,9 +123,7 @@ class LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(70, 130, 180, 1),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -152,6 +179,24 @@ class LandingPageState extends State<LandingPage> {
             ),
             const SizedBox(width: 250),
             Row(
+              children: [
+                const Text(
+                  "Mode sombre",
+                  style: TextStyle(fontSize: 14),
+                ),
+                const SizedBox(width: 5),
+                Switch(
+                    value: Provider.of<ThemeService>(context).isDark,
+                    activeColor: Colors.blue,
+                    onChanged: (bool value) {
+                      Provider.of<ThemeService>(context, listen: false)
+                          .switchTheme();
+                      setState(() {});
+                    }),
+              ],
+            ),
+            const SizedBox(width: 20),
+            Row(
               children: buttons(),
             ),
           ],
@@ -159,12 +204,9 @@ class LandingPageState extends State<LandingPage> {
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
-        // color: Color.fromRGBO(r, g, b, 1), // Espacement des bords de l'écran
         child: Center(
             child: Row(
           mainAxisSize: MainAxisSize.min,
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +214,6 @@ class LandingPageState extends State<LandingPage> {
                 children: [
                   const Text(
                     'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
-                    // textAlign: TextAlign.left,
                     style: TextStyle(
                       fontSize: 40,
                       color: Color.fromRGBO(70, 130, 180, 1),
@@ -206,8 +247,6 @@ class LandingPageState extends State<LandingPage> {
                           // Actions to perform when the button is pressed
                         },
                         style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 15),
                             shape: RoundedRectangleBorder(
@@ -219,7 +258,6 @@ class LandingPageState extends State<LandingPage> {
                                 )),
                         child: const Text(
                           'En savoir plus',
-                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     ),
@@ -228,8 +266,6 @@ class LandingPageState extends State<LandingPage> {
                       padding: const EdgeInsets.only(top: 35),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 190, 189, 189),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 25, vertical: 15),
                           shape: RoundedRectangleBorder(
@@ -240,7 +276,6 @@ class LandingPageState extends State<LandingPage> {
                         onPressed: () => goToCreation(),
                         child: const Text(
                           'Créer mon conteneur',
-                          style: TextStyle(color: Colors.black),
                         ),
                       ),
                     )
