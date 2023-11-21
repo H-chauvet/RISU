@@ -7,6 +7,7 @@ class UserData {
   String email;
   String? firstName;
   String? lastName;
+  String? ID;
 
   /// Constructor of the UserData class
   UserData({
@@ -14,6 +15,7 @@ class UserData {
     this.token,
     required this.firstName,
     required this.lastName,
+    this.ID,
   });
 
   /// Function to display user email
@@ -36,9 +38,11 @@ class UserData {
     }
 
     return UserData(
-        email: json['user']['email'],
-        token: (isToken ? json['token'] : null),
-        firstName: json['user']['firstName'],
-        lastName: json['user']['lastName']);
+      email: json['user']['email'],
+      token: (isToken ? json['token'] : null),
+      firstName: json['user']['firstName'],
+      lastName: json['user']['lastName'],
+      ID: json['user']['id'],
+    );
   }
 }
