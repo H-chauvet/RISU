@@ -13,8 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create .env file
-        run: echo "${{ secrets.ENV_MOBILE }}" > .env
       - name: Install Docker Compose
         run: |
           sudo apt-get update
@@ -40,6 +38,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_MOBILE }}" > ./Application/.env
       - name: Install Docker Compose
         run: |
           sudo apt-get update
