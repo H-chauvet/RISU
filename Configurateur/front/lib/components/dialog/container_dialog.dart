@@ -144,12 +144,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                   padding: const EdgeInsets.all(8),
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
                     child: const Text(
                       'Ajouter',
-                      style: TextStyle(color: Colors.white),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {

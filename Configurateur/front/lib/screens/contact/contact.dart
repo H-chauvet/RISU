@@ -70,7 +70,12 @@ class _ContactPageState extends State<ContactPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Prénom'),
+                      decoration: InputDecoration(
+                        labelText: 'Prénom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre prénom';
@@ -85,7 +90,12 @@ class _ContactPageState extends State<ContactPage> {
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Nom'),
+                      decoration: InputDecoration(
+                        labelText: 'Nom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre nom';
@@ -102,7 +112,12 @@ class _ContactPageState extends State<ContactPage> {
               ),
               const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Veuillez entrer votre email';
@@ -117,9 +132,14 @@ class _ContactPageState extends State<ContactPage> {
                   _email = value!;
                 },
               ),
-
+              const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Message'),
+                decoration: InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 maxLines: 5,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -131,29 +151,25 @@ class _ContactPageState extends State<ContactPage> {
                   _message = value!;
                 },
               ),
-              const SizedBox(
-                  height:
-                      16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     sendFormData(_formKey, _surname, _name, _email, _message);
-                  } else {
-                  }
+                  } else {}
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 child: const Text(
                   'Envoyer',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],

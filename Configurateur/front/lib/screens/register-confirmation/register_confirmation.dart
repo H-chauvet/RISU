@@ -98,14 +98,13 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff4682B4),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
                         child: const Text(
                           "Renvoyer le mail de confirmation",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ),

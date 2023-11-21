@@ -7,7 +7,6 @@ class CustomBottomNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      color: const Color.fromRGBO(70, 130, 180, 1),
       child: Wrap(
         alignment: WrapAlignment.center,
         children: [
