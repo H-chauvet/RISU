@@ -7,15 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/app_routes.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  Widget createWidgetForTesting({required Widget child}) {
-    return MaterialApp(
-      home: child,
-    );
-  }
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Login screen', (WidgetTester tester) async {
@@ -23,7 +21,19 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    await tester.pumpWidget(createWidgetForTesting(child: const LoginScreen()));
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const LoginScreen(),
+        ),
+      ),
+    ));
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 

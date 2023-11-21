@@ -3,10 +3,12 @@ services:
   database:
     build: ./server/database
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - .:/code
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     networks:
@@ -22,13 +24,11 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      database:
-        condition: service_healthy
+      - database
     env_file:
-      - server/application.env
+      - .env
     environment:
       - IS_MIGRATION=true #SET TO true when a migration needed
-      - DATABASE_URL=mysql://root:password@database:3306/test
     volumes:
       - .:/code
     stdin_open: true

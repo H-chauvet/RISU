@@ -1,7 +1,7 @@
 const { Strategy, ExtractJwt } = require('passport-jwt')
 const passport = require('passport')
 const database = require('../database_init')
-require('dotenv').config({ path: '../application.env' })
+require('dotenv').config({ path: '../.env' })
 
 /**
  * Strategy options needed by passport
@@ -17,7 +17,7 @@ const options = {
 passport.use(
   new Strategy(options, async (jwt_payload, done) => {
     try {
-      const user = await database.prisma.User.findUnique({
+      const user = await database.prisma.user.findUnique({
         where: {
           id: jwt_payload.id
         }

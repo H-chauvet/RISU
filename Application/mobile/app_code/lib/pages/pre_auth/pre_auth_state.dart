@@ -4,11 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/main.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
-
-import '../login/login_page.dart';
-import '../signup/signup_page.dart';
 
 class PreAuthState extends State<PreAuthPage> {
   void _signInWithGoogle() {}

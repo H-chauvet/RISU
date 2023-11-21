@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
-import 'package:risu/network/informations.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../login/login_page.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {

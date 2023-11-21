@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/pages/pre_auth/pre_auth_page.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       title: 'Risu',
       theme: context
           .select((ThemeProvider themeProvider) => themeProvider.currentTheme),
-      home: const PreAuthPage(),
+      home: const HomePage(),
     );
   }
 }

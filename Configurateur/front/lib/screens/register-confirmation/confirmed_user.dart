@@ -25,23 +25,6 @@ class ConfirmedUserState extends State<ConfirmedUser> {
 
   @override
   void initState() {
-    if (token != "") {
-      jwtToken = token;
-    } else {
-      context.go("/login");
-    }
-    /*StorageService().readStorage('token').then((value) => {
-          debugPrint(value),
-          if (value == null)
-            {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()))
-            }
-          else
-            {
-              jwtToken = value,
-            }
-        });*/
     http.post(
       Uri.parse('http://$serverIp:3000/api/auth/confirmed-register'),
       headers: <String, String>{
