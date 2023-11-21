@@ -25,6 +25,7 @@ model User {
   mailVerification          Boolean         @default(false)
   confirmProcess            String          @default("")
   createdAt                 DateTime        @default(now())
+  Locations                 Location[]
 }
 
 model Containers {
@@ -60,4 +61,13 @@ model Contact {
   email                    String
   message                  String
   createdAt                DateTime                   @default(now())
+}
+
+model Location {
+    id                     String             @id @unique @default(cuid())
+    price                  Int
+    user                   User               @relation(fields: [userId], references: [id])
+    userId                 String
+    createdAt              DateTime           @default(now())
+    duration               Int
 }
