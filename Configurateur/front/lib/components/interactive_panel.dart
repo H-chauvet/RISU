@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/container_dialog.dart';
+import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/services/locker_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 class InteractivePanel extends StatefulWidget {
   const InteractivePanel(
@@ -28,10 +31,9 @@ class InteractivePanelState extends State<InteractivePanel> {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10),
-        ),
+        decoration: Provider.of<ThemeService>(context).isDark
+            ? boxDecorationDarkTheme
+            : boxDecorationLightTheme,
         child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,

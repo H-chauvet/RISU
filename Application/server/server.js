@@ -11,7 +11,7 @@ const session = require('express-session')
 const jwt = require('jwt-simple')
 const utils = require('./utils')
 const axios = require('axios')
-require('dotenv').config({ path: '../application.env' })
+require('dotenv').config({ path: '../.env' })
 const nodemailer = require('nodemailer')
 
 const app = express()

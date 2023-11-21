@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 ///
 /// Google button
@@ -25,9 +28,9 @@ class GoogleLogo extends StatelessWidget {
         child: Container(
           width: 200,
           height: 40,
-          decoration: const BoxDecoration(
-              color: Color.fromARGB(255, 214, 214, 214),
-              borderRadius: BorderRadius.all(Radius.circular(30.0))),
+          decoration: BoxDecoration(
+              color: Theme.of(context).buttonTheme.colorScheme!.primary,
+              borderRadius: const BorderRadius.all(Radius.circular(30.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -41,7 +44,13 @@ class GoogleLogo extends StatelessWidget {
               const SizedBox(
                 width: 5.0,
               ),
-              const Text('Google')
+              Text(
+                'Google',
+                style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? Colors.black
+                        : Colors.white),
+              )
             ],
           ),
         ));

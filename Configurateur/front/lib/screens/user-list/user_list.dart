@@ -9,33 +9,14 @@ import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
-class MessagePage extends StatefulWidget {
-  const MessagePage({Key? key}) : super(key: key);
+class UserPage extends StatefulWidget {
+  const UserPage({Key? key}) : super(key: key);
 
   @override
-  _MessagePageState createState() => _MessagePageState();
+  _UserPageState createState() => _UserPageState();
 }
 
-class tmp extends StatelessWidget {
-  late List<UserMobile> users_mobile;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView.builder(
-        itemCount: users_mobile.length,
-        itemBuilder: (context, index) {
-          final product = users_mobile[index];
-          return UserMobileCard(
-            user: product,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _MessagePageState extends State<MessagePage> {
+class _UserPageState extends State<UserPage> {
   List<User> users = [];
   List<UserMobile> users_mobile = [];
 

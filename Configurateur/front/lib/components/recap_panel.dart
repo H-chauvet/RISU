@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 class Locker {
   String type;
@@ -30,10 +33,9 @@ class RecapPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         //width: 300,
-        decoration: BoxDecoration(
-          color: Colors.grey[300],
-          borderRadius: BorderRadius.circular(10),
-        ),
+        decoration: Provider.of<ThemeService>(context).isDark
+            ? boxDecorationDarkTheme
+            : boxDecorationLightTheme,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,11 +100,11 @@ class RecapPanel extends StatelessWidget {
                 ElevatedButton(
                   onPressed: onSaved,
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
-                  child: const Text('Sauvegarde',
-                      style: TextStyle(color: Colors.white)),
+                  child: const Text(
+                    'Sauvegarde',
+                  ),
                 ),
                 /*const SizedBox(
                   width: 20,
