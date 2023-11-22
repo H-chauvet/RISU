@@ -14,7 +14,7 @@ class MyDropdownButton extends StatefulWidget {
 
 class _MyDropdownButtonState extends State<MyDropdownButton> {
   late Future<String> _selectedItem;
-  List<String> _items = ['Clair', 'Sombre'];
+  final List<String> _items = ['Clair', 'Sombre'];
 
   Future<String> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
@@ -36,14 +36,14 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
           return DropdownButton(
             itemHeight: null,
             value: null,
-            items: [DropdownMenuItem(child: Text('Loading...'))],
+            items: const [DropdownMenuItem(child: Text('Loading...'))],
             onChanged: null,
           );
         } else if (snapshot.hasError) {
           return DropdownButton(
             itemHeight: null,
             value: null,
-            items: [DropdownMenuItem(child: Text('Error'))],
+            items: const [DropdownMenuItem(child: Text('Error'))],
             onChanged: null,
           );
         } else {
