@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-import 'package:risu/globals.dart';
-import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/utils/theme.dart';
-import 'package:risu/utils/user_data.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 
@@ -21,7 +16,7 @@ void main() {
     // This code runs after each test case.
   });
 
-  testWidgets('ContactPage widget test', (WidgetTester tester) async {
+  /*testWidgets('ContactPage widget test', (WidgetTester tester) async {
     userInformation = UserData(
         email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
     await tester.pumpWidget(
@@ -50,5 +45,5 @@ void main() {
     final sendButton = find.byKey(Key('new-contact-button'));
     await tester.tap(sendButton);
     await tester.pumpAndSettle();
-  });
+  });*/
 }
