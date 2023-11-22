@@ -127,9 +127,6 @@ class ContactPageState extends State<ContactPage> {
                 OutlinedButton(
                   key: const Key('new-contact-button'),
                   onPressed: () {
-                    print('Nom : $_name');
-                    print('Email : $_email');
-                    print('Message : $_message');
                     if (_name != "" && _email != "" && _message != "") {
                       apiContact(_name!, _email!, _message!)
                           .then((value) => {});

@@ -35,7 +35,6 @@ class HomePageState extends State<HomePage> {
     try {
       String? firstName = userInformation?.firstName;
       String? lastName = userInformation?.lastName;
-      print('firstName: $firstName');
       if (userInformation?.email != null &&
           (firstName == null || lastName == null)) {
         await MyAlertDialog.showChoiceAlertDialog(
