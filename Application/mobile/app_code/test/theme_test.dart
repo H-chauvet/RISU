@@ -6,11 +6,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('ThemeProvider Integration Test', () {
+    setUpAll(() async {
+      // This code runs once before all the tests.
+      WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
+    });
+
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
-      // Initialize the SharedPreferences instance for testing.
       SharedPreferences.setMockInitialValues({'isDarkTheme': false});
 
-      // Build a test widget with ThemeProvider.
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider(
@@ -34,19 +42,15 @@ void main() {
         ),
       );
 
-      // Verify that the initial theme is light.
       expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
           Brightness.light);
 
-      // Tap the "Toggle Theme" button.
       await tester.tap(find.byType(TextButton));
-      await tester.pump();
+      await tester.pumpAndSettle();
 
-      // Verify that the theme has toggled to dark.
       expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
           Brightness.dark);
 
-      // Verify that the theme change has been saved to SharedPreferences.
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('isDarkTheme'), true);
     });
