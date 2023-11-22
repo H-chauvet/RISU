@@ -20,7 +20,7 @@ class SignupPageState extends State<SignupPage> {
 
   Future<bool> apiSignup() async {
     if (_email == null || _password == null) {
-      await MyAlertDialog.showInfoAlertDialog(
+      await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Creation de compte',
           message: 'Please fill all the field !');
@@ -38,7 +38,7 @@ class SignupPageState extends State<SignupPage> {
       );
     } catch (err) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Connexion',
             message: 'Connection refused.');
@@ -55,7 +55,7 @@ class SignupPageState extends State<SignupPage> {
       }
     } else {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Creation de compte',
             message: 'Invalid e-mail address !');

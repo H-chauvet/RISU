@@ -44,7 +44,7 @@ class ContactPageState extends State<ContactPage> {
     } else {
       if (context.mounted) {
         print(response.statusCode);
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Contact',
             message: 'Erreur lors de l\'envoi du message.');
