@@ -10,6 +10,11 @@ void main() {
     setUpAll(() async {
       // This code runs once before all the tests.
       WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
     });
 
     Finder textinputRightIconFinder =

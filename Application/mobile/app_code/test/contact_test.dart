@@ -8,10 +8,19 @@ import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
-// Create a mock HTTP client for testing
 class MockHttpClient extends Mock implements http.Client {}
 
 void main() {
+  setUpAll(() async {
+    // This code runs once before all the tests.
+    WidgetsFlutterBinding.ensureInitialized();
+    WidgetController.hitTestWarningShouldBeFatal = true;
+  });
+
+  tearDown(() {
+    // This code runs after each test case.
+  });
+
   testWidgets('ContactPage widget test', (WidgetTester tester) async {
     userInformation = UserData(
         email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
@@ -28,10 +37,9 @@ void main() {
       ),
     );
 
-    // Verify that the initial widget is displayed
+    await tester.pumpAndSettle();
     expect(find.text('Nous contacter'), findsOneWidget);
 
-    // Simulate user input
     final nameField = find.byKey(Key('name'));
     await tester.enterText(nameField, 'hugo');
     final emailField = find.byKey(Key('email'));
@@ -39,7 +47,6 @@ void main() {
     final messageField = find.byKey(Key('message'));
     await tester.enterText(messageField, 'Hello, World!');
 
-    // Simulate button tap
     final sendButton = find.byKey(Key('new-contact-button'));
     await tester.tap(sendButton);
     await tester.pumpAndSettle();

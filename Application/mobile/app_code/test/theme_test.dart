@@ -6,6 +6,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('ThemeProvider Integration Test', () {
+    setUpAll(() async {
+      // This code runs once before all the tests.
+      WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
+    });
+
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
       SharedPreferences.setMockInitialValues({'isDarkTheme': false});
 

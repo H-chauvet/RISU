@@ -12,7 +12,10 @@ void main() {
       WidgetController.hitTestWarningShouldBeFatal = true;
     });
 
-    tearDown(() {});
+    tearDown(() {
+      // This code runs after each test case.
+    });
+
     testWidgets('Light mode', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(

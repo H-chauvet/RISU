@@ -4,8 +4,17 @@ import 'package:risu/utils/validators.dart';
 
 void main() {
   group('Validators Integration Test', () {
+    setUpAll(() async {
+      // This code runs once before all the tests.
+      WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
+    });
+    
     testWidgets('Valid Phone Number', (WidgetTester tester) async {
-      // Create a MaterialApp to enable building widgets
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -19,7 +28,6 @@ void main() {
         ),
       );
 
-      // Expect that the text widget displays no error message
       expect(find.text('Please enter a valid phone number.'), findsNothing);
     });
 
@@ -56,8 +64,6 @@ void main() {
 
       expect(find.text('Please enter a valid email.'), findsNothing);
     });
-
-    // Add more test cases for email, date, and notEmpty validators as needed
 
     testWidgets('Valid Date', (WidgetTester tester) async {
       await tester.pumpWidget(
