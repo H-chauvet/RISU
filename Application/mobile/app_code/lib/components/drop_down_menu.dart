@@ -48,6 +48,7 @@ class _MyDropdownButtonState extends State<MyDropdownButton> {
           );
         } else {
           return DropdownButton(
+            key: widget.key,
             itemHeight: null,
             value: snapshot.data,
             items: _items.map((String item) {
