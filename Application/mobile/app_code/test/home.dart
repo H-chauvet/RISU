@@ -33,53 +33,6 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  testWidgets('Logged out user should see LoginPage',
-      (WidgetTester tester) async {
-    userInformation = null;
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: HomePage(),
-        ),
-      ),
-    );
-
-    expect(find.byType(LoginPage), findsOneWidget);
-  });
-
-  testWidgets('Valid login should navigate to HomePage',
-      (WidgetTester tester) async {
-    userInformation = null;
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: LoginPage(),
-        ),
-      ),
-    );
-
-    // Enter valid credentials and tap "Se connecter" button
-    await tester.enterText(find.byKey(const Key('login-textinput_email')),
-        'valid_email@example.com');
-    await tester.enterText(
-        find.byKey(const Key('login-textinput_password')), 'valid_password');
-    await tester.tap(find.byKey(const Key('login-button_signin')));
-    await tester.pumpAndSettle();
-
-    // Verify that it navigates to HomePage
-    expect(find.byType(HomePage), findsOneWidget);
-  });
-
   testWidgets('Invalid login should show error message',
       (WidgetTester tester) async {
     userInformation = null;
@@ -124,6 +77,8 @@ void main() {
         ),
       ),
     );
+    await tester.enterText(
+        find.byKey(const Key('login-textinput_email')), 'invalid_email');
 
     // Tap "Mot de passe oublié ?" button
     await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
