@@ -6,7 +6,16 @@ import 'package:risu/utils/theme.dart';
 
 void main() {
   group('Test Settings', () {
-    testWidgets('Settings', (WidgetTester tester) async {
+    setUpAll(() async {
+      // This code runs once before all the tests.
+      WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
+    });
+    testWidgets('Light mode', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -15,27 +24,56 @@ void main() {
                   ThemeProvider(false), // Provide a default value for testing.
             ),
           ],
-          child: MaterialApp(
+          child: const MaterialApp(
             home: SettingsPage(),
           ),
         ),
       );
 
-      Finder goToLoginFinder =
-          find.byKey(const Key('settings-button_go_to_parameter_page'));
+      final changeInformationButtonFinder =
+          find.byKey(const Key('settings-button_change_information'));
+      final dropdownFinder = find.byKey(const Key('drop_down'));
 
+      final themeProvider = Provider.of<ThemeProvider>(
+          tester.element(find.byType(SettingsPage)),
+          listen: false);
+
+      expect(themeProvider.currentTheme.brightness, Brightness.light);
+      expect(dropdownFinder, findsOneWidget);
+      expect(changeInformationButtonFinder, findsOneWidget);
       await tester.pumpAndSettle();
-
-      expect(goToLoginFinder, findsOneWidget);
-
-      await tester.tap(goToLoginFinder);
+      await tester.tap(changeInformationButtonFinder);
       await tester.pumpAndSettle();
+    });
+    testWidgets('Dark mode', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeProvider>(
+              create: (_) =>
+                  ThemeProvider(true), // Provide a default value for testing.
+            ),
+          ],
+          child: const MaterialApp(
+            home: SettingsPage(),
+          ),
+        ),
+      );
 
-      Finder dropDown = find.byKey(const Key('drop_down'));
-      await tester.tap(dropDown);
+      final changeInformationButtonFinder =
+          find.byKey(const Key('settings-button_change_information'));
+      final dropdownFinder = find.byKey(const Key('drop_down'));
+
+      final themeProvider = Provider.of<ThemeProvider>(
+          tester.element(find.byType(SettingsPage)),
+          listen: false);
+
+      expect(themeProvider.currentTheme.brightness, Brightness.dark);
+      expect(dropdownFinder, findsOneWidget);
+      expect(changeInformationButtonFinder, findsOneWidget);
       await tester.pumpAndSettle();
-
-      await tester.tap(find.text('Sombre'));
+      await tester.tap(changeInformationButtonFinder);
+      await tester.pumpAndSettle();
     });
   });
 }
