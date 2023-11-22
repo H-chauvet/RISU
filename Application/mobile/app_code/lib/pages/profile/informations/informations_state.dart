@@ -25,13 +25,9 @@ Future<void> fetchUserData() async {
         });
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
-      print('userData : $userData');
       firstName = userData['firstName'];
       lastName = userData['lastName'];
       email = userData['email'];
-      print('firstName : $firstName');
-      print('lastName : $lastName');
-      print('email : $email');
       UserData.fromJson(userData);
     } else {
       print('Error: ${response.statusCode}');
@@ -492,10 +488,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       OutlinedButton(
                         key: const Key('update_password-button'),
                         onPressed: () async {
-                          print('currentPassword : $currentPassword');
-                          print('newPassword : $newPassword');
-                          print(
-                              'newPasswordConfirmation : $newPasswordConfirmation');
                           if (currentPassword.isEmpty ||
                               newPassword.isEmpty ||
                               newPasswordConfirmation.isEmpty) {
@@ -507,7 +499,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             return;
                           }
                           if (newPassword == newPasswordConfirmation) {
-                            print('Les mots de passe correspondent');
                             updatePassword(currentPassword, newPassword);
                           } else {
                             await MyAlertDialog.showInfoAlertDialog(
