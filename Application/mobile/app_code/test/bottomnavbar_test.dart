@@ -5,6 +5,16 @@ import 'package:risu/components/bottomnavbar.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
+  setUpAll(() async {
+    // This code runs once before all the tests.
+    WidgetsFlutterBinding.ensureInitialized();
+    WidgetController.hitTestWarningShouldBeFatal = true;
+  });
+
+  tearDown(() {
+    // This code runs after each test case.
+  });
+
   testWidgets('BottomNavBar should display and handle taps',
       (WidgetTester tester) async {
     int currentIndex = 0; // Initial index
