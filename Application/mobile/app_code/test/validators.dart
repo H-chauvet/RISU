@@ -77,7 +77,7 @@ void main() {
           findsNothing);
     });
 
-    testWidgets('Invalid Date', (WidgetTester tester) async {
+    testWidgets('Invalid Month', (WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: Scaffold(
@@ -90,8 +90,24 @@ void main() {
         ),
       );
 
-      expect(
-          find.text('Invalid date format. Please use the format "dd/mm/yyyy"'),
+      expect(find.text('Invalid month. Please enter a value between 1 and 12'),
+          findsOneWidget);
+    });
+
+    testWidgets('Invalid Day', (WidgetTester tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: Builder(
+              builder: (BuildContext context) {
+                return Text(Validators().date(context, '32/11/2023') ?? '');
+              },
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Invalid day. Please enter a value between 1 and 30'),
           findsOneWidget);
     });
 
