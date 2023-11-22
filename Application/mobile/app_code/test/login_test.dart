@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
@@ -45,18 +47,6 @@ void main() {
           find.byKey(const Key('login-textbutton_gotosignup'));
       Finder alertdialogEmptyFieldsFinder =
           find.byKey(const Key('login-alertdialog_emptyfields'));
-      Finder alertdialogConnectionRefusedFinder =
-          find.byKey(const Key('login-alertdialog_connectionrefused'));
-      Finder alertdialogInvalidDataFinder =
-          find.byKey(const Key('login-alertdialog_invaliddata'));
-      Finder alertdialogInvalidTokenFinder =
-          find.byKey(const Key('login-alertdialog_invalidtoken'));
-      Finder alertdialogInvalidResponseFinder =
-          find.byKey(const Key('login-alertdialog_invalidresponse'));
-      Finder alertdialogInvalidCredentialsFinder =
-          find.byKey(const Key('login-alertdialog_invalidcredentials'));
-      Finder alertdialogErrorFinder =
-          find.byKey(const Key('login-alertdialog_error'));
 
       expect(subTitleFinder, findsOneWidget);
       expect(textInputEmailFinder, findsOneWidget);
@@ -72,8 +62,9 @@ void main() {
 
       await tester.enterText(textInputEmailFinder, 'admin@gmail.com');
 
-      expect(find.byKey(const Key('alertdialog-button_ok')), findsOneWidget);
-      await tester.tap(find.byKey(const Key('alertdialog-button_ok')));
+      expect(find.byType(AlertDialog), findsOneWidget);
+      Finder okButton = find.byKey(const Key('alertdialog-button_ok'));
+      await tester.tap(okButton);
       await tester.pumpAndSettle();
       expect(alertdialogEmptyFieldsFinder, findsNothing);
 
@@ -87,5 +78,80 @@ void main() {
       expect(tester.widget<MyTextInput>(textInputPasswordFinder).obscureText,
           false);
     });
+  });
+
+  testWidgets('Invalid login should show error message',
+      (WidgetTester tester) async {
+    userInformation = null;
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(false),
+          ),
+        ],
+        child: const MaterialApp(
+          home: LoginPage(),
+        ),
+      ),
+    );
+
+    await tester.enterText(
+        find.byKey(const Key('login-textinput_email')), 'invalid_email');
+    await tester.enterText(
+        find.byKey(const Key('login-textinput_password')), 'invalid_password');
+    await tester.tap(find.byKey(const Key('login-button_signin')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+  });
+
+  testWidgets(
+      'Tapping "Mot de passe oublié ?" should show reset password dialog',
+      (WidgetTester tester) async {
+    userInformation = null;
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(false),
+          ),
+        ],
+        child: const MaterialApp(
+          home: LoginPage(),
+        ),
+      ),
+    );
+    await tester.enterText(
+        find.byKey(const Key('login-textinput_email')), 'invalid_email');
+
+    await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('A reset password has been sent to your email box.'),
+        findsOneWidget);
+  });
+
+  testWidgets(
+      'Tapping "Pas de compte ? S\'inscrire" should navigate to SignupPage',
+      (WidgetTester tester) async {
+    userInformation = null;
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(true),
+          ),
+        ],
+        child: const MaterialApp(
+          home: LoginPage(),
+        ),
+      ),
+    );
+
+    await tester.tap(find.byKey(const Key('login-textbutton_gotosignup')));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(SignupPage), findsOneWidget);
   });
 }
