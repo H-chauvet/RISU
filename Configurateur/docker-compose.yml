@@ -27,7 +27,8 @@ services:
     env_file:
       - .env
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     ports:
       - 3000:3000
     stdin_open: true
