@@ -137,14 +137,14 @@ class SignupPageState extends State<SignupPage> {
                     onChanged: (value) => _password = value,
                     validator: (value) =>
                         Validators().notEmpty(context, value)),
-                Align(
+                const Align(
                   alignment: Alignment.centerRight,
                   child: Column(
                     children: [
                       TextButton(
-                        key: const Key('signup-textbutton_resetpassword'),
-                        onPressed: () {},
-                        child: const Text(
+                        key: Key('signup-textbutton_resetpassword'),
+                        onPressed: null,
+                        child: Text(
                           '',
                           style: TextStyle(
                             fontSize: 12,
