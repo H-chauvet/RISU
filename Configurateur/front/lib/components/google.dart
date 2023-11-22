@@ -5,6 +5,7 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 import 'package:provider/provider.dart';
@@ -89,6 +90,11 @@ class GoogleLogo extends StatelessWidget {
         .then((value) => {
               if (value.statusCode == 200)
                 {
+                  Fluttertoast.showToast(
+                    msg: 'Connexion réussite',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                  ),
                   response = jsonDecode(value.body),
                   token = response['accessToken'],
                   /*StorageService()
@@ -97,6 +103,14 @@ class GoogleLogo extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) => const LandingPage()))
+                }
+              else
+                {
+                  Fluttertoast.showToast(
+                      msg: 'Echec de la connexion',
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                    ),
                 }
             });
   }
