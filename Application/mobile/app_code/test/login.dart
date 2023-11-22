@@ -22,8 +22,7 @@ void main() {
         MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeProvider>(
-              create: (_) =>
-                  ThemeProvider(false), // Provide a default value for testing.
+              create: (_) => ThemeProvider(false),
             ),
           ],
           child: const MaterialApp(

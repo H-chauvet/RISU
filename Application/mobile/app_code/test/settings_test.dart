@@ -12,16 +12,13 @@ void main() {
       WidgetController.hitTestWarningShouldBeFatal = true;
     });
 
-    tearDown(() {
-      // This code runs after each test case.
-    });
+    tearDown(() {});
     testWidgets('Light mode', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeProvider>(
-              create: (_) =>
-                  ThemeProvider(false), // Provide a default value for testing.
+              create: (_) => ThemeProvider(false),
             ),
           ],
           child: const MaterialApp(
@@ -50,8 +47,7 @@ void main() {
         MultiProvider(
           providers: [
             ChangeNotifierProvider<ThemeProvider>(
-              create: (_) =>
-                  ThemeProvider(true), // Provide a default value for testing.
+              create: (_) => ThemeProvider(true),
             ),
           ],
           child: const MaterialApp(
