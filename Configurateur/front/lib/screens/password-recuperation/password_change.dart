@@ -113,7 +113,7 @@ class PasswordChangeState extends State<PasswordChange> {
                                 );
                               } else {
                                 Fluttertoast.showToast(
-                                  msg: 'Echec du changement de mot de message',
+                                  msg: 'Echec lors du changement du mot de passe',
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.CENTER,
                                 );

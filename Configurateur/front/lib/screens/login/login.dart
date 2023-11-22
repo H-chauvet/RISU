@@ -127,7 +127,7 @@ class LoginScreenState extends State<LoginScreen> {
                                           {
                                             Fluttertoast.showToast(
                                               msg:
-                                                  "Connexion réussite",
+                                                  "Vous êtes désormais connecté !",
                                               toastLength: Toast.LENGTH_LONG,
                                               gravity: ToastGravity.CENTER,
                                             ),
