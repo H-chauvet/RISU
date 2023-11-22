@@ -8,7 +8,7 @@ import 'package:risu/pages/pre_auth/pre_auth_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-
+import '../../globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/article/rent_page.dart';
 
@@ -138,6 +138,26 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    text: 'Louer un article (provisoire)',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RentArticlePage(
+                            name: 'ballon de volley',
+                            price: 10,
+                            containerId: 1,
+                            locations: ['Location 1', 'Location 2'],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
                 TextButton(
                   key: const Key('profile-textbutton_delete-account'),
                   onPressed: () {
@@ -183,82 +203,8 @@ class ProfilePageState extends State<ProfilePage> {
                       color: Colors.red,
                     ),
                   ),
-<<<<<<< HEAD
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MyOutlinedButton(
-                      text: 'Paramètres',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const SettingsPage();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MyOutlinedButton(
-                      text: 'Nous Contacter',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const ContactPage();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MyOutlinedButton(
-                      text: 'Louer un article (provisoire)',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const RentArticlePage();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    child: MyOutlinedButton(
-                      text: 'Déconnexion',
-                      onPressed: () {
-                        userInformation = null;
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const PreAuthPage();
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                ],
-              ),
-=======
-                )
+                ),
               ],
->>>>>>> dev
             ),
           ),
         ),

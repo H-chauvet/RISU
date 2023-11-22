@@ -10,15 +10,29 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
-import '../../network/informations.dart';
+import '../../globals.dart';
 import '../../utils/theme.dart';
 import 'rent_page.dart';
 import '../../components/alert_dialog.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
   int _rentalHours = 1;
-  int _rentalPrice = 5;
-  String _articleName = 'Nom de l\'article';
+  //String _articleName = 'Nom de l\'article';
+
+  late int _rentalPrice = 5;
+  late String _articleName;
+  late int _price;
+  late int _containerId;
+  late List<String> _locations;
+
+  @override
+  void initState() {
+    super.initState();
+    _articleName = widget.name;
+    _rentalPrice = widget.price;
+    _containerId = widget.containerId;
+    _locations = widget.locations;
+  }
 
   void _incrementHours() {
     setState(() {
@@ -95,11 +109,6 @@ class RentArticlePageState extends State<RentArticlePage> {
             message: 'Erreur lors de la location.');
       }
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -269,7 +278,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     icon: Icon(Icons.remove),
                                     onPressed: _decrementHours,
                                   ),
-                                  Text('$_rentalHours heures'),
+                                  Text('$_rentalHours heure' +
+                                      (_rentalHours > 1 ? 's' : '')),
                                   IconButton(
                                     key: Key('increment-hours-button'),
                                     icon: Icon(Icons.add),
@@ -285,7 +295,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(

@@ -248,6 +248,15 @@ app.get('/api/mailVerification', async (req, res) => {
 })
 
 async function createFixtures () {
+  await database.prisma.Item.createMany({
+      data : [
+        {
+          name: 'Ballon de volley',
+          price: 5,
+          locations: []
+        }
+      ]
+  });
   await database.prisma.User.createMany({
     data: [
       {

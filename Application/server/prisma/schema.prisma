@@ -41,7 +41,6 @@ model Items {
 	price				Int
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
-	Locations			Location[]
 
 }
 
@@ -60,10 +59,10 @@ model Contact {
 }
 
 model Location {
-    id                     String             @id @unique @default(cuid())
-    price                  Int
-    user                   User               @relation(fields: [userId], references: [id])
-    userId                 String
-    createdAt              DateTime           @default(now())
-    duration               Int
+    id                    String                      @id @unique @default(cuid())
+    price                 Int
+    user                  User                        @relation(fields: [userId], references: [id])
+    userId                String
+    createdAt             DateTime                    @default(now())
+    duration              Int
 }
