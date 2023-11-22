@@ -137,7 +137,7 @@ class SignupPageState extends State<SignupPage> {
                     onChanged: (value) => _password = value,
                     validator: (value) =>
                         Validators().notEmpty(context, value)),
-                const Align(
+                Align(
                   alignment: Alignment.centerRight,
                   child: Column(
                     children: [
