@@ -57,10 +57,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         final updatedData = json.decode(response.body);
         print('Mise à jour réussie: $updatedData');
         await fetchUserData();
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Mise à jour réussie',
-            message: 'Le prénom a été mis à jour');
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Mise à jour réussie',
+              message: 'Le prénom a été mis à jour');
+        }
       } else {
         print('Erreur: ${response.statusCode}');
       }
@@ -86,10 +88,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         final updatedData = json.decode(response.body);
         print('Mise à jour réussie: $updatedData');
         await fetchUserData();
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Mise à jour réussie',
-            message: 'Le nom a été mis à jour');
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Mise à jour réussie',
+              message: 'Le nom a été mis à jour');
+        }
       } else {
         print('Erreur: ${response.statusCode}');
       }
@@ -116,10 +120,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         final updatedData = json.decode(response.body);
         print('Mise à jour réussie: $updatedData');
         await fetchUserData();
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Mise à jour réussie',
-            message: 'L\'email a été mis à jour');
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Mise à jour réussie',
+              message: 'L\'email a été mis à jour');
+        }
       } else {
         print('Erreur: ${response.statusCode}');
       }
@@ -150,21 +156,27 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       if (response.statusCode == 200) {
         final updatedData = json.decode(response.body);
         print('Mise à jour réussie: $updatedData');
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Mise à jour réussie',
-            message: 'Le mot de passe a été mis à jour');
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: 'Mise à jour réussie',
+              message: 'Le mot de passe a été mis à jour');
+        }
       } else {
         if (response.statusCode == 401) {
-          await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour refusée',
-              message: 'Le mot de passe actuel est incorrect');
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+                context: context,
+                title: 'Mise à jour refusée',
+                message: 'Le mot de passe actuel est incorrect');
+          }
         } else {
-          await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Impossible de mettre à jour le mot de passe',
-              message: 'Erreur inconnue');
+          if (context.mounted) {
+            await MyAlertDialog.showErrorAlertDialog(
+                context: context,
+                title: 'Impossible de mettre à jour le mot de passe',
+                message: 'Erreur inconnue');
+          }
         }
         print('Erreur: ${response.statusCode}');
       }
@@ -243,15 +255,15 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               // Désactivez le champ texte
                               initialValue: firstName,
                               // Utilisez la valeur actuelle comme valeur initiale
-                              decoration:
-                                  InputDecoration(labelText: 'Prénom actuel'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Prénom actuel'),
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              decoration:
-                                  InputDecoration(labelText: 'Nouveau prénom'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Nouveau prénom'),
                               onChanged: (value) {
                                 newFirstName = value;
                               },
@@ -259,7 +271,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       OutlinedButton(
                         key: const Key('update_firstName-button'),
                         onPressed: () {
@@ -316,15 +328,15 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               // Désactivez le champ texte
                               initialValue: lastName,
                               // Utilisez la valeur actuelle comme valeur initiale
-                              decoration:
-                                  InputDecoration(labelText: 'Nom actuel'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Nom actuel'),
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              decoration:
-                                  InputDecoration(labelText: 'Nouveau nom'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Nouveau nom'),
                               onChanged: (value) {
                                 newLastName = value;
                               },
@@ -332,7 +344,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       OutlinedButton(
                         key: const Key('update_lastName-button'),
                         onPressed: () {
@@ -390,15 +402,15 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               // Désactivez le champ texte
                               initialValue: email,
                               // Utilisez la valeur actuelle comme valeur initiale
-                              decoration:
-                                  InputDecoration(labelText: 'Email actuel'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Email actuel'),
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
-                              decoration:
-                                  InputDecoration(labelText: 'Nouvel email'),
+                              decoration: const InputDecoration(
+                                  labelText: 'Nouvel email'),
                               onChanged: (value) {
                                 newEmail = value;
                               },
@@ -406,7 +418,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       OutlinedButton(
                         key: const Key('reset-email-button'),
                         onPressed: () {
@@ -456,35 +468,34 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                     children: [
                       // Mot de passe actuel
                       TextFormField(
-                        decoration:
-                            InputDecoration(labelText: 'Mot de passe actuel'),
+                        decoration: const InputDecoration(
+                            labelText: 'Mot de passe actuel'),
                         onChanged: (value) {
                           currentPassword = value;
                         },
                         obscureText: true,
                       ),
-                      SizedBox(height: 10), // Ajout d'un espace vertical
+                      const SizedBox(height: 10), // Ajout d'un espace vertical
                       // Nouveau mot de passe
                       TextField(
-                        decoration:
-                            InputDecoration(labelText: 'Nouveau mot de passe'),
+                        decoration: const InputDecoration(
+                            labelText: 'Nouveau mot de passe'),
                         onChanged: (value) {
                           newPassword = value;
                         },
                         obscureText: true,
                       ),
-                      SizedBox(height: 10), // Ajout d'un espace vertical
+                      const SizedBox(height: 10), // Ajout d'un espace vertical
                       // Confirmation du nouveau mot de passe
                       TextField(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                             labelText: 'Confirmation du nouveau mot de passe'),
                         onChanged: (value) {
                           newPasswordConfirmation = value;
                         },
                         obscureText: true,
                       ),
-
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       OutlinedButton(
                         key: const Key('update_password-button'),
                         onPressed: () async {
