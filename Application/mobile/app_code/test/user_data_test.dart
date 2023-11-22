@@ -4,6 +4,16 @@ import 'package:risu/utils/user_data.dart';
 
 void main() {
   group('UserData Integration Tests', () {
+    setUpAll(() async {
+      // This code runs once before all the tests.
+      WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
+    });
+
     test('UserData constructor should create an instance with email', () {
       final userData = UserData(
           email: 'test@example.com', firstName: 'Test', lastName: 'Example');
