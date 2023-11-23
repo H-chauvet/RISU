@@ -418,6 +418,50 @@ app.post('/api/user/password', async (req, res) => {
   }
 })
 
+app.post('/api/rent/article', async (req, res) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+    if (!req.body.price || req.body.price < 0) {
+      return res.status(401).json({ message: 'Missing price' })
+    }
+    if (!req.body.itemId || req.body.itemId === '') {
+        return res.status(401).json({ message: 'Missing itemId' })
+    }
+    if (!req.body.duration || req.body.duration < 0) {
+        return res.status(401).json({ message: 'Missing duration' })
+    }
+
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    })
+/*    console.log('user : ', user);
+    console.log('itemId : ', req.body.itemId);
+    console.log('price : ', req.body.price);
+    console.log('duration : ', req.body.duration);*/
+
+    const locationPrice = req.body.price * req.body.duration
+    //console.log('locationPrice : ', locationPrice);
+    await database.prisma.Location.create({
+        data: {
+            price: locationPrice,
+            //itemId: req.body.itemId,
+            userId: user.id,
+            createdAt: new Date(),
+            duration: parseInt(req.body.duration),
+        }
+    })
+
+    res.status(201).json({ message: 'location saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
