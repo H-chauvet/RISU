@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -10,6 +11,11 @@ void main() {
     setUpAll(() async {
       // This code runs once before all the tests.
       WidgetsFlutterBinding.ensureInitialized();
+      WidgetController.hitTestWarningShouldBeFatal = true;
+    });
+
+    tearDown(() {
+      // This code runs after each test case.
     });
 
     Finder textinputRightIconFinder =
@@ -56,6 +62,29 @@ void main() {
         ),
       );
 
+      await tester.pumpAndSettle();
+
+      final Finder alertDialog = find.byType(AlertDialog);
+      final Finder signUpButton = find.byKey(const Key('signup-button_signup'));
+      final Finder alertDialogButtonOk =
+          find.byKey(const Key('alertdialog-button_ok'));
+      final Finder textButtonResetPassword =
+          find.byKey(const Key('signup-textbutton_resetpassword'));
+      final Finder gotoSignInButton =
+          find.byKey(const Key('signup-textbutton_gotologin'));
+      final Finder gotoSignUpButton =
+          find.byKey(const Key('login-textbutton_gotosignup'));
+
+      expect(signUpButton, findsOneWidget);
+      expect(textButtonResetPassword, findsOneWidget);
+      await tester.tap(textButtonResetPassword);
+      await tester.tap(signUpButton);
+      await tester.pumpAndSettle();
+      expect(alertDialog, findsOneWidget);
+      expect(alertDialogButtonOk, findsOneWidget);
+      await tester.tap(alertDialogButtonOk);
+      await tester.pumpAndSettle();
+
       // Enter email and password
       await tester.enterText(
           find.byKey(const Key('signup-textinput_email')), 'test@example.com');
@@ -69,10 +98,22 @@ void main() {
       expect(tester.widget<MyTextInput>(textInputPasswordFinder).obscureText,
           false);
 
-      expect(
-          find.byKey(const Key('signup-textbutton_gotologin')), findsOneWidget);
-      // Tap the signup button
+      expect(gotoSignInButton, findsOneWidget);
+      String? oldServerIp = serverIp;
+      serverIp = 'wrongIP';
       await tester.tap(find.byKey(const Key('signup-button_signup')));
+      await tester.pumpAndSettle();
+      expect(alertDialog, findsOneWidget);
+      expect(alertDialogButtonOk, findsOneWidget);
+      await tester.tap(alertDialogButtonOk);
+      await tester.pumpAndSettle();
+      serverIp = oldServerIp;
+      await tester.tap(gotoSignInButton);
+      await tester.pumpAndSettle();
+      expect(gotoSignUpButton, findsOneWidget);
+      await tester.tap(gotoSignUpButton);
+      await tester.pumpAndSettle();
+      await tester.tap(signUpButton);
     });
   });
 }

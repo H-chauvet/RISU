@@ -184,6 +184,28 @@ app.post('/api/user/resetPassword', async (req, res) => {
   }
 })
 
+app.delete('/api/user/:userId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        if (req.user.id != req.params.userId) {
+            return res.status(401).send('Unauthorized');
+        }
+        const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        await database.prisma.User.delete({ where: { id: req.params.userId } })
+        return res.status(200).send('User deleted');
+    } catch (error) {
+        console.error('Failed to delete account: ', error)
+        return res.status(500).json({ message: 'Failed to reset password' })
+    }
+  }
+)
+
 async function sendAccountConfirmationEmail (email, token) {
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
@@ -226,24 +248,30 @@ app.get('/api/mailVerification', async (req, res) => {
 })
 
 async function createFixtures () {
-  await database.prisma.User.createMany({
-    data: [
-      {
-        email: 'admin@gmail.com',
-        firstName: 'admin',
-        lastName: 'admin',
-        password: await utils.hash('admin'),
-        mailVerification: true
-      },
-      {
-        email: 'user@gmail.com',
-        firstName: 'user',
-        lastName: 'user',
-        password: await utils.hash('user'),
-        mailVerification: true
-      }
-    ]
-  })
+    try {
+        if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
+            await database.prisma.User.create({
+                data: {
+                    email: 'admin@gmail.com',
+                    firstName: 'admin',
+                    lastName: 'admin',
+                    password: await utils.hash('admin'),
+                    mailVerification: true
+                },
+            })
+        if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
+            await database.prisma.User.create({
+                data: {
+                    email: 'user@gmail.com',
+                    firstName: 'user',
+                    lastName: 'user',
+                    password: await utils.hash('user'),
+                    mailVerification: true
+                }
+            })
+    } catch (err) {
+        console.error(err.message)
+    }
 }
 
 app.post('/api/contact', async (req, res) => {

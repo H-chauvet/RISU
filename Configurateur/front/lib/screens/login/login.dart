@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -124,14 +125,30 @@ class LoginScreenState extends State<LoginScreen> {
                                   .then((value) => {
                                         if (value.statusCode == 200)
                                           {
+                                            Fluttertoast.showToast(
+                                              msg:
+                                                  "Vous êtes désormais connecté !",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.CENTER,
+                                            ),
                                             response = jsonDecode(value.body),
                                             token = response['accessToken'],
-                                            decodedToken = JwtDecoder.decode(token),
+                                            decodedToken =
+                                                JwtDecoder.decode(token),
                                             userMail = decodedToken['userMail'],
                                             /*StorageService().writeStorage(
                                                 'token',
                                                 response['accessToken']),*/
                                             context.go("/")
+                                          }
+                                        else
+                                          {
+                                            Fluttertoast.showToast(
+                                              msg:
+                                                  "Echec de la connexion",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.CENTER,
+                                            ),
                                           }
                                       });
                             }

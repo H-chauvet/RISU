@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/container-list/container_mobile.dart';
 import 'package:front/screens/container-list/container_web.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +17,6 @@ class ContainerPage extends StatefulWidget {
 
 class _ContainerPageState extends State<ContainerPage> {
   List<User> users = [];
-  List<UserMobile> users_mobile = [];
 
   @override
   void initState() {
@@ -35,25 +33,6 @@ class _ContainerPageState extends State<ContainerPage> {
       final List<dynamic> usersData = responseData["user"];
       setState(() {
         users = usersData.map((data) => User.fromJson(data)).toList();
-      });
-    } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
-    }
-  }
-
-  Future<void> fetchMessagesMobile() async {
-    final response =
-        await http.get(Uri.parse('http://localhost:8080/api/container/listall'));
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> usersData = responseData["user"];
-      setState(() {
-        users_mobile =
-            usersData.map((data) => UserMobile.fromJson(data)).toList();
       });
     } else {
       // Fluttertoast.showToast(
@@ -117,17 +96,6 @@ class _ContainerPageState extends State<ContainerPage> {
                   decorationStyle: TextDecorationStyle.solid,
                 ),
               ),
-            ),
-            const SizedBox(height: 20,),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: users_mobile.length,
-              itemBuilder: (context, index) {
-                final product = users_mobile[index];
-                return UserMobileCard(
-                  user: product,
-                );
-              },
             ),
           ],
         ),

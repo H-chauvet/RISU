@@ -3,6 +3,7 @@ import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/screens/messages/messages.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/screens/password-recuperation/password-recuperation.dart';
@@ -120,6 +121,12 @@ class AppRouter {
         path: '/admin',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: AdminPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/admin/messages',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: MessagePage(),
         ),
       ),
       GoRoute(
