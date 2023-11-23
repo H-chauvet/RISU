@@ -10,7 +10,7 @@ describe('POST /contact', function () {
             .post('/api/contact')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .send({ prenom: "henri", nom: "chauvet", email: 'test@gmail.com', message: "Ceci est un message" })
+            .send({ firstName: "henri", lastName: "chauvet", email: 'test@gmail.com', message: "Ceci est un message" })
             .expect(200, callback)
         },
         function (callback) {
@@ -18,7 +18,7 @@ describe('POST /contact', function () {
             .post('/api/contact')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .send({ prenom: "henri", nom: "chauvet", message: "Ceci est un message bugué" })
+            .send({ firstName: "henri", lastName: "chauvet", message: "Ceci est un message bugué" })
             .expect(400, callback)
         },
       ],
