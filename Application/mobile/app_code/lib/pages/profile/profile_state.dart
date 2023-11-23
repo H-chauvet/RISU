@@ -138,26 +138,6 @@ class ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Louer un article (provisoire)',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RentArticlePage(
-                            name: 'ballon de volley',
-                            price: 10,
-                            containerId: 1,
-                            locations: ['Location 1', 'Location 2'],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
                 TextButton(
                   key: const Key('profile-textbutton_delete-account'),
                   onPressed: () {

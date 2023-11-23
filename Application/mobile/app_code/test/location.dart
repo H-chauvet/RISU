@@ -16,7 +16,12 @@ void main() {
             ),
           ],
           child: const MaterialApp(
-            home: RentArticlePage(),
+            home: RentArticlePage(
+              name: 'Ballon de volley',
+              price: 2,
+              containerId: 1,
+              locations: ['Gymnase', 'Salle de sport'],
+            ),
           ),
         ),
       );
@@ -45,7 +50,7 @@ void main() {
       await tester.pump();
 
       // Verify the updated state after interaction
-      expect(find.text('1 heures'), findsOneWidget);
+      expect(find.text('1 heure'), findsOneWidget);
 
       // Simulate another user interaction
       await tester.scrollUntilVisible(confirmButtonFinder, 100.0);
