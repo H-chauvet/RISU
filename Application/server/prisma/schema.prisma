@@ -26,11 +26,13 @@ model User {
 	confirmProcess		String		@default("")
 	createdAt			DateTime	@default(now())
 	Locations			Location[]
+	Notifications		Notifications? @relation(fields: [notificationsId], references: [id])
+	notificationsId		String?
 }
 
 model Containers {
 	id					String		@id @unique @default(cuid())
-	localisation		String
+	localization		String
 	items				Items[]
 	owner				String
 }
@@ -42,7 +44,6 @@ model Items {
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
 	Locations			Location[]
-
 }
 
 model Comments {
@@ -68,4 +69,12 @@ model Location {
 	userId				String
 	createdAt			DateTime	@default(now())
 	duration			Int
+}
+
+model Notifications {
+	id						String		@id @unique @default(cuid())
+	Users					User[]
+	favoriteItemsAvailable 	Boolean
+	endOfRenting			Boolean
+	newsOffersRisu			Boolean
 }
