@@ -13,6 +13,7 @@ import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
+import 'package:risu/components/loader.dart';
 
 import 'login_page.dart';
 
@@ -20,6 +21,7 @@ class LoginPageState extends State<LoginPage> {
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
+  // CustomLoader loader = CustomLoader(loadingFuture: LoaderManager.activateLoader(activation: true));
 
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
@@ -35,6 +37,7 @@ class LoginPageState extends State<LoginPage> {
 
     late http.Response response;
     try {
+      CustomLoader(loadingFuture: LoaderManager.yourAsyncFunction(activation: true));
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/login'),
         headers: <String, String>{
@@ -300,7 +303,8 @@ class LoginPageState extends State<LoginPage> {
                       themeProvider.currentTheme.secondaryHeaderColor),
                 ),
               ),
-            )
+            ),
+            CustomLoader(loadingFuture: LoaderManager.yourAsyncFunction(activation: true)),
           ],
         ),
       ),
