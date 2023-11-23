@@ -117,5 +117,35 @@ describe('POST /api/signup', () => {
         ],
         done
       )
+    }),
+    it('Change all notifications preferences to false', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/login')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .send({ favoriteItemsAvailable: false, endOfRenting: false, newsOffersRisu: false })
+            expect(res.statusCode).toBe(200)
+          }
+        ],
+        done
+      )
+    });
+    it('Change few notifications preferences', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/login')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .send({ favoriteItemsAvailable: true, newsOffersRisu: true })
+            expect(res.statusCode).toBe(200)
+          }
+        ],
+        done
+      )
     });
 });
