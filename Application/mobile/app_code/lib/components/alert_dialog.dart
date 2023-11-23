@@ -85,6 +85,7 @@ class MyAlertDialog {
           content: Text(message),
           actions: [
             TextButton(
+              key: const Key('alertdialog-button_cancel'),
               child: Text(
                 onCancelName,
                 style: const TextStyle(
@@ -98,6 +99,7 @@ class MyAlertDialog {
             ),
             TextButton(
               child: Text(onOkName,
+                  key: const Key('alertdialog-button_ok'),
                   style: TextStyle(
                       color: context.select((ThemeProvider themeProvider) =>
                           themeProvider.currentTheme.dialogTheme.titleTextStyle

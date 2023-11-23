@@ -3,6 +3,7 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 class PasswordChange extends StatefulWidget {
@@ -91,7 +92,7 @@ class PasswordChangeState extends State<PasswordChange> {
                           onPressed: () async {
                             if (formKey.currentState!.validate() &&
                                 password == validedPassword) {
-                              await http.post(
+                              var response = await http.post(
                                 Uri.parse(
                                     'http://$serverIp:3000/api/auth/update-password'),
                                 headers: <String, String>{
@@ -104,6 +105,19 @@ class PasswordChangeState extends State<PasswordChange> {
                                   'password': password,
                                 }),
                               );
+                              if (response.statusCode == 200) {
+                                Fluttertoast.showToast(
+                                  msg: 'Mot de passe changé avec succès',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Echec lors du changement du mot de passe',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              }
                               // ignore: use_build_context_synchronously
                               context.go("/");
                             }

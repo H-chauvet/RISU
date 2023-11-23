@@ -16,6 +16,7 @@ class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
     ArticleListPage(),
+    Container(),
     const MapPage(),
     const ProfilePage(),
   ];
@@ -35,7 +36,6 @@ class HomePageState extends State<HomePage> {
     try {
       String? firstName = userInformation?.firstName;
       String? lastName = userInformation?.lastName;
-      print('firstName: $firstName');
       if (userInformation?.email != null &&
           (firstName == null || lastName == null)) {
         await MyAlertDialog.showChoiceAlertDialog(
