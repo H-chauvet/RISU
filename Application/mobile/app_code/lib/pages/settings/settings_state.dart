@@ -70,7 +70,7 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
                 const SizedBox(height: 20),
                 MyOutlinedButton(
-                  key: const Key('settings-button_go_to_parameter_page'),
+                  key: const Key('settings-button_change_information'),
                   onPressed: () {
                     print(context);
                   },

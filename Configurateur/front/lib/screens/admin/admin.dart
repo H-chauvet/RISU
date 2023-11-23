@@ -61,6 +61,7 @@ class _AdminPageState extends State<AdminPage> {
                             ),
                           ),
                           onPressed: () {
+                            context.go("/admin/messages");
                           },
                           child: const Text(
                             'Gestion des messages',

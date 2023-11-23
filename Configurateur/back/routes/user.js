@@ -64,7 +64,7 @@ router.post('/google-login', async function (req, res, next) {
 
 router.post('/register', async function (req, res, next) {
   try {
-    const { firstName, lastName, company, email, password } = req.body
+    const { firstName, lastName, organization, email, password } = req.body
     if (!email || !password) {
       res.status(400)
       throw new Error('Email and password are required')
@@ -80,7 +80,7 @@ router.post('/register', async function (req, res, next) {
     const user = await userCtrl.registerByEmail({
       firstName,
       lastName,
-      company,
+      organization,
       email,
       password
     })

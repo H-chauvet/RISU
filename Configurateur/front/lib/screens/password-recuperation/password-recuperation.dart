@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 class PasswordRecuperation extends StatefulWidget {
@@ -142,9 +143,9 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         width: 300,
                         child: ElevatedButton(
                           key: const Key('submit'),
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              http.post(
+                              var response = await http.post(
                                 Uri.parse(
                                     'http://$serverIp:3000/api/auth/forgot-password'),
                                 headers: <String, String>{
@@ -156,6 +157,19 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                                   'email': mail,
                                 }),
                               );
+                              if (response.statusCode == 200) {
+                                Fluttertoast.showToast(
+                                  msg: 'Mot de passe récupéré avec succès',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Echec de la récupération du mot de message',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              }
                               context.go("/");
                             }
                           },
