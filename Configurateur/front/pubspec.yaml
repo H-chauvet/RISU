@@ -86,12 +86,12 @@ flutter:
      - assets/container.png
      - assets/3d_logo.png
      - assets/cube.png
-     - assets/henri.png
-     - assets/louis.png
-     - assets/hugo.png
-     - assets/quentin.png
-     - assets/tanguy.png
-     - assets/cédric.png
+     - assets/Henri.png
+     - assets/Louis.png
+     - assets/Hugo.png
+     - assets/Quentin.png
+     - assets/Tanguy.png
+     - assets/Cédric.png
 
   #   - images/a_dot_ham.jpeg
 
