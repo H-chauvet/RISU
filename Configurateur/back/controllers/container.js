@@ -32,3 +32,20 @@ exports.updateContainer = (id, container) => {
     data: container
   })
 }
+
+exports.getAllContainers = async () => {
+  try {
+    const users = await db.Container.findMany();
+    return users;
+  } catch (error) {
+    console.error('Error retrieving users:', error);
+    throw new Error('Failed to retrieve users');
+  }
+};
+
+exports.createContainer2 = container => {
+  container.price = parseFloat(container.price)
+  return db.Container.create({
+    data: container
+  })
+}
