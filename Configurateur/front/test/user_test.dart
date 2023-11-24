@@ -17,6 +17,7 @@ void main() {
             firstName: 'John',
             lastName: 'Doe',
           ),
+          onDelete: (message) {},
         ),
       ),
     );
@@ -37,6 +38,7 @@ void main() {
             company: 'copany',
             email: 'john.doe@example.com',
           ),
+          onDelete: (message) {},
         ),
       ),
     );
