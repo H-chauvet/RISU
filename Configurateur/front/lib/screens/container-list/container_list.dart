@@ -21,10 +21,10 @@ class _ContainerPageState extends State<ContainerPage> {
   @override
   void initState() {
     super.initState();
-    fetchMessages();
+    fetchContainers();
   }
 
-  Future<void> fetchMessages() async {
+  Future<void> fetchContainers() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
@@ -55,7 +55,7 @@ class _ContainerPageState extends State<ContainerPage> {
       //   toastLength: Toast.LENGTH_SHORT,
       //   gravity: ToastGravity.CENTER,
       // );
-      fetchMessages();
+      fetchContainers();
     } else {
       // Fluttertoast.showToast(
       //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',

@@ -14,6 +14,7 @@ import 'package:front/screens/register/register.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
+import 'package:front/screens/company/company.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
@@ -140,6 +141,12 @@ class AppRouter {
         path: '/userList',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: UserPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/company',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyPage(),
         ),
       ),
     ],
