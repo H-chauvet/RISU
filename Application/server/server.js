@@ -111,11 +111,25 @@ app.post('/api/login', (req, res, next) => {
 
 app.get('/api/dev/user/listall', async (req, res) => {
   try {
-    const users = await database.prisma.User.findMany()
-    return res.json(users)
+    const user = await database.prisma.User.findMany()
+    res.status(200).json({ user });
   } catch (err) {
     console.log(err)
     return res.status(400).json('An error occured.')
+  }
+})
+
+app.post('/api/dev/user/delete', async function (req, res) {
+  const { email } = req.body
+
+  try {
+    await database.prisma.User.delete({where: {
+      email: email,
+    }
+  })
+    res.json('ok').status(200)
+  } catch (err) {
+    res.json('ok').status(200)
   }
 })
 
