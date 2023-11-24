@@ -1,0 +1,72 @@
+// import 'dart:ffi';
+
+import 'package:flutter/material.dart';
+
+class ContainerList {
+  final int? id;
+  final dynamic? createdAt;
+  final dynamic? organization;
+  final int? organizationId;
+  final dynamic? containerMapping;
+  final double? price;
+
+  ContainerList({
+    required this.id,
+    required this.createdAt,
+    required this.organization,
+    required this.organizationId,
+    required this.containerMapping,
+    required this.price,
+  });
+
+  factory ContainerList.fromJson(Map<String, dynamic> json) {
+    return ContainerList(
+      id: json['id'],
+      createdAt: json['createdAt'],
+      organization: json['organization'],
+      organizationId: json['organizationId'],
+      containerMapping: json['containerMapping'],
+      price: json['price'],
+    );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'createdAt': createdAt,
+      'organization': organization,
+      'organizationId': organizationId,
+      'containerMapping': containerMapping,
+      'price': price,
+    };
+  }
+}
+
+class ContainerCard extends StatelessWidget {
+  final ContainerList user;
+   final Function(ContainerList) onDelete;
+
+  const ContainerCard({super.key, required this.user, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            title: Text(user.id.toString()),
+            subtitle: Text(user.price.toString()),
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onDelete(user),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
