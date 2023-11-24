@@ -23,11 +23,59 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    fetchMessages();
-    fetchMessagesMobile();
+    fetchContainer();
+    fetchContainerMobile();
   }
 
-  Future<void> fetchMessages() async {
+  Future<void> deleteContainerWeb(User user) async {
+    final Uri url = Uri.parse("http://${serverIp}:3000/api/auth/delete");
+    final response = await http.post(
+      url,
+      body: json.encode({'email': user.email}),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
+
+    if (response.statusCode == 200) {
+      // Fluttertoast.showToast(
+      //   msg: 'Message supprimé avec succès',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+      fetchContainer();
+    } else {
+      // Fluttertoast.showToast(
+      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+    }
+  }
+
+  Future<void> deleteContainerMobile(UserMobile user) async {
+    final Uri url = Uri.parse("http://localhost:8080/api/dev/user/delete");
+    final response = await http.post(
+      url,
+      body: json.encode({'email': user.email}),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
+
+    if (response.statusCode == 200) {
+      // Fluttertoast.showToast(
+      //   msg: 'Message supprimé avec succès',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+      fetchContainerMobile();
+    } else {
+      // Fluttertoast.showToast(
+      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+    }
+  }
+
+  Future<void> fetchContainer() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/auth/listAll'));
     if (response.statusCode == 200) {
@@ -45,7 +93,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Future<void> fetchMessagesMobile() async {
+  Future<void> fetchContainerMobile() async {
     final response =
         await http.get(Uri.parse('http://localhost:8080/api/dev/user/listall'));
     if (response.statusCode == 200) {
@@ -100,6 +148,7 @@ class _UserPageState extends State<UserPage> {
                 final product = users[index];
                 return UserCard(
                   user: product,
+                  onDelete: deleteContainerWeb,
                 );
               },
             ),
@@ -126,6 +175,7 @@ class _UserPageState extends State<UserPage> {
                 final product = users_mobile[index];
                 return UserMobileCard(
                   user: product,
+                  onDelete: deleteContainerMobile,
                 );
               },
             ),

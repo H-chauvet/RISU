@@ -37,8 +37,9 @@ class User {
 
 class UserCard extends StatelessWidget {
   final User user;
+  final Function(User) onDelete;
 
-  const UserCard({super.key, required this.user});
+  const UserCard({super.key, required this.user, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +49,15 @@ class UserCard extends StatelessWidget {
           ListTile(
             title: Text(user.firstName),
             subtitle: Text(user.email),
-            // leading: Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     Text(user.company),
-            //     Text(user.password),
-            //   ],
-            // ),
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onDelete(user),
+                ),
+              ],
+            ),
           ),
         ],
       ),
