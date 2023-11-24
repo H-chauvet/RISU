@@ -44,7 +44,7 @@ exports.getAllContainers = async () => {
 };
 
 exports.createContainer2 = container => {
-  container.price = 10;
+  container.price = parseFloat(container.price)
   return db.Container.create({
     data: container
   })

@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class User {
+class ContainerList {
   final int? id;
   final dynamic? createdAt;
   final dynamic? organization;
@@ -10,7 +10,7 @@ class User {
   final dynamic? containerMapping;
   final double? price;
 
-  User({
+  ContainerList({
     required this.id,
     required this.createdAt,
     required this.organization,
@@ -19,8 +19,8 @@ class User {
     required this.price,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory ContainerList.fromJson(Map<String, dynamic> json) {
+    return ContainerList(
       id: json['id'],
       createdAt: json['createdAt'],
       organization: json['organization'],
@@ -41,10 +41,11 @@ class User {
   }
 }
 
-class UserCard extends StatelessWidget {
-  final User user;
+class ContainerCard extends StatelessWidget {
+  final ContainerList user;
+   final Function(ContainerList) onDelete;
 
-  const UserCard({super.key, required this.user});
+  const ContainerCard({super.key, required this.user, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -52,15 +53,17 @@ class UserCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text('${user.id}'),
-            subtitle: Text('${user.price}'),
-            // leading: Row(
-            //   mainAxisSize: MainAxisSize.min,
-            //   children: [
-            //     Text(user.organizationId),
-            //     Text(user.password),
-            //   ],
-            // ),
+            title: Text(user.id.toString()),
+            subtitle: Text(user.price.toString()),
+            leading: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onDelete(user),
+                ),
+              ],
+            ),
           ),
         ],
       ),

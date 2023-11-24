@@ -16,13 +16,12 @@ class ContainerPage extends StatefulWidget {
 }
 
 class _ContainerPageState extends State<ContainerPage> {
-  List<User> users = [];
+  List<ContainerList> users = [];
 
   @override
   void initState() {
     super.initState();
     fetchMessages();
-    // fetchMessagesMobile();
   }
 
   Future<void> fetchMessages() async {
@@ -32,11 +31,34 @@ class _ContainerPageState extends State<ContainerPage> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> usersData = responseData["user"];
       setState(() {
-        users = usersData.map((data) => User.fromJson(data)).toList();
+        users = usersData.map((data) => ContainerList.fromJson(data)).toList();
       });
     } else {
       // Fluttertoast.showToast(
       //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+    }
+  }
+
+  Future<void> deleteContainer(ContainerList message) async {
+    final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
+    final response = await http.post(
+      url,
+      body: json.encode({'id': message.id}),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
+    if (response.statusCode == 200) {
+      // Fluttertoast.showToast(
+      //   msg: 'Message supprimé avec succès',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
+      fetchMessages();
+    } else {
+      // Fluttertoast.showToast(
+      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
       //   toastLength: Toast.LENGTH_SHORT,
       //   gravity: ToastGravity.CENTER,
       // );
@@ -48,54 +70,25 @@ class _ContainerPageState extends State<ContainerPage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
-        'Gestion des utilisateurs',
+        'Gestion des conteuneurs',
         context: context,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
-            const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
-              child: Text(
-                "Web :",
-                style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 30,),
             ListView.builder(
               shrinkWrap:
                   true,
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final product = users[index];
-                return UserCard(
+                return ContainerCard(
                   user: product,
+                  onDelete: deleteContainer,
                 );
               },
-            ),
-            const SizedBox(height: 20,),
-            const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
-              child: Text(
-                "Mobile :",
-                style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                ),
-              ),
             ),
           ],
         ),

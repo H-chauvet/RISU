@@ -25,13 +25,7 @@ router.get('/get', async function (req, res, next) {
   }
 })
 
-router.delete('/delete', async function (req, res, next) {
-  try {
-    jwtMiddleware.verifyToken(req.headers.authorization)
-  } catch (err) {
-    res.status(401)
-    throw new Error('Unauthorized')
-  }
+router.post('/delete', async function (req, res, next) {
   try {
     const { id } = req.body
 
@@ -93,11 +87,15 @@ router.put('/update', async function (req, res, next) {
   }
 })
 
-router.post('/create-ctn', async (req, res, next) => {
+router.post('/create-ctn', async (req, res) => {
   try {
-    const { containerMapping } = req.body
+    const { id, price, width, height  } = req.body
     const container = await containerCtrl.createContainer2(
-      {containerMapping,}
+      {
+          price,
+          width,
+          height
+      }
     )
     res.status(200).json(container)
   } catch (err) {
