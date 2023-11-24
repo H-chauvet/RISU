@@ -48,7 +48,7 @@ class Validators {
     }
     final daysInMonth = DateTime(year, month + 1, 0).day;
     if (day < 1 || day > daysInMonth) {
-      return "Invalid day. Please enter a value between 1 and {daysInMonth}";
+      return "Invalid day. Please enter a value between 1 and $daysInMonth";
     }
     return null; // The date is valid
   }

@@ -49,7 +49,7 @@ class ProductCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text('${product.id}'),
+                title: Text(product.id.toString()),
                 leading: Image.asset(
                   'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
                   width: 150, // Largeur de l'image

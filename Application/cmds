@@ -53,7 +53,12 @@ case "$command" in
     echo "Executing command fud..."
     sudo docker-compose down
     sudo docker volume rm $(sudo docker volume ls -q)
-    sudo docker rmi -f $(docker images -f "dangling=true" -q)
+    sudo docker stop $(docker ps -q)
+    sudo docker rm $(docker ps -a -q)
+    sudo docker stop $(docker ps -aq)
+    sudo docker rm $(docker ps -aq)
+    sudo docker rmi -f $(docker images -aq)
+
     ;;
 
   "mobile")

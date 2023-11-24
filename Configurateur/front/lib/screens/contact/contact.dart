@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 class ContactPage extends StatefulWidget {
@@ -12,10 +13,12 @@ class ContactPage extends StatefulWidget {
 }
 
 void sendFormData(
-    String surname, String name, String email, String message) async {
+  GlobalKey<FormState> formKey,
+  String surname, String name, String email, String message,
+) async {
   var body = {
-    'prenom': surname,
-    'nom': name,
+    'firstName': surname,
+    'lastName': name,
     'email': email,
     'message': message,
   };
@@ -27,8 +30,19 @@ void sendFormData(
 
   if (response.statusCode == 200) {
     print('Code 200, données envoyées.');
+    Fluttertoast.showToast(
+        msg: 'Message envoyé avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+      formKey.currentState!.reset();
   } else {
     print('Erreur lors de l\'envoi des données : ${response.statusCode}');
+    Fluttertoast.showToast(
+        msg: "Erreur durant l'envoi du message",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
   }
 }
 
@@ -56,7 +70,12 @@ class _ContactPageState extends State<ContactPage> {
                 children: <Widget>[
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Prénom'),
+                      decoration: InputDecoration(
+                        labelText: 'Prénom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre prénom';
@@ -71,7 +90,12 @@ class _ContactPageState extends State<ContactPage> {
                   const SizedBox(width: 16.0),
                   Expanded(
                     child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Nom'),
+                      decoration: InputDecoration(
+                        labelText: 'Nom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Veuillez entrer votre nom';
@@ -88,7 +112,12 @@ class _ContactPageState extends State<ContactPage> {
               ),
               const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Veuillez entrer votre email';
@@ -103,9 +132,14 @@ class _ContactPageState extends State<ContactPage> {
                   _email = value!;
                 },
               ),
-
+              const SizedBox(height: 16.0),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Message'),
+                decoration: InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                ),
                 maxLines: 5,
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -117,29 +151,25 @@ class _ContactPageState extends State<ContactPage> {
                   _message = value!;
                 },
               ),
-              const SizedBox(
-                  height:
-                      16.0),
+              const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    sendFormData(_surname, _name, _email, _message);
-                  } else {
-                  }
+                    sendFormData(_formKey, _surname, _name, _email, _message);
+                  } else {}
+
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0),
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
                 child: const Text(
                   'Envoyer',
-                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],

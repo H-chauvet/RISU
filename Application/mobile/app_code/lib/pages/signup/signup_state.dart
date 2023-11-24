@@ -6,11 +6,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
-import 'package:risu/network/informations.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../login/login_page.dart';
 import 'signup_page.dart';
 
 class SignupPageState extends State<SignupPage> {
@@ -20,7 +20,7 @@ class SignupPageState extends State<SignupPage> {
 
   Future<bool> apiSignup() async {
     if (_email == null || _password == null) {
-      await MyAlertDialog.showInfoAlertDialog(
+      await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Creation de compte',
           message: 'Please fill all the field !');
@@ -38,7 +38,7 @@ class SignupPageState extends State<SignupPage> {
       );
     } catch (err) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Connexion',
             message: 'Connection refused.');
@@ -55,7 +55,7 @@ class SignupPageState extends State<SignupPage> {
       }
     } else {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Creation de compte',
             message: 'Invalid e-mail address !');
@@ -142,9 +142,9 @@ class SignupPageState extends State<SignupPage> {
                   child: Column(
                     children: [
                       TextButton(
-                        key: const Key('signup-textbutton_resetpassword'),
-                        onPressed: () {},
-                        child: const Text(
+                        key: Key('signup-textbutton_resetpassword'),
+                        onPressed: null,
+                        child: Text(
                           '',
                           style: TextStyle(
                             fontSize: 12,

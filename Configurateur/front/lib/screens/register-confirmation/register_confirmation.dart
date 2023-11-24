@@ -98,14 +98,13 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff4682B4),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
                         child: const Text(
                           "Renvoyer le mail de confirmation",
-                          style: TextStyle(fontSize: 18, color: Colors.white),
+                          style: TextStyle(fontSize: 18),
                         ),
                       ),
                     ),
@@ -117,13 +116,13 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                       onTap: () {
                         context.go("/");
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
-                                "Retour à l'acceuil",
+                                "Retour à l'accueil",
                                 style:
                                     TextStyle(color: Colors.blue, fontSize: 16),
                               ),

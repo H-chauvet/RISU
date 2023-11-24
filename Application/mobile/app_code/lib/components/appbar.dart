@@ -29,19 +29,21 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             : null,
         title: showLogo
             ? Image.asset(
+                key: const Key('appbar-image_logo'),
                 'assets/logo_noir.png',
                 height: 64,
               )
             : null,
         centerTitle: true,
-        /*actions: showBurgerMenu
+        actions: showBurgerMenu
             ? [
                 IconButton(
+                  key: const Key('appbar-button_burgermenu'),
                   icon: const Icon(Icons.menu),
                   onPressed: () {},
                 ),
               ]
-            : null,*/
+            : null,
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,
         elevation: 0,

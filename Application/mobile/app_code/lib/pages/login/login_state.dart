@@ -7,13 +7,13 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
-import 'package:risu/network/informations.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
 
-import '../home/home_page.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -44,6 +44,7 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err) {
+      print(err);
       if (context.mounted) {
         await MyAlertDialog.showErrorAlertDialog(
             key: const Key('login-alertdialog_connectionrefused'),
@@ -71,6 +72,7 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err) {
+        print(err);
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
               key: const Key('login-alertdialog_invalidtoken'),
@@ -103,6 +105,7 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err) {
+        print(err);
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
               key: const Key('login-alertdialog_error'),
@@ -241,13 +244,14 @@ class LoginPageState extends State<LoginPage> {
                 apiLogin().then((value) => {
                       if (value)
                         {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
                                 return const HomePage();
                               },
                             ),
+                            (route) => false,
                           ),
                         }
                     });
