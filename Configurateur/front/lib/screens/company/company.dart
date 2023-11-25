@@ -21,7 +21,7 @@ class MyContainerList {
 }
 
 class ProductCard extends StatelessWidget {
-  final MyContainerList product;
+  List<MyContainerList> users = [];
 
   const ProductCard({required this.product});
 
