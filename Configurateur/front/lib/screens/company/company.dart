@@ -73,12 +73,12 @@ class CompanyPage extends StatefulWidget {
 
 class CompanyPageState extends State<CompanyPage> {
   late List<String> products = [
-    'assets/henri.png',
-    'assets/louis.png',
-    'assets/hugo.png',
-    'assets/quentin.png',
-    'assets/tanguy.png',
-    'assets/cédric.png',
+    'assets/Henri.png',
+    'assets/Louis.png',
+    'assets/Hugo.png',
+    'assets/Quentin.png',
+    'assets/Tanguy.png',
+    'assets/Cédric.png',
   ];
 
   @override
