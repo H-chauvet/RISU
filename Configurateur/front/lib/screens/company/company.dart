@@ -10,9 +10,8 @@ import 'package:front/network/informations.dart';
 
 class MyContainerList {
   final int id;
-  final String? containerMapping;
 
-  MyContainerList({required this.id, required this.containerMapping});
+  MyContainerList({required this.id});
 
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
     return MyContainerList(
