@@ -10,20 +10,22 @@ import 'package:front/network/informations.dart';
 
 class MyContainerList {
   final int id;
+  final String? containerMapping;
 
-  MyContainerList({required this.id});
+  MyContainerList({required this.id, required this.containerMapping});
 
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
     return MyContainerList(
       id: json['id'],
+      containerMapping: json['containerMapping'],
     );
   }
 }
 
 class ProductCard extends StatelessWidget {
-  
+  final MyContainerList product;
 
-  const ProductCard({required this.user});
+  const ProductCard({required this.product});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class ProductCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text(user.id.toString()),
+                title: Text(product.id.toString()),
                 leading: Image.asset(
                   'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
                   width: 150, // Largeur de l'image
@@ -70,7 +72,6 @@ class CompanyPage extends StatefulWidget {
 }
 
 class CompanyPageState extends State<CompanyPage> {
-  List<MyContainerList> users = [];
   late List<String> members = [
     'assets/Henri.png',
     'assets/Louis.png',
@@ -83,24 +84,21 @@ class CompanyPageState extends State<CompanyPage> {
   @override
   void initState() {
     super.initState();
-    fetchContainers();
   }
 
-  Future<void> fetchContainers() async {
-    final response =
-        await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
+  Future<List<MyContainerList>> fetchData() async {
+    final response = await http
+        .get(Uri.parse('http://$serverIp:3000/api/container/listAll'));
+
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> usersData = responseData["user"];
-      setState(() {
-        users = usersData.map((data) => MyContainerList.fromJson(data)).toList();
-      });
+      List<dynamic> data = json.decode(response.body);
+      List<MyContainerList> containerList = data.map((json) {
+        MyContainerList container = MyContainerList.fromJson(json);
+        return container;
+      }).toList();
+      return containerList;
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      throw Exception('Failed to load data');
     }
   }
 
@@ -161,18 +159,38 @@ class CompanyPageState extends State<CompanyPage> {
                 decorationStyle: TextDecorationStyle.solid,
               )),
           SizedBox(height: 80,),
-          ListView.builder(
-              shrinkWrap:
-                  true,
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                final product = users[index];
-                return ProductCard(
-                  user: product,
-                  onDelete: deleteContainer,
+          FutureBuilder<List<MyContainerList>>(
+            future: fetchData(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                print('Error: ${snapshot.error}');
+                print('Stack trace:\n${snapshot.stackTrace}');
+                return Text('Error occurred. See console for details.');
+              } else {
+                List<MyContainerList> data = snapshot.data!;
+                if (data.isEmpty) {
+                  return (const Center(
+                    child: Center(child: Text("Aucun conteneur n'a été créer"),)
+                  ));
+                }
+                return Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Center(
+                    child: Wrap(
+                      spacing: 50.0,
+                      runSpacing: 20.0,
+                      children: List.generate(
+                        data.length,
+                        (index) => ProductCard(product: data[index]),
+                      ),
+                    ),
+                  ),
                 );
-              },
-            ),
+              }
+            },
+          ),
         ],
       ),
       ),
