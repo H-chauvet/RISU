@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class MyColors {
   static const Color primary = Color(0xFF4682B4);
   static const Color secondary = Color(0xFF23415A);
+  static const Color alertDialogChoiceCancel = Color(0xFF808080);
 }
 
 final lightTheme = ThemeData(
@@ -54,7 +55,7 @@ final lightTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.primary,
+    backgroundColor: MyColors.secondary,
     selectedItemColor: Colors.white,
     unselectedItemColor: Colors.white54,
   ),
@@ -70,7 +71,7 @@ final darkTheme = ThemeData(
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFF4E4E4E),
     titleTextStyle: TextStyle(
-      color: MyColors.secondary,
+      color: MyColors.primary,
       fontWeight: FontWeight.bold,
       fontSize: 20.0,
     ),
@@ -109,7 +110,7 @@ final darkTheme = ThemeData(
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.secondary,
+    backgroundColor: MyColors.primary,
     selectedItemColor: Colors.white,
     unselectedItemColor: Colors.white54,
   ),

@@ -45,7 +45,8 @@ Released under [MIT](/LICENSE) by [Henri Chauvet](https://github.com/h-chauvet).
 [Hugo Lopes-Pinto](https://github.com/hugolopespinto) <br>
 [Tanguy Bellicha](https://github.com/tbellicha) <br>
 [Louis Maestre](https://github.com/Louismaestre) <br>
-[Quentin Leroueil](https://github.com/invpuppet)
+[Quentin Leroueil](https://github.com/invpuppet) <br>
+[Nathan Rousseau](https://github.com/31Nathan)
 </div>
 
 <div align="center">

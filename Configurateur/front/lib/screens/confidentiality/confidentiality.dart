@@ -8,7 +8,6 @@ class ConfidentialityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Politique de confidentialité',
         context: context,

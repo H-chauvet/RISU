@@ -186,3 +186,13 @@ exports.forgotPassword = email => {
     transporter.sendMail(mail)
   })
 }
+
+exports.getAllUsers = async () => {
+  try {
+    const users = await db.User.findMany();
+    return users;
+  } catch (error) {
+    console.error('Error retrieving users:', error);
+    throw new Error('Failed to retrieve users');
+  }
+};

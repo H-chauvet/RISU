@@ -2,7 +2,7 @@ const { Strategy } = require('passport-local')
 const { hash, compare } = require('../utils')
 const passport = require('passport')
 const database = require('../database_init')
-require('dotenv').config({ path: '../application.env' })
+require('dotenv').config({ path: '../.env' })
 
 /**
  * Strategy option needed by passport
@@ -32,10 +32,21 @@ passport.use(
       if (existsEmail) {
         return cb(null, existsEmail)
       }
+      const notifications = await database.prisma.Notifications.create({
+        data: {
+          favoriteItemsAvailable: true,
+          endOfRenting: true,
+          newsOffersRisu: true
+        }
+      });
       const user = await database.prisma.User.create({
         data: {
           email: email,
-          password: await hash(password)
+          password: await hash(password),
+          notificationsId: notifications.id,
+        },
+        include: {
+          Notifications: true,
         }
       })
       return cb(null, user)

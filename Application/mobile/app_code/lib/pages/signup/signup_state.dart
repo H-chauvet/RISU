@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
-import 'package:risu/network/informations.dart';
-import 'package:risu/pages/login/login_functional.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/validators.dart';
 
@@ -20,10 +20,11 @@ class SignupPageState extends State<SignupPage> {
 
   Future<bool> apiSignup() async {
     if (_email == null || _password == null) {
-      await MyAlertDialog.showInfoAlertDialog(
+      await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Creation de compte',
           message: 'Please fill all the field !');
+      return false;
     }
     late http.Response response;
     try {
@@ -37,11 +38,12 @@ class SignupPageState extends State<SignupPage> {
       );
     } catch (err) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Connexion',
             message: 'Connection refused.');
       }
+      return false;
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -53,11 +55,12 @@ class SignupPageState extends State<SignupPage> {
       }
     } else {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Creation de compte',
             message: 'Invalid e-mail address !');
       }
+      return false;
     }
     return false;
   }
@@ -139,9 +142,9 @@ class SignupPageState extends State<SignupPage> {
                   child: Column(
                     children: [
                       TextButton(
-                        key: const Key('signup-textbutton_resetpassword'),
-                        onPressed: () {},
-                        child: const Text(
+                        key: Key('signup-textbutton_resetpassword'),
+                        onPressed: null,
+                        child: Text(
                           '',
                           style: TextStyle(
                             fontSize: 12,
@@ -159,7 +162,19 @@ class SignupPageState extends State<SignupPage> {
                 apiSignup().then((value) => {
                       if (value)
                         {
-                          goToLoginPage(context),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Account created !'),
+                            ),
+                          ),
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const LoginPage();
+                              },
+                            ),
+                          ),
                         }
                     });
               },
@@ -189,7 +204,14 @@ class SignupPageState extends State<SignupPage> {
             TextButton(
               key: const Key('signup-textbutton_gotologin'),
               onPressed: () {
-                goToLoginPage(context);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const LoginPage();
+                    },
+                  ),
+                );
               },
               child: Text(
                 'Déjà inscrit ? Se connecter',

@@ -11,7 +11,7 @@ const session = require('express-session')
 const jwt = require('jwt-simple')
 const utils = require('./utils')
 const axios = require('axios')
-require('dotenv').config({ path: '../application.env' })
+require('dotenv').config({ path: '../.env' })
 const nodemailer = require('nodemailer')
 
 const app = express()
@@ -68,7 +68,10 @@ app.post('/api/signup', (req, res, next) => {
     { session: false },
     async (err, user, info) => {
       if (err) throw new Error(err)
-      if (user == false) return res.json(info)
+      if (user == false) {
+        console.log(info);
+        return res.status(401).json(info)
+      }
       const token = utils.generateToken(user.id)
       try {
         const decoded = jwt.decode(token, process.env.JWT_SECRET)
@@ -79,6 +82,7 @@ app.post('/api/signup', (req, res, next) => {
           where: { id: decoded.id },
           data: { mailVerification: false }
         })
+        console.log('user : ', user);
         sendAccountConfirmationEmail(user.email, token)
       } catch (err) {
         console.error(err.message)
@@ -107,11 +111,25 @@ app.post('/api/login', (req, res, next) => {
 
 app.get('/api/dev/user/listall', async (req, res) => {
   try {
-    const users = await database.prisma.User.findMany()
-    return res.json(users)
+    const user = await database.prisma.User.findMany()
+    res.status(200).json({ user });
   } catch (err) {
     console.log(err)
     return res.status(400).json('An error occured.')
+  }
+})
+
+app.post('/api/dev/user/delete', async function (req, res) {
+  const { email } = req.body
+
+  try {
+    await database.prisma.User.delete({where: {
+      email: email,
+    }
+  })
+    res.json('ok').status(200)
+  } catch (err) {
+    res.json('ok').status(200)
   }
 })
 
@@ -154,6 +172,9 @@ function generateRandomPassword (length) {
 
 app.post('/api/user/resetPassword', async (req, res) => {
   const { email } = req.body
+  if (!email || email === '') {
+    return res.status(401).json({ message: 'Missing fields' })
+  }
 
   try {
     const user = await database.prisma.User.findUnique({ where: { email } })
@@ -176,6 +197,28 @@ app.post('/api/user/resetPassword', async (req, res) => {
     return res.status(500).json({ message: 'Failed to reset password' })
   }
 })
+
+app.delete('/api/user/:userId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        if (req.user.id != req.params.userId) {
+            return res.status(401).send('Unauthorized');
+        }
+        const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        await database.prisma.User.delete({ where: { id: req.params.userId } })
+        return res.status(200).send('User deleted');
+    } catch (error) {
+        console.error('Failed to delete account: ', error)
+        return res.status(500).json({ message: 'Failed to reset password' })
+    }
+  }
+)
 
 async function sendAccountConfirmationEmail (email, token) {
   const mailOptions = {
@@ -219,24 +262,46 @@ app.get('/api/mailVerification', async (req, res) => {
 })
 
 async function createFixtures () {
-  await database.prisma.User.createMany({
-    data: [
-      {
-        email: 'admin@gmail.com',
-        firstName: 'admin',
-        lastName: 'admin',
-        password: await utils.hash('admin'),
-        mailVerification: true
-      },
-      {
-        email: 'user@gmail.com',
-        firstName: 'user',
-        lastName: 'user',
-        password: await utils.hash('user'),
-        mailVerification: true
-      }
-    ]
-  })
+    try {
+        const notification1 = await database.prisma.Notifications.create({
+            data: {
+                favoriteItemsAvailable: true,
+                endOfRenting: true,
+                newsOffersRisu: true
+            }
+        })
+        const notification2 = await database.prisma.Notifications.create({
+            data: {
+                favoriteItemsAvailable: true,
+                endOfRenting: true,
+                newsOffersRisu: true
+            }
+        })
+        if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
+            await database.prisma.User.create({
+                data: {
+                    email: 'admin@gmail.com',
+                    firstName: 'admin',
+                    lastName: 'admin',
+                    password: await utils.hash('admin'),
+                    mailVerification: true,
+                    notificationsId: notification1.id,
+                },
+            })
+        if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
+            await database.prisma.User.create({
+                data: {
+                    email: 'user@gmail.com',
+                    firstName: 'user',
+                    lastName: 'user',
+                    password: await utils.hash('user'),
+                    mailVerification: true,
+                    notificationsId: notification2.id,
+                }
+            })
+    } catch (err) {
+        console.error(err.message)
+    }
 }
 
 app.post('/api/contact', async (req, res) => {
@@ -271,7 +336,10 @@ app.get('/api/user', async (req, res) => {
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     console.log(decoded)
     const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
+      where: { id: decoded.id },
+      include: {
+        Notifications: true,
+      }
     })
     console.log('user : ', user)
     res.json(user)
@@ -281,11 +349,48 @@ app.get('/api/user', async (req, res) => {
   }
 })
 
+app.put('/api/user/notifications',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        const user = await database.prisma.User.findUnique({
+            where: { id: req.user.id },
+            include: { Notifications: true }
+        })
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const updatedUser = await database.prisma.User.update({
+            where: { id: user.id },
+            data: {
+                Notifications: {
+                    update: {
+                        favoriteItemsAvailable: req.body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
+                        endOfRenting: req.body.endOfRenting ?? user.Notifications.endOfRenting,
+                        newsOffersRisu: req.body.newsOffersRisu ?? user.Notifications.newsOffersRisu
+                    }
+                }
+            },
+            include: { Notifications: true }
+        })
+        return res.status(200).json({updatedUser});
+    } catch (error) {
+        console.error('Failed to update notifications: ', error)
+        return res.status(500).send('Failed to update notifications.')
+    }
+  }
+)
+
 app.post('/api/user/firstName', async (req, res) => {
   try {
     const token = req.headers.authorization
     if (!token) {
       return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+    if (!req.body.firstName || req.body.firstName === '') {
+      return res.status(401).json({ message: 'Missing firstName' })
     }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
@@ -304,9 +409,13 @@ app.post('/api/user/firstName', async (req, res) => {
 
 app.post('/api/user/lastName', async (req, res) => {
   try {
-    const lastName = req.body.lastName
-    console.log('lastName : ', lastName)
     const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+    if (!req.body.lastName || req.body.lastName === '') {
+      return res.status(401).json({ message: 'Missing lastName' })
+    }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
@@ -324,6 +433,9 @@ app.post('/api/user/lastName', async (req, res) => {
 
 app.post('/api/user/email', async (req, res) => {
   try {
+    if (!req.body.email || req.body.email === '') {
+      return res.status(401).json({ message: 'Missing email' })
+    }
     const token = req.headers.authorization
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
@@ -343,25 +455,29 @@ app.post('/api/user/email', async (req, res) => {
 app.post('/api/user/password', async (req, res) => {
   try {
     const token = req.headers.authorization
+    if (!token || token === '') {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
     const currentPassword = req.body.currentPassword
-    console.log('currentPassword : ', currentPassword)
+    if (!currentPassword || currentPassword === '') {
+      return res.status(401).json({ message: 'Missing currentPassword' })
+    }
     const newPassword = req.body.newPassword
-    console.log('newPassword : ', newPassword)
+    if (!newPassword || newPassword === '') {
+      return res.status(401).json({ message: 'Missing newPassword' })
+    }
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     const user = await database.prisma.User.findUnique({
       where: { id: decoded.id }
     })
     const isMatch = await utils.compare(currentPassword, user.password)
     if (!isMatch) {
-      console.log('Incorrect Password')
       return res.status(401).json({ message: 'Incorrect Password' })
     }
-    console.log('Password Match')
     await database.prisma.User.update({
       where: { id: decoded.id },
       data: { password: await utils.hash(newPassword) }
     })
-    console.log('Password updated')
     res.json(user)
   } catch (err) {
     console.error(err.message)
@@ -369,9 +485,83 @@ app.post('/api/user/password', async (req, res) => {
   }
 })
 
+app.get('/api/container/listall', async (req, res) => {
+  try {
+    const users = await database.prisma.Containers.findMany()
+    res.status(200).json(users)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
+})
+
+app.post('/create-ctn', async (req, res, next) => {
+    try {
+      const { containerMapping } = req.body
+      const tmp = database.prisma.Containers.create({
+        data: {
+          id: "c oui",
+          localisation: "chez moi",
+          items: [],
+          owner: "moi",
+        }
+      })
+      res.status(200).json({tmp})
+    } catch (err) {
+      console.log(err)
+      console.log("je passe là")
+      return res.status(400).json('An error occured.')
+    }
+})
+
+app.post('/api/rent/article', async (req, res) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+    if (!req.body.price || req.body.price < 0) {
+      return res.status(401).json({ message: 'Missing price' })
+    }
+    if (!req.body.itemId || req.body.itemId === '') {
+        return res.status(401).json({ message: 'Missing itemId' })
+    }
+    if (!req.body.duration || req.body.duration < 0) {
+        return res.status(401).json({ message: 'Missing duration' })
+    }
+
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    })
+/*    console.log('user : ', user);
+    console.log('itemId : ', req.body.itemId);
+    console.log('price : ', req.body.price);
+    console.log('duration : ', req.body.duration);*/
+
+    const locationPrice = req.body.price * req.body.duration
+    //console.log('locationPrice : ', locationPrice);
+    await database.prisma.Location.create({
+        data: {
+            price: locationPrice,
+            //itemId: req.body.itemId,
+            userId: user.id,
+            createdAt: new Date(),
+            duration: parseInt(req.body.duration),
+        }
+    })
+
+    res.status(201).json({ message: 'location saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
+  createFixturesCtn()
 })
 
 module.exports = app

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 class PasswordRecuperation extends StatefulWidget {
@@ -43,7 +44,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.4,
+                widthFactor: 0.5,
                 heightFactor: 0.7,
                 child: Form(
                     key: formKey,
@@ -75,12 +76,13 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       Center(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             LocalCaptcha(
                               key: ValueKey(configFormData.toString()),
                               controller: captchaController,
                               height: 50,
-                              width: 200,
+                              width: 350,
                               backgroundColor: Colors.grey[100]!,
                               chars: configFormData.chars,
                               length: configFormData.length,
@@ -141,9 +143,9 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         width: 300,
                         child: ElevatedButton(
                           key: const Key('submit'),
-                          onPressed: () {
+                          onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              http.post(
+                              var response = await http.post(
                                 Uri.parse(
                                     'http://$serverIp:3000/api/auth/forgot-password'),
                                 headers: <String, String>{
@@ -155,18 +157,30 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                                   'email': mail,
                                 }),
                               );
+                              if (response.statusCode == 200) {
+                                Fluttertoast.showToast(
+                                  msg: 'Mot de passe récupéré avec succès',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                  msg: 'Echec de la récupération du mot de message',
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.CENTER,
+                                );
+                              }
                               context.go("/");
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xff4682B4),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           child: const Text(
                             "Envoyer l'email de récupération",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 18),
                           ),
                         ),
                       ),
