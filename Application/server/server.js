@@ -495,25 +495,6 @@ app.get('/api/container/listall', async (req, res) => {
   }
 })
 
-app.post('/create-ctn', async (req, res, next) => {
-    try {
-      const { containerMapping } = req.body
-      const tmp = database.prisma.Containers.create({
-        data: {
-          id: "c oui",
-          localisation: "chez moi",
-          items: [],
-          owner: "moi",
-        }
-      })
-      res.status(200).json({tmp})
-    } catch (err) {
-      console.log(err)
-      console.log("je passe là")
-      return res.status(400).json('An error occured.')
-    }
-})
-
 app.post('/api/rent/article', async (req, res) => {
   try {
     const token = req.headers.authorization
