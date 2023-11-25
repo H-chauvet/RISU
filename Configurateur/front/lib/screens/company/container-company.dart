@@ -48,10 +48,10 @@ class MyContainerList {
   }
 }
 
-class ProductCard extends StatelessWidget {
-  final MyContainerList product;
+class ContainerCard extends StatelessWidget {
+  final MyContainerList container;
 
-  const ProductCard({super.key, required this.product});
+  const ContainerCard({super.key, required this.container});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class ProductCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text(product.id.toString()),
+                title: Text(container.id.toString()),
                 leading: Image.asset(
                   'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
                   width: 150, // Largeur de l'image

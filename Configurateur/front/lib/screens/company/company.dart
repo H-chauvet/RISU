@@ -27,7 +27,7 @@ class CompanyPageState extends State<CompanyPage> {
     'assets/Cédric.png',
   ];
 
-  List<MyContainerList> users = [];
+  List<MyContainerList> containers = [];
 
   @override
   void initState() {
@@ -40,9 +40,9 @@ class CompanyPageState extends State<CompanyPage> {
         await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> usersData = responseData["user"];
+      final List<dynamic> containersData = responseData["user"];
       setState(() {
-        users = usersData.map((data) => MyContainerList.fromJson(data)).toList();
+        containers = containersData.map((data) => MyContainerList.fromJson(data)).toList();
       });
     } else {
       // Fluttertoast.showToast(
@@ -114,9 +114,9 @@ class CompanyPageState extends State<CompanyPage> {
           spacing: 16.0, // Adjust as needed
           runSpacing: 16.0, // Adjust as needed
           children: List.generate(
-            users.length,
-            (index) => ProductCard(
-              product: users[index],
+            containers.length,
+            (index) => ContainerCard(
+              container: containers[index],
             ),
           ),
         ),

@@ -70,7 +70,7 @@ class _ContainerPageState extends State<ContainerPage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
-        'Gestion des conteuneurs',
+        'Gestion des conteneurs',
         context: context,
       ),
       body: SingleChildScrollView(
