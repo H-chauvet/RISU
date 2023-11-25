@@ -17,7 +17,6 @@ class MyContainerList {
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
     return MyContainerList(
       id: json['id'],
-      containerMapping: json['containerMapping'],
     );
   }
 }
