@@ -561,7 +561,6 @@ app.post('/api/rent/article', async (req, res) => {
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
-  createFixturesCtn()
 })
 
 module.exports = app
