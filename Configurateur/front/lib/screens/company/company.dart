@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/screens/company/container-company.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -7,62 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
-
-class MyContainerList {
-  final int id;
-  final String? containerMapping;
-
-  MyContainerList({required this.id, required this.containerMapping});
-
-  factory MyContainerList.fromJson(Map<String, dynamic> json) {
-    return MyContainerList(
-      id: json['id'],
-      containerMapping: json['containerMapping'],
-    );
-  }
-}
-
-class ProductCard extends StatelessWidget {
-  final MyContainerList product;
-
-  const ProductCard({required this.product});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-          decoration: BoxDecoration(
-            color: Colors.white, // Couleur du conteneur
-            borderRadius: BorderRadius.circular(30.0),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xff4682B4).withOpacity(0.5), // Shadow color
-                spreadRadius: 5, // How much the shadow should spread
-                blurRadius: 7, // How blurry the shadow should be
-                offset: Offset(0, 3), // Shadow offset
-              ),
-            ],
-          ),
-          width: 300,
-          child: Column(
-            children: [
-              ListTile(
-                title: Text(product.id.toString()),
-                leading: Image.asset(
-                  'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
-                  width: 150, // Largeur de l'image
-                ),
-              ),
-              const Text('Price: 10'),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
+// import 'package:front/screens/company-company.dart';
 
 class CompanyPage extends StatefulWidget {
   const CompanyPage({Key? key}) : super(key: key);
@@ -81,24 +27,29 @@ class CompanyPageState extends State<CompanyPage> {
     'assets/Cédric.png',
   ];
 
+  List<MyContainerList> users = [];
+
   @override
   void initState() {
     super.initState();
+    fetchContainers();
   }
 
-  Future<List<MyContainerList>> fetchData() async {
-    final response = await http
-        .get(Uri.parse('http://$serverIp:3000/api/container/listAll'));
-
+  Future<void> fetchContainers() async {
+    final response =
+        await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      List<MyContainerList> containerList = data.map((json) {
-        MyContainerList container = MyContainerList.fromJson(json);
-        return container;
-      }).toList();
-      return containerList;
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> usersData = responseData["user"];
+      setState(() {
+        users = usersData.map((data) => MyContainerList.fromJson(data)).toList();
+      });
     } else {
-      throw Exception('Failed to load data');
+      // Fluttertoast.showToast(
+      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
     }
   }
 
@@ -159,38 +110,16 @@ class CompanyPageState extends State<CompanyPage> {
                 decorationStyle: TextDecorationStyle.solid,
               )),
           SizedBox(height: 80,),
-          FutureBuilder<List<MyContainerList>>(
-            future: fetchData(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                print('Error: ${snapshot.error}');
-                print('Stack trace:\n${snapshot.stackTrace}');
-                return Text('Error occurred. See console for details.');
-              } else {
-                List<MyContainerList> data = snapshot.data!;
-                if (data.isEmpty) {
-                  return (const Center(
-                    child: Center(child: Text("Aucun conteneur n'a été créer"),)
-                  ));
-                }
-                return Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(
-                    child: Wrap(
-                      spacing: 50.0,
-                      runSpacing: 20.0,
-                      children: List.generate(
-                        data.length,
-                        (index) => ProductCard(product: data[index]),
-                      ),
-                    ),
-                  ),
-                );
-              }
-            },
+          Wrap(
+          spacing: 16.0, // Adjust as needed
+          runSpacing: 16.0, // Adjust as needed
+          children: List.generate(
+            users.length,
+            (index) => ProductCard(
+              product: users[index],
+            ),
           ),
+        ),
         ],
       ),
       ),
