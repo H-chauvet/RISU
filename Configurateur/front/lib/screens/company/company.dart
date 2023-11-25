@@ -10,14 +10,12 @@ import 'package:front/network/informations.dart';
 
 class MyContainerList {
   final int id;
-  final String? containerMapping;
 
-  MyContainerList({required this.id, required this.containerMapping});
+  MyContainerList({required this.id});
 
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
     return MyContainerList(
       id: json['id'],
-      containerMapping: json['containerMapping'],
     );
   }
 }
@@ -72,7 +70,7 @@ class CompanyPage extends StatefulWidget {
 }
 
 class CompanyPageState extends State<CompanyPage> {
-  late List<String> products = [
+  late List<String> members = [
     'assets/Henri.png',
     'assets/Louis.png',
     'assets/Hugo.png',
@@ -88,7 +86,7 @@ class CompanyPageState extends State<CompanyPage> {
 
   Future<List<MyContainerList>> fetchData() async {
     final response = await http
-        .get(Uri.parse('http://$serverIp:3000/api/container/list-container'));
+        .get(Uri.parse('http://$serverIp:3000/api/container/listAll'));
 
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
@@ -113,7 +111,7 @@ class CompanyPageState extends State<CompanyPage> {
         child: Column(
         children: [
           SizedBox(height:  15,),
-          const Text("Nos Conteneurs :",
+          const Text("Notre équipe :",
             style: TextStyle(
               color: Color.fromRGBO(70, 130, 180, 1),
               fontSize: 30,
@@ -127,16 +125,16 @@ class CompanyPageState extends State<CompanyPage> {
             spacing: 70.0,
             runSpacing: 20.0,
             children: List.generate(
-              products.length,
+              members.length,
               (index) => Column(children: [
                   Image.asset(
-                    products[index],
+                    members[index],
                     width: 95,
                     height: 95,
                 ),
                 const SizedBox(height: 5,),
                 Text(
-                  products[index].substring(products[index].indexOf('/') + 1, products[index].indexOf('.')).toUpperCase(),
+                  members[index].substring(members[index].indexOf('/') + 1, members[index].indexOf('.')).toUpperCase(),
                   style: const TextStyle(
                     color: Color.fromRGBO(70, 130, 180, 1),
                     fontSize: 15,
