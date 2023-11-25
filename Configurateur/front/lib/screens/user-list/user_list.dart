@@ -95,7 +95,7 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> fetchContainerMobile() async {
     final response =
-        await http.get(Uri.parse('http://localhost:8080/api/dev/user/listall'));
+        await http.get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> usersData = responseData["user"];
