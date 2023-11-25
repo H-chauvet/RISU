@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
@@ -13,6 +14,8 @@ import 'package:front/screens/register/register.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
+import 'package:front/screens/company/company.dart';
+import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
 ///
@@ -126,6 +129,24 @@ class AppRouter {
         path: '/admin/messages',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: MessagePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/containerList',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ContainerPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/userList',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: UserPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/company',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyPage(),
         ),
       ),
     ],

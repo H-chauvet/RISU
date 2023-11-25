@@ -53,11 +53,11 @@ model Comments {
 }
 
 model Contact {
-	id					String		@id @unique @default(cuid())
-	name				String
-	email				String
-	message				String
-	createdAt			DateTime	@default(now())
+  id                       String                     @id @unique @default(cuid())
+  name                     String
+  email                    String
+  message                  String
+  createdAt                DateTime                   @default(now())
 }
 
 model Location {
