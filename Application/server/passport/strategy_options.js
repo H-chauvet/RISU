@@ -32,10 +32,21 @@ passport.use(
       if (existsEmail) {
         return cb(null, existsEmail)
       }
+      const notifications = await database.prisma.Notifications.create({
+        data: {
+          favoriteItemsAvailable: true,
+          endOfRenting: true,
+          newsOffersRisu: true
+        }
+      });
       const user = await database.prisma.User.create({
         data: {
           email: email,
-          password: await hash(password)
+          password: await hash(password),
+          notificationsId: notifications.id,
+        },
+        include: {
+          Notifications: true,
         }
       })
       return cb(null, user)

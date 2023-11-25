@@ -25,13 +25,7 @@ router.get('/get', async function (req, res, next) {
   }
 })
 
-router.delete('/delete', async function (req, res, next) {
-  try {
-    jwtMiddleware.verifyToken(req.headers.authorization)
-  } catch (err) {
-    res.status(401)
-    throw new Error('Unauthorized')
-  }
+router.post('/delete', async function (req, res, next) {
   try {
     const { id } = req.body
 
@@ -43,6 +37,19 @@ router.delete('/delete', async function (req, res, next) {
     res.status(200).json('container deleted')
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/create-ctn', async (req, res, next) => {
+  try {
+    const { containerMapping } = req.body
+    const container = await containerCtrl.createContainer2(
+      { containerMapping,
+    })
+    res.status(200).json('container created')
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
   }
 })
 
@@ -90,6 +97,33 @@ router.put('/update', async function (req, res, next) {
     res.status(200).json('container updated')
   } catch (err) {
     next(err)
+  }
+})
+
+router.post('/create-ctn', async (req, res) => {
+  try {
+    const { id, price, width, height  } = req.body
+    const container = await containerCtrl.createContainer2(
+      {
+          price,
+          width,
+          height
+      }
+    )
+    res.status(200).json(container)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
+})
+
+router.get('/listAll', async function(req, res, next) {
+  try {
+    const user = await containerCtrl.getAllContainers();
+
+    res.status(200).json({ user });
+  } catch (err) {
+    next(err);
   }
 })
 
