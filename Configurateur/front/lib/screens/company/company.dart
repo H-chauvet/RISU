@@ -167,7 +167,7 @@ class CompanyPageState extends State<CompanyPage> {
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final product = users[index];
-                return ContainerCard(
+                return ProductCard(
                   user: product,
                   onDelete: deleteContainer,
                 );
