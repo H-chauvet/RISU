@@ -263,6 +263,20 @@ app.get('/api/mailVerification', async (req, res) => {
 
 async function createFixtures () {
     try {
+        const notification1 = await database.prisma.Notifications.create({
+            data: {
+                favoriteItemsAvailable: true,
+                endOfRenting: true,
+                newsOffersRisu: true
+            }
+        })
+        const notification2 = await database.prisma.Notifications.create({
+            data: {
+                favoriteItemsAvailable: true,
+                endOfRenting: true,
+                newsOffersRisu: true
+            }
+        })
         if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
             await database.prisma.User.create({
                 data: {
@@ -270,7 +284,8 @@ async function createFixtures () {
                     firstName: 'admin',
                     lastName: 'admin',
                     password: await utils.hash('admin'),
-                    mailVerification: true
+                    mailVerification: true,
+                    notificationsId: notification1.id,
                 },
             })
         if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
@@ -280,7 +295,8 @@ async function createFixtures () {
                     firstName: 'user',
                     lastName: 'user',
                     password: await utils.hash('user'),
-                    mailVerification: true
+                    mailVerification: true,
+                    notificationsId: notification2.id,
                 }
             })
     } catch (err) {
@@ -320,7 +336,10 @@ app.get('/api/user', async (req, res) => {
     const decoded = jwt.decode(token, process.env.JWT_SECRET)
     console.log(decoded)
     const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
+      where: { id: decoded.id },
+      include: {
+        Notifications: true,
+      }
     })
     console.log('user : ', user)
     res.json(user)
@@ -329,6 +348,40 @@ app.get('/api/user', async (req, res) => {
     res.status(401).send('An error occurred.')
   }
 })
+
+app.put('/api/user/notifications',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        const user = await database.prisma.User.findUnique({
+            where: { id: req.user.id },
+            include: { Notifications: true }
+        })
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        const updatedUser = await database.prisma.User.update({
+            where: { id: user.id },
+            data: {
+                Notifications: {
+                    update: {
+                        favoriteItemsAvailable: req.body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
+                        endOfRenting: req.body.endOfRenting ?? user.Notifications.endOfRenting,
+                        newsOffersRisu: req.body.newsOffersRisu ?? user.Notifications.newsOffersRisu
+                    }
+                }
+            },
+            include: { Notifications: true }
+        })
+        return res.status(200).json({updatedUser});
+    } catch (error) {
+        console.error('Failed to update notifications: ', error)
+        return res.status(500).send('Failed to update notifications.')
+    }
+  }
+)
 
 app.post('/api/user/firstName', async (req, res) => {
   try {

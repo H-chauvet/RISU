@@ -17,20 +17,22 @@ datasource db {
 }
 
 model User {
-  id                        String          @id @unique @default(cuid())
-  email                     String          @unique
-  firstName                 String?
-  lastName                  String?
-  password                  String
-  mailVerification          Boolean         @default(false)
-  confirmProcess            String          @default("")
-  createdAt                 DateTime        @default(now())
-  Locations                 Location[]
+	id					String		@id @unique @default(cuid())
+	email				String		@unique
+	firstName			String?
+	lastName			String?
+	password			String
+	mailVerification	Boolean		@default(false)
+	confirmProcess		String		@default("")
+	createdAt			DateTime	@default(now())
+	Locations			Location[]
+	Notifications		Notifications? @relation(fields: [notificationsId], references: [id])
+	notificationsId		String?
 }
 
 model Containers {
 	id					String		@id @unique @default(cuid())
-	localisation		String
+	localization		String
 	items				Items[]
 	owner				String
 }
@@ -41,7 +43,7 @@ model Items {
 	price				Int
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
-
+	Locations			Location[]
 }
 
 model Comments {
@@ -59,10 +61,20 @@ model Contact {
 }
 
 model Location {
-    id                    String                      @id @unique @default(cuid())
-    price                 Int
-    user                  User                        @relation(fields: [userId], references: [id])
-    userId                String
-    createdAt             DateTime                    @default(now())
-    duration              Int
+	id					String		@id @unique @default(cuid())
+	price				Int
+	item				Items		@relation(fields: [itemId], references: [id])
+	itemId				String
+	user				User		@relation(fields: [userId], references: [id])
+	userId				String
+	createdAt			DateTime	@default(now())
+	duration			Int
+}
+
+model Notifications {
+	id						String		@id @unique @default(cuid())
+	Users					User[]
+	favoriteItemsAvailable 	Boolean
+	endOfRenting			Boolean
+	newsOffersRisu			Boolean
 }
