@@ -75,13 +75,13 @@ class ContainerCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text(container.id.toString()),
+                title: const Text("name"),
                 leading: Image.asset(
                   'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
                   width: 150, // Largeur de l'image
                 ),
               ),
-              const Text('Price: 10'),
+              Text(container.price.toString()),
             ],
           ),
         ),
