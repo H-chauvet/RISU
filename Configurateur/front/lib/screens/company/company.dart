@@ -21,9 +21,9 @@ class MyContainerList {
 }
 
 class ProductCard extends StatelessWidget {
-  List<MyContainerList> users = [];
+  
 
-  const ProductCard({required this.product});
+  const ProductCard({required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
           child: Column(
             children: [
               ListTile(
-                title: Text(users.id.toString()),
+                title: Text(user.id.toString()),
                 leading: Image.asset(
                   'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
                   width: 150, // Largeur de l'image
@@ -70,6 +70,7 @@ class CompanyPage extends StatefulWidget {
 }
 
 class CompanyPageState extends State<CompanyPage> {
+  List<MyContainerList> users = [];
   late List<String> members = [
     'assets/Henri.png',
     'assets/Louis.png',
