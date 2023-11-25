@@ -106,9 +106,9 @@ router.post('/create-ctn', async (req, res) => {
 
 router.get('/listAll', async function(req, res, next) {
   try {
-    const user = await containerCtrl.getAllContainers();
+    const container = await containerCtrl.getAllContainers();
 
-    res.status(200).json({ user });
+    res.status(200).json({ container });
   } catch (err) {
     next(err);
   }

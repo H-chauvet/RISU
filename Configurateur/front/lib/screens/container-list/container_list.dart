@@ -29,7 +29,7 @@ class _ContainerPageState extends State<ContainerPage> {
         await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> usersData = responseData["user"];
+      final List<dynamic> usersData = responseData["container"];
       setState(() {
         users = usersData.map((data) => ContainerList.fromJson(data)).toList();
       });

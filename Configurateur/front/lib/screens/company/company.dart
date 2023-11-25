@@ -40,7 +40,7 @@ class CompanyPageState extends State<CompanyPage> {
         await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> containersData = responseData["user"];
+      final List<dynamic> containersData = responseData["container"];
       setState(() {
         containers = containersData.map((data) => MyContainerList.fromJson(data)).toList();
       });
