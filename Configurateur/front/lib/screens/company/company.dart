@@ -82,21 +82,24 @@ class CompanyPageState extends State<CompanyPage> {
   @override
   void initState() {
     super.initState();
+    fetchContainers();
   }
 
-  Future<List<MyContainerList>> fetchData() async {
-    final response = await http
-        .get(Uri.parse('http://$serverIp:3000/api/container/listAll'));
-
+  Future<void> fetchContainers() async {
+    final response =
+        await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      List<MyContainerList> containerList = data.map((json) {
-        MyContainerList container = MyContainerList.fromJson(json);
-        return container;
-      }).toList();
-      return containerList;
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> usersData = responseData["user"];
+      setState(() {
+        users = usersData.map((data) => MyContainerList.fromJson(data)).toList();
+      });
     } else {
-      throw Exception('Failed to load data');
+      // Fluttertoast.showToast(
+      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
+      //   toastLength: Toast.LENGTH_SHORT,
+      //   gravity: ToastGravity.CENTER,
+      // );
     }
   }
 
@@ -157,38 +160,18 @@ class CompanyPageState extends State<CompanyPage> {
                 decorationStyle: TextDecorationStyle.solid,
               )),
           SizedBox(height: 80,),
-          FutureBuilder<List<MyContainerList>>(
-            future: fetchData(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                print('Error: ${snapshot.error}');
-                print('Stack trace:\n${snapshot.stackTrace}');
-                return Text('Error occurred. See console for details.');
-              } else {
-                List<MyContainerList> data = snapshot.data!;
-                if (data.isEmpty) {
-                  return (const Center(
-                    child: Center(child: Text("Aucun conteneur n'a été créer"),)
-                  ));
-                }
-                return Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Center(
-                    child: Wrap(
-                      spacing: 50.0,
-                      runSpacing: 20.0,
-                      children: List.generate(
-                        data.length,
-                        (index) => ProductCard(product: data[index]),
-                      ),
-                    ),
-                  ),
+          ListView.builder(
+              shrinkWrap:
+                  true,
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final product = users[index];
+                return ContainerCard(
+                  user: product,
+                  onDelete: deleteContainer,
                 );
-              }
-            },
-          ),
+              },
+            ),
         ],
       ),
       ),
