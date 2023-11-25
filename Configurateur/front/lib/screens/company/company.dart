@@ -111,8 +111,8 @@ class CompanyPageState extends State<CompanyPage> {
               )),
           SizedBox(height: 80,),
           Wrap(
-          spacing: 16.0, // Adjust as needed
-          runSpacing: 16.0, // Adjust as needed
+          spacing: 16.0,
+          runSpacing: 16.0,
           children: List.generate(
             containers.length,
             (index) => ContainerCard(

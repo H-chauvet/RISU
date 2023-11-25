@@ -60,14 +60,14 @@ class ContainerCard extends StatelessWidget {
         Container(
           padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
           decoration: BoxDecoration(
-            color: Colors.white, // Couleur du conteneur
+            color: Colors.white,
             borderRadius: BorderRadius.circular(30.0),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff4682B4).withOpacity(0.5), // Shadow color
-                spreadRadius: 5, // How much the shadow should spread
-                blurRadius: 7, // How blurry the shadow should be
-                offset: Offset(0, 3), // Shadow offset
+                color: Color(0xff4682B4).withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3),
               ),
             ],
           ),
@@ -77,8 +77,8 @@ class ContainerCard extends StatelessWidget {
               ListTile(
                 title: const Text("name"),
                 leading: Image.asset(
-                  'assets/container.png', // Remplacez 'mon_image.png' par le chemin de votre image.
-                  width: 150, // Largeur de l'image
+                  'assets/container.png',
+                  width: 150,
                 ),
               ),
               Text(container.price.toString()),

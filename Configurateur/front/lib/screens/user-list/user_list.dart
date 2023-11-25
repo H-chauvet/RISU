@@ -126,7 +126,7 @@ class _UserPageState extends State<UserPage> {
           children: [
             const SizedBox(height: 20,),
             const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Web :",
                 style: TextStyle(
@@ -154,7 +154,7 @@ class _UserPageState extends State<UserPage> {
             ),
             const SizedBox(height: 20,),
             const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Mobile :",
                 style: TextStyle(
