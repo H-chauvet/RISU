@@ -49,16 +49,18 @@ router.post('/create', async function (req, res, next) {
     throw new Error('Unauthorized')
   }
   try {
-    const { price, containerMapping } = req.body
+    const { price, containerMapping, width, height } = req.body
 
-    if (!price || !containerMapping) {
+    if (!price || !containerMapping || !width || !height) {
       res.status(400)
       throw new Error('Container object are required')
     }
 
     await containerCtrl.createContainer({
       price,
-      containerMapping
+      containerMapping,
+      width,
+      height
     })
     res.status(200).json('container created')
   } catch (err) {
@@ -106,9 +108,9 @@ router.post('/create-ctn', async (req, res) => {
 
 router.get('/listAll', async function(req, res, next) {
   try {
-    const user = await containerCtrl.getAllContainers();
+    const container = await containerCtrl.getAllContainers();
 
-    res.status(200).json({ user });
+    res.status(200).json({ container });
   } catch (err) {
     next(err);
   }

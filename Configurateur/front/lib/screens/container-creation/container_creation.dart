@@ -431,6 +431,8 @@ class ContainerCreationState extends State<ContainerCreation> {
       <String, String>{
         'price': getPrice(),
         'containerMapping': getContainerMapping(),
+        'width': '12',
+        'height': '5',
       },
     );
     context.go("/");
@@ -461,7 +463,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 1,
               progress: 0,
               previous: 'Précédent',
               next: 'Terminer',
@@ -527,7 +529,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                     // If you want to reduce distortion, shoot from a distance at high magnification.
                     Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
                     Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: true,
+                    allowUserWorldRotation: false,
                     allowUserWorldZoom: false,
                   ),
                 ],

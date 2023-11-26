@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:go_router/go_router.dart';
 import 'dart:convert';
 
 import 'package:provider/provider.dart';
@@ -99,18 +99,15 @@ class GoogleLogo extends StatelessWidget {
                   token = response['accessToken'],
                   /*StorageService()
                       .writeStorage('token', response['accessToken']),*/
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LandingPage()))
+                  context.go('/')
                 }
               else
                 {
                   Fluttertoast.showToast(
-                      msg: 'Echec de la connexion',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                    ),
+                    msg: 'Echec de la connexion',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                  ),
                 }
             });
   }
