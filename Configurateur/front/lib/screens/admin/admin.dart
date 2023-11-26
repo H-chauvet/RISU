@@ -144,7 +144,7 @@ class _AdminPageState extends State<AdminPage> {
                             context.go("/containerList");
                           },
                           child: const Text(
-                            'Gestion des articles',
+                            'Gestion des conteneurs',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),
