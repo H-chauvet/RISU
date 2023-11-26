@@ -34,6 +34,7 @@ void sendFormData(
         msg: 'Message envoyé avec succès',
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
       );
       formKey.currentState!.reset();
   } else {
@@ -42,6 +43,8 @@ void sendFormData(
         msg: "Erreur durant l'envoi du message",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red
       );
   }
 }
