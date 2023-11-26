@@ -32,6 +32,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     String password = '';
     String validedPassword = '';
     dynamic response;
+    Map<String, dynamic> decodedToken;
 
     return Scaffold(
         appBar: CustomAppBar(
