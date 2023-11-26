@@ -539,6 +539,63 @@ app.post('/api/rent/article', async (req, res) => {
   }
 })
 
+app.post('/api/opinion', async (req, res) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+    if (!req.body.comment || req.body.comment === '') {
+      return res.status(401).json({ message: 'Missing comment' })
+    }
+    if (!req.body.note || req.body.note === '') {
+      return res.status(401).json({ message: 'Missing note' })
+    }
+
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    })
+    // create int note
+    await database.prisma.Opinions.create({
+      data: {
+        userId: user.id,
+        date: new Date(),
+        note: req.body.note,
+        comment: req.body.comment,
+      }
+    })
+
+    res.status(201).json({ message: 'opinion saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
+app.get('/api/opinion', async (req, res) => {
+  try {
+    const token = req.headers.authorization
+    if (!token) {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
+
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await database.prisma.User.findUnique({
+      where: { id: decoded.id }
+    })
+    if (user == null) {
+      return res.status(401).json({ message: 'No user found' })
+    }
+
+    const opinions = await database.prisma.Opinions.findMany()
+    res.status(201).json({ opinions })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
