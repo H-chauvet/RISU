@@ -49,16 +49,18 @@ router.post('/create', async function (req, res, next) {
     throw new Error('Unauthorized')
   }
   try {
-    const { price, containerMapping } = req.body
+    const { price, containerMapping, width, height } = req.body
 
-    if (!price || !containerMapping) {
+    if (!price || !containerMapping || !width || !height) {
       res.status(400)
       throw new Error('Container object are required')
     }
 
     await containerCtrl.createContainer({
       price,
-      containerMapping
+      containerMapping,
+      width,
+      height
     })
     res.status(200).json('container created')
   } catch (err) {
@@ -74,13 +76,13 @@ router.put('/update', async function (req, res, next) {
     throw new Error('Unauthorized')
   }
   try {
-    const { id, price, containerMapping } = req.body
+    const { id, price, containerMapping, height, width } = req.body
 
     if (!id) {
       res.status(400)
       throw new Error('id and name are required')
     }
-    await containerCtrl.updateContainer(id, { price, containerMapping })
+    await containerCtrl.updateContainer(id, { price, containerMapping,height, width })
     res.status(200).json('container updated')
   } catch (err) {
     next(err)

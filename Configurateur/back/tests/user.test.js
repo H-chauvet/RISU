@@ -6,15 +6,8 @@ describe('GET /listAll', function () {
     async.series(
       [
         function (callback) {
-            request('http://localhost:3000')
-              .get('/api/user/listAll')
-              .set('Content-Type', 'application/json')
-              .set('Accept', 'application/json')
-              .expect(400, callback)
-          },
-        function (callback) {
           request('http://localhost:3000')
-            .post('/api/user/register')
+            .post('/api/auth/register')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .send({ firstName: "henri", lastName: "chauvet", company: 'test@gmail.com', email: "Ceci est un message", password: "password" })
@@ -22,7 +15,7 @@ describe('GET /listAll', function () {
         },
         function (callback) {
           request('http://localhost:3000')
-            .get('/api/user/listAll')
+            .get('/api/auth/listAll')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .expect(200, callback)
