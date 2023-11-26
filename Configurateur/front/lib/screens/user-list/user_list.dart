@@ -23,11 +23,11 @@ class _UserPageState extends State<UserPage> {
   @override
   void initState() {
     super.initState();
-    fetchContainer();
-    fetchContainerMobile();
+    fetchUser();
+    fetchUserMobile();
   }
 
-  Future<void> deleteContainerWeb(User user) async {
+  Future<void> deleteUserWeb(User user) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/auth/delete");
     final response = await http.post(
       url,
@@ -41,7 +41,7 @@ class _UserPageState extends State<UserPage> {
       //   toastLength: Toast.LENGTH_SHORT,
       //   gravity: ToastGravity.CENTER,
       // );
-      fetchContainer();
+      fetchUser();
     } else {
       // Fluttertoast.showToast(
       //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
@@ -51,7 +51,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Future<void> deleteContainerMobile(UserMobile user) async {
+  Future<void> deleteUserMobile(UserMobile user) async {
     final Uri url = Uri.parse("http://localhost:8080/api/dev/user/delete");
     final response = await http.post(
       url,
@@ -65,7 +65,7 @@ class _UserPageState extends State<UserPage> {
       //   toastLength: Toast.LENGTH_SHORT,
       //   gravity: ToastGravity.CENTER,
       // );
-      fetchContainerMobile();
+      fetchUserMobile();
     } else {
       // Fluttertoast.showToast(
       //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
@@ -75,7 +75,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Future<void> fetchContainer() async {
+  Future<void> fetchUser() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/auth/listAll'));
     if (response.statusCode == 200) {
@@ -93,7 +93,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
-  Future<void> fetchContainerMobile() async {
+  Future<void> fetchUserMobile() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
     if (response.statusCode == 200) {
@@ -126,7 +126,7 @@ class _UserPageState extends State<UserPage> {
           children: [
             const SizedBox(height: 20,),
             const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Web :",
                 style: TextStyle(
@@ -148,13 +148,13 @@ class _UserPageState extends State<UserPage> {
                 final product = users[index];
                 return UserCard(
                   user: product,
-                  onDelete: deleteContainerWeb,
+                  onDelete: deleteUserWeb,
                 );
               },
             ),
             const SizedBox(height: 20,),
             const Padding(
-              padding: EdgeInsets.all(8.0), // Adjust the padding as needed
+              padding: EdgeInsets.all(8.0),
               child: Text(
                 "Mobile :",
                 style: TextStyle(
@@ -175,7 +175,7 @@ class _UserPageState extends State<UserPage> {
                 final product = users_mobile[index];
                 return UserMobileCard(
                   user: product,
-                  onDelete: deleteContainerMobile,
+                  onDelete: deleteUserMobile,
                 );
               },
             ),
