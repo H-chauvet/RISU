@@ -39,6 +39,8 @@ exports.createContainer = container => {
 
 exports.updateContainer = (id, container) => {
   container.price = parseFloat(container.price)
+  container.width = parseFloat(container.width)
+  container.height = parseFloat(container.height)
   return db.Container.update({
     where: {
       id: id
