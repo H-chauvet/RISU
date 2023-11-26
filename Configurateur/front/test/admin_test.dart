@@ -24,7 +24,7 @@ void main() {
     // Assuming there are 3 buttons for managing messages, users, and articles
     expect(find.widgetWithText(ElevatedButton, 'Gestion des messages'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Gestion des utilisateurs'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Gestion des articles'), findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Gestion des conteneurs'), findsOneWidget);
     
     expect(find.byKey(const Key('btn-messages')), findsOneWidget);
     expect(find.byKey(const Key('btn-user')), findsOneWidget);
