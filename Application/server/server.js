@@ -587,9 +587,23 @@ app.get('/api/opinion', async (req, res) => {
     if (user == null) {
       return res.status(401).json({ message: 'No user found' })
     }
+    const note = req.body.note
+    if (note != null) {
+      console.log('note : ', note)
+      if (!note || note != '0' && note != '1' && note != '2'
+        && note != '3' && note != '4' && note != '5') {
+        return res.status(401).json({ message: 'Missing note' })
+      }
+      const opinions = await database.prisma.Opinions.findMany({
+        where: { note: note }
+      })
+      console.log('opinions : ', opinions)
+      res.status(201).json({ opinions })
+    } else {
+      const opinions = await database.prisma.Opinions.findMany()
+      res.status(201).json({ opinions })
+    }
 
-    const opinions = await database.prisma.Opinions.findMany()
-    res.status(201).json({ opinions })
   } catch (err) {
     console.error(err.message)
     res.status(401).send('An error occurred')

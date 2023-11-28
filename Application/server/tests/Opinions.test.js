@@ -50,5 +50,33 @@ describe('POST /api/opinion', () => {
         ],
         done
       )
+    }),
+    it('should get all opinions with note 5', (done) => {
+      async.series(
+        [
+          function (callback) {
+            request('http://localhost:8080')
+              .get('/api/opinion')
+              .set('Authorization', authToken)
+              .send({ note: '5' })
+              .expect(201, callback)
+          }
+        ],
+        done
+      )
+    }),
+    it('should get all opinions with note 1', (done) => {
+      async.series(
+        [
+          function (callback) {
+            request('http://localhost:8080')
+              .get('/api/opinion')
+              .set('Authorization', authToken)
+              .send({ note: '1' })
+              .expect(201, callback)
+          }
+        ],
+        done
+      )
     })
 });
