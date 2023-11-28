@@ -44,6 +44,7 @@ class UserMobileCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(user.firstName),
+            subtitle: Text(user.email),
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

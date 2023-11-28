@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/container-list/container_web.dart';
+import 'package:front/screens/company/company.dart';
 
 void main() {
   
@@ -11,7 +12,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         home: ContainerCard(
-          user: ContainerList(
+          container: ContainerList(
             id: 1,
             price: 10.0,
             createdAt: null,

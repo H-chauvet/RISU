@@ -100,7 +100,9 @@ class _AdminPageState extends State<AdminPage> {
                                   20.0), // Définit le rayon du bouton arrondi
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            context.go("/userList");
+                          },
                           child: const Text(
                             'Gestion des utilisateurs',
                             style: TextStyle(color: Colors.black),
@@ -138,9 +140,11 @@ class _AdminPageState extends State<AdminPage> {
                                   20.0), // Définit le rayon du bouton arrondi
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            context.go("/containerList");
+                          },
                           child: const Text(
-                            'Gestion des articles',
+                            'Gestion des conteneurs',
                             style: TextStyle(color: Colors.black),
                           ),
                         ),

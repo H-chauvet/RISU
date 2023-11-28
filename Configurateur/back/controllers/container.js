@@ -30,6 +30,8 @@ exports.deleteContainer = id => {
 
 exports.createContainer = container => {
   container.price = parseFloat(container.price)
+  container.height = parseFloat(container.height)
+  container.width = parseFloat(container.width)
   return db.Container.create({
     data: container
   })
@@ -37,6 +39,8 @@ exports.createContainer = container => {
 
 exports.updateContainer = (id, container) => {
   container.price = parseFloat(container.price)
+  container.width = parseFloat(container.width)
+  container.height = parseFloat(container.height)
   return db.Container.update({
     where: {
       id: id

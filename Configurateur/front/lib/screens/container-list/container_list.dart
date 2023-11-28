@@ -16,7 +16,7 @@ class ContainerPage extends StatefulWidget {
 }
 
 class _ContainerPageState extends State<ContainerPage> {
-  List<ContainerList> users = [];
+  List<ContainerList> containers = [];
 
   @override
   void initState() {
@@ -29,9 +29,9 @@ class _ContainerPageState extends State<ContainerPage> {
         await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> usersData = responseData["user"];
+      final List<dynamic> containersData = responseData["container"];
       setState(() {
-        users = usersData.map((data) => ContainerList.fromJson(data)).toList();
+        containers = containersData.map((data) => ContainerList.fromJson(data)).toList();
       });
     } else {
       // Fluttertoast.showToast(
@@ -70,7 +70,7 @@ class _ContainerPageState extends State<ContainerPage> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
-        'Gestion des conteuneurs',
+        'Gestion des conteneurs',
         context: context,
       ),
       body: SingleChildScrollView(
@@ -81,11 +81,11 @@ class _ContainerPageState extends State<ContainerPage> {
             ListView.builder(
               shrinkWrap:
                   true,
-              itemCount: users.length,
+              itemCount: containers.length,
               itemBuilder: (context, index) {
-                final product = users[index];
+                final product = containers[index];
                 return ContainerCard(
-                  user: product,
+                  container: product,
                   onDelete: deleteContainer,
                 );
               },

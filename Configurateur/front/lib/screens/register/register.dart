@@ -5,6 +5,7 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 
 import 'package:go_router/go_router.dart';
@@ -31,6 +32,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     String password = '';
     String validedPassword = '';
     dynamic response;
+    Map<String, dynamic> decodedToken;
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -201,6 +203,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                           {
                                             response = jsonDecode(value.body),
                                             token = response['accessToken'],
+                                            decodedToken = JwtDecoder.decode(token),
+                                            userMail = decodedToken['userMail'],
                                             /*StorageService().writeStorage(
                                                 'token',
                                                 response['accessToken']),*/

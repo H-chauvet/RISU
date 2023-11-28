@@ -63,8 +63,8 @@ model Contact {
 model Location {
 	id					String		@id @unique @default(cuid())
 	price				Int
-	item				Items		@relation(fields: [itemId], references: [id])
-	itemId				String
+	item				Items?		@relation(fields: [itemId], references: [id])
+	itemId				String?
 	user				User		@relation(fields: [userId], references: [id])
 	userId				String
 	createdAt			DateTime	@default(now())

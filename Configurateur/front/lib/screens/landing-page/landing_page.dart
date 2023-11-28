@@ -168,7 +168,7 @@ class LandingPageState extends State<LandingPage> {
                 }),
               ),
               onPressed: () {
-                // Actions à effectuer lors du clic sur le texte
+                context.go("/company");
               },
               child: const Text(
                 'En savoir plus...',

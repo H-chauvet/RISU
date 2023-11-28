@@ -42,10 +42,10 @@ class ContainerList {
 }
 
 class ContainerCard extends StatelessWidget {
-  final ContainerList user;
+  final ContainerList container;
    final Function(ContainerList) onDelete;
 
-  const ContainerCard({super.key, required this.user, required this.onDelete});
+  const ContainerCard({super.key, required this.container, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +53,17 @@ class ContainerCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(user.id.toString()),
-            subtitle: Text(user.price.toString()),
+            title: Text(container.id.toString()),
+            subtitle: Text(container.price.toString()),
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () => onDelete(user),
+                  onPressed: () => onDelete(container),
                 ),
+              SizedBox(width: 10,),
+              Text("name"),
               ],
             ),
           ),
