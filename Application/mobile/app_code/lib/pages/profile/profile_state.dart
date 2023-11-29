@@ -7,9 +7,6 @@ import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import '../../globals.dart';
-import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/pages/article/rent_page.dart';
 
 import '../../components/alert_dialog.dart';
 import '../login/login_page.dart';
@@ -19,7 +16,7 @@ class ProfilePageState extends State<ProfilePage> {
   Future<bool> apiDeleteAccount() async {
     try {
       final token = userInformation!.token;
-      final userId = userInformation!.ID;
+      final userId = userInformation!.id;
       final response = await http.delete(
         Uri.parse('http://$serverIp:8080/api/user/$userId'),
         headers: <String, String>{
