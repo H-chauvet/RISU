@@ -24,13 +24,13 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           function (callback) {
-            console.log(authToken)
             request('http://localhost:8080')
               .post('/api/opinion')
               .set('Authorization', authToken)
               .send({
                 note: '5',
-                comment: 'comment test',
+                comment: 'super produit',
+                // comment: 'ugthvfid hktbr fgihbr edubedzc uojnb gfov ouezhvfdukoz bshbiu fbdvc uihv, uovngf uvrnjg f',
               })
               .expect(201, callback)
           }
@@ -56,9 +56,8 @@ describe('POST /api/opinion', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/opinion')
+              .get('/api/opinion?note=5')
               .set('Authorization', authToken)
-              .send({ note: '5' })
               .expect(201, callback)
           }
         ],
@@ -70,9 +69,8 @@ describe('POST /api/opinion', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/opinion')
+              .get('/api/opinion?note=1')
               .set('Authorization', authToken)
-              .send({ note: '1' })
               .expect(201, callback)
           }
         ],
