@@ -574,6 +574,7 @@ app.post('/api/opinion', async (req, res) => {
 })
 
 app.get('/api/opinion', async (req, res) => {
+  var opinions = []
   try {
     const token = req.headers.authorization
     if (!token) {
@@ -587,23 +588,34 @@ app.get('/api/opinion', async (req, res) => {
     if (user == null) {
       return res.status(401).json({ message: 'No user found' })
     }
-    const note = req.body.note
+    const note = req.query.note
     if (note != null) {
-      console.log('note : ', note)
       if (!note || note != '0' && note != '1' && note != '2'
         && note != '3' && note != '4' && note != '5') {
         return res.status(401).json({ message: 'Missing note' })
       }
-      const opinions = await database.prisma.Opinions.findMany({
+      opinions = await database.prisma.Opinions.findMany({
         where: { note: note }
       })
-      console.log('opinions : ', opinions)
-      res.status(201).json({ opinions })
     } else {
-      const opinions = await database.prisma.Opinions.findMany()
-      res.status(201).json({ opinions })
+      opinions = await database.prisma.Opinions.findMany()
     }
 
+    var result = []
+    // for each opinion, add in result {'user.firstName + lastName', comment, note}
+    for (var i = 0; i < opinions.length; i++) {
+      const user = await database.prisma.User.findUnique({
+        where: { id: opinions[i].userId }
+      })
+      result.push({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        comment: opinions[i].comment,
+        note: opinions[i].note
+      })
+    }
+
+    res.status(201).json({ result })
   } catch (err) {
     console.error(err.message)
     res.status(401).send('An error occurred')
