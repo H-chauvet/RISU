@@ -4,6 +4,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/drop_down_menu.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'settings_page.dart';
 
@@ -75,6 +76,20 @@ class SettingsPageState extends State<SettingsPage> {
                     print(context);
                   },
                   text: "Modification d'information",
+                ),
+                const SizedBox(height: 20),
+                MyOutlinedButton(
+                  text: 'Page des avis',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const OpinionPage();
+                        },
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
