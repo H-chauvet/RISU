@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-creation/delivery_info_screen.dart';
+import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
@@ -17,6 +20,7 @@ import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:front/screens/company/company.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
+import 'package:front/screens/container-creation/payment_screen.dart';
 
 ///
 /// App router
@@ -149,6 +153,25 @@ class AppRouter {
           child: CompanyPage(),
         ),
       ),
+      GoRoute(
+          path: '/container-creation/payment',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: PaymentScreen())),
+      GoRoute(
+          path: '/container-creation/delivery',
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: DeliveryInfoScreen())),
+      GoRoute(
+          path: '/container-creation/recap',
+          builder: (context, state) {
+            List<Locker> lockers = [];
+            if (state.extra != null) {
+              lockers = state.extra! as List<Locker>;
+            }
+            return RecapScreen(
+              lockers: lockers,
+            );
+          }),
     ],
   );
 

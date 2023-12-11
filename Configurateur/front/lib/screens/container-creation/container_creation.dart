@@ -38,13 +38,13 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    if (token != "") {
+    /*if (token != "") {
       jwtToken = token;
     } else {
       context.go(
         '/login',
       );
-    }
+    }*/
     /*StorageService().readStorage('token').then((value) => {
           if (value == null)
             {context.go("/login")}
@@ -421,7 +421,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goNext() async {
-    HttpService().request(
+    /*HttpService().request(
       'http://$serverIp:3000/api/container/create',
       <String, String>{
         'Authorization': jwtToken,
@@ -434,17 +434,17 @@ class ContainerCreationState extends State<ContainerCreation> {
         'width': '12',
         'height': '5',
       },
-    );
-    context.go("/");
+    );*/
+    context.go("/container-creation/recap", extra: lockers);
   }
 
   void checkToken() {
-    if (token != "") {
+    /*if (token != "") {
       jwtToken = token;
     } else {
       debugPrint("token is empty");
       context.go("/login");
-    }
+    }*/
   }
 
   void goPrevious() {
@@ -463,10 +463,10 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 1,
+              length: 5,
               progress: 0,
               previous: 'Précédent',
-              next: 'Terminer',
+              next: 'Suivant',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),
