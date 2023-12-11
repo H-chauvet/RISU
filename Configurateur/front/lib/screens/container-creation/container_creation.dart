@@ -283,14 +283,11 @@ class ContainerCreationState extends State<ContainerCreation> {
                 .faces[0]
                 .materialIndex !=
             0) {
-          debugPrint("freeSpace: $freeSpace");
           int size = objs[0]
               .fragments[j * width + i + fragmentIncrement]
               .faces[0]
               .materialIndex!;
-          debugPrint("size: $size");
           if (freeSpace.isNotEmpty) {
-            debugPrint("i: $i, j: $j");
             ret = handleMoveLocker(freeSpace, i, j, fragmentIncrement, size);
             if (ret.item1 != -1) {
               i = ret.item1;
