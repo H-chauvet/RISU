@@ -146,7 +146,7 @@ class OpinionPageState extends State<OpinionPage> {
                       ),
                     ),
                   ),
-                  // Champ de commentaire
+                  SizedBox(height: 20),
                   MyTextInput(
                     key: const Key('opinion-textinput_comment'),
                     labelText: "Commentaire",
@@ -161,20 +161,20 @@ class OpinionPageState extends State<OpinionPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
+                    MyOutlinedButton(
+                      text: 'Annuler',
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    MyOutlinedButton(
+                      text: 'Ajouter',
                       onPressed: () {
                         print('Note ajoutée : $selectedStar');
                         print('Commentaire ajouté : $comment');
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
                       },
-                      child: Text('Ajouter'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text('Annuler'),
                     ),
                   ],
                 ),
@@ -215,27 +215,13 @@ class OpinionPageState extends State<OpinionPage> {
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          'Avis de l\'application',
-                          key: Key('opinion-title'),
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        FloatingActionButton(
-                          key: const Key('add_opinion-button'),
-                          onPressed: () {
-                            _showAddOpinionDialog(); // affiche la modale
-                          },
-                          child: Icon(Icons.add),
-                          backgroundColor: Colors
-                              .green, // Remplacez par la couleur souhaitée
-                        ),
-                      ],
+                    const Text(
+                      'Avis de l\'application',
+                      key: Key('opinion-title'),
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Center(
                       child: Column(
@@ -356,6 +342,15 @@ class OpinionPageState extends State<OpinionPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        key: const Key('add_opinion-button'),
+        onPressed: () {
+          _showAddOpinionDialog();
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
