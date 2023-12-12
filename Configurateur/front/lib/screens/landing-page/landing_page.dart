@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
-import 'package:front/services/payment_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -114,8 +113,7 @@ class LandingPageState extends State<LandingPage> {
 
   void goToCreation() {
     if (token == '') {
-      PaymentService().makePayment();
-      //context.go("/login");
+      context.go("/login");
     } else {
       context.go("/creation");
     }

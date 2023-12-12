@@ -11,6 +11,9 @@ void main() async {
 
   Stripe.publishableKey =
       "pk_test_51OKkt3HkBPo6kqvSNnGpz15uJSXmrgXOK3eUv8CIw9dwp3q7nibb39ktqw6FLdEulS3kXfWlEKqW4og1KmBLhPdh00DSNgjev3";
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
 
   await dotenv.load(fileName: "../.env");
 
