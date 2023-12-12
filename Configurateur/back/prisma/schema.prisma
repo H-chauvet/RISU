@@ -54,3 +54,13 @@ model Contact {
 	message				String
 	createdAt			DateTime		@default(now())
 }
+
+model Feedbacks {
+	id					Int				@id @default(autoincrement())
+	firstName			String
+	lastName			String
+	email				String
+	message				String
+	mark				Int
+	createdAt			DateTime		@default(now())
+}

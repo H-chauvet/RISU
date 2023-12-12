@@ -28,7 +28,7 @@ router.post('/login', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/google-login', async function (req, res, next) {
   try {
@@ -60,11 +60,11 @@ router.post('/google-login', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/register', async function (req, res, next) {
   try {
-    const { firstName, lastName, organization, email, password } = req.body
+    const { firstName, lastName, company, email, password } = req.body
     if (!email || !password) {
       res.status(400)
       throw new Error('Email and password are required')
@@ -80,7 +80,7 @@ router.post('/register', async function (req, res, next) {
     const user = await userCtrl.registerByEmail({
       firstName,
       lastName,
-      organization,
+      company,
       email,
       password
     })
@@ -92,7 +92,7 @@ router.post('/register', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/forgot-password', async function (req, res, next) {
   try {
@@ -114,7 +114,7 @@ router.post('/forgot-password', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/update-password', async function (req, res, next) {
   try {
@@ -136,7 +136,7 @@ router.post('/update-password', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/register-confirmation', async function (req, res, next) {
   try {
@@ -164,7 +164,7 @@ router.post('/register-confirmation', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/confirmed-register', async function (req, res, next) {
   try {
@@ -180,7 +180,7 @@ router.post('/confirmed-register', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.post('/delete', async function (req, res, next) {
   const { email } = req.body
@@ -191,7 +191,7 @@ router.post('/delete', async function (req, res, next) {
   } catch (err) {
     res.json('ok').status(200)
   }
-})
+});
 
 router.get('/privacy', async function (req, res, next) {
   try {
@@ -202,7 +202,7 @@ router.get('/privacy', async function (req, res, next) {
   } catch (err) {
     next(err)
   }
-})
+});
 
 router.get('/listAll', async function(req, res, next) {
   try {
@@ -212,6 +212,18 @@ router.get('/listAll', async function(req, res, next) {
   } catch (err) {
     next(err);
   }
-})
+});
+
+router.get('/user-details/:email', async (req, res) => {
+  const email = req.params.email;
+
+  try {
+    const userDetails = await userController.findUserDetailsByEmail(email);
+    res.json(userDetails);
+  } catch (error) {
+    console.error('Error retrieving user details:', error);
+    res.status(500).json({ error: 'Failed to retrieve user details' });
+  }
+});
 
 module.exports = router
