@@ -247,11 +247,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       int x = int.parse(coordinates[0]);
       int y = int.parse(coordinates[1]);
       int counter = int.parse(coordinates[2]);
-      if (x == i) {
-        moveWholeLine(i, j, fragmentIncrement, counter);
-        freeSpace.removeAt(k);
-        return Tuple2(x, y);
-      }
+
       if (counter >= size) {
         moveLocker(x, y, size, i, j, fragmentIncrement);
         freeSpace.clear();
