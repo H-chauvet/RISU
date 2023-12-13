@@ -61,6 +61,50 @@ class ProfilePageState extends State<ProfilePage> {
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       body: SingleChildScrollView(
+        child: Row(children: [
+          Container(
+            margin: const EdgeInsets.only(top: 30, left: 20, right: 20),
+            width: 70,
+            height: 70,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: AssetImage('assets/avatar-rond.png'),
+                  fit: BoxFit.fill),
+            ),
+          ),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: Text(
+                  'Nom d\'utilisateur',
+                  style: TextStyle(
+                    fontSize: 22,
+                  ),
+                ),
+              ),
+              Text(
+                'E-mail',
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          )
+        ]),
+      ),
+    );
+  }
+
+  @override
+  Widget AAA(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      body: SingleChildScrollView(
         child: Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
