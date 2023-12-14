@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:risu/utils/check_signin.dart';
 import 'rent_page.dart';
 
 class Article extends StatelessWidget {
@@ -15,11 +14,7 @@ class Article extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {
-        bool signIn = await checkSignin(context);
-        if (signIn == false) {
-          return;
-        }
+      onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
