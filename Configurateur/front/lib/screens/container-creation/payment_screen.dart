@@ -2,12 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/progress_bar.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
 import '../../network/informations.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key});
+  const PaymentScreen({super.key, this.amount});
+
+  final int? amount;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -30,33 +35,146 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  void goPrevious() {
+    context.go('/');
+  }
+
+  void goNext() {
+    context.go('/');
+  }
+
   @override
   Widget build(BuildContext context) {
+    String adress = '';
+    String city = '';
+    String informations = '';
+
     return Scaffold(
-        body: Column(children: [
-      CardField(
-        controller: controller,
-      ),
-      const SizedBox(height: 20),
-      ElevatedButton(
-        onPressed: controller.complete ? makePayment : null,
-        child: const Text('Payer'),
-      ),
-    ]));
+        appBar: CustomAppBar('Paiement', context: context),
+        bottomSheet: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ProgressBar(
+              length: 5,
+              progress: 4,
+              previous: 'Précédent',
+              next: 'Terminer',
+              previousFunc: goPrevious,
+              nextFunc: goNext,
+            ),
+            const SizedBox(
+              height: 50,
+            )
+          ],
+        ),
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Center(
+            child: FractionallySizedBox(
+              widthFactor: 0.6,
+              child: Column(
+                children: [
+                  const Text(
+                    "Informations de livraison",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          key: const Key('adress'),
+                          decoration: InputDecoration(
+                            hintText: 'Entrez votre adresse',
+                            labelText: 'Adresse',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          onChanged: (String? value) {
+                            adress = value!;
+                          },
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez remplir ce champ';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          key: const Key('city'),
+                          decoration: InputDecoration(
+                            hintText: 'Entrez la ville',
+                            labelText: 'Ville',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          onChanged: (String? value) {
+                            city = value!;
+                          },
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez remplir ce champ';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  CardField(
+                    controller: controller,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    "Des demandes supplémentaires à nous faire parvenir ?",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    key: const Key('informations'),
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    onChanged: (String? value) {
+                      informations = value!;
+                    },
+                    validator: (String? value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Veuillez remplir ce champ';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: controller.complete ? makePayment : null,
+            child: const Text('Payer'),
+          ),
+        ]));
   }
 
   Future<void> makePayment() async {
     const billingDetails = BillingDetails(
-      email: 'test.mocked@gmail.com',
-      phone: '+33612345678',
-      name: 'Test Mocked',
+      email: 'risu.epitech@gmail.com',
+      name: 'Risu Corp',
       address: Address(
           city: 'Nantes',
           country: 'FR',
           line1: '1 rue de la paix',
           line2: 'Appartement 1',
           postalCode: '44000',
-          state: 'Loire Atlantique'),
+          state: 'Loire Atlantique'), // Mocked data
     );
 
     final paymentMethod = await Stripe.instance.createPaymentMethod(
@@ -68,7 +186,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
       true,
       paymentMethod.id,
       'eur',
-      ['id-1'],
     );
 
     if (paymentIntentResult['error'] != null) {
@@ -83,8 +200,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
-  Future<Map<String, dynamic>> callPayEndpoint(bool useStripeSdk,
-      String paymentMethodId, String currency, List<String>? items) async {
+  Future<Map<String, dynamic>> callPayEndpoint(
+      bool useStripeSdk, String paymentMethodId, String currency) async {
     final url = Uri.parse('http://$serverIp:3000/api/payment/card-pay');
     final response = await http.post(
       url,
@@ -95,7 +212,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'useStripeSdk': useStripeSdk,
         'paymentMethodId': paymentMethodId,
         'currency': currency,
-        'items': items
+        'amount': widget.amount,
       }),
     );
     return json.decode(response.body);

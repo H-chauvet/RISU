@@ -25,9 +25,8 @@ const generateResponse = (intent) => {
 };
 
 router.post("/card-pay", async function (req, res, next) {
-  const { paymentMethodId, paymentIntentId, currency, useStripeSdk } = req.body;
+  const { paymentMethodId, currency, useStripeSdk, amount } = req.body;
 
-  const orderAmount = 1000;
   const secret_key = "pranked";
 
   const stripe = new Stripe(secret_key, {
@@ -37,7 +36,7 @@ router.post("/card-pay", async function (req, res, next) {
 
   if (paymentMethodId) {
     const params = {
-      amount: orderAmount,
+      amount: amount,
       confirm: true,
       confirmation_method: "manual",
       currency,
