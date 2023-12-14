@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:profile_photo/profile_photo.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
@@ -56,80 +58,80 @@ class ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
-      body: SingleChildScrollView(
-        child: Row(children: [
-          Container(
-            margin: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            width: 70,
-            height: 70,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: AssetImage('assets/avatar-rond.png'),
-                  fit: BoxFit.fill),
-            ),
-          ),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 40),
-                child: Text(
-                  'Nom d\'utilisateur',
-                  style: TextStyle(
-                    fontSize: 22,
-                  ),
-                ),
-              ),
-              Text(
-                'E-mail',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-            ],
-          )
-        ]),
-      ),
-    );
-  }
+    String email = userInformation!.email;
+    var splitEmail = email.split("@");
+    var hiddenEmail = email.replaceRange(
+        2, splitEmail[0].length, "*" * (splitEmail[0].length - 2));
 
-  @override
-  Widget AAA(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Informations',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const ProfileInformationsPage();
-                          },
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(children: [
+                Padding(
+                    padding: const EdgeInsets.only(right: 30, top: 20),
+                    child: ProfilePhoto(
+                      totalWidth: 56,
+                      cornerRadius: 80,
+                      color: Colors.blue,
+                      image: const AssetImage('assets/avatar-rond.png'),
+                    )),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Text(
+                        "${userInformation!.firstName!} ${userInformation!.lastName!}",
+                        style: const TextStyle(
+                          fontSize: 22,
                         ),
-                      );
-                    },
+                      ),
+                    ),
+                    Text(
+                      hiddenEmail,
+                      style: const TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+              const MyDivider(vertical: 16.0, horizontal: 16.0),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Historique de location (10 plus récents)",
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
+                child: SizedBox(
+                  height: 100.0,
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 15,
+                    itemBuilder: (BuildContext context, int index) =>
+                        const Card(
+                      child: Center(child: Text('Dummy Card Text')),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
                     text: 'Paramètres',
@@ -145,43 +147,46 @@ class ProfilePageState extends State<ProfilePage> {
                     },
                   ),
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Nous contacter',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const ContactPage();
-                          },
-                        ),
-                      );
-                    },
-                  ),
+              ),
+              const MyDivider(vertical: 16.0, horizontal: 16.0),
+              SizedBox(
+                width: double.infinity,
+                child: MyOutlinedButton(
+                  text: 'Déconnexion',
+                  onPressed: () {
+                    userInformation = null;
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const LoginPage();
+                        },
+                      ),
+                      (route) => false,
+                    );
+                  },
                 ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Déconnexion',
-                    onPressed: () {
-                      userInformation = null;
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const LoginPage();
-                          },
-                        ),
-                        (route) => false,
-                      );
-                    },
-                  ),
-                ),
-                const SizedBox(height: 16),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget ToDelete(BuildContext context) {
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.background),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
                 TextButton(
                   key: const Key('profile-textbutton_delete-account'),
                   onPressed: () {
