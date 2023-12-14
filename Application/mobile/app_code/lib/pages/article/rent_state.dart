@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -12,6 +13,7 @@ import 'package:risu/components/text_input.dart';
 import '../../globals.dart';
 import '../../utils/theme.dart';
 import 'rent_page.dart';
+import '../../components/alert_dialog.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
   int _rentalHours = 1;
@@ -75,7 +77,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         Uri.parse('http://$serverIp:8080/api/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token,
+          'Authorization': '$token',
         },
         body: jsonEncode(<String, String>{
           'itemId': '1',
@@ -129,7 +131,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Location de l\'article',
                   style: TextStyle(
                     fontSize: 36,
@@ -144,7 +146,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                   height: 200,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
+                    image: DecorationImage(
                       image: AssetImage('assets/volley.png'),
                       fit: BoxFit.cover,
                     ),
@@ -170,7 +172,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                           alignment: Alignment.center,
                           child: Text(
                             _articleName,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -193,7 +195,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
                                         color: Color(0xFF4682B4),
-                                        child: const Text(
+                                        child: Text(
                                           'Prix par heure',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -207,7 +209,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
                                         color: Color(0xFF4682B4),
-                                        child: const Text(
+                                        child: Text(
                                           'Coût total',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -228,7 +230,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                             Color(0xFF4682B4).withOpacity(0.6),
                                         child: Text(
                                           _rentalPrice.toString() + ' €',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -245,7 +247,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                           (_rentalPrice * _rentalHours)
                                                   .toString() +
                                               ' €',
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
