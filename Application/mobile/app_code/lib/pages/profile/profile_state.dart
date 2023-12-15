@@ -56,6 +56,31 @@ class ProfilePageState extends State<ProfilePage> {
     super.initState();
   }
 
+  Widget toComplete() {
+    if (userInformation!.lastName == null ||
+        userInformation!.firstName == null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 20, top: 20),
+        child: MyOutlinedButton(
+          text: 'A compléter',
+          sizeCoefficient: 0.8,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return const ProfileInformationsPage();
+                },
+              ),
+            );
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     String email = userInformation!.email;
@@ -88,7 +113,7 @@ class ProfilePageState extends State<ProfilePage> {
                     Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Text(
-                        "${userInformation!.firstName!} ${userInformation!.lastName!}",
+                        "${userInformation!.firstName ?? "Prénom"} ${userInformation!.lastName ?? "Nom"}",
                         style: const TextStyle(
                           fontSize: 22,
                         ),
@@ -102,6 +127,7 @@ class ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
+                toComplete()
               ]),
               const MyDivider(vertical: 16.0, horizontal: 16.0),
               const Align(
@@ -120,10 +146,10 @@ class ProfilePageState extends State<ProfilePage> {
                     physics: const ClampingScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
-                    itemCount: 15,
+                    itemCount: 10,
                     itemBuilder: (BuildContext context, int index) =>
                         const Card(
-                      child: Center(child: Text('Dummy Card Text')),
+                      child: Center(child: Text('Historique')),
                     ),
                   ),
                 ),
