@@ -102,6 +102,7 @@ class ProfilePageState extends State<ProfilePage> {
                 Padding(
                     padding: const EdgeInsets.only(right: 30, top: 20),
                     child: ProfilePhoto(
+                      key: const Key('profile-profile_photo-user_photo'),
                       totalWidth: 56,
                       cornerRadius: 80,
                       color: Colors.blue,
