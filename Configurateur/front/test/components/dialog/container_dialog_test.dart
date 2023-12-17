@@ -4,7 +4,7 @@ import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/services/locker_service.dart';
 
 void main() {
-  void blankFunction(LockerCoordinates coordinates) {}
+  void blankFunction(LockerCoordinates coordinates, bool unitTesting) {}
 
   testWidgets('test unfilled form', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(

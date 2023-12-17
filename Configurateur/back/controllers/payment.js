@@ -23,7 +23,7 @@ const generateResponse = (intent) => {
 };
 
 exports.makePayments = async (data) => {
-  const stripe = new Stripe(secret_key, {
+  const stripe = new Stripe(process.env.STRIPE_SECRET, {
     apiVersion: "2023-08-16",
     typescript: false,
   });

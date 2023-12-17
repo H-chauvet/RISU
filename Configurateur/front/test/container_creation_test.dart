@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
+import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_3d/simple_3d.dart';
+import 'package:util_simple_3d/util_simple_3d.dart';
 
 void main() {
   testWidgets('Container Creation progress bar', (WidgetTester tester) async {
@@ -168,21 +171,39 @@ void main() {
     await tester.tap(find.byKey(const Key('front-view')));
   });
 
-  /*testWidgets('updateCube', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-    await tester.pumpWidget(const MaterialApp(
-      home: ContainerCreation(),
-    ));
-
+  testWidgets('updateCube', (WidgetTester tester) async {
     ContainerCreationState containerCreationState = ContainerCreationState();
 
-    containerCreationState
-        .updateCube(LockerCoordinates(1, 2, 'Devant', 'Haut', 1, 'Rouge'));
-    containerCreationState
-        .updateCube(LockerCoordinates(2, 2, 'Derrière', 'Haut', 2, 'Bleu'));
-    containerCreationState
-        .updateCube(LockerCoordinates(3, 5, 'Devant', 'Bas', 3, 'Vert'));
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    obj.materials.add(FSp3dMaterial.green.deepCopy());
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.materials.add(FSp3dMaterial.blue.deepCopy());
+    obj.materials.add(FSp3dMaterial.black.deepCopy());
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    containerCreationState.objs.add(obj);
+
+    containerCreationState.updateCube(
+        LockerCoordinates(1, 2, 'Devant', 'Haut', 1), true);
+    containerCreationState.updateCube(
+        LockerCoordinates(2, 2, 'Derrière', 'Haut', 2), true);
+    containerCreationState.updateCube(
+        LockerCoordinates(3, 5, 'Devant', 'Bas', 3), true);
+    containerCreationState.updateCube(
+        LockerCoordinates(4, 1, 'Devant', 'Bas', 4), true);
+
+    await tester.pump();
+
+    expect(containerCreationState.getPrice(), '350');
+
+    expect(containerCreationState.getContainerMapping(),
+        '000100000000100000000000003000000000003000000000003000000000000000000000020000000000020000000000000000000000000000000000');
+
+    containerCreationState.autoFillContainer('Devant', true);
+
+    containerCreationState.autoFillContainer('Derrière', true);
+
+    containerCreationState.autoFillContainer('Toutes', true);
 
     expect(containerCreationState.lockers[0].type, 'Petit casier');
     expect(containerCreationState.lockers[0].price, 50);
@@ -190,5 +211,7 @@ void main() {
     expect(containerCreationState.lockers[1].price, 100);
     expect(containerCreationState.lockers[2].type, 'Grand casier');
     expect(containerCreationState.lockers[2].price, 150);
-  });*/
+    expect(containerCreationState.lockers[3].type, 'Petit casier');
+    expect(containerCreationState.lockers[3].price, 50);
+  });
 }

@@ -97,12 +97,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               },
                             );
                           },
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez remplir ce champ';
-                            }
-                            return null;
-                          },
                         ),
                       ),
                       const SizedBox(width: 20),
@@ -122,12 +116,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 city = value!;
                               },
                             );
-                          },
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez remplir ce champ';
-                            }
-                            return null;
                           },
                         ),
                       ),
@@ -158,12 +146,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     onChanged: (String? value) {
                       informations = value!;
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
-                      }
-                      return null;
                     },
                   ),
                 ],

@@ -65,7 +65,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
   }
 
-  String updateCube(LockerCoordinates coordinates) {
+  String updateCube(LockerCoordinates coordinates, bool unitTesting) {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
     int increment = 0;
     int color = 0;
@@ -82,6 +82,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         break;
       default:
         color = 1;
+        coordinates.size = 1;
         break;
     }
 
@@ -114,7 +115,25 @@ class ContainerCreationState extends State<ContainerCreation> {
       fragment += increment;
     }
 
-    setState(() {
+    if (unitTesting == false) {
+      setState(() {
+        switch (coordinates.size) {
+          case 1:
+            lockers.add(Locker('Petit casier', 50));
+            break;
+          case 2:
+            lockers.add(Locker('Moyen casier', 100));
+            break;
+          case 3:
+            lockers.add(Locker('Grand casier', 150));
+            break;
+          default:
+            lockers.add(Locker('Petit casier', 50));
+            break;
+        }
+        isLoaded = true;
+      });
+    } else {
       switch (coordinates.size) {
         case 1:
           lockers.add(Locker('Petit casier', 50));
@@ -126,11 +145,9 @@ class ContainerCreationState extends State<ContainerCreation> {
           lockers.add(Locker('Grand casier', 150));
           break;
         default:
-          lockers.add(Locker('Petit casier', 50));
           break;
       }
-      isLoaded = true;
-    });
+    }
     return "";
   }
 
@@ -198,48 +215,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void moveWholeLine(int x, int y, int counter, int fragmentIncrement) {
-    for (int i = y; i < 5; i++) {
-      int size = objs[0].fragments[x + i * 12].faces[0].materialIndex!;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[0].materialIndex =
-          0;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[1].materialIndex =
-          0;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[2].materialIndex =
-          0;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[3].materialIndex =
-          0;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[4].materialIndex =
-          0;
-      objs[0].fragments[x + i * 12 + fragmentIncrement].faces[5].materialIndex =
-          0;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[0]
-          .materialIndex = size;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[1]
-          .materialIndex = size;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[2]
-          .materialIndex = size;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[3]
-          .materialIndex = size;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[4]
-          .materialIndex = size;
-      objs[0]
-          .fragments[x + (i - counter) * 12 + fragmentIncrement]
-          .faces[5]
-          .materialIndex = size;
-    }
-  }
-
   Tuple2<int, int> handleMoveLocker(
       List<String> freeSpace, int i, int j, int fragmentIncrement, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
@@ -247,11 +222,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       int x = int.parse(coordinates[0]);
       int y = int.parse(coordinates[1]);
       int counter = int.parse(coordinates[2]);
-      if (x == i) {
-        moveWholeLine(i, j, fragmentIncrement, counter);
-        freeSpace.removeAt(k);
-        return Tuple2(x, y);
-      }
+
       if (counter >= size) {
         moveLocker(x, y, size, i, j, fragmentIncrement);
         freeSpace.clear();
@@ -309,7 +280,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void autoFillContainer(String face) {
+  void autoFillContainer(String face, bool unitTesting) {
     int fragmentIncrement = 0;
 
     if (face == 'Derrière') {
@@ -322,9 +293,13 @@ class ContainerCreationState extends State<ContainerCreation> {
       fragmentIncrement = 60;
       autoFilling(fragmentIncrement);
     }
-    setState(() {
+    if (unitTesting == false) {
+      setState(() {
+        isLoaded = true;
+      });
+    } else {
       isLoaded = true;
-    });
+    }
   }
 
   void rotateBack() {
@@ -438,15 +413,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     context.go("/");
   }
 
-  void checkToken() {
-    if (token != "") {
-      jwtToken = token;
-    } else {
-      debugPrint("token is empty");
-      context.go("/login");
-    }
-  }
-
   void goPrevious() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
@@ -510,7 +476,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                                 context: context,
                                 builder: (context) => AutoFillDialog(
                                     callback: autoFillContainer));
-                            autoFillContainer(face);
+                            autoFillContainer(face, false);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
