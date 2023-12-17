@@ -43,12 +43,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     context.go('/');
   }
 
+  String adress = '';
+  String city = '';
+  String informations = '';
+
   @override
   Widget build(BuildContext context) {
-    String adress = '';
-    String city = '';
-    String informations = '';
-
     return Scaffold(
         appBar: CustomAppBar('Paiement', context: context),
         bottomSheet: Row(
@@ -75,7 +75,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 children: [
                   const Text(
                     "Informations de livraison",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -91,7 +91,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                           ),
                           onChanged: (String? value) {
-                            adress = value!;
+                            setState(
+                              () {
+                                adress = value!;
+                              },
+                            );
                           },
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
@@ -101,6 +105,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           },
                         ),
                       ),
+                      const SizedBox(width: 20),
                       Expanded(
                         child: TextFormField(
                           key: const Key('city'),
@@ -112,7 +117,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                           ),
                           onChanged: (String? value) {
-                            city = value!;
+                            setState(
+                              () {
+                                city = value!;
+                              },
+                            );
                           },
                           validator: (String? value) {
                             if (value == null || value.isEmpty) {
@@ -124,14 +133,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 50),
+                  const Text(
+                    "Coordonnées bancaires",
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 20),
                   CardField(
                     controller: controller,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 100),
                   const Text(
                     "Des demandes supplémentaires à nous faire parvenir ?",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(
@@ -157,9 +171,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            onPressed: controller.complete ? makePayment : null,
-            child: const Text('Payer'),
+          SizedBox(
+            width: 200,
+            child: ElevatedButton(
+              onPressed: (controller.complete && adress != '' && city != '')
+                  ? makePayment
+                  : null,
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0))),
+              child: const Text('Payer'),
+            ),
           ),
         ]));
   }

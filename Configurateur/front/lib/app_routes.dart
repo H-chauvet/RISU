@@ -105,9 +105,18 @@ class AppRouter {
         ),
       ),
       GoRoute(
-          path: '/creation',
+          path: '/container-creation',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ContainerCreation())),
+      GoRoute(
+        path: '/container-creation/payment',
+        builder: (BuildContext context, GoRouterState state) {
+          final price = state.extra! as int;
+          return PaymentScreen(
+            amount: price,
+          );
+        },
+      ),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(
@@ -150,12 +159,6 @@ class AppRouter {
           child: CompanyPage(),
         ),
       ),
-      GoRoute(
-        path: '/test',
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: PaymentScreen(),
-        ),
-      )
     ],
   );
 
