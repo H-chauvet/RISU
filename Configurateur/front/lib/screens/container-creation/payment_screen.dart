@@ -24,6 +24,9 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
+  String adress = '';
+  String city = '';
+  String informations = '';
 
   @override
   void initState() {
@@ -68,14 +71,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'containerMapping': widget.containerMapping!,
         'width': '12',
         'height': '5',
+        'city': city,
+        'adress': adress,
       },
     );
     context.go('/');
   }
-
-  String adress = '';
-  String city = '';
-  String informations = '';
 
   @override
   Widget build(BuildContext context) {
