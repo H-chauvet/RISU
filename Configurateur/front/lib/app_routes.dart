@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
@@ -104,9 +107,21 @@ class AppRouter {
         ),
       ),
       GoRoute(
-          path: '/creation',
+          path: '/container-creation',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ContainerCreation())),
+      GoRoute(
+        path: '/container-creation/payment',
+        builder: (BuildContext context, GoRouterState state) {
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return PaymentScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+          );
+        },
+      ),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(
