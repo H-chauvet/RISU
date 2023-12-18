@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
@@ -111,9 +113,12 @@ class AppRouter {
       GoRoute(
         path: '/container-creation/payment',
         builder: (BuildContext context, GoRouterState state) {
-          final price = state.extra! as int;
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
           return PaymentScreen(
-            amount: price,
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
           );
         },
       ),

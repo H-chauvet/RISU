@@ -7,7 +7,7 @@ router.post("/card-pay", async function (req, res, next) {
 
   try {
     res.send(
-      paymentCtrl.makePayments({
+      await paymentCtrl.makePayments({
         paymentMethodId,
         currency,
         useStripeSdk,

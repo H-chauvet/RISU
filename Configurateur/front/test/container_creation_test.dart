@@ -194,7 +194,7 @@ void main() {
 
     await tester.pump();
 
-    expect(containerCreationState.getPrice(), '350');
+    expect(containerCreationState.sumPrice(), 350);
 
     expect(containerCreationState.getContainerMapping(),
         '000100000000100000000000003000000000003000000000003000000000000000000000020000000000020000000000000000000000000000000000');

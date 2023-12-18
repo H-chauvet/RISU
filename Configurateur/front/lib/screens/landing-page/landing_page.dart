@@ -115,7 +115,7 @@ class LandingPageState extends State<LandingPage> {
     if (token == '') {
       context.go("/login");
     } else {
-      context.go("/creation");
+      context.go("/container-creation");
     }
   }
 

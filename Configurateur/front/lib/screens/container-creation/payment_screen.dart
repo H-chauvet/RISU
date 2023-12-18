@@ -6,13 +6,16 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:front/services/storage_service.dart';
 
 import '../../network/informations.dart';
+import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key, this.amount});
+  const PaymentScreen({super.key, this.amount, this.containerMapping});
 
   final int? amount;
+  final String? containerMapping;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -20,9 +23,16 @@ class PaymentScreen extends StatefulWidget {
 
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
+  String jwtToken = '';
 
   @override
   void initState() {
+    debugPrint(token);
+    if (token == '') {
+      context.go('/login');
+    } else {
+      jwtToken = token;
+    }
     controller.addListener(update);
     super.initState();
   }
@@ -36,10 +46,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goPrevious() {
-    context.go('/');
+    context.go('/container-creation');
   }
 
   void goNext() {
+    if (controller.complete && adress != '' && city != '') {
+      makePayment();
+    } else {
+      return;
+    }
+
+    HttpService().request(
+      'http://$serverIp:3000/api/container/create',
+      <String, String>{
+        'Authorization': jwtToken,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+      <String, String>{
+        'price': widget.amount.toString(),
+        'containerMapping': widget.containerMapping!,
+        'width': '12',
+        'height': '5',
+      },
+    );
     context.go('/');
   }
 
@@ -55,10 +85,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
-              progress: 4,
+              length: 2,
+              progress: 1,
               previous: 'Précédent',
-              next: 'Terminer',
+              next: 'Payer',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),
@@ -153,18 +183,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            width: 200,
-            child: ElevatedButton(
-              onPressed: (controller.complete && adress != '' && city != '')
-                  ? makePayment
-                  : null,
-              style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0))),
-              child: const Text('Payer'),
-            ),
-          ),
         ]));
   }
 

@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
@@ -12,8 +13,6 @@ import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
-
-import 'package:front/network/informations.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
@@ -379,12 +378,12 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
-  String getPrice() {
+  int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockers.length; i++) {
       price += lockers[i].price;
     }
-    return price.toString();
+    return price;
   }
 
   String getContainerMapping() {
@@ -396,21 +395,11 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goNext() async {
-    HttpService().request(
-      'http://$serverIp:3000/api/container/create',
-      <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      <String, String>{
-        'price': getPrice(),
-        'containerMapping': getContainerMapping(),
-        'width': '12',
-        'height': '5',
-      },
-    );
-    context.go("/");
+    var data = {
+      'amount': sumPrice(),
+      'containerMapping': getContainerMapping(),
+    };
+    context.go("/container-creation/payment", extra: jsonEncode(data));
   }
 
   void goPrevious() {
@@ -429,7 +418,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 1,
+              length: 2,
               progress: 0,
               previous: 'Précédent',
               next: 'Terminer',

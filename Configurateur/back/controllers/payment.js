@@ -28,14 +28,14 @@ exports.makePayments = async (data) => {
     typescript: false,
   });
 
-  if (paymentMethodId) {
+  if (data.paymentMethodId) {
     const params = {
-      amount: amount * 100,
+      amount: data.amount * 100,
       confirm: true,
       confirmation_method: "manual",
-      currency,
-      payment_method: paymentMethodId,
-      use_stripe_sdk: useStripeSdk,
+      currency: data.currency,
+      payment_method: data.paymentMethodId,
+      use_stripe_sdk: data.useStripeSdk,
       return_url: "risu://stripe-redirect",
     };
     const intent = await stripe.paymentIntents.create(params);

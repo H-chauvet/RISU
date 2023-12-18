@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   url_launcher: ^6.1.10
-  http: ^0.13.5
+  http: ^0.13.6
   size_config: ^2.0.3
   flutter_signin_button: ^2.0.0
   sign_button: ^2.0.3
@@ -68,6 +68,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  mockito: ^5.4.0
+  build_runner: ^2.3.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -94,7 +96,6 @@ flutter:
     - assets/Quentin.png
     - assets/Tanguy.png
     - assets/Cédric.png
-    - ../.env
 
   #   - images/a_dot_ham.jpeg
 

@@ -15,8 +15,6 @@ void main() async {
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
 
-  await dotenv.load(fileName: "../.env");
-
   runApp(
     ChangeNotifierProvider<ThemeService>(
       create: (context) => ThemeService(),
