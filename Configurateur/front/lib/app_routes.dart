@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-list/container_list.dart';
+import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
@@ -147,6 +148,12 @@ class AppRouter {
         path: '/company',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: CompanyPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/feedbacks',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: FeedbacksPage(),
         ),
       ),
     ],

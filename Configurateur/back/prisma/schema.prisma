@@ -61,6 +61,6 @@ model Feedbacks {
 	lastName			String
 	email				String
 	message				String
-	mark				Int
+	mark				String
 	createdAt			DateTime		@default(now())
 }

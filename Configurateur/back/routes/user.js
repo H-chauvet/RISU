@@ -218,8 +218,8 @@ router.get('/user-details/:email', async (req, res) => {
   const email = req.params.email;
 
   try {
-    const userDetails = await userController.findUserDetailsByEmail(email);
-    res.json(userDetails);
+    const userDetails = await userCtrl.findUserDetailsByEmail(email);
+    res.status(200).json(userDetails);
   } catch (error) {
     console.error('Error retrieving user details:', error);
     res.status(500).json({ error: 'Failed to retrieve user details' });
