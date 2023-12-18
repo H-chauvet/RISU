@@ -19,7 +19,8 @@ void main() {
     });
   });
 
-  testWidgets('Profile page', (WidgetTester tester) async {
+  testWidgets('Profile page with complete user info (Settings)',
+      (WidgetTester tester) async {
     userInformation = UserData(
         email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
     await tester.pumpWidget(
@@ -38,5 +39,64 @@ void main() {
     Finder profilePhotoUser =
         find.byKey(const Key('profile-profile_photo-user_photo'));
     expect(profilePhotoUser, findsOneWidget);
+    Finder buttonToComplete =
+        find.byKey(const Key('profile-button-complete_button'));
+    expect(buttonToComplete, findsNothing);
+
+    Finder buttonSettings =
+        find.byKey(const Key('profile-button-settings_button'));
+    expect(buttonSettings, findsOneWidget);
+
+    await tester.tap(buttonSettings);
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('Profile page with complete user info (Log out)',
+      (WidgetTester tester) async {
+    userInformation = UserData(
+        email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) =>
+                ThemeProvider(false), // Provide a default value for testing.
+          ),
+        ],
+        child: const MaterialApp(
+          home: ProfilePage(),
+        ),
+      ),
+    );
+    Finder buttonLogOut =
+        find.byKey(const Key('profile-button-log_out_button'));
+    expect(buttonLogOut, findsOneWidget);
+
+    await tester.tap(buttonLogOut);
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('Profile page with no user info', (WidgetTester tester) async {
+    userInformation =
+        UserData(email: 'example@gmail.com', firstName: null, lastName: null);
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) =>
+                ThemeProvider(false), // Provide a default value for testing.
+          ),
+        ],
+        child: const MaterialApp(
+          home: ProfilePage(),
+        ),
+      ),
+    );
+    Finder buttonToComplete =
+        find.byKey(const Key('profile-button-complete_button'));
+    expect(buttonToComplete, findsOneWidget);
+
+    await tester.tap(buttonToComplete);
+    await tester.pumpAndSettle();
   });
 }
