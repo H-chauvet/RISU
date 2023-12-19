@@ -1,16 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/components/recap_panel.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/recap_panel.dart';
 import '../../styles/themes.dart';
 
 class RecapScreen extends StatefulWidget {
-  const RecapScreen({super.key, this.lockers});
+  const RecapScreen(
+      {super.key, this.lockers, this.amount, this.containerMapping});
 
-  final List<Locker>? lockers;
+  final String? lockers;
+  final int? amount;
+  final String? containerMapping;
 
   @override
   State<RecapScreen> createState() => RecapScreenState();
@@ -22,12 +28,40 @@ class RecapScreen extends StatefulWidget {
 /// page de connexion pour le configurateur
 ///
 class RecapScreenState extends State<RecapScreen> {
+  List<Locker> lockerss = [];
+
   void previousFunc() {
-    Navigator.pop(context);
+    var data = {
+      'amount': widget.amount,
+      'containerMapping': widget.containerMapping,
+      'lockers': jsonEncode(lockerss),
+    };
+    context.go('/container-creation/payment', extra: jsonEncode(data));
   }
 
   void nextFunc() {
-    Navigator.pushNamed(context, '/container-creation/confirmation');
+    var data = {
+      'amount': widget.amount,
+      'containerMapping': widget.containerMapping,
+    };
+    context.go('/container-creation/payment', extra: jsonEncode(data));
+  }
+
+  void decodeLockers() {
+    final decode = jsonDecode(widget.lockers!);
+
+    for (int i = 0; i < decode.length; i++) {
+      lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.lockers != null) {
+      decodeLockers();
+    }
   }
 
   @override
@@ -41,7 +75,7 @@ class RecapScreenState extends State<RecapScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 5,
+            length: 4,
             progress: 2,
             previous: 'Précédent',
             next: 'Suivant',
@@ -79,7 +113,7 @@ class RecapScreenState extends State<RecapScreen> {
                   child: ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: widget.lockers!.length,
+                    itemCount: lockerss.length,
                     itemBuilder: (_, i) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -89,14 +123,14 @@ class RecapScreenState extends State<RecapScreen> {
                             padding:
                                 const EdgeInsets.only(left: 10, bottom: 10),
                             child: Text(
-                              widget.lockers![i].type,
+                              lockerss[i].type,
                             ),
                           ),
                           Padding(
                             padding:
                                 const EdgeInsets.only(right: 10, bottom: 10),
                             child: Text(
-                              "${widget.lockers![i].price.toString()}€",
+                              "${lockerss[i].price.toString()}€",
                             ),
                           ),
                         ],

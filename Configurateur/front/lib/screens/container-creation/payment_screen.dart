@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/components/recap_panel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:front/services/storage_service.dart';
@@ -12,8 +13,10 @@ import '../../network/informations.dart';
 import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key, this.amount, this.containerMapping});
+  const PaymentScreen(
+      {super.key, this.lockers, this.amount, this.containerMapping});
 
+  final String? lockers;
   final int? amount;
   final String? containerMapping;
 
@@ -27,10 +30,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String adress = '';
   String city = '';
   String informations = '';
+  List<Locker> lockerss = [];
 
   @override
   void initState() {
-    debugPrint(token);
     if (token == '') {
       context.go('/login');
     } else {
@@ -49,7 +52,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goPrevious() {
-    context.go('/container-creation');
+    var data = {
+      'amount': widget.amount,
+      'containerMapping': widget.containerMapping,
+      'lockers': jsonEncode(lockerss),
+    };
+    context.go('/container-creation/visualization', extra: jsonEncode(data));
   }
 
   void goNext() {
@@ -86,8 +94,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
-              progress: 1,
+              length: 4,
+              progress: 3,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,

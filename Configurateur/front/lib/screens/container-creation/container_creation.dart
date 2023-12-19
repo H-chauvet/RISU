@@ -398,8 +398,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers),
     };
-    context.go("/container-creation/payment", extra: jsonEncode(data));
+    context.go("/container-creation/visualization", extra: jsonEncode(data));
   }
 
   void goPrevious() {
@@ -418,7 +419,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 4,
               progress: 0,
               previous: 'Précédent',
               next: 'Suivant',
