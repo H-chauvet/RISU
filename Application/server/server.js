@@ -579,6 +579,16 @@ app.post('/api/rent/article', async (req, res) => {
   }
 })
 
+app.get('/api/locations', async (req, res) => {
+  try {
+    const locations = await database.prisma.Location.findMany()
+    res.status(201).json({ locations });
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()

@@ -7,111 +7,111 @@ class MyColors {
 }
 
 final lightTheme = ThemeData(
-  brightness: Brightness.light,
-  primaryColor: MyColors.primary,
-  secondaryHeaderColor: MyColors.secondary,
-  colorScheme: const ColorScheme.light(
-    background: Color(0xFFE5E5E5),
-  ),
-  dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFFFFFFFF),
-    titleTextStyle: TextStyle(
-      color: MyColors.secondary,
-      fontWeight: FontWeight.bold,
-      fontSize: 20.0,
+    brightness: Brightness.light,
+    primaryColor: MyColors.primary,
+    secondaryHeaderColor: MyColors.secondary,
+    colorScheme: const ColorScheme.light(
+      background: Color(0xFFE5E5E5),
     ),
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-    filled: false,
-    fillColor: Color(0xFFE5E5E5),
-    border: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
+    dialogTheme: const DialogTheme(
+      backgroundColor: Color(0xFFFFFFFF),
+      titleTextStyle: TextStyle(
+        color: MyColors.secondary,
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0,
       ),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xFFA1C1DB),
-        width: 2.0,
+    inputDecorationTheme: const InputDecorationTheme(
+      filled: false,
+      fillColor: Color(0xFFE5E5E5),
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
       ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Color(0xFFA1C1DB),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      hintStyle: TextStyle(
+        color: Color(0xFF808080),
+      ),
+      labelStyle: TextStyle(
+        color: Color(0xFF000000),
+      ),
+      floatingLabelStyle: TextStyle(
+        color: Color(0xFF0F3F62),
       ),
     ),
-    hintStyle: TextStyle(
-      color: Color(0xFF808080),
+    buttonTheme: const ButtonThemeData(
+      colorScheme: ColorScheme.light(
+        secondary: Color(0xFFA1C1DB),
+      ),
     ),
-    labelStyle: TextStyle(
-      color: Color(0xFF000000),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: MyColors.secondary,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white54,
     ),
-    floatingLabelStyle: TextStyle(
-      color: Color(0xFF0F3F62),
-    ),
-  ),
-  buttonTheme: const ButtonThemeData(
-    colorScheme: ColorScheme.light(
-      secondary: Color(0xFFA1C1DB),
-    ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.secondary,
-    selectedItemColor: Colors.white,
-    unselectedItemColor: Colors.white54,
-  ),
-);
+    dividerColor: Colors.black);
 
 final darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  primaryColor: MyColors.secondary,
-  secondaryHeaderColor: MyColors.primary,
-  colorScheme: const ColorScheme.dark(
-    background: Color(0xFF1E1E1E),
-  ),
-  dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFF4E4E4E),
-    titleTextStyle: TextStyle(
-      color: MyColors.primary,
-      fontWeight: FontWeight.bold,
-      fontSize: 20.0,
+    brightness: Brightness.dark,
+    primaryColor: MyColors.secondary,
+    secondaryHeaderColor: MyColors.primary,
+    colorScheme: const ColorScheme.dark(
+      background: Color(0xFF1E1E1E),
     ),
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-    filled: false,
-    fillColor: Color(0xFF1E1E1E),
-    border: OutlineInputBorder(
-      borderSide: BorderSide.none,
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
+    dialogTheme: const DialogTheme(
+      backgroundColor: Color(0xFF4E4E4E),
+      titleTextStyle: TextStyle(
+        color: MyColors.primary,
+        fontWeight: FontWeight.bold,
+        fontSize: 20.0,
       ),
     ),
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(
-        color: Color(0xFFA1C1DB),
-        width: 2.0,
+    inputDecorationTheme: const InputDecorationTheme(
+      filled: false,
+      fillColor: Color(0xFF1E1E1E),
+      border: OutlineInputBorder(
+        borderSide: BorderSide.none,
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
       ),
-      borderRadius: BorderRadius.all(
-        Radius.circular(8.0),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Color(0xFFA1C1DB),
+          width: 2.0,
+        ),
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+      ),
+      hintStyle: TextStyle(
+        color: Color(0xFF808080),
+      ),
+      labelStyle: TextStyle(
+        color: Color(0xFFFFFFFF),
+      ),
+      floatingLabelStyle: TextStyle(
+        color: Color(0xFF4682B4),
       ),
     ),
-    hintStyle: TextStyle(
-      color: Color(0xFF808080),
+    buttonTheme: const ButtonThemeData(
+      colorScheme: ColorScheme.dark(
+        secondary: Color(0xFFA1C1DB),
+      ),
     ),
-    labelStyle: TextStyle(
-      color: Color(0xFFFFFFFF),
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: MyColors.primary,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white54,
     ),
-    floatingLabelStyle: TextStyle(
-      color: Color(0xFF4682B4),
-    ),
-  ),
-  buttonTheme: const ButtonThemeData(
-    colorScheme: ColorScheme.dark(
-      secondary: Color(0xFFA1C1DB),
-    ),
-  ),
-  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-    backgroundColor: MyColors.primary,
-    selectedItemColor: Colors.white,
-    unselectedItemColor: Colors.white54,
-  ),
-);
+    dividerColor: Colors.white);
