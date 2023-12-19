@@ -8,10 +8,10 @@ class MyDivider extends StatelessWidget {
   final double horizontal;
 
   const MyDivider({
-    Key? key,
+    super.key,
     this.vertical = 0.0,
     this.horizontal = 0.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
