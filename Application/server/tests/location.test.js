@@ -90,5 +90,17 @@ describe('POST /api/user/firstName', () => {
         ],
         done
       )
+    }),
+    it('should get all locations', (done) => {
+      async.series(
+        [
+          function (callback) {
+            request('http://localhost:8080')
+              .get('/api/locations')
+              .expect(201, callback)
+          }
+        ],
+        done
+      )
     })
 });

@@ -16,7 +16,6 @@ class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
     ArticleListPage(),
-    Container(),
     const MapPage(),
     const ProfilePage(),
   ];
