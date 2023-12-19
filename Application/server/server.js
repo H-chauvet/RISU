@@ -277,6 +277,20 @@ async function createFixtures () {
                 newsOffersRisu: true
             }
         })
+        const container = await database.prisma.Containers.create({
+          data: {
+            id:'1234',
+            localization: 'Nantes',
+            owner: 'Risu',
+            items: {
+              create: [
+                {name: 'ballon de volley', price: 3, available: true},
+                {name: 'raquette', price: 6, available: false},
+                {name: 'boulle de petanque', price: 16, available: true},
+              ]
+            }
+          }
+        })
         if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
             await database.prisma.User.create({
                 data: {
@@ -487,11 +501,37 @@ app.post('/api/user/password', async (req, res) => {
 
 app.get('/api/container/listall', async (req, res) => {
   try {
+    console.log("container/listall")
     const users = await database.prisma.Containers.findMany()
+    console.log(JSON.stringify(users, null, 2));
     res.status(200).json(users)
   } catch (err) {
     console.log(err)
     return res.status(400).json('An error occured.')
+  }
+})
+
+app.post('/api/container/details', async (req, res) => {
+  try {
+    if (!req.body.containerId || req.body.containerId === '') {
+      return res.status(401).json({ message: 'Missing containerId' })
+    }
+    const container = await database.prisma.Containers.findUnique({
+      where: {id: req.body.containerId},
+      select: {
+        localization: true,
+        owner: true,
+        _count: {
+          select: {   // count the number of items available related to the container
+            items: {where: {available: true}}
+          }
+        }
+      },
+    })
+    res.status(200).json(container)
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
   }
 })
 
