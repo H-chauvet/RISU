@@ -54,7 +54,9 @@ jobs:
         run: docker-compose ps
       - name: Run Back-End unit tests
         working-directory: ./Configurateur/back
-        run: npm test
+        run: |
+          npm install
+          npm test
       - name: Stop Docker Compose
         working-directory: ./Configurateur
         run: docker-compose down
@@ -103,7 +105,9 @@ jobs:
         run: docker-compose ps
       - name: Run Back-End unit tests
         working-directory: ./Application/server
-        run: npm test
+        run:  |
+          npm install
+          npm test
       - name: Stop Docker Compose
         working-directory: ./Application
         run: docker-compose down
