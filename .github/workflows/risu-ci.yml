@@ -28,7 +28,7 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Configurateur
         run: docker-compose down
-  WEB-TEST:
+  FRONT-WEB-TEST:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -55,7 +55,7 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Application
         run: docker-compose down
-  MOBILE-TEST:
+  FRONT-MOBILE-TEST:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
