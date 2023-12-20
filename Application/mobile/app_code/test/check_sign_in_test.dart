@@ -36,7 +36,6 @@ void main() {
     });
     testWidgets('User info null', (WidgetTester tester) async {
       userInformation = null;
-      var copyContext;
 
       await tester.pumpWidget(
         MultiProvider(
@@ -57,11 +56,10 @@ void main() {
       final res = checkSignin(context);
       await tester.pumpAndSettle();
       final Finder authRequired =
-      find.byKey(const Key("check_sign_in-alert_dialog-required_auth"));
+          find.byKey(const Key("check_sign_in-alert_dialog-required_auth"));
       expect(authRequired, findsOneWidget);
 
-      final Finder okButton =
-      find.byKey(const Key("alertdialog-button_ok"));
+      final Finder okButton = find.byKey(const Key("alertdialog-button_ok"));
       expect(okButton, findsOneWidget);
 
       await tester.tap(okButton);
