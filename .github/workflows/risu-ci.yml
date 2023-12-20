@@ -36,6 +36,28 @@ jobs:
       - name: Run unit tests (WEB)
         working-directory: ./Configurateur/front
         run: flutter test
+  BACK-WEB-TEST:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_WEB }}" > ./Configurateur/.env
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker-compose
+      - name: Start Docker Compose
+        working-directory: ./Configurateur
+        run: docker-compose up -d
+      - name: Verify Docker Compose
+        working-directory: ./Configurateur
+        run: docker-compose ps
+      - name: Run Back-End unit tests
+        working-directory: ./Configurateur/back
+        run: npm test
+      - name: Stop Docker Compose
+        working-directory: ./Configurateur
+        run: docker-compose down
   MOBILE-BUILD:
     runs-on: ubuntu-latest
     steps:
@@ -63,4 +85,26 @@ jobs:
       - name: Run unit tests (MOBILE)
         working-directory: ./Application/mobile/app_code
         run: flutter test
+  BACK-MOBILE-TEST:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_MOBILE }}" > ./Application/.env
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install docker-compose
+      - name: Start Docker Compose
+        working-directory: ./Application
+        run: docker-compose up -d
+      - name: Verify Docker Compose
+        working-directory: ./Application
+        run: docker-compose ps
+      - name: Run Back-End unit tests
+        working-directory: ./Application/server
+        run: npm test
+      - name: Stop Docker Compose
+        working-directory: ./Application
+        run: docker-compose down
   
