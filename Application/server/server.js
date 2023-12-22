@@ -528,6 +528,9 @@ app.post('/api/container/details', async (req, res) => {
         }
       },
     })
+    if (!container) {
+      throw "container doesn't exist"
+    }
     res.status(200).json(container)
   } catch (err) {
     console.error(err.message)

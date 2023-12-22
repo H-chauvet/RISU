@@ -17,6 +17,21 @@ describe('POST /containerDetails', function () {
 			done
 		)
 	}),
+	it('should not get container details from wrong id', function (done) {
+		async.series(
+			[
+				function (callback) {
+					request('http://localhost:8080')
+						.post('/api/container/details')
+						.set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({'containerId': 'wrong id'})
+            .expect(401, callback)
+				}
+			],
+			done
+		)
+	}),
 	it('should not get container details from empty id', function (done) {
 		async.series(
 			[

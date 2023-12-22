@@ -143,8 +143,8 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
-                    key: Key('container-button_article-list-page'),
                     text: 'Afficher la liste des article',
+                    key: const Key('container-button_article-list-page'),
                     onPressed: () {
                       Navigator.push(
                           context,

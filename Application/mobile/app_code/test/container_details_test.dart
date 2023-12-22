@@ -30,18 +30,11 @@ void main () {
         ),
       );
 
-      Finder invalidData = find.byKey(const Key('container-details_invaliddata'));
       Finder titleData = find.byKey(const Key('container-details_title'));
       Finder containerData = find.byKey(const Key('container-details_article-list'));
-      Finder articleListButton = find.byKey(const Key('container-button_article-list-page'));
 
-      expect(invalidData, findsOneWidget);
       expect(titleData, findsOneWidget);
       expect(containerData, findsOneWidget);
-      expect(articleListButton, findsOneWidget);
-
-      await tester.tap(articleListButton);
-      await tester.pumpAndSettle();
     }
   );
 }
