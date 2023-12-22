@@ -32,9 +32,10 @@ Future<dynamic> getContainerData(
   } catch (err) {
     if (context.mounted) {
       await MyAlertDialog.showErrorAlertDialog(
+          key: const Key('container-details_connectionrefused'),
           context: context,
           title: 'Container',
-          message: 'Failed to get container');
+          message: 'container-connexion_refused');
     }
   }
   if (response.statusCode == 200) {
@@ -45,6 +46,7 @@ Future<dynamic> getContainerData(
       print(response.statusCode);
       print(response.reasonPhrase);
       await MyAlertDialog.showErrorAlertDialog(
+          key: const Key('container-details_invaliddata'),
           context: context,
           title: 'Container',
           message: 'Failed to get container');
@@ -88,8 +90,8 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  // (localization === "" || owner === "") ?
                   '$localization par $owner',
+                  key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -125,6 +127,7 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
                           alignment: Alignment.center,
                           child: Text(
                             'Il y a Actuellement $available_items articles disponibles',
+                            key: const Key('container-details_article-list'),
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -140,7 +143,7 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
-                    key: Key('go-to-article-list-page'),
+                    key: Key('container-button_article-list-page'),
                     text: 'Afficher la liste des article',
                     onPressed: () {
                       Navigator.push(
