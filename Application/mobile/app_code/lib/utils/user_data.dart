@@ -28,21 +28,18 @@ class UserData {
   }
 
   /// Convert a json map into the class
-  factory UserData.fromJson(Map<String, dynamic> json) {
-    late bool isToken;
-    try {
-      json['token'];
+  factory UserData.fromJson(Map<String, dynamic> user, String token) {
+    bool isToken = false;
+    if (token.isNotEmpty) {
       isToken = true;
-    } catch (err) {
-      isToken = false;
     }
 
     return UserData(
-      email: json['user']['email'],
-      token: (isToken ? json['token'] : null),
-      firstName: json['user']['firstName'],
-      lastName: json['user']['lastName'],
-      id: json['user']['id'],
+      email: user['email'],
+      token: (isToken ? token : null),
+      firstName: user['firstName'],
+      lastName: user['lastName'],
+      id: user['id'],
     );
   }
 }
