@@ -5,15 +5,14 @@ const objectCtrl = require('../controllers/object')
 const jwtMiddleware = require('../middleware/jwt')
 
 router.get('/get', async function (req, res, next) {
-  // try {
-  //   jwtMiddleware.verifyToken(req.headers.authorization)
-  // } catch (err) {
-  //   res.status(401)
-  //   throw new Error('Unauthorized')
-  // }
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization)
+  } catch (err) {
+    res.status(401)
+    throw new Error('Unauthorized')
+  }
   try {
     const { id } = req.query
-    console.log(id);
 
     if (!id) {
       res.status(400)
@@ -57,15 +56,12 @@ router.post('/create', async function (req, res, next) {
       throw new Error('Object object are required')
     }
 
-    await objectCtrl.createObject2(
-      {
-          id,
-          name,
-          available,
-          price,
-          containerId,
-      }
-    )
+    await objectCtrl.createObject({
+      price,
+      objectMapping,
+      width,
+      height
+    })
     res.status(200).json('object created')
   } catch (err) {
     next(err)

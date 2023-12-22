@@ -9,12 +9,8 @@ exports.getAllObject = containerId => {
 }
 
 exports.getObject = id => {
-    return db.Object.findUnique({
-      where: {
-          id: id
-      }
-    })
-  }
+  return db.Object.findMany()
+}
 
 
 exports.createObject2 = object => {
