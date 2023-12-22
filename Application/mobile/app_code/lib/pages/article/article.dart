@@ -1,15 +1,83 @@
 import 'package:flutter/material.dart';
 import 'rent_page.dart';
+import 'package:risu/globals.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Article extends StatelessWidget {
+class Article extends StatefulWidget {
   final String article_name;
   final int articlePrice;
 
-  const Article({
+  Article({
     Key? key,
     required this.article_name,
     required this.articlePrice,
   }) : super(key: key);
+
+  @override
+  _ArticleState createState() => _ArticleState(
+    article_name: article_name,
+    articlePrice: articlePrice,
+  );
+}
+
+class _ArticleState extends State<Article> {
+  bool available = true;
+  late List<dynamic> locations;
+  final String article_name;
+  final int articlePrice;
+
+  _ArticleState({
+    Key? key,
+    required this.article_name,
+    required this.articlePrice,
+  });
+
+  void getLocations() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/locations'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 201) {
+        locations = jsonDecode(response.body)['locations'];
+        if (locations.length > 0) {
+          searchAvailable();
+        }
+      } else {
+        print('Error getLocations(): ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error getLocations(): $e');
+    }
+  }
+
+  void searchAvailable() {
+    DateTime now = DateTime.now();
+    for (var location in locations) {
+      DateTime createdAt = DateTime.parse(location['createdAt']);
+      int duration = location['duration'];
+      DateTime endTime = createdAt.add(Duration(hours: duration));
+      if (!now.isAfter(endTime)) {
+        setState(() {
+          available = false;
+        });
+        return;
+      }
+    }
+
+    setState(() {
+      available = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getLocations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +169,7 @@ class Article extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          'Disponible',
+                          available == true ? 'Disponible' : 'Indisponible',
                           style: TextStyle(
                             fontSize: 15.0,
                           ),
@@ -112,7 +180,9 @@ class Article extends StatelessWidget {
                           height: 10,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.green,
+                            color: available == true
+                                ? Colors.green
+                                : Colors.red,
                           ),
                         ),
                       ],
