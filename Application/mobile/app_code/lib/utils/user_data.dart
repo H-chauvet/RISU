@@ -7,7 +7,7 @@ class UserData {
   String email;
   String? firstName;
   String? lastName;
-  String? id;
+  String? ID;
 
   /// Constructor of the UserData class
   UserData({
@@ -15,7 +15,7 @@ class UserData {
     this.token,
     required this.firstName,
     required this.lastName,
-    this.id,
+    this.ID,
   });
 
   /// Function to display user email
@@ -28,18 +28,21 @@ class UserData {
   }
 
   /// Convert a json map into the class
-  factory UserData.fromJson(Map<String, dynamic> user, String token) {
-    bool isToken = false;
-    if (token.isNotEmpty) {
+  factory UserData.fromJson(Map<String, dynamic> json) {
+    late bool isToken;
+    try {
+      json['token'];
       isToken = true;
+    } catch (err) {
+      isToken = false;
     }
 
     return UserData(
-      email: user['email'],
-      token: (isToken ? token : null),
-      firstName: user['firstName'],
-      lastName: user['lastName'],
-      id: user['id'],
+      email: json['user']['email'],
+      token: (isToken ? json['token'] : null),
+      firstName: json['user']['firstName'],
+      lastName: json['user']['lastName'],
+      ID: json['user']['id'],
     );
   }
 }
