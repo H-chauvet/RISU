@@ -35,6 +35,16 @@ model Organization {
 	contactInformation	String
 }
 
+model Object {
+	id					Int				@id @default(autoincrement())
+	name				String
+	available			Boolean
+	container			Container? @relation(fields: [containerId], references: [id])
+	createdAt			DateTime		@default(now())
+	containerId			Int?
+	price				Float
+}
+
 model Container {
 	id					Int				@id @default(autoincrement())
 	createdAt			DateTime		@default(now())
@@ -44,6 +54,7 @@ model Container {
 	price				Float
 	width				Float
 	height				Float
+	object				Object[]
 }
 
 model Contact {
