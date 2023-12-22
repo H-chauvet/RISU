@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'divider.dart';
 
 class MyParameter extends StatelessWidget {
-  final String iconPath;
   final String title;
   final Widget goToPage;
+  final Widget paramIcon;
 
   const MyParameter({
     super.key,
-    required this.iconPath,
     required this.title,
     required this.goToPage,
+    required this.paramIcon,
   });
 
   @override
@@ -31,7 +31,7 @@ class MyParameter extends StatelessWidget {
           Row(children: [
             Padding(
               padding: const EdgeInsets.only(right: 8),
-              child: Image(image: AssetImage(iconPath)),
+              child: paramIcon,
             ),
             Text(
               title,

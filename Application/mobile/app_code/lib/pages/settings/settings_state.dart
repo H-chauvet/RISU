@@ -35,12 +35,69 @@ class SettingsPageState extends State<SettingsPage> {
                 ),
               ),
               SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Mon compte',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
               MyParameter(
                 goToPage: LoginPage(),
-                iconPath: 'assets/user.png',
                 title: 'Voir les détails du profil',
+                paramIcon: Icon(Icons.person),
               ),
               SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Informations de paiement',
+                paramIcon: Icon(Icons.payments_outlined),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Notifications',
+                paramIcon: Icon(Icons.notifications),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Thème',
+                paramIcon: Icon(Icons.brush),
+              ),
+              SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Assistance',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Avis',
+                paramIcon: Icon(Icons.star),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Nous contacter',
+                paramIcon: Icon(Icons.message_outlined),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'A propos',
+                paramIcon: Icon(Icons.question_mark),
+              ),
             ],
           ),
         ),
