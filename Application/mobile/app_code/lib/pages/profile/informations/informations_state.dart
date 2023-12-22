@@ -18,10 +18,11 @@ String email = '';
 Future<void> fetchUserData() async {
   try {
     final token = userInformation!.token;
-    final response = await http.get(Uri.parse('http://$serverIp:8080/api/user'),
+    final response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         });
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
