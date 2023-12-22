@@ -9,12 +9,12 @@ class RentArticlePage extends StatefulWidget {
   final List<String> locations;
 
   const RentArticlePage({
-    Key? key,
+    super.key,
     required this.name,
     required this.price,
     required this.containerId,
     required this.locations,
-  }) : super(key: key);
+  });
 
   @override
   State<RentArticlePage> createState() => RentArticlePageState();

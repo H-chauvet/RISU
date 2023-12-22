@@ -76,5 +76,31 @@ describe('POST /api/user/firstName', () => {
         ],
         done
       )
+    }),
+    it('should not create location, no price', (done) => {
+      async.series(
+        [
+          function (callback) {
+            request('http://localhost:8080')
+              .post('/api/rent/article')
+              .set('Authorization', authToken)
+              .send({price: '10', itemId: '1', duration: '2'})
+              .expect(201, callback)
+          }
+        ],
+        done
+      )
+    }),
+    it('should get all locations', (done) => {
+      async.series(
+        [
+          function (callback) {
+            request('http://localhost:8080')
+              .get('/api/locations')
+              .expect(201, callback)
+          }
+        ],
+        done
+      )
     })
 });

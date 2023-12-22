@@ -18,10 +18,11 @@ String email = '';
 Future<void> fetchUserData() async {
   try {
     final token = userInformation!.token;
-    final response = await http.get(Uri.parse('http://$serverIp:8080/api/user'),
+    final response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         });
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
@@ -217,10 +218,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                   children: [
                     // Chevron bleu pour la navigation vers /home
                     GestureDetector(
-                      onTap: () {
-                        // Naviguer vers la route "/home"
-                        context.go('/profile');
-                      },
                       child: const Icon(
                         Icons.chevron_left,
                         color: Colors.blue, // Couleur du chevron
@@ -262,6 +259,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
+                              key:
+                                  const Key('profile_info-text_field-new_name'),
                               decoration: const InputDecoration(
                                   labelText: 'Nouveau prénom'),
                               onChanged: (value) {
@@ -273,10 +272,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton(
-                        key: const Key('update_firstName-button'),
+                        key: const Key('profile_info-button-update_firstName'),
                         onPressed: () {
                           if (newFirstName.isEmpty) {
                             MyAlertDialog.showInfoAlertDialog(
+                                key: const Key(
+                                    'profile_info-alert_dialog-no_firstName'),
                                 context: context,
                                 title: 'Impossible de mettre à jour le prénom',
                                 message: 'Veuillez remplir le champ');
@@ -335,6 +336,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
+                              key: const Key(
+                                  'profile_info-text_field-last_name'),
                               decoration: const InputDecoration(
                                   labelText: 'Nouveau nom'),
                               onChanged: (value) {
@@ -346,10 +349,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton(
-                        key: const Key('update_lastName-button'),
+                        key: const Key('profile_info-button-update_last_name'),
                         onPressed: () {
                           if (newLastName.isEmpty) {
                             MyAlertDialog.showInfoAlertDialog(
+                                key: const Key(
+                                    'profile_info-alert_dialog-no_last_name'),
                                 context: context,
                                 title: 'Impossible de mettre à jour le nom',
                                 message: 'Veuillez remplir le champ');
@@ -409,6 +414,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
+                              key: const Key('profile_info-text_field-email'),
                               decoration: const InputDecoration(
                                   labelText: 'Nouvel email'),
                               onChanged: (value) {
@@ -420,10 +426,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton(
-                        key: const Key('reset-email-button'),
+                        key: const Key('profile_info-button-update_email'),
                         onPressed: () {
                           if (newEmail.isEmpty) {
                             MyAlertDialog.showInfoAlertDialog(
+                                key: const Key(
+                                    'profile_info-alert_dialog-no_email'),
                                 context: context,
                                 title: 'Impossible de mettre à jour l\'email',
                                 message: 'Veuillez remplir le champ');
@@ -468,6 +476,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                     children: [
                       // Mot de passe actuel
                       TextFormField(
+                        key: const Key('profile_info-text_field-curr_password'),
                         decoration: const InputDecoration(
                             labelText: 'Mot de passe actuel'),
                         onChanged: (value) {
@@ -478,6 +487,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       const SizedBox(height: 10), // Ajout d'un espace vertical
                       // Nouveau mot de passe
                       TextField(
+                        key: const Key('profile_info-text_field-new_password'),
                         decoration: const InputDecoration(
                             labelText: 'Nouveau mot de passe'),
                         onChanged: (value) {
@@ -488,6 +498,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       const SizedBox(height: 10), // Ajout d'un espace vertical
                       // Confirmation du nouveau mot de passe
                       TextField(
+                        key: const Key(
+                            'profile_info-text_field-new_password_conf'),
                         decoration: const InputDecoration(
                             labelText: 'Confirmation du nouveau mot de passe'),
                         onChanged: (value) {
@@ -497,12 +509,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton(
-                        key: const Key('update_password-button'),
+                        key: const Key('profile_info-button-update_password'),
                         onPressed: () async {
                           if (currentPassword.isEmpty ||
                               newPassword.isEmpty ||
                               newPasswordConfirmation.isEmpty) {
                             await MyAlertDialog.showInfoAlertDialog(
+                                key: const Key(
+                                    'profile_info-alert_dialog-no_password'),
                                 context: context,
                                 title:
                                     'Impossible de mettre à jour le mot de passe',
@@ -513,6 +527,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             updatePassword(currentPassword, newPassword);
                           } else {
                             await MyAlertDialog.showInfoAlertDialog(
+                                key: const Key(
+                                    'profile_info-alert_dialog-diff_password'),
                                 context: context,
                                 title: 'Les mots de passe ne correspondent pas',
                                 message:
@@ -555,34 +571,34 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     );
   }
 
-  Widget buildButton(
+/**Widget buildButton(
     String text, {
     double fontSize = 18,
     double width = double.infinity,
     bool isLogoutButton = false,
     String route = '',
-  }) {
+    }) {
     final textColor = isLogoutButton ? Colors.black : const Color(0xFF4682B4);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      width: width,
-      child: ElevatedButton(
-        onPressed: () {
-          if (route.isNotEmpty) {
-            context.go(route);
-          }
-        },
-        style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          onPrimary: textColor,
-          side: const BorderSide(color: Color(0xFF4682B4)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-        child: Text(text, style: TextStyle(fontSize: fontSize)),
-      ),
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    width: width,
+    child: ElevatedButton(
+    onPressed: () {
+    if (route.isNotEmpty) {
+    context.go(route);
+    }
+    },
+    style: ElevatedButton.styleFrom(
+    primary: Colors.white,
+    onPrimary: textColor,
+    side: const BorderSide(color: Color(0xFF4682B4)),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(30),
+    ),
+    ),
+    child: Text(text, style: TextStyle(fontSize: fontSize)),
+    ),
     );
-  }
+    }**/
 }

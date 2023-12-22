@@ -6,7 +6,7 @@ const List<String> directionList = <String>['Largeur', 'Hauteur'];
 class AutoFillDialog extends StatefulWidget {
   const AutoFillDialog({super.key, required this.callback});
 
-  final Function(String) callback;
+  final Function(String, bool) callback;
 
   @override
   State<AutoFillDialog> createState() => AutoFillDialogState();
@@ -30,6 +30,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
           Padding(
             padding: const EdgeInsets.all(8),
             child: DropdownMenu<String>(
+              key: const Key('face'),
               hintText: 'Face du conteneur',
               label: const Text('Face du conteneur'),
               initialSelection: faceList.first,
@@ -52,7 +53,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               child: const Text(
-                'Ajouter',
+                'Trier',
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {

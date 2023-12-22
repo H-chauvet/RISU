@@ -22,11 +22,6 @@ class MapPageState extends State<MapPage> {
       tilt: 59.440717697143555,
       zoom: 19.151926040649414);
 
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-
   @override
   void initState() {
     super.initState();
@@ -49,3 +44,8 @@ class MapPageState extends State<MapPage> {
         );
   }
 }
+
+/**  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
+    }**/

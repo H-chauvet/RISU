@@ -195,22 +195,21 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                    key: const Key('login-textinput_password'),
-                    labelText: "Mot de passe",
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: !_isPasswordVisible,
-                    icon: Icons.lock_outline,
-                    rightIcon: _isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    rightIconOnPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    onChanged: (value) => _password = value,
-                    validator: (value) =>
-                        Validators().notEmpty(context, value)),
+                  key: const Key('login-textinput_password'),
+                  labelText: "Mot de passe",
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
+                  icon: Icons.lock_outline,
+                  rightIcon: _isPasswordVisible
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  rightIconOnPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                  onChanged: (value) => _password = value,
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Column(
