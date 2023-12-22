@@ -86,12 +86,9 @@ app.post('/api/signup', (req, res, next) => {
         sendAccountConfirmationEmail(user.email, token)
       } catch (err) {
         console.error(err.message)
-        res.status(401).send('An error occured.')
+        return res.status(401).send('An error occurred.')
       }
-      return res.status(201).json({
-        status: 'success',
-        statusCode: res.statusCode
-      })
+      return res.status(201).send('User created')
     }
   )(req, res, next)
 })
@@ -101,11 +98,7 @@ app.post('/api/login', (req, res, next) => {
     if (err) throw new Error(err)
     if (user == false) return res.json(info)
     const token = utils.generateToken(user.id)
-    return res.status(201).json({
-      status: 'success',
-      data: { message: 'Welcome back.', user, token },
-      statusCode: res.statusCode
-    })
+    return res.status(201).json({ user: user, token: token, message: 'User logged inefzfref' })
   })(req, res, next)
 })
 
@@ -287,6 +280,9 @@ async function createFixtures () {
                     mailVerification: true,
                     notificationsId: notification1.id,
                 },
+                include: {
+                    Notifications: true,
+                }
             })
         if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
             await database.prisma.User.create({
@@ -297,6 +293,9 @@ async function createFixtures () {
                     password: await utils.hash('user'),
                     mailVerification: true,
                     notificationsId: notification2.id,
+                },
+                include: {
+                    Notifications: true,
                 }
             })
     } catch (err) {
@@ -330,24 +329,30 @@ app.post('/api/contact', async (req, res) => {
   }
 })
 
-app.get('/api/user', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    console.log(decoded)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id },
-      include: {
-        Notifications: true,
-      }
-    })
-    console.log('user : ', user)
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred.')
+app.get('/api/user/:userId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).send('Invalid token');
+        }
+        if (req.user.id != req.params.userId) {
+            return res.status(401).send('Unauthorized');
+        }
+        console.log(req.user)
+        const user = await database.prisma.User.findUnique({
+            where: { id: decoded.id },
+            include: {
+                Notifications: true,
+            }
+        })
+        console.log('user : ', user)
+        res.json(user)
+    } catch (err) {
+        console.error(err.message)
+        res.status(401).send('An error occurred.')
+    }
   }
-})
+)
 
 app.put('/api/user/notifications',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
