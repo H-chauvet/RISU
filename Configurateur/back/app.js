@@ -5,7 +5,7 @@ const userRoutes = require('./routes/user')
 const contactRoutes = require('./routes/contact')
 const messagesRoutes = require('./routes/messages')
 const containerRoutes = require('./routes/container')
-const objectRoutes = require('./routes/object')
+const itemsRoutes = require('./routes/items')
 
 var cors = require('cors')
 var bodyParser = require('body-parser')
@@ -25,6 +25,6 @@ app.use('/api/auth', userRoutes)
 app.use('/api', contactRoutes)
 app.use('/api/container', containerRoutes)
 app.use('/api/messages', messagesRoutes)
-app.use('/api/object', objectRoutes)
+app.use('/api/items', itemsRoutes)
 
 module.exports = app

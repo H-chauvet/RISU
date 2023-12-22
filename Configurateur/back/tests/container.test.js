@@ -45,7 +45,7 @@ describe('Create container', function () {
         },
         async function () {
           const req = await request('http://localhost:3000')
-            .post('/api/object/create-ctn')
+            .post('/api/object/create')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', token)

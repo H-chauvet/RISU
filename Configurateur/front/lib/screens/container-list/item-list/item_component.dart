@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class ObjectList {
+class ItemList {
   final int? id;
   final dynamic? name;
   final bool? available;
@@ -11,7 +11,7 @@ class ObjectList {
   final dynamic? containerId;
   final double? price;
 
-  ObjectList({
+  ItemList({
     required this.id,
     required this.name,
     required this.available,
@@ -21,8 +21,8 @@ class ObjectList {
     required this.price,
   });
 
-  factory ObjectList.fromJson(Map<String, dynamic> json) {
-    return ObjectList(
+  factory ItemList.fromJson(Map<String, dynamic> json) {
+    return ItemList(
       id: json['id'],
       name: json['name'],
       available: json['available'],
@@ -45,11 +45,11 @@ class ObjectList {
   }
 }
 
-class ObjectCard extends StatelessWidget {
-  final ObjectList object;
-  final Function(ObjectList) onDelete;
+class ItemCard extends StatelessWidget {
+  final ItemList item;
+  final Function(ItemList) onDelete;
 
-  const ObjectCard({super.key, required this.object, required this.onDelete});
+  const ItemCard({super.key, required this.item, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +57,14 @@ class ObjectCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(object.id.toString()),
-            subtitle: Text(object.name),
+            title: Text(item.id.toString()),
+            subtitle: Text(item.name),
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: const Icon(Icons.delete),
-                  onPressed: () => onDelete(object),
+                  onPressed: () => onDelete(item),
                 ),
               SizedBox(width: 10,),
               ],

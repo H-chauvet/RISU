@@ -1,7 +1,7 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:front/screens/container-list/object-list/object_list.dart';
+import 'package:front/screens/container-list/item-list/item_list.dart';
 
 class ContainerList {
   final int? id;
@@ -56,7 +56,7 @@ class ContainerCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ObjectPage(containerId: container.id),
+              builder: (context) => ItemPage(containerId: container.id),
             ),
           );
         },

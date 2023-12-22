@@ -4,46 +4,46 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 // import 'package:front/screens/container-list/container_web.dart';
-import 'package:front/screens/container-list/object-list/object_component.dart';
+import 'package:front/screens/container-list/item-list/item_component.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
-class ObjectPage extends StatefulWidget {
+class ItemPage extends StatefulWidget {
   final int? containerId;
-  const ObjectPage({Key? key, required int? this.containerId}) : super(key: key);
+  const ItemPage({Key? key, required int? this.containerId}) : super(key: key);
 
   @override
-  _ObjectPageState createState() => _ObjectPageState(containerId: containerId);
+  _ItemPageState createState() => _ItemPageState(containerId: containerId);
 }
 
-class _ObjectPageState extends State<ObjectPage> {
+class _ItemPageState extends State<ItemPage> {
   final int? containerId;
-  _ObjectPageState({required this.containerId});
-  List<ObjectList> objects = [];
+  _ItemPageState({required this.containerId});
+  List<ItemList> items = [];
 
   @override
   void initState() {
     super.initState();
-    fetchObjects();
+    fetchItems();
   }
 
-  Future<void> fetchObjects() async {
+  Future<void> fetchItems() async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/object/listAll?containerId=$containerId'),
+      Uri.parse('http://${serverIp}:3000/api/items/listAll?containerId=$containerId'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> objectsData = responseData["object"];
+      final List<dynamic> itemsData = responseData["item"];
       setState(() {
-        objects = objectsData.map((data) => ObjectList.fromJson(data)).toList();
+        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
     }
   }
 
-  Future<void> deleteObject(ObjectList message) async {
-    final Uri url = Uri.parse("http://${serverIp}:3000/api/object/delete");
+  Future<void> deleteItem(ItemList message) async {
+    final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     final response = await http.post(
       url,
       body: json.encode({'id': message.id}),
@@ -55,7 +55,7 @@ class _ObjectPageState extends State<ObjectPage> {
       //   toastLength: Toast.LENGTH_SHORT,
       //   gravity: ToastGravity.CENTER,
       // );
-      fetchObjects();
+      fetchItems();
     } else {
       // Fluttertoast.showToast(
       //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
@@ -81,12 +81,12 @@ class _ObjectPageState extends State<ObjectPage> {
             ListView.builder(
               shrinkWrap:
                   true,
-              itemCount: objects.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                final product = objects[index];
-                return ObjectCard(
-                  object: product,
-                  onDelete: deleteObject,
+                final product = items[index];
+                return ItemCard(
+                  item: product,
+                  onDelete: deleteItem,
                 );
                 // return Text("$itemId");
               },

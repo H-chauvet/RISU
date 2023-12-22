@@ -35,7 +35,7 @@ model Organization {
 	contactInformation	String
 }
 
-model Object {
+model Item {
 	id					Int				@id @default(autoincrement())
 	name				String
 	available			Boolean
@@ -54,7 +54,7 @@ model Container {
 	price				Float
 	width				Float
 	height				Float
-	object				Object[]
+	object				Item[]
 }
 
 model Contact {
