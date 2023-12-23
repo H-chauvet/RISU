@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/drop_down_menu.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'settings_page.dart';
@@ -73,6 +74,12 @@ class SettingsPageState extends State<SettingsPage> {
                   key: const Key('settings-button_change_information'),
                   onPressed: () {
                     print(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileInformationsPage(),
+                      ),
+                    );
                   },
                   text: "Modification d'information",
                 ),
