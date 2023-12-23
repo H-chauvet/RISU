@@ -92,7 +92,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       print('currentPassword : $currentPassword');
       print('newPassword : $newPassword');
 
-      final response = await http.post(
+      final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
