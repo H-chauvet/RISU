@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
@@ -30,7 +31,10 @@ class ContactPageState extends State<ContactPage> {
     } catch (err) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Connection refused.');
+            context: context,
+            key: const Key("contact-alert_dialog-refused"),
+            title: 'Contact',
+            message: 'Connection refused.');
         print(err);
         print(response.statusCode);
       }
@@ -81,7 +85,6 @@ class ContactPageState extends State<ContactPage> {
                 const SizedBox(height: 30),
                 Text(
                   'Nous contacter',
-                  key: const Key('subtitle-text'),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 32,
@@ -98,9 +101,9 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 42),
+                const SizedBox(height: 32),
                 MyTextInput(
-                  key: const Key('name'),
+                  key: const Key('contact-text_input-input_name'),
                   labelText: "Nom",
                   keyboardType: TextInputType.name,
                   icon: Icons.person,
@@ -108,7 +111,7 @@ class ContactPageState extends State<ContactPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                  key: const Key('email'),
+                  key: const Key('contact-text_input-input_email'),
                   labelText: "Email",
                   keyboardType: TextInputType.emailAddress,
                   icon: Icons.email_outlined,
@@ -116,49 +119,34 @@ class ContactPageState extends State<ContactPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                  key: const Key('message'),
+                  key: const Key('contact-text_input-input_message'),
                   labelText: "Message",
                   keyboardType: TextInputType.multiline,
                   icon: Icons.message_outlined,
                   onChanged: (value) => _message = value,
-                  height: 200,
+                  height: 128,
                 ),
                 const SizedBox(height: 36),
-                OutlinedButton(
-                  key: const Key('new-contact-button'),
+                MyOutlinedButton(
+                  text: 'Envoyer',
+                  key: const Key('contact-button-send_message'),
                   onPressed: () {
-                    if (_name != "" && _email != "" && _message != "") {
+                    if (_name != null &&
+                        _name != "" &&
+                        _email != null &&
+                        _email != "" &&
+                        _message != null &&
+                        _message != "") {
                       apiContact(_name!, _email!, _message!)
                           .then((value) => {});
                     } else {
                       MyAlertDialog.showInfoAlertDialog(
+                          key: const Key("contact-alert_dialog-invalid_info"),
                           context: context,
                           title: 'champs invalides',
                           message: 'Veuillez entrer des informations valides.');
                     }
                   },
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                    side: BorderSide(
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      width: 3.0,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 48.0,
-                      vertical: 16.0,
-                    ),
-                  ),
-                  child: Text(
-                    'Envoyer',
-                    style: TextStyle(
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      fontSize: 16.0,
-                    ),
-                  ),
                 ),
               ],
             ),

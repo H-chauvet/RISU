@@ -17,9 +17,10 @@ import '../../components/alert_dialog.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
   int _rentalHours = 1;
+
   //String _articleName = 'Nom de l\'article';
 
-  late int _rentalPrice = 5;
+  late int _rentalPrice;
   late String _articleName;
   late int _price;
   late int _containerId;
@@ -134,16 +135,16 @@ class RentArticlePageState extends State<RentArticlePage> {
                 Text(
                   'Location de l\'article',
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF4682B4),
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 // image
                 Container(
-                  width: 300,
-                  height: 200,
+                  width: 256,
+                  height: 192,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(
@@ -153,13 +154,13 @@ class RentArticlePageState extends State<RentArticlePage> {
                   ),
                 ),
 
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
 
                 Card(
                   elevation: 2,
-                  margin: const EdgeInsets.all(16),
+                  margin: const EdgeInsets.all(8),
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(8),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -261,7 +262,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 8),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,

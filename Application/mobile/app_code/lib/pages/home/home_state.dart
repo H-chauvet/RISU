@@ -16,7 +16,6 @@ class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
     ArticleListPage(),
-    Container(),
     const MapPage(),
     const ProfilePage(),
   ];
@@ -63,20 +62,12 @@ class HomePageState extends State<HomePage> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    bool response = false;
-    await MyAlertDialog.showChoiceAlertDialog(
-      context: context,
-      title: "Confirmation",
-      message: "Voulez-vous vraiment quitter l'application ?",
-    ).then((value) => response = value);
-    return response;
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () {
+        return Future<bool>.value(false);
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
