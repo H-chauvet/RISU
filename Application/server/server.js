@@ -388,6 +388,33 @@ app.put('/api/user/notifications',
   }
 )
 
+app.put('/api/user',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+          return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+          where: { id: req.user.id },
+      })
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+      const updatedUser = await database.prisma.User.update({
+        where: {id: user.id},
+        data: {
+          firstName: req.body.firstName ?? user.firstName,
+          lastName: req.body.lastName ?? user.lastName,
+          email: req.body.email ?? user.email,
+        }
+      })
+      return res.status(200).json({updatedUser});
+    } catch (error) {
+        console.error('Failed to update notifications: ', error)
+        return res.status(500).send('Failed to update notifications.')
+    }
+})
+
 app.post('/api/user/firstName', async (req, res) => {
   try {
     const token = req.headers.authorization
