@@ -1,20 +1,12 @@
 const express = require("express");
 
-<<<<<<< HEAD
 const app = express()
 const userRoutes = require('./routes/user')
 const contactRoutes = require('./routes/contact')
 const messagesRoutes = require('./routes/messages')
 const containerRoutes = require('./routes/container')
 const itemsRoutes = require('./routes/items')
-=======
-const app = express();
-const userRoutes = require("./routes/user");
-const contactRoutes = require("./routes/contact");
-const messagesRoutes = require("./routes/messages");
-const containerRoutes = require("./routes/container");
 const paymentRoutes = require("./routes/payment");
->>>>>>> dev
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
