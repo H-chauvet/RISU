@@ -7,7 +7,7 @@ import 'package:front/screens/company/company.dart';
 
 void main() {
   
-  testWidgets('UserMobileCard displays message details', (WidgetTester tester) async {
+  testWidgets('ItemCard displays message details', (WidgetTester tester) async {
 
     await tester.pumpWidget(
       MaterialApp(
