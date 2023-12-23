@@ -1,19 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
-import 'package:risu/components/text_input.dart';
+
 import '../../globals.dart';
 import '../../utils/theme.dart';
 import 'rent_page.dart';
-import '../../components/alert_dialog.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
   int _rentalHours = 1;
@@ -78,7 +74,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         Uri.parse('http://$serverIp:8080/api/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(<String, String>{
           'itemId': '1',
@@ -132,7 +128,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   'Location de l\'article',
                   style: TextStyle(
                     fontSize: 32,
@@ -147,7 +143,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                   height: 192,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
+                    image: const DecorationImage(
                       image: AssetImage('assets/volley.png'),
                       fit: BoxFit.cover,
                     ),
@@ -173,7 +169,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                           alignment: Alignment.center,
                           child: Text(
                             _articleName,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -196,7 +192,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
                                         color: Color(0xFF4682B4),
-                                        child: Text(
+                                        child: const Text(
                                           'Prix par heure',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -209,8 +205,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
-                                        child: Text(
+                                        color: const Color(0xFF4682B4),
+                                        child: const Text(
                                           'Coût total',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -230,8 +226,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                         color:
                                             Color(0xFF4682B4).withOpacity(0.6),
                                         child: Text(
-                                          _rentalPrice.toString() + ' €',
-                                          style: TextStyle(
+                                          '$_rentalPrice €',
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -242,13 +238,11 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color:
-                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        color: const Color(0xFF4682B4)
+                                            .withOpacity(0.6),
                                         child: Text(
-                                          (_rentalPrice * _rentalHours)
-                                                  .toString() +
-                                              ' €',
-                                          style: TextStyle(
+                                          '${_rentalPrice * _rentalHours} €',
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -262,7 +256,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -275,15 +269,15 @@ class RentArticlePageState extends State<RentArticlePage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   IconButton(
-                                    key: Key('decrement-hours-button'),
-                                    icon: Icon(Icons.remove),
+                                    key: const Key('decrement-hours-button'),
+                                    icon: const Icon(Icons.remove),
                                     onPressed: _decrementHours,
                                   ),
-                                  Text('$_rentalHours heure' +
-                                      (_rentalHours > 1 ? 's' : '')),
+                                  Text(
+                                      '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}'),
                                   IconButton(
-                                    key: Key('increment-hours-button'),
-                                    icon: Icon(Icons.add),
+                                    key: const Key('increment-hours-button'),
+                                    icon: const Icon(Icons.add),
                                     onPressed: _incrementHours,
                                   ),
                                 ],
@@ -300,7 +294,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
-                    key: Key('confirm-rent-button'),
+                    key: const Key('confirm-rent-button'),
                     text: 'Louer',
                     onPressed: () {
                       confirmRent();
