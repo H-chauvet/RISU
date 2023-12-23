@@ -279,7 +279,6 @@ async function createFixtures () {
         })
         const container = await database.prisma.Containers.create({
           data: {
-            id:'1234',
             localization: 'Nantes',
             owner: 'Risu',
             items: {
@@ -529,12 +528,12 @@ app.post('/api/container/details', async (req, res) => {
       },
     })
     if (!container) {
-      throw "container doesn't exist"
+      return res.status(401).json("container not found")
     }
-    res.status(200).json(container)
+    return res.status(200).json(container)
   } catch (err) {
     console.error(err.message)
-    res.status(401).send('An error occurred')
+    return res.status(401).send('An error occurred')
   }
 })
 

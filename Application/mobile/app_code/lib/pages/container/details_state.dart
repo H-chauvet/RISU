@@ -12,12 +12,8 @@ import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
 
-String owner = "";
-String localization = "";
-int available_items = 0;
-
 Future<dynamic> getContainerData(
-    BuildContext context, String _containerId) async {
+    BuildContext context, String containerId) async {
   late http.Response response;
 
   try {
@@ -27,7 +23,7 @@ Future<dynamic> getContainerData(
           'Content-Type': 'application/json; charset=UTF-8'
         },
         body: jsonEncode(<String, String>{
-          'containerId': _containerId,
+          'containerId': containerId,
         }));
   } catch (err) {
     if (context.mounted) {
@@ -56,6 +52,9 @@ Future<dynamic> getContainerData(
 
 class ContainerDetailsPageState extends State<ContainerDetailsPage> {
   String _containerId = "";
+  String _owner = "";
+  String _localization = "";
+  int _availableItems = 0;
 
   @override
   void initState() {
@@ -63,9 +62,9 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
     _containerId = widget.containerId;
     getContainerData(context, _containerId).then((dynamic value) {
       setState(() {
-        owner = value['owner'].toString();
-        localization = value['localization'].toString();
-        available_items = value['_count']['items'];
+        _owner = value['owner'].toString();
+        _localization = value['localization'].toString();
+        _availableItems = value['_count']['items'];
       });
     });
   }
@@ -90,7 +89,7 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$localization par $owner',
+                  '$_localization par $_owner',
                   key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 36,
@@ -126,7 +125,7 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            'Il y a Actuellement $available_items articles disponibles',
+                            'Il y a Actuellement $_availableItems articles disponibles',
                             key: const Key('container-details_article-list'),
                             style: TextStyle(
                               fontSize: 18,
