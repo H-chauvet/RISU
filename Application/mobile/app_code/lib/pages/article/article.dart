@@ -1,35 +1,37 @@
-import 'package:flutter/material.dart';
-import 'rent_page.dart';
-import 'package:risu/globals.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:risu/globals.dart';
+
+import 'rent_page.dart';
+
 class Article extends StatefulWidget {
-  final String article_name;
+  final String articleName;
   final int articlePrice;
 
   Article({
     Key? key,
-    required this.article_name,
+    required this.articleName,
     required this.articlePrice,
   }) : super(key: key);
 
   @override
   _ArticleState createState() => _ArticleState(
-    article_name: article_name,
-    articlePrice: articlePrice,
-  );
+        articleName: articleName,
+        articlePrice: articlePrice,
+      );
 }
 
 class _ArticleState extends State<Article> {
   bool available = true;
   late List<dynamic> locations;
-  final String article_name;
+  final String articleName;
   final int articlePrice;
 
   _ArticleState({
     Key? key,
-    required this.article_name,
+    required this.articleName,
     required this.articlePrice,
   });
 
@@ -87,7 +89,7 @@ class _ArticleState extends State<Article> {
           context,
           MaterialPageRoute(
             builder: (context) => RentArticlePage(
-              name: article_name,
+              name: articleName,
               price: articlePrice,
               containerId: 1,
               locations: ['La Baule - Casier N°A4'],
@@ -96,8 +98,8 @@ class _ArticleState extends State<Article> {
         );
       },
       child: Container(
-        margin:
-            EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
+        margin: const EdgeInsets.only(
+            left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
         alignment: Alignment.center,
         height: 150.0,
         decoration: BoxDecoration(
@@ -105,10 +107,10 @@ class _ArticleState extends State<Article> {
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
             BoxShadow(
-              color: Color(0xff4682B4).withOpacity(0.5),
+              color: const Color(0xff4682B4).withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -126,17 +128,17 @@ class _ArticleState extends State<Article> {
                 Row(
                   children: [
                     Text(
-                      article_name,
-                      style: TextStyle(
+                      articleName,
+                      style: const TextStyle(
                         color: Color(0xFF4682B4),
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
-                Text(
+                const Text(
                   'La Baule - Casier N°A4',
                   style: TextStyle(
                     fontStyle: FontStyle.italic,
@@ -149,8 +151,8 @@ class _ArticleState extends State<Article> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Prix: ' + articlePrice.toString() + '€/Heure',
-                      style: TextStyle(
+                      'Prix: $articlePrice€/Heure',
+                      style: const TextStyle(
                         fontSize: 15.0,
                       ),
                     )
@@ -160,7 +162,7 @@ class _ArticleState extends State<Article> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
+                    const Text(
                       'Statut: ',
                       style: TextStyle(
                         fontSize: 15.0,
@@ -170,19 +172,18 @@ class _ArticleState extends State<Article> {
                       children: [
                         Text(
                           available == true ? 'Disponible' : 'Indisponible',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 15.0,
                           ),
                         ),
-                        SizedBox(width: 5),
+                        const SizedBox(width: 5),
                         Container(
                           width: 10,
                           height: 10,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: available == true
-                                ? Colors.green
-                                : Colors.red,
+                            color:
+                                available == true ? Colors.green : Colors.red,
                           ),
                         ),
                       ],
