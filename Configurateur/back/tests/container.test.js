@@ -45,7 +45,7 @@ describe('Create container', function () {
         },
         async function () {
           const req = await request('http://localhost:3000')
-            .post('/api/object/create')
+            .post('/api/items/create')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', token)
@@ -59,14 +59,14 @@ describe('Create container', function () {
         },
         async function () {
           const req = await request('http://localhost:3000')
-            .post('/api/object/delete')
+            .post('/api/items/delete')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', token)
             .send({ id: 1 })
 
           expect(req.statusCode).toBe(200)
-          expect(req.body).toBe('object deleted')
+          expect(req.body).toBe('items deleted')
         },
         async function () {
           const req = await request('http://localhost:3000')
