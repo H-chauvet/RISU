@@ -21,11 +21,10 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   void initState() {
     super.initState();
-    getLocations();
+    getContainer();
   }
 
-  void getLocations() async {
-    print("one passadf");
+  void getContainer() async {
     try {
       final response = await http.get(
         Uri.parse('http://$serverIp:3000/api/container/listAll'),
@@ -40,31 +39,12 @@ class ContainerPageState extends State<ContainerPage> {
           containers = containersData.map((data) => ContainerList.fromJson(data)).toList();
         });
       } else {
-        print('Error getLocations(): ${response.statusCode}');
+        print('Error getContainer(): ${response.statusCode}');
       }
     } catch (e) {
-      print('Error getLocations(): $e');
+      print('Error getContainer(): $e');
     }
   }
-
-  // Future<void> fetchContainers() async {
-  //   print("je passe la");
-  //   final response =
-  //       await http.get(Uri.parse('http://localhost:3000/api/container/listAll'));
-  //   if (response.statusCode == 200) {
-      // final Map<String, dynamic> responseData = json.decode(response.body);
-      // final List<dynamic> containersData = responseData["container"];
-      // setState(() {
-      //   containers = containersData.map((data) => ContainerList.fromJson(data)).toList();
-      // });
-  //   } else {
-  //     // Fluttertoast.showToast(
-  //     //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-  //     //   toastLength: Toast.LENGTH_SHORT,
-  //     //   gravity: ToastGravity.CENTER,
-  //     // );
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -79,13 +59,13 @@ class ContainerPageState extends State<ContainerPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
                 left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 30),
-                Text(
+                const SizedBox(height: 30),
+                const Text(
                   'Liste des conteneurs',
                   style: TextStyle(
                     fontSize: 36,
@@ -93,7 +73,7 @@ class ContainerPageState extends State<ContainerPage> {
                     color: Color(0xFF4682B4),
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Column(
                   children: [
                     ListView.builder(
