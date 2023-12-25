@@ -52,7 +52,7 @@ describe('Create container', function () {
             .send({
               name: "hello world",
               available: true,
-              price: '2.0',
+              price: '1000.0',
               containerId: 1,
             })
           expect(req.statusCode).toBe(200)

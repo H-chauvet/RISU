@@ -13,7 +13,7 @@ router.post('/delete', async function (req, res, next) {
       throw new Error('userId is required')
     }
     await itemCtrl.deleteItem(id)
-    res.status(200).json('object deleted')
+    res.status(200).json('items deleted')
   } catch (err) {
     next(err)
   }
