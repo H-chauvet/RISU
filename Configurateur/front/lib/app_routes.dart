@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-creation/delivery_info_screen.dart';
+import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-creation/visualization_screen.dart';
@@ -154,6 +155,12 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: CompanyPage(),
         ),
+      ),
+      GoRoute(
+        path: '/container-creation/design',
+        builder: (BuildContext context, GoRouterState state) {
+          return const DesignScreen();
+        },
       ),
       GoRoute(
         path: '/container-creation/payment',

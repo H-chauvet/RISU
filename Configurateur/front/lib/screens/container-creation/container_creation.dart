@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -16,6 +17,13 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
+class MaterialIndex {
+  int materialIndex;
+  String name;
+
+  MaterialIndex(this.materialIndex, this.name);
+}
+
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
 
@@ -29,21 +37,23 @@ class ContainerCreation extends StatefulWidget {
 /// page d'inscription pour le configurateur
 class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
-  late Sp3dWorld world;
+  List<MaterialIndex> materialIndex = [];
+  Sp3dWorld? world;
   bool isLoaded = false;
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
   String jwtToken = '';
+  int imageIndex = 0;
 
   @override
   void initState() {
-    if (token != "") {
+    /*if (token != "") {
       jwtToken = token;
     } else {
       context.go(
         '/login',
       );
-    }
+    }*/
     /*StorageService().readStorage('token').then((value) => {
           if (value == null)
             {context.go("/login")}
@@ -55,13 +65,31 @@ class ContainerCreationState extends State<ContainerCreation> {
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
+    materialIndex.add(MaterialIndex(1, "Green"));
     obj.materials.add(FSp3dMaterial.red.deepCopy());
+    materialIndex.add(MaterialIndex(2, "Red"));
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
+    materialIndex.add(MaterialIndex(3, "Blue"));
     obj.materials.add(FSp3dMaterial.black.deepCopy());
+    materialIndex.add(MaterialIndex(4, "Black"));
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
-    loadImage();
+    loadImage(0, filepath: './assets/Hugo.png').then((value) => null);
+  }
+
+  Future<Uint8List> _readFileBytes(String filePath) async {
+    ByteData bd = await rootBundle.load(filePath);
+    return bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
+  }
+
+  int getMaterialIndexByName(String name) {
+    for (int i = 0; i < materialIndex.length; i++) {
+      if (materialIndex[i].name == name) {
+        return materialIndex[i].materialIndex;
+      }
+    }
+    return 0;
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
@@ -69,18 +97,20 @@ class ContainerCreationState extends State<ContainerCreation> {
     int increment = 0;
     int color = 0;
 
+    loadImage(2, filepath: './assets/Henri.png').then((value) => null);
+
     switch (coordinates.size) {
       case 1:
-        color = 1;
+        color = getMaterialIndexByName("Green");
         break;
       case 2:
-        color = 2;
+        color = getMaterialIndexByName("Red");
         break;
       case 3:
-        color = 3;
+        color = getMaterialIndexByName("Blue");
         break;
       default:
-        color = 1;
+        color = getMaterialIndexByName("Green");
         coordinates.size = 1;
         break;
     }
@@ -369,9 +399,25 @@ class ContainerCreationState extends State<ContainerCreation> {
     handleFloatingPoint();
   }
 
-  void loadImage() async {
+  Future<void> loadImage(int fragment, {String? filepath}) async {
+    if (filepath != null) {
+      Uint8List data = await _readFileBytes(filepath);
+
+      objs[0].fragments[fragment].faces[0].materialIndex = materialIndex.length;
+      objs[0].fragments[fragment].faces[1].materialIndex = materialIndex.length;
+      objs[0].fragments[fragment].faces[2].materialIndex = materialIndex.length;
+      objs[0].fragments[fragment].faces[3].materialIndex = materialIndex.length;
+
+      objs[0].materials.add(FSp3dMaterial.green.deepCopy());
+      objs[0].materials[materialIndex.length] = FSp3dMaterial.green.deepCopy()
+        ..imageIndex = imageIndex;
+      objs[0].images.add(data);
+      imageIndex++;
+
+      materialIndex.add(MaterialIndex(materialIndex.length, filepath));
+    }
     world = Sp3dWorld(objs);
-    world.initImages().then((List<Sp3dObj> errorObjs) {
+    await world?.initImages().then((List<Sp3dObj> errorObjs) {
       setState(() {
         isLoaded = true;
       });
@@ -400,12 +446,29 @@ class ContainerCreationState extends State<ContainerCreation> {
       'containerMapping': getContainerMapping(),
       'lockers': jsonEncode(lockers),
     };
-    context.go("/container-creation/visualization", extra: jsonEncode(data));
+    context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
   void goPrevious() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
+  }
+
+  Widget loadCube() {
+    if (world != null) {
+      return Sp3dRenderer(
+        const Size(800, 800),
+        const Sp3dV2D(400, 400),
+        world!,
+        // If you want to reduce distortion, shoot from a distance at high magnification.
+        Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+        Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+        allowUserWorldRotation: false,
+        allowUserWorldZoom: false,
+      );
+    } else {
+      return Container();
+    }
   }
 
   @override
@@ -478,16 +541,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                       ),
                     ),
                   ),
-                  Sp3dRenderer(
-                    const Size(800, 800),
-                    const Sp3dV2D(400, 400),
-                    world,
-                    // If you want to reduce distortion, shoot from a distance at high magnification.
-                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: false,
-                    allowUserWorldZoom: false,
-                  ),
+                  loadCube(),
                 ],
               ),
               Flexible(
