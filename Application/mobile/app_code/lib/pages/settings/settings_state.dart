@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
+import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import '../../components/divider.dart';
@@ -47,7 +49,7 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 16),
               MyParameter(
-                goToPage: LoginPage(),
+                goToPage: ProfileInformationsPage(),
                 title: 'Voir les détails du profil',
                 paramIcon: Icon(Icons.person),
               ),
@@ -56,16 +58,18 @@ class SettingsPageState extends State<SettingsPage> {
                 goToPage: LoginPage(),
                 title: 'Informations de paiement',
                 paramIcon: Icon(Icons.payments_outlined),
+                locked: true,
               ),
               SizedBox(height: 8),
               MyParameter(
                 goToPage: LoginPage(),
                 title: 'Notifications',
                 paramIcon: Icon(Icons.notifications),
+                locked: true,
               ),
               SizedBox(height: 8),
               MyParameter(
-                goToPage: LoginPage(),
+                goToPage: ThemeSettingsPage(),
                 title: 'Thème',
                 paramIcon: Icon(Icons.brush),
               ),
@@ -88,7 +92,7 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 8),
               MyParameter(
-                goToPage: LoginPage(),
+                goToPage: ContactPage(),
                 title: 'Nous contacter',
                 paramIcon: Icon(Icons.message_outlined),
               ),
@@ -97,6 +101,7 @@ class SettingsPageState extends State<SettingsPage> {
                 goToPage: LoginPage(),
                 title: 'A propos',
                 paramIcon: Icon(Icons.question_mark),
+                locked: true,
               ),
             ],
           ),
