@@ -539,6 +539,27 @@ app.post('/api/rent/article', async (req, res) => {
   }
 })
 
+// get rental
+app.get('/api/rent', async (req, res) => {
+    try {
+        const token = req.headers.authorization
+        if (!token) {
+            return res.status(401).json({ message: 'No token, authorization denied' })
+        }
+        const decoded = jwt.decode(token, process.env.JWT_SECRET)
+        const user = await database.prisma.User.findUnique({
+            where: { id: decoded.id }
+        })
+        const rentals = await database.prisma.Location.findMany({
+            where: { userId: user.id }
+        })
+        res.status(201).json({ rentals: rentals })
+    } catch (err) {
+        console.error(err.message)
+        res.status(401).send('An error occurred')
+    }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
