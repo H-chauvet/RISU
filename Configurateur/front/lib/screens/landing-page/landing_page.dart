@@ -25,7 +25,7 @@ class LandingPageState extends State<LandingPage> {
     super.initState();
     adminButton = "Administration";
     adminFunction = () => context.go("/admin");
-    
+
     if (token != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
@@ -49,7 +49,6 @@ class LandingPageState extends State<LandingPage> {
     List<Widget> list = [];
 
     if (token != '' && userMail == "risu.admin@gmail.com") {
-      
       list.add(
         ElevatedButton(
           onPressed: adminFunction,
@@ -69,7 +68,7 @@ class LandingPageState extends State<LandingPage> {
     }
 
     list.add(const SizedBox(width: 20));
-    
+
     if (token == '') {
       list.add(
         ElevatedButton(
@@ -116,7 +115,7 @@ class LandingPageState extends State<LandingPage> {
     if (token == '') {
       context.go("/login");
     } else {
-      context.go("/creation");
+      context.go("/container-creation");
     }
   }
 

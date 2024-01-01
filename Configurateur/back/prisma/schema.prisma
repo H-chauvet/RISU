@@ -41,6 +41,8 @@ model Container {
 	organization		Organization?	@relation(fields: [organizationId], references: [id])
 	organizationId		Int?
 	containerMapping	String?
+	adress 				String?
+	city 				String?
 	price				Float
 	width				Float
 	height				Float
