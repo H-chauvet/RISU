@@ -36,7 +36,9 @@ class ContainerPageState extends State<ContainerPage> {
         final Map<String, dynamic> responseData = json.decode(response.body);
         final List<dynamic> containersData = responseData["container"];
         setState(() {
-          containers = containersData.map((data) => ContainerList.fromJson(data)).toList();
+          containers = containersData
+              .map((data) => ContainerList.fromJson(data))
+              .toList();
         });
       } else {
         print('Error getContainer(): ${response.statusCode}');
@@ -76,17 +78,24 @@ class ContainerPageState extends State<ContainerPage> {
                 const SizedBox(height: 30),
                 Column(
                   children: [
-                    ListView.builder(
-                      shrinkWrap:
-                          true,
-                      itemCount: containers.length,
-                      itemBuilder: (context, index) {
-                        final product = containers[index];
-                        return ContainerCard(
-                          container: product,
-                        );
-                      },
-                    ),
+                    containers.isEmpty
+                        ? const Text(
+                            'Aucun conteneur trouvé.',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFF4682B4),
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: containers.length,
+                            itemBuilder: (context, index) {
+                              final product = containers[index];
+                              return ContainerCard(
+                                container: product,
+                              );
+                            },
+                          ),
                   ],
                 ),
               ],
