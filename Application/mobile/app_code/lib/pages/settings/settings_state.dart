@@ -89,6 +89,7 @@ class SettingsPageState extends State<SettingsPage> {
                 goToPage: LoginPage(),
                 title: 'Avis',
                 paramIcon: Icon(Icons.star),
+                locked: true,
               ),
               SizedBox(height: 8),
               MyParameter(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/pages/settings/settings_page.dart';
+import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
-  group('Test Settings', () {
+  group('Test Theme Settings', () {
     setUpAll(() async {
       // This code runs once before all the tests.
       WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +25,7 @@ void main() {
             ),
           ],
           child: const MaterialApp(
-            home: SettingsPage(),
+            home: ThemeSettingsPage(),
           ),
         ),
       );
@@ -35,7 +35,7 @@ void main() {
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
-          tester.element(find.byType(SettingsPage)),
+          tester.element(find.byType(ThemeSettingsPage)),
           listen: false);
 
       expect(themeProvider.currentTheme.brightness, Brightness.light);
@@ -54,7 +54,7 @@ void main() {
             ),
           ],
           child: const MaterialApp(
-            home: SettingsPage(),
+            home: ThemeSettingsPage(),
           ),
         ),
       );
@@ -64,7 +64,7 @@ void main() {
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
-          tester.element(find.byType(SettingsPage)),
+          tester.element(find.byType(ThemeSettingsPage)),
           listen: false);
 
       expect(themeProvider.currentTheme.brightness, Brightness.dark);
