@@ -22,7 +22,7 @@ router.post('/delete', async function (req, res, next) {
 router.post('/create', async (req, res) => {
   try {
     const { id, name, available, price, containerId } = req.body
-    const item = await itemCtrl.createItem2(
+    const item = await itemCtrl.createItem(
       {
           id,
           name,

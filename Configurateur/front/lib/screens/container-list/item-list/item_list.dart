@@ -5,7 +5,7 @@ import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 // import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
@@ -50,18 +50,18 @@ class _ItemPageState extends State<ItemPage> {
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
     );
     if (response.statusCode == 200) {
-      // Fluttertoast.showToast(
-      //   msg: 'Message supprimé avec succès',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Message supprimé avec succès',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
       fetchItems();
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 

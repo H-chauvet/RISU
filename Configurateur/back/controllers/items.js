@@ -22,15 +22,6 @@ exports.deleteItem = id => {
 
 exports.createItem = item => {
   item.price = parseFloat(item.price)
-  item.height = parseFloat(item.height)
-  item.width = parseFloat(item.width)
-  return db.Item.create({
-    data: item
-  })
-}
-
-exports.createItem2 = item => {
-  item.price = parseFloat(item.price)
   return db.Item.create({
     data: item
   })
