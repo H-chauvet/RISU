@@ -8,6 +8,25 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
+  testWidgets('ContainerStat full info', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(false),
+          ),
+        ],
+        child: const MaterialApp(
+          home: ContainerPage(),
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.text("Liste des conteneurs"), findsOneWidget);
+    expect(find.byType(ListView), findsNothing);
+
+  });
+
   testWidgets('ContainerMobilePage displays message details',
       (WidgetTester tester) async {
     final List<ContainerList> containers = [];
