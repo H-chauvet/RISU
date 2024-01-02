@@ -25,7 +25,7 @@ class SettingsPageState extends State<SettingsPage> {
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: const Column(
+          child: Column(
             children: [
               SizedBox(height: 8),
               Text(

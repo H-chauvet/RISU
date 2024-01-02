@@ -44,7 +44,7 @@ class ThemeSettingsPageState extends State<ThemeSettingsPage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SizedBox(width: 20),
