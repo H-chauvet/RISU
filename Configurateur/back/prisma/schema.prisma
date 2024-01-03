@@ -47,7 +47,7 @@ model Container {
   width            Float?
   height           Float?
   designs          String @db.LongText
-  informations     String @db.LongText
+  informations     String? @db.LongText
 }
 
 model Contact {

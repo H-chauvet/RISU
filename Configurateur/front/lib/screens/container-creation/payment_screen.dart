@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -61,32 +62,57 @@ class _PaymentScreenState extends State<PaymentScreen> {
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
-  void goNext() {
+  void goNext() async {
     if (controller.complete && adress != '' && city != '') {
-      makePayment();
+      bool response = await makePayment();
+      if (response == false) {
+        Fluttertoast.showToast(
+          msg: "Echec de la commande",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+        return;
+      }
     } else {
       return;
     }
 
-    HttpService().putRequest(
-      'http://$serverIp:3000/api/container/update',
-      <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      <String, String>{
-        'id': widget.id!,
-        'price': widget.amount.toString(),
-        'containerMapping': widget.containerMapping!,
-        'width': '12',
-        'height': '5',
-        'city': city,
-        'informations': informations,
-        'adress': adress,
-      },
-    );
-    context.go('/');
+    try {
+      HttpService().putRequest(
+        'http://$serverIp:3000/api/container/update',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, String>{
+          'id': widget.id!,
+          'price': widget.amount.toString(),
+          'containerMapping': widget.containerMapping!,
+          'width': '12',
+          'height': '5',
+          'city': city,
+          'informations': informations,
+          'adress': adress,
+        },
+      ).then((value) {
+        if (value.statusCode == 200) {
+          context.go('/container-creation/confirmation');
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la commande",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Echec de la commande",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
   @override
@@ -198,7 +224,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ]));
   }
 
-  Future<void> makePayment() async {
+  Future<bool> makePayment() async {
     const billingDetails = BillingDetails(
       email: 'risu.epitech@gmail.com',
       name: 'Risu Corp',
@@ -219,6 +245,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   PaymentMethodData(billingDetails: billingDetails)));
     } catch (e) {
       debugPrint(e.toString());
+      return false;
     }
 
     final paymentIntentResult = await callPayEndpoint(
@@ -229,14 +256,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (paymentIntentResult['error'] != null) {
       debugPrint("Error");
-      return;
+      return false;
     }
 
     if (paymentIntentResult['clientSecret'] != null &&
         paymentIntentResult['requiresAction'] == null) {
       debugPrint("Payment success");
-      return;
+      return true;
     }
+    return false;
   }
 
   Future<Map<String, dynamic>> callPayEndpoint(
