@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
-import 'package:front/screens/container-creation/delivery_info_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
@@ -159,12 +158,6 @@ class AppRouter {
       GoRoute(
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
-          return const DesignScreen();
-        },
-      ),
-      GoRoute(
-        path: '/container-creation/payment',
-        builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
             return const PaymentScreen(
               amount: null,
@@ -175,7 +168,7 @@ class AppRouter {
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
 
-          return PaymentScreen(
+          return DesignScreen(
             amount: user['amount'],
             containerMapping: user['containerMapping'],
             lockers: user['lockers'],
@@ -183,9 +176,27 @@ class AppRouter {
         },
       ),
       GoRoute(
-          path: '/container-creation/delivery',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: DeliveryInfoScreen())),
+        path: '/container-creation/payment',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const PaymentScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return PaymentScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+          );
+        },
+      ),
       GoRoute(
         path: '/container-creation/recap',
         builder: (context, state) {
@@ -194,6 +205,7 @@ class AppRouter {
               lockers: null,
               amount: null,
               containerMapping: null,
+              id: null,
             );
           }
           final data = state.extra! as String;
@@ -202,6 +214,7 @@ class AppRouter {
             lockers: user['lockers'],
             amount: user['amount'],
             containerMapping: user['containerMapping'],
+            id: user['id'],
           );
         },
       ),

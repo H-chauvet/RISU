@@ -75,7 +75,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
-    loadImage(0, filepath: './assets/Hugo.png').then((value) => null);
+    loadImage(0).then((value) => null);
   }
 
   Future<Uint8List> _readFileBytes(String filePath) async {
@@ -96,8 +96,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
     int increment = 0;
     int color = 0;
-
-    loadImage(2, filepath: './assets/Henri.png').then((value) => null);
 
     switch (coordinates.size) {
       case 1:

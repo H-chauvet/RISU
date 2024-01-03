@@ -12,11 +12,12 @@ import '../../styles/themes.dart';
 
 class RecapScreen extends StatefulWidget {
   const RecapScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping});
+      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
+  final String? id;
 
   @override
   State<RecapScreen> createState() => RecapScreenState();
@@ -36,13 +37,14 @@ class RecapScreenState extends State<RecapScreen> {
       'containerMapping': widget.containerMapping,
       'lockers': jsonEncode(lockerss),
     };
-    context.go('/container-creation/payment', extra: jsonEncode(data));
+    context.go('/container-creation/design', extra: jsonEncode(data));
   }
 
   void nextFunc() {
     var data = {
       'amount': widget.amount,
       'containerMapping': widget.containerMapping,
+      'id': widget.id,
     };
     context.go('/container-creation/payment', extra: jsonEncode(data));
   }
@@ -53,6 +55,7 @@ class RecapScreenState extends State<RecapScreen> {
     for (int i = 0; i < decode.length; i++) {
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
+    debugPrint(lockerss.toString());
   }
 
   @override

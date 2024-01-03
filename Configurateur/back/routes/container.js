@@ -49,22 +49,12 @@ router.post("/create", async function (req, res, next) {
     throw new Error("Unauthorized");
   }
   try {
-    const { price, containerMapping, width, height, city, adress } = req.body;
+    const { designs } = req.body;
 
-    if (!price || !containerMapping || !width || !height) {
-      res.status(400);
-      throw new Error("Container object are required");
-    }
-
-    await containerCtrl.createContainer({
-      price,
-      containerMapping,
-      width,
-      height,
-      city,
-      adress,
+    const container = await containerCtrl.createContainer({
+      designs,
     });
-    res.status(200).json("container created");
+    res.status(200).json(container);
   } catch (err) {
     next(err);
   }
@@ -78,19 +68,32 @@ router.put("/update", async function (req, res, next) {
     throw new Error("Unauthorized");
   }
   try {
-    const { id, price, containerMapping, height, width } = req.body;
+    const {
+      id,
+      price,
+      containerMapping,
+      height,
+      width,
+      city,
+      adress,
+      designs,
+    } = req.body;
 
     if (!id) {
       res.status(400);
       throw new Error("id and name are required");
     }
-    await containerCtrl.updateContainer(id, {
+
+    const container = await containerCtrl.updateContainer(id, {
       price,
       containerMapping,
       height,
       width,
+      city,
+      adress,
+      designs,
     });
-    res.status(200).json("container updated");
+    res.status(200).json(container);
   } catch (err) {
     next(err);
   }

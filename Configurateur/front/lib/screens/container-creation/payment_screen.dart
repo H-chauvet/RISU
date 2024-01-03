@@ -14,11 +14,12 @@ import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping});
+      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
+  final String? id;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -55,9 +56,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var data = {
       'amount': widget.amount,
       'containerMapping': widget.containerMapping,
-      'lockers': jsonEncode(lockerss),
+      'lockers': widget.lockers,
     };
-    context.go('/container-creation/visualization', extra: jsonEncode(data));
+    context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
   void goNext() {
@@ -67,14 +68,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
       return;
     }
 
-    HttpService().request(
-      'http://$serverIp:3000/api/container/create',
+    HttpService().putRequest(
+      'http://$serverIp:3000/api/container/update',
       <String, String>{
         'Authorization': jwtToken,
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },
       <String, String>{
+        'id': widget.id!,
         'price': widget.amount.toString(),
         'containerMapping': widget.containerMapping!,
         'width': '12',
@@ -82,7 +84,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'city': city,
         'adress': adress,
       },
-    );
+    ).then((value) {
+      HttpService().getRequest(
+          'http://$serverIp:3000/api/container/get?id=1', <String, String>{
+        'Authorization': jwtToken,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      }).then((value) => debugPrint(value.body.toString()));
+    });
     context.go('/');
   }
 

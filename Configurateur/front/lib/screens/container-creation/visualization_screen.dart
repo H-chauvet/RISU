@@ -49,7 +49,7 @@ class VisualizationScreenState extends State<VisualizationScreen> {
   @override
   void initState() {
     super.initState();
-    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
