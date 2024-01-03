@@ -36,7 +36,7 @@ class ThemeSettingsPageState extends State<ThemeSettingsPage> {
               children: [
                 const SizedBox(height: 30), // Espace ajouté
                 const Text(
-                  'Thème', // Texte "Paramètres"
+                  'Thème',
                   style: TextStyle(
                     fontSize: 36, // Taille de la police
                     fontWeight: FontWeight.bold, // Gras
