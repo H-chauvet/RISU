@@ -44,6 +44,7 @@ class RecapScreenState extends State<RecapScreen> {
     var data = {
       'amount': widget.amount,
       'containerMapping': widget.containerMapping,
+      'lockers': jsonEncode(lockerss),
       'id': widget.id,
     };
     context.go('/container-creation/payment', extra: jsonEncode(data));
@@ -55,7 +56,6 @@ class RecapScreenState extends State<RecapScreen> {
     for (int i = 0; i < decode.length; i++) {
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
-    debugPrint(lockerss.toString());
   }
 
   @override
@@ -109,6 +109,19 @@ class RecapScreenState extends State<RecapScreen> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
+                  height: 5,
+                ),
+                const SizedBox(
+                  width: 200,
+                  child: Divider(
+                    color: Colors.grey,
+                    height: 20,
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                ),
+                const SizedBox(
                   height: 20,
                 ),
                 FractionallySizedBox(
@@ -140,6 +153,24 @@ class RecapScreenState extends State<RecapScreen> {
                       );
                     },
                   ),
+                ),
+                const SizedBox(
+                  width: 200,
+                  child: Divider(
+                    color: Colors.grey,
+                    height: 20,
+                    thickness: 1,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Prix total: ${widget.amount}€",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
             ),

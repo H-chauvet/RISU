@@ -47,13 +47,13 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    /*if (token != "") {
+    if (token != "") {
       jwtToken = token;
     } else {
       context.go(
         '/login',
       );
-    }*/
+    }
     /*StorageService().readStorage('token').then((value) => {
           if (value == null)
             {context.go("/login")}
@@ -448,8 +448,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goPrevious() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LandingPage()));
+    context.go("/");
   }
 
   Widget loadCube() {
@@ -550,7 +549,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                       heightFactor: 0.7,
                       child: RecapPanel(
                         articles: lockers,
-                        onSaved: goNext,
+                        onSaved: () => {},
                       )),
                 ),
               ),

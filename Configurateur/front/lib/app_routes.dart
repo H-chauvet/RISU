@@ -159,7 +159,7 @@ class AppRouter {
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const PaymentScreen(
+            return const DesignScreen(
               amount: null,
               containerMapping: null,
               lockers: null,

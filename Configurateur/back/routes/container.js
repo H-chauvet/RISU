@@ -76,6 +76,7 @@ router.put("/update", async function (req, res, next) {
       width,
       city,
       adress,
+      informations,
       designs,
     } = req.body;
 
@@ -91,6 +92,7 @@ router.put("/update", async function (req, res, next) {
       width,
       city,
       adress,
+      informations,
       designs,
     });
     res.status(200).json(container);

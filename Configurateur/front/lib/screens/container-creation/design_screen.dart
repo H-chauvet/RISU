@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -127,7 +126,8 @@ class DesignScreenState extends State<DesignScreen> {
       }
       objs[0].materials.add(FSp3dMaterial.black);
       objs[0].materials[materialIndex] = FSp3dMaterial.green.deepCopy()
-        ..imageIndex = imageIndex;
+        ..imageIndex = imageIndex
+        ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
       objs[0].fragments[0].faces[faceIndex].materialIndex = materialIndex;
       objs[0].images.add(fileData);
       designss.add(picked!.files.first.bytes!.toList());
@@ -258,7 +258,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   Widget fileName() {
     if (picked?.files.first.name != null) {
-      return Text(picked!.files.first.name);
+      return Text("Image: ${picked!.files.first.name}");
     }
     return const Text("Aucun fichier sélectionner");
   }
@@ -292,7 +292,7 @@ class DesignScreenState extends State<DesignScreen> {
           children: [
             ProgressBar(
               length: 4,
-              progress: 0,
+              progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,
@@ -306,49 +306,97 @@ class DesignScreenState extends State<DesignScreen> {
         body: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              width: 100,
+            ),
+            Flexible(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: const Text('Importer une image'),
+                      onPressed: () async {
+                        picked = await FilePicker.platform.pickFiles();
+                        setState(() {});
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    ElevatedButton(
+                      child: const Text("Retirer l'image sélectionner"),
+                      onPressed: () async {
+                        removeImage();
+                        setState(() {});
+                      },
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    fileName(),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const SizedBox(
+                      width: 400,
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 20,
+                        thickness: 1,
+                        indent: 20,
+                        endIndent: 20,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: DropdownMenu<String>(
+                        key: const Key('design-face'),
+                        initialSelection: faceList.first,
+                        onSelected: (String? value) {
+                          setState(() {
+                            face = value!;
+                          });
+                        },
+                        dropdownMenuEntries: faceList
+                            .map<DropdownMenuEntry<String>>((String value) {
+                          return DropdownMenuEntry<String>(
+                              value: value, label: value);
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    ElevatedButton(
+                      child: const Text('Appliquer'),
+                      onPressed: () async {
+                        loadImage(fileData: picked!.files.first.bytes);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
             loadCube(),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ElevatedButton(
-                  child: const Text('UPLOAD FILE'),
-                  onPressed: () async {
-                    picked = await FilePicker.platform.pickFiles();
-                    setState(() {});
-                  },
-                ),
-                fileName(),
-                ElevatedButton(
-                  child: const Text('REMOVE FILE'),
-                  onPressed: () async {
-                    removeImage();
-                    setState(() {});
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: DropdownMenu<String>(
-                    key: const Key('design-face'),
-                    initialSelection: faceList.first,
-                    onSelected: (String? value) {
-                      setState(() {
-                        face = value!;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        faceList.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
-                    }).toList(),
-                  ),
-                ),
-                ElevatedButton(
-                  child: const Text('Appliquer'),
-                  onPressed: () async {
-                    loadImage(fileData: picked!.files.first.bytes);
-                  },
-                ),
-              ],
+            Flexible(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: FractionallySizedBox(
+                    widthFactor: 0.7,
+                    heightFactor: 0.7,
+                    child: RecapPanel(
+                      articles: lockerss,
+                      onSaved: () => {},
+                    )),
+              ),
+            ),
+            const SizedBox(
+              width: 50,
             )
           ],
         ));

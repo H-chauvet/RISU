@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
-import 'package:front/components/recap_panel.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:front/services/storage_service.dart';
@@ -31,7 +30,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String adress = '';
   String city = '';
   String informations = '';
-  List<Locker> lockerss = [];
 
   @override
   void initState() {
@@ -45,6 +43,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void update() => setState(() {});
+
   @override
   void dispose() {
     controller.removeListener(update);
@@ -57,6 +56,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'amount': widget.amount,
       'containerMapping': widget.containerMapping,
       'lockers': widget.lockers,
+      'id': widget.id,
     };
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }
@@ -82,16 +82,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'width': '12',
         'height': '5',
         'city': city,
+        'informations': informations,
         'adress': adress,
       },
-    ).then((value) {
-      HttpService().getRequest(
-          'http://$serverIp:3000/api/container/get?id=1', <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      }).then((value) => debugPrint(value.body.toString()));
-    });
+    );
     context.go('/');
   }
 
@@ -217,10 +211,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
           state: 'Loire Atlantique'), // Mocked data
     );
 
-    final paymentMethod = await Stripe.instance.createPaymentMethod(
-        params: const PaymentMethodParams.card(
-            paymentMethodData:
-                PaymentMethodData(billingDetails: billingDetails)));
+    late var paymentMethod;
+    try {
+      paymentMethod = await Stripe.instance.createPaymentMethod(
+          params: const PaymentMethodParams.card(
+              paymentMethodData:
+                  PaymentMethodData(billingDetails: billingDetails)));
+    } catch (e) {
+      debugPrint(e.toString());
+    }
 
     final paymentIntentResult = await callPayEndpoint(
       true,
