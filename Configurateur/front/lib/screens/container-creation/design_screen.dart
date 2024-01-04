@@ -77,7 +77,7 @@ class DesignScreenState extends State<DesignScreen> {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
-    loadImage().then((value) => null);
+    loadImage(false).then((value) => null);
     if (widget.lockers != null) {
       decodeLockers();
     }
@@ -91,7 +91,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  Future<void> loadImage({Uint8List? fileData}) async {
+  Future<void> loadImage(bool unitTesting, {Uint8List? fileData}) async {
     if (fileData != null) {
       int faceIndex = 0;
       switch (face) {
@@ -136,13 +136,17 @@ class DesignScreenState extends State<DesignScreen> {
     }
     world = Sp3dWorld(objs);
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
-      setState(() {
+      if (unitTesting == false) {
+        setState(() {
+          isLoaded = true;
+        });
+      } else {
         isLoaded = true;
-      });
+      }
     });
   }
 
-  Future<void> removeImage() async {
+  Future<void> removeImage(bool unitTesting) async {
     picked = null;
     int faceIndex = 0;
     switch (face) {
@@ -173,9 +177,13 @@ class DesignScreenState extends State<DesignScreen> {
 
     world = Sp3dWorld(objs);
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
-      setState(() {
+      if (unitTesting == false) {
+        setState(() {
+          isLoaded = true;
+        });
+      } else {
         isLoaded = true;
-      });
+      }
     });
   }
 
@@ -328,7 +336,7 @@ class DesignScreenState extends State<DesignScreen> {
                     ElevatedButton(
                       child: const Text("Retirer l'image sélectionner"),
                       onPressed: () async {
-                        removeImage();
+                        removeImage(false);
                         setState(() {});
                       },
                     ),
@@ -375,7 +383,7 @@ class DesignScreenState extends State<DesignScreen> {
                     ElevatedButton(
                       child: const Text('Appliquer'),
                       onPressed: () async {
-                        loadImage(fileData: picked!.files.first.bytes);
+                        loadImage(false, fileData: picked!.files.first.bytes);
                       },
                     ),
                   ],

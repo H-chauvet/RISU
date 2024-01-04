@@ -75,7 +75,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
-    loadImage(0).then((value) => null);
+    loadImage(0, false).then((value) => null);
   }
 
   Future<Uint8List> _readFileBytes(String filePath) async {
@@ -397,7 +397,8 @@ class ContainerCreationState extends State<ContainerCreation> {
     handleFloatingPoint();
   }
 
-  Future<void> loadImage(int fragment, {String? filepath}) async {
+  Future<void> loadImage(int fragment, bool unitTesting,
+      {String? filepath}) async {
     if (filepath != null) {
       Uint8List data = await _readFileBytes(filepath);
 
@@ -416,9 +417,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
     world = Sp3dWorld(objs);
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
-      setState(() {
+      if (unitTesting == false) {
+        setState(() {
+          isLoaded = true;
+        });
+      } else {
         isLoaded = true;
-      });
+      }
     });
   }
 
@@ -432,6 +437,9 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   String getContainerMapping() {
     String mapping = "";
+    for (int i = 0; i < lockers.length; i++) {
+      debugPrint(lockers[i].type);
+    }
     for (int i = 0; i < objs[0].fragments.length; i++) {
       mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
     }
