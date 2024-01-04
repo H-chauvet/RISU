@@ -28,7 +28,6 @@ exports.deleteContainer = (id) => {
 };
 
 exports.createContainer = (container) => {
-  console.log(container);
   return db.Container.create({
     data: container,
   });
