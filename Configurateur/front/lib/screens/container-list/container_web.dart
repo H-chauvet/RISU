@@ -52,7 +52,6 @@ class ContainerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          // Action à effectuer lorsqu'on clique sur la carte
           Navigator.push(
             context,
             MaterialPageRoute(
