@@ -96,14 +96,21 @@ class RatingDialogContent extends StatelessWidget {
               constraints: const BoxConstraints(
                 maxWidth: 300.0,
               ),
-              child: TextField(
+              child: TextFormField(
                 onChanged: (value) {
                   context.read<DialogCubit>().updateMessage(value);
                 },
+                
                 decoration: const InputDecoration(
                   hintText: 'Entrez votre message...',
                 ),
                 maxLines: 5,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Veuillez remplir ce champ';
+                  }
+                  return null;
+                },
               ),
             ),
             const SizedBox(height: 16.0),
