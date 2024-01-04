@@ -8,7 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  void blankFunction(LockerCoordinates coordinates) {}
+  void blankFunction(LockerCoordinates coordinates, bool unitTesting) {}
   void blankRotateFunction() {}
 
   testWidgets('test interactive panel', (WidgetTester tester) async {

@@ -45,6 +45,31 @@ describe('Create container', function () {
         },
         async function () {
           const req = await request('http://localhost:3000')
+            .post('/api/items/create')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set('Authorization', token)
+            .send({
+              name: "hello world",
+              available: true,
+              price: '1000.0',
+              containerId: 1,
+            })
+          expect(req.statusCode).toBe(200)
+        },
+        async function () {
+          const req = await request('http://localhost:3000')
+            .post('/api/items/delete')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .set('Authorization', token)
+            .send({ id: 1 })
+
+          expect(req.statusCode).toBe(200)
+          expect(req.body).toBe('items deleted')
+        },
+        async function () {
+          const req = await request('http://localhost:3000')
             .put('/api/container/update')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')

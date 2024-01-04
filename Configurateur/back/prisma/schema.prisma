@@ -35,15 +35,28 @@ model Organization {
 	contactInformation	String
 }
 
+model Item {
+	id					Int				@id @default(autoincrement())
+	name				String
+	available			Boolean
+	container			Container? @relation(fields: [containerId], references: [id])
+	createdAt			DateTime		@default(now())
+	containerId			Int?
+	price				Float
+}
+
 model Container {
 	id					Int				@id @default(autoincrement())
 	createdAt			DateTime		@default(now())
 	organization		Organization?	@relation(fields: [organizationId], references: [id])
 	organizationId		Int?
 	containerMapping	String?
+	adress 				String?
+	city 				String?
 	price				Float
 	width				Float
 	height				Float
+	object				Item[]
 }
 
 model Contact {

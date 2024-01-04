@@ -8,7 +8,7 @@ class ContainerDialog extends StatefulWidget {
   const ContainerDialog(
       {super.key, required this.callback, required this.size});
 
-  final Function(LockerCoordinates) callback;
+  final Function(LockerCoordinates, bool) callback;
   final int size;
 
   @override
@@ -152,8 +152,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        if (widget.callback(LockerCoordinates(int.parse(x),
-                                int.parse(y), face, direction, widget.size)) ==
+                        if (widget.callback(
+                                LockerCoordinates(int.parse(x), int.parse(y),
+                                    face, direction, widget.size),
+                                false) ==
                             'overwriteError') {
                           await showDialog(
                               context: context,

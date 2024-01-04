@@ -14,7 +14,7 @@ class InteractivePanel extends StatefulWidget {
       required this.rotateLeftCallback,
       required this.rotateRightCallback});
 
-  final Function(LockerCoordinates) callback;
+  final Function(LockerCoordinates, bool) callback;
   final Function() rotateFrontCallback;
   final Function() rotateBackCallback;
   final Function() rotateLeftCallback;
