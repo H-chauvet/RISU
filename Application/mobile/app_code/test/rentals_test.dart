@@ -29,4 +29,39 @@ void main() {
       expect(find.text('En cours'), findsOneWidget);
     });
   });
+  testWidgets('Rentals, Test if buttons are clickable', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(false),
+          ),
+        ],
+        child: const MaterialApp(
+          home: RentalPage(),
+        ),
+      ),
+    );
+
+    // Verify initial state
+    expect(find.text('Toutes'), findsOneWidget);
+    expect(find.text('En cours'), findsOneWidget);
+
+    // Tap on the 'Toutes' button
+    await tester.tap(find.text('Toutes'));
+    await tester.pump();
+
+    // Verify the updated state
+    expect(find.text('Toutes'), findsOneWidget);
+    expect(find.text('En cours'), findsOneWidget);
+
+    // Tap on the 'En cours' button
+    await tester.tap(find.text('En cours'));
+    await tester.pump();
+
+    // Verify the updated state
+    expect(find.text('Toutes'), findsOneWidget);
+    expect(find.text('En cours'), findsOneWidget);
+  });
+
 }

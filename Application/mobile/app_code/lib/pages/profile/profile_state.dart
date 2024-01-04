@@ -10,6 +10,7 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/rental/rental_page.dart';
 
 import '../../components/alert_dialog.dart';
 import '../login/login_page.dart';
@@ -97,30 +98,6 @@ class ProfilePageState extends State<ProfilePage> {
                 toComplete()
               ]),
               const MyDivider(vertical: 16.0, horizontal: 16.0),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  "Historique de location (10 plus récents)",
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 0),
-                child: SizedBox(
-                  height: 100.0,
-                  child: ListView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 10,
-                    itemBuilder: (BuildContext context, int index) =>
-                        const Card(
-                      child: Center(child: Text('Historique')),
-                    ),
-                  ),
-                ),
-              ),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
@@ -135,6 +112,27 @@ class ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const SettingsPage();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    key: const Key('profile-button-my_rentals_button'),
+                    text: 'Mes locations',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const RentalPage();
                           },
                         ),
                       );

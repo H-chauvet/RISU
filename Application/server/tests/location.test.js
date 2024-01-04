@@ -20,7 +20,6 @@ describe('POST /api/user/firstName', () => {
         done
       )
     }),
-    // firstName
     it('should not create location, no token', (done) => {
       async.series(
         [
@@ -77,7 +76,7 @@ describe('POST /api/user/firstName', () => {
         done
       )
     }),
-    it('should not create location, no price', (done) => {
+    it('should create location', (done) => {
       async.series(
         [
           function (callback) {
