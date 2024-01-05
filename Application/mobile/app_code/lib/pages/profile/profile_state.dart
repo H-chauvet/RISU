@@ -7,7 +7,6 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:text_scroll/text_scroll.dart';
 import '../login/login_page.dart';
 import 'profile_page.dart';
 
@@ -76,15 +75,9 @@ class ProfilePageState extends State<ProfilePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextScroll(
+                          Text(
                             "${userInformation!.firstName ?? "Prénom"} ${userInformation!.lastName ?? "Nom"}",
-                            mode: TextScrollMode.bouncing,
-                            numberOfReps: 6,
-                            delayBefore: const Duration(milliseconds: 2000),
-                            pauseBetween: const Duration(milliseconds: 1000),
-                            pauseOnBounce: const Duration(milliseconds: 2000),
-                            velocity:
-                                const Velocity(pixelsPerSecond: Offset(50, 0)),
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 22,
                             ),

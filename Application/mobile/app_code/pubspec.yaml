@@ -41,7 +41,6 @@ dependencies:
   google_maps_flutter: ^2.2.0
   flutter_dotenv: ^5.1.0
   profile_photo: ^1.0.3
-  text_scroll: ^0.2.0
 
 dev_dependencies:
   integration_test:
