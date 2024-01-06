@@ -19,8 +19,6 @@ class OpinionPageState extends State<OpinionPage> {
 
   void getOpinions() async {
     try {
-      final token = userInformation?.token ?? 'defaultToken';
-      print('token: $token');
       var url = '';
       if (selectedStarFilter == 6) {
         url = 'http://$serverIp:8080/api/opinion';
@@ -31,7 +29,7 @@ class OpinionPageState extends State<OpinionPage> {
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${userInformation?.token}',
         },
       );
       if (response.statusCode == 201) {
@@ -71,15 +69,13 @@ class OpinionPageState extends State<OpinionPage> {
     print('postOpinion');
     print('note: $note');
     print('comment: $comment');
-    final token = userInformation?.token ?? 'defaultToken';
-    print('token: $token');
     late http.Response response;
     try {
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/opinion'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
+          'Authorization': 'Bearer ${userInformation?.token}',
         },
         body: jsonEncode(<String, String>{
           'note': note.toString(),
@@ -164,12 +160,14 @@ class OpinionPageState extends State<OpinionPage> {
                   children: [
                     MyOutlinedButton(
                       text: 'Annuler',
+                      key: Key('cancel-button'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     MyOutlinedButton(
                       text: 'Ajouter',
+                      key: Key('opinion-button_add'),
                       onPressed: () {
                         print('Note ajoutée : $selectedStar');
                         print('Commentaire ajouté : $comment');
@@ -285,6 +283,7 @@ class OpinionPageState extends State<OpinionPage> {
                                 ),
                                 child: ListTile(
                                   contentPadding: EdgeInsets.all(15),
+                                  key: Key('opinion-listTile_${opinion['id']}'),
                                   title: Text(
                                     ((opinion['firstName'] ?? '').isNotEmpty
                                         ? opinion['firstName']
