@@ -32,6 +32,9 @@ Future<void> fetchUserData() async {
       lastName = userData['lastName'];
       email = userData['email'];
       UserData.fromJson(userData['user'], userData['token']);
+      newFirstName = '';
+      newLastName = '';
+      newEmail = '';
     } else {
       print('Error: ${response.statusCode}');
     }
@@ -96,7 +99,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         Uri.parse('http://$serverIp:8080/api/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
           'currentPassword': currentPassword,
@@ -159,30 +162,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Chevron bleu pour la navigation vers /home
-                    GestureDetector(
-                      child: const Icon(
-                        Icons.chevron_left,
-                        color: Colors.blue, // Couleur du chevron
-                        size: 30.0, // Taille du chevron
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    // Logo RISU
-                    Expanded(
-                      child: Center(
-                        child: Image.asset(
-                          'assets/logo_noir.png',
-                          width: 200,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-                  ],
-                ),
                 // Prénom
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 25),
@@ -300,13 +279,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               newEmail == '') {
                             MyAlertDialog.showErrorAlertDialog(
                                 key: const Key(
-                                    'informations-alert_dialog_error'),
+                                    'informations-alert_dialog_error_no_info'),
                                 context: context,
                                 title: 'Erreur',
                                 message:
                                     'Veuillez renseigner au moins un champ.');
                             return;
                           }
+                          print('${newFirstName} ${newLastName} ${newEmail}');
                           updateUser();
                         },
                         style: OutlinedButton.styleFrom(
@@ -439,35 +419,4 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       ),
     );
   }
-
-/**Widget buildButton(
-    String text, {
-    double fontSize = 18,
-    double width = double.infinity,
-    bool isLogoutButton = false,
-    String route = '',
-    }) {
-    final textColor = isLogoutButton ? Colors.black : const Color(0xFF4682B4);
-
-    return Container(
-    margin: const EdgeInsets.symmetric(vertical: 10),
-    width: width,
-    child: ElevatedButton(
-    onPressed: () {
-    if (route.isNotEmpty) {
-    context.go(route);
-    }
-    },
-    style: ElevatedButton.styleFrom(
-    primary: Colors.white,
-    onPrimary: textColor,
-    side: const BorderSide(color: Color(0xFF4682B4)),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30),
-    ),
-    ),
-    child: Text(text, style: TextStyle(fontSize: fontSize)),
-    ),
-    );
-    }**/
 }
