@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 
 import 'rent_page.dart';
 
@@ -84,7 +85,11 @@ class _ArticleState extends State<Article> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
+        bool signIn = await checkSignin(context);
+        if (signIn == false) {
+          return;
+        }
         Navigator.push(
           context,
           MaterialPageRoute(
