@@ -194,7 +194,7 @@ app.delete('/api/user/:userId',
         return res.status(200).send('User deleted');
     } catch (error) {
         console.error('Failed to delete account: ', error)
-        return res.status(500).json({ message: 'Failed to reset password' })
+        return res.status(500).json({ message: 'Failed to delete the user:', error })
     }
   }
 )
@@ -324,9 +324,8 @@ app.get('/api/user/:userId',
         if (req.user.id != req.params.userId) {
             return res.status(401).send('Unauthorized');
         }
-        console.log(req.user)
         const user = await database.prisma.User.findUnique({
-            where: { id: decoded.id },
+            where: { id: req.params.userId },
             include: {
                 Notifications: true,
             }
@@ -426,7 +425,7 @@ app.put('/api/user/password',
         return res.status(401).json({ message: 'Incorrect Password' })
       }
       var updatedUser = await database.prisma.User.update({
-        where: { id: decoded.id },
+        where: { id: user.id },
         data: { password: await utils.hash(newPassword) }
       })
       return res.status(200).json({updatedUser});
