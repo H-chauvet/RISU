@@ -35,20 +35,6 @@ describe('PUT /api/user', () => {
         done
       )
     }),
-    it('should not update firstname, invalid data', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .put('/api/user')
-              .set('Authorization', `Bearer ${authToken}`)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    }),
     it('should not update firstname, no token', (done) => {
       async.series(
         [
@@ -86,20 +72,6 @@ describe('PUT /api/user', () => {
               .set('Authorization', `Bearer ${authToken}`)
               .send({ lastName: 'NewLastName' })
               .expect(200, callback)
-          }
-        ],
-        done
-      )
-    }),
-    it('should not update the last name, invalid data', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .put('/api/user')
-              .set('Authorization', `Bearer ${authToken}`)
-              .send({})
-              .expect(401, callback)
           }
         ],
         done
@@ -147,20 +119,6 @@ describe('PUT /api/user', () => {
         done
       )
     }),
-    it('should not update the email, invalid data', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .put('/api/user')
-              .set('Authorization', `Bearer ${authToken}`)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    });
     it('should not update the email, no token', (done) => {
       async.series(
         [

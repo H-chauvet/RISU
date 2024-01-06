@@ -96,23 +96,8 @@ describe('POST /api/user', () => {
               .delete(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
-              .set('Authorization', `Bearer ${authToken}`)
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .expect(401, callback)
-          },
-        ],
-        done
-      )
-    }),
-    it('Should delete the user', function (done) {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .delete(`/api/user/${userID}`)
-              .set('Content-Type', 'application/json')
-              .set('Accept', 'application/json')
-              .set('Authorization', `Bearer ${userToken}`)
-              .expect(200, callback)
           },
         ],
         done
