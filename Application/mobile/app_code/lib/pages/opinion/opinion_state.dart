@@ -31,7 +31,7 @@ class OpinionPageState extends State<OpinionPage> {
         Uri.parse(url),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token,
+          'Authorization': 'Bearer $token',
         },
       );
       if (response.statusCode == 201) {
@@ -79,7 +79,7 @@ class OpinionPageState extends State<OpinionPage> {
         Uri.parse('http://$serverIp:8080/api/opinion'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token,
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode(<String, String>{
           'note': note.toString(),

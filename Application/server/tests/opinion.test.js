@@ -26,7 +26,7 @@ describe('POST /api/opinion', () => {
           function (callback) {
             request('http://localhost:8080')
               .post('/api/opinion')
-              .set('Authorization', authToken)
+              .set('Authorization', 'Bearer ' + authToken)
               .send({
                 note: '5',
                 comment: 'super produit',
@@ -44,7 +44,7 @@ describe('POST /api/opinion', () => {
           function (callback) {
             request('http://localhost:8080')
               .get('/api/opinion')
-              .set('Authorization', authToken)
+              .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)
           }
         ],
@@ -57,7 +57,7 @@ describe('POST /api/opinion', () => {
           function (callback) {
             request('http://localhost:8080')
               .get('/api/opinion?note=5')
-              .set('Authorization', authToken)
+              .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)
           }
         ],
@@ -70,7 +70,7 @@ describe('POST /api/opinion', () => {
           function (callback) {
             request('http://localhost:8080')
               .get('/api/opinion?note=1')
-              .set('Authorization', authToken)
+              .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)
           }
         ],

@@ -549,11 +549,17 @@ app.get('/api/locations', async (req, res) => {
   }
 });
 
-app.post('/api/opinion', async (req, res) => {
+app.post('/api/opinion',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
   try {
-    const token = req.headers.authorization
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' })
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id }
+    })
+    if (!user) {
+      return res.status(401).send('User not found');
     }
     if (!req.body.comment || req.body.comment === '') {
       return res.status(401).json({ message: 'Missing comment' })
@@ -561,11 +567,6 @@ app.post('/api/opinion', async (req, res) => {
     if (!req.body.note || req.body.note === '') {
       return res.status(401).json({ message: 'Missing note' })
     }
-
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
     // create int note
     await database.prisma.Opinions.create({
       data: {
@@ -583,21 +584,20 @@ app.post('/api/opinion', async (req, res) => {
   }
 })
 
-app.get('/api/opinion', async (req, res) => {
+app.get('/api/opinion',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
   var opinions = []
   try {
-    const token = req.headers.authorization
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' })
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id }
+    })
+    if (!user) {
+      return res.status(401).send('User not found');
     }
 
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-    if (user == null) {
-      return res.status(401).json({ message: 'No user found' })
-    }
     const note = req.query.note
     if (note != null) {
       if (!note || note != '0' && note != '1' && note != '2'
