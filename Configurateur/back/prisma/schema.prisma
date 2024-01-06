@@ -2,57 +2,70 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-	provider = "prisma-client-js"
-	binaryTargets = ["native"]
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
-	provider = "mysql"
-	url      = env("DATABASE_URL")
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-	id					Int				@id @default(autoincrement())
-	uuid				String?			@unique
-	firstName			String?			@default("")
-	lastName			String?			@default("")
-	company				String?			@default("")
-	email				String			@unique
-	token				String?			@unique
-	password			String
-	organization		Organization?	@relation(fields: [organizationId], references: [id])
-	organizationId		Int?
-	confirmed			Boolean			@default(false)
-	createdAt			DateTime		@default(now())
+  id             Int           @id @default(autoincrement())
+  uuid           String?       @unique
+  firstName      String?       @default("")
+  lastName       String?       @default("")
+  company        String?       @default("")
+  email          String        @unique
+  token          String?       @unique
+  password       String
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  organizationId Int?
+  confirmed      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
 }
 
 model Organization {
+  id                 Int         @id @default(autoincrement())
+  name               String
+  type               String //Company, City, ...
+  affiliate          User[]
+  containers         Container[]
+  contactInformation String
+}
+
+model Item {
 	id					Int				@id @default(autoincrement())
 	name				String
-	type				String			//Company, City, ...
-	affiliate			User[]
-	containers			Container[]
-	contactInformation	String
+	available			Boolean
+	container			Container? @relation(fields: [containerId], references: [id])
+	createdAt			DateTime		@default(now())
+	containerId			Int?
+	price				Float
 }
 
 model Container {
-	id					Int				@id @default(autoincrement())
-	createdAt			DateTime		@default(now())
-	organization		Organization?	@relation(fields: [organizationId], references: [id])
-	organizationId		Int?
-	containerMapping	String?
-	adress 				String?
-	city 				String?
-	price				Float
-	width				Float
-	height				Float
+  id               Int           @id @default(autoincrement())
+  createdAt        DateTime      @default(now())
+  organization     Organization? @relation(fields: [organizationId], references: [id])
+  organizationId   Int?
+  containerMapping String?
+  adress           String?
+  city             String?
+  price            Float?
+  width            Float?
+  height           Float?
+  designs          String @db.LongText
+  informations     String? @db.LongText
+  object				   Item[]
 }
 
 model Contact {
-	id					Int				@id @default(autoincrement())
-	firstName			String
-	lastName			String
-	email				String
-	message				String
-	createdAt			DateTime		@default(now())
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
 }

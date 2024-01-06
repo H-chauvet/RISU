@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -12,10 +13,13 @@ import '../../network/informations.dart';
 import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key, this.amount, this.containerMapping});
+  const PaymentScreen(
+      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
 
+  final String? lockers;
   final int? amount;
   final String? containerMapping;
+  final String? id;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -30,7 +34,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   void initState() {
-    debugPrint(token);
     if (token == '') {
       context.go('/login');
     } else {
@@ -41,6 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void update() => setState(() {});
+
   @override
   void dispose() {
     controller.removeListener(update);
@@ -49,33 +53,66 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goPrevious() {
-    context.go('/container-creation');
+    var data = {
+      'amount': widget.amount,
+      'containerMapping': widget.containerMapping,
+      'lockers': widget.lockers,
+      'id': widget.id,
+    };
+    context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
-  void goNext() {
+  void goNext() async {
     if (controller.complete && adress != '' && city != '') {
-      makePayment();
+      bool response = await makePayment();
+      if (response == false) {
+        Fluttertoast.showToast(
+          msg: "Echec de la commande",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+        return;
+      }
     } else {
       return;
     }
 
-    HttpService().request(
-      'http://$serverIp:3000/api/container/create',
-      <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      <String, String>{
-        'price': widget.amount.toString(),
-        'containerMapping': widget.containerMapping!,
-        'width': '12',
-        'height': '5',
-        'city': city,
-        'adress': adress,
-      },
-    );
-    context.go('/');
+    try {
+      HttpService().putRequest(
+        'http://$serverIp:3000/api/container/update',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, String>{
+          'id': widget.id!,
+          'price': widget.amount.toString(),
+          'containerMapping': widget.containerMapping!,
+          'width': '12',
+          'height': '5',
+          'city': city,
+          'informations': informations,
+          'adress': adress,
+        },
+      ).then((value) {
+        if (value.statusCode == 200) {
+          context.go('/container-creation/confirmation');
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la commande",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Echec de la commande",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
   @override
@@ -86,8 +123,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
-              progress: 1,
+              length: 4,
+              progress: 3,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,
@@ -187,7 +224,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ]));
   }
 
-  Future<void> makePayment() async {
+  Future<bool> makePayment() async {
     const billingDetails = BillingDetails(
       email: 'risu.epitech@gmail.com',
       name: 'Risu Corp',
@@ -200,10 +237,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
           state: 'Loire Atlantique'), // Mocked data
     );
 
-    final paymentMethod = await Stripe.instance.createPaymentMethod(
-        params: const PaymentMethodParams.card(
-            paymentMethodData:
-                PaymentMethodData(billingDetails: billingDetails)));
+    late var paymentMethod;
+    try {
+      paymentMethod = await Stripe.instance.createPaymentMethod(
+          params: const PaymentMethodParams.card(
+              paymentMethodData:
+                  PaymentMethodData(billingDetails: billingDetails)));
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
 
     final paymentIntentResult = await callPayEndpoint(
       true,
@@ -213,14 +256,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     if (paymentIntentResult['error'] != null) {
       debugPrint("Error");
-      return;
+      return false;
     }
 
     if (paymentIntentResult['clientSecret'] != null &&
         paymentIntentResult['requiresAction'] == null) {
       debugPrint("Payment success");
-      return;
+      return true;
     }
+    return false;
   }
 
   Future<Map<String, dynamic>> callPayEndpoint(

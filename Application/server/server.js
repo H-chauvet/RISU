@@ -554,6 +554,89 @@ app.get('/api/locations', async (req, res) => {
   }
 });
 
+app.post('/api/opinion',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id }
+    })
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+    if (!req.body.comment || req.body.comment === '') {
+      return res.status(401).json({ message: 'Missing comment' })
+    }
+    if (!req.body.note || req.body.note === '') {
+      return res.status(401).json({ message: 'Missing note' })
+    }
+    // create int note
+    await database.prisma.Opinions.create({
+      data: {
+        userId: user.id,
+        date: new Date(),
+        note: req.body.note,
+        comment: req.body.comment,
+      }
+    })
+
+    res.status(201).json({ message: 'opinion saved' })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
+app.get('/api/opinion',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+  var opinions = []
+  try {
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id }
+    })
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+
+    const note = req.query.note
+    if (note != null) {
+      if (!note || note != '0' && note != '1' && note != '2'
+        && note != '3' && note != '4' && note != '5') {
+        return res.status(401).json({ message: 'Missing note' })
+      }
+      opinions = await database.prisma.Opinions.findMany({
+        where: { note: note }
+      })
+    } else {
+      opinions = await database.prisma.Opinions.findMany()
+    }
+
+    var result = []
+    // for each opinion, add in result {'user.firstName + lastName', comment, note}
+    for (var i = 0; i < opinions.length; i++) {
+      const user = await database.prisma.User.findUnique({
+        where: { id: opinions[i].userId }
+      })
+      result.push({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        comment: opinions[i].comment,
+        note: opinions[i].note
+      })
+    }
+
+    res.status(201).json({ result })
+  } catch (err) {
+    console.error(err.message)
+    res.status(401).send('An error occurred')
+  }
+})
+
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)
   createFixtures()
