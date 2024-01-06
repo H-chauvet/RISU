@@ -213,6 +213,7 @@ class RentalPageState extends State<RentalPage> {
               ),
               const SizedBox(height: 20),
               Expanded(
+                key: const Key('rentals-list'),
                 child: (showAllRentals ? rentals : rentalsInProgress).isEmpty
                     ? const Center(
                         child: Text(
@@ -240,6 +241,7 @@ class RentalPageState extends State<RentalPage> {
                             ),
                             color: Theme.of(context).cardColor,
                             child: ListTile(
+                              key: const Key('rental-list-tile'),
                               contentPadding: const EdgeInsets.all(16.0),
                               title: const Text(
                                 'Ballon de volley' +

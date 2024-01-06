@@ -6,8 +6,8 @@ import 'package:risu/pages/rental/rental_page.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
-  group('Test RentArticlePage', () {
-    testWidgets('Rent Article Page UI', (WidgetTester tester) async {
+  group('Test RentalPage', () {
+    testWidgets('Rental Page UI', (WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -62,6 +62,25 @@ void main() {
     // Verify the updated state
     expect(find.text('Toutes'), findsOneWidget);
     expect(find.text('En cours'), findsOneWidget);
+  });
+  testWidgets('Rental 1', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (_) => ThemeProvider(false),
+          ),
+        ],
+        child: const MaterialApp(
+          home: RentalPage(),
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    // expect List of rentals to be displayed
+    expect(find.byKey(const Key('rentals-list')), findsOneWidget);
   });
 
 }
