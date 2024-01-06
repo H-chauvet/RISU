@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:profile_photo/profile_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/pages/article/rent_page.dart';
 import 'package:risu/pages/rental/rental_page.dart';
 
 import '../../components/alert_dialog.dart';
@@ -75,25 +72,27 @@ class ProfilePageState extends State<ProfilePage> {
                       color: Colors.blue,
                       image: const AssetImage('assets/avatar-rond.png'),
                     )),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
+                Expanded(
+                  child: Padding(
                       padding: const EdgeInsets.only(top: 20),
-                      child: Text(
-                        "${userInformation!.firstName ?? "Prénom"} ${userInformation!.lastName ?? "Nom"}",
-                        style: const TextStyle(
-                          fontSize: 22,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      hiddenEmail,
-                      style: const TextStyle(
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${userInformation!.firstName ?? "Prénom"} ${userInformation!.lastName ?? "Nom"}",
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 22,
+                            ),
+                          ),
+                          Text(
+                            hiddenEmail,
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      )),
                 ),
                 toComplete()
               ]),

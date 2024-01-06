@@ -8,6 +8,13 @@ class Locker {
   int price;
 
   Locker(this.type, this.price);
+
+  Map<String, dynamic> toJson() {
+    return {
+      "type": type,
+      "price": price,
+    };
+  }
 }
 
 ///
