@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/home/home_state.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -27,12 +28,13 @@ Future<dynamic> getContainerData(
         }));
   } catch (err) {
     if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
+      MyAlertDialog.showErrorAlertDialog(
           key: const Key('container-details_connectionrefused'),
           context: context,
-          title: 'Container',
-          message: 'container-connexion_refused');
+          title: 'Container-details',
+          message: 'Connexion refused');
     }
+    return {'owner': '', 'localization':'','_count':{'items':0}};
   }
   if (response.statusCode == 200) {
     dynamic responseData = jsonDecode(response.body);
@@ -41,16 +43,17 @@ Future<dynamic> getContainerData(
     if (context.mounted) {
       print(response.statusCode);
       print(response.reasonPhrase);
-      await MyAlertDialog.showErrorAlertDialog(
+      MyAlertDialog.showErrorAlertDialog(
           key: const Key('container-details_invaliddata'),
           context: context,
-          title: 'Container',
+          title: 'Container-details',
           message: 'Failed to get container');
     }
+    return {'owner': '', 'localization':'','_count':{'items':0}};
   }
 }
 
-class ContainerDetailsPageState extends State<ContainerDetailsPage> {
+class ContainerDetailsState extends State<ContainerDetailsPage> {
   String _containerId = "";
   String _owner = "";
   String _localization = "";
@@ -67,6 +70,22 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
         _availableItems = value['_count']['items'];
       });
     });
+  }
+
+  String getContainerId() {
+    return _containerId;
+  }
+
+  String getOwner() {
+    return _owner;
+  }
+
+  String getLocalization() {
+    return _localization;
+  }
+
+  int getAvalableItems() {
+    return _availableItems;
   }
 
   Widget build(BuildContext context) {
@@ -146,10 +165,11 @@ class ContainerDetailsPageState extends State<ContainerDetailsPage> {
                     key: const Key('container-button_article-list-page'),
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
                     },
                   ),
                 )

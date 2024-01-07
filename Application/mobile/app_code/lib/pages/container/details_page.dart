@@ -8,5 +8,5 @@ class ContainerDetailsPage extends StatefulWidget {
   const ContainerDetailsPage({ Key? key, required this.containerId }) : super(key: key);
 
   @override
-  State<ContainerDetailsPage> createState() => ContainerDetailsPageState();
+  State<ContainerDetailsPage> createState() => ContainerDetailsState();
 }

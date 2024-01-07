@@ -1,15 +1,14 @@
 const request = require('supertest');
 const async = require('async');
-const { json } = require('express');
 
 describe('POST /containerDetails', () => {
-	var containersId = []
+	var containersId
 	beforeAll(async () => {
 		const response = await request('http://localhost:8080')
 			.get('/api/container/listall')
 			.set('Content-Type', 'application/json')
 			.set('Accept', 'application/json')
-		containersId[0] = response.body[0].id
+		containersId = response.body[0].id
 	})
 	it('should get container details from id', function (done) {
 		async.series(
@@ -19,7 +18,7 @@ describe('POST /containerDetails', () => {
 						.post('/api/container/details')
 						.set('Content-Type', 'application/json')
 						.set('Accept', 'application/json')
-						.send({ 'containerId': containersId[0] })
+						.send({ 'containerId': containersId })
 						.expect(200, callback)
 				}
 			],

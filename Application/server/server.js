@@ -285,7 +285,7 @@ async function createFixtures () {
               create: [
                 {name: 'ballon de volley', price: 3, available: true},
                 {name: 'raquette', price: 6, available: false},
-                {name: 'boulle de petanque', price: 16, available: true},
+                {name: 'ballon de football', price: 16, available: true},
               ]
             }
           }
@@ -501,9 +501,9 @@ app.post('/api/user/password', async (req, res) => {
 app.get('/api/container/listall', async (req, res) => {
   try {
     console.log("container/listall")
-    const users = await database.prisma.Containers.findMany()
-    console.log(JSON.stringify(users, null, 2));
-    res.status(200).json(users)
+    const containers = await database.prisma.Containers.findMany()
+    console.log(JSON.stringify(containers, null, 2));
+    res.status(200).json(containers)
   } catch (err) {
     console.log(err)
     return res.status(400).json('An error occured.')
