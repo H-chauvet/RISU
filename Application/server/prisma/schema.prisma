@@ -53,6 +53,14 @@ model Comments {
 	date				DateTime
 }
 
+model Opinions {
+	id					String		@id @unique @default(cuid())
+	userId			String
+	date				DateTime
+	note        String
+	comment     String     @default("")
+}
+
 model Contact {
   id                       String                     @id @unique @default(cuid())
   name                     String
