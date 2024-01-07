@@ -48,6 +48,19 @@ class CustomBottomNavigationBar extends StatelessWidget {
               ),
             ),
           ),
+          const SizedBox(width: 20),
+          TextButton(
+            onPressed: () {
+              context.go("/feedbacks");
+            },
+            child: const Text(
+              'Avis',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
         ],
       ),
     );
