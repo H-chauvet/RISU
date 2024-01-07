@@ -1,6 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-creation/confirmation_screen.dart';
+import 'package:front/screens/container-creation/design_screen.dart';
+import 'package:front/screens/container-creation/recap_screen.dart';
+import 'package:front/screens/container-creation/payment_screen.dart';
+import 'package:front/screens/container-creation/visualization_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
+import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
@@ -104,7 +112,7 @@ class AppRouter {
         ),
       ),
       GoRoute(
-          path: '/creation',
+          path: '/container-creation',
           pageBuilder: (context, state) =>
               const NoTransitionPage(child: ContainerCreation())),
       GoRoute(
@@ -148,6 +156,101 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: CompanyPage(),
         ),
+      ),
+      GoRoute(
+        path: '/feedbacks',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: FeedbacksPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-creation/design',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const DesignScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return DesignScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/payment',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const PaymentScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return PaymentScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/recap',
+        builder: (context, state) {
+          if (state.extra == null) {
+            return const RecapScreen(
+              lockers: null,
+              amount: null,
+              containerMapping: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+          return RecapScreen(
+            lockers: user['lockers'],
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            id: user['id'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/confirmation',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ConfirmationScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-creation/visualization',
+        builder: (context, state) {
+          if (state.extra == null) {
+            return const VisualizationScreen(
+              lockers: null,
+              amount: null,
+              containerMapping: null,
+            );
+          }
+          final data = state.extra! as String;
+
+          final user = jsonDecode(data) as Map<String, dynamic>;
+          return VisualizationScreen(
+            lockers: user['lockers'],
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+          );
+        },
       ),
     ],
   );
