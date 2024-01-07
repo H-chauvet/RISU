@@ -38,6 +38,9 @@ void main() {
     await tester.enterText(
         find.byKey(const Key('informations')), 'some random informations');
 
+    await tester.tap(find.text('Payer'));
+    await tester.tap(find.text("Précédent"));
+
     await tester.pump();
   });
 }

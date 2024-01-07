@@ -9,4 +9,19 @@ class HttpService {
       body: jsonEncode(body),
     );
   }
+
+  Future<http.Response> putRequest(path, header, body) async {
+    return http.put(
+      Uri.parse(path),
+      headers: header,
+      body: jsonEncode(body),
+    );
+  }
+
+  Future<http.Response> getRequest(path, header) async {
+    return http.get(
+      Uri.parse(path),
+      headers: header,
+    );
+  }
 }
