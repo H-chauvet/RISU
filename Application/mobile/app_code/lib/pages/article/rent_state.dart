@@ -19,7 +19,7 @@ class RentArticlePageState extends State<RentArticlePage> {
   late int _rentalPrice;
   late String _articleName;
   late int _price;
-  late int _containerId;
+  late String _containerId;
   late List<String> _locations;
 
   @override
