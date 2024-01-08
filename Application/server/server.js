@@ -485,16 +485,6 @@ app.post('/api/user/password', async (req, res) => {
   }
 })
 
-app.get('/api/container/listall', async (req, res) => {
-  try {
-    const users = await database.prisma.Containers.findMany()
-    res.status(200).json(users)
-  } catch (err) {
-    console.log(err)
-    return res.status(400).json('An error occured.')
-  }
-})
-
 app.post('/api/rent/article', async (req, res) => {
   try {
     const token = req.headers.authorization
