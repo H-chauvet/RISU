@@ -55,13 +55,13 @@ class DesignScreenState extends State<DesignScreen> {
 
   @override
   void initState() {
-    if (token != "") {
+    /*if (token != "") {
       jwtToken = token;
     } else {
       context.go(
         '/login',
       );
-    }
+    }*/
     /*StorageService().readStorage('token').then((value) => {
           if (value == null)
             {context.go("/login")}

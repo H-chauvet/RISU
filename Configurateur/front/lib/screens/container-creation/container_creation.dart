@@ -38,12 +38,12 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    if (token != "") {
+    /*if (token != "") {
       jwtToken = token;
     } else {
       jwtToken = "";
     }
-    MyAlertTest.checkSignInStatus(context);
+    MyAlertTest.checkSignInStatus(context);*/
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -390,6 +390,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers),
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
