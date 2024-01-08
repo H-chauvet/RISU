@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/footer.dart';
 
-class RecapConfigPage extends StatelessWidget {
-  const RecapConfigPage({super.key});
+class RecapConfigPage extends StatefulWidget {
+  const RecapConfigPage({Key? key}) : super(key: key);
+
+  @override
+  _RecapConfigPageState createState() => _RecapConfigPageState();
+}
+
+class _RecapConfigPageState extends State<RecapConfigPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    MyAlertTest.checkSignInStatus(context);
+  }
 
   @override
   Widget build(BuildContext context) {
