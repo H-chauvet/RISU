@@ -7,8 +7,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/home/home_page.dart';
-import 'package:risu/pages/home/home_state.dart';
+import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -23,7 +22,7 @@ Future<dynamic> getContainerData(
       Uri.parse('http://$serverIp:8080/api/container/details'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': '$token',
+        'Authorization': 'Bearer $token',
       },
       body: jsonEncode(<String, String>{
         'containerId': containerId,
@@ -178,7 +177,9 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomePage(),
+                          builder: (context) => ArticleListPage(
+                            containerId: _containerId,
+                          ),
                         ),
                       );
                     },

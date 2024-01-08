@@ -5,7 +5,7 @@ import 'rent_state.dart';
 class RentArticlePage extends StatefulWidget {
   final String name;
   final int price;
-  final int containerId;
+  final String containerId;
   final List<String> locations;
 
   const RentArticlePage({
