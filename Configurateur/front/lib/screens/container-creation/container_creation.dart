@@ -409,7 +409,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 4,
               progress: 0,
               previous: 'Précédent',
               next: 'Suivant',
