@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
@@ -39,6 +40,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     } else {
       jwtToken = token;
     }
+    MyAlertTest.checkSignInStatus(context);
     controller.addListener(update);
     super.initState();
   }
