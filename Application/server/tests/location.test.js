@@ -13,7 +13,7 @@ describe('POST /api/rent/article', () => {
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ email: 'admin@gmail.com', password: 'admin' })
-            authToken = res.body.data.token
+            authToken = res.body.token
             expect(res.statusCode).toBe(201)
           }
         ],
