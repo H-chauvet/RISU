@@ -38,12 +38,12 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    /*if (token != "") {
+    if (token != "") {
       jwtToken = token;
     } else {
       jwtToken = "";
     }
-    MyAlertTest.checkSignInStatus(context);*/
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
