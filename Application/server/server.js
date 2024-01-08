@@ -450,16 +450,6 @@ app.put('/api/user/password',
 
 app.get('/api/container/listall', async (req, res) => {
   try {
-    const users = await database.prisma.Containers.findMany()
-    res.status(200).json(users)
-  } catch (err) {
-    console.log(err)
-    return res.status(400).json('An error occurred.')
-  }
-})
-
-app.get('/api/container/listall', async (req, res) => {
-  try {
     const token = req.headers.authorization
     if (!token || token === '') {
       return res.status(401).json({ message: 'No token, authorization denied' })
