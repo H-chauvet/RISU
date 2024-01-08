@@ -390,6 +390,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers),
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
