@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
 class MessagePage extends StatefulWidget {
@@ -16,11 +18,17 @@ class MessagePage extends StatefulWidget {
 
 class _MessagePageState extends State<MessagePage> {
   List<Message> messages = [];
+  bool jwtToken = false;
 
   @override
   void initState() {
     super.initState();
     fetchMessages();
+    if (token != "") {
+      jwtToken = true;
+    } else {
+      jwtToken = false;
+    }
   }
 
   Future<void> deleteMessage(Message message) async {
@@ -73,19 +81,22 @@ class _MessagePageState extends State<MessagePage> {
         'Gestion des messages',
         context: context,
       ),
-      body: ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final product = messages[index];
-          return MessageCard(
-            message: product,
-            onDelete: deleteMessage,
-          );
-        },
-      ),
+      body: jwtToken
+          ? ListView.builder(
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final product = messages[index];
+                return MessageCard(
+                  message: product,
+                  onDelete: deleteMessage,
+                );
+              },
+            )
+          : const CustomAlertDialog(
+              title: "Connexion requise",
+              message: 'Vous devez être connecté à un compte pour poursuivre.',
+            ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }
-
-      

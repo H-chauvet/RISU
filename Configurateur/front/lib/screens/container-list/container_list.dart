@@ -12,7 +12,6 @@ import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
-
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
 
@@ -36,13 +35,14 @@ class _ContainerPageState extends State<ContainerPage> {
   }
 
   Future<void> fetchContainers() async {
-    final response =
-        await http.get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
+    final response = await http
+        .get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
       setState(() {
-        containers = containersData.map((data) => ContainerList.fromJson(data)).toList();
+        containers =
+            containersData.map((data) => ContainerList.fromJson(data)).toList();
       });
     } else {
       // Fluttertoast.showToast(
@@ -88,24 +88,36 @@ class _ContainerPageState extends State<ContainerPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30,),
-            jwtToken 
-            ? ListView.builder(
-              shrinkWrap:
-                  true,
-              itemCount: containers.length,
-              itemBuilder: (context, index) {
-                final product = containers[index];
-                return ContainerCard(
-                  container: product,
-                  onDelete: deleteContainer,
-                );
-              },
-            )
-            : const CustomAlertDialog(
-              title: "Connexion requise",
-              message: 'Vous devez être connecté à un compte pour poursuivre.',
+            const SizedBox(
+              height: 30,
             ),
+            jwtToken
+                ? containers.isEmpty
+                    ? Center(
+                        child: Text(
+                          'Aucun conteneur trouvé.',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 211, 11, 11),
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: containers.length,
+                        itemBuilder: (context, index) {
+                          final product = containers[index];
+                          return ContainerCard(
+                            container: product,
+                            onDelete: deleteContainer,
+                          );
+                        },
+                      )
+                : const CustomAlertDialog(
+                    title: "Connexion requise",
+                    message:
+                        'Vous devez être connecté à un compte pour poursuivre.',
+                  ),
           ],
         ),
       ),

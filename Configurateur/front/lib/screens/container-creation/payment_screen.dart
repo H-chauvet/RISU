@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
+  bool connected = false;
   String adress = '';
   String city = '';
   String informations = '';
@@ -31,10 +33,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     debugPrint(token);
-    if (token == '') {
-      context.go('/login');
-    } else {
+    if (token != "") {
       jwtToken = token;
+      connected = true;
+    } else {
+      jwtToken = "";
+      connected = false;
     }
     controller.addListener(update);
     super.initState();
@@ -98,7 +102,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
             )
           ],
         ),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        body: 
+        connected
+        ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Center(
             child: FractionallySizedBox(
               widthFactor: 0.6,
@@ -184,7 +190,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           const SizedBox(height: 20),
-        ]));
+        ])
+        : const CustomAlertDialog(
+              title: "Connexion requise",
+              message: 'Vous devez être connecté à un compte pour poursuivre.',
+            ),
+        );
   }
 
   Future<void> makePayment() async {

@@ -1,8 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/services/storage_service.dart';
 
-class RecapConfigPage extends StatelessWidget {
-  const RecapConfigPage({super.key});
+class RecapConfigPage extends StatefulWidget {
+  const RecapConfigPage({Key? key}) : super(key: key);
+
+  @override
+  _RecapConfigPageState createState() => _RecapConfigPageState();
+}
+
+
+class _RecapConfigPageState extends State<RecapConfigPage> {
+  // RecapConfigPage({super.key});
+
+  bool jwtToken = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // fetchUser();
+    // fetchUserMobile();
+    if (token != "") {
+      jwtToken = true;
+    } else {
+      jwtToken = false;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
