@@ -25,7 +25,6 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  bool connected = false;
   String adress = '';
   String city = '';
   String informations = '';
@@ -33,13 +32,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     debugPrint(token);
-    if (token != "") {
-      jwtToken = token;
-      connected = true;
+    if (token == '') {
+      context.go('/login');
     } else {
-      jwtToken = "";
-      connected = false;
+      jwtToken = token;
     }
+    MyAlertTest.checkSignInStatus(context);
     controller.addListener(update);
     super.initState();
   }
@@ -102,9 +100,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             )
           ],
         ),
-        body: 
-        connected
-        ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Center(
             child: FractionallySizedBox(
               widthFactor: 0.6,
@@ -190,12 +186,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           const SizedBox(height: 20),
-        ])
-        : const CustomAlertDialog(
-              title: "Connexion requise",
-              message: 'Vous devez être connecté à un compte pour poursuivre.',
-            ),
-        );
+        ]));
   }
 
   Future<void> makePayment() async {

@@ -4,12 +4,13 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/user-list/user-component.dart';
-import 'package:front/screens/user-list/user-component-web.dart';
-import 'package:front/services/storage_service.dart';
+import 'package:front/screens/container-list/container_web.dart';
+import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/screens/user-list/user-component-web.dart';
+import 'package:front/screens/user-list/user-component.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -28,11 +29,7 @@ class _UserPageState extends State<UserPage> {
     super.initState();
     fetchUser();
     fetchUserMobile();
-    if (token != "") {
-      jwtToken = true;
-    } else {
-      jwtToken = false;
-    }
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> deleteUserWeb(User user) async {
@@ -130,80 +127,75 @@ class _UserPageState extends State<UserPage> {
         'Gestion des utilisateurs',
         context: context,
       ),
-      body: jwtToken
-          ? SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Web :",
-                      style: TextStyle(
-                        color: Color.fromRGBO(70, 130, 180, 1),
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2.0,
-                        decorationStyle: TextDecorationStyle.solid,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: users.length,
-                    itemBuilder: (context, index) {
-                      final product = users[index];
-                      return UserCard(
-                        user: product,
-                        onDelete: deleteUserWeb,
-                      );
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Mobile :",
-                      style: TextStyle(
-                        color: Color.fromRGBO(70, 130, 180, 1),
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
-                        decorationThickness: 2.0,
-                        decorationStyle: TextDecorationStyle.solid,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: users_mobile.length,
-                    itemBuilder: (context, index) {
-                      final product = users_mobile[index];
-                      return UserMobileCard(
-                        user: product,
-                        onDelete: deleteUserMobile,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            )
-          : const CustomAlertDialog(
-              title: "Connexion requise",
-              message: 'Vous devez être connecté à un compte pour poursuivre.',
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Web :",
+                style: TextStyle(
+                  color: Color.fromRGBO(70, 130, 180, 1),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 2.0,
+                  decorationStyle: TextDecorationStyle.solid,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final product = users[index];
+                return UserCard(
+                  user: product,
+                  onDelete: deleteUserWeb,
+                );
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                "Mobile :",
+                style: TextStyle(
+                  color: Color.fromRGBO(70, 130, 180, 1),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 2.0,
+                  decorationStyle: TextDecorationStyle.solid,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: users_mobile.length,
+              itemBuilder: (context, index) {
+                final product = users_mobile[index];
+                return UserMobileCard(
+                  user: product,
+                  onDelete: deleteUserMobile,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }

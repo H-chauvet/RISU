@@ -38,11 +38,6 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    if (token != "") {
-      jwtToken = true;
-    } else {
-      jwtToken = false;
-    }
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -53,6 +48,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
     loadImage();
+    MyAlertTest.checkSignInStatus(context);
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {

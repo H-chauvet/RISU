@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'package:front/components/alert_dialog.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/container-list/container_web.dart';
+import 'package:front/screens/messages/messages_card.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
@@ -27,11 +25,7 @@ class _ContainerPageState extends State<ContainerPage> {
   void initState() {
     super.initState();
     fetchContainers();
-    if (token.isNotEmpty) {
-      jwtToken = true;
-    } else {
-      jwtToken = false;
-    }
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> fetchContainers() async {
@@ -45,11 +39,11 @@ class _ContainerPageState extends State<ContainerPage> {
             containersData.map((data) => ContainerList.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -61,18 +55,18 @@ class _ContainerPageState extends State<ContainerPage> {
       headers: {'Content-Type': 'application/json; charset=UTF-8'},
     );
     if (response.statusCode == 200) {
-      // Fluttertoast.showToast(
-      //   msg: 'Message supprimé avec succès',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Message supprimé avec succès',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
       fetchContainers();
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -91,32 +85,26 @@ class _ContainerPageState extends State<ContainerPage> {
             const SizedBox(
               height: 30,
             ),
-            jwtToken
-                ? containers.isEmpty
-                    ? Center(
-                        child: Text(
-                          'Aucun conteneur trouvé.',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Color.fromARGB(255, 211, 11, 11),
-                          ),
-                        ),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: containers.length,
-                        itemBuilder: (context, index) {
-                          final product = containers[index];
-                          return ContainerCard(
-                            container: product,
-                            onDelete: deleteContainer,
-                          );
-                        },
-                      )
-                : const CustomAlertDialog(
-                    title: "Connexion requise",
-                    message:
-                        'Vous devez être connecté à un compte pour poursuivre.',
+            containers.isEmpty
+                ? Center(
+                    child: Text(
+                      'Aucun conteneur trouvé.',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromARGB(255, 211, 11, 11),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: containers.length,
+                    itemBuilder: (context, index) {
+                      final product = containers[index];
+                      return ContainerCard(
+                        container: product,
+                        onDelete: deleteContainer,
+                      );
+                    },
                   ),
           ],
         ),

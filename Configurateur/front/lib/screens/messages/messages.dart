@@ -24,11 +24,7 @@ class _MessagePageState extends State<MessagePage> {
   void initState() {
     super.initState();
     fetchMessages();
-    if (token != "") {
-      jwtToken = true;
-    } else {
-      jwtToken = false;
-    }
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> deleteMessage(Message message) async {
@@ -81,8 +77,7 @@ class _MessagePageState extends State<MessagePage> {
         'Gestion des messages',
         context: context,
       ),
-      body: jwtToken
-          ? ListView.builder(
+      body: ListView.builder(
               itemCount: messages.length,
               itemBuilder: (context, index) {
                 final product = messages[index];
@@ -92,10 +87,7 @@ class _MessagePageState extends State<MessagePage> {
                 );
               },
             )
-          : const CustomAlertDialog(
-              title: "Connexion requise",
-              message: 'Vous devez être connecté à un compte pour poursuivre.',
-            ),
+          ,
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
