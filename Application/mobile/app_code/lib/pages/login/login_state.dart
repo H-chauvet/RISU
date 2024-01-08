@@ -12,7 +12,6 @@ import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
-import 'package:risu/utils/validators.dart';
 
 import 'login_page.dart';
 
@@ -58,8 +57,10 @@ class LoginPageState extends State<LoginPage> {
     if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
-        if (jsonData.containsKey('data')) {
-          userInformation = UserData.fromJson(jsonData['data']);
+        print(jsonData);
+        if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
+          userInformation =
+              UserData.fromJson(jsonData['user'], jsonData['token']);
           return true;
         } else {
           if (context.mounted) {
