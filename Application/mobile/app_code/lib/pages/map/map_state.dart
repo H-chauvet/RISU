@@ -8,7 +8,7 @@ import 'map_page.dart';
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
 
-  LatLng _center = LatLng(37.7749, -122.4194); // Default map center
+  LatLng _center = LatLng(37.7749, -122.4194);
 
   final Set<Marker> _markers = {
     const Marker(
@@ -19,7 +19,6 @@ class MapPageState extends State<MapPage> {
         snippet: 'Nantes',
       ),
     ),
-    // Add more markers as needed
   };
 
   void _onMapCreated(GoogleMapController controller) {
@@ -31,7 +30,7 @@ class MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    _requestLocationPermission(); // Request location permission when the page initializes
+    _requestLocationPermission();
   }
 
   Future<void> _requestLocationPermission() async {
@@ -39,11 +38,10 @@ class MapPageState extends State<MapPage> {
     if (permission != PermissionStatus.granted) {
       permission = await Permission.locationWhenInUse.request();
       if (permission != PermissionStatus.granted) {
-        // Handle denied permission
         return;
       }
     }
-    _getUserLocation(); // Get the user's location if permission is granted
+    _getUserLocation();
   }
 
   Future<void> _getUserLocation() async {
@@ -54,8 +52,6 @@ class MapPageState extends State<MapPage> {
       setState(() {
         _center = LatLng(position.latitude, position.longitude);
       });
-
-      // Move the map camera to the new center
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (e) {
       print('Error fetching location: $e');
