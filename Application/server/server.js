@@ -484,6 +484,29 @@ app.post('/api/rent/article',
   }
 })
 
+// get rental
+app.get('/api/rent',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token')
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id }
+      })
+      if (!user) {
+        return res.status(404).send('User not found')
+      }
+      const rentals = await database.prisma.Location.findMany({
+        where: { userId: user.id }
+      })
+      res.status(201).json({ rentals: rentals })
+    } catch (err) {
+      console.error(err.message)
+      res.status(401).send('An error occurred')
+    }
+})
+
 app.get('/api/locations', async (req, res) => {
   try {
     const locations = await database.prisma.Location.findMany()
