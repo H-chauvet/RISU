@@ -17,6 +17,54 @@ void main() {
     });
   });
 
+  testWidgets('Profile Info user widgets with information empty fields',
+          (WidgetTester tester) async {
+        await tester.pumpWidget(
+          MultiProvider(
+            providers: [
+              ChangeNotifierProvider<ThemeProvider>(
+                create: (_) =>
+                    ThemeProvider(
+                        false), // Provide a default value for testing.
+              ),
+            ],
+            child: const MaterialApp(
+              home: ProfileInformationsPage(),
+            ),
+          ),
+        );
+
+        // FIRST NAME
+        Finder nameField =
+        find.byKey(const Key('profile_info-text_field-new_name'));
+        expect(nameField, findsOneWidget);
+        await tester.enterText(nameField, "");
+        await tester.pumpAndSettle();
+
+        // LAST NAME
+        Finder lastNameField =
+        find.byKey(const Key('profile_info-text_field-last_name'));
+        expect(lastNameField, findsOneWidget);
+        await tester.enterText(nameField, "");
+        await tester.pumpAndSettle();
+
+        // EMAIL
+        Finder emailField = find.byKey(
+            const Key('profile_info-text_field-email'));
+        expect(emailField, findsOneWidget);
+        await tester.enterText(emailField, "");
+        await tester.pumpAndSettle();
+
+        Finder updateInfo =
+        find.byKey(const Key('informations-button_update_user'));
+        expect(updateInfo, findsOneWidget);
+        await tester.tap(updateInfo);
+        await tester.pumpAndSettle();
+
+        expect(find.byKey(const Key('informations-alert_dialog_error_no_info')),
+            findsOneWidget);
+      });
+
   testWidgets('Profile Info user widgets with values',
           (WidgetTester tester) async {
         await tester.pumpWidget(
@@ -41,15 +89,6 @@ void main() {
         await tester.enterText(nameField, "new name");
         await tester.pumpAndSettle();
 
-        Finder updateName =
-        find.byKey(const Key('profile_info-button-update_firstName'));
-        expect(updateName, findsOneWidget);
-        await tester.tap(updateName);
-        await tester.pumpAndSettle();
-
-        expect(find.byKey(const Key('profile_info-alert_dialog-no_firstName')),
-            findsNothing);
-
         // LAST NAME
         Finder lastNameField =
         find.byKey(const Key('profile_info-text_field-last_name'));
@@ -57,36 +96,18 @@ void main() {
         await tester.enterText(lastNameField, "new last name");
         await tester.pumpAndSettle();
 
-        Finder updateLastName =
-        find.byKey(const Key('profile_info-button-update_last_name'));
-        expect(updateLastName, findsOneWidget);
-        await tester.tap(updateLastName);
-        await tester.pumpAndSettle();
-
-        expect(find.byKey(const Key('profile_info-alert_dialog-no_last_name')),
-            findsNothing);
-
-        // E MAIL
+        // EMAIL
         Finder emailField = find.byKey(
             const Key('profile_info-text_field-email'));
         expect(emailField, findsOneWidget);
         await tester.enterText(emailField, "test@test.com");
         await tester.pumpAndSettle();
 
-        Finder updateEmail =
-        find.byKey(const Key('profile_info-button-update_email'));
-        expect(updateEmail, findsOneWidget);
-
-        await tester.dragUntilVisible(
-            updateEmail, // what you want to find
-            updateLastName, // widget you want to scroll
-            const Offset(0, -100) // delta to move
-        );
-        await tester.tap(updateEmail);
+        Finder updateInfos =
+        find.byKey(const Key('informations-button_update_user'));
+        expect(updateInfos, findsOneWidget);
+        await tester.tap(updateInfos);
         await tester.pumpAndSettle();
-
-        expect(find.byKey(const Key('profile_info-alert_dialog-no_email')),
-            findsNothing);
 
         // PASSWORD
         Finder currPasswordField =
@@ -101,13 +122,14 @@ void main() {
         find.byKey(const Key('profile_info-text_field-new_password_conf'));
         expect(newPasswordFieldConf, findsOneWidget);
 
+        // scroll down to the button
         await tester.dragUntilVisible(
             newPasswordField, // what you want to find
-            updateLastName, // widget you want to scroll
+            updateInfos, // widget you want to scroll
             const Offset(0, -300) // delta to move
         );
 
-        await tester.enterText(currPasswordField, "curr");
+        await tester.enterText(currPasswordField, "admin");
         await tester.pumpAndSettle();
         await tester.enterText(newPasswordField, "newOne");
         await tester.pumpAndSettle();
@@ -119,96 +141,6 @@ void main() {
         expect(updatePassword, findsOneWidget);
         await tester.tap(updatePassword);
         await tester.pumpAndSettle();
-      });
-
-  testWidgets('Profile Info user widgets with empty name',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider<ThemeProvider>(
-                create: (_) =>
-                    ThemeProvider(
-                        false), // Provide a default value for testing.
-              ),
-            ],
-            child: const MaterialApp(
-              home: ProfileInformationsPage(),
-            ),
-          ),
-        );
-        Finder updateName =
-        find.byKey(const Key('profile_info-button-update_firstName'));
-        expect(updateName, findsOneWidget);
-        await tester.tap(updateName);
-        await tester.pumpAndSettle();
-
-        Finder alertDialogName =
-        find.byKey(const Key('profile_info-alert_dialog-no_firstName'));
-
-        expect(alertDialogName, findsOneWidget);
-      });
-
-  testWidgets('Profile Info user widgets with empty last name',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider<ThemeProvider>(
-                create: (_) =>
-                    ThemeProvider(
-                        false), // Provide a default value for testing.
-              ),
-            ],
-            child: const MaterialApp(
-              home: ProfileInformationsPage(),
-            ),
-          ),
-        );
-        Finder updateLastName =
-        find.byKey(const Key('profile_info-button-update_last_name'));
-        expect(updateLastName, findsOneWidget);
-        await tester.tap(updateLastName);
-        await tester.pumpAndSettle();
-
-        expect(find.byKey(const Key('profile_info-alert_dialog-no_last_name')),
-            findsOneWidget);
-      });
-  testWidgets('Profile Info user widgets with empty email',
-          (WidgetTester tester) async {
-        await tester.pumpWidget(
-          MultiProvider(
-            providers: [
-              ChangeNotifierProvider<ThemeProvider>(
-                create: (_) =>
-                    ThemeProvider(
-                        false), // Provide a default value for testing.
-              ),
-            ],
-            child: const MaterialApp(
-              home: ProfileInformationsPage(),
-            ),
-          ),
-        );
-        Finder updateLastName =
-        find.byKey(const Key('profile_info-button-update_last_name'));
-        expect(updateLastName, findsOneWidget);
-
-        Finder updateEmail =
-        find.byKey(const Key('profile_info-button-update_email'));
-        expect(updateEmail, findsOneWidget);
-
-        await tester.dragUntilVisible(
-            updateEmail, // what you want to find
-            updateLastName, // widget you want to scroll
-            const Offset(0, -100) // delta to move
-        );
-
-        await tester.tap(updateEmail);
-        await tester.pumpAndSettle();
-
-        expect(find.byKey(const Key('profile_info-alert_dialog-no_email')),
-            findsOneWidget);
       });
 
   testWidgets('Profile Info user widgets with empty password',
@@ -227,9 +159,9 @@ void main() {
             ),
           ),
         );
-        Finder updateLastName =
-        find.byKey(const Key('profile_info-button-update_last_name'));
-        expect(updateLastName, findsOneWidget);
+        Finder updateInfo =
+        find.byKey(const Key('informations-button_update_user'));
+        expect(updateInfo, findsOneWidget);
 
         Finder updatePassword =
         find.byKey(const Key('profile_info-button-update_password'));
@@ -237,7 +169,7 @@ void main() {
 
         await tester.dragUntilVisible(
             updatePassword, // what you want to find
-            updateLastName, // widget you want to scroll
+            updateInfo, // widget you want to scroll
             const Offset(0, -300) // delta to move
         );
 
@@ -264,9 +196,9 @@ void main() {
             ),
           ),
         );
-        Finder updateLastName =
-        find.byKey(const Key('profile_info-button-update_last_name'));
-        expect(updateLastName, findsOneWidget);
+        Finder updateInfo =
+        find.byKey(const Key('informations-button_update_user'));
+        expect(updateInfo, findsOneWidget);
 
         Finder currPasswordField =
         find.byKey(const Key('profile_info-text_field-curr_password'));
@@ -286,11 +218,11 @@ void main() {
 
         await tester.dragUntilVisible(
             updatePassword, // what you want to find
-            updateLastName, // widget you want to scroll
+            updateInfo, // widget you want to scroll
             const Offset(0, -300) // delta to move
         );
 
-        await tester.enterText(currPasswordField, "curr");
+        await tester.enterText(currPasswordField, "admin");
         await tester.pumpAndSettle();
         await tester.enterText(newPasswordField, "newOne1");
         await tester.pumpAndSettle();

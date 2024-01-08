@@ -3,12 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 
-import '../../components/divider.dart';
 import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {

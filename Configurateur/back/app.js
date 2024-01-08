@@ -5,6 +5,7 @@ const userRoutes = require('./routes/user')
 const contactRoutes = require('./routes/contact')
 const messagesRoutes = require('./routes/messages')
 const containerRoutes = require('./routes/container')
+const feedbacksRoutes = require('./routes/feedbacks')
 const itemsRoutes = require('./routes/items')
 const paymentRoutes = require("./routes/payment");
 
@@ -26,6 +27,7 @@ app.use('/api/auth', userRoutes)
 app.use('/api', contactRoutes)
 app.use('/api/container', containerRoutes)
 app.use('/api/messages', messagesRoutes)
+app.use('/api/feedbacks', feedbacksRoutes)
 app.use('/api/items', itemsRoutes)
 app.use("/api/payment", paymentRoutes);
 

@@ -143,7 +143,7 @@ class ContactPageState extends State<ContactPage> {
                       MyAlertDialog.showInfoAlertDialog(
                           key: const Key("contact-alert_dialog-invalid_info"),
                           context: context,
-                          title: 'champs invalides',
+                          title: 'Champs invalides',
                           message: 'Veuillez entrer des informations valides.');
                     }
                   },

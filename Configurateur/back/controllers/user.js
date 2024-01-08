@@ -196,3 +196,23 @@ exports.getAllUsers = async () => {
     throw new Error('Failed to retrieve users');
   }
 };
+
+/**
+ *
+ * Find user details by email (including first name and last name)
+ *
+ * @param {*} email of the user
+ * @returns user details (including first name and last name)
+ */
+exports.findUserDetailsByEmail = email => {
+  return db.User.findUnique({
+    where: {
+      email
+    },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true
+    }
+  });
+};

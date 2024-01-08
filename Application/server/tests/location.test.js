@@ -3,7 +3,7 @@ const async = require('async');
 
 let authToken = '';
 
-describe('POST /api/rent', () => {
+describe('POST /api/rent/article', () => {
     it('should connect and get a token', (done) => {
       async.series(
         [
@@ -40,7 +40,7 @@ describe('POST /api/rent', () => {
           function (callback) {
             request('http://localhost:8080')
               .post('/api/rent/article')
-              .set('Authorization', authToken)
+              .set('Authorization', `Bearer ${authToken}`)
               .send({})
               .expect(401, callback)
           }
@@ -54,7 +54,7 @@ describe('POST /api/rent', () => {
           function (callback) {
             request('http://localhost:8080')
               .post('/api/rent/article')
-              .set('Authorization', authToken)
+              .set('Authorization', `Bearer ${authToken}`)
               .send({price: '10'})
               .expect(401, callback)
           }
@@ -68,7 +68,7 @@ describe('POST /api/rent', () => {
           function (callback) {
             request('http://localhost:8080')
               .post('/api/rent/article')
-              .set('Authorization', authToken)
+              .set('Authorization', `Bearer ${authToken}`)
               .send({price: '10', itemId: '1'})
               .expect(401, callback)
           }
@@ -82,7 +82,7 @@ describe('POST /api/rent', () => {
           function (callback) {
             request('http://localhost:8080')
               .post('/api/rent/article')
-              .set('Authorization', authToken)
+              .set('Authorization', `Bearer ${authToken}`)
               .send({price: '10', itemId: '1', duration: '2'})
               .expect(201, callback)
           }
