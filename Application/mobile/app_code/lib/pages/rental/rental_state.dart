@@ -37,6 +37,10 @@ class RentalPageState extends State<RentalPage> {
           print(rentals);
         });
       } else {
+        await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Erreur',
+            message: 'Les locations n\'ont pas pu être récupérées.');
         print('Error getRentals(): ${response.statusCode}');
       }
     } catch (e) {
@@ -49,10 +53,8 @@ class RentalPageState extends State<RentalPage> {
     int rentalDuration = rental['duration'];
     DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
     Duration remainingTime = rentalEnd.difference(DateTime.now());
-
     int hours = remainingTime.inHours;
     int minutes = remainingTime.inMinutes.remainder(60);
-
     return '$hours heures et $minutes minutes';
   }
 
@@ -61,19 +63,21 @@ class RentalPageState extends State<RentalPage> {
       DateTime rentalStart = DateTime.parse(rental['createdAt']);
       int rentalDuration = rental['duration'];
       DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
-
       return rentalEnd.isAfter(DateTime.now());
     }
-
     return false;
   }
 
-  void getRentalsInProgress() {
+  void getRentalsInProgress() async {
     try {
       setState(() {
         this.rentalsInProgress = rentals.where(isRentalInProgress).toList();
       });
     } catch (e) {
+      await MyAlertDialog.showInfoAlertDialog(
+          context: context,
+          title: 'Erreur',
+          message: 'Les locations en cours n\'ont pas pu être récupérées.');
       print('Error getRentalsInProgress(): $e');
     }
   }
