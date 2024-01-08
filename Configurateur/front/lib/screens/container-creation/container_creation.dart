@@ -391,12 +391,11 @@ class ContainerCreationState extends State<ContainerCreation> {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
     };
-    context.go("/container-creation/payment", extra: jsonEncode(data));
+    context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
   void goPrevious() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LandingPage()));
+    context.go('/');
   }
 
   @override
@@ -410,10 +409,10 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 4,
               progress: 0,
               previous: 'Précédent',
-              next: 'Terminer',
+              next: 'Suivant',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),
