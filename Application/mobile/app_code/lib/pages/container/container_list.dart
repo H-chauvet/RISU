@@ -71,7 +71,7 @@ class ContainerCard extends StatelessWidget {
             ListTile(
               title: Text(container.id.toString()),
               // subtitle: Text(container.price.toString()),
-              leading: const Row(
+              leading: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   SizedBox(
