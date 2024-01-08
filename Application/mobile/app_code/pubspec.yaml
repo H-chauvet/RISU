@@ -40,7 +40,10 @@ dependencies:
   flutter_signin_button: ^2.0.0
   google_maps_flutter: ^2.2.0
   flutter_dotenv: ^5.1.0
+  intl: ^0.17.0
   profile_photo: ^1.0.3
+  geolocator: ^10.1.0
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   integration_test:

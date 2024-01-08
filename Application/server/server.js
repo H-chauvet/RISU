@@ -86,12 +86,9 @@ app.post('/api/signup', (req, res, next) => {
         sendAccountConfirmationEmail(user.email, token)
       } catch (err) {
         console.error(err.message)
-        res.status(401).send('An error occured.')
+        return res.status(401).send('An error occurred.')
       }
-      return res.status(201).json({
-        status: 'success',
-        statusCode: res.statusCode
-      })
+      return res.status(201).send('User created')
     }
   )(req, res, next)
 })
@@ -101,11 +98,7 @@ app.post('/api/login', (req, res, next) => {
     if (err) throw new Error(err)
     if (user == false) return res.json(info)
     const token = utils.generateToken(user.id)
-    return res.status(201).json({
-      status: 'success',
-      data: { message: 'Welcome back.', user, token },
-      statusCode: res.statusCode
-    })
+    return res.status(201).json({ user: user, token: token, message: 'User logged in' })
   })(req, res, next)
 })
 
@@ -119,20 +112,6 @@ app.get('/api/dev/user/listall', async (req, res) => {
   }
 })
 
-app.post('/api/dev/user/delete', async function (req, res) {
-  const { email } = req.body
-
-  try {
-    await database.prisma.User.delete({where: {
-      email: email,
-    }
-  })
-    res.json('ok').status(200)
-  } catch (err) {
-    res.json('ok').status(200)
-  }
-})
-
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
@@ -143,7 +122,7 @@ const transporter = nodemailer.createTransport({
   }
 })
 
-async function sendResetPasswordEmail (email, newPassword) {
+async function sendResetPasswordEmail(email, newPassword) {
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
     to: email,
@@ -159,7 +138,7 @@ async function sendResetPasswordEmail (email, newPassword) {
   }
 }
 
-function generateRandomPassword (length) {
+function generateRandomPassword(length) {
   const characters =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@m!$%&*?'
   let password = ''
@@ -201,26 +180,26 @@ app.post('/api/user/resetPassword', async (req, res) => {
 app.delete('/api/user/:userId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).send('Invalid token');
-        }
-        if (req.user.id != req.params.userId) {
-            return res.status(401).send('Unauthorized');
-        }
-        const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        await database.prisma.User.delete({ where: { id: req.params.userId } })
-        return res.status(200).send('User deleted');
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      if (req.user.id != req.params.userId) {
+        return res.status(401).send('Unauthorized');
+      }
+      const user = await database.prisma.User.findUnique({ where: { id: req.params.userId } })
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+      await database.prisma.User.delete({ where: { id: req.params.userId } })
+      return res.status(200).send('User deleted');
     } catch (error) {
-        console.error('Failed to delete account: ', error)
-        return res.status(500).json({ message: 'Failed to reset password' })
+      console.error('Failed to delete account: ', error)
+      return res.status(500).json({ message: 'Failed to delete the user:', error })
     }
   }
 )
 
-async function sendAccountConfirmationEmail (email, token) {
+async function sendAccountConfirmationEmail(email, token) {
   const mailOptions = {
     from: process.env.SMTP_EMAIL,
     to: email,
@@ -252,56 +231,75 @@ app.get('/api/mailVerification', async (req, res) => {
       where: { id: decoded.id },
       data: { mailVerification: true }
     })
-    res.send(
+    return res.status(200).send(
       'Email now successfully verified !\nYou can go back to login page.'
     )
   } catch (err) {
     console.error(err.message)
-    res.status(401).send('No matching user found.')
+    return res.status(401).send('No matching user found.')
   }
 })
 
-async function createFixtures () {
-    try {
-        const notification1 = await database.prisma.Notifications.create({
-            data: {
-                favoriteItemsAvailable: true,
-                endOfRenting: true,
-                newsOffersRisu: true
-            }
-        })
-        const notification2 = await database.prisma.Notifications.create({
-            data: {
-                favoriteItemsAvailable: true,
-                endOfRenting: true,
-                newsOffersRisu: true
-            }
-        })
-        if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
-            await database.prisma.User.create({
-                data: {
-                    email: 'admin@gmail.com',
-                    firstName: 'admin',
-                    lastName: 'admin',
-                    password: await utils.hash('admin'),
-                    mailVerification: true,
-                    notificationsId: notification1.id,
-                },
-            })
-        if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
-            await database.prisma.User.create({
-                data: {
-                    email: 'user@gmail.com',
-                    firstName: 'user',
-                    lastName: 'user',
-                    password: await utils.hash('user'),
-                    mailVerification: true,
-                    notificationsId: notification2.id,
-                }
-            })
-    } catch (err) {
-        console.error(err.message)
-    }
+async function createFixtures() {
+  try {
+    const notification1 = await database.prisma.Notifications.create({
+      data: {
+        favoriteItemsAvailable: true,
+        endOfRenting: true,
+        newsOffersRisu: true
+      }
+    })
+    const notification2 = await database.prisma.Notifications.create({
+      data: {
+        favoriteItemsAvailable: true,
+        endOfRenting: true,
+        newsOffersRisu: true
+      }
+    })
+    const container = await database.prisma.Containers.create({
+      data: {
+        localization: 'Nantes',
+        owner: 'Risu',
+        items: {
+          create: [
+            { name: 'ballon de volley', price: 3, available: true },
+            { name: 'raquette', price: 6, available: false },
+            { name: 'ballon de football', price: 16, available: true },
+          ]
+        }
+      }
+    })
+    if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
+      await database.prisma.User.create({
+        data: {
+          email: 'admin@gmail.com',
+          firstName: 'admin',
+          lastName: 'admin',
+          password: await utils.hash('admin'),
+          mailVerification: true,
+          notificationsId: notification1.id,
+        },
+        include: {
+          Notifications: true,
+        }
+      })
+    if (!await database.prisma.User.findUnique({ where: { email: 'user@gmail.com' } }))
+      await database.prisma.User.create({
+        data: {
+          email: 'user@gmail.com',
+          firstName: 'user',
+          lastName: 'user',
+          password: await utils.hash('user'),
+          mailVerification: true,
+          notificationsId: notification2.id,
+        },
+        include: {
+          Notifications: true,
+        }
+      })
+  } catch (err) {
+    console.error(err.message)
+  }
 }
 
 app.post('/api/contact', async (req, res) => {
@@ -323,314 +321,418 @@ app.post('/api/contact', async (req, res) => {
     //const contacts = await database.prisma.Contact.findMany()
     //console.log(contacts)
 
-    res.status(201).json({ message: 'contact saved' })
+    return res.status(201).json({ message: 'contact saved' })
   } catch (err) {
     console.error(err.message)
-    res.status(401).send('Error while saving contact.')
+    return res.status(401).send('Error while saving contact.')
   }
 })
 
-app.get('/api/user', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    console.log(decoded)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id },
-      include: {
-        Notifications: true,
-      }
-    })
-    console.log('user : ', user)
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred.')
-  }
-})
-
-app.put('/api/user/notifications',
+app.get('/api/user/:userId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(401).send('Invalid token');
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      if (req.user.id != req.params.userId) {
+        return res.status(401).send('Unauthorized');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.params.userId },
+        include: {
+          Notifications: true,
         }
-        const user = await database.prisma.User.findUnique({
-            where: { id: req.user.id },
-            include: { Notifications: true }
-        })
-        if (!user) {
-            return res.status(404).send('User not found');
-        }
-        const updatedUser = await database.prisma.User.update({
-            where: { id: user.id },
-            data: {
-                Notifications: {
-                    update: {
-                        favoriteItemsAvailable: req.body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
-                        endOfRenting: req.body.endOfRenting ?? user.Notifications.endOfRenting,
-                        newsOffersRisu: req.body.newsOffersRisu ?? user.Notifications.newsOffersRisu
-                    }
-                }
-            },
-            include: { Notifications: true }
-        })
-        return res.status(200).json({updatedUser});
-    } catch (error) {
-        console.error('Failed to update notifications: ', error)
-        return res.status(500).send('Failed to update notifications.')
+      })
+      console.log('user : ', user)
+      return res.status(200).json({ user });
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred.')
     }
   }
 )
 
-app.post('/api/user/firstName', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' })
-    }
-    if (!req.body.firstName || req.body.firstName === '') {
-      return res.status(401).json({ message: 'Missing firstName' })
-    }
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-    await database.prisma.User.update({
-      where: { id: decoded.id },
-      data: { firstName: req.body.firstName }
-    })
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
-  }
-})
-
-app.post('/api/user/lastName', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' })
-    }
-    if (!req.body.lastName || req.body.lastName === '') {
-      return res.status(401).json({ message: 'Missing lastName' })
-    }
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-    await database.prisma.User.update({
-      where: { id: decoded.id },
-      data: { lastName: req.body.lastName }
-    })
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
-  }
-})
-
-app.post('/api/user/email', async (req, res) => {
-  try {
-    if (!req.body.email || req.body.email === '') {
-      return res.status(401).json({ message: 'Missing email' })
-    }
-    const token = req.headers.authorization
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-    await database.prisma.User.update({
-      where: { id: decoded.id },
-      data: { email: req.body.email }
-    })
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
-  }
-})
-
-app.post('/api/user/password', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    if (!token || token === '') {
-      return res.status(401).json({ message: 'No token, authorization denied' })
-    }
-    const currentPassword = req.body.currentPassword
-    if (!currentPassword || currentPassword === '') {
-      return res.status(401).json({ message: 'Missing currentPassword' })
-    }
-    const newPassword = req.body.newPassword
-    if (!newPassword || newPassword === '') {
-      return res.status(401).json({ message: 'Missing newPassword' })
-    }
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-    const isMatch = await utils.compare(currentPassword, user.password)
-    if (!isMatch) {
-      return res.status(401).json({ message: 'Incorrect Password' })
-    }
-    await database.prisma.User.update({
-      where: { id: decoded.id },
-      data: { password: await utils.hash(newPassword) }
-    })
-    res.json(user)
-  } catch (err) {
-    console.error(err.message)
-    res.status(500).send('An error occurred')
-  }
-})
-
-app.get('/api/container/listall', async (req, res) => {
-  try {
-    const users = await database.prisma.Containers.findMany()
-    res.status(200).json(users)
-  } catch (err) {
-    console.log(err)
-    return res.status(400).json('An error occured.')
-  }
-})
-
-app.post('/api/rent/article', async (req, res) => {
-  try {
-    const token = req.headers.authorization
-    if (!token) {
-      return res.status(401).json({ message: 'No token, authorization denied' })
-    }
-    if (!req.body.price || req.body.price < 0) {
-      return res.status(401).json({ message: 'Missing price' })
-    }
-    if (!req.body.itemId || req.body.itemId === '') {
-        return res.status(401).json({ message: 'Missing itemId' })
-    }
-    if (!req.body.duration || req.body.duration < 0) {
-        return res.status(401).json({ message: 'Missing duration' })
-    }
-
-    const decoded = jwt.decode(token, process.env.JWT_SECRET)
-    const user = await database.prisma.User.findUnique({
-      where: { id: decoded.id }
-    })
-/*    console.log('user : ', user);
-    console.log('itemId : ', req.body.itemId);
-    console.log('price : ', req.body.price);
-    console.log('duration : ', req.body.duration);*/
-
-    const locationPrice = req.body.price * req.body.duration
-    //console.log('locationPrice : ', locationPrice);
-    await database.prisma.Location.create({
+app.put('/api/user/notifications',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+        include: { Notifications: true }
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      const updatedUser = await database.prisma.User.update({
+        where: { id: user.id },
         data: {
-            price: locationPrice,
-            //itemId: req.body.itemId,
-            userId: user.id,
-            createdAt: new Date(),
-            duration: parseInt(req.body.duration),
-        }
-    })
-
-    res.status(201).json({ message: 'location saved' })
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
+          Notifications: {
+            update: {
+              favoriteItemsAvailable: req.body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
+              endOfRenting: req.body.endOfRenting ?? user.Notifications.endOfRenting,
+              newsOffersRisu: req.body.newsOffersRisu ?? user.Notifications.newsOffersRisu
+            }
+          }
+        },
+        include: { Notifications: true }
+      })
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      console.error('Failed to update notifications: ', error)
+      return res.status(500).send('Failed to update notifications.')
+    }
   }
+)
+
+app.put('/api/user',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      const updatedUser = await database.prisma.User.update({
+        where: { id: user.id },
+        data: {
+          firstName: req.body.firstName ?? user.firstName,
+          lastName: req.body.lastName ?? user.lastName,
+          email: req.body.email ?? user.email,
+        }
+      })
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      console.error('Failed to update notifications: ', error)
+      return res.status(500).send('Failed to update notifications.')
+    }
+  })
+
+app.put('/api/user/password',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      const currentPassword = req.body.currentPassword
+      if (!currentPassword || currentPassword === '') {
+        return res.status(401).json({ message: 'Missing currentPassword' })
+      }
+      const newPassword = req.body.newPassword
+      if (!newPassword || newPassword === '') {
+        return res.status(401).json({ message: 'Missing newPassword' })
+      }
+      const isMatch = await utils.compare(currentPassword, user.password)
+      if (!isMatch) {
+        return res.status(401).json({ message: 'Incorrect Password' })
+      }
+      var updatedUser = await database.prisma.User.update({
+        where: { id: user.id },
+        data: { password: await utils.hash(newPassword) }
+      })
+      return res.status(200).json({ updatedUser });
+    } catch (err) {
+      console.error(err.message)
+      return res.status(500).send('An error occurred')
+    }
+  })
+
+app.get('/api/container/listall',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      console.log("container/listall")
+      const containers = await database.prisma.Containers.findMany()
+      console.log(JSON.stringify(containers, null, 2));
+      return res.status(200).json(containers)
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json(err.message)
+    }
+  }
+)
+
+app.post('/api/container/details',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      if (!req.body.containerId || req.body.containerId === '') {
+        return res.status(401).json({ message: 'Missing containerId' })
+      }
+      const container = await database.prisma.Containers.findUnique({
+        where: { id: req.body.containerId },
+        select: {
+          localization: true,
+          owner: true,
+          _count: {
+            select: {   // count the number of items available related to the container
+              items: { where: { available: true } }
+            }
+          }
+        },
+      })
+      if (!container) {
+        return res.status(401).json("container not found")
+      }
+      return res.status(200).json(container)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send(err.message)
+    }
+  })
+
+app.post('/api/container/articleslist',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.body.containerId || req.body.containerId === '') {
+        return res.status(401).json({ message: 'Missing containerId' })
+      }
+      const container = await database.prisma.Containers.findUnique({
+        where: { id: req.body.containerId },
+        select: {
+          items: {
+            select: {
+              id: true,
+              containerId: true,
+              name: true,
+              available: true,
+              price: true,
+            }
+          }
+        },
+      })
+      if (!container) {
+        return res.status(401).json("containerlist not found")
+      } else if (!container.items || container.items.length === 0) {
+        return res.status(204).json({ message: 'Container doen\'t have items' })
+      }
+      return res.status(200).json(container.items)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  })
+
+app.get('/api/article/listall',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      console.log("article/listall")
+      const articles = await database.prisma.Items.findMany()
+      console.log(JSON.stringify(articles, null, 2));
+      res.status(200).json(articles)
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json('An error occured.')
+    }
+  })
+
+app.post('/api/article/details',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.body.articleId || req.body.articleId === '') {
+        return res.status(401).json({ message: 'Missing articleId' })
+      }
+      const article = await database.prisma.Items.findUnique({
+        where: { id: req.body.articleId },
+        select: {
+          id: true,
+          name: true,
+          price: true,
+          available: true,
+          containerId: true
+        }
+      })
+      if (!article) {
+        return res.status(401).json("article not found")
+      }
+      return res.status(200).json(article)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  })
+
+app.post('/api/rent/article',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id },
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      if (!req.body.price || req.body.price < 0) {
+        return res.status(401).json({ message: 'Missing price' })
+      }
+      if (!req.body.itemId || req.body.itemId === '') {
+        return res.status(401).json({ message: 'Missing itemId' })
+      }
+      if (!req.body.duration || req.body.duration < 0) {
+        return res.status(401).json({ message: 'Missing duration' })
+      }
+      const locationPrice = req.body.price * req.body.duration
+      //console.log('locationPrice : ', locationPrice);
+      await database.prisma.Location.create({
+        data: {
+          price: locationPrice,
+          //itemId: req.body.itemId,
+          userId: user.id,
+          createdAt: new Date(),
+          duration: parseInt(req.body.duration),
+        }
+      })
+      return res.status(201).json({ message: 'location saved' })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  })
+
+// get rental
+app.get('/api/rent',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token')
+      }
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id }
+      })
+      if (!user) {
+        return res.status(404).send('User not found')
+      }
+      const rentals = await database.prisma.Location.findMany({
+        where: { userId: user.id }
+      })
+      res.status(201).json({ rentals: rentals })
+    } catch (err) {
+      console.error(err.message)
+      res.status(401).send('An error occurred')
+    }
 })
 
 app.get('/api/locations', async (req, res) => {
   try {
     const locations = await database.prisma.Location.findMany()
-    res.status(201).json({ locations });
+    return res.status(201).json({ locations });
   } catch (err) {
     console.error(err.message)
-    res.status(401).send('An error occurred')
+    return res.status(401).send('An error occurred')
   }
 });
 
 app.post('/api/opinion',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
-  try {
-    if (!req.user) {
-      return res.status(401).send('Invalid token');
-    }
-    const user = await database.prisma.User.findUnique({
-      where: { id: req.user.id }
-    })
-    if (!user) {
-      return res.status(401).send('User not found');
-    }
-    if (!req.body.comment || req.body.comment === '') {
-      return res.status(401).json({ message: 'Missing comment' })
-    }
-    if (!req.body.note || req.body.note === '') {
-      return res.status(401).json({ message: 'Missing note' })
-    }
-    // create int note
-    await database.prisma.Opinions.create({
-      data: {
-        userId: user.id,
-        date: new Date(),
-        note: req.body.note,
-        comment: req.body.comment,
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
       }
-    })
+      const user = await database.prisma.User.findUnique({
+        where: { id: req.user.id }
+      })
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      if (!req.body.comment || req.body.comment === '') {
+        return res.status(401).json({ message: 'Missing comment' })
+      }
+      if (!req.body.note || req.body.note === '') {
+        return res.status(401).json({ message: 'Missing note' })
+      }
+      // create int note
+      await database.prisma.Opinions.create({
+        data: {
+          userId: user.id,
+          date: new Date(),
+          note: req.body.note,
+          comment: req.body.comment,
+        }
+      })
 
-    res.status(201).json({ message: 'opinion saved' })
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
-  }
-})
+      res.status(201).json({ message: 'opinion saved' })
+    } catch (err) {
+      console.error(err.message)
+      res.status(401).send('An error occurred')
+    }
+  })
 
 app.get('/api/opinion',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
-  var opinions = []
-  try {
-    if (!req.user) {
-      return res.status(401).send('Invalid token');
-    }
-    const user = await database.prisma.User.findUnique({
-      where: { id: req.user.id }
-    })
-    if (!user) {
-      return res.status(401).send('User not found');
-    }
-
-    const note = req.query.note
-    if (note != null) {
-      if (!note || note != '0' && note != '1' && note != '2'
-        && note != '3' && note != '4' && note != '5') {
-        return res.status(401).json({ message: 'Missing note' })
+    var opinions = []
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
       }
-      opinions = await database.prisma.Opinions.findMany({
-        where: { note: note }
-      })
-    } else {
-      opinions = await database.prisma.Opinions.findMany()
-    }
-
-    var result = []
-    // for each opinion, add in result {'user.firstName + lastName', comment, note}
-    for (var i = 0; i < opinions.length; i++) {
       const user = await database.prisma.User.findUnique({
-        where: { id: opinions[i].userId }
+        where: { id: req.user.id }
       })
-      result.push({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        comment: opinions[i].comment,
-        note: opinions[i].note
-      })
-    }
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
 
-    res.status(201).json({ result })
-  } catch (err) {
-    console.error(err.message)
-    res.status(401).send('An error occurred')
-  }
-})
+      const note = req.query.note
+      if (note != null) {
+        if (!note || note != '0' && note != '1' && note != '2'
+          && note != '3' && note != '4' && note != '5') {
+          return res.status(401).json({ message: 'Missing note' })
+        }
+        opinions = await database.prisma.Opinions.findMany({
+          where: { note: note }
+        })
+      } else {
+        opinions = await database.prisma.Opinions.findMany()
+      }
+
+      var result = []
+      // for each opinion, add in result {'user.firstName + lastName', comment, note}
+      for (var i = 0; i < opinions.length; i++) {
+        const user = await database.prisma.User.findUnique({
+          where: { id: opinions[i].userId }
+        })
+        result.push({
+          firstName: user.firstName,
+          lastName: user.lastName,
+          comment: opinions[i].comment,
+          note: opinions[i].note
+        })
+      }
+
+      res.status(201).json({ result })
+    } catch (err) {
+      console.error(err.message)
+      res.status(401).send('An error occurred')
+    }
+  })
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)

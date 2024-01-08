@@ -32,7 +32,8 @@ void main() {
     ));
 
     expect(find.text('Précédent'), findsOneWidget);
-    expect(find.text('Suivant'), findsOneWidget);
+    expect(find.text('Terminer'), findsOneWidget);
+    
   });
 
   testWidgets('Container Creation invalid JWT token',

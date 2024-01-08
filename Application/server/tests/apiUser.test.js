@@ -1,16 +1,16 @@
 const request = require('supertest');
 const async = require('async');
 
-describe('POST /api/signup', () => {
+describe('POST /api/user', () => {
     let authToken;
+    let userID;
 
     beforeAll(async () => {
       const loginResponse = await request('http://localhost:8080')
         .post('/api/login')
         .send({ email: 'user@gmail.com', password: 'user' });
 
-      userToken = loginResponse.body.data.token;
-      userID = loginResponse.body.data.user.id;
+      userToken = loginResponse.body.token;
     });
     it('should connect and get a token', (done) => {
       async.series(
@@ -21,35 +21,35 @@ describe('POST /api/signup', () => {
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ email: 'admin@gmail.com', password: 'admin' })
-            authToken = res.body.data.token
+            authToken = res.body.token
+            userID = res.body.user.id
             expect(res.statusCode).toBe(201)
           }
         ],
         done
       )
     }),
-    it('should get user informations', function (done) {
+    it('should get user information', function (done) {
       async.series(
         [
           function (callback) {
-          console.log('_________' + authToken)
             request('http://localhost:8080')
-              .get('/api/user')
+              .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
-              .set('Authorization', authToken)
+              .set('Authorization', `Bearer ${authToken}`)
               .expect(200, callback)
           },
         ],
         done
       )
     }),
-    it('should not get user informations, invalid token', function (done) {
+    it('should not get user information, no token', function (done) {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/user')
+              .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .expect(401, callback)
@@ -58,15 +58,15 @@ describe('POST /api/signup', () => {
         done
       )
     }),
-    it('should not get user informations, invalid token', function (done) {
+    it('should not get user information, invalid token', function (done) {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/user')
+              .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
-              .set('Authorization', 'invalidToken')
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .expect(401, callback)
           },
         ],
@@ -81,7 +81,7 @@ describe('POST /api/signup', () => {
               .delete('/api/user/invalidID')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
-              .set('Authorization', 'invalidToken')
+              .set('Authorization', `Bearer ${authToken}`)
               .expect(401, callback)
           },
         ],
@@ -96,23 +96,8 @@ describe('POST /api/signup', () => {
               .delete(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
-              .set('Authorization', `Bearer blablabla`)
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .expect(401, callback)
-          },
-        ],
-        done
-      )
-    }),
-    it('Should delete the user', function (done) {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .delete(`/api/user/${userID}`)
-              .set('Content-Type', 'application/json')
-              .set('Accept', 'application/json')
-              .set('Authorization', `Bearer ${userToken}`)
-              .expect(200, callback)
           },
         ],
         done
@@ -123,9 +108,10 @@ describe('POST /api/signup', () => {
         [
           async function () {
             const res = await request('http://localhost:8080')
-              .post('/api/login')
+              .put('/api/user/notifications')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ favoriteItemsAvailable: false, endOfRenting: false, newsOffersRisu: false })
             expect(res.statusCode).toBe(200)
           }
@@ -138,9 +124,10 @@ describe('POST /api/signup', () => {
         [
           async function () {
             const res = await request('http://localhost:8080')
-              .post('/api/login')
+              .put('/api/user/notifications')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ favoriteItemsAvailable: true, newsOffersRisu: true })
             expect(res.statusCode).toBe(200)
           }

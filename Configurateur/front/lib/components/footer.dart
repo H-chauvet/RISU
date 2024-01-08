@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:path/path.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
@@ -51,7 +53,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
           const SizedBox(width: 20),
           TextButton(
             onPressed: () {
-              context.go("/feedbacks");
+              if (token == '') {
+                context.go("/login");
+              } else {
+                context.go("/feedbacks");
+              }
             },
             child: const Text(
               'Avis',

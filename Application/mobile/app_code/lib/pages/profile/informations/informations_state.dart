@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -14,21 +13,28 @@ import 'informations_page.dart';
 String firstName = '';
 String lastName = '';
 String email = '';
+String newFirstName = '';
+String newLastName = '';
+String newEmail = '';
 
 Future<void> fetchUserData() async {
   try {
     final token = userInformation!.token;
-    final response = await http.get(Uri.parse('http://$serverIp:8080/api/user'),
+    final response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         });
     if (response.statusCode == 200) {
       final userData = json.decode(response.body);
       firstName = userData['firstName'];
       lastName = userData['lastName'];
       email = userData['email'];
-      UserData.fromJson(userData);
+      UserData.fromJson(userData['user'], userData['token']);
+      newFirstName = '';
+      newLastName = '';
+      newEmail = '';
     } else {
       print('Error: ${response.statusCode}');
     }
@@ -38,19 +44,30 @@ Future<void> fetchUserData() async {
 }
 
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
-  Future<void> updateFirstName(String newFirstName) async {
+  Future<void> updateUser() async {
     try {
       final token = userInformation!.token;
 
       print('token : $token');
+      // Add newFirstName, newLastName, newEmail if not null
+      Map<String, dynamic> body = {};
+      if (newFirstName != '') {
+        body['firstName'] = newFirstName;
+      }
+      if (newLastName != '') {
+        body['lastName'] = newLastName;
+      }
+      if (newEmail != '') {
+        body['email'] = newEmail;
+      }
 
-      final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/firstName'),
+      final response = await http.put(
+        Uri.parse('http://$serverIp:8080/api/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         },
-        body: jsonEncode({'firstName': newFirstName}),
+        body: jsonEncode(body),
       );
 
       if (response.statusCode == 200) {
@@ -61,76 +78,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           await MyAlertDialog.showInfoAlertDialog(
               context: context,
               title: 'Mise à jour réussie',
-              message: 'Le prénom a été mis à jour');
+              message: 'Informations mises à jour.');
         }
       } else {
-        print('Erreur: ${response.statusCode}');
+        print('Erreur: ${response.statusCode}, ${response.body}');
       }
     } catch (e) {
-      print('Erreur updateFirstName() : $e');
-    }
-  }
-
-  Future<void> updateLastName(String newLastName) async {
-    try {
-      final token = userInformation!.token;
-
-      final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/lastName'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
-        },
-        body: jsonEncode({'lastName': newLastName}),
-      );
-
-      if (response.statusCode == 200) {
-        final updatedData = json.decode(response.body);
-        print('Mise à jour réussie: $updatedData');
-        await fetchUserData();
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour réussie',
-              message: 'Le nom a été mis à jour');
-        }
-      } else {
-        print('Erreur: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Erreur updateLastName() : $e');
-    }
-  }
-
-  Future<void> updateEmail(String newEmail) async {
-    try {
-      final token = userInformation!.token;
-      print('newEmail : $newEmail');
-
-      final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/email'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
-        },
-        body: jsonEncode({'email': newEmail}),
-      );
-
-      if (response.statusCode == 200) {
-        final updatedData = json.decode(response.body);
-        print('Mise à jour réussie: $updatedData');
-        await fetchUserData();
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour réussie',
-              message: 'L\'email a été mis à jour');
-        }
-      } else {
-        print('Erreur: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Erreur updateEmail() : $e');
+      print('Erreur updateUser() : $e');
     }
   }
 
@@ -141,11 +95,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       print('currentPassword : $currentPassword');
       print('newPassword : $newPassword');
 
-      final response = await http.post(
+      final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': '$token',
+          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
           'currentPassword': currentPassword,
@@ -193,10 +147,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    String newFirstName = '';
-    String newLastName = '';
-    String newEmail = '';
-
     String currentPassword = '';
     String newPassword = '';
     String newPasswordConfirmation = '';
@@ -212,30 +162,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    // Chevron bleu pour la navigation vers /home
-                    GestureDetector(
-                      child: const Icon(
-                        Icons.chevron_left,
-                        color: Colors.blue, // Couleur du chevron
-                        size: 30.0, // Taille du chevron
-                      ),
-                    ),
-                    const SizedBox(width: 20),
-                    // Logo RISU
-                    Expanded(
-                      child: Center(
-                        child: Image.asset(
-                          'assets/logo_noir.png',
-                          width: 200,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 40),
-                  ],
-                ),
                 // Prénom
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 25),
@@ -270,45 +196,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      OutlinedButton(
-                        key: const Key('profile_info-button-update_firstName'),
-                        onPressed: () {
-                          if (newFirstName.isEmpty) {
-                            MyAlertDialog.showInfoAlertDialog(
-                                key: const Key(
-                                    'profile_info-alert_dialog-no_firstName'),
-                                context: context,
-                                title: 'Impossible de mettre à jour le prénom',
-                                message: 'Veuillez remplir le champ');
-                            return;
-                          }
-                          updateFirstName(newFirstName);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          side: BorderSide(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            width: 3.0,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48.0,
-                            vertical: 16.0,
-                          ),
-                        ),
-                        child: Text(
-                          'Mettre à jour le prénom',
-                          style: TextStyle(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -347,46 +234,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      OutlinedButton(
-                        key: const Key('profile_info-button-update_last_name'),
-                        onPressed: () {
-                          if (newLastName.isEmpty) {
-                            MyAlertDialog.showInfoAlertDialog(
-                                key: const Key(
-                                    'profile_info-alert_dialog-no_last_name'),
-                                context: context,
-                                title: 'Impossible de mettre à jour le nom',
-                                message: 'Veuillez remplir le champ');
-                            return;
-                          }
-                          print('newLastName : $newLastName');
-                          updateLastName(newLastName);
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          side: BorderSide(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            width: 3.0,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48.0,
-                            vertical: 16.0,
-                          ),
-                        ),
-                        child: Text(
-                          'Mettre à jour le nom',
-                          style: TextStyle(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -425,19 +272,22 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       ),
                       const SizedBox(height: 20),
                       OutlinedButton(
-                        key: const Key('profile_info-button-update_email'),
+                        key: const Key('informations-button_update_user'),
                         onPressed: () {
-                          if (newEmail.isEmpty) {
-                            MyAlertDialog.showInfoAlertDialog(
+                          if (newFirstName == '' &&
+                              newLastName == '' &&
+                              newEmail == '') {
+                            MyAlertDialog.showErrorAlertDialog(
                                 key: const Key(
-                                    'profile_info-alert_dialog-no_email'),
+                                    'informations-alert_dialog_error_no_info'),
                                 context: context,
-                                title: 'Impossible de mettre à jour l\'email',
-                                message: 'Veuillez remplir le champ');
+                                title: 'Erreur',
+                                message:
+                                    'Veuillez renseigner au moins un champ.');
                             return;
                           }
-                          print('newEmail : $newEmail');
-                          updateEmail(newEmail);
+                          print('${newFirstName} ${newLastName} ${newEmail}');
+                          updateUser();
                         },
                         style: OutlinedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -455,7 +305,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           ),
                         ),
                         child: Text(
-                          'Mettre à jour l\'email',
+                          'Appliquer les changements',
                           style: TextStyle(
                             color: context.select(
                                 (ThemeProvider themeProvider) => themeProvider
@@ -569,35 +419,4 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       ),
     );
   }
-
-/**Widget buildButton(
-    String text, {
-    double fontSize = 18,
-    double width = double.infinity,
-    bool isLogoutButton = false,
-    String route = '',
-    }) {
-    final textColor = isLogoutButton ? Colors.black : const Color(0xFF4682B4);
-
-    return Container(
-    margin: const EdgeInsets.symmetric(vertical: 10),
-    width: width,
-    child: ElevatedButton(
-    onPressed: () {
-    if (route.isNotEmpty) {
-    context.go(route);
-    }
-    },
-    style: ElevatedButton.styleFrom(
-    primary: Colors.white,
-    onPrimary: textColor,
-    side: const BorderSide(color: Color(0xFF4682B4)),
-    shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(30),
-    ),
-    ),
-    child: Text(text, style: TextStyle(fontSize: fontSize)),
-    ),
-    );
-    }**/
 }
