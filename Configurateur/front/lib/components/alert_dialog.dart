@@ -5,6 +5,7 @@ import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class MyAlertTest {
@@ -20,7 +21,8 @@ class MyAlertTest {
   static Future<void> checkSignInStatusAdmin(BuildContext context) async {
     bool isSignedIn = await checkSignInAdmin(context);
     String title = 'Connexion Administrateur requise';
-    String message = "Vous devez être connecté en tant qu'Administrateur à un compte pour poursuivre.";
+    String message =
+        "Vous devez être connecté en tant qu'Administrateur à un compte pour poursuivre.";
     if (!isSignedIn) {
       _showSignInAlertDialog(context, title, message);
     }
@@ -38,27 +40,15 @@ class MyAlertTest {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const LandingPage();
-                    },
-                  ),
-                );
+                Navigator.pop(context);
+                context.go('/');
               },
               child: const Text("Retour à l'accueil"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const LoginScreen();
-                    },
-                  ),
-                );
+                Navigator.pop(context);
+                context.go('/login');
               },
               child: const Text('Se connecter'),
             ),
