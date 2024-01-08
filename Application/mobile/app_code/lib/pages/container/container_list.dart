@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'details_page.dart';
 
 class ContainerList {
   final int? id;
@@ -46,7 +47,16 @@ class ContainerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      key: const Key('container-list_card'),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute( // id must be the same from web to mobile
+              builder: (context) => ContainerDetailsPage(containerId: container.id.toString())
+            ));
+      },
+      child: Container(
       height: 120,
       margin: EdgeInsets.only(right:25.0, left: 25.0, top: 10.0), // Adjust the padding here
       child: Container(
@@ -75,6 +85,7 @@ class ContainerCard extends StatelessWidget {
         ),
       ),
       ),
+    ),
     );
   }
 }
