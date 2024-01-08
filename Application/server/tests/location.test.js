@@ -3,7 +3,7 @@ const async = require('async');
 
 let authToken = '';
 
-describe('POST /api/user/firstName', () => {
+describe('POST /api/rent', () => {
     it('should connect and get a token', (done) => {
       async.series(
         [
