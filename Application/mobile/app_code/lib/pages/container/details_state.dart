@@ -15,17 +15,39 @@ import 'details_page.dart';
 
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
+  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
     response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/container/details'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: jsonEncode(<String, String>{
-          'containerId': containerId,
-        }));
+      Uri.parse('http://$serverIp:8080/api/container/details'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': '$token',
+      },
+      body: jsonEncode(<String, String>{
+        'containerId': containerId,
+      }),
+    );
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      return responseData;
+    } else {
+      if (context.mounted) {
+        print(response.statusCode);
+        print(response.reasonPhrase);
+        MyAlertDialog.showErrorAlertDialog(
+            key: const Key('container-details_invaliddata'),
+            context: context,
+            title: 'Container-details',
+            message: 'Failed to get container');
+      }
+      return {
+        'owner': '',
+        'localization': '',
+        '_count': {'items': 0}
+      };
+    }
   } catch (err) {
     if (context.mounted) {
       MyAlertDialog.showErrorAlertDialog(
@@ -34,22 +56,11 @@ Future<dynamic> getContainerData(
           title: 'Container-details',
           message: 'Connexion refused');
     }
-    return {'owner': '', 'localization':'','_count':{'items':0}};
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    return responseData;
-  } else {
-    if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      MyAlertDialog.showErrorAlertDialog(
-          key: const Key('container-details_invaliddata'),
-          context: context,
-          title: 'Container-details',
-          message: 'Failed to get container');
-    }
-    return {'owner': '', 'localization':'','_count':{'items':0}};
+    return {
+      'owner': '',
+      'localization': '',
+      '_count': {'items': 0}
+    };
   }
 }
 

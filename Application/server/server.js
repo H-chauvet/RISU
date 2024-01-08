@@ -500,18 +500,26 @@ app.post('/api/user/password', async (req, res) => {
 
 app.get('/api/container/listall', async (req, res) => {
   try {
+    const token = req.headers.authorization
+    if (!token || token === '') {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
     console.log("container/listall")
     const containers = await database.prisma.Containers.findMany()
     console.log(JSON.stringify(containers, null, 2));
-    res.status(200).json(containers)
+    return res.status(200).json(containers)
   } catch (err) {
     console.log(err)
-    return res.status(400).json('An error occured.')
+    return res.status(400).json(err.message)
   }
 })
 
 app.post('/api/container/details', async (req, res) => {
   try {
+    const token = req.headers.authorization
+    if (!token || token === '') {
+      return res.status(401).json({ message: 'No token, authorization denied' })
+    }
     if (!req.body.containerId || req.body.containerId === '') {
       return res.status(401).json({ message: 'Missing containerId' })
     }
@@ -533,7 +541,7 @@ app.post('/api/container/details', async (req, res) => {
     return res.status(200).json(container)
   } catch (err) {
     console.error(err.message)
-    return res.status(401).send('An error occurred')
+    return res.status(401).send(err.message)
   }
 })
 
