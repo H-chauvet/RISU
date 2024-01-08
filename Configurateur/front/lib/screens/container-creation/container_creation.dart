@@ -34,10 +34,16 @@ class ContainerCreationState extends State<ContainerCreation> {
   bool isLoaded = false;
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
-  bool jwtToken = false;
+  String jwtToken = '';
 
   @override
   void initState() {
+    if (token != "") {
+      jwtToken = token;
+    } else {
+      jwtToken = "";
+    }
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -48,7 +54,6 @@ class ContainerCreationState extends State<ContainerCreation> {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
     loadImage();
-    MyAlertTest.checkSignInStatus(context);
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
@@ -401,107 +406,98 @@ class ContainerCreationState extends State<ContainerCreation> {
           'Configurateur',
           context: context,
         ),
-        bottomSheet: jwtToken
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ProgressBar(
-                    length: 2,
-                    progress: 0,
-                    previous: 'Précédent',
-                    next: 'Terminer',
-                    previousFunc: goPrevious,
-                    nextFunc: goNext,
+        bottomSheet: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ProgressBar(
+              length: 2,
+              progress: 0,
+              previous: 'Précédent',
+              next: 'Terminer',
+              previousFunc: goPrevious,
+              nextFunc: goNext,
+            ),
+            const SizedBox(
+              height: 50,
+            )
+          ],
+        ),
+        body: Stack(children: [
+          Row(
+            children: [
+              const SizedBox(
+                width: 50,
+              ),
+              Flexible(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: 0.7,
+                    heightFactor: 0.7,
+                    child: InteractivePanel(
+                      callback: updateCube,
+                      rotateFrontCallback: rotateFront,
+                      rotateBackCallback: rotateBack,
+                      rotateLeftCallback: rotateLeftSide,
+                      rotateRightCallback: rotateRightSide,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 50,
-                  )
+                ),
+              ),
+              Column(
+                children: [
+                  Flexible(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        padding: const EdgeInsets.only(top: 20.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            String face = await showDialog(
+                                context: context,
+                                builder: (context) => AutoFillDialog(
+                                    callback: autoFillContainer));
+                            autoFillContainer(face, false);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          child: const Text('Remplissage',
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Sp3dRenderer(
+                    const Size(800, 800),
+                    const Sp3dV2D(400, 400),
+                    world,
+                    // If you want to reduce distortion, shoot from a distance at high magnification.
+                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                    allowUserWorldRotation: false,
+                    allowUserWorldZoom: false,
+                  ),
                 ],
+              ),
+              Flexible(
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FractionallySizedBox(
+                      widthFactor: 0.7,
+                      heightFactor: 0.7,
+                      child: RecapPanel(
+                        articles: lockers,
+                        onSaved: goNext,
+                      )),
+                ),
+              ),
+              const SizedBox(
+                width: 50,
               )
-            : const Text(""),
-        body: jwtToken
-            ? Stack(children: [
-                Row(
-                  children: [
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    Flexible(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: FractionallySizedBox(
-                          widthFactor: 0.7,
-                          heightFactor: 0.7,
-                          child: InteractivePanel(
-                            callback: updateCube,
-                            rotateFrontCallback: rotateFront,
-                            rotateBackCallback: rotateBack,
-                            rotateLeftCallback: rotateLeftSide,
-                            rotateRightCallback: rotateRightSide,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Container(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: ElevatedButton(
-                                onPressed: () async {
-                                  String face = await showDialog(
-                                      context: context,
-                                      builder: (context) => AutoFillDialog(
-                                          callback: autoFillContainer));
-                                  autoFillContainer(face, false);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0))),
-                                child: const Text('Remplissage',
-                                    style: TextStyle(color: Colors.white)),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Sp3dRenderer(
-                          const Size(800, 800),
-                          const Sp3dV2D(400, 400),
-                          world,
-                          // If you want to reduce distortion, shoot from a distance at high magnification.
-                          Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                          Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                          allowUserWorldRotation: false,
-                          allowUserWorldZoom: false,
-                        ),
-                      ],
-                    ),
-                    Flexible(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: FractionallySizedBox(
-                            widthFactor: 0.7,
-                            heightFactor: 0.7,
-                            child: RecapPanel(
-                              articles: lockers,
-                              onSaved: goNext,
-                            )),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 50,
-                    )
-                  ],
-                )
-              ])
-            : const CustomAlertDialog(
-                title: "Connexion requise",
-                message:
-                    'Vous devez être connecté à un compte pour poursuivre.',
-              ));
+            ],
+          )
+        ]));
   }
 }

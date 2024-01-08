@@ -1,6 +1,7 @@
 // import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:front/screens/container-list/item-list/item_list.dart';
 
 class ContainerList {
   final int? id;
@@ -49,26 +50,40 @@ class ContainerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(container.id.toString()),
-            subtitle: Text(container.price.toString()),
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => onDelete(container),
-                ),
-              SizedBox(width: 10,),
-              Text("name"),
-              ],
+    return InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ItemPage(containerId: container.id),
+            ),
+          );
+        },
+        child: Card(
+          child: ListTile(
+            title: Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    title: Text(container.id.toString()),
+                    subtitle: Text(container.price.toString()),
+                    leading: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => onDelete(container),
+                        ),
+                      SizedBox(width: 10,),
+                      Text("name"),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
-      ),
-    );
+        ),
+      );
   }
 }

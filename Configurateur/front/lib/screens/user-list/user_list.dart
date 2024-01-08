@@ -122,7 +122,6 @@ class _UserPageState extends State<UserPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Gestion des utilisateurs',
         context: context,

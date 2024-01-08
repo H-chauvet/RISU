@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/components/appbar.dart';
-import 'package:risu/components/drop_down_menu.dart';
-import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/parameter.dart';
+import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 
+import '../../components/divider.dart';
 import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {
@@ -16,68 +20,91 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: true,
-        showLogo: true,
-        showBurgerMenu: false,
-      ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 51),
-            child: Column(
-              // mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(height: 30), // Espace ajouté
-                const Text(
-                  'Paramètres', // Texte "Paramètres"
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          child: Column(
+            children: [
+              SizedBox(height: 8),
+              Text(
+                'Paramètres',
+                style: TextStyle(
+                  fontSize: 36, // Taille de la police
+                  fontWeight: FontWeight.bold, // Gras
+                  color: Color(0xFF4682B4),
+                ),
+              ),
+              SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Mon compte',
                   style: TextStyle(
-                    fontSize: 36, // Taille de la police
-                    fontWeight: FontWeight.bold, // Gras
-                    color: Color(0xFF4682B4),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Thème : ',
-                      style: TextStyle(
-                        fontSize: 20, // Taille de la police
-                        fontWeight: FontWeight.bold, // Gras
-                        color: Color(0xFF4682B4),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          MyDropdownButton(
-                            key: Key('drop_down'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              ),
+              SizedBox(height: 16),
+              MyParameter(
+                goToPage: ProfileInformationsPage(),
+                title: 'Voir les détails du profil',
+                paramIcon: Icon(Icons.person),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Informations de paiement',
+                paramIcon: Icon(Icons.payments_outlined),
+                locked: true,
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'Notifications',
+                paramIcon: Icon(Icons.notifications),
+                locked: true,
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: ThemeSettingsPage(),
+                title: 'Thème',
+                paramIcon: Icon(Icons.brush),
+              ),
+              SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Assistance',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                const SizedBox(height: 20),
-                MyOutlinedButton(
-                  key: const Key('settings-button_change_information'),
-                  onPressed: () {
-                    print(context);
-                  },
-                  text: "Modification d'information",
-                ),
-              ],
-            ),
+              ),
+              SizedBox(height: 16),
+              MyParameter(
+                goToPage: OpinionPage(),
+                title: 'Avis',
+                paramIcon: Icon(Icons.star),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: ContactPage(),
+                title: 'Nous contacter',
+                paramIcon: Icon(Icons.message_outlined),
+              ),
+              SizedBox(height: 8),
+              MyParameter(
+                goToPage: LoginPage(),
+                title: 'A propos',
+                paramIcon: Icon(Icons.question_mark),
+                locked: true,
+              ),
+            ],
           ),
         ),
       ),
