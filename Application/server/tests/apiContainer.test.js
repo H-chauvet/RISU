@@ -8,6 +8,7 @@ describe('POST /containerDetails', () => {
 			.get('/api/container/listall')
 			.set('Content-Type', 'application/json')
 			.set('Accept', 'application/json')
+			.set('Authorization', 'defaultToken')
 		containersId = response.body[0].id
 	})
 	it('should get container details from id', function (done) {
@@ -18,6 +19,7 @@ describe('POST /containerDetails', () => {
 						.post('/api/container/details')
 						.set('Content-Type', 'application/json')
 						.set('Accept', 'application/json')
+						.set('Authorization', 'defaultToken')
 						.send({ 'containerId': containersId })
 						.expect(200, callback)
 				}
@@ -33,6 +35,7 @@ describe('POST /containerDetails', () => {
 						.post('/api/container/details')
 						.set('Content-Type', 'application/json')
 						.set('Accept', 'application/json')
+						.set('Authorization', 'defaultToken')
 						.send({ 'containerId': 'wrong id' })
 						.expect(401, callback)
 				}
@@ -48,6 +51,7 @@ describe('POST /containerDetails', () => {
 						.post('/api/container/details')
 						.set('Content-Type', 'application/json')
 						.set('Accept', 'application/json')
+						.set('Authorization', 'defaultToken')
 						.send({ 'containerId': '' })
 						.expect(401, callback)
 				}
@@ -63,6 +67,7 @@ describe('POST /containerDetails', () => {
 						.post('/api/container/details')
 						.set('Content-Type', 'application/json')
 						.set('Accept', 'application/json')
+						.set('Authorization', 'defaultToken')
 						.send({ 'containerId': null })
 						.expect(401, callback)
 				}
