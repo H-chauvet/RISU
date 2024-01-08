@@ -58,7 +58,14 @@ case "$command" in
     sudo docker stop $(docker ps -aq)
     sudo docker rm $(docker ps -aq)
     sudo docker rmi -f $(docker images -aq)
+    ;;
 
+  "tests")
+    echo "Executing command tests..."
+    cd server/ && npm test
+    cd ..
+    cd mobile/app_code/ && ./run it
+    cd -
     ;;
 
   "mobile")
