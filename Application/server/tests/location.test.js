@@ -76,7 +76,7 @@ describe('POST /api/rent/article', () => {
         done
       )
     }),
-    it('should not create location, no price', (done) => {
+    it('should create location', (done) => {
       async.series(
         [
           function (callback) {
