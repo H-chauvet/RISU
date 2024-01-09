@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/screens/company/container-company.dart';
-import 'package:front/services/storage_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -82,6 +80,7 @@ class CompanyPageState extends State<CompanyPage> {
               (index) => Column(children: [
                   Image.asset(
                     members[index],
+                    key: Key('member_image_$index'),
                     width: 95,
                     height: 95,
                 ),
