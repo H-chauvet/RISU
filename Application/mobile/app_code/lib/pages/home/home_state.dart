@@ -85,19 +85,19 @@ class HomePageState extends State<HomePage> {
         endDrawer: SizedBox(
           width: MediaQuery.of(context).size.width * 0.6, // 60 % of the screen
           child: Drawer(
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
-              children: [
-                SizedBox(
-                  height: 128,
-                  child: DrawerHeader(
-                    padding: const EdgeInsets.only(left: 32, top: 8),
-                    decoration: BoxDecoration(
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                    ),
-                    child: const Text(
+            child: Column(children: [
+              SizedBox(
+                height: 96,
+                width: double.infinity,
+                child: DrawerHeader(
+                  padding: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                  ),
+                  child: const Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
                       'Menu',
                       style: TextStyle(
                         fontSize: 36,
@@ -106,40 +106,42 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 16),
-                        MyParameter(
-                          goToPage: _pages[2],
-                          title: 'Profil',
-                          paramIcon: Icon(Icons.person),
-                        ),
-                        SizedBox(height: 8),
-                        MyParameter(
-                          goToPage: ProfileInformationsPage(),
-                          title: 'Notifications',
-                          paramIcon: Icon(Icons.notifications_active),
-                          locked: true,
-                        ),
-                        SizedBox(height: 8),
-                        MyParameter(
-                          goToPage: OpinionPage(),
-                          title: 'Avis',
-                          paramIcon: Icon(Icons.star),
-                        ),
-                        SizedBox(height: 8),
-                        MyParameter(
-                          goToPage: SettingsPage(),
-                          title: 'Paramètres',
-                          paramIcon: Icon(Icons.settings),
-                        ),
-                      ],
-                    )),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+              MyRedirectDivider(
+                goToPage: _pages[2],
+                title: 'Profil',
+                paramIcon: Icon(Icons.person),
+              ),
+              SizedBox(height: 8),
+              MyRedirectDivider(
+                goToPage: LoginPage(),
+                title: 'Notifications',
+                paramIcon: Icon(Icons.notifications_active),
+                disconnect: true,
+              ),
+              SizedBox(height: 8),
+              MyRedirectDivider(
+                goToPage: OpinionPage(),
+                title: 'Avis',
+                paramIcon: Icon(Icons.star),
+              ),
+              SizedBox(height: 8),
+              MyRedirectDivider(
+                goToPage: SettingsPage(),
+                title: 'Paramètres',
+                paramIcon: Icon(Icons.settings),
+              ),
+              Spacer(),
+              MyRedirectDivider(
+                goToPage: LoginPage(),
+                title: 'Déconnexion',
+                paramIcon: Icon(Icons.logout),
+                disconnect: true,
+                chosenPlace: DIVIDERPLACE.top,
+              ),
+              SizedBox(height: 8),
+            ]),
           ),
         ),
         body: _pages[_currentIndex],
