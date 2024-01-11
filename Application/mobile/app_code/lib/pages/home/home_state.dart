@@ -87,7 +87,7 @@ class HomePageState extends State<HomePage> {
           child: Drawer(
             child: Column(children: [
               SizedBox(
-                height: 96,
+                height: 128,
                 width: double.infinity,
                 child: DrawerHeader(
                   padding: EdgeInsets.zero,
@@ -95,14 +95,12 @@ class HomePageState extends State<HomePage> {
                     color: context.select((ThemeProvider themeProvider) =>
                         themeProvider.currentTheme.secondaryHeaderColor),
                   ),
-                  child: const Align(
+                  child: Align(
                     alignment: Alignment.topCenter,
-                    child: Text(
-                      'Menu',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Image.asset(
+                      key: const Key('appbar-image_logo'),
+                      'assets/logo_noir.png',
+                      height: 64,
                     ),
                   ),
                 ),
