@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
+import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/pages/login/login_page.dart';
@@ -82,66 +83,7 @@ class HomePageState extends State<HomePage> {
           showLogo: true,
           showBurgerMenu: false,
         ),
-        endDrawer: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.6, // 60 % of the screen
-          child: Drawer(
-            child: Column(children: [
-              SizedBox(
-                height: 128,
-                width: double.infinity,
-                child: DrawerHeader(
-                  padding: EdgeInsets.zero,
-                  decoration: BoxDecoration(
-                    color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
-                  ),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Image.asset(
-                      key: const Key('appbar-image_logo'),
-                      'assets/logo_noir.png',
-                      height: 64,
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              MyRedirectDivider(
-                goToPage: _pages[2],
-                title: 'Profil',
-                paramIcon: Icon(Icons.person),
-              ),
-              SizedBox(height: 8),
-              MyRedirectDivider(
-                goToPage: LoginPage(),
-                title: 'Notifications',
-                paramIcon: Icon(Icons.notifications_active),
-                disconnect: true,
-              ),
-              SizedBox(height: 8),
-              MyRedirectDivider(
-                goToPage: OpinionPage(),
-                title: 'Avis',
-                paramIcon: Icon(Icons.star),
-              ),
-              SizedBox(height: 8),
-              MyRedirectDivider(
-                goToPage: SettingsPage(),
-                title: 'Paramètres',
-                paramIcon: Icon(Icons.settings),
-              ),
-              Spacer(),
-              MyRedirectDivider(
-                goToPage: LoginPage(),
-                title: 'Déconnexion',
-                paramIcon: Icon(Icons.logout),
-                disconnect: true,
-                chosenPlace: DIVIDERPLACE.top,
-              ),
-              SizedBox(height: 8),
-            ]),
-          ),
-        ),
+        endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(

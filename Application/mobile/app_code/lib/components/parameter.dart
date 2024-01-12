@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:risu/utils/check_signin.dart';
 import '../globals.dart';
 import 'divider.dart';
 
@@ -24,26 +25,31 @@ class MyRedirectDivider extends StatelessWidget {
   });
 
   void onChanging(BuildContext context) {
-    if (disconnect) {
-      userInformation = null;
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return goToPage;
-          },
-        ),
-        (route) => false,
-      );
+    if (userInformation == null) {
+      checkSignin(context);
+      return;
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return goToPage;
-          },
-        ),
-      );
+      if (disconnect) {
+        userInformation = null;
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return goToPage;
+            },
+          ),
+          (route) => false,
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return goToPage;
+            },
+          ),
+        );
+      }
     }
   }
 
