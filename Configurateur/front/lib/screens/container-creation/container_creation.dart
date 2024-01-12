@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -17,13 +17,6 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
-class MaterialIndex {
-  int materialIndex;
-  String name;
-
-  MaterialIndex(this.materialIndex, this.name);
-}
-
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation({super.key});
 
@@ -37,59 +30,30 @@ class ContainerCreation extends StatefulWidget {
 /// page d'inscription pour le configurateur
 class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
-  List<MaterialIndex> materialIndex = [];
-  Sp3dWorld? world;
+  late Sp3dWorld world;
   bool isLoaded = false;
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
   String jwtToken = '';
-  int imageIndex = 0;
 
   @override
   void initState() {
     if (token != "") {
       jwtToken = token;
     } else {
-      context.go(
-        '/login',
-      );
+      jwtToken = "";
     }
-    /*StorageService().readStorage('token').then((value) => {
-          if (value == null)
-            {context.go("/login")}
-          else
-            {
-              jwtToken = value,
-            }
-        });*/
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
-    materialIndex.add(MaterialIndex(1, "Green"));
     obj.materials.add(FSp3dMaterial.red.deepCopy());
-    materialIndex.add(MaterialIndex(2, "Red"));
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
-    materialIndex.add(MaterialIndex(3, "Blue"));
     obj.materials.add(FSp3dMaterial.black.deepCopy());
-    materialIndex.add(MaterialIndex(4, "Black"));
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
-    loadImage(0, false).then((value) => null);
-  }
-
-  Future<Uint8List> _readFileBytes(String filePath) async {
-    ByteData bd = await rootBundle.load(filePath);
-    return bd.buffer.asUint8List(bd.offsetInBytes, bd.lengthInBytes);
-  }
-
-  int getMaterialIndexByName(String name) {
-    for (int i = 0; i < materialIndex.length; i++) {
-      if (materialIndex[i].name == name) {
-        return materialIndex[i].materialIndex;
-      }
-    }
-    return 0;
+    loadImage();
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
@@ -99,16 +63,16 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     switch (coordinates.size) {
       case 1:
-        color = getMaterialIndexByName("Green");
+        color = 1;
         break;
       case 2:
-        color = getMaterialIndexByName("Red");
+        color = 2;
         break;
       case 3:
-        color = getMaterialIndexByName("Blue");
+        color = 3;
         break;
       default:
-        color = getMaterialIndexByName("Green");
+        color = 1;
         coordinates.size = 1;
         break;
     }
@@ -397,33 +361,12 @@ class ContainerCreationState extends State<ContainerCreation> {
     handleFloatingPoint();
   }
 
-  Future<void> loadImage(int fragment, bool unitTesting,
-      {String? filepath}) async {
-    if (filepath != null) {
-      Uint8List data = await _readFileBytes(filepath);
-
-      objs[0].fragments[fragment].faces[0].materialIndex = materialIndex.length;
-      objs[0].fragments[fragment].faces[1].materialIndex = materialIndex.length;
-      objs[0].fragments[fragment].faces[2].materialIndex = materialIndex.length;
-      objs[0].fragments[fragment].faces[3].materialIndex = materialIndex.length;
-
-      objs[0].materials.add(FSp3dMaterial.green.deepCopy());
-      objs[0].materials[materialIndex.length] = FSp3dMaterial.green.deepCopy()
-        ..imageIndex = imageIndex;
-      objs[0].images.add(data);
-      imageIndex++;
-
-      materialIndex.add(MaterialIndex(materialIndex.length, filepath));
-    }
+  void loadImage() async {
     world = Sp3dWorld(objs);
-    await world?.initImages().then((List<Sp3dObj> errorObjs) {
-      if (unitTesting == false) {
-        setState(() {
-          isLoaded = true;
-        });
-      } else {
+    world.initImages().then((List<Sp3dObj> errorObjs) {
+      setState(() {
         isLoaded = true;
-      }
+      });
     });
   }
 
@@ -437,9 +380,6 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   String getContainerMapping() {
     String mapping = "";
-    for (int i = 0; i < lockers.length; i++) {
-      debugPrint(lockers[i].type);
-    }
     for (int i = 0; i < objs[0].fragments.length; i++) {
       mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
     }
@@ -450,30 +390,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
-      'lockers': jsonEncode(lockers),
     };
-    context.go("/container-creation/design", extra: jsonEncode(data));
+    context.go("/container-creation/payment", extra: jsonEncode(data));
   }
 
   void goPrevious() {
-    context.go("/");
-  }
-
-  Widget loadCube() {
-    if (world != null) {
-      return Sp3dRenderer(
-        const Size(800, 800),
-        const Sp3dV2D(400, 400),
-        world!,
-        // If you want to reduce distortion, shoot from a distance at high magnification.
-        Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-        Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-        allowUserWorldRotation: false,
-        allowUserWorldZoom: false,
-      );
-    } else {
-      return Container();
-    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const LandingPage()));
   }
 
   @override
@@ -487,10 +410,10 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
+              length: 2,
               progress: 0,
               previous: 'Précédent',
-              next: 'Suivant',
+              next: 'Terminer',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),
@@ -546,7 +469,16 @@ class ContainerCreationState extends State<ContainerCreation> {
                       ),
                     ),
                   ),
-                  loadCube(),
+                  Sp3dRenderer(
+                    const Size(800, 800),
+                    const Sp3dV2D(400, 400),
+                    world,
+                    // If you want to reduce distortion, shoot from a distance at high magnification.
+                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                    allowUserWorldRotation: false,
+                    allowUserWorldZoom: false,
+                  ),
                 ],
               ),
               Flexible(
@@ -557,7 +489,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                       heightFactor: 0.7,
                       child: RecapPanel(
                         articles: lockers,
-                        onSaved: () => {},
+                        onSaved: goNext,
                       )),
                 ),
               ),

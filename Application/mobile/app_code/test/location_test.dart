@@ -19,7 +19,7 @@ void main() {
             home: RentArticlePage(
               name: 'Ballon de volley',
               price: 2,
-              containerId: 1,
+              containerId: "1",
               locations: ['Gymnase', 'Salle de sport'],
             ),
           ),

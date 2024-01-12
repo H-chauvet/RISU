@@ -41,6 +41,7 @@ model Items {
 	id					String		@id @unique @default(cuid())
 	name				String
 	price				Int
+	available			Boolean		@default(false)
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
 	Locations			Location[]
