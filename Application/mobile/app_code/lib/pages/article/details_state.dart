@@ -19,38 +19,37 @@ Future<dynamic> getContainerData(BuildContext context, String articleId) async {
   final token = userInformation?.token ?? 'defaultToken';
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/article/details'),
+    response = await http.get(
+      Uri.parse('http://$serverIp:8080/api/article/${articleId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'articleId': articleId,
-      }),
     );
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      print(responseData);
+      return responseData;
+    } else {
+      if (context.mounted) {
+        print(response.statusCode);
+        print(response.reasonPhrase);
+        MyAlertDialog.showErrorAlertDialog(
+            key: const Key('article-details_invaliddata'),
+            context: context,
+            title: 'Article-details',
+            message: 'Failed to get article');
+      }
+    }
   } catch (err) {
     if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
+        print(response.statusCode);
+        print(response.reasonPhrase);
+      MyAlertDialog.showErrorAlertDialog(
           key: const Key('article-details_connectionrefused'),
           context: context,
-          title: 'Container-details',
+          title: 'Article-details',
           message: 'Connexion refused');
-    }
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    print(responseData);
-    return responseData;
-  } else {
-    if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-details_invaliddata'),
-          context: context,
-          title: 'Container-details',
-          message: 'Failed to get article');
     }
   }
 }

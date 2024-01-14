@@ -17,16 +17,30 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   late http.Response response;
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/container/articleslist'),
+    response = await http.get(
+      Uri.parse(
+          'http://$serverIp:8080/api/container/articleslist/${containerId}'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'containerId': containerId,
-      }),
     );
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      return responseData;
+    } else if (response.statusCode == 200) {
+      return null;
+    } else {
+      if (context.mounted) {
+        print(response.statusCode);
+        print(response.reasonPhrase);
+        await MyAlertDialog.showErrorAlertDialog(
+            key: const Key('article-list_invaliddata'),
+            context: context,
+            title: 'Article-list',
+            message: 'Failed to get article list');
+      }
+    }
   } catch (err) {
     if (context.mounted) {
       await MyAlertDialog.showErrorAlertDialog(
@@ -34,22 +48,6 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
           context: context,
           title: 'Article-list',
           message: 'connexion refused');
-    }
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    return responseData;
-  } else if (response.statusCode == 200) {
-    return null;
-  } else {
-    if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-list_invaliddata'),
-          context: context,
-          title: 'Article-list',
-          message: 'Failed to get article list');
     }
   }
 }

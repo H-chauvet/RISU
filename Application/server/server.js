@@ -471,9 +471,10 @@ app.get('/api/container/listall',
   }
 )
 
-app.post('/api/container/details',
+app.get('/api/container/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
+      console.log("container/details")
       if (!req.user) {
         return res.status(401).send('Invalid token');
       }
@@ -483,11 +484,11 @@ app.post('/api/container/details',
       if (!user) {
         return res.status(401).send('User not found');
       }
-      if (!req.body.containerId || req.body.containerId === '') {
+      if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
       const container = await database.prisma.Containers.findUnique({
-        where: { id: req.body.containerId },
+        where: { id: req.params.containerId },
         select: {
           localization: true,
           owner: true,
@@ -508,32 +509,29 @@ app.post('/api/container/details',
     }
   })
 
-app.post('/api/container/articleslist',
+app.get('/api/container/articleslist/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-      if (!req.body.containerId || req.body.containerId === '') {
+      console.log("container/articleList")
+      if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
-      const container = await database.prisma.Containers.findUnique({
-        where: { id: req.body.containerId },
+      const items = await database.prisma.Items.findMany({
+        where: { containerId: req.params.containerId },
         select: {
-          items: {
-            select: {
-              id: true,
-              containerId: true,
-              name: true,
-              available: true,
-              price: true,
-            }
-          }
+          id: true,
+          containerId: true,
+          name: true,
+          available: true,
+          price: true,
         },
       })
-      if (!container) {
-        return res.status(401).json("containerlist not found")
-      } else if (!container.items || container.items.length === 0) {
+      if (!items) {
+        return res.status(401).json("itemList not found")
+      } else if (!items || items.length === 0) {
         return res.status(204).json({ message: 'Container doen\'t have items' })
       }
-      return res.status(200).json(container.items)
+      return res.status(200).json(items)
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
@@ -553,14 +551,14 @@ app.get('/api/article/listall',
     }
   })
 
-app.post('/api/article/details',
+app.get('/api/article/:articleId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-      if (!req.body.articleId || req.body.articleId === '') {
+      if (!req.params.articleId || req.params.articleId === '') {
         return res.status(401).json({ message: 'Missing articleId' })
       }
       const article = await database.prisma.Items.findUnique({
-        where: { id: req.body.articleId },
+        where: { id: req.params.articleId },
         select: {
           id: true,
           name: true,
@@ -639,7 +637,7 @@ app.get('/api/rent',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-})
+  })
 
 app.get('/api/locations', async (req, res) => {
   try {
