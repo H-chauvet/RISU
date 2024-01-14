@@ -228,6 +228,10 @@ class DesignScreenState extends State<DesignScreen> {
     return mapping;
   }
 
+  void saveContainer() async {
+    context.go("/confirmation-save");
+  }
+
   void goNext() async {
     HttpService().request(
       'http://$serverIp:3000/api/container/create',
@@ -399,7 +403,7 @@ class DesignScreenState extends State<DesignScreen> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockerss,
-                      onSaved: () => {},
+                      onSaved: saveContainer,
                     )),
               ),
             ),

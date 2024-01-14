@@ -394,6 +394,10 @@ class ContainerCreationState extends State<ContainerCreation> {
     context.go("/container-creation/payment", extra: jsonEncode(data));
   }
 
+  void saveContainer() async {
+    context.go("/confirmation-save");
+  }
+
   void goPrevious() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const LandingPage()));
@@ -489,7 +493,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                       heightFactor: 0.7,
                       child: RecapPanel(
                         articles: lockers,
-                        onSaved: goNext,
+                        onSaved: saveContainer,
                       )),
                 ),
               ),

@@ -36,6 +36,10 @@ class VisualizationScreenState extends State<VisualizationScreen> {
     context.go('/container-creation');
   }
 
+  void saveContainer() {
+    context.go('/confirmation-save');
+  }
+
   void goNext() async {
     var data = {
       'amount': widget.amount,
@@ -127,7 +131,7 @@ class VisualizationScreenState extends State<VisualizationScreen> {
                     heightFactor: 0.6,
                     child: RecapPanel(
                       articles: lockerss,
-                      onSaved: goNext,
+                      onSaved: saveContainer,
                     )),
               ),
             ),
