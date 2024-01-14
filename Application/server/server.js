@@ -269,6 +269,15 @@ async function createFixtures() {
         }
       }
     })
+    const emptyContainer = await database.prisma.Containers.create({
+      data: {
+        localization: 'Nantes',
+        owner: 'Risu',
+        items: {
+          create: []
+        }
+      }
+    })
     if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
       await database.prisma.User.create({
         data: {
@@ -462,7 +471,6 @@ app.get('/api/container/listall',
       }
       console.log("container/listall")
       const containers = await database.prisma.Containers.findMany()
-      console.log(JSON.stringify(containers, null, 2));
       return res.status(200).json(containers)
     } catch (err) {
       console.log(err)
@@ -477,12 +485,6 @@ app.get('/api/container/:containerId',
       console.log("container/details")
       if (!req.user) {
         return res.status(401).send('Invalid token');
-      }
-      const user = await database.prisma.User.findUnique({
-        where: { id: req.user.id },
-      })
-      if (!user) {
-        return res.status(401).send('User not found');
       }
       if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
@@ -513,25 +515,33 @@ app.get('/api/container/articleslist/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       console.log("container/articleList")
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
       if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
-      const items = await database.prisma.Items.findMany({
-        where: { containerId: req.params.containerId },
+      const container = await database.prisma.Containers.findUnique({
+        where: { id: req.params.containerId },
         select: {
-          id: true,
-          containerId: true,
-          name: true,
-          available: true,
-          price: true,
+          items: {
+            select: {
+              id: true,
+              containerId: true,
+              name: true,
+              available: true,
+              price: true,
+            }
+          }
         },
       })
-      if (!items) {
+      console.log(container);
+      if (!container) {
         return res.status(401).json("itemList not found")
-      } else if (!items || items.length === 0) {
+      } else if (!container.items || container.items.length === 0) {
         return res.status(204).json({ message: 'Container doen\'t have items' })
       }
-      return res.status(200).json(items)
+      return res.status(200).json(container.items)
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
