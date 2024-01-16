@@ -3,7 +3,8 @@ const router = express.Router();
 const paymentCtrl = require("../controllers/payment");
 
 router.post("/card-pay", async function (req, res, next) {
-  const { paymentMethodId, currency, useStripeSdk, amount } = req.body;
+  const { containerId, paymentMethodId, currency, useStripeSdk, amount } =
+    req.body;
 
   try {
     res.send(
@@ -12,6 +13,7 @@ router.post("/card-pay", async function (req, res, next) {
         currency,
         useStripeSdk,
         amount,
+        containerId,
       })
     );
   } catch (e) {

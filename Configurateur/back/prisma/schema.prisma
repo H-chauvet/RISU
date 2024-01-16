@@ -59,6 +59,7 @@ model Container {
   designs          String @db.LongText
   informations     String? @db.LongText
   object				   Item[]
+  paid             Boolean       @default(false)
 }
 
 model Feedbacks {

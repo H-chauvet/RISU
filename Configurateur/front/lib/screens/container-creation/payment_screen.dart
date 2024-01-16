@@ -282,6 +282,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'paymentMethodId': paymentMethodId,
         'currency': currency,
         'amount': widget.amount,
+        'containerId': widget.id,
       }),
     );
     return json.decode(response.body);

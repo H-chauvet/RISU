@@ -390,8 +390,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers)
     };
-    context.go("/container-creation/payment", extra: jsonEncode(data));
+    context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
   void saveContainer() async {
@@ -417,7 +418,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               length: 2,
               progress: 0,
               previous: 'Précédent',
-              next: 'Terminer',
+              next: 'Suivant',
               previousFunc: goPrevious,
               nextFunc: goNext,
             ),
