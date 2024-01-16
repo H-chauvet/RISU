@@ -16,6 +16,10 @@ class MyContainerList {
   final int? organizationId;
   final dynamic? containerMapping;
   final double? price;
+  final String? adress;
+  final String? city;
+  final String? design;
+  final String? informations;
 
   MyContainerList({
     required this.id,
@@ -24,6 +28,10 @@ class MyContainerList {
     required this.organizationId,
     required this.containerMapping,
     required this.price,
+    required this.adress,
+    required this.city,
+    required this.design,
+    required this.informations,
   });
 
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
@@ -34,6 +42,10 @@ class MyContainerList {
       organizationId: json['organizationId'],
       containerMapping: json['containerMapping'],
       price: json['price'],
+      adress: json['adress'],
+      city: json['city'],
+      design: json['design'],
+      informations: json['informations'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -44,6 +56,9 @@ class MyContainerList {
       'organizationId': organizationId,
       'containerMapping': containerMapping,
       'price': price,
+      'adress': adress,
+      'city': design,
+      'informations': informations,
     };
   }
 }
@@ -58,7 +73,8 @@ class ContainerCard extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+          margin: EdgeInsets.only(left: 7, right: 7),
+          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(30.0),
@@ -71,17 +87,27 @@ class ContainerCard extends StatelessWidget {
               ),
             ],
           ),
-          width: 300,
+          width: 350,
           child: Column(
             children: [
               ListTile(
-                title: const Text("name"),
+                title: Container(
+                  child: Row(
+                    children: [
+                      Text("Ville : "),
+                      container.city != null
+                          ? Text(container.city!)
+                          : Text("inconnue"),
+                    ],
+                  ),
+                ),
+                subtitle:
+                    Text("prix du conteneur : " + container.price.toString()),
                 leading: Image.asset(
                   'assets/container.png',
                   width: 150,
                 ),
               ),
-              Text(container.price.toString()),
             ],
           ),
         ),

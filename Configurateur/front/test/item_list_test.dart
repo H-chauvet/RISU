@@ -6,9 +6,7 @@ import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:front/screens/company/company.dart';
 
 void main() {
-  
   testWidgets('ItemCard displays message details', (WidgetTester tester) async {
-
     await tester.pumpWidget(
       MaterialApp(
         home: ItemCard(
@@ -20,13 +18,42 @@ void main() {
             available: true,
             containerId: 2,
             container: 0,
+            image: "image",
+            description: "c'est un objet",
           ),
           onDelete: (message) {},
         ),
       ),
     );
 
-    expect(find.text(1.toString()), findsOneWidget);
+    expect(find.text("1"), findsOneWidget);
     expect(find.text("Hello world"), findsOneWidget);
+  });
+
+  test('ContainerTest toJson and fromJson', () {
+    final container = ItemList(
+      id: 1,
+      name: "Hello world",
+      price: 10.0,
+      createdAt: null,
+      available: true,
+      containerId: 2,
+      container: 0,
+      image: "image",
+      description: "c'est un objet",
+    );
+
+    final Map<String, dynamic> containerJson = container.toMap();
+    final ItemList parsedContainer = ItemList.fromJson(containerJson);
+
+    expect(parsedContainer.id, container.id);
+    expect(parsedContainer.name, container.name);
+    expect(parsedContainer.price, container.price);
+    expect(parsedContainer.createdAt, container.createdAt);
+    expect(parsedContainer.available, container.available);
+    expect(parsedContainer.container, container.container);
+    expect(parsedContainer.containerId, container.containerId);
+    expect(parsedContainer.image, container.image);
+    expect(parsedContainer.description, container.description);
   });
 }

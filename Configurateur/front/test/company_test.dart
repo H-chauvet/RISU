@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/company/company.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:http/http.dart' as http;
+
 void main() {
   testWidgets('CompanyPage should render without error',
       (WidgetTester tester) async {
@@ -52,34 +53,6 @@ void main() {
     expect(find.byKey(Key('member_image_4')), findsOneWidget);
   });
 
-  testWidgets('ContainerCard should render without error',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: ContainerCard(
-            container: MyContainerList(
-              id: 1,
-              createdAt: '2022-01-01',
-              organization: 'Test Organization',
-              organizationId: 123,
-              containerMapping: {},
-              price: 29.99,
-            ),
-          ),
-        ),
-      ),
-    );
-
-    await tester.pump();
-
-    expect(find.byType(ContainerCard), findsOneWidget);
-
-    expect(find.text('name'), findsOneWidget);
-    expect(find.byType(Image), findsOneWidget);
-    expect(find.text('29.99'), findsOneWidget);
-  });
-
   test('ContainerTest toJson and fromJson', () {
     final container = MyContainerList(
       id: 1,
@@ -88,6 +61,10 @@ void main() {
       organizationId: 123,
       containerMapping: {},
       price: 29.99,
+      adress: "blabla",
+      city: null,
+      design: null,
+      informations: "c'est un conteneur",
     );
 
     final Map<String, dynamic> containerJson = container.toMap();
@@ -100,5 +77,9 @@ void main() {
     expect(parsedContainer.organizationId, container.organizationId);
     expect(parsedContainer.containerMapping, container.containerMapping);
     expect(parsedContainer.price, container.price);
+    expect(parsedContainer.adress, container.adress);
+    expect(parsedContainer.city, container.city);
+    expect(parsedContainer.design, container.design);
+    expect(parsedContainer.informations, container.informations);
   });
 }

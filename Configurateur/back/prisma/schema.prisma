@@ -43,6 +43,8 @@ model Item {
 	createdAt			DateTime		@default(now())
 	containerId			Int?
 	price				Float
+  image       String?
+  description String?
 }
 
 model Container {
