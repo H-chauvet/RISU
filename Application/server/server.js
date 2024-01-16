@@ -256,7 +256,7 @@ async function createFixtures() {
         newsOffersRisu: true
       }
     })
-    const container = await database.prisma.Containers.create({
+    const container = await database.prisma.Container.create({
       data: {
         localization: 'Nantes',
         owner: 'Risu',
@@ -461,7 +461,7 @@ app.get('/api/container/listall',
         return res.status(401).send('User not found');
       }
       console.log("container/listall")
-      const containers = await database.prisma.Containers.findMany()
+      const containers = await database.prisma.Container.findMany()
       console.log(JSON.stringify(containers, null, 2));
       return res.status(200).json(containers)
     } catch (err) {
@@ -486,7 +486,7 @@ app.post('/api/container/details',
       if (!req.body.containerId || req.body.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
-      const container = await database.prisma.Containers.findUnique({
+      const container = await database.prisma.Container.findUnique({
         where: { id: req.body.containerId },
         select: {
           localization: true,
@@ -514,7 +514,7 @@ app.post('/api/container/articleslist',
       if (!req.body.containerId || req.body.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
-      const container = await database.prisma.Containers.findUnique({
+      const container = await database.prisma.Container.findUnique({
         where: { id: req.body.containerId },
         select: {
           items: {
@@ -544,7 +544,7 @@ app.get('/api/article/listall',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       console.log("article/listall")
-      const articles = await database.prisma.Items.findMany()
+      const articles = await database.prisma.Item.findMany()
       console.log(JSON.stringify(articles, null, 2));
       res.status(200).json(articles)
     } catch (err) {
@@ -559,7 +559,7 @@ app.post('/api/article/details',
       if (!req.body.articleId || req.body.articleId === '') {
         return res.status(401).json({ message: 'Missing articleId' })
       }
-      const article = await database.prisma.Items.findUnique({
+      const article = await database.prisma.Item.findUnique({
         where: { id: req.body.articleId },
         select: {
           id: true,
