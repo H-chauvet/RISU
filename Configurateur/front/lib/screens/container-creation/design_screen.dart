@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/http_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -26,11 +27,12 @@ const List<String> faceList = <String>[
 
 class DesignScreen extends StatefulWidget {
   const DesignScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping});
+      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
+  final String? id;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -229,7 +231,53 @@ class DesignScreenState extends State<DesignScreen> {
   }
 
   void saveContainer() async {
-    context.go("/confirmation-save");
+    var header = <String, String>{
+      'Authorization': jwtToken,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    if (widget.id == null) {
+      HttpService().request('http://$serverIp:3000/api/container/create',
+          header, <String, String>{
+        'containerMapping': widget.containerMapping!,
+        'designs': json.encode(designss),
+        'height': '5',
+        'width': '12',
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    } else {
+      HttpService().putRequest('http://$serverIp:3000/api/container/update',
+          header, <String, String>{
+        'id': widget.id!,
+        'containerMapping': widget.containerMapping!,
+        'price': sumPrice().toString(),
+        'width': '12',
+        'height': '5',
+        'city': '',
+        'informations': '',
+        'adress': '',
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    }
   }
 
   void goNext() async {
@@ -242,6 +290,8 @@ class DesignScreenState extends State<DesignScreen> {
       },
       <String, dynamic>{
         'designs': json.encode(designss),
+        'height': '5',
+        'width': '12',
       },
     ).then((value) {
       if (value.statusCode != 200) {
@@ -262,7 +312,7 @@ class DesignScreenState extends State<DesignScreen> {
   void goPrevious() {
     var data = {
       'amount': sumPrice(),
-      'containerMapping': getContainerMapping(),
+      'containerMapping': widget.containerMapping,
       'lockers': jsonEncode(lockerss),
     };
     context.go("/container-creation", extra: jsonEncode(data));

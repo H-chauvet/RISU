@@ -49,10 +49,13 @@ router.post("/create", async function (req, res, next) {
     throw new Error("Unauthorized");
   }
   try {
-    const { designs } = req.body;
+    const { designs, containerMapping, height, width } = req.body;
 
     const container = await containerCtrl.createContainer({
       designs,
+      containerMapping,
+      height,
+      width,
     });
     res.status(200).json(container);
   } catch (err) {

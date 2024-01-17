@@ -1,12 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
@@ -18,7 +21,10 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import '../../components/dialog/autofill_dialog.dart';
 
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation({super.key});
+  const ContainerCreation({super.key, this.id, this.container});
+
+  final String? id;
+  final String? container;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -54,6 +60,32 @@ class ContainerCreationState extends State<ContainerCreation> {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
     loadImage();
+    if (widget.container != null) {
+      loadContainer();
+    }
+  }
+
+  void loadContainer() {
+    dynamic container = jsonDecode(widget.container!);
+    for (int i = 0; i < container['containerMapping'].length; i++) {
+      if (container['containerMapping'] != '0') {
+        objs[0].fragments[i].faces[0].materialIndex =
+            int.parse(container['containerMapping'][i]);
+        objs[0].fragments[i].faces[1].materialIndex =
+            int.parse(container['containerMapping'][i]);
+        objs[0].fragments[i].faces[2].materialIndex =
+            int.parse(container['containerMapping'][i]);
+        objs[0].fragments[i].faces[3].materialIndex =
+            int.parse(container['containerMapping'][i]);
+        objs[0].fragments[i].faces[4].materialIndex =
+            int.parse(container['containerMapping'][i]);
+        objs[0].fragments[i].faces[5].materialIndex =
+            int.parse(container['containerMapping'][i]);
+      }
+    }
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
@@ -396,7 +428,52 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void saveContainer() async {
-    context.go("/confirmation-save");
+    var header = <String, String>{
+      'Authorization': jwtToken,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    if (widget.id == null) {
+      HttpService().request('http://$serverIp:3000/api/container/create',
+          header, <String, String>{
+        'containerMapping': getContainerMapping(),
+        'height': '5',
+        'width': '12',
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    } else {
+      HttpService().putRequest('http://$serverIp:3000/api/container/update',
+          header, <String, String>{
+        'id': widget.id!,
+        'containerMapping': getContainerMapping(),
+        'price': sumPrice().toString(),
+        'width': '12',
+        'height': '5',
+        'city': '',
+        'informations': '',
+        'adress': '',
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    }
   }
 
   void goPrevious() {

@@ -114,9 +114,20 @@ class AppRouter {
         ),
       ),
       GoRoute(
-          path: '/container-creation',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ContainerCreation())),
+        path: '/container-creation',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const ContainerCreation();
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return ContainerCreation(
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(
@@ -182,6 +193,7 @@ class AppRouter {
             amount: user['amount'],
             containerMapping: user['containerMapping'],
             lockers: user['lockers'],
+            id: user['id'],
           );
         },
       ),

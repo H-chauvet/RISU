@@ -56,7 +56,7 @@ model Container {
   price            Float?
   width            Float?
   height           Float?
-  designs          String @db.LongText
+  designs          String? @db.LongText
   informations     String? @db.LongText
   object				   Item[]
   paid             Boolean       @default(false)

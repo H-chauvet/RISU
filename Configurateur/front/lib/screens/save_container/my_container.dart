@@ -19,7 +19,8 @@ class MyContainer extends StatefulWidget {
 ///
 /// page de confirmation d'enregistrement pour le configurateur
 class MyContainerState extends State<MyContainer> {
-  late String containers;
+  List<dynamic> containers = [];
+  dynamic body;
 
   @override
   void initState() {
@@ -33,7 +34,10 @@ class MyContainerState extends State<MyContainer> {
     ).then((value) => {
           if (value.statusCode == 200)
             {
-              containers = value.body,
+              setState(() {
+                body = jsonDecode(value.body);
+                containers = body['container'];
+              }),
             }
           else
             {
@@ -54,22 +58,31 @@ class MyContainerState extends State<MyContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              "Votre conteneur a bien été sauvegardé",
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                context.go('/');
-              },
-              child: const Text("Retour à l'accueil"),
-            ),
+            const Text("Mes conteneurs"),
+            const SizedBox(height: 20),
+            ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: containers.length,
+                itemBuilder: (_, i) {
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              context.go('/container-creation',
+                                  extra: jsonEncode({
+                                    'id': containers[i]['id'],
+                                    'container': jsonEncode(containers[i]),
+                                  }));
+                            },
+                            child: Text(i.toString()),
+                          ),
+                        ),
+                      ]);
+                }),
           ],
         ),
       ),
