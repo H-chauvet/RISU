@@ -29,20 +29,20 @@ class ThemeSettingsPageState extends State<ThemeSettingsPage> {
         child: Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 51),
-            child: Column(
+            child: const Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 30), // Espace ajouté
-                const Text(
+                SizedBox(height: 30),
+                Text(
                   'Thème',
                   style: TextStyle(
-                    fontSize: 36, // Taille de la police
-                    fontWeight: FontWeight.bold, // Gras
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
                     color: Color(0xFF4682B4),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
