@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart'; // Import permission_handler
+import 'package:permission_handler/permission_handler.dart';
 
 import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
-  final bool displayGoogleMap = false;
+  final bool displayGoogleMap = true;
 
   LatLng _center = const LatLng(37.7749, -122.4194);
 
@@ -21,7 +21,7 @@ class MapPageState extends State<MapPage> {
     if (!displayGoogleMap) {
       return const Center(
         child: Text(
-          'Google Map is not available',
+          'Risu decided to not display the map',
           textAlign: TextAlign.center,
         ),
       );
@@ -73,8 +73,8 @@ class MapPageState extends State<MapPage> {
         _center = LatLng(position.latitude, position.longitude);
       });
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
-    } catch (e) {
-      print('Error fetching location: $e');
+    } catch (err) {
+      print('Error _getUserLocation(): $err');
     }
   }
 
