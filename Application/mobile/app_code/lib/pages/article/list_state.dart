@@ -5,12 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
 
-import 'list_page.dart';
 import 'article_list_data.dart';
+import 'list_page.dart';
 
 Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   final token = userInformation?.token ?? 'defaultToken';
@@ -28,12 +27,14 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
       }),
     );
   } catch (err) {
+    print('Error getItemsData(): $err');
     if (context.mounted) {
       await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-list_connectionrefused'),
-          context: context,
-          title: 'Article-list',
-          message: 'connexion refused');
+        key: const Key('article-list_connectionrefused'),
+        context: context,
+        title: 'Article-list',
+        message: 'connexion refused',
+      );
     }
   }
   if (response.statusCode == 200) {
@@ -42,14 +43,14 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   } else if (response.statusCode == 200) {
     return null;
   } else {
+    print('Error getItemsData(): ${response.statusCode}');
     if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
       await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-list_invaliddata'),
-          context: context,
-          title: 'Article-list',
-          message: 'Failed to get article list');
+        key: const Key('article-list_invaliddata'),
+        context: context,
+        title: 'Article-list',
+        message: 'Failed to get article list',
+      );
     }
   }
 }
@@ -69,6 +70,7 @@ class ArticleListState extends State<ArticleListPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -84,15 +86,15 @@ class ArticleListState extends State<ArticleListPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
                 left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 16),
-                Text(
+                const Text(
                   'Liste des articles',
-                  key: const Key('articles-list_title'),
+                  key: Key('articles-list_title'),
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -100,27 +102,29 @@ class ArticleListState extends State<ArticleListPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                (_itemsDatas.length == 0)
-                    ? Text(
-                        'Aucun articles disponibles pour ce conteneur',
-                        key: const Key('articles-list_no-article'),
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4682B4),
-                        ),
-                      )
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _itemsDatas.length,
-                        itemBuilder: (context, index) {
-                          final item = _itemsDatas.elementAt(index);
-                          return ArticleDataCard(
-                            articleData: ArticleData.fromJson(item),
-                          );
-                        },
-                      ),
+                if (_itemsDatas.isEmpty)
+                  const Text(
+                    'Aucun article disponible pour ce conteneur',
+                    key: Key('articles-list_no-article'),
+                    style: TextStyle(
+                      fontSize: 36,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF4682B4),
+                    ),
+                  )
+                else ...[
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _itemsDatas.length,
+                    itemBuilder: (context, index) {
+                      final item = _itemsDatas.elementAt(index);
+                      return ArticleDataCard(
+                        articleData: ArticleData.fromJson(item),
+                      );
+                    },
+                  ),
+                ]
               ],
             ),
           ),
