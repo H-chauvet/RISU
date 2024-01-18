@@ -25,14 +25,39 @@ const List<String> faceList = <String>[
   'Bas'
 ];
 
+class Design {
+  Design(this.face, this.design);
+
+  String face;
+  List<int> design;
+
+  Map<String, dynamic> toJson() => {
+        'face': face,
+        'design': design,
+      };
+
+  factory Design.fromJson(Map<String, dynamic> json) {
+    return Design(
+      json['face'] as String,
+      json['design'] as List<int>,
+    );
+  }
+}
+
 class DesignScreen extends StatefulWidget {
   const DesignScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
+      {super.key,
+      this.lockers,
+      this.amount,
+      this.containerMapping,
+      this.id,
+      this.container});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
   final String? id;
+  final String? container;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -53,7 +78,7 @@ class DesignScreenState extends State<DesignScreen> {
   int materialIndex = 1;
   FilePickerResult? picked;
   String face = faceList.first;
-  List<List<int>> designss = [];
+  List<Design> designss = [];
 
   @override
   void initState() {
@@ -83,48 +108,68 @@ class DesignScreenState extends State<DesignScreen> {
     if (widget.lockers != null) {
       decodeLockers();
     }
+    if (widget.container != null) {
+      decodeDesigns();
+    }
   }
 
   void decodeLockers() {
-    final decode = jsonDecode(widget.lockers!);
+    dynamic decode = jsonDecode(widget.lockers!);
 
     for (int i = 0; i < decode.length; i++) {
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
   }
 
-  Future<void> loadImage(bool unitTesting, {Uint8List? fileData}) async {
+  void decodeDesigns() {
+    dynamic container = jsonDecode(widget.container!);
+
+    dynamic decode = jsonDecode(container['designs']);
+
+    for (int i = 0; i < decode.length; i++) {
+      loadImage(false,
+          fileData: decode[i]['design'],
+          faceLoad: int.parse(decode[i]['face']));
+    }
+
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  Future<void> loadImage(bool unitTesting,
+      {Uint8List? fileData, int? faceLoad}) async {
     if (fileData != null) {
       int faceIndex = 0;
       switch (face) {
         case 'Devant':
-          lockerss.add(Locker('design face avant', 50));
           faceIndex = 0;
           break;
         case 'Derrière':
-          lockerss.add(Locker('design face arrière', 50));
           faceIndex = 1;
           break;
         case 'Bas':
-          lockerss.add(Locker('design face du dessous', 50));
           faceIndex = 4;
           break;
         case 'Gauche':
-          lockerss.add(Locker('design côté gauche', 50));
           faceIndex = 3;
           break;
         case 'Haut':
-          lockerss.add(Locker('design face du haut', 50));
           faceIndex = 2;
           break;
         case 'Droite':
-          lockerss.add(Locker('design côté droit', 50));
           faceIndex = 5;
           break;
         default:
-          lockerss.add(Locker('design face avant', 50));
           faceIndex = 0;
           break;
+      }
+      if (faceLoad != null) {
+        faceIndex = faceLoad;
+      }
+      lockerss.add(Locker('design personnalisé', 50));
+      if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
+        removeDesign(faceIndex);
       }
       objs[0].materials.add(FSp3dMaterial.black);
       objs[0].materials[materialIndex] = FSp3dMaterial.green.deepCopy()
@@ -132,7 +177,7 @@ class DesignScreenState extends State<DesignScreen> {
         ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
       objs[0].fragments[0].faces[faceIndex].materialIndex = materialIndex;
       objs[0].images.add(fileData);
-      designss.add(picked!.files.first.bytes!.toList());
+      designss.add(Design(faceIndex.toString(), fileData));
       imageIndex++;
       materialIndex++;
     }
@@ -174,6 +219,15 @@ class DesignScreenState extends State<DesignScreen> {
         faceIndex = 0;
         break;
     }
+    if (objs[0].fragments[0].faces[faceIndex].materialIndex == 0) {
+      return;
+    }
+    for (int i = 0; i < designss.length; i++) {
+      if (designss[i].face == faceIndex.toString()) {
+        designss.removeAt(i);
+        break;
+      }
+    }
     removeDesign(faceIndex);
     objs[0].fragments[0].faces[faceIndex].materialIndex = 0;
 
@@ -191,23 +245,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
-      if (lockerss[i].type == 'design face avant' && faceIndex == 0) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face arrière' && faceIndex == 1) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face du dessous' &&
-          faceIndex == 4) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design côté gauche' && faceIndex == 3) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face du haut' && faceIndex == 2) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design côté droit' && faceIndex == 5) {
+      if (lockerss[i].type == 'design personnalisé') {
         lockerss.removeAt(i);
         return;
       }

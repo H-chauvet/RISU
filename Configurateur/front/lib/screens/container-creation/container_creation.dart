@@ -41,6 +41,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
   String jwtToken = '';
+  dynamic decodedContainer;
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
     if (widget.container != null) {
       loadContainer();
+      loadLockers();
     }
   }
 
@@ -86,6 +88,39 @@ class ContainerCreationState extends State<ContainerCreation> {
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void loadLockers() {
+    int littleLocker = 0;
+    int mediumLocker = 0;
+    int bigLocker = 0;
+    dynamic container = jsonDecode(widget.container!);
+
+    for (int i = 0; i < container['containerMapping'].length; i++) {
+      if (container['containerMapping'][i] == '1') {
+        littleLocker++;
+      } else if (container['containerMapping'][i] == '2') {
+        mediumLocker++;
+      } else if (container['containerMapping'][i] == '3') {
+        bigLocker++;
+      }
+    }
+
+    decodedContainer = jsonDecode(container['designs']);
+
+    for (int i = 0; i < littleLocker; i++) {
+      lockers.add(Locker('Petit casier', 50));
+    }
+    for (int i = 0; i < mediumLocker / 2; i++) {
+      lockers.add(Locker('Moyen casier', 100));
+    }
+    for (int i = 0; i < bigLocker / 3; i++) {
+      lockers.add(Locker('Grand casier', 150));
+    }
+
+    for (int i = 0; i < decodedContainer.length; i++) {
+      lockers.add(Locker('design personnalisé', 50));
+    }
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
@@ -422,7 +457,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
-      'lockers': jsonEncode(lockers)
+      'lockers': jsonEncode(lockers),
+      'id': widget.id,
+      'container': widget.container,
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
@@ -477,8 +514,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goPrevious() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LandingPage()));
+    context.go('/');
   }
 
   @override
@@ -492,7 +528,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 2,
+              length: 4,
               progress: 0,
               previous: 'Précédent',
               next: 'Suivant',

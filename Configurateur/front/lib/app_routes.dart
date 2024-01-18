@@ -194,6 +194,7 @@ class AppRouter {
             containerMapping: user['containerMapping'],
             lockers: user['lockers'],
             id: user['id'],
+            container: user['container'],
           );
         },
       ),
