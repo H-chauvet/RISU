@@ -36,20 +36,23 @@ Future<void> fetchUserData() async {
       newLastName = '';
       newEmail = '';
     } else {
-      print('Error: ${response.statusCode}');
+      print('Error fetchUserData() : ${response.statusCode}');
     }
-  } catch (e) {
-    print('Error fetchUserData() : $e');
+  } catch (err) {
+    print('Error fetchUserData() : $err');
   }
 }
 
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
+  @override
+  void initState() {
+    super.initState();
+    fetchUserData();
+  }
+
   Future<void> updateUser() async {
     try {
       final token = userInformation!.token;
-
-      print('token : $token');
-      // Add newFirstName, newLastName, newEmail if not null
       Map<String, dynamic> body = {};
       if (newFirstName != '') {
         body['firstName'] = newFirstName;
@@ -72,19 +75,19 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
       if (response.statusCode == 200) {
         final updatedData = json.decode(response.body);
-        print('Mise à jour réussie: $updatedData');
         await fetchUserData();
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour réussie',
-              message: 'Informations mises à jour.');
+            context: context,
+            title: 'Mise à jour réussie',
+            message: 'Informations mises à jour.',
+          );
         }
       } else {
-        print('Erreur: ${response.statusCode}, ${response.body}');
+        print('Error updateUser() : ${response.statusCode}');
       }
-    } catch (e) {
-      print('Erreur updateUser() : $e');
+    } catch (err) {
+      print('Erreur updateUser() : $err');
     }
   }
 
@@ -92,8 +95,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       String currentPassword, String newPassword) async {
     try {
       final token = userInformation!.token;
-      print('currentPassword : $currentPassword');
-      print('newPassword : $newPassword');
 
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/password'),
@@ -109,40 +110,36 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
       if (response.statusCode == 200) {
         final updatedData = json.decode(response.body);
-        print('Mise à jour réussie: $updatedData');
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour réussie',
-              message: 'Le mot de passe a été mis à jour');
+            context: context,
+            title: 'Mise à jour réussie',
+            message: 'Le mot de passe a été mis à jour',
+          );
         }
       } else {
         if (response.statusCode == 401) {
           if (context.mounted) {
             await MyAlertDialog.showInfoAlertDialog(
-                context: context,
-                title: 'Mise à jour refusée',
-                message: 'Le mot de passe actuel est incorrect');
+              context: context,
+              title: 'Mise à jour refusée',
+              message: 'Le mot de passe actuel est incorrect',
+            );
           }
         } else {
+          print('Error updatePassword() : ${response.statusCode}');
           if (context.mounted) {
             await MyAlertDialog.showErrorAlertDialog(
-                context: context,
-                title: 'Impossible de mettre à jour le mot de passe',
-                message: 'Erreur inconnue');
+              context: context,
+              title: 'Impossible de mettre à jour le mot de passe',
+              message: 'Erreur inconnue',
+            );
           }
         }
-        print('Erreur: ${response.statusCode}');
       }
-    } catch (e) {
-      print('Erreur updatePassword() : $e');
+    } catch (err) {
+      print('Error updatePassword() : $err');
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUserData();
   }
 
   @override
@@ -170,13 +167,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Champ texte désactivé pour le prénom actuel
                           Expanded(
                             child: TextFormField(
                               enabled: false,
-                              // Désactivez le champ texte
                               initialValue: firstName,
-                              // Utilisez la valeur actuelle comme valeur initiale
                               decoration: const InputDecoration(
                                   labelText: 'Prénom actuel'),
                             ),
@@ -208,24 +202,24 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Champ texte désactivé pour le nom actuel
                           Expanded(
                             child: TextFormField(
                               enabled: false,
-                              // Désactivez le champ texte
                               initialValue: lastName,
-                              // Utilisez la valeur actuelle comme valeur initiale
                               decoration: const InputDecoration(
-                                  labelText: 'Nom actuel'),
+                                labelText: 'Nom actuel',
+                              ),
                             ),
                           ),
                           const SizedBox(width: 10),
                           Expanded(
                             child: TextField(
                               key: const Key(
-                                  'profile_info-text_field-last_name'),
+                                'profile_info-text_field-last_name',
+                              ),
                               decoration: const InputDecoration(
-                                  labelText: 'Nouveau nom'),
+                                labelText: 'Nouveau nom',
+                              ),
                               onChanged: (value) {
                                 newLastName = value;
                               },
@@ -246,15 +240,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          // Champ texte désactivé pour l'email actuel
                           Expanded(
                             child: TextFormField(
                               enabled: false,
-                              // Désactivez le champ texte
                               initialValue: email,
-                              // Utilisez la valeur actuelle comme valeur initiale
                               decoration: const InputDecoration(
-                                  labelText: 'Email actuel'),
+                                labelText: 'Email actuel',
+                              ),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -262,7 +254,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                             child: TextField(
                               key: const Key('profile_info-text_field-email'),
                               decoration: const InputDecoration(
-                                  labelText: 'Nouvel email'),
+                                labelText: 'Nouveau email',
+                              ),
                               onChanged: (value) {
                                 newEmail = value;
                               },
@@ -278,15 +271,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               newLastName == '' &&
                               newEmail == '') {
                             MyAlertDialog.showErrorAlertDialog(
-                                key: const Key(
-                                    'informations-alert_dialog_error_no_info'),
-                                context: context,
-                                title: 'Erreur',
-                                message:
-                                    'Veuillez renseigner au moins un champ.');
+                              key: const Key(
+                                  'informations-alert_dialog_error_no_info'),
+                              context: context,
+                              title: 'Erreur',
+                              message: 'Veuillez renseigner au moins un champ.',
+                            );
                             return;
                           }
-                          print('${newFirstName} ${newLastName} ${newEmail}');
                           updateUser();
                         },
                         style: OutlinedButton.styleFrom(
@@ -333,7 +325,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         },
                         obscureText: true,
                       ),
-                      const SizedBox(height: 10), // Ajout d'un espace vertical
+                      const SizedBox(height: 10),
                       // Nouveau mot de passe
                       TextField(
                         key: const Key('profile_info-text_field-new_password'),
@@ -344,8 +336,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         },
                         obscureText: true,
                       ),
-                      const SizedBox(height: 10), // Ajout d'un espace vertical
-                      // Confirmation du nouveau mot de passe
+                      const SizedBox(height: 10),
                       TextField(
                         key: const Key(
                             'profile_info-text_field-new_password_conf'),
@@ -364,24 +355,26 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                               newPassword.isEmpty ||
                               newPasswordConfirmation.isEmpty) {
                             await MyAlertDialog.showInfoAlertDialog(
-                                key: const Key(
-                                    'profile_info-alert_dialog-no_password'),
-                                context: context,
-                                title:
-                                    'Impossible de mettre à jour le mot de passe',
-                                message: 'Veuillez remplir tous les champs');
+                              key: const Key(
+                                  'profile_info-alert_dialog-no_password'),
+                              context: context,
+                              title:
+                                  'Impossible de mettre à jour le mot de passe',
+                              message: 'Veuillez remplir tous les champs',
+                            );
                             return;
                           }
                           if (newPassword == newPasswordConfirmation) {
                             updatePassword(currentPassword, newPassword);
                           } else {
                             await MyAlertDialog.showInfoAlertDialog(
-                                key: const Key(
-                                    'profile_info-alert_dialog-diff_password'),
-                                context: context,
-                                title: 'Les mots de passe ne correspondent pas',
-                                message:
-                                    'Veuillez choisir le même mot de passe pour le mot de passe et la confirmation du mot de passe');
+                              key: const Key(
+                                  'profile_info-alert_dialog-diff_password'),
+                              context: context,
+                              title: 'Les mots de passe ne correspondent pas',
+                              message:
+                                  'Veuillez choisir le même mot de passe pour le mot de passe et la confirmation du mot de passe',
+                            );
                           }
                         },
                         style: OutlinedButton.styleFrom(

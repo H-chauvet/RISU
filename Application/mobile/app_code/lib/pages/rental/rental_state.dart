@@ -1,13 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:intl/intl.dart';
 
 import 'rental_page.dart';
 
@@ -15,6 +15,12 @@ class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
   bool showAllRentals = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getRentals();
+  }
 
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -34,17 +40,19 @@ class RentalPageState extends State<RentalPage> {
       if (response.statusCode == 201) {
         setState(() {
           rentals = jsonDecode(response.body)['rentals'];
-          print(rentals);
         });
       } else {
-        await MyAlertDialog.showInfoAlertDialog(
+        print('Error getRentals(): ${response.statusCode}');
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Erreur',
-            message: 'Les locations n\'ont pas pu être récupérées.');
-        print('Error getRentals(): ${response.statusCode}');
+            message: 'Les locations n\'ont pas pu être récupérées.',
+          );
+        }
       }
-    } catch (e) {
-      print('Error getRentals(): $e');
+    } catch (err) {
+      print('Error getRentals(): $err');
     }
   }
 
@@ -71,21 +79,16 @@ class RentalPageState extends State<RentalPage> {
   void getRentalsInProgress() async {
     try {
       setState(() {
-        this.rentalsInProgress = rentals.where(isRentalInProgress).toList();
+        rentalsInProgress = rentals.where(isRentalInProgress).toList();
       });
-    } catch (e) {
+    } catch (err) {
+      print('Error getRentalsInProgress(): $err');
       await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Erreur',
-          message: 'Les locations en cours n\'ont pas pu être récupérées.');
-      print('Error getRentalsInProgress(): $e');
+        context: context,
+        title: 'Erreur',
+        message: 'Les locations en cours n\'ont pas pu être récupérées.',
+      );
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getRentals();
   }
 
   @override
@@ -158,11 +161,11 @@ class RentalPageState extends State<RentalPage> {
                               color: showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
-                                  Brightness.light
-                                  ? Colors.grey[
-                              400] // Gris foncé pour le mode clair
-                                  : Colors.grey[
-                              800], // Gris clair pour le mode sombre
+                                          Brightness.light
+                                      ? Colors.grey[
+                                          400] // Gris foncé pour le mode clair
+                                      : Colors.grey[
+                                          800], // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -199,11 +202,11 @@ class RentalPageState extends State<RentalPage> {
                               color: !showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
-                                  Brightness.light
-                                  ? Colors.grey[
-                              400] // Gris foncé pour le mode clair
-                                  : Colors.grey[
-                              800], // Gris clair pour le mode sombre
+                                          Brightness.light
+                                      ? Colors.grey[
+                                          400] // Gris foncé pour le mode clair
+                                      : Colors.grey[
+                                          800], // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -218,57 +221,57 @@ class RentalPageState extends State<RentalPage> {
                 key: const Key('rentals-list'),
                 child: (showAllRentals ? rentals : rentalsInProgress).isEmpty
                     ? const Center(
-                  child: Text(
-                    'Aucune location',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
+                        child: Text(
+                          'Aucune location',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
                     : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: showAllRentals
-                      ? rentals.length
-                      : rentalsInProgress.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    dynamic rental = showAllRentals
-                        ? rentals[index]
-                        : rentalsInProgress[index];
-                    return Card(
-                      elevation: 5,
-                      margin: const EdgeInsets.symmetric(vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      color: themeProvider.currentTheme.cardColor,
-                      child: ListTile(
-                        key: const Key('rental-list-tile'),
-                        contentPadding: const EdgeInsets.all(16.0),
-                        title: const Text(
-                          'Ballon de volley' +
-                              '  |  La Baule - Casier N°A4',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10),
-                            Text('Prix : ${rental['price']} €'),
-                            Text(
-                              'Début de location : ${formatDateTime(rental['createdAt'])}',
+                        shrinkWrap: true,
+                        itemCount: showAllRentals
+                            ? rentals.length
+                            : rentalsInProgress.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          dynamic rental = showAllRentals
+                              ? rentals[index]
+                              : rentalsInProgress[index];
+                          return Card(
+                            elevation: 5,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            Text(
-                              'Durée de location : ${rental['duration']} heures\n'
-                                  'Status : ${isRentalInProgress(rental) ? 'En cours' : 'Terminé'}'
-                                  '${isRentalInProgress(rental) ? '\nTemps restant : ${calculateRemainingTime(rental)}' : ''}',
+                            color: themeProvider.currentTheme.cardColor,
+                            child: ListTile(
+                              key: const Key('rental-list-tile'),
+                              contentPadding: const EdgeInsets.all(16.0),
+                              title: const Text(
+                                'Ballon de volley' +
+                                    '  |  La Baule - Casier N°A4',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  Text('Prix : ${rental['price']} €'),
+                                  Text(
+                                    'Début de location : ${formatDateTime(rental['createdAt'])}',
+                                  ),
+                                  Text(
+                                    'Durée de location : ${rental['duration']} heures\n'
+                                    'Status : ${isRentalInProgress(rental) ? 'En cours' : 'Terminé'}'
+                                    '${isRentalInProgress(rental) ? '\nTemps restant : ${calculateRemainingTime(rental)}' : ''}',
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
               ),
             ],
           ),
