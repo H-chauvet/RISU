@@ -123,7 +123,7 @@ void main() {
       ),
     );
     await tester.enterText(
-        find.byKey(const Key('login-textinput_email')), 'invalid_email');
+        find.byKey(const Key('login-textinput_email')), 'user@gmail.com');
 
     await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
     await tester.pumpAndSettle();
