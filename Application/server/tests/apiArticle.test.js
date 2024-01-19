@@ -38,7 +38,7 @@ describe('get containerId', () => {
 })
 
 describe('GET /api/article/', () => {
-  it('should get article detais from id', (done) => {
+  it('should get article details from id', (done) => {
     async.series(
       [
         async function () {

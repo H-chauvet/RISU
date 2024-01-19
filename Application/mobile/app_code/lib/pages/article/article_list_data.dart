@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/utils/theme.dart';
 
 class ArticleData {
   final String id;
@@ -60,11 +62,13 @@ class ArticleDataCard extends StatelessWidget {
         alignment: Alignment.center,
         height: 150.0,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.cardColor),
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
             BoxShadow(
-              color: Color(0xff4682B4).withOpacity(0.5),
+              color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.primaryColor).withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
               offset: Offset(0, 3),
@@ -87,7 +91,8 @@ class ArticleDataCard extends StatelessWidget {
                     Text(
                       articleData.name,
                       style: TextStyle(
-                        color: Color(0xFF4682B4),
+                        color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.primaryColor),
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
                       ),
@@ -100,7 +105,9 @@ class ArticleDataCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Prix : ' + articleData.price.toString() + '€ de l\'heure',
+                      'Prix : ' +
+                          articleData.price.toString() +
+                          '€ de l\'heure',
                       style: TextStyle(
                         fontSize: 15.0,
                       ),

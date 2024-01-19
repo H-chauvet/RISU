@@ -28,18 +28,17 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
     if (response.statusCode == 200) {
       dynamic responseData = jsonDecode(response.body);
       return responseData;
-    } else if (response.statusCode == 200) {
-      return null;
+    } else if (response.statusCode == 204) {
+      return [];
     } else {
       if (context.mounted) {
-        print(response.statusCode);
-        print(response.reasonPhrase);
         await MyAlertDialog.showErrorAlertDialog(
             key: const Key('article-list_invaliddata'),
             context: context,
             title: 'Article-list',
             message: 'Failed to get article list');
       }
+      return [];
     }
   } catch (err) {
     if (context.mounted) {
@@ -49,6 +48,9 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
           title: 'Article-list',
           message: 'connexion refused');
     }
+    print(err);
+    print(response.statusCode);
+    return [];
   }
 }
 
@@ -92,33 +94,52 @@ class ArticleListState extends State<ArticleListPage> {
                   'Liste des articles',
                   key: const Key('articles-list_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
-                (_itemsDatas.length == 0)
-                    ? Text(
-                        'Aucun articles disponibles pour ce conteneur',
-                        key: const Key('articles-list_no-article'),
-                        style: TextStyle(
-                          fontSize: 36,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF4682B4),
+                if (_itemsDatas.length == 0)
+                  Text(
+                    'Aucun articles disponibles pour ce conteneur',
+                    key: const Key('articles-list_no-article'),
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.secondaryHeaderColor),
+                      shadows: [
+                        Shadow(
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.secondaryHeaderColor),
+                          blurRadius: 24,
+                          offset: const Offset(0, 4),
                         ),
-                      )
-                    : ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: _itemsDatas.length,
-                        itemBuilder: (context, index) {
-                          final item = _itemsDatas.elementAt(index);
-                          return ArticleDataCard(
-                            articleData: ArticleData.fromJson(item),
-                          );
-                        },
-                      ),
+                      ],
+                    ),
+                  )
+                else
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: _itemsDatas.length,
+                    itemBuilder: (context, index) {
+                      final item = _itemsDatas.elementAt(index);
+                      return ArticleDataCard(
+                        articleData: ArticleData.fromJson(item),
+                      );
+                    },
+                  ),
               ],
             ),
           ),

@@ -30,8 +30,6 @@ Future<dynamic> getContainerData(
       return responseData;
     } else {
       if (context.mounted) {
-        print(response.statusCode);
-        print(response.reasonPhrase);
         MyAlertDialog.showErrorAlertDialog(
             key: const Key('container-details_invaliddata'),
             context: context,
@@ -52,6 +50,8 @@ Future<dynamic> getContainerData(
           title: 'Container-details',
           message: 'Connexion refused');
     }
+    print(err);
+    print(response.statusCode);
     return {
       'owner': '',
       'localization': '',
@@ -118,7 +118,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                   '$_localization par $_owner',
                   key: const Key('container-details_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.select((ThemeProvider themeProvider) =>
                         themeProvider.currentTheme.secondaryHeaderColor),
@@ -154,7 +154,9 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.colorScheme.background),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: const EdgeInsets.all(8.0),
@@ -165,7 +167,6 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         )
