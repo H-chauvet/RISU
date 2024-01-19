@@ -44,6 +44,7 @@ dependencies:
   profile_photo: ^1.0.3
   geolocator: ^10.1.0
   permission_handler: ^11.0.1
+  flutter_stripe: ^7.0.0
 
 dev_dependencies:
   integration_test:
@@ -66,6 +67,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - lib/.env
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
