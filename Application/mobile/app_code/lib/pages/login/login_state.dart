@@ -157,7 +157,7 @@ class LoginPageState extends State<LoginPage> {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Email',
-            message: 'Error while trying to send reset password.',
+            message: 'The reset of the password failed.',
           );
         }
       }
