@@ -92,9 +92,9 @@ class ArticleListState extends State<ArticleListPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Liste des articles',
-                  key: Key('articles-list_title'),
+                  key: const Key('articles-list_title'),
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
