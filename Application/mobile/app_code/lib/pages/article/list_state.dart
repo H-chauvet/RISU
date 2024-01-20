@@ -12,20 +12,33 @@ import 'article_list_data.dart';
 import 'list_page.dart';
 
 Future<dynamic> getItemsData(BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/container/articleslist'),
+    response = await http.get(
+      Uri.parse(
+          'http://$serverIp:8080/api/container/$containerId/articleslist'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'containerId': containerId,
-      }),
     );
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      return responseData;
+    } else if (response.statusCode == 204) {
+      return [];
+    } else {
+      print('Error getItemsData(): ${response.statusCode}');
+      if (context.mounted) {
+        await MyAlertDialog.showErrorAlertDialog(
+          key: const Key('article-list_invaliddata'),
+          context: context,
+          title: 'Article-list',
+          message: 'Failed to get article list',
+        );
+      }
+      return [];
+    }
   } catch (err) {
     print('Error getItemsData(): $err');
     if (context.mounted) {
@@ -36,22 +49,7 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
         message: 'connexion refused',
       );
     }
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    return responseData;
-  } else if (response.statusCode == 200) {
-    return null;
-  } else {
-    print('Error getItemsData(): ${response.statusCode}');
-    if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-        key: const Key('article-list_invaliddata'),
-        context: context,
-        title: 'Article-list',
-        message: 'Failed to get article list',
-      );
-    }
+    return [];
   }
 }
 
@@ -92,24 +90,42 @@ class ArticleListState extends State<ArticleListPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   'Liste des articles',
-                  key: Key('articles-list_title'),
+                  key: const Key('articles-list_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
                 if (_itemsDatas.isEmpty)
-                  const Text(
+                  Text(
                     'Aucun article disponible pour ce conteneur',
-                    key: Key('articles-list_no-article'),
+                    key: const Key('articles-list_no-article'),
                     style: TextStyle(
-                      fontSize: 36,
+                      fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF4682B4),
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.secondaryHeaderColor),
+                      shadows: [
+                        Shadow(
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.secondaryHeaderColor),
+                          blurRadius: 24,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
                     ),
                   )
                 else ...[
