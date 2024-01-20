@@ -52,7 +52,7 @@ describe('GET /api/container/articleslist/', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .get(`/api/container/articleslist/${containerId[0]}`)
+            .get(`/api/container/${containerId[0]}/articleslist`)
           expect(res.statusCode).toBe(200)
         }
       ],
@@ -64,7 +64,7 @@ describe('GET /api/container/articleslist/', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .get(`/api/container/articleslist/wrongId/`)
+            .get(`/api/container/wrongId/articleslist/`)
           expect(res.statusCode).toBe(401)
         }
       ],
@@ -76,7 +76,7 @@ describe('GET /api/container/articleslist/', () => {
         [
           async function () {
             const res = await request('http://localhost:8080')
-              .get(`/api/container/articleslist/${containerId[1]}`)
+              .get(`/api/container/${containerId[1]}/articleslist`)
             expect(res.statusCode).toBe(204)
           }
         ],
