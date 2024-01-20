@@ -498,7 +498,7 @@ app.get('/api/container/:containerId', async (req, res) => {
   }
 )
 
-app.get('/api/container/articleslist/:containerId', async (req, res) => {
+app.get('/api/container/:containerId/articleslist/', async (req, res) => {
     try {
       if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
@@ -533,7 +533,7 @@ app.get('/api/container/articleslist/:containerId', async (req, res) => {
 app.get('/api/article/listall', async (req, res) => {
     try {
       const articles = await database.prisma.Items.findMany()
-      res.status(200).json(articles)
+      return res.status(200).json(articles)
     } catch (err) {
       console.log(err)
       return res.status(400).json('An error occured.')

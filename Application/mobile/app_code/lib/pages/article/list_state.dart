@@ -17,7 +17,7 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   try {
     response = await http.get(
       Uri.parse(
-          'http://$serverIp:8080/api/container/articleslist/$containerId'),
+          'http://$serverIp:8080/api/container/$containerId/articleslist'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
