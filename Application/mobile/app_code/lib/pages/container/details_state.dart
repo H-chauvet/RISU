@@ -14,19 +14,14 @@ import 'details_page.dart';
 
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/container/details'),
+    response = await http.get(
+      Uri.parse('http://$serverIp:8080/api/container/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'containerId': containerId,
-      }),
     );
     if (response.statusCode == 200) {
       dynamic responseData = jsonDecode(response.body);
@@ -123,10 +118,19 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                 Text(
                   '$_localization par $_owner',
                   key: const Key('container-details_title'),
-                  style: const TextStyle(
-                    fontSize: 36,
+                  style: TextStyle(
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -151,7 +155,9 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.colorScheme.background),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: const EdgeInsets.all(8.0),
@@ -162,7 +168,6 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         )
