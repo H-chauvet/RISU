@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
-import '../globals.dart';
+
 import 'divider.dart';
 
 enum DIVIDERPLACE {

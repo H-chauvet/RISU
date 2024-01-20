@@ -7,12 +7,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Color curveColor;
 
   const MyAppBar({
-    Key? key,
+    super.key,
     required this.curveColor,
     this.showBackButton = true,
     this.showLogo = true,
     this.showBurgerMenu = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

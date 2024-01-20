@@ -4,13 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/rental/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/pages/rental/rental_page.dart';
 
-import '../../components/alert_dialog.dart';
-import '../login/login_page.dart';
 import 'profile_page.dart';
 
 class ProfilePageState extends State<ProfilePage> {
@@ -120,7 +119,7 @@ class ProfilePageState extends State<ProfilePage> {
               ),
               Padding(
                 padding:
-                const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
                 child: SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
@@ -166,103 +165,3 @@ class ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
-/**Future<bool> apiDeleteAccount() async {
-    try {
-    final token = userInformation!.token;
-    final userId = userInformation!.ID;
-    final response = await http.delete(
-    Uri.parse('http://$serverIp:8080/api/user/$userId'),
-    headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8',
-    'Authorization': 'Bearer $token',
-    },
-    );
-    if (response.statusCode == 200) {
-    return true;
-    } else {
-    if (context.mounted) {
-    await MyAlertDialog.showInfoAlertDialog(
-    context: context,
-    title: 'Suppression de compte',
-    message: 'Erreur lors de la suppression du compte.');
-    }
-    }
-    } catch (err) {
-    if (context.mounted) {
-    await MyAlertDialog.showInfoAlertDialog(
-    context: context,
-    title: 'Suppression de compte',
-    message: 'Erreur lors de la suppresion du compte.');
-    }
-    return false;
-    }
-    return false;
-    }
-    @override
-    Widget ToDelete(BuildContext context) {
-    return Scaffold(
-    resizeToAvoidBottomInset: false,
-    backgroundColor: context.select((ThemeProvider themeProvider) =>
-    themeProvider.currentTheme.colorScheme.background),
-    body: SingleChildScrollView(
-    child: Center(
-    child: Container(
-    margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
-    child: Column(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    TextButton(
-    key: const Key('profile-textbutton_delete-account'),
-    onPressed: () {
-    MyAlertDialog.showChoiceAlertDialog(
-    context: context,
-    title: "Confirmation",
-    message: "Voulez-vous vraiment supprimer votre compte ?",
-    onOkName: "Supprimer",
-    ).then((value) {
-    if (value) {
-    apiDeleteAccount().then((response) => {
-    if (response)
-    {
-    MyAlertDialog.showInfoAlertDialog(
-    context: context,
-    title: "Compte supprimé",
-    message:
-    "Votre compte a bien été supprimé.",
-    ).then(
-    (x) {
-    userInformation = null;
-    Navigator.pushAndRemoveUntil(
-    context,
-    MaterialPageRoute(
-    builder: (context) {
-    return const LoginPage();
-    },
-    ),
-    (route) => false,
-    );
-    },
-    )
-    }
-    });
-    }
-    });
-    },
-    child: const Text(
-    'Supprimer mon compte',
-    style: TextStyle(
-    fontSize: 12,
-    decoration: TextDecoration.underline,
-    color: Colors.red,
-    ),
-    ),
-    ),
-    ],
-    ),
-    ),
-    ),
-    ),
-    );
-    }
-    }**/

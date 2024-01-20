@@ -7,10 +7,10 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/container/details_page.dart';
+import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
 
@@ -29,28 +29,29 @@ Future<dynamic> getContainerData(BuildContext context, String articleId) async {
         'articleId': articleId,
       }),
     );
-  } catch (err) {
-    if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-details_connectionrefused'),
-          context: context,
-          title: 'Container-details',
-          message: 'Connexion refused');
-    }
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    print(responseData);
-    return responseData;
-  } else {
-    if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      await MyAlertDialog.showErrorAlertDialog(
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      return responseData;
+    } else {
+      print('Error getContainerData(): ${response.statusCode}');
+      if (context.mounted) {
+        await MyAlertDialog.showErrorAlertDialog(
           key: const Key('article-details_invaliddata'),
           context: context,
           title: 'Container-details',
-          message: 'Failed to get article');
+          message: 'Failed to get article',
+        );
+      }
+    }
+  } catch (err) {
+    print('Error getContainerData(): $err');
+    if (context.mounted) {
+      await MyAlertDialog.showErrorAlertDialog(
+        key: const Key('article-details_connectionrefused'),
+        context: context,
+        title: 'Container-details',
+        message: 'Connexion refused',
+      );
     }
   }
 }
@@ -69,6 +70,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -91,7 +93,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                 Text(
                   articleData.name,
                   key: const Key('article-details_title'),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF4682B4),
@@ -103,7 +105,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   height: 200,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/volley.png'),
                         fit: BoxFit.cover,
                       )),
@@ -132,8 +134,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
-                                        child: Text(
+                                        color: const Color(0xFF4682B4),
+                                        child: const Text(
                                           'Actuellement :',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -146,8 +148,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
-                                        child: Text(
+                                        color: const Color(0xFF4682B4),
+                                        child: const Text(
                                           'Prix à l\'heure :',
                                           style: TextStyle(
                                             fontSize: 18,
@@ -164,21 +166,21 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                           padding: const EdgeInsets.all(8.0),
-                                          color: Color(0xFF4682B4)
+                                          color: const Color(0xFF4682B4)
                                               .withOpacity(0.6),
                                           child: Row(
                                             children: [
                                               Text(
                                                 articleData.available == true
                                                     ? 'Disponible'
-                                                    : 'indisponible',
-                                                style: TextStyle(
+                                                    : 'Indisponible',
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
                                                 ),
                                               ),
-                                              SizedBox(width: 5),
+                                              const SizedBox(width: 5),
                                               Container(
                                                 width: 10,
                                                 height: 10,
@@ -197,11 +199,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color:
-                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        color: const Color(0xFF4682B4)
+                                            .withOpacity(0.6),
                                         child: Text(
                                           articleData.price.toString(),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black,
@@ -250,7 +252,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               name: articleData.name,
                               price: articleData.price,
                               containerId: articleData.containerId,
-                              locations: ['La Baule - Casier N°A4']),
+                              locations: const ['La Baule - Casier N°A4']),
                         ),
                       );
                     },
