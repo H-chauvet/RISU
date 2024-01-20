@@ -7,6 +7,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -24,7 +25,7 @@ class NotificationsPageState extends State<NotificationsPage> {
     super.initState();
   }
 
-  void saveNotifications() async {
+  Future<http.Response?> saveNotifications() async {
     try {
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/notifications'),
@@ -44,13 +45,7 @@ class NotificationsPageState extends State<NotificationsPage> {
           isEndOfRentingChecked,
           isNewsOffersChecked
         ];
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Notifications',
-            message: 'Notifications saved.',
-          );
-        }
+        return response;
       } else {
         print('Error saveNotifications : ${response.statusCode}');
         if (context.mounted) {
@@ -72,6 +67,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         );
       }
     }
+    return null;
   }
 
   Widget createSwitch(String text, bool value, Function(bool) onChanged) {
@@ -184,7 +180,20 @@ class NotificationsPageState extends State<NotificationsPage> {
             ),
             // Put the button at the bottom of the screen
             const Expanded(child: SizedBox()),
-            MyButton(text: "Enregistrer", onPressed: saveNotifications),
+            MyButton(
+              text: "Enregistrer",
+              onPressed: () => saveNotifications().then(
+                (response) => {
+                  if (response != null && response.statusCode == 200)
+                    {
+                      MyToastMessage.show(
+                        context: context,
+                        message: 'Notifications enregistrées.',
+                      ),
+                    },
+                },
+              ),
+            ),
           ],
         ),
       ),
