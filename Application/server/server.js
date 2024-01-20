@@ -471,7 +471,6 @@ app.get('/api/container/listall',
       if (!user) {
         return res.status(401).send('User not found');
       }
-      console.log("container/listall")
       const containers = await database.prisma.Containers.findMany()
       return res.status(200).json(containers)
     } catch (err) {
@@ -484,7 +483,6 @@ app.get('/api/container/listall',
 app.get('/api/container/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-      console.log("container/details")
       if (!req.user) {
         return res.status(401).send('Invalid token');
       }
@@ -517,7 +515,6 @@ app.get('/api/container/:containerId',
 app.get('/api/container/articleslist/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-      console.log("container/articleList")
       if (!req.user) {
         return res.status(401).send('Invalid token');
       }
@@ -541,7 +538,7 @@ app.get('/api/container/articleslist/:containerId',
       if (!container) {
         return res.status(401).json("itemList not found")
       } else if (!container.items || container.items.length === 0) {
-        return res.status(204).json({ message: 'Container doen\'t have items' })
+        return res.status(204).json({ message: 'Container doesn\'t have items' })
       }
       return res.status(200).json(container.items)
     } catch (err) {
@@ -554,7 +551,6 @@ app.get('/api/container/articleslist/:containerId',
 app.get('/api/article/listall',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
-      console.log("article/listall")
       const articles = await database.prisma.Items.findMany()
       res.status(200).json(articles)
     } catch (err) {
@@ -647,10 +643,10 @@ app.get('/api/rent',
       const rentals = await database.prisma.Location.findMany({
         where: { userId: user.id }
       })
-      res.status(201).json({ rentals: rentals })
+      return res.status(201).json({ rentals: rentals })
     } catch (err) {
       console.error(err.message)
-      res.status(401).send('An error occurred')
+      return res.status(401).send('An error occurred')
     }
   }
 )
