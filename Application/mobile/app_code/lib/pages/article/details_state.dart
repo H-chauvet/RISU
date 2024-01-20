@@ -178,6 +178,18 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                     .currentTheme.primaryColor),
                                         child: Row(
                                           children: [
+                                            Container(
+                                              width: 10,
+                                              height: 10,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: articleData.available ==
+                                                    true
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 5),
                                             Text(
                                               (articleData.available)
                                                   ? 'Disponible'
@@ -185,18 +197,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 5),
-                                            Container(
-                                              width: 10,
-                                              height: 10,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: articleData.available ==
-                                                        true
-                                                    ? Colors.green
-                                                    : Colors.red,
                                               ),
                                             ),
                                           ],
@@ -235,7 +235,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                         .primaryColor)
                                             .withOpacity(0.6),
                                         child: Text(
-                                          articleData.price.toString(),
+                                          '${articleData.price} €',
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
