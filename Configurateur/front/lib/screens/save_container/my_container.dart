@@ -58,30 +58,39 @@ class MyContainerState extends State<MyContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Mes conteneurs"),
+            const Text(
+              "Mes conteneurs sauvegardés",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 20),
             ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
                 itemCount: containers.length,
                 itemBuilder: (_, i) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.go('/container-creation',
-                                  extra: jsonEncode({
-                                    'id': containers[i]['id'],
-                                    'container': jsonEncode(containers[i]),
-                                  }));
-                            },
-                            child: Text(i.toString()),
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
                           ),
+                          onPressed: () {
+                            context.go('/container-creation',
+                                extra: jsonEncode({
+                                  'id': containers[i]['id'],
+                                  'container': jsonEncode(containers[i]),
+                                }));
+                          },
+                          child: Text(containers[i]['saveName']),
                         ),
-                      ]);
+                      ),
+                    ],
+                  );
                 }),
           ],
         ),

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -222,7 +223,8 @@ class DesignScreenState extends State<DesignScreen> {
         faceIndex = 0;
         break;
     }
-    if (objs[0].fragments[0].faces[faceIndex].materialIndex == 0) {
+    if (objs[0].fragments[0].faces[faceIndex].materialIndex == 0 &&
+        unitTesting == false) {
       return;
     }
     for (int i = 0; i < designss.length; i++) {
@@ -278,7 +280,15 @@ class DesignScreenState extends State<DesignScreen> {
     return mapping;
   }
 
-  void saveContainer() async {
+  Widget openDialog() {
+    if (widget.container != null) {
+      return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
+    } else {
+      return SaveDialog();
+    }
+  }
+
+  void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': jwtToken,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -292,6 +302,7 @@ class DesignScreenState extends State<DesignScreen> {
         'designs': json.encode(designss),
         'height': '5',
         'width': '12',
+        'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
@@ -315,6 +326,7 @@ class DesignScreenState extends State<DesignScreen> {
         'city': '',
         'informations': '',
         'adress': '',
+        'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
@@ -556,7 +568,12 @@ class DesignScreenState extends State<DesignScreen> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockerss,
-                      onSaved: saveContainer,
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
                     )),
               ),
             ),

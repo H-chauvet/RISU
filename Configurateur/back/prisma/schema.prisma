@@ -60,6 +60,7 @@ model Container {
   informations     String? @db.LongText
   object				   Item[]
   paid             Boolean       @default(false)
+  saveName         String?
 }
 
 model Feedbacks {

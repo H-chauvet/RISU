@@ -6,7 +6,6 @@ import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
-import 'package:front/screens/container-creation/visualization_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
@@ -248,26 +247,6 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ConfirmationScreen(),
         ),
-      ),
-      GoRoute(
-        path: '/container-creation/visualization',
-        builder: (context, state) {
-          if (state.extra == null) {
-            return const VisualizationScreen(
-              lockers: null,
-              amount: null,
-              containerMapping: null,
-            );
-          }
-          final data = state.extra! as String;
-
-          final user = jsonDecode(data) as Map<String, dynamic>;
-          return VisualizationScreen(
-            lockers: user['lockers'],
-            amount: user['amount'],
-            containerMapping: user['containerMapping'],
-          );
-        },
       ),
       GoRoute(
         path: '/confirmation-save',

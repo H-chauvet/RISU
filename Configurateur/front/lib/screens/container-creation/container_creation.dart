@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
@@ -219,6 +220,14 @@ class ContainerCreationState extends State<ContainerCreation> {
         actualRotationDegree != 270 * 3.14 / 180) {
       actualRotationDegree =
           double.parse(actualRotationDegree.toStringAsFixed(2));
+    }
+  }
+
+  Widget openDialog() {
+    if (widget.container != null) {
+      return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
+    } else {
+      return SaveDialog();
     }
   }
 
@@ -467,7 +476,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
-  void saveContainer() async {
+  void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': jwtToken,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -482,12 +491,14 @@ class ContainerCreationState extends State<ContainerCreation> {
           'designs': jsonDecode(widget.container!)['designs'],
           'width': '12',
           'height': '5',
+          'saveName': name,
         };
       } else {
         body = {
           'containerMapping': getContainerMapping(),
           'width': '12',
           'height': '5',
+          'saveName': name,
         };
       }
 
@@ -517,6 +528,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'city': '',
           'informations': '',
           'adress': '',
+          'saveName': name,
         };
       } else {
         body = {
@@ -528,6 +540,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'city': '',
           'informations': '',
           'adress': '',
+          'saveName': name,
         };
       }
       HttpService()
@@ -641,7 +654,12 @@ class ContainerCreationState extends State<ContainerCreation> {
                       heightFactor: 0.7,
                       child: RecapPanel(
                         articles: lockers,
-                        onSaved: saveContainer,
+                        onSaved: () async {
+                          String name = await showDialog(
+                              context: context,
+                              builder: (context) => openDialog());
+                          saveContainer(name);
+                        },
                       )),
                 ),
               ),

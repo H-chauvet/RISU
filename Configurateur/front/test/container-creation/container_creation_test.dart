@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
@@ -286,5 +288,44 @@ void main() {
         containerCreationState.objs[0].fragments[0].faces[0].materialIndex, 1);
     expect(
         containerCreationState.objs[0].fragments[1].faces[0].materialIndex, 0);
+  });
+
+  testWidgets('Load container', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    token = "token";
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: ContainerCreation(
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.pump();
+
+    expect(find.text("Petit casier"), findsNWidgets(12));
+    expect(find.text("Moyen casier"), findsNWidgets(3));
+    expect(find.text("Grand casier"), findsNWidgets(2));
   });
 }
