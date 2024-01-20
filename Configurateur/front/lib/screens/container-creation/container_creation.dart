@@ -63,6 +63,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
     if (widget.container != null) {
       loadContainer();
+
       loadLockers();
     }
   }
@@ -108,6 +109,12 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     decodedContainer = jsonDecode(container['designs']);
 
+    if (decodedContainer != null) {
+      for (int i = 0; i < decodedContainer.length; i++) {
+        lockers.add(Locker('design personnalisé', 50));
+      }
+    }
+
     for (int i = 0; i < littleLocker; i++) {
       lockers.add(Locker('Petit casier', 50));
     }
@@ -116,10 +123,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
     for (int i = 0; i < bigLocker / 3; i++) {
       lockers.add(Locker('Grand casier', 150));
-    }
-
-    for (int i = 0; i < decodedContainer.length; i++) {
-      lockers.add(Locker('design personnalisé', 50));
     }
   }
 
@@ -472,12 +475,25 @@ class ContainerCreationState extends State<ContainerCreation> {
     };
 
     if (widget.id == null) {
-      HttpService().request('http://$serverIp:3000/api/container/create',
-          header, <String, String>{
-        'containerMapping': getContainerMapping(),
-        'height': '5',
-        'width': '12',
-      }).then((value) {
+      dynamic body;
+      if (widget.container != null) {
+        body = {
+          'containerMapping': getContainerMapping(),
+          'designs': jsonDecode(widget.container!)['designs'],
+          'width': '12',
+          'height': '5',
+        };
+      } else {
+        body = {
+          'containerMapping': getContainerMapping(),
+          'width': '12',
+          'height': '5',
+        };
+      }
+
+      HttpService()
+          .request('http://$serverIp:3000/api/container/create', header, body)
+          .then((value) {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
@@ -489,17 +505,35 @@ class ContainerCreationState extends State<ContainerCreation> {
         }
       });
     } else {
-      HttpService().putRequest('http://$serverIp:3000/api/container/update',
-          header, <String, String>{
-        'id': widget.id!,
-        'containerMapping': getContainerMapping(),
-        'price': sumPrice().toString(),
-        'width': '12',
-        'height': '5',
-        'city': '',
-        'informations': '',
-        'adress': '',
-      }).then((value) {
+      dynamic body;
+      if (widget.container != null) {
+        body = {
+          'id': widget.id!,
+          'containerMapping': getContainerMapping(),
+          'price': sumPrice().toString(),
+          'designs': jsonDecode(widget.container!)['designs'],
+          'width': '12',
+          'height': '5',
+          'city': '',
+          'informations': '',
+          'adress': '',
+        };
+      } else {
+        body = {
+          'id': widget.id!,
+          'containerMapping': getContainerMapping(),
+          'price': sumPrice().toString(),
+          'width': '12',
+          'height': '5',
+          'city': '',
+          'informations': '',
+          'adress': '',
+        };
+      }
+      HttpService()
+          .putRequest(
+              'http://$serverIp:3000/api/container/update', header, body)
+          .then((value) {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {

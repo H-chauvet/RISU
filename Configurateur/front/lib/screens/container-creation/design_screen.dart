@@ -126,10 +126,12 @@ class DesignScreenState extends State<DesignScreen> {
 
     dynamic decode = jsonDecode(container['designs']);
 
-    for (int i = 0; i < decode.length; i++) {
-      loadImage(false,
-          fileData: decode[i]['design'],
-          faceLoad: int.parse(decode[i]['face']));
+    if (decode != null) {
+      for (int i = 0; i < decode.length; i++) {
+        loadImage(false,
+            fileData: Uint8List.fromList(decode[i]['design']),
+            faceLoad: int.parse(decode[i]['face']));
+      }
     }
 
     setState(() {
@@ -166,8 +168,9 @@ class DesignScreenState extends State<DesignScreen> {
       }
       if (faceLoad != null) {
         faceIndex = faceLoad;
+      } else {
+        lockerss.add(Locker('design personnalisé', 50));
       }
-      lockerss.add(Locker('design personnalisé', 50));
       if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
         removeDesign(faceIndex);
       }
@@ -247,6 +250,13 @@ class DesignScreenState extends State<DesignScreen> {
     for (int i = 0; i < lockerss.length; i++) {
       if (lockerss[i].type == 'design personnalisé') {
         lockerss.removeAt(i);
+        break;
+      }
+    }
+
+    for (int i = 0; i < designss.length; i++) {
+      if (designss[i].face == faceIndex.toString()) {
+        designss.removeAt(i);
         return;
       }
     }
@@ -299,6 +309,7 @@ class DesignScreenState extends State<DesignScreen> {
         'id': widget.id!,
         'containerMapping': widget.containerMapping!,
         'price': sumPrice().toString(),
+        'designs': json.encode(designss),
         'width': '12',
         'height': '5',
         'city': '',
@@ -319,41 +330,95 @@ class DesignScreenState extends State<DesignScreen> {
   }
 
   void goNext() async {
-    HttpService().request(
-      'http://$serverIp:3000/api/container/create',
-      <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      <String, dynamic>{
-        'designs': json.encode(designss),
-        'height': '5',
-        'width': '12',
-      },
-    ).then((value) {
-      if (value.statusCode != 200) {
-        return;
-      }
-      dynamic response = jsonDecode(value.body);
-
-      var data = {
-        'id': response['id'],
-        'amount': sumPrice(),
-        'containerMapping': widget.containerMapping,
-        'lockers': jsonEncode(lockerss),
-      };
-      context.go("/container-creation/recap", extra: jsonEncode(data));
-    });
+    if (widget.id == null) {
+      HttpService().request(
+        'http://$serverIp:3000/api/container/create',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, dynamic>{
+          'designs': json.encode(designss),
+          'height': '5',
+          'width': '12',
+        },
+      ).then((value) {
+        if (value.statusCode != 200) {
+          return;
+        }
+        dynamic response = jsonDecode(value.body);
+        var data = {
+          'id': response['id'],
+          'amount': sumPrice(),
+          'containerMapping': widget.containerMapping,
+          'lockers': jsonEncode(lockerss),
+          'container': jsonEncode(response),
+        };
+        context.go("/container-creation/recap", extra: jsonEncode(data));
+      });
+    } else {
+      HttpService().putRequest(
+        'http://$serverIp:3000/api/container/update',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, dynamic>{
+          'id': widget.id!,
+          'containerMapping': widget.containerMapping!,
+          'price': sumPrice().toString(),
+          'designs': json.encode(designss),
+          'width': '12',
+          'height': '5',
+          'city': '',
+          'informations': '',
+          'adress': '',
+        },
+      ).then((value) {
+        if (value.statusCode != 200) {
+          return;
+        }
+        dynamic response = jsonDecode(value.body);
+        var data = {
+          'id': response['id'],
+          'amount': sumPrice(),
+          'containerMapping': widget.containerMapping,
+          'lockers': jsonEncode(lockerss),
+          'container': jsonEncode(response),
+        };
+        context.go("/container-creation/recap", extra: jsonEncode(data));
+      });
+    }
   }
 
   void goPrevious() {
-    var data = {
-      'amount': sumPrice(),
-      'containerMapping': widget.containerMapping,
-      'lockers': jsonEncode(lockerss),
-    };
-    context.go("/container-creation", extra: jsonEncode(data));
+    if (widget.container != null) {
+      dynamic decode = jsonDecode(widget.container!);
+      decode['designs'] = jsonEncode(designss);
+      decode['containerMapping'] = widget.containerMapping;
+
+      var data = {
+        'id': widget.id,
+        'container': jsonEncode(decode),
+      };
+      context.go("/container-creation", extra: jsonEncode(data));
+    } else {
+      dynamic design = jsonEncode(designss);
+
+      var container = {
+        'containerMapping': widget.containerMapping!,
+        'designs': design!,
+        'height': '5',
+        'width': '12',
+      };
+
+      var data = {
+        'container': jsonEncode(container),
+      };
+      context.go("/container-creation", extra: jsonEncode(data));
+    }
   }
 
   Widget fileName() {

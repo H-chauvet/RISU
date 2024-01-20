@@ -15,12 +15,18 @@ import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
+      {super.key,
+      this.lockers,
+      this.amount,
+      this.containerMapping,
+      this.id,
+      this.container});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
   final String? id;
+  final String? container;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -60,6 +66,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'containerMapping': widget.containerMapping,
       'lockers': widget.lockers,
       'id': widget.id,
+      'container': widget.container,
     };
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }

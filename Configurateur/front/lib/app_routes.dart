@@ -217,6 +217,7 @@ class AppRouter {
             containerMapping: user['containerMapping'],
             lockers: user['lockers'],
             id: user['id'],
+            container: user['container'],
           );
         },
       ),
@@ -238,6 +239,7 @@ class AppRouter {
             amount: user['amount'],
             containerMapping: user['containerMapping'],
             id: user['id'],
+            container: user['container'],
           );
         },
       ),
