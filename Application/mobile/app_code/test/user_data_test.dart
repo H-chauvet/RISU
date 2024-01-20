@@ -35,7 +35,14 @@ void main() {
 
     test('UserData.fromJson should create an instance from a JSON map', () {
       final Map<String, dynamic> jsonData = {
-        'user': {'email': 'test@example.com'},
+        'user': {
+          'email': 'test@example.com',
+          'Notifications': {
+            'favoriteItemsAvailable': true,
+            'endOfRenting': true,
+            'newsOffersRisu': true,
+          }
+        },
         'token': 'test_token',
       };
       String token = 'test_token';
@@ -46,7 +53,14 @@ void main() {
 
     test('UserData.fromJson should handle missing token in JSON', () {
       final Map<String, dynamic> jsonData = {
-        'user': {'email': 'test@example.com'},
+        'user': {
+          'email': 'test@example.com',
+          'Notifications': {
+            'favoriteItemsAvailable': true,
+            'endOfRenting': true,
+            'newsOffersRisu': true,
+          }
+        },
       };
       String token = '';
       final userData = UserData.fromJson(jsonData['user'], token);
