@@ -420,7 +420,8 @@ app.put('/api/user',
       console.error('Failed to update notifications: ', error)
       return res.status(500).send('Failed to update notifications.')
     }
-  })
+  }
+)
 
 app.put('/api/user/password',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -455,7 +456,8 @@ app.put('/api/user/password',
       console.error(err.message)
       return res.status(500).send('An error occurred')
     }
-  })
+  }
+)
 
 app.get('/api/container/listall',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -509,7 +511,8 @@ app.get('/api/container/:containerId',
       console.error(err.message)
       return res.status(401).send(err.message)
     }
-  })
+  }
+)
 
 app.get('/api/container/articleslist/:containerId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -535,7 +538,6 @@ app.get('/api/container/articleslist/:containerId',
           }
         },
       })
-      console.log(container);
       if (!container) {
         return res.status(401).json("itemList not found")
       } else if (!container.items || container.items.length === 0) {
@@ -546,20 +548,21 @@ app.get('/api/container/articleslist/:containerId',
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.get('/api/article/listall',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       console.log("article/listall")
       const articles = await database.prisma.Items.findMany()
-      console.log(JSON.stringify(articles, null, 2));
       res.status(200).json(articles)
     } catch (err) {
       console.log(err)
       return res.status(400).json('An error occured.')
     }
-  })
+  }
+)
 
 app.get('/api/article/:articleId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -585,7 +588,8 @@ app.get('/api/article/:articleId',
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.post('/api/rent/article',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -624,7 +628,8 @@ app.post('/api/rent/article',
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 // get rental
 app.get('/api/rent',
@@ -647,7 +652,8 @@ app.get('/api/rent',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.get('/api/locations', async (req, res) => {
   try {
@@ -692,7 +698,8 @@ app.post('/api/opinion',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.get('/api/opinion',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -740,7 +747,8 @@ app.get('/api/opinion',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)

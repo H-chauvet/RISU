@@ -63,14 +63,18 @@ class ArticleDataCard extends StatelessWidget {
         alignment: Alignment.center,
         height: 150.0,
         decoration: BoxDecoration(
-          color: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.cardColor),
+          color: context.select(
+            (ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.cardColor,
+          ),
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
             BoxShadow(
               color: context
-                  .select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor)
+                  .select(
+                    (ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.primaryColor,
+                  )
                   .withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
