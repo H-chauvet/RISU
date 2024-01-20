@@ -97,11 +97,11 @@ class ArticleListState extends State<ArticleListPage> {
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.select((ThemeProvider themeProvider) =>
-                    themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.secondaryHeaderColor),
                     shadows: [
                       Shadow(
                         color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.secondaryHeaderColor),
                         blurRadius: 24,
                         offset: const Offset(0, 4),
                       ),

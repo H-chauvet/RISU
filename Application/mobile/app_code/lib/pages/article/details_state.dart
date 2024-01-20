@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
-import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -182,7 +182,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: articleData.available ==
-                                                    true
+                                                        true
                                                     ? Colors.green
                                                     : Colors.red,
                                               ),
