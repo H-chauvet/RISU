@@ -17,6 +17,7 @@ class NotificationsPageState extends State<NotificationsPage> {
       userInformation!.notifications?[0] ?? false;
   bool isEndOfRentingChecked = userInformation!.notifications?[1] ?? false;
   bool isNewsOffersChecked = userInformation!.notifications?[2] ?? false;
+  bool isAllChecked = false;
 
   @override
   void initState() {
@@ -118,6 +119,9 @@ class NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
+    isAllChecked = isFavoriteItemsAvailableChecked &&
+        isEndOfRentingChecked &&
+        isNewsOffersChecked;
     return Scaffold(
       appBar: MyAppBar(
         curveColor: context.select(
@@ -164,6 +168,19 @@ class NotificationsPageState extends State<NotificationsPage> {
               "Actus, offres et conseils de Risu",
               isNewsOffersChecked,
               (newValue) => setState(() => isNewsOffersChecked = newValue),
+            ),
+            const MyDivider(),
+            createSwitch(
+              "Tous",
+              isAllChecked,
+              (newValue) => {
+                setState(() {
+                  isAllChecked = newValue;
+                  isFavoriteItemsAvailableChecked = newValue;
+                  isEndOfRentingChecked = newValue;
+                  isNewsOffersChecked = newValue;
+                })
+              },
             ),
             // Put the button at the bottom of the screen
             const Expanded(child: SizedBox()),
