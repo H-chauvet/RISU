@@ -35,11 +35,12 @@ void main() {
       ),
     );
 
-    final ContainerDetailsState testData = tester.state(find.byType(ContainerDetailsPage));
+    final ContainerDetailsState testData =
+        tester.state(find.byType(ContainerDetailsPage));
     expect(testData.getContainerId(), '');
     expect(testData.getOwner(), '');
     expect(testData.getLocalization(), '');
-    expect(testData.getAvalableItems(), 0);
+    expect(testData.getAvailableItems(), 0);
 
     Finder titleData = find.byKey(const Key('container-details_title'));
     expect(titleData, findsOneWidget);

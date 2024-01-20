@@ -5,24 +5,18 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
 import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/article/list_page.dart';
-import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
-import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/theme.dart';
 
-import '../../components/parameter.dart';
-import '../opinion/opinion_page.dart';
-import '../profile/informations/informations_page.dart';
 import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
-    ContainerPage(),
+    const ContainerPage(),
     const MapPage(),
     const ProfilePage(),
   ];
@@ -64,8 +58,8 @@ class HomePageState extends State<HomePage> {
       setState(() {
         didAskForProfile = true;
       });
-    } catch (e) {
-      print('Error configProfile(): $e');
+    } catch (err) {
+      print('Error configProfile(): $err');
     }
   }
 

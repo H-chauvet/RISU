@@ -5,7 +5,10 @@ import 'details_state.dart';
 class ContainerDetailsPage extends StatefulWidget {
   final String containerId;
 
-  const ContainerDetailsPage({ Key? key, required this.containerId }) : super(key: key);
+  const ContainerDetailsPage({
+    super.key,
+    required this.containerId,
+  });
 
   @override
   State<ContainerDetailsPage> createState() => ContainerDetailsState();

@@ -5,12 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
 
-import 'list_page.dart';
 import 'article_list_data.dart';
+import 'list_page.dart';
 
 Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   final token = userInformation?.token ?? 'defaultToken';
@@ -19,7 +18,7 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
   try {
     response = await http.get(
       Uri.parse(
-          'http://$serverIp:8080/api/container/articleslist/${containerId}'),
+          'http://$serverIp:8080/api/container/articleslist/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
@@ -31,25 +30,27 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
     } else if (response.statusCode == 204) {
       return [];
     } else {
+      print('Error getItemsData(): ${response.statusCode}');
       if (context.mounted) {
         await MyAlertDialog.showErrorAlertDialog(
-            key: const Key('article-list_invaliddata'),
-            context: context,
-            title: 'Article-list',
-            message: 'Failed to get article list');
+          key: const Key('article-list_invaliddata'),
+          context: context,
+          title: 'Article-list',
+          message: 'Failed to get article list',
+        );
       }
       return [];
     }
   } catch (err) {
+    print('Error getItemsData(): $err');
     if (context.mounted) {
       await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-list_connectionrefused'),
-          context: context,
-          title: 'Article-list',
-          message: 'connexion refused');
+        key: const Key('article-list_connectionrefused'),
+        context: context,
+        title: 'Article-list',
+        message: 'connexion refused',
+      );
     }
-    print(err);
-    print(response.statusCode);
     return [];
   }
 }
@@ -69,6 +70,7 @@ class ArticleListState extends State<ArticleListPage> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -84,7 +86,7 @@ class ArticleListState extends State<ArticleListPage> {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            margin: EdgeInsets.only(
+            margin: const EdgeInsets.only(
                 left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -97,11 +99,11 @@ class ArticleListState extends State<ArticleListPage> {
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                    themeProvider.currentTheme.secondaryHeaderColor),
                     shadows: [
                       Shadow(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.secondaryHeaderColor),
                         blurRadius: 24,
                         offset: const Offset(0, 4),
                       ),
@@ -109,9 +111,9 @@ class ArticleListState extends State<ArticleListPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (_itemsDatas.length == 0)
+                if (_itemsDatas.isEmpty)
                   Text(
-                    'Aucun articles disponibles pour ce conteneur',
+                    'Aucun article disponible pour ce conteneur',
                     key: const Key('articles-list_no-article'),
                     style: TextStyle(
                       fontSize: 32,
@@ -128,7 +130,7 @@ class ArticleListState extends State<ArticleListPage> {
                       ],
                     ),
                   )
-                else
+                else ...[
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -140,6 +142,7 @@ class ArticleListState extends State<ArticleListPage> {
                       );
                     },
                   ),
+                ]
               ],
             ),
           ),

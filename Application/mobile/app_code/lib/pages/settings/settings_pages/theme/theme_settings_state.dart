@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/drop_down_menu.dart';
-import 'package:risu/components/outlined_button.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'theme_settings_page.dart';
@@ -30,20 +29,20 @@ class ThemeSettingsPageState extends State<ThemeSettingsPage> {
         child: Center(
           child: Container(
             margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 51),
-            child: Column(
+            child: const Column(
               // mainAxisAlignment: MainAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const SizedBox(height: 30), // Espace ajouté
-                const Text(
+                SizedBox(height: 30),
+                Text(
                   'Thème',
                   style: TextStyle(
-                    fontSize: 36, // Taille de la police
-                    fontWeight: FontWeight.bold, // Gras
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
                     color: Color(0xFF4682B4),
                   ),
                 ),
-                const SizedBox(height: 40),
+                SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -59,14 +58,6 @@ class ThemeSettingsPageState extends State<ThemeSettingsPage> {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 20),
-                MyOutlinedButton(
-                  key: const Key('settings-button_change_information'),
-                  onPressed: () {
-                    print(context);
-                  },
-                  text: "Modification d'information",
                 ),
               ],
             ),

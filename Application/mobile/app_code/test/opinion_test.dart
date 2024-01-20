@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -24,9 +23,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -51,7 +50,8 @@ void main() {
       expect(find.byKey(const Key('opinion-star_3')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_4')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('opinion-star_4')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_4')),
+          warnIfMissed: false);
       await tester.pump();
     });
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
@@ -71,9 +71,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -91,7 +91,7 @@ void main() {
       await tester.tap(filterAll, warnIfMissed: false);
       await tester.pump();
 
-      expect(find.text('0 étoiles'), findsOneWidget);
+      expect(find.text('0 étoile'), findsOneWidget);
       expect(find.text('1 étoile'), findsOneWidget);
       expect(find.text('2 étoiles'), findsOneWidget);
       expect(find.text('3 étoiles'), findsOneWidget);
@@ -120,9 +120,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -161,9 +161,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -202,9 +202,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -243,9 +243,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -284,9 +284,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -325,9 +325,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -368,9 +368,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
@@ -395,19 +395,25 @@ void main() {
       expect(find.byKey(const Key('opinion-star_3')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_4')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('opinion-star_0')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_0')),
+          warnIfMissed: false);
       await tester.pump();
-      await tester.tap(find.byKey(const Key('opinion-star_1')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_1')),
+          warnIfMissed: false);
       await tester.pump();
-      await tester.tap(find.byKey(const Key('opinion-star_2')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_2')),
+          warnIfMissed: false);
       await tester.pump();
-      await tester.tap(find.byKey(const Key('opinion-star_3')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_3')),
+          warnIfMissed: false);
       await tester.pump();
-      await tester.tap(find.byKey(const Key('opinion-star_4')), warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_4')),
+          warnIfMissed: false);
       await tester.pump();
 
       // écrire 'test' dans le champ  qui a pour key 'opinion-textinput_comment'
-      await tester.enterText(find.byKey(const Key('opinion-textinput_comment')), 'test');
+      await tester.enterText(
+          find.byKey(const Key('opinion-textinput_comment')), 'test');
 
       final buttonFinder = find.byKey(const Key('opinion-button_add'));
       expect(buttonFinder, findsOneWidget);
@@ -431,9 +437,9 @@ void main() {
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
-      find.byKey(const Key('add_opinion-button'));
+          find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
-      find.byKey(const Key('opinion-filter_dropdown'));
+          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);

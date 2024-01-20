@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart'; // Import permission_handler
+import 'package:permission_handler/permission_handler.dart';
 
 import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
+  final bool displayGoogleMap = true;
 
-  LatLng _center = LatLng(37.7749, -122.4194);
+  LatLng _center = const LatLng(37.7749, -122.4194);
+
+  @override
+  void initState() {
+    super.initState();
+    _requestLocationPermission();
+  }
+
+  Widget displayMap() {
+    if (!displayGoogleMap) {
+      return const Center(
+        child: Text(
+          'Risu decided to not display the map',
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+    return GoogleMap(
+      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: _center,
+        zoom: 10.0,
+      ),
+      markers: _markers,
+    );
+  }
 
   final Set<Marker> _markers = {
     const Marker(
@@ -25,12 +51,6 @@ class MapPageState extends State<MapPage> {
     setState(() {
       mapController = controller;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _requestLocationPermission();
   }
 
   Future<void> _requestLocationPermission() async {
@@ -53,8 +73,8 @@ class MapPageState extends State<MapPage> {
         _center = LatLng(position.latitude, position.longitude);
       });
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
-    } catch (e) {
-      print('Error fetching location: $e');
+    } catch (err) {
+      print('Error _getUserLocation(): $err');
     }
   }
 
@@ -62,14 +82,7 @@ class MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 10.0,
-        ),
-        markers: _markers,
-      ),
+      body: displayMap(),
     );
   }
 }

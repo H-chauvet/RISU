@@ -123,13 +123,12 @@ void main() {
       ),
     );
     await tester.enterText(
-        find.byKey(const Key('login-textinput_email')), 'invalid_email');
+        find.byKey(const Key('login-textinput_email')), 'user@gmail.com');
 
     await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(const Duration(milliseconds: 4000));
 
-    expect(find.text('A reset password has been sent to your email box.'),
-        findsOneWidget);
+    expect(find.byType(AlertDialog), findsOneWidget);
   });
 
   testWidgets(

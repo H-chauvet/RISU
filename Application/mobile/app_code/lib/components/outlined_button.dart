@@ -8,11 +8,11 @@ class MyOutlinedButton extends StatelessWidget {
   final double sizeCoefficient;
 
   const MyOutlinedButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.sizeCoefficient = 1.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
