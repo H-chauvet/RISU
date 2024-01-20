@@ -12,7 +12,6 @@ import 'article_list_data.dart';
 import 'list_page.dart';
 
 Future<dynamic> getItemsData(BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
@@ -21,7 +20,6 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
           'http://$serverIp:8080/api/container/articleslist/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
     );
     if (response.statusCode == 200) {

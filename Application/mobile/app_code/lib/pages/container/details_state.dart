@@ -14,7 +14,6 @@ import 'details_page.dart';
 
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
@@ -22,7 +21,6 @@ Future<dynamic> getContainerData(
       Uri.parse('http://$serverIp:8080/api/container/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
     );
     if (response.statusCode == 200) {

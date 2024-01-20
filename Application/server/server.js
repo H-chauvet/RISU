@@ -459,18 +459,8 @@ app.put('/api/user/password',
   }
 )
 
-app.get('/api/container/listall',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/listall', async (req, res) => {
     try {
-      if (!req.user) {
-        return res.status(401).send('Invalid token');
-      }
-      const user = await database.prisma.User.findUnique({
-        where: { id: req.user.id },
-      })
-      if (!user) {
-        return res.status(401).send('User not found');
-      }
       const containers = await database.prisma.Containers.findMany()
       return res.status(200).json(containers)
     } catch (err) {
@@ -480,12 +470,8 @@ app.get('/api/container/listall',
   }
 )
 
-app.get('/api/container/:containerId',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/:containerId', async (req, res) => {
     try {
-      if (!req.user) {
-        return res.status(401).send('Invalid token');
-      }
       if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
@@ -512,12 +498,8 @@ app.get('/api/container/:containerId',
   }
 )
 
-app.get('/api/container/articleslist/:containerId',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/articleslist/:containerId', async (req, res) => {
     try {
-      if (!req.user) {
-        return res.status(401).send('Invalid token');
-      }
       if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
@@ -548,8 +530,7 @@ app.get('/api/container/articleslist/:containerId',
   }
 )
 
-app.get('/api/article/listall',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/article/listall', async (req, res) => {
     try {
       const articles = await database.prisma.Items.findMany()
       res.status(200).json(articles)
@@ -560,12 +541,8 @@ app.get('/api/article/listall',
   }
 )
 
-app.get('/api/article/:articleId',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/article/:articleId', async (req, res) => {
     try {
-      if (!req.params.articleId || req.params.articleId === '') {
-        return res.status(401).json({ message: 'Missing articleId' })
-      }
       const article = await database.prisma.Items.findUnique({
         where: { id: req.params.articleId },
         select: {
