@@ -14,11 +14,13 @@ import 'package:risu/utils/theme.dart';
 import 'notifications_page.dart';
 
 class NotificationsPageState extends State<NotificationsPage> {
-  bool isFavoriteItemsAvailableChecked =
+  static bool isFavoriteItemsAvailableChecked =
       userInformation!.notifications?[0] ?? false;
-  bool isEndOfRentingChecked = userInformation!.notifications?[1] ?? false;
-  bool isNewsOffersChecked = userInformation!.notifications?[2] ?? false;
-  bool isAllChecked = false;
+
+  static bool isEndOfRentingChecked =
+      userInformation!.notifications?[1] ?? false;
+  static bool isNewsOffersChecked = userInformation!.notifications?[2] ?? false;
+  static bool isAllChecked = false;
 
   @override
   void initState() {
@@ -40,14 +42,16 @@ class NotificationsPageState extends State<NotificationsPage> {
         }),
       );
       if (response.statusCode == 200) {
-        userInformation!.notifications = [
-          isFavoriteItemsAvailableChecked,
-          isEndOfRentingChecked,
-          isNewsOffersChecked
-        ];
+        setState(() {
+          userInformation!.notifications = [
+            isFavoriteItemsAvailableChecked,
+            isEndOfRentingChecked,
+            isNewsOffersChecked
+          ];
+        });
         return response;
       } else {
-        print('Error saveNotifications : ${response.statusCode}');
+        print('Error saveNotifications: ${response.statusCode}');
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
@@ -58,7 +62,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         }
       }
     } catch (err) {
-      print('Error saveNotifications : $err');
+      print('Error saveNotifications: $err');
       if (context.mounted) {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
@@ -70,7 +74,8 @@ class NotificationsPageState extends State<NotificationsPage> {
     return null;
   }
 
-  Widget createSwitch(String text, bool value, Function(bool) onChanged) {
+  static Widget createSwitch(
+      Key key, String text, bool value, Function(bool) onChanged) {
     const Color activeColor = Colors.green;
     final MaterialStateProperty<Icon?> thumbIcon =
         MaterialStateProperty.resolveWith<Icon?>(
@@ -101,6 +106,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         ),
         const Expanded(child: SizedBox()),
         Switch(
+          key: key,
           value: value,
           onChanged: onChanged,
           inactiveThumbColor: Colors.red,
@@ -149,24 +155,28 @@ class NotificationsPageState extends State<NotificationsPage> {
             ),
             const SizedBox(height: 20),
             createSwitch(
+              const Key('notifications-switch_disponibility_favorite'),
               "Disponibilité d'un article favoris",
               isFavoriteItemsAvailableChecked,
               (newValue) =>
                   setState(() => isFavoriteItemsAvailableChecked = newValue),
             ),
             createSwitch(
+              const Key('notifications-switch_end_renting'),
               "Fin de ma location",
               isEndOfRentingChecked,
               (newValue) => setState(() => isEndOfRentingChecked = newValue),
             ),
             const MyDivider(),
             createSwitch(
+              const Key('notifications-switch_news_offers_risu'),
               "Actus, offres et conseils de Risu",
               isNewsOffersChecked,
               (newValue) => setState(() => isNewsOffersChecked = newValue),
             ),
             const MyDivider(),
             createSwitch(
+              const Key('notifications-switch_all'),
               "Tous",
               isAllChecked,
               (newValue) => {
@@ -181,6 +191,7 @@ class NotificationsPageState extends State<NotificationsPage> {
             // Put the button at the bottom of the screen
             const Expanded(child: SizedBox()),
             MyButton(
+              key: const Key('notifications-button_save'),
               text: "Enregistrer",
               onPressed: () => saveNotifications().then(
                 (response) => {
