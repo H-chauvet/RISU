@@ -41,7 +41,7 @@ void main() {
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     expect(find.text('Votre conteneur a bien été sauvegardé'), findsOneWidget);
-    expect(find.text("blabla"), findsOneWidget);
+    expect(find.text("Retour à l'accueil"), findsOneWidget);
 
     await tester.pumpAndSettle();
   });
