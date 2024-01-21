@@ -460,109 +460,104 @@ app.put('/api/user/password',
 )
 
 app.get('/api/container/listall', async (req, res) => {
-    try {
-      const containers = await database.prisma.Containers.findMany()
-      return res.status(200).json(containers)
-    } catch (err) {
-      console.log(err)
-      return res.status(400).json(err.message)
-    }
+  try {
+    const containers = await database.prisma.Containers.findMany()
+    return res.status(200).json(containers)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json(err.message)
   }
-)
+})
 
 app.get('/api/container/:containerId', async (req, res) => {
-    try {
-      if (!req.params.containerId || req.params.containerId === '') {
-        return res.status(401).json({ message: 'Missing containerId' })
-      }
-      const container = await database.prisma.Containers.findUnique({
-        where: { id: req.params.containerId },
-        select: {
-          localization: true,
-          owner: true,
-          _count: {
-            select: {   // count the number of items available related to the container
-              items: { where: { available: true } }
-            }
-          }
-        },
-      })
-      if (!container) {
-        return res.status(401).json("container not found")
-      }
-      return res.status(200).json(container)
-    } catch (err) {
-      console.error(err.message)
-      return res.status(401).send(err.message)
+  try {
+    if (!req.params.containerId || req.params.containerId === '') {
+      return res.status(401).json({ message: 'Missing containerId' })
     }
+    const container = await database.prisma.Containers.findUnique({
+      where: { id: req.params.containerId },
+      select: {
+        localization: true,
+        owner: true,
+        _count: {
+          select: {   // count the number of items available related to the container
+            items: { where: { available: true } }
+          }
+        }
+      },
+    })
+    if (!container) {
+      return res.status(401).json("container not found")
+    }
+    return res.status(200).json(container)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send(err.message)
   }
-)
+})
 
 app.get('/api/container/:containerId/articleslist/', async (req, res) => {
-    try {
-      if (!req.params.containerId || req.params.containerId === '') {
-        return res.status(401).json({ message: 'Missing containerId' })
-      }
-      const container = await database.prisma.Containers.findUnique({
-        where: { id: req.params.containerId },
-        select: {
-          items: {
-            select: {
-              id: true,
-              containerId: true,
-              name: true,
-              available: true,
-              price: true,
-            }
-          }
-        },
-      })
-      if (!container) {
-        return res.status(401).json("itemList not found")
-      } else if (!container.items || container.items.length === 0) {
-        return res.status(204).json({ message: 'Container doesn\'t have items' })
-      }
-      return res.status(200).json(container.items)
-    } catch (err) {
-      console.error(err.message)
-      return res.status(401).send('An error occurred')
+  try {
+    if (!req.params.containerId || req.params.containerId === '') {
+      return res.status(401).json({ message: 'Missing containerId' })
     }
+    const container = await database.prisma.Containers.findUnique({
+      where: { id: req.params.containerId },
+      select: {
+        items: {
+          select: {
+            id: true,
+            containerId: true,
+            name: true,
+            available: true,
+            price: true,
+          }
+        }
+      },
+    })
+    if (!container) {
+      return res.status(401).json("itemList not found")
+    } else if (!container.items || container.items.length === 0) {
+      return res.status(204).json({ message: 'Container doesn\'t have items' })
+    }
+    return res.status(200).json(container.items)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send('An error occurred')
   }
-)
+})
 
 app.get('/api/article/listall', async (req, res) => {
-    try {
-      const articles = await database.prisma.Items.findMany()
-      return res.status(200).json(articles)
-    } catch (err) {
-      console.log(err)
-      return res.status(400).json('An error occured.')
-    }
+  try {
+    const articles = await database.prisma.Items.findMany()
+    return res.status(200).json(articles)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
   }
-)
+})
 
 app.get('/api/article/:articleId', async (req, res) => {
-    try {
-      const article = await database.prisma.Items.findUnique({
-        where: { id: req.params.articleId },
-        select: {
-          id: true,
-          name: true,
-          price: true,
-          available: true,
-          containerId: true
-        }
-      })
-      if (!article) {
-        return res.status(401).json("article not found")
+  try {
+    const article = await database.prisma.Items.findUnique({
+      where: { id: req.params.articleId },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        available: true,
+        containerId: true
       }
-      return res.status(200).json(article)
-    } catch (err) {
-      console.error(err.message)
-      return res.status(401).send('An error occurred')
+    })
+    if (!article) {
+      return res.status(401).json("article not found")
     }
+    return res.status(200).json(article)
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send('An error occurred')
   }
-)
+})
 
 app.post('/api/rent/article',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -572,27 +567,41 @@ app.post('/api/rent/article',
       }
       const user = await database.prisma.User.findUnique({
         where: { id: req.user.id },
+        select: { id: true }
       })
       if (!user) {
         return res.status(401).send('User not found');
       }
-      if (!req.body.price || req.body.price < 0) {
-        return res.status(401).json({ message: 'Missing price' })
-      }
       if (!req.body.itemId || req.body.itemId === '') {
         return res.status(401).json({ message: 'Missing itemId' })
+      }
+      const item = await database.prisma.Items.findUnique({
+        where: { id: req.body.itemId },
+        select: {
+          id: true,
+          available: true,
+          price: true
+        }
+      })
+      if (!item) {
+        return res.status(401).send('Item not found');
+      }
+      if (!item.available) {
+        return res.status(401).send('Item not available');
       }
       if (!req.body.duration || req.body.duration < 0) {
         return res.status(401).json({ message: 'Missing duration' })
       }
-      const locationPrice = req.body.price * req.body.duration
-      //console.log('locationPrice : ', locationPrice);
+      const locationPrice = item.price * req.body.duration
+      await database.prisma.Items.update({
+        where: { id: item.id },
+        data: { available: false }
+      })
       await database.prisma.Location.create({
         data: {
           price: locationPrice,
-          //itemId: req.body.itemId,
+          itemId: item.id,
           userId: user.id,
-          createdAt: new Date(),
           duration: parseInt(req.body.duration),
         }
       })
