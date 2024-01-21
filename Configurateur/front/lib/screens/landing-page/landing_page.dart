@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
-import 'package:front/main.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -15,22 +14,23 @@ class LandingPage extends StatefulWidget {
 
 class LandingPageState extends State<LandingPage> {
   String connectedButton = '';
-  late Function() connectedFunction;
+  Function() connectedFunction = () {};
   String inscriptionButton = '';
-  late Function() inscriptionFunction;
+  Function() inscriptionFunction = () {};
   String adminButton = '';
-  late Function() adminFunction;
+  Function() adminFunction = () {};
+  String? token = '';
+  String? userMail = '';
 
-  @override
-  void initState() {
-    super.initState();
-    adminButton = "Administration";
-    adminFunction = () => context.go("/admin");
+  void checkToken() async {
+    token = await storageService.readStorage('token');
 
-    if (storageService.readStorage('token') != '') {
+    if (token != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
         storageService.removeStorage('token');
+        storageService.removeStorage('tokenExpiration');
+        token = '';
         inscriptionButton = 'Inscription';
         inscriptionFunction = () => context.go("/register");
         connectedButton = 'Connexion';
@@ -43,14 +43,24 @@ class LandingPageState extends State<LandingPage> {
       connectedButton = 'Connexion';
       connectedFunction = () => context.go("/login");
     }
+
+    storageService.getUserMail().then((value) => userMail = value);
+
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    adminButton = "Administration";
+    adminFunction = () => context.go("/admin");
+    checkToken();
   }
 
   List<Widget> buttons() {
     List<Widget> list = [];
 
-    if (storageService.readStorage('token') != '' &&
-        userMail == "risu.admin@gmail.com") {
+    if (token != '' && userMail == "risu.admin@gmail.com") {
       list.add(
         ElevatedButton(
           onPressed: adminFunction,
@@ -71,7 +81,7 @@ class LandingPageState extends State<LandingPage> {
 
     list.add(const SizedBox(width: 20));
 
-    if (storageService.readStorage('token') == '') {
+    if (token == '') {
       list.add(
         ElevatedButton(
           onPressed: connectedFunction,
@@ -113,8 +123,8 @@ class LandingPageState extends State<LandingPage> {
     return list;
   }
 
-  void goToCreation() {
-    if (storageService.readStorage('token') == '') {
+  void goToCreation() async {
+    if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
       context.go("/container-creation");

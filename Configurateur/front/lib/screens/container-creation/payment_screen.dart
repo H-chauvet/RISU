@@ -6,7 +6,7 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
-import 'package:front/main.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,14 +33,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String city = '';
   String informations = '';
 
-  @override
-  void initState() {
-    String? token = storageService.readStorage('token');
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token == '') {
       context.go('/login');
     } else {
       jwtToken = token!;
     }
+  }
+
+  @override
+  void initState() {
     MyAlertTest.checkSignInStatus(context);
     controller.addListener(update);
     super.initState();

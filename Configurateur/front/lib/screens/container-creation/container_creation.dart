@@ -37,14 +37,18 @@ class ContainerCreationState extends State<ContainerCreation> {
   double actualRotationDegree = 0.0;
   String jwtToken = '';
 
-  @override
-  void initState() {
-    String? token = storageService.readStorage('token');
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
       jwtToken = token!;
     } else {
       jwtToken = "";
     }
+  }
+
+  @override
+  void initState() {
+    checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);

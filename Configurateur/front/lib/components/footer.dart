@@ -53,8 +53,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           TextButton(
-            onPressed: () {
-              if (storageService.readStorage('token') == '') {
+            onPressed: () async {
+              if (await storageService.readStorage('token') == '') {
                 context.go("/login");
               } else {
                 context.go("/feedbacks");

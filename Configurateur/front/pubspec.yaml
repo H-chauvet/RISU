@@ -61,6 +61,7 @@ dependencies:
   flutter_stripe_web: ^4.5.0
   file_picker: ^5.3.1
   shared_preferences: ^2.2.2
+  mockito: ^5.4.0
 
 dev_dependencies:
   flutter_test:
@@ -72,7 +73,6 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  mockito: ^5.4.0
   build_runner: ^2.3.3
 
 # For information on the generic Dart part of this file, see the

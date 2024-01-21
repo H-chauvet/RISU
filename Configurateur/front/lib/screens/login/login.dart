@@ -137,7 +137,6 @@ class LoginScreenState extends State<LoginScreen> {
                                             decodedToken = JwtDecoder.decode(
                                               response['accessToken'],
                                             ),
-                                            userMail = decodedToken['userMail'],
                                             storageService.writeStorage(
                                               'token',
                                               response['accessToken'],

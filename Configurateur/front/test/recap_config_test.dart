@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
   testWidgets('Recap config test', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
     await tester.pumpWidget(const MaterialApp(
       home: RecapConfigPage(),
     ));
@@ -27,3 +40,5 @@ void main() {
     await tester.pump();
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

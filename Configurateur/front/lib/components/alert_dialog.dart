@@ -61,15 +61,26 @@ class MyAlertTest {
 }
 
 Future<bool> checkSignin(BuildContext context) async {
-  if (storageService.readStorage('token') == null) {
+  String? token = await storageService.readStorage('token');
+
+  if (token == '') {
+    return false;
+  }
+
+  bool isUserVerified = await storageService.isUserVerified();
+  if (!isUserVerified) {
     return false;
   }
   return true;
 }
 
 Future<bool> checkSignInAdmin(BuildContext context) async {
-  if (storageService.readStorage('token') != null &&
-      userMail == "risu.admin@gmail.com") {
+  String? token = await storageService.readStorage('token');
+  String? userMail;
+  if (token != '') {
+    userMail = await storageService.getUserMail();
+  }
+  if (token != '' && userMail == "risu.admin@gmail.com") {
     return true;
   }
   return false;

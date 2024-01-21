@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:front/main.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -53,9 +53,8 @@ class DesignScreenState extends State<DesignScreen> {
   String face = faceList.first;
   List<List<int>> designss = [];
 
-  @override
-  void initState() {
-    String? token = storageService.readStorage('token');
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
       jwtToken = token!;
     } else {
@@ -63,6 +62,11 @@ class DesignScreenState extends State<DesignScreen> {
         '/login',
       );
     }
+  }
+
+  @override
+  void initState() {
+    checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());

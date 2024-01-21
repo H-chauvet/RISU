@@ -26,9 +26,8 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
   String jwtToken = '';
   List<Feedbacks> feedbacks = [];
 
-  @override
-  void initState() {
-    String? token = storageService.readStorage('token');
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
       jwtToken = token!;
     } else {
@@ -36,6 +35,11 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
         '/login',
       );
     }
+  }
+
+  @override
+  void initState() {
+    checkToken();
     super.initState();
     fetchFeedbacks();
   }

@@ -33,7 +33,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     String password = '';
     String validedPassword = '';
     dynamic response;
-    Map<String, dynamic> decodedToken;
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -203,10 +202,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         if (value.statusCode == 200)
                                           {
                                             response = jsonDecode(value.body),
-                                            decodedToken = JwtDecoder.decode(
-                                              response['accessToken'],
-                                            ),
-                                            userMail = decodedToken['userMail'],
                                             storageService.writeStorage(
                                               'token',
                                               response['accessToken'],

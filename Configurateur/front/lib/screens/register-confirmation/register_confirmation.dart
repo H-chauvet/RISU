@@ -23,15 +23,18 @@ class RegisterConfirmation extends StatefulWidget {
 class RegisterConfirmationState extends State<RegisterConfirmation> {
   String jwtToken = '';
 
-  @override
-  void initState() {
-    String? tokenStorage = storageService.readStorage('token');
+  void checkToken() async {
+    String? tokenStorage = await storageService.readStorage('token');
     if (tokenStorage != "") {
       jwtToken = tokenStorage!;
     } else {
       context.go("/login");
     }
+  }
 
+  @override
+  void initState() {
+    checkToken();
     super.initState();
   }
 
