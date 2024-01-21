@@ -6,6 +6,7 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
+import 'package:front/main.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -38,8 +39,9 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
+    String? token = storageService.readStorage('token');
     if (token != "") {
-      jwtToken = token;
+      jwtToken = token!;
     } else {
       jwtToken = "";
     }

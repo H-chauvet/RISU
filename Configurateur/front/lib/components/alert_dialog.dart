@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:front/main.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/storage_service.dart';
@@ -60,14 +61,15 @@ class MyAlertTest {
 }
 
 Future<bool> checkSignin(BuildContext context) async {
-  if (token.isEmpty) {
+  if (storageService.readStorage('token') == null) {
     return false;
   }
   return true;
 }
 
 Future<bool> checkSignInAdmin(BuildContext context) async {
-  if (token.isNotEmpty && userMail == "risu.admin@gmail.com") {
+  if (storageService.readStorage('token') != null &&
+      userMail == "risu.admin@gmail.com") {
     return true;
   }
   return false;

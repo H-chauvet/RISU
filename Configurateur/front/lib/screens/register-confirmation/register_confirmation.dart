@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
@@ -24,20 +25,13 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
 
   @override
   void initState() {
-    if (token != "") {
-      jwtToken = token;
+    String? tokenStorage = storageService.readStorage('token');
+    if (tokenStorage != "") {
+      jwtToken = tokenStorage!;
     } else {
       context.go("/login");
     }
-    /*StorageService().readStorage('token').then((value) => {
-          debugPrint(value),
-          if (value == null)
-            {context.go("/login")}
-          else
-            {
-              jwtToken = value,
-            }
-        });*/
+
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
@@ -202,12 +203,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         if (value.statusCode == 200)
                                           {
                                             response = jsonDecode(value.body),
-                                            token = response['accessToken'],
-                                            decodedToken = JwtDecoder.decode(token),
+                                            decodedToken = JwtDecoder.decode(
+                                              response['accessToken'],
+                                            ),
                                             userMail = decodedToken['userMail'],
-                                            /*StorageService().writeStorage(
-                                                'token',
-                                                response['accessToken']),*/
+                                            storageService.writeStorage(
+                                              'token',
+                                              response['accessToken'],
+                                            ),
                                           }
                                       });
                               if (response != null) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/google.dart';
+import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/storage_service.dart';
@@ -132,13 +133,15 @@ class LoginScreenState extends State<LoginScreen> {
                                               gravity: ToastGravity.CENTER,
                                             ),
                                             response = jsonDecode(value.body),
-                                            token = response['accessToken'],
-                                            decodedToken =
-                                                JwtDecoder.decode(token),
+                                            response['accessToken'],
+                                            decodedToken = JwtDecoder.decode(
+                                              response['accessToken'],
+                                            ),
                                             userMail = decodedToken['userMail'],
-                                            /*StorageService().writeStorage(
-                                                'token',
-                                                response['accessToken']),*/
+                                            storageService.writeStorage(
+                                              'token',
+                                              response['accessToken'],
+                                            ),
                                             context.go("/")
                                           }
                                         else

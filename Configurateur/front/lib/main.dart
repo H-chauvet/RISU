@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import './app_routes.dart';
 import 'styles/themes.dart';
 import 'services/theme_service.dart';
+
+StorageService storageService = StorageService();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,6 +16,8 @@ void main() async {
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
+
+  storageService.initializePrefs();
 
   runApp(
     ChangeNotifierProvider<ThemeService>(

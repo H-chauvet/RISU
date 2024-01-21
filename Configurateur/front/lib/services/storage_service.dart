@@ -1,16 +1,23 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-String token = "";
 String userMail = "";
 
 class StorageService {
-  /*FlutterSecureStorage storage = const FlutterSecureStorage();
+  late SharedPreferences prefs;
 
-  void writeStorage(key, value) async {
-    await storage.write(key: key, value: value);
+  Future<void> initializePrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
-  Future<String?> readStorage(key) async {
-    return await storage.read(key: key);
-  }*/
+  void writeStorage(key, value) async {
+    await prefs.setString(key, value);
+  }
+
+  String? readStorage(key) {
+    return prefs.getString(key);
+  }
+
+  Future<bool> removeStorage(key) async {
+    return await prefs.remove(key);
+  }
 }

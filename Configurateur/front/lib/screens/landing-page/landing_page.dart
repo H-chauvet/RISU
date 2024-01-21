@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/main.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -26,10 +27,10 @@ class LandingPageState extends State<LandingPage> {
     adminButton = "Administration";
     adminFunction = () => context.go("/admin");
 
-    if (token != '') {
+    if (storageService.readStorage('token') != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
-        token = '';
+        storageService.removeStorage('token');
         inscriptionButton = 'Inscription';
         inscriptionFunction = () => context.go("/register");
         connectedButton = 'Connexion';
@@ -48,7 +49,8 @@ class LandingPageState extends State<LandingPage> {
   List<Widget> buttons() {
     List<Widget> list = [];
 
-    if (token != '' && userMail == "risu.admin@gmail.com") {
+    if (storageService.readStorage('token') != '' &&
+        userMail == "risu.admin@gmail.com") {
       list.add(
         ElevatedButton(
           onPressed: adminFunction,
@@ -69,7 +71,7 @@ class LandingPageState extends State<LandingPage> {
 
     list.add(const SizedBox(width: 20));
 
-    if (token == '') {
+    if (storageService.readStorage('token') == '') {
       list.add(
         ElevatedButton(
           onPressed: connectedFunction,
@@ -112,7 +114,7 @@ class LandingPageState extends State<LandingPage> {
   }
 
   void goToCreation() {
-    if (token == '') {
+    if (storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
       context.go("/container-creation");
