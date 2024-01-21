@@ -1,24 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   group('Test Opinion Page', () {
     testWidgets('find opinions pages buttons', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -55,18 +44,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -104,18 +82,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 1 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -145,18 +112,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 2 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -186,18 +142,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 3 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -227,18 +172,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 4 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -268,18 +202,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('select filter 5 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -309,18 +232,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('no opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -352,18 +264,7 @@ void main() {
       expect(find.text('Aucun avis'), findsOneWidget);
     });
     testWidgets('new opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -421,18 +322,7 @@ void main() {
       await tester.pump();
     });
     testWidgets('cancel button new opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: OpinionPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const OpinionPage()));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
