@@ -1,31 +1,38 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:front/screens/login/login.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 
 class MyAlertTest {
   static Future<void> checkSignInStatus(BuildContext context) async {
-    bool isSignedIn = await checkSignin(context);
-    String title = 'Connexion requise';
-    String message = 'Vous devez être connecté à un compte pour poursuivre.';
-    if (!isSignedIn) {
+    dynamic object = await checkSignin(context);
+    String title = object['title'];
+    String message = object['message'];
+    if (!object['isSignedIn']) {
       _showSignInAlertDialog(context, title, message);
     }
   }
 
   static Future<void> checkSignInStatusAdmin(BuildContext context) async {
-    bool isSignedIn = await checkSignInAdmin(context);
-    String title = 'Connexion Administrateur requise';
-    String message =
-        "Vous devez être connecté en tant qu'Administrateur à un compte pour poursuivre.";
-    if (!isSignedIn) {
+    dynamic object = await checkSignInAdmin(context);
+    String title = object['title'];
+    String message = object['message'];
+    if (!object['isSignedIn']) {
       _showSignInAlertDialog(context, title, message);
+    }
+  }
+
+  static Widget loginButton(BuildContext context) {
+    if ('title' == 'Connexion requise') {
+      return TextButton(
+        onPressed: () {
+          context.go('/login');
+        },
+        child: const Text('Se connecter'),
+      );
+    } else {
+      return Container();
     }
   }
 
@@ -33,6 +40,7 @@ class MyAlertTest {
       BuildContext context, String title, String message) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title),
@@ -46,13 +54,7 @@ class MyAlertTest {
               },
               child: const Text("Retour à l'accueil"),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                context.go('/login');
-              },
-              child: const Text('Se connecter'),
-            ),
+            loginButton(context),
           ],
         );
       },
@@ -60,28 +62,41 @@ class MyAlertTest {
   }
 }
 
-Future<bool> checkSignin(BuildContext context) async {
+Future<Map<String, dynamic>> checkSignin(BuildContext context) async {
   String? token = await storageService.readStorage('token');
 
   if (token == '') {
-    return false;
+    return {
+      'isSignedIn': false,
+      'title': 'Connexion requise',
+      'message': 'Vous devez être connecté à un compte pour poursuivre.'
+    };
   }
 
   bool isUserVerified = await storageService.isUserVerified();
   if (!isUserVerified) {
-    return false;
+    return {
+      'isSignedIn': false,
+      'title': 'Compte non vérifié',
+      'message': 'Vous devez vérifier votre compte pour poursuivre'
+    };
   }
-  return true;
+  return {'isSignedIn': true, 'title': '', 'message': ''};
 }
 
-Future<bool> checkSignInAdmin(BuildContext context) async {
+Future<Map<String, dynamic>> checkSignInAdmin(BuildContext context) async {
   String? token = await storageService.readStorage('token');
   String? userMail;
   if (token != '') {
     userMail = await storageService.getUserMail();
   }
   if (token != '' && userMail == "risu.admin@gmail.com") {
-    return true;
+    return {'isSignedIn': true, 'title': '', 'message': ''};
   }
-  return false;
+  return {
+    'isSignedIn': false,
+    'title': 'Connexion Administrateur requise',
+    'message':
+        "Vous devez être connecté en tant qu'Administrateur à un compte pour poursuivre."
+  };
 }

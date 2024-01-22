@@ -31,9 +31,9 @@ void main() {
   test('checkSignin - token vide', () async {
     SharedPreferences.setMockInitialValues({});
 
-    bool isSignedIn = await checkSignin(mockContext);
+    dynamic object = await checkSignin(mockContext);
 
-    expect(isSignedIn, false);
+    expect(object['isSignedIn'], false);
   });
 
   test('checkSignin - token non vide', () async {
@@ -51,17 +51,17 @@ void main() {
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
-    bool isSignedIn = await checkSignin(mockContext);
+    dynamic object = await checkSignin(mockContext);
 
-    expect(isSignedIn, true);
+    expect(object['isSignedIn'], true);
   });
 
   test('checkSignInAdmin - token vide ou utilisateur non admin', () async {
     SharedPreferences.setMockInitialValues({});
 
-    bool isSignedInAdmin = await checkSignInAdmin(mockContext);
+    dynamic object = await checkSignInAdmin(mockContext);
 
-    expect(isSignedInAdmin, false);
+    expect(object['isSignedIn'], false);
   });
 
   test('checkSignInAdmin - token non vide et utilisateur admin', () async {
@@ -77,9 +77,9 @@ void main() {
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
-    bool isSignedInAdmin = await checkSignInAdmin(mockContext);
+    dynamic object = await checkSignInAdmin(mockContext);
 
-    expect(isSignedInAdmin, true);
+    expect(object['isSignedIn'], true);
   });
 }
 
