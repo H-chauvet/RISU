@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:risu/pages/article/article_list_data.dart';
 
 import 'rent_state.dart';
 
 class RentArticlePage extends StatefulWidget {
-  final String name;
-  final int price;
-  final String containerId;
-  final List<String> locations;
+  final ArticleData articleData;
 
   const RentArticlePage({
     super.key,
-    required this.name,
-    required this.price,
-    required this.containerId,
-    required this.locations,
+    required this.articleData,
   });
 
   @override

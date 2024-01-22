@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:risu/pages/rental/rental_page.dart';
+import 'package:risu/pages/rent/rental_page.dart';
 
 import 'globals.dart';
 

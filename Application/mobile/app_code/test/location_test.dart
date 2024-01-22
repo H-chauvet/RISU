@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/rent/rent_page.dart';
+import 'package:risu/pages/article/article_list_data.dart';
 
 import 'globals.dart';
 
@@ -9,11 +10,14 @@ void main() {
     testWidgets('Rent Article Page UI', (WidgetTester tester) async {
       await tester.pumpWidget(
         initPage(
-          const RentArticlePage(
-            name: 'Ballon de volley',
-            price: 2,
-            containerId: "1",
-            locations: ['Gymnase', 'Salle de sport'],
+          RentArticlePage(
+            articleData: ArticleData(
+                available: true,
+                id: "1234",
+                name: "test object",
+                containerId: "12345",
+                price: 3,
+              ),
           ),
         ),
       );

@@ -8,8 +8,8 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/article/rent_page.dart';
 import 'package:risu/pages/container/details_page.dart';
+import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -270,25 +270,24 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Louer cet article',
-                    key: const Key('article-button_article-rent'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RentArticlePage(
-                              name: articleData.name,
-                              price: articleData.price,
-                              containerId: articleData.containerId,
-                              locations: const ['La Baule - Casier N°A4']),
-                        ),
-                      );
-                    },
-                  ),
-                )
+                if (articleData.available)
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Louer cet article',
+                      key: const Key('article-button_article-rent'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RentArticlePage(
+                              articleData: articleData,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
               ],
             ),
           ),
