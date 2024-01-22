@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
-import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'rent_page.dart';
@@ -17,7 +17,6 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   //String _articleName = 'Nom de l\'article';
 
-  late int _rentalPrice;
   late ArticleData _articleData;
 
   @override
