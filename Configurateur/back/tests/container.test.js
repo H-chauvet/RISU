@@ -78,8 +78,9 @@ describe("Create container", function () {
               containerMapping: "00011100000000030000000200",
               width: "12",
               height: "5",
-              city: "Nantes",
-              adress: "blabla",
+              city: "Paris",
+              adress: "rue de la paix",
+              saveName: "test",
             });
 
           expect(req.statusCode).toBe(200);
@@ -88,8 +89,8 @@ describe("Create container", function () {
           expect(req.body.price).toBe(15000.0);
           expect(req.body.width).toBe(12);
           expect(req.body.height).toBe(5);
-          expect(req.body.city).toBe("Nantes");
-          expect(req.body.adress).toBe("blabla");
+          expect(req.body.city).toBe("Paris");
+          expect(req.body.adress).toBe("rue de la paix");
         },
         async function () {
           const req = await request("http://localhost:3000")
