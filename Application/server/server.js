@@ -269,7 +269,7 @@ async function createFixtures() {
         }
       }
     })
-    const emptyContainer = await database.prisma.Containers.create({
+    const emptyContainer = await database.prisma.Container.create({
       data: {
         localization: 'Nantes',
         owner: 'Risu',
