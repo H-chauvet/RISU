@@ -78,7 +78,7 @@ describe('POST /api/rent/article', () => {
               .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ "itemId": itemId });
-            console.log(res.error.text);
+            expect(res.statusCode).toBe(401);
             expect(res.error.text).toBe('{"message":"Missing duration"}');
           }
         ],

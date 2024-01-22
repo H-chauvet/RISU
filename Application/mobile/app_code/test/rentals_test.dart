@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/pages/rental/rental_page.dart';
+import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {

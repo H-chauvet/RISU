@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/theme.dart';
 
 void main() {
@@ -15,12 +15,15 @@ void main() {
               create: (_) => ThemeProvider(false),
             ),
           ],
-          child: const MaterialApp(
+          child: MaterialApp(
             home: RentArticlePage(
-              name: 'Ballon de volley',
-              price: 2,
-              containerId: "1",
-              locations: ['Gymnase', 'Salle de sport'],
+              articleData: ArticleData(
+                available: true,
+                id: "1234",
+                name: "test object",
+                containerId: "12345",
+                price: 3,
+              ),
             ),
           ),
         ),
