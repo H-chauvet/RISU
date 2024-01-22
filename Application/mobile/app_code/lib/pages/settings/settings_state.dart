@@ -5,6 +5,7 @@ import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -62,10 +63,10 @@ class SettingsPageState extends State<SettingsPage> {
               ),
               SizedBox(height: 8),
               MyParameter(
-                goToPage: LoginPage(),
+                goToPage: NotificationsPage(),
                 title: 'Notifications',
                 paramIcon: Icon(Icons.notifications),
-                locked: true,
+                locked: false,
               ),
               SizedBox(height: 8),
               MyParameter(
