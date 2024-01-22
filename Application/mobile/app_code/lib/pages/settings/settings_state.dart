@@ -45,9 +45,10 @@ class SettingsPageState extends State<SettingsPage> {
     } catch (err) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Suppression de compte',
-            message: 'Erreur lors de la suppresion du compte.');
+          context: context,
+          title: 'Suppression de compte',
+          message: 'Erreur lors de la suppresion du compte.',
+        );
       }
       return false;
     }
