@@ -1,6 +1,7 @@
 const Stripe = require("stripe");
+const { db } = require("../middleware/database");
 
-const generateResponse = (intent) => {
+const generateResponse = async (intent, id) => {
   switch (intent.status) {
     case "requires_action":
       return {
@@ -14,6 +15,17 @@ const generateResponse = (intent) => {
       };
     case "succeeded":
       console.log("Payment received!");
+      try {
+        await db.Container.update({
+          where: {
+            id: id,
+          },
+          data: { paid: true },
+        });
+      } catch (error) {
+        console.error("Error retrieving users:", error);
+        throw new Error("Failed to retrieve container");
+      }
       return { clientSecret: intent.client_secret, status: intent.status };
   }
 
@@ -39,6 +51,6 @@ exports.makePayments = async (data) => {
       return_url: "risu://stripe-redirect",
     };
     const intent = await stripe.paymentIntents.create(params);
-    return generateResponse(intent);
+    return generateResponse(intent, data.containerId);
   }
 };
