@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
+import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
@@ -15,7 +16,7 @@ import 'home_page.dart';
 class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
-    ContainerPage(),
+    const ContainerPage(),
     const MapPage(),
     const ProfilePage(),
   ];
@@ -57,8 +58,8 @@ class HomePageState extends State<HomePage> {
       setState(() {
         didAskForProfile = true;
       });
-    } catch (e) {
-      print('Error configProfile(): $e');
+    } catch (err) {
+      print('Error configProfile(): $err');
     }
   }
 
@@ -77,6 +78,7 @@ class HomePageState extends State<HomePage> {
           showLogo: true,
           showBurgerMenu: false,
         ),
+        endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(

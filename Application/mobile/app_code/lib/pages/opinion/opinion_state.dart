@@ -5,12 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
-import '../../utils/theme.dart';
+import 'package:risu/utils/theme.dart';
+
 import 'opinion_page.dart';
 
 class OpinionPageState extends State<OpinionPage> {
@@ -33,42 +32,38 @@ class OpinionPageState extends State<OpinionPage> {
         },
       );
       if (response.statusCode == 201) {
-        print('Opinions récupérés');
         final data = json.decode(response.body);
-        print('data: $data');
         final opinions = data['result'];
         if (opinions == null) {
           opinionsList = [];
           return;
         }
-        print('opinions: $opinions');
         setState(() {
           opinionsList = opinions;
         });
-
-        setState(() {});
       } else {
-        print('response.statusCode: ${response.statusCode}');
-        print('response.body: ${response.body}');
-        print('Erreur lors de la récupération des avis.');
-        await MyAlertDialog.showInfoAlertDialog(
+        print("Error getOpinions(): ${response.statusCode}");
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Contact',
-            message: 'Erreur lors de la récupération des avis.');
+            message: 'Erreur lors de la récupération des avis.',
+          );
+        }
       }
-    } catch (e) {
-      print('erreur: $e');
-      await MyAlertDialog.showInfoAlertDialog(
+    } catch (err) {
+      print("Error getOpinions(): $err");
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
           context: context,
           title: 'Contact',
-          message: 'Erreur lors de la récupération des avis.');
+          message: 'Erreur lors de la récupération des avis.',
+        );
+      }
     }
   }
 
   void postOpinion(note, comment) async {
-    print('postOpinion');
-    print('note: $note');
-    print('comment: $comment');
     late http.Response response;
     try {
       response = await http.post(
@@ -82,30 +77,33 @@ class OpinionPageState extends State<OpinionPage> {
           'comment': comment,
         }),
       );
-    } catch (err) {
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Connection refused.');
-        print(err);
-        print(response.statusCode);
-      }
-    }
-    if (response.statusCode == 201) {
-      if (context.mounted) {
-        getOpinions();
-        await MyAlertDialog.showInfoAlertDialog(
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          getOpinions();
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Avis ajouté',
-            message: 'Votre avis a bien été sauvegardé.');
-      }
-    } else {
-      if (context.mounted) {
-        print(response.statusCode);
-        print(response.body);
-        await MyAlertDialog.showInfoAlertDialog(
+            message: 'Votre avis a bien été sauvegardé.',
+          );
+        }
+      } else {
+        print("Error postOpinion(): ${response.statusCode}");
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Avis non ajouté',
-            message: 'Erreur lors de la sauvegarde de l\'avis.');
+            message: 'Erreur lors de la sauvegarde de l\'avis.',
+          );
+        }
+      }
+    } catch (err) {
+      print("Error postOpinion(): $err");
+      if (context.mounted) {
+        await MyAlertDialog.showInfoAlertDialog(
+          context: context,
+          title: 'Contact',
+          message: 'Connection refused.',
+        );
       }
     }
   }
@@ -120,7 +118,7 @@ class OpinionPageState extends State<OpinionPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: Text('Ajouter un avis'),
+              title: const Text('Ajouter un avis'),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -128,14 +126,13 @@ class OpinionPageState extends State<OpinionPage> {
                   Row(
                     children: List.generate(
                       5,
-                          (index) => IconButton(
+                      (index) => IconButton(
                         key: Key('opinion-star_$index'),
                         icon: Icon(
                           index < selectedStar ? Icons.star : Icons.star_border,
                           color: Colors.yellow,
                         ),
                         onPressed: () {
-                          // Lorsque l'utilisateur clique sur une étoile
                           setState(() {
                             selectedStar = index + 1;
                           });
@@ -143,7 +140,7 @@ class OpinionPageState extends State<OpinionPage> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   MyTextInput(
                     key: const Key('opinion-textinput_comment'),
                     labelText: "Commentaire",
@@ -160,17 +157,15 @@ class OpinionPageState extends State<OpinionPage> {
                   children: [
                     MyOutlinedButton(
                       text: 'Annuler',
-                      key: Key('cancel-button'),
+                      key: const Key('cancel-button'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     MyOutlinedButton(
                       text: 'Ajouter',
-                      key: Key('opinion-button_add'),
+                      key: const Key('opinion-button_add'),
                       onPressed: () {
-                        print('Note ajoutée : $selectedStar');
-                        print('Commentaire ajouté : $comment');
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
                       },
@@ -196,14 +191,14 @@ class OpinionPageState extends State<OpinionPage> {
     return Scaffold(
       appBar: MyAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
-        themeProvider.currentTheme.secondaryHeaderColor),
+            themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
         showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-      themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.background),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -228,40 +223,40 @@ class OpinionPageState extends State<OpinionPage> {
                           DropdownButton<int>(
                             key: const Key('opinion-filter_dropdown'),
                             value: selectedStarFilter,
-                            items: [
+                            items: const [
                               DropdownMenuItem<int>(
                                 value: 0,
-                                key: const Key('opinion-filter_dropdown_0'),
-                                child: Text('0 étoiles'),
+                                key: Key('opinion-filter_dropdown_0'),
+                                child: Text('0 étoile'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 1,
-                                key: const Key('opinion-filter_dropdown_1'),
+                                key: Key('opinion-filter_dropdown_1'),
                                 child: Text('1 étoile'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 2,
-                                key: const Key('opinion-filter_dropdown_2'),
+                                key: Key('opinion-filter_dropdown_2'),
                                 child: Text('2 étoiles'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 3,
-                                key: const Key('opinion-filter_dropdown_3'),
+                                key: Key('opinion-filter_dropdown_3'),
                                 child: Text('3 étoiles'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 4,
-                                key: const Key('opinion-filter_dropdown_4'),
+                                key: Key('opinion-filter_dropdown_4'),
                                 child: Text('4 étoiles'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 5,
-                                key: const Key('opinion-filter_dropdown_5'),
+                                key: Key('opinion-filter_dropdown_5'),
                                 child: Text('5 étoiles'),
                               ),
                               DropdownMenuItem<int>(
                                 value: 6,
-                                key: const Key('opinion-filter_dropdown_all'),
+                                key: Key('opinion-filter_dropdown_all'),
                                 child: Text('Tous les avis'),
                               ),
                             ],
@@ -269,7 +264,7 @@ class OpinionPageState extends State<OpinionPage> {
                               setState(() {
                                 selectedStarFilter = value ?? 0;
                               });
-                              getOpinions(); // Actualiser la liste d'avis lorsque le filtre change
+                              getOpinions();
                             },
                           ),
                           if (opinionsList.isNotEmpty)
@@ -282,53 +277,47 @@ class OpinionPageState extends State<OpinionPage> {
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.all(15),
+                                  contentPadding: const EdgeInsets.all(15),
                                   key: Key('opinion-listTile_${opinion['id']}'),
                                   title: Text(
-                                    ((opinion['firstName'] ?? '').isNotEmpty
-                                        ? opinion['firstName']
-                                        : 'Anonyme') +
-                                        ' ' +
-                                        ((opinion['lastName'] ?? '').isNotEmpty
-                                            ? opinion['lastName']
-                                            : ''),
+                                    '${(opinion['firstName'] ?? 'Anonyme')} ${(opinion['lastName'] ?? '')}',
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Row(
                                         children: List.generate(
                                           5,
-                                              (index) => Padding(
-                                            padding: EdgeInsets.symmetric(
+                                          (index) => Padding(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 2),
                                             child: Icon(
                                               index < int.parse(opinion['note'])
                                                   ? Icons.star
                                                   : Icons.star_border,
                                               color: index <
-                                                  int.parse(opinion['note'])
+                                                      int.parse(opinion['note'])
                                                   ? Colors.yellow
                                                   : Colors.grey,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      SizedBox(height: 8),
+                                      const SizedBox(height: 8),
                                       Text(
                                         opinion['comment'],
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
                           if (opinionsList.isEmpty)
-                            Text(
+                            const Text(
                               'Aucun avis',
                               style: TextStyle(fontSize: 16),
                             ),
@@ -347,8 +336,8 @@ class OpinionPageState extends State<OpinionPage> {
         onPressed: () {
           _showAddOpinionDialog();
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

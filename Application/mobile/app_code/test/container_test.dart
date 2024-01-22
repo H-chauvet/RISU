@@ -1,30 +1,16 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/pages/container/container_list.dart';
 import 'package:risu/pages/container/container_page.dart';
-import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   testWidgets('ContainerStat full info', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: ContainerPage(),
-        ),
-      ),
-    );
+    await tester.pumpWidget(initPage(const ContainerPage()));
     await tester.pump();
     expect(find.text("Liste des conteneurs"), findsOneWidget);
     expect(find.byType(ListView), findsNothing);
-
   });
 
   testWidgets('ContainerMobilePage displays message details',
@@ -42,8 +28,8 @@ void main() {
     );
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
+      initPage(
+        Scaffold(
           body: Column(
             children: [
               ListView.builder(
@@ -69,8 +55,8 @@ void main() {
   testWidgets('ContainerMobileCard displays message details',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MaterialApp(
-        home: ContainerCard(
+      initPage(
+        ContainerCard(
           container: ContainerList(
             id: 1,
             price: 10,

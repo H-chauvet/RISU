@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/utils/validators.dart';
 
+import 'globals.dart';
+
 void main() {
   group('Validators Integration Test', () {
     setUpAll(() async {
@@ -13,11 +15,11 @@ void main() {
     tearDown(() {
       // This code runs after each test case.
     });
-    
+
     testWidgets('Valid Phone Number', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(
@@ -33,8 +35,8 @@ void main() {
 
     testWidgets('Invalid Phone Number', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(Validators().phoneNumber(context, 'invalid') ?? '');
@@ -50,8 +52,8 @@ void main() {
 
     testWidgets('Valid Email', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(
@@ -67,8 +69,8 @@ void main() {
 
     testWidgets('Valid Date', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(Validators().date(context, '01/01/2023') ?? '');
@@ -85,8 +87,8 @@ void main() {
 
     testWidgets('Invalid Month', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(Validators().date(context, '32/13/2023') ?? '');
@@ -102,8 +104,8 @@ void main() {
 
     testWidgets('Invalid Day', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(Validators().date(context, '32/11/2023') ?? '');
@@ -119,8 +121,8 @@ void main() {
 
     testWidgets('Valid Not Empty', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(
@@ -136,8 +138,8 @@ void main() {
 
     testWidgets('Invalid Not Empty', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
+        initPage(
+          Scaffold(
             body: Builder(
               builder: (BuildContext context) {
                 return Text(Validators().notEmpty(context, '') ?? '');

@@ -9,7 +9,6 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/utils/validators.dart';
 
 import 'signup_page.dart';
 
@@ -18,12 +17,18 @@ class SignupPageState extends State<SignupPage> {
   String? _password;
   bool _isPasswordVisible = false;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<bool> apiSignup() async {
     if (_email == null || _password == null) {
       await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Creation de compte',
-          message: 'Please fill all the field !');
+        context: context,
+        title: 'Creation de compte',
+        message: 'Please fill all the field !',
+      );
       return false;
     }
     late http.Response response;
@@ -36,38 +41,38 @@ class SignupPageState extends State<SignupPage> {
         body: jsonEncode(
             <String, String>{'email': _email!, 'password': _password!}),
       );
-    } catch (err) {
-      if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Connexion',
-            message: 'Connection refused.');
-      }
-      return false;
-    }
-    if (response.statusCode == 201) {
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Email',
-            message: 'A confirmation e-mail has been sent to you.');
-        return true;
-      }
-    } else {
-      if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
+            message: 'A confirmation e-mail has been sent to you.',
+          );
+          return true;
+        }
+      } else {
+        print('Error apiSignup(): ${response.statusCode}');
+        if (context.mounted) {
+          await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Creation de compte',
-            message: 'Invalid e-mail address !');
+            message: 'Invalid e-mail address !',
+          );
+        }
+        return false;
+      }
+      return false;
+    } catch (err) {
+      print('Error apiSignup(): $err');
+      if (context.mounted) {
+        await MyAlertDialog.showErrorAlertDialog(
+          context: context,
+          title: 'Connexion',
+          message: 'Connection refused.',
+        );
       }
       return false;
     }
-    return false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -136,7 +141,7 @@ class SignupPageState extends State<SignupPage> {
                   },
                   onChanged: (value) => _password = value,
                 ),
-                Align(
+                const Align(
                   alignment: Alignment.centerRight,
                   child: Column(
                     children: [

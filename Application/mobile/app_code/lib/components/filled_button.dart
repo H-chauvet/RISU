@@ -8,11 +8,11 @@ class MyButton extends StatelessWidget {
   final double sizeCoefficient;
 
   const MyButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.sizeCoefficient = 1.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

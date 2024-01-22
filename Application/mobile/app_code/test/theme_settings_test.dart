@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
+import 'globals.dart';
+
 void main() {
   group('Test Theme Settings', () {
     setUpAll(() async {
@@ -17,21 +19,8 @@ void main() {
     });
 
     testWidgets('Light mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: ThemeSettingsPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const ThemeSettingsPage()));
 
-      final changeInformationButtonFinder =
-          find.byKey(const Key('settings-button_change_information'));
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
@@ -40,27 +29,12 @@ void main() {
 
       expect(themeProvider.currentTheme.brightness, Brightness.light);
       expect(dropdownFinder, findsOneWidget);
-      expect(changeInformationButtonFinder, findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(changeInformationButtonFinder);
       await tester.pumpAndSettle();
     });
     testWidgets('Dark mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(true),
-            ),
-          ],
-          child: const MaterialApp(
-            home: ThemeSettingsPage(),
-          ),
-        ),
-      );
+      await tester
+          .pumpWidget(initPage(const ThemeSettingsPage(), isDarkMode: true));
 
-      final changeInformationButtonFinder =
-          find.byKey(const Key('settings-button_change_information'));
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
@@ -69,9 +43,6 @@ void main() {
 
       expect(themeProvider.currentTheme.brightness, Brightness.dark);
       expect(dropdownFinder, findsOneWidget);
-      expect(changeInformationButtonFinder, findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(changeInformationButtonFinder);
       await tester.pumpAndSettle();
     });
   });

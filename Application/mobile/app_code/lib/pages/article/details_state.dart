@@ -7,51 +7,61 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/pages/article/rent_page.dart';
+import 'package:risu/pages/container/details_page.dart';
+import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
 
-Future<dynamic> getContainerData(BuildContext context, String articleId) async {
+Future<dynamic> getArticleData(BuildContext context, String articleId) async {
   late http.Response response;
-  final token = userInformation?.token ?? 'defaultToken';
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/article/details'),
+    response = await http.get(
+      Uri.parse('http://$serverIp:8080/api/article/$articleId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'articleId': articleId,
-      }),
     );
-  } catch (err) {
-    if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-details_connectionrefused'),
-          context: context,
-          title: 'Container-details',
-          message: 'Connexion refused');
-    }
-  }
-  if (response.statusCode == 200) {
-    dynamic responseData = jsonDecode(response.body);
-    print(responseData);
-    return responseData;
-  } else {
-    if (context.mounted) {
-      print(response.statusCode);
-      print(response.reasonPhrase);
-      await MyAlertDialog.showErrorAlertDialog(
+    if (response.statusCode == 200) {
+      dynamic responseData = jsonDecode(response.body);
+      return responseData;
+    } else {
+      print('Error getArticleData(): ${response.statusCode}');
+      if (context.mounted) {
+        await MyAlertDialog.showErrorAlertDialog(
           key: const Key('article-details_invaliddata'),
           context: context,
           title: 'Container-details',
-          message: 'Failed to get article');
+          message: 'Failed to get article',
+        );
+      }
     }
+    return {
+      'id': '',
+      'containerId': '',
+      'name': '',
+      'available': false,
+      'price': 0,
+    };
+  } catch (err) {
+    print('Error getArticleData(): $err');
+    if (context.mounted) {
+      await MyAlertDialog.showErrorAlertDialog(
+        key: const Key('article-details_connectionrefused'),
+        context: context,
+        title: 'Container-details',
+        message: 'Connexion refused',
+      );
+    }
+    return {
+      'id': '',
+      'containerId': '',
+      'name': '',
+      'available': false,
+      'price': 0,
+    };
   }
 }
 
@@ -62,13 +72,14 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   @override
   void initState() {
     super.initState();
-    getContainerData(context, widget.articleId).then((dynamic value) {
+    getArticleData(context, widget.articleId).then((dynamic value) {
       setState(() {
         articleData = ArticleData.fromJson(value);
       });
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -92,9 +103,18 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   articleData.name,
                   key: const Key('article-details_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -103,7 +123,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   height: 200,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/volley.png'),
                         fit: BoxFit.cover,
                       )),
@@ -120,7 +140,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
                           child: Container(
-                            color: Colors.white,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.colorScheme.background),
                             child: Table(
                               columnWidths: const {
                                 0: FlexColumnWidth(1.0),
@@ -132,13 +154,15 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
-                                        child: Text(
+                                        color: context.select(
+                                            (ThemeProvider themeProvider) =>
+                                                themeProvider
+                                                    .currentTheme.primaryColor),
+                                        child: const Text(
                                           'Actuellement :',
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
@@ -146,14 +170,34 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
-                                        child: Text(
-                                          'Prix à l\'heure :',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
+                                        color: context.select(
+                                            (ThemeProvider themeProvider) =>
+                                                themeProvider
+                                                    .currentTheme.primaryColor),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              width: 10,
+                                              height: 10,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: articleData.available ==
+                                                        true
+                                                    ? Colors.green
+                                                    : Colors.red,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              (articleData.available)
+                                                  ? 'Disponible'
+                                                  : 'indisponible',
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -163,48 +207,36 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                   children: [
                                     TableCell(
                                       child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          color: Color(0xFF4682B4)
-                                              .withOpacity(0.6),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                articleData.available == true
-                                                    ? 'Disponible'
-                                                    : 'indisponible',
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                              SizedBox(width: 5),
-                                              Container(
-                                                width: 10,
-                                                height: 10,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color:
-                                                      articleData.available ==
-                                                              true
-                                                          ? Colors.green
-                                                          : Colors.red,
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        padding: const EdgeInsets.all(8.0),
+                                        color: context
+                                            .select(
+                                                (ThemeProvider themeProvider) =>
+                                                    themeProvider.currentTheme
+                                                        .primaryColor)
+                                            .withOpacity(0.6),
+                                        child: const Text(
+                                          'Prix à l\'heure :',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color:
-                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        color: context
+                                            .select(
+                                                (ThemeProvider themeProvider) =>
+                                                    themeProvider.currentTheme
+                                                        .primaryColor)
+                                            .withOpacity(0.6),
                                         child: Text(
-                                          articleData.price.toString(),
-                                          style: TextStyle(
+                                          '${articleData.price} €',
+                                          style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.black,
                                           ),
                                         ),
                                       ),
@@ -237,6 +269,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
@@ -250,7 +283,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               name: articleData.name,
                               price: articleData.price,
                               containerId: articleData.containerId,
-                              locations: ['La Baule - Casier N°A4']),
+                              locations: const ['La Baule - Casier N°A4']),
                         ),
                       );
                     },

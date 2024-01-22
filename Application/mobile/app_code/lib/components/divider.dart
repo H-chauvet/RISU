@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../utils/theme.dart';
+import 'package:risu/utils/theme.dart';
 
 class MyDivider extends StatelessWidget {
   final double vertical;

@@ -8,9 +8,9 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
+import 'package:risu/globals.dart';
+import 'package:risu/utils/theme.dart';
 
-import '../../globals.dart';
-import '../../utils/theme.dart';
 import 'rent_page.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
@@ -65,28 +65,33 @@ class RentArticlePageState extends State<RentArticlePage> {
         }),
       );
     } catch (err) {
+      print('Error rentArticle(): $err');
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Connection refused.');
-        print(err);
-        print(response.statusCode);
+          context: context,
+          title: 'Contact',
+          message: 'Connection refused.',
+        );
       }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Location enregistrée.');
+          context: context,
+          title: 'Contact',
+          message: 'Location enregistrée.',
+        );
       }
     } else {
+      print('Error rentArticle(): ${response.statusCode}');
       if (context.mounted) {
         print(response.statusCode);
         print(response.body);
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Erreur lors de la location.');
+          context: context,
+          title: 'Contact',
+          message: 'Erreur lors de la location.',
+        );
       }
     }
   }
@@ -271,7 +276,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color: Color(0xFF4682B4),
+                                        color: const Color(0xFF4682B4),
                                         child: const Text(
                                           'Prix par heure',
                                           style: TextStyle(
@@ -303,8 +308,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     TableCell(
                                       child: Container(
                                         padding: const EdgeInsets.all(8.0),
-                                        color:
-                                            Color(0xFF4682B4).withOpacity(0.6),
+                                        color: const Color(0xFF4682B4)
+                                            .withOpacity(0.6),
                                         child: Text(
                                           '$_rentalPrice €',
                                           style: const TextStyle(

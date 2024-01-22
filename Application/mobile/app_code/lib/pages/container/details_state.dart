@@ -14,32 +14,27 @@ import 'details_page.dart';
 
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
 
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/container/details'),
+    response = await http.get(
+      Uri.parse('http://$serverIp:8080/api/container/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'containerId': containerId,
-      }),
     );
     if (response.statusCode == 200) {
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
+      print('Error getContainerData(): ${response.statusCode}');
       if (context.mounted) {
-        print(response.statusCode);
-        print(response.reasonPhrase);
-        MyAlertDialog.showErrorAlertDialog(
-            key: const Key('container-details_invaliddata'),
-            context: context,
-            title: 'Container-details',
-            message: 'Failed to get container');
+        await MyAlertDialog.showErrorAlertDialog(
+          key: const Key('container-details_invaliddata'),
+          context: context,
+          title: 'Container-details',
+          message: 'Failed to get container',
+        );
       }
       return {
         'owner': '',
@@ -48,12 +43,14 @@ Future<dynamic> getContainerData(
       };
     }
   } catch (err) {
+    print('Error getContainerData(): $err');
     if (context.mounted) {
-      MyAlertDialog.showErrorAlertDialog(
-          key: const Key('container-details_connectionrefused'),
-          context: context,
-          title: 'Container-details',
-          message: 'Connexion refused');
+      await MyAlertDialog.showErrorAlertDialog(
+        key: const Key('container-details_connectionrefused'),
+        context: context,
+        title: 'Container-details',
+        message: 'Connexion refused',
+      );
     }
     return {
       'owner': '',
@@ -94,10 +91,11 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _localization;
   }
 
-  int getAvalableItems() {
+  int getAvailableItems() {
     return _availableItems;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -121,9 +119,18 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                   '$_localization par $_owner',
                   key: const Key('container-details_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -132,7 +139,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                   height: 200,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/container.png'),
                         fit: BoxFit.cover,
                       )),
@@ -148,18 +155,19 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.colorScheme.background),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            'Il y a Actuellement $_availableItems articles disponibles',
+                            'Il y a actuellement $_availableItems articles disponible${_availableItems > 1 ? 's' : ''}',
                             key: const Key('container-details_article-list'),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         )
@@ -171,7 +179,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
-                    text: 'Afficher la liste des article',
+                    text: 'Afficher la liste des articles',
                     key: const Key('container-button_article-list-page'),
                     onPressed: () {
                       Navigator.push(
