@@ -65,12 +65,13 @@ class SettingsPageState extends State<SettingsPage> {
           child: Column(
             children: [
               const SizedBox(height: 8),
-              const Text(
+              Text(
                 'Paramètres',
                 style: TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF4682B4),
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.primaryColor),
                 ),
               ),
               const SizedBox(height: 20),
