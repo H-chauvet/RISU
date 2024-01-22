@@ -57,10 +57,6 @@ class RentArticlePageState extends State<RentArticlePage> {
   }
 
   void rentArticle() async {
-    /*print("Renting article");
-    print('_rentalHours: $_rentalHours');
-    print('_rentalPrice: $_rentalPrice');
-    print('_articleName: $_articleName');*/
     final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
     try {
@@ -125,12 +121,13 @@ class RentArticlePageState extends State<RentArticlePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   'Location de l\'article',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor),
                   ),
                 ),
                 const SizedBox(height: 8),

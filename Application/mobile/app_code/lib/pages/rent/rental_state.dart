@@ -14,12 +14,13 @@ import 'rental_page.dart';
 class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
-  bool showAllRentals = true;
+  bool showAllRentals = false;
 
   @override
   void initState() {
     super.initState();
     getRentals();
+    getRentalsInProgress();
   }
 
   String formatDateTime(String dateTimeString) {
@@ -136,7 +137,7 @@ class RentalPageState extends State<RentalPage> {
                     onTap: () {
                       getRentalsInProgress();
                       setState(() {
-                        showAllRentals = true;
+                        showAllRentals = false;
                       });
                     },
                     child: ClipRRect(
@@ -150,15 +151,15 @@ class RentalPageState extends State<RentalPage> {
                           height: 30, // hauteur du bouton
                         ),
                         decoration: BoxDecoration(
-                          color: showAllRentals
+                          color: !showAllRentals
                               ? themeProvider.currentTheme.primaryColor
                               : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
-                            'Toutes',
+                            'En Cours',
                             style: TextStyle(
-                              color: showAllRentals
+                              color: !showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
                                           Brightness.light
@@ -177,7 +178,7 @@ class RentalPageState extends State<RentalPage> {
                     onTap: () {
                       getRentalsInProgress();
                       setState(() {
-                        showAllRentals = false;
+                        showAllRentals = true;
                       });
                     },
                     child: ClipRRect(
@@ -191,15 +192,15 @@ class RentalPageState extends State<RentalPage> {
                           height: 30, // hauteur du bouton
                         ),
                         decoration: BoxDecoration(
-                          color: !showAllRentals
+                          color: showAllRentals
                               ? themeProvider.currentTheme.primaryColor
                               : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
-                            'En cours',
+                            'Toutes',
                             style: TextStyle(
-                              color: !showAllRentals
+                              color: showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
                                           Brightness.light
@@ -248,9 +249,8 @@ class RentalPageState extends State<RentalPage> {
                             child: ListTile(
                               key: const Key('rental-list-tile'),
                               contentPadding: const EdgeInsets.all(16.0),
-                              title: const Text(
-                                'Ballon de volley' +
-                                    '  |  La Baule - Casier N°A4',
+                              title: Text(
+                                '${rental['item']['name']}  |  ${rental['item']['container']['localization']}',
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               subtitle: Column(

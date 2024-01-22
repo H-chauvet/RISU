@@ -627,7 +627,28 @@ app.get('/api/rent',
         return res.status(404).send('User not found')
       }
       const rentals = await database.prisma.Location.findMany({
-        where: { userId: user.id }
+        where: { userId: user.id },
+        select: {
+          id: true,
+          price: true,
+          createdAt: true,
+          duration: true,
+          item: {
+            select: {
+              id: true,
+              name: true,
+              container: {
+                select: {
+                  id: true,
+                  localization: true,
+                }
+              }
+            }
+          }
+        },
+        orderBy: {
+          createdAt: 'desc',
+        }
       })
       return res.status(201).json({ rentals: rentals })
     } catch (err) {
