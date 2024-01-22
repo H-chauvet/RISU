@@ -12,16 +12,22 @@ import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
 
   testWidgets('Recap screen', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -62,3 +68,5 @@ void main() {
     await tester.pumpAndSettle();
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

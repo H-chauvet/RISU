@@ -8,6 +8,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   Widget createWidgetForTesting({required Widget child}) {
@@ -16,12 +19,20 @@ void main() {
     );
   }
 
-  TestWidgetsFlutterBinding.ensureInitialized();
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
 
   testWidgets('Password change screen', (WidgetTester tester) async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+
     // Build our app and trigger a frame.
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(
         createWidgetForTesting(child: const PasswordChange(params: 'uuid')));
@@ -41,3 +52,5 @@ void main() {
     await tester.pumpAndSettle();
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

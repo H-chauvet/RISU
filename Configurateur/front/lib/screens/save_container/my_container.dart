@@ -22,12 +22,12 @@ class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
   dynamic body;
 
-  @override
-  void initState() {
+  void getContainers() async {
+    String? token = await storageService.readStorage('token');
     HttpService().getRequest(
       'http://$serverIp:3000/api/container/listAll',
       <String, String>{
-        'Authorization': token,
+        'Authorization': token!,
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },
@@ -44,6 +44,11 @@ class MyContainerState extends State<MyContainer> {
               debugPrint('error'),
             }
         });
+  }
+
+  @override
+  void initState() {
+    getContainers();
     super.initState();
   }
 

@@ -9,15 +9,25 @@ import 'package:front/screens/messages/messages.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
   testWidgets('MessagePage', (WidgetTester tester) async {
-    token = "token";
-    
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
-    
+
     await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeService>(
@@ -32,7 +42,7 @@ void main() {
       ),
     ));
     await tester.pumpAndSettle(const Duration(seconds: 2));
-    
+
     expect(find.text("Gestion des messages"), findsOneWidget);
 
     expect(find.byType(CustomAppBar), findsOneWidget);
@@ -40,3 +50,5 @@ void main() {
     expect(find.byType(ListView), findsOneWidget);
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}
