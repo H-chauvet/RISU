@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   group(
@@ -74,17 +74,7 @@ void main() {
               available: true,
               price: 3);
           await tester.pumpWidget(
-            MultiProvider(
-              providers: [
-                ChangeNotifierProvider<ThemeProvider>(
-                  create: (_) => ThemeProvider(false),
-                ),
-              ],
-              child: MaterialApp(
-                home: ArticleDataCard(articleData: articleListData),
-              ),
-            ),
-          );
+              initPage(ArticleDataCard(articleData: articleListData)));
 
           Finder articleButton = find.byKey(const Key('articles-list_card'));
           expect(articleButton, findsOneWidget);

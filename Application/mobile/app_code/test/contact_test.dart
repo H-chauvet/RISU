@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/utils/theme.dart';
-import 'package:risu/utils/user_data.dart';
+
+import 'globals.dart';
 
 class MockHttpClient extends Mock implements http.Client {}
 
@@ -22,20 +21,8 @@ void main() {
   });
 
   testWidgets('ContactPage full info', (WidgetTester tester) async {
-    userInformation = UserData(
-        email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: ContactPage(),
-        ),
-      ),
-    );
+    userInformation = initExampleUser();
+    await tester.pumpWidget(initPage(const ContactPage()));
 
     Finder nameInput = find.byKey(const Key('contact-text_input-input_name'));
     expect(nameInput, findsOneWidget);
@@ -69,20 +56,8 @@ void main() {
   });
 
   testWidgets('ContactPage no info', (WidgetTester tester) async {
-    userInformation = UserData(
-        email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: ContactPage(),
-        ),
-      ),
-    );
+    userInformation = initExampleUser();
+    await tester.pumpWidget(initPage(const ContactPage()));
 
     Finder sendButton = find.byKey(const Key('contact-button-send_message'));
     expect(sendButton, findsOneWidget);
