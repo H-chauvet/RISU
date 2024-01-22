@@ -19,10 +19,14 @@ class LandingPageState extends State<LandingPage> {
   late Function() inscriptionFunction;
   String adminButton = '';
   late Function() adminFunction;
+  String profileButton= '';
+  late Function() profileFunction;
 
   @override
   void initState() {
     super.initState();
+    profileButton = 'Mon profil';
+    profileFunction = () => context.go("/profile");
     adminButton = "Administration";
     adminFunction = () => context.go("/admin");
 
@@ -48,10 +52,10 @@ class LandingPageState extends State<LandingPage> {
   List<Widget> buttons() {
     List<Widget> list = [];
 
-    if (token != '' && userMail == "risu.admin@gmail.com") {
+    if (token != '') {
       list.add(
         ElevatedButton(
-          onPressed: adminFunction,
+          onPressed: profileFunction,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 190, 189, 189),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -60,11 +64,29 @@ class LandingPageState extends State<LandingPage> {
             ),
           ),
           child: Text(
-            adminButton,
+            profileButton,
             style: const TextStyle(color: Colors.black),
           ),
         ),
       );
+      if (userMail == "risu.admin@gmail.com") {
+        list.add(
+          ElevatedButton(
+            onPressed: adminFunction,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            child: Text(
+              adminButton,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+      }
     }
 
     list.add(const SizedBox(width: 20));

@@ -212,7 +212,10 @@ exports.findUserDetailsByEmail = email => {
     select: {
       id: true,
       firstName: true,
-      lastName: true
+      lastName: true,
+      createdAt: true,
+      company: true,
+      email: true,
     }
   });
 };
