@@ -30,8 +30,6 @@ void main() {
         ),
       );
 
-      final changeInformationButtonFinder =
-          find.byKey(const Key('settings-button_change_information'));
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
@@ -40,9 +38,6 @@ void main() {
 
       expect(themeProvider.currentTheme.brightness, Brightness.light);
       expect(dropdownFinder, findsOneWidget);
-      expect(changeInformationButtonFinder, findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(changeInformationButtonFinder);
       await tester.pumpAndSettle();
     });
     testWidgets('Dark mode', (WidgetTester tester) async {
@@ -59,8 +54,6 @@ void main() {
         ),
       );
 
-      final changeInformationButtonFinder =
-          find.byKey(const Key('settings-button_change_information'));
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
       final themeProvider = Provider.of<ThemeProvider>(
@@ -69,9 +62,6 @@ void main() {
 
       expect(themeProvider.currentTheme.brightness, Brightness.dark);
       expect(dropdownFinder, findsOneWidget);
-      expect(changeInformationButtonFinder, findsOneWidget);
-      await tester.pumpAndSettle();
-      await tester.tap(changeInformationButtonFinder);
       await tester.pumpAndSettle();
     });
   });

@@ -5,6 +5,7 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -252,7 +253,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design face du dessous", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Bas";
 
@@ -272,7 +273,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design face du haut", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Haut";
 
@@ -292,7 +293,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design côté gauche", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Gauche";
 
@@ -312,7 +313,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design côté droit", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Droite";
 
@@ -332,7 +333,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design face avant", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Devant";
 
@@ -343,7 +344,7 @@ void main() {
     expect(designScreenState.lockerss.length, 0);
   });
 
-  testWidgets('removeImage Devant', (WidgetTester tester) async {
+  testWidgets('sumPrice', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
@@ -352,7 +353,30 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design face arrière", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design personnalisé", 100));
+    designScreenState.lockerss.add(Locker("design personnalisé", 150));
+
+    designScreenState.face = "Devant";
+
+    int price = designScreenState.sumPrice();
+
+    await tester.pump();
+
+    expect(price, 300);
+  });
+
+  testWidgets('removeImage Devant', (WidgetTester tester) async {
+    DesignScreenState designScreenState = DesignScreenState();
+
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
+    obj.materials.add(FSp3dMaterial.green.deepCopy());
+
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    obj.fragments[0].faces[0].materialIndex = 1;
+    designScreenState.objs.add(obj);
+    designScreenState.lockerss.add(Locker("design personnalisé", 50));
 
     designScreenState.face = "Derrière";
 
@@ -361,5 +385,48 @@ void main() {
     await tester.pump();
 
     expect(designScreenState.lockerss.length, 0);
+  });
+
+  testWidgets('Load container', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    token = "token";
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: DesignScreen(
+            lockers:
+                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+            amount: 60,
+            containerMapping: '0000000111111111112222333',
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.pump();
+
+    expect(find.text("Petit casier"), findsNWidgets(1));
+    expect(find.text("Moyen casier"), findsNWidgets(1));
+    expect(find.text("Grand casier"), findsNWidgets(1));
   });
 }

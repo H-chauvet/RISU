@@ -269,6 +269,15 @@ async function createFixtures() {
         }
       }
     })
+    const emptyContainer = await database.prisma.Containers.create({
+      data: {
+        localization: 'Nantes',
+        owner: 'Risu',
+        items: {
+          create: []
+        }
+      }
+    })
     if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
       await database.prisma.User.create({
         data: {
@@ -411,7 +420,8 @@ app.put('/api/user',
       console.error('Failed to update notifications: ', error)
       return res.status(500).send('Failed to update notifications.')
     }
-  })
+  }
+)
 
 app.put('/api/user/password',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -446,10 +456,10 @@ app.put('/api/user/password',
       console.error(err.message)
       return res.status(500).send('An error occurred')
     }
-  })
+  }
+)
 
-app.get('/api/container/listall',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/listall', async (req, res) => {
     try {
       if (!req.user) {
         return res.status(401).send('Invalid token');
@@ -471,19 +481,9 @@ app.get('/api/container/listall',
   }
 )
 
-app.post('/api/container/details',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/:containerId', async (req, res) => {
     try {
-      if (!req.user) {
-        return res.status(401).send('Invalid token');
-      }
-      const user = await database.prisma.User.findUnique({
-        where: { id: req.user.id },
-      })
-      if (!user) {
-        return res.status(401).send('User not found');
-      }
-      if (!req.body.containerId || req.body.containerId === '') {
+      if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
       const container = await database.prisma.Container.findUnique({
@@ -506,12 +506,12 @@ app.post('/api/container/details',
       console.error(err.message)
       return res.status(401).send(err.message)
     }
-  })
+  }
+)
 
-app.post('/api/container/articleslist',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/container/:containerId/articleslist/', async (req, res) => {
     try {
-      if (!req.body.containerId || req.body.containerId === '') {
+      if (!req.params.containerId || req.params.containerId === '') {
         return res.status(401).json({ message: 'Missing containerId' })
       }
       const container = await database.prisma.Container.findUnique({
@@ -529,32 +529,30 @@ app.post('/api/container/articleslist',
         },
       })
       if (!container) {
-        return res.status(401).json("containerlist not found")
+        return res.status(401).json("itemList not found")
       } else if (!container.items || container.items.length === 0) {
-        return res.status(204).json({ message: 'Container doen\'t have items' })
+        return res.status(204).json({ message: 'Container doesn\'t have items' })
       }
       return res.status(200).json(container.items)
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
-app.get('/api/article/listall',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/article/listall', async (req, res) => {
     try {
-      console.log("article/listall")
       const articles = await database.prisma.Item.findMany()
-      console.log(JSON.stringify(articles, null, 2));
       res.status(200).json(articles)
     } catch (err) {
       console.log(err)
       return res.status(400).json('An error occured.')
     }
-  })
+  }
+)
 
-app.post('/api/article/details',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+app.get('/api/article/:articleId', async (req, res) => {
     try {
       if (!req.body.articleId || req.body.articleId === '') {
         return res.status(401).json({ message: 'Missing articleId' })
@@ -577,7 +575,8 @@ app.post('/api/article/details',
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.post('/api/rent/article',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -616,7 +615,8 @@ app.post('/api/rent/article',
       console.error(err.message)
       return res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 // get rental
 app.get('/api/rent',
@@ -634,12 +634,13 @@ app.get('/api/rent',
       const rentals = await database.prisma.Location.findMany({
         where: { userId: user.id }
       })
-      res.status(201).json({ rentals: rentals })
+      return res.status(201).json({ rentals: rentals })
     } catch (err) {
       console.error(err.message)
-      res.status(401).send('An error occurred')
+      return res.status(401).send('An error occurred')
     }
-})
+  }
+)
 
 app.get('/api/locations', async (req, res) => {
   try {
@@ -684,7 +685,8 @@ app.post('/api/opinion',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.get('/api/opinion',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -732,7 +734,8 @@ app.get('/api/opinion',
       console.error(err.message)
       res.status(401).send('An error occurred')
     }
-  })
+  }
+)
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running...`)

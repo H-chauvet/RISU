@@ -49,10 +49,14 @@ router.post("/create", async function (req, res, next) {
     throw new Error("Unauthorized");
   }
   try {
-    const { designs } = req.body;
+    const { designs, containerMapping, height, width, saveName } = req.body;
 
     const container = await containerCtrl.createContainer({
       designs,
+      containerMapping,
+      height,
+      width,
+      saveName,
     });
     res.status(200).json(container);
   } catch (err) {
@@ -78,6 +82,7 @@ router.put("/update", async function (req, res, next) {
       adress,
       informations,
       designs,
+      saveName,
     } = req.body;
 
     if (!id) {
@@ -94,6 +99,7 @@ router.put("/update", async function (req, res, next) {
       adress,
       informations,
       designs,
+      saveName,
     });
     res.status(200).json(container);
   } catch (err) {

@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
-import 'package:risu/globals.dart';
+import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
-import 'package:risu/pages/profile/profile_page.dart';
-
-import '../pages/login/login_page.dart';
-import '../pages/opinion/opinion_page.dart';
-import '../pages/settings/settings_page.dart';
-import '../utils/theme.dart';
+import 'package:risu/pages/settings/settings_page.dart';
+import 'package:risu/utils/theme.dart';
 
 class BurgerDrawer extends StatelessWidget {
   const BurgerDrawer({
@@ -43,7 +40,7 @@ class BurgerDrawer extends StatelessWidget {
           const SizedBox(height: 16),
           const MyRedirectDivider(
             goToPage: ProfileInformationsPage(),
-            title: 'Détails du profil',
+            title: 'Détails du profile',
             paramIcon: Icon(Icons.person),
           ),
           const SizedBox(height: 8),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
 import 'details_page.dart';
 
 class ContainerList {
   final int? id;
-  final dynamic? createdAt;
-  final dynamic? organization;
+  final dynamic createdAt;
+  final dynamic organization;
   final int? organizationId;
   final dynamic? containerMapping;
   final double? price;
@@ -43,6 +44,7 @@ class ContainerList {
       informations: json['informations'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

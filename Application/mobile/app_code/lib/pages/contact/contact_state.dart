@@ -17,6 +17,11 @@ class ContactPageState extends State<ContactPage> {
   String? _email;
   String? _message;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   Future<bool> apiContact(String name, String email, String message) async {
     late http.Response response;
     try {
@@ -29,37 +34,36 @@ class ContactPageState extends State<ContactPage> {
             <String, String>{'name': name, 'email': email, 'message': message}),
       );
     } catch (err) {
+      print('Error apiContact(): $err');
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            key: const Key("contact-alert_dialog-refused"),
-            title: 'Contact',
-            message: 'Connection refused.');
-        print(err);
-        print(response.statusCode);
+          context: context,
+          key: const Key("contact-alert_dialog-refused"),
+          title: 'Contact',
+          message: 'Connection refused.',
+        );
       }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Message envoyé.');
+          context: context,
+          title: 'Contact',
+          message: 'Message envoyé.',
+        );
         return true;
       }
     } else {
+      print('Error apiContact(): ${response.statusCode}');
       if (context.mounted) {
-        print(response.statusCode);
         await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Erreur lors de l\'envoi du message.');
+          context: context,
+          title: 'Contact',
+          message: 'Erreur lors de l\'envoi du message.',
+        );
       }
     }
     return false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -141,10 +145,11 @@ class ContactPageState extends State<ContactPage> {
                           .then((value) => {});
                     } else {
                       MyAlertDialog.showInfoAlertDialog(
-                          key: const Key("contact-alert_dialog-invalid_info"),
-                          context: context,
-                          title: 'Champs invalides',
-                          message: 'Veuillez entrer des informations valides.');
+                        key: const Key("contact-alert_dialog-invalid_info"),
+                        context: context,
+                        title: 'Champs invalides',
+                        message: 'Veuillez entrer des informations valides.',
+                      );
                     }
                   },
                 ),
