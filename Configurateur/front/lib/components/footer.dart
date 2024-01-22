@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/main.dart';
 import 'package:go_router/go_router.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:path/path.dart';
@@ -52,8 +53,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
           ),
           const SizedBox(width: 20),
           TextButton(
-            onPressed: () {
-              if (token == '') {
+            onPressed: () async {
+              if (await storageService.readStorage('token') == '') {
                 context.go("/login");
               } else {
                 context.go("/feedbacks");
