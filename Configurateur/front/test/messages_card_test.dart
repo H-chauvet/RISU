@@ -3,8 +3,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
   test('Feedbacks.toMap should convert Feedbacks object to JSON', () {
     Message msg = Message(
       id: 1,
@@ -39,8 +46,9 @@ void main() {
     expect(feedback.message, 'Great app!');
   });
   testWidgets('MessageCard', (WidgetTester tester) async {
-    token = "token";
-    userMail = "risu.admin@gmail.com";
+    TestWidgetsFlutterBinding.ensureInitialized();
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(
@@ -65,3 +73,22 @@ void main() {
   });
 }
 
+class MockSharedPreferences extends Mock implements SharedPreferences {}
+
+class MockJwtDecoder {
+  static Map<String, dynamic> Function(String token) decode =
+      (String token) => {};
+
+  // Setter for the decode function
+  static void setDecodeFunction(
+      Map<String, dynamic> Function(String) decodeFunction) {
+    decode = decodeFunction;
+  }
+}
+
+class MockFunction {
+  final Function function;
+  MockFunction(this.function);
+
+  dynamic call(Object? arg) => Function.apply(function, [arg]);
+}

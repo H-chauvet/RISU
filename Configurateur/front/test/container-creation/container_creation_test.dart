@@ -8,16 +8,23 @@ import 'package:front/services/locker_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
 void main() {
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
   testWidgets('Container Creation progress bar', (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -42,7 +49,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -65,7 +72,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -90,7 +97,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -116,7 +123,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -142,7 +149,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -171,7 +178,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -200,7 +207,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -294,7 +301,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    token = "token";
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     var container = {
       'id': '1',
@@ -329,3 +336,5 @@ void main() {
     expect(find.text("Grand casier"), findsNWidgets(2));
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

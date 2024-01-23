@@ -7,6 +7,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'rent_page.dart';
@@ -16,19 +17,12 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   //String _articleName = 'Nom de l\'article';
 
-  late int _rentalPrice;
-  late String _articleName;
-  late int _price;
-  late String _containerId;
-  late List<String> _locations;
+  late ArticleData _articleData;
 
   @override
   void initState() {
     super.initState();
-    _articleName = widget.name;
-    _rentalPrice = widget.price;
-    _containerId = widget.containerId;
-    _locations = widget.locations;
+    _articleData = widget.articleData;
   }
 
   void _incrementHours() {
@@ -77,9 +71,8 @@ class RentArticlePageState extends State<RentArticlePage> {
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode(<String, String>{
-          'itemId': '1',
+          'itemId': _articleData.id,
           'duration': _rentalHours.toString(),
-          'price': _rentalPrice.toString(),
         }),
       );
     } catch (err) {
@@ -172,7 +165,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            _articleName,
+                            _articleData.name,
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -230,7 +223,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                         color: const Color(0xFF4682B4)
                                             .withOpacity(0.6),
                                         child: Text(
-                                          '$_rentalPrice €',
+                                          '${_articleData.price} €',
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -245,7 +238,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                         color: const Color(0xFF4682B4)
                                             .withOpacity(0.6),
                                         child: Text(
-                                          '${_rentalPrice * _rentalHours} €',
+                                          '${_articleData.price * _rentalHours} €',
                                           style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -295,16 +288,17 @@ class RentArticlePageState extends State<RentArticlePage> {
                 ),
 
                 const SizedBox(height: 8),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    key: const Key('confirm-rent-button'),
-                    text: 'Louer',
-                    onPressed: () {
-                      confirmRent();
-                    },
+                if (_articleData.available)
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      key: const Key('confirm-rent-button'),
+                      text: 'Louer',
+                      onPressed: () {
+                        confirmRent();
+                      },
+                    ),
                   ),
-                ),
               ],
             ),
           ),

@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/theme.dart';
 
+import 'globals.dart';
+
 void main() {
   group('Test Theme Settings', () {
     setUpAll(() async {
@@ -17,18 +19,7 @@ void main() {
     });
 
     testWidgets('Light mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: ThemeSettingsPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const ThemeSettingsPage()));
 
       final dropdownFinder = find.byKey(const Key('drop_down'));
 
@@ -41,18 +32,8 @@ void main() {
       await tester.pumpAndSettle();
     });
     testWidgets('Dark mode', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(true),
-            ),
-          ],
-          child: const MaterialApp(
-            home: ThemeSettingsPage(),
-          ),
-        ),
-      );
+      await tester
+          .pumpWidget(initPage(const ThemeSettingsPage(), isDarkMode: true));
 
       final dropdownFinder = find.byKey(const Key('drop_down'));
 

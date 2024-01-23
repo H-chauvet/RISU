@@ -5,6 +5,7 @@ import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
+import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/utils/theme.dart';
 
 class BurgerDrawer extends StatelessWidget {
@@ -45,10 +46,9 @@ class BurgerDrawer extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const MyRedirectDivider(
-            goToPage: LoginPage(),
+            goToPage: NotificationsPage(),
             title: 'Notifications',
-            paramIcon: Icon(Icons.lock),
-            disconnect: true, // Temporary before implementation
+            paramIcon: Icon(Icons.notifications),
           ),
           const SizedBox(height: 8),
           const MyRedirectDivider(

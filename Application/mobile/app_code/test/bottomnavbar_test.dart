@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/components/bottomnavbar.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   setUpAll(() async {
@@ -20,25 +20,18 @@ void main() {
     int currentIndex = 0; // Initial index
 
     await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: MaterialApp(
-          home: Scaffold(
-            bottomNavigationBar: BottomNavBar(
-              currentIndex: currentIndex,
-              onTap: (index) {
-                currentIndex = index;
-              },
-              theme: ThemeData(
-                bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                  backgroundColor: Colors.blue,
-                  selectedItemColor: Colors.green,
-                  unselectedItemColor: Colors.grey,
-                ),
+      initPage(
+        Scaffold(
+          bottomNavigationBar: BottomNavBar(
+            currentIndex: currentIndex,
+            onTap: (index) {
+              currentIndex = index;
+            },
+            theme: ThemeData(
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.blue,
+                selectedItemColor: Colors.green,
+                unselectedItemColor: Colors.grey,
               ),
             ),
           ),

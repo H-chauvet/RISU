@@ -4,9 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:front/screens/company/company.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+<<<<<<< HEAD
   testWidgets('ItemCard displays message details', (WidgetTester tester) async {
+=======
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
+
+  testWidgets('ItemCard displays message details', (WidgetTester tester) async {
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+>>>>>>> dev
     await tester.pumpWidget(
       MaterialApp(
         home: ItemCard(
@@ -29,6 +43,7 @@ void main() {
     expect(find.text("1"), findsOneWidget);
     expect(find.text("Hello world"), findsOneWidget);
   });
+<<<<<<< HEAD
 
   test('ContainerTest toJson and fromJson', () {
     final container = ItemList(
@@ -57,3 +72,8 @@ void main() {
     expect(parsedContainer.description, container.description);
   });
 }
+=======
+}
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}
+>>>>>>> dev
