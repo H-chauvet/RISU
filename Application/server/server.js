@@ -256,8 +256,9 @@ async function createFixtures() {
         newsOffersRisu: true
       }
     })
-    const container = await database.prisma.Container.create({
+    const container = await database.prisma.Containers.create({
       data: {
+        id: '1',
         localization: 'Nantes',
         owner: 'Risu',
         items: {
@@ -269,8 +270,9 @@ async function createFixtures() {
         }
       }
     })
-    const emptyContainer = await database.prisma.Container.create({
+    const emptyContainer = await database.prisma.Containers.create({
       data: {
+        id: '2',
         localization: 'Nantes',
         owner: 'Risu',
         items: {
