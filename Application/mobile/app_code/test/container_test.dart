@@ -18,12 +18,17 @@ void main() {
     final List<ContainerList> containers = [];
     containers.add(
       ContainerList(
-        id: 1,
+        id: '1',
         price: 10,
         createdAt: null,
-        organization: null,
-        organizationId: 2,
         containerMapping: null,
+        adress: "rue george",
+        city: "nantes",
+        designs: null,
+        items: null,
+        informations: "info",
+        paid: true,
+        saveName: null,
       ),
     );
 
@@ -58,12 +63,17 @@ void main() {
       initPage(
         ContainerCard(
           container: ContainerList(
-            id: 1,
+            id: '1',
             price: 10,
             createdAt: null,
-            organization: null,
-            organizationId: 1,
             containerMapping: null,
+            adress: "rue george",
+            city: "nantes",
+            designs: null,
+            items: null,
+            informations: "info",
+            paid: true,
+            saveName: null,
           ),
         ),
       ),
