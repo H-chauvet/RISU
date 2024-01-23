@@ -133,14 +133,14 @@ class RentArticlePageState extends State<RentArticlePage> {
   Future<void> makePayment() async {
     //print('publishableKey: ${stripePublishableKey}');
     //print('secretKey: ${stripeSecretKey}');
-    print('STRIPE_SECRET: ${dotenv.env['STRIPE_SECRET_KEY']}');
-    print('STRIPE_PUBLISHABLE: ${dotenv.env['STRIPE_PUBLISHABLE_KEY']}');
+    //print('STRIPE_SECRET: ${dotenv.env['STRIPE_SECRET_KEY']}');
+    //print('STRIPE_PUBLISHABLE: ${dotenv.env['STRIPE_PUBLISHABLE_KEY']}');
     try {
-      final amount = _rentalPrice * 100 * _rentalHours; // for stripe, price is in cents
+      final amount = _articleData.price * 100 * _rentalHours; // for stripe, price is in cents
       final Map<String, dynamic> paymentIntentData = await createPaymentIntent(amount.toString(), 'EUR');
-      print('\n\n\npaymentIntentData: $paymentIntentData');
+      //print('\n\n\npaymentIntentData: $paymentIntentData');
       final clientSecret = paymentIntentData['client_secret'];
-      print('\n\n\nclientSecret: $clientSecret');
+      //print('\n\n\nclientSecret: $clientSecret');
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
         await stripe.Stripe.instance.presentPaymentSheet().then((value) async {
