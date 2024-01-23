@@ -19,14 +19,14 @@ class ContainerPageState extends State<ContainerPage> {
   void getContainer() async {
     try {
       final response = await http.get(
-        Uri.parse('http://$serverIp:3000/api/container/listAll'),
+        Uri.parse('http://$serverIp:8080/api/container/listAll'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        final List<dynamic> containersData = responseData["container"];
+        dynamic responseData = json.decode(response.body);
+        final List<dynamic> containersData = responseData;
         setState(() {
           containers = containersData
               .map((data) => ContainerList.fromJson(data))
@@ -76,7 +76,7 @@ class ContainerPageState extends State<ContainerPage> {
                         shrinkWrap: true,
                         itemCount: containers.length,
                         itemBuilder: (context, index) {
-                          final product = containers[index];
+                          final product = containers.elementAt(index);
                           return ContainerCard(
                             container: product,
                           );
