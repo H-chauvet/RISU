@@ -259,8 +259,8 @@ async function createFixtures() {
     const container = await database.prisma.Containers.create({
       data: {
         id: '1',
-        localization: 'Nantes',
-        owner: 'Risu',
+        city: 'Nantes',
+        adress: 'Risu',
         items: {
           create: [
             { name: 'ballon de volley', price: 3, available: true },
@@ -273,8 +273,8 @@ async function createFixtures() {
     const emptyContainer = await database.prisma.Containers.create({
       data: {
         id: '2',
-        localization: 'Nantes',
-        owner: 'Risu',
+        city: 'Nantes',
+        adress: 'Risu',
         items: {
           create: []
         }
@@ -479,8 +479,8 @@ app.get('/api/container/:containerId', async (req, res) => {
     const container = await database.prisma.Containers.findUnique({
       where: { id: req.params.containerId },
       select: {
-        localization: true,
-        owner: true,
+        city: true,
+        adress: true,
         _count: {
           select: {   // count the number of items available related to the container
             items: { where: { available: true } }

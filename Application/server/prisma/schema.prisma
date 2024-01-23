@@ -31,10 +31,19 @@ model User {
 }
 
 model Containers {
-	id					String		@id @unique @default(cuid())
-	localization		String
-	items				Items[]
-	owner				String
+	id               String           @id @default(cuid())
+	createdAt        DateTime      @default(now())
+	containerMapping String?
+	adress           String?
+	city             String?
+	price            Float?
+	width            Float?
+	height           Float?
+	designs          String? @db.LongText
+	informations     String? @db.LongText
+	items				   Items[]
+	paid             Boolean       @default(false)
+	saveName         String?
 }
 
 model Items {
@@ -44,7 +53,10 @@ model Items {
 	available			Boolean		@default(false)
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
+	createdAt			DateTime		@default(now())
 	Locations			Location[]
+	image       String?
+  	description String?
 }
 
 model Comments {
