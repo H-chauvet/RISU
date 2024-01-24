@@ -30,7 +30,7 @@ void main() {
           tester.state(find.byType(ContainerDetailsPage));
       expect(testData.getContainerId(), '');
       expect(testData.getAddress(), '');
-      expect(testData.getLocalization(), '');
+      expect(testData.getCity(), '');
       expect(testData.getAvailableItems(), 0);
 
       Finder titleData = find.byKey(const Key('container-details_title'));

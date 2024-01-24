@@ -86,7 +86,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _address;
   }
 
-  String getLocalization() {
+  String getCity() {
     return _city;
   }
 
