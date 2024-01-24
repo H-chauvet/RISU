@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
 
@@ -86,7 +88,7 @@ class ContainerCard extends StatelessWidget {
         child: Container(
           child: Card(
             elevation: 5,
-            shadowColor: Colors.blueAccent,
+            shadowColor: context.select((ThemeProvider themeProvider) => themeProvider.currentTheme.dividerColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
