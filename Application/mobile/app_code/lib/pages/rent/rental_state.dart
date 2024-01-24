@@ -20,6 +20,7 @@ class RentalPageState extends State<RentalPage> {
   @override
   void initState() {
     super.initState();
+    getRentals();
   }
 
   String formatDateTime(String dateTimeString) {
