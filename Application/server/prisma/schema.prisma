@@ -34,14 +34,14 @@ model Containers {
 	id               String           @id @default(cuid())
 	createdAt        DateTime      @default(now())
 	containerMapping String?
-	address           String?
+	address          String?
 	city             String?
 	price            Float?
 	width            Float?
 	height           Float?
 	designs          String? @db.LongText
 	informations     String? @db.LongText
-	items				   Items[]
+	items			 Items[]
 	paid             Boolean       @default(false)
 	saveName         String?
 }
@@ -55,8 +55,8 @@ model Items {
 	containerId			String
 	createdAt			DateTime		@default(now())
 	Locations			Location[]
-	image       String?
-  	description String?
+	image       		String?
+  	description 		String?
 }
 
 model Comments {
@@ -67,10 +67,10 @@ model Comments {
 
 model Opinions {
 	id					String		@id @unique @default(cuid())
-	userId			String
+	userId				String
 	date				DateTime
-	note        String
-	comment     String     @default("")
+	note        		String
+	comment     		String     @default("")
 }
 
 model Contact {
