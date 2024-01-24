@@ -16,7 +16,7 @@ void main() {
     // This code runs after each test case.
   });
 
-  testWidgets('MyDivider', (WidgetTester tester) async {
+  testWidgets('Confirm rent test', (WidgetTester tester) async {
     final ArticleData data = ArticleData(
         id: "", containerId: "", name: "Ballon", available: true, price: 8);
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
