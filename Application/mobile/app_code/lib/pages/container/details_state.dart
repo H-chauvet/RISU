@@ -82,7 +82,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _containerId;
   }
 
-  String getOwner() {
+  String getAddress() {
     return _address;
   }
 

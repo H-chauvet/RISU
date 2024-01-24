@@ -29,7 +29,7 @@ void main() {
       final ContainerDetailsState testData =
           tester.state(find.byType(ContainerDetailsPage));
       expect(testData.getContainerId(), '');
-      expect(testData.getOwner(), '');
+      expect(testData.getAddress(), '');
       expect(testData.getLocalization(), '');
       expect(testData.getAvailableItems(), 0);
 
