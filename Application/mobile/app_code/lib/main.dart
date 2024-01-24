@@ -16,7 +16,6 @@ void main() async {
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Continue with SharedPreferences and ThemeProvider
   final prefs = await SharedPreferences.getInstance();
