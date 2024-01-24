@@ -25,8 +25,8 @@ describe("Create container", function () {
             .send({
               designs: "[[0,1,2,3,4,5,6,7,8,9]]",
               containerMapping: "10000000000000",
-              width: "12",
-              height: "5",
+              width: 12.0,
+              height: 5.0,
               saveName: "test",
             });
           expect(req.statusCode).toBe(200);
