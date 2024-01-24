@@ -101,7 +101,7 @@ class ContainerCard extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("prix : " + "test" /* container.price.toString() */),
+                      Text("prix : " + container.price.toString()),
                     ],
                   ),
                 ),
