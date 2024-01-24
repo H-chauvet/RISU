@@ -37,7 +37,7 @@ Future<dynamic> getContainerData(
         );
       }
       return {
-        'adress': '',
+        'address': '',
         'city': '',
         '_count': {'items': 0}
       };
@@ -53,7 +53,7 @@ Future<dynamic> getContainerData(
       );
     }
     return {
-      'adress': '',
+      'address': '',
       'city': '',
       '_count': {'items': 0}
     };
@@ -62,7 +62,7 @@ Future<dynamic> getContainerData(
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
   String _containerId = "";
-  String _adress = "";
+  String _address = "";
   String _city = "";
   int _availableItems = 0;
 
@@ -72,7 +72,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     _containerId = widget.containerId;
     getContainerData(context, _containerId).then((dynamic value) {
       setState(() {
-        _adress = value['adress'].toString();
+        _address = value['address'].toString();
         _city = value['city'].toString();
         _availableItems = value['_count']['items'];
       });
@@ -84,7 +84,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
   }
 
   String getOwner() {
-    return _adress;
+    return _address;
   }
 
   String getLocalization() {
@@ -116,7 +116,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$_city par $_adress',
+                  '$_city par $_address',
                   key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 32,

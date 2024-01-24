@@ -260,7 +260,7 @@ async function createFixtures() {
       data: {
         id: '1',
         city: 'Nantes',
-        adress: 'Risu',
+        address: 'Risu',
         items: {
           create: [
             { name: 'ballon de volley', price: 3, available: true },
@@ -274,7 +274,7 @@ async function createFixtures() {
       data: {
         id: '2',
         city: 'Nantes',
-        adress: 'Risu',
+        address: 'Risu',
         items: {
           create: []
         }
@@ -480,7 +480,7 @@ app.get('/api/container/:containerId', async (req, res) => {
       where: { id: req.params.containerId },
       select: {
         city: true,
-        adress: true,
+        address: true,
         _count: {
           select: {   // count the number of items available related to the container
             items: { where: { available: true } }

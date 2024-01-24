@@ -16,7 +16,7 @@ class MyContainerList {
   final int? organizationId;
   final dynamic? containerMapping;
   final double? price;
-  final String? adress;
+  final String? address;
   final String? city;
   final String? design;
   final String? informations;
@@ -28,7 +28,7 @@ class MyContainerList {
     required this.organizationId,
     required this.containerMapping,
     required this.price,
-    required this.adress,
+    required this.address,
     required this.city,
     required this.design,
     required this.informations,
@@ -42,7 +42,7 @@ class MyContainerList {
       organizationId: json['organizationId'],
       containerMapping: json['containerMapping'],
       price: json['price'],
-      adress: json['adress'],
+      address: json['address'],
       city: json['city'],
       design: json['design'],
       informations: json['informations'],
@@ -56,7 +56,7 @@ class MyContainerList {
       'organizationId': organizationId,
       'containerMapping': containerMapping,
       'price': price,
-      'adress': adress,
+      'address': address,
       'city': design,
       'informations': informations,
     };

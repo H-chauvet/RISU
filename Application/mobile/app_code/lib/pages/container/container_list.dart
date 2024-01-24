@@ -7,7 +7,7 @@ class ContainerList {
   final dynamic createdAt;
   final dynamic? containerMapping;
   final double? price;
-  final String? adress;
+  final String? address;
   final String? city;
   final String? designs;
   final dynamic? items;
@@ -20,7 +20,7 @@ class ContainerList {
     required this.createdAt,
     required this.containerMapping,
     required this.price,
-    required this.adress,
+    required this.address,
     required this.city,
     required this.designs,
     required this.items,
@@ -35,7 +35,7 @@ class ContainerList {
       createdAt: json['createdAt'],
       containerMapping: json['containerMapping'],
       price: json['price'],
-      adress: json['adress'],
+      address: json['address'],
       city: json['city'],
       designs: json['designs'],
       items: json['items'],
@@ -51,7 +51,7 @@ class ContainerList {
       'createdAt': createdAt,
       'containerMapping': containerMapping,
       'price': price,
-      'adress': adress,
+      'address': address,
       'city': city,
       'designs': designs,
       'items': items,
@@ -94,7 +94,7 @@ class ContainerCard extends StatelessWidget {
               children: [
                 ListTile(
                   title: container.city != null ? Text(container.city!) : null,
-                  subtitle: container.adress != null ? Text(container.adress!) : null,
+                  subtitle: container.address != null ? Text(container.address!) : null,
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

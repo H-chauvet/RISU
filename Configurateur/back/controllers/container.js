@@ -28,8 +28,6 @@ exports.deleteContainer = (id) => {
 };
 
 exports.createContainer = (container) => {
-  container.width = parseFloat(container.width);
-  container.height = parseFloat(container.height);
   return db.Container.create({
     data: container,
   });

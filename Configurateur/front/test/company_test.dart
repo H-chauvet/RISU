@@ -61,7 +61,7 @@ void main() {
       organizationId: 123,
       containerMapping: {},
       price: 29.99,
-      adress: "blabla",
+      address: "blabla",
       city: null,
       design: null,
       informations: "c'est un conteneur",
@@ -77,7 +77,7 @@ void main() {
     expect(parsedContainer.organizationId, container.organizationId);
     expect(parsedContainer.containerMapping, container.containerMapping);
     expect(parsedContainer.price, container.price);
-    expect(parsedContainer.adress, container.adress);
+    expect(parsedContainer.address, container.address);
     expect(parsedContainer.city, container.city);
     expect(parsedContainer.design, container.design);
     expect(parsedContainer.informations, container.informations);

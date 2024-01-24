@@ -79,7 +79,7 @@ describe("Create container", function () {
               width: "12",
               height: "5",
               city: "Paris",
-              adress: "rue de la paix",
+              address: "rue de la paix",
               saveName: "test",
             });
 
@@ -90,7 +90,7 @@ describe("Create container", function () {
           expect(req.body.width).toBe(12);
           expect(req.body.height).toBe(5);
           expect(req.body.city).toBe("Paris");
-          expect(req.body.adress).toBe("rue de la paix");
+          expect(req.body.address).toBe("rue de la paix");
         },
         async function () {
           const req = await request("http://localhost:3000")

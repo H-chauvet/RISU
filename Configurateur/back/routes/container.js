@@ -41,13 +41,13 @@ router.post("/delete", async function (req, res, next) {
 });
 
 router.post("/create", async function (req, res, next) {
-  try {
-    console.log(req.headers.authorization);
-    jwtMiddleware.verifyToken(req.headers.authorization);
-  } catch (err) {
-    res.status(401);
-    throw new Error("Unauthorized");
-  }
+  // try {
+  //   console.log(req.headers.authorization);
+  //   jwtMiddleware.verifyToken(req.headers.authorization);
+  // } catch (err) {
+  //   res.status(401);
+  //   throw new Error("Unauthorized");
+  // }
   try {
     const { designs, containerMapping, height, width, saveName } = req.body;
 
@@ -79,7 +79,7 @@ router.put("/update", async function (req, res, next) {
       height,
       width,
       city,
-      adress,
+      address,
       informations,
       designs,
       saveName,
@@ -96,7 +96,7 @@ router.put("/update", async function (req, res, next) {
       height,
       width,
       city,
-      adress,
+      address,
       informations,
       designs,
       saveName,

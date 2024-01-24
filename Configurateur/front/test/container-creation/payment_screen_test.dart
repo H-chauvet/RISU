@@ -44,7 +44,7 @@ void main() {
         findsOneWidget);
     expect(find.text('Payer'), findsOneWidget);
 
-    await tester.enterText(find.byKey(const Key('adress')), '1 rue de la paix');
+    await tester.enterText(find.byKey(const Key('address')), '1 rue de la paix');
     await tester.enterText(find.byKey(const Key('city')), 'Nantes');
     await tester.enterText(
         find.byKey(const Key('informations')), 'some random informations');

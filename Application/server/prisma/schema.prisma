@@ -34,7 +34,7 @@ model Containers {
 	id               String           @id @default(cuid())
 	createdAt        DateTime      @default(now())
 	containerMapping String?
-	adress           String?
+	address           String?
 	city             String?
 	price            Float?
 	width            Float?

@@ -23,7 +23,7 @@ void main() {
             price: 10,
             createdAt: null,
             containerMapping: null,
-            adress: "rue george",
+            address: "rue george",
             city: "nantes",
             designs: null,
             items: null,

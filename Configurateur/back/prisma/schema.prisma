@@ -53,7 +53,7 @@ model Container {
   organization     Organization? @relation(fields: [organizationId], references: [id])
   organizationId   Int?
   containerMapping String?
-  adress           String?
+  address           String?
   city             String?
   price            Float?
   width            Float?
