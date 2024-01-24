@@ -9,6 +9,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/check_signin.dart';
 
 import 'rent_page.dart';
 
@@ -40,6 +41,10 @@ class RentArticlePageState extends State<RentArticlePage> {
   }
 
   void confirmRent() async {
+    bool signIn = await checkSignin(context);
+    if (!signIn) {
+      return;
+    }
     await MyAlertDialog.showChoiceAlertDialog(
       context: context,
       title: 'Confirmer la location',
@@ -127,7 +132,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                     color: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.primaryColor),
+                        themeProvider.currentTheme.primaryColor),
                   ),
                 ),
                 const SizedBox(height: 8),

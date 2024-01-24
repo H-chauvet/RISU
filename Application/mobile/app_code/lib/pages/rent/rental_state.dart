@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/theme.dart';
 
@@ -14,13 +15,12 @@ import 'rental_page.dart';
 class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
-  bool showAllRentals = false;
+  bool showAllRentals = true;
 
   @override
   void initState() {
     super.initState();
     getRentals();
-    getRentalsInProgress();
   }
 
   String formatDateTime(String dateTimeString) {
@@ -32,7 +32,7 @@ class RentalPageState extends State<RentalPage> {
     try {
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent'),
+        Uri.parse('http://$serverIp:8080/api/rents/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -68,7 +68,7 @@ class RentalPageState extends State<RentalPage> {
   }
 
   bool isRentalInProgress(dynamic rental) {
-    if (rental['createdAt'] != null && rental['duration'] != null) {
+    if (rental['createdAt'] != null && rental['duration'] != null && rental['finished'] == false) {
       DateTime rentalStart = DateTime.parse(rental['createdAt']);
       int rentalDuration = rental['duration'];
       DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
@@ -137,7 +137,7 @@ class RentalPageState extends State<RentalPage> {
                     onTap: () {
                       getRentalsInProgress();
                       setState(() {
-                        showAllRentals = false;
+                        showAllRentals = true;
                       });
                     },
                     child: ClipRRect(
@@ -151,15 +151,15 @@ class RentalPageState extends State<RentalPage> {
                           height: 30, // hauteur du bouton
                         ),
                         decoration: BoxDecoration(
-                          color: !showAllRentals
+                          color: showAllRentals
                               ? themeProvider.currentTheme.primaryColor
                               : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
-                            'En Cours',
+                            'Toues',
                             style: TextStyle(
-                              color: !showAllRentals
+                              color: showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
                                           Brightness.light
@@ -178,7 +178,7 @@ class RentalPageState extends State<RentalPage> {
                     onTap: () {
                       getRentalsInProgress();
                       setState(() {
-                        showAllRentals = true;
+                        showAllRentals = false;
                       });
                     },
                     child: ClipRRect(
@@ -192,15 +192,15 @@ class RentalPageState extends State<RentalPage> {
                           height: 30, // hauteur du bouton
                         ),
                         decoration: BoxDecoration(
-                          color: showAllRentals
+                          color: !showAllRentals
                               ? themeProvider.currentTheme.primaryColor
                               : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
-                            'Toutes',
+                            'En cours',
                             style: TextStyle(
-                              color: showAllRentals
+                              color: !showAllRentals
                                   ? Colors.white
                                   : themeProvider.currentTheme.brightness ==
                                           Brightness.light
