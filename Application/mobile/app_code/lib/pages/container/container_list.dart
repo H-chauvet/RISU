@@ -88,7 +88,8 @@ class ContainerCard extends StatelessWidget {
         child: Container(
           child: Card(
             elevation: 5,
-            shadowColor: context.select((ThemeProvider themeProvider) => themeProvider.currentTheme.dividerColor),
+            shadowColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

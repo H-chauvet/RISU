@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/theme.dart';
 
 import 'container_list.dart';
 import 'container_page.dart';
@@ -43,6 +47,13 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: false,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(
@@ -52,23 +63,26 @@ class ContainerPageState extends State<ContainerPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 30),
-                const Text(
+                Text(
                   'Liste des conteneurs',
                   style: TextStyle(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor),
+                    // context.select((ThemeProvider themeProvider) => themeProvider.currentTheme.primaryColor),
                   ),
                 ),
                 const SizedBox(height: 30),
                 Column(
                   children: [
                     if (containers.isEmpty)
-                      const Text(
+                      Text(
                         'Aucun conteneur trouvé.',
                         style: TextStyle(
                           fontSize: 18,
-                          color: Color(0xFF4682B4),
+                          color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor),
                         ),
                       )
                     else ...[
