@@ -15,7 +15,6 @@ import 'details_page.dart';
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
   late http.Response response;
-  print(containerId);
   try {
     response = await http.get(
       Uri.parse('http://$serverIp:8080/api/container/$containerId'),
