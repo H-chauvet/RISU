@@ -69,8 +69,7 @@ class ContainerPageState extends State<ContainerPage> {
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
                     color: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.primaryColor),
-                    // context.select((ThemeProvider themeProvider) => themeProvider.currentTheme.primaryColor),
+                        themeProvider.currentTheme.primaryColor),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -82,7 +81,7 @@ class ContainerPageState extends State<ContainerPage> {
                         style: TextStyle(
                           fontSize: 18,
                           color: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.primaryColor),
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       )
                     else ...[

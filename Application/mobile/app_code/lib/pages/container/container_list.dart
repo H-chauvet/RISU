@@ -78,18 +78,17 @@ class ContainerCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 // id must be the same from web to mobile
-                builder: (context) => ContainerDetailsPage(
-                    containerId: container.id)));
+                builder: (context) =>
+                    ContainerDetailsPage(containerId: container.id)));
       },
       child: Container(
         height: 120,
-        margin: EdgeInsets.only(
-            right: 25.0, left: 25.0, top: 10.0),
+        margin: EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
         child: Container(
           child: Card(
             elevation: 5,
             shadowColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.primaryColor),
+                themeProvider.currentTheme.primaryColor),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
@@ -97,13 +96,13 @@ class ContainerCard extends StatelessWidget {
               children: [
                 ListTile(
                   title: container.city != null ? Text(container.city!) : null,
-                  subtitle: container.address != null ? Text(container.address!) : null,
+                  subtitle: container.address != null
+                      ? Text(container.address!)
+                      : null,
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(
-                        width: 10
-                      ),
+                      SizedBox(width: 10),
                       Text("Prix : " + container.price.toString() + "€"),
                     ],
                   ),
