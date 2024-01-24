@@ -11,6 +11,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/check_signin.dart';
 
 import 'rent_page.dart';
 
@@ -62,7 +63,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
+          title: 'Erreur lors de la location',
           message: 'Connection refused.',
         );
       }
@@ -71,18 +72,16 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
-          message: 'Location enregistrée.',
+          title: 'Location enregistrée',
+          message: 'Votre location a bien été prise en compte.',
         );
       }
     } else {
       print('Error rentArticle(): ${response.statusCode}');
       if (context.mounted) {
-        print(response.statusCode);
-        print(response.body);
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
+          title: '',
           message: 'Erreur lors de la location.',
         );
       }
@@ -131,10 +130,6 @@ class RentArticlePageState extends State<RentArticlePage> {
   }
 
   Future<void> makePayment() async {
-    //print('publishableKey: ${stripePublishableKey}');
-    //print('secretKey: ${stripeSecretKey}');
-    //print('STRIPE_SECRET: ${dotenv.env['STRIPE_SECRET_KEY']}');
-    //print('STRIPE_PUBLISHABLE: ${dotenv.env['STRIPE_PUBLISHABLE_KEY']}');
     try {
       final amount = _articleData.price * 100 * _rentalHours; // for stripe, price is in cents
       final Map<String, dynamic> paymentIntentData = await createPaymentIntent(amount.toString(), 'EUR');
@@ -375,7 +370,11 @@ class RentArticlePageState extends State<RentArticlePage> {
                     child: MyOutlinedButton(
                       key: const Key('confirm-rent-button'),
                       text: 'Louer',
-                      onPressed: () {
+                      onPressed: () async {
+                        bool signIn = await checkSignin(context);
+                        if (!signIn) {
+                          return;
+                        }
                         confirmRent();
                       },
                     ),
