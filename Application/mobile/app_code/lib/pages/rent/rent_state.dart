@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -12,15 +11,11 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/check_signin.dart';
-
 import 'rent_page.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
   dynamic paymentIntent;
   int _rentalHours = 1;
-
-  //String _articleName = 'Nom de l\'article';
-
   late ArticleData _articleData;
 
   @override
