@@ -82,7 +82,7 @@ class ContainerCard extends StatelessWidget {
       child: Container(
         height: 120,
         margin: EdgeInsets.only(
-            right: 25.0, left: 25.0, top: 10.0), // Adjust the padding here
+            right: 25.0, left: 25.0, top: 10.0),
         child: Container(
           child: Card(
             elevation: 5,
