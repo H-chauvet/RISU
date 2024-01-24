@@ -260,7 +260,7 @@ async function createFixtures() {
       data: {
         id: '1',
         city: 'Nantes',
-        address: 'Risu',
+        address: 'Rue George',
         items: {
           create: [
             { name: 'ballon de volley', price: 3, available: true },
@@ -274,7 +274,7 @@ async function createFixtures() {
       data: {
         id: '2',
         city: 'Nantes',
-        address: 'Risu',
+        address: 'Rue george',
         items: {
           create: []
         }
