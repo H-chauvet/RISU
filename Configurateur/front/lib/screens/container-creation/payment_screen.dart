@@ -51,6 +51,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     MyAlertTest.checkSignInStatus(context);
+    checkToken();
     controller.addListener(update);
     super.initState();
   }

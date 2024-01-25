@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'rental_page.dart';
@@ -31,7 +32,7 @@ class RentalPageState extends State<RentalPage> {
     try {
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent'),
+        Uri.parse('http://$serverIp:8080/api/rents/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -67,7 +68,9 @@ class RentalPageState extends State<RentalPage> {
   }
 
   bool isRentalInProgress(dynamic rental) {
-    if (rental['createdAt'] != null && rental['duration'] != null) {
+    if (rental['createdAt'] != null &&
+        rental['duration'] != null &&
+        rental['ended'] == false) {
       DateTime rentalStart = DateTime.parse(rental['createdAt']);
       int rentalDuration = rental['duration'];
       DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
@@ -164,8 +167,8 @@ class RentalPageState extends State<RentalPage> {
                                           Brightness.light
                                       ? Colors.grey[
                                           400] // Gris foncé pour le mode clair
-                                      : Colors.grey[
-                                          800], // Gris clair pour le mode sombre
+                                      : Colors.grey[800],
+                              // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -205,8 +208,8 @@ class RentalPageState extends State<RentalPage> {
                                           Brightness.light
                                       ? Colors.grey[
                                           400] // Gris foncé pour le mode clair
-                                      : Colors.grey[
-                                          800], // Gris clair pour le mode sombre
+                                      : Colors.grey[800],
+                              // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -246,12 +249,21 @@ class RentalPageState extends State<RentalPage> {
                             ),
                             color: themeProvider.currentTheme.cardColor,
                             child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReturnArticlePage(rentId: rental['id']),
+                                  ),
+                                );
+                              },
                               key: const Key('rental-list-tile'),
                               contentPadding: const EdgeInsets.all(16.0),
-                              title: const Text(
-                                'Ballon de volley' +
-                                    '  |  La Baule - Casier N°A4',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title: Text(
+                                '${rental['item']['name']}  |  ${rental['item']['container']['localization']}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,7 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/rent')
+              .get('/api/rents')
               .set('Authorization', 'Bearer ' +  authToken)
               .expect(201, callback)
           }
@@ -38,7 +38,7 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .get('/api/rent')
+              .get('/api/rents')
               .set('Authorization', '')
               .expect(401, callback)
           }

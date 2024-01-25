@@ -20,6 +20,7 @@ class MyContainer extends StatefulWidget {
 /// page de confirmation d'enregistrement pour le configurateur
 class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
+  List<dynamic> displayedContainers = [];
   dynamic body;
 
   void getContainers() async {
@@ -37,6 +38,12 @@ class MyContainerState extends State<MyContainer> {
               setState(() {
                 body = jsonDecode(value.body);
                 containers = body['container'];
+
+                for (int i = 0; i < containers.length; i++) {
+                  if (containers[i]['paid'] == false) {
+                    displayedContainers.add(containers[i]);
+                  }
+                }
               }),
             }
           else
@@ -71,7 +78,7 @@ class MyContainerState extends State<MyContainer> {
             ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: containers.length,
+                itemCount: displayedContainers.length,
                 itemBuilder: (_, i) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -87,11 +94,12 @@ class MyContainerState extends State<MyContainer> {
                           onPressed: () {
                             context.go('/container-creation',
                                 extra: jsonEncode({
-                                  'id': containers[i]['id'],
-                                  'container': jsonEncode(containers[i]),
+                                  'id': displayedContainers[i]['id'],
+                                  'container':
+                                      jsonEncode(displayedContainers[i]),
                                 }));
                           },
-                          child: Text(containers[i]['saveName']),
+                          child: Text(displayedContainers[i]['saveName']),
                         ),
                       ),
                     ],
