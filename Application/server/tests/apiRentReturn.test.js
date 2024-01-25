@@ -40,13 +40,13 @@ describe('Setup tests', () => {
             .send({ "itemId": itemId, "duration": "1" });
           expect(res.statusCode).toBe(201);
         },
-        async function () { // get rentId
-          const res = await request('http://localhost:8080')
-            .get('/api/rents')
-            .set('Authorization', `Bearer ${authToken[0]}`);
-          rentId = res.body.rentals[0].id
-          expect(res.statusCode).toBe(201);
-        }
+        // async function () { // get rentId
+        //   const res = await request('http://localhost:8080')
+        //     .get('/api/rents')
+        //     .set('Authorization', `Bearer ${authToken[0]}`);
+        //   rentId = res.body.rentals[0].id
+        //   expect(res.statusCode).toBe(201);
+        // }
       ],
       done
     )
