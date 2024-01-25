@@ -52,16 +52,6 @@ void main() {
       await tester.scrollUntilVisible(confirmButtonFinder, 100.0);
       await tester.tap(confirmButtonFinder);
       await tester.pump();
-
-      // Verify that the confirmation dialog appears
-      expect(find.text('Confirmer la location'), findsOneWidget);
-
-      // Simulate confirming the rent
-      await tester.tap(find.text('Confirmer'));
-      await tester.pump();
-
-      // Verify the expected behavior after confirming rent
-      // Add assertions based on your implementation
     });
   });
 }

@@ -1,22 +1,22 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/theme.dart';
-
+import 'package:risu/utils/check_signin.dart';
 import 'rent_page.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
+  dynamic paymentIntent;
   int _rentalHours = 1;
-
-  //String _articleName = 'Nom de l\'article';
-
   late ArticleData _articleData;
 
   @override
@@ -39,23 +39,6 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
-  void confirmRent() async {
-    await MyAlertDialog.showChoiceAlertDialog(
-      context: context,
-      title: 'Confirmer la location',
-      message: 'Êtes-vous sûr de vouloir louer cet article ?',
-      onOkName: 'Confirmer',
-      onCancelName: 'Annuler',
-    ).then(
-      (value) => {
-        if (value)
-          {
-            rentArticle(),
-          }
-      },
-    );
-  }
-
   void rentArticle() async {
     final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
@@ -76,17 +59,24 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
+          title: 'Erreur lors de la location',
           message: 'Connection refused.',
         );
       }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Location enregistrée.',
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ConfirmRentPage(
+                hours: _rentalHours,
+                data: _articleData,
+              );
+            },
+          ),
+          (route) => false,
         );
       }
     } else {
@@ -94,11 +84,104 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
+          title: '',
           message: 'Erreur lors de la location.',
         );
       }
     }
+  }
+
+  Future<Map<String, dynamic>> createPaymentIntent(String amount, String currency) async {
+    try {
+      final response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET_KEY']}',
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: {
+          'amount': amount,
+          'currency': currency,
+        },
+      );
+
+      final responseData = json.decode(response.body);
+
+      if (response.statusCode == 200) {
+        return responseData;
+      } else {
+        throw Exception('Failed to create payment intent: ${responseData['error']}');
+      }
+    } catch (err) {
+      throw Exception('Failed to create payment intent: $err');
+    }
+  }
+
+  Future<void> initPaymentSheet(String clientSecret) async {
+    try {
+      await stripe.Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: stripe.SetupPaymentSheetParameters(
+          paymentIntentClientSecret: clientSecret,
+          style: ThemeMode.light,
+          merchantDisplayName: 'Ikay',
+        ),
+      );
+    } catch (e) {
+      debugPrint('Error initializing Payment Sheet: $e');
+      throw Exception('Error initializing Payment Sheet: $e');
+    }
+  }
+
+  Future<void> makePayment() async {
+    try {
+      final amount = _articleData.price * 100 * _rentalHours; // for stripe, price is in cents
+      final Map<String, dynamic> paymentIntentData = await createPaymentIntent(amount.toString(), 'EUR');
+      //print('\n\n\npaymentIntentData: $paymentIntentData');
+      final clientSecret = paymentIntentData['client_secret'];
+      //print('\n\n\nclientSecret: $clientSecret');
+      if (clientSecret != null) {
+        await initPaymentSheet(clientSecret);
+        await stripe.Stripe.instance.presentPaymentSheet().then((value) async {
+          rentArticle();
+          // paiement success
+          await MyAlertDialog.showErrorAlertDialog(
+              context: context,
+              title: 'Paiement effectué',
+              message: 'Le paiement a bien été effectué');
+
+        });
+      } else {
+        await MyAlertDialog.showErrorAlertDialog(
+            context: context,
+            title: 'Le paiement a échoué',
+            message: 'Client secret is missing');
+        throw Exception('Client secret is missing');
+      }
+    } catch (err) {
+      print('error: $err');
+      await MyAlertDialog.showErrorAlertDialog(
+          context: context,
+          title: 'Le paiement a échoué',
+          message: err.toString());
+      throw Exception(err);
+    }
+  }
+
+  void confirmRent() async {
+    await MyAlertDialog.showChoiceAlertDialog(
+      context: context,
+      title: 'Confirmer la location',
+      message: 'Êtes-vous sûr de vouloir louer cet article ?',
+      onOkName: 'Confirmer',
+      onCancelName: 'Annuler',
+    ).then(
+      (value) => {
+        if (value)
+          {
+            makePayment(),
+          }
+      },
+    );
   }
 
   @override
@@ -291,7 +374,11 @@ class RentArticlePageState extends State<RentArticlePage> {
                     child: MyOutlinedButton(
                       key: const Key('confirm-rent-button'),
                       text: 'Louer',
-                      onPressed: () {
+                      onPressed: () async {
+                        bool signIn = await checkSignin(context);
+                        if (!signIn) {
+                          return;
+                        }
                         confirmRent();
                       },
                     ),
