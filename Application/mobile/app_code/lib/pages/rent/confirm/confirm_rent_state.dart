@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/outlined_button.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/components/appbar.dart';
-import 'package:risu/components/outlined_button.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
@@ -16,14 +16,6 @@ class ConfirmRentState extends State<ConfirmRentPage> {
     super.initState();
     hours = widget.hours;
     data = widget.data;
-  }
-
-  String pluralHours() {
-    if (hours > 1) {
-      return "s";
-    } else {
-      return "";
-    }
   }
 
   @override
@@ -93,7 +85,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '- Nombre d\'heure${pluralHours()}: $hours',
+                '- Nombre d\'heure${hours > 1 ? 's' : ''}: $hours',
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -116,7 +108,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Merci pour votre location !\nN\'oubliez pas de rendre l\'article dans $hours heure${pluralHours()} !',
+                      'Merci pour votre location !\nN\'oubliez pas de rendre l\'article dans $hours heure${hours > 1 ? 's' : ''} !',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22,
