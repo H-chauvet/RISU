@@ -44,13 +44,18 @@ class ContainerCreationState extends State<ContainerCreation> {
   String jwtToken = '';
   dynamic decodedContainer;
 
-  @override
-  void initState() {
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
-      jwtToken = token;
+      jwtToken = token!;
     } else {
       jwtToken = "";
     }
+  }
+
+  @override
+  void initState() {
+    checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);

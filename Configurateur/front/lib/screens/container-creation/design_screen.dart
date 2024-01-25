@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -15,7 +16,6 @@ import 'package:go_router/go_router.dart';
 import '../../components/progress_bar.dart';
 import '../../components/recap_panel.dart';
 import '../../network/informations.dart';
-import '../../services/storage_service.dart';
 
 const List<String> faceList = <String>[
   'Devant',
@@ -81,23 +81,20 @@ class DesignScreenState extends State<DesignScreen> {
   String face = faceList.first;
   List<Design> designss = [];
 
-  @override
-  void initState() {
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
-      jwtToken = token;
+      jwtToken = token!;
     } else {
       context.go(
         '/login',
       );
     }
-    /*StorageService().readStorage('token').then((value) => {
-          if (value == null)
-            {context.go("/login")}
-          else
-            {
-              jwtToken = value,
-            }
-        });*/
+  }
+
+  @override
+  void initState() {
+    checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());

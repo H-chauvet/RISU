@@ -96,9 +96,8 @@ class GoogleLogo extends StatelessWidget {
                     gravity: ToastGravity.CENTER,
                   ),
                   response = jsonDecode(value.body),
-                  token = response['accessToken'],
-                  /*StorageService()
-                      .writeStorage('token', response['accessToken']),*/
+                  StorageService()
+                      .writeStorage('token', response['accessToken']),
                   context.go('/')
                 }
               else

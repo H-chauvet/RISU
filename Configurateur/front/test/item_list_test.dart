@@ -4,10 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:front/screens/company/company.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
+
   testWidgets('ItemCard displays message details', (WidgetTester tester) async {
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
 
     await tester.pumpWidget(
       MaterialApp(
@@ -30,3 +38,5 @@ void main() {
     expect(find.text("Hello world"), findsOneWidget);
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

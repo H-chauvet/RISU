@@ -9,6 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'rent_page.dart';
@@ -65,10 +66,17 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Location enregistrée',
-          message: 'Votre location a bien été prise en compte.',
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return ConfirmRentPage(
+                hours: _rentalHours,
+                data: _articleData,
+              );
+            },
+          ),
+          (route) => false,
         );
       }
     } else {
