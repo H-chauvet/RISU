@@ -78,7 +78,7 @@ model Location {
 	userId				String
 	createdAt			DateTime	@default(now())
 	duration			Int
-	finished			Boolean		@default(false)
+	ended			Boolean		@default(false)
 }
 
 model Notifications {

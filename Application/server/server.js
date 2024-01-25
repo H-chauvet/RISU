@@ -633,7 +633,7 @@ app.get('/api/rents',
           price: true,
           createdAt: true,
           duration: true,
-          finished: true,
+          ended: true,
           item: {
             select: {
               id: true,
@@ -678,7 +678,7 @@ app.get('/api/rent/:rentId',
           createdAt: true,
           duration: true,
           userId: true,
-          finished: true,
+          ended: true,
           item: {
             select: {
               id: true,
@@ -694,10 +694,10 @@ app.get('/api/rent/:rentId',
         }
       })
       if (!rental) {
-        return res.status(401).send('location not found')
+        return res.status(401).send('Location not found')
       }
       if (rental.userId != req.user.id) {
-        return res.status(401).send('location from wrong user')
+        return res.status(401).send('Location from wrong user')
       }
       return res.status(201).json({ rental: rental })
     } catch (err) {
@@ -707,17 +707,17 @@ app.get('/api/rent/:rentId',
   }
 )
 
-app.post('/api/rent/return',
+app.post('/api/rent/:rentId/return',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
         return res.status(401).send('Invalid token')
       }
-      if (!req.body.rentId || req.params.rentId == '') {
+      if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).json({ message: 'Missing rentId' })
       }
       const rent = await database.prisma.Location.findUnique({
-        where: { id: req.body.rentId }
+        where: { id: req.params.rentId }
       })
       if (!rent) {
         return res.status(401).send('Location not found')
@@ -726,9 +726,9 @@ app.post('/api/rent/return',
         return res.status(401).send('Location from wrong user')
       }
       await database.prisma.Location.update({
-        where: { id: req.body.rentId },
+        where: { id: req.params.rentId },
         data: {
-          finished: true,
+          ended: true,
           item: {
             update: { available: true }
           }

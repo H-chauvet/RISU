@@ -70,7 +70,7 @@ class RentalPageState extends State<RentalPage> {
   bool isRentalInProgress(dynamic rental) {
     if (rental['createdAt'] != null &&
         rental['duration'] != null &&
-        rental['finished'] == false) {
+        rental['ended'] == false) {
       DateTime rentalStart = DateTime.parse(rental['createdAt']);
       int rentalDuration = rental['duration'];
       DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));

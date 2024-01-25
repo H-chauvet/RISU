@@ -18,7 +18,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     'createdAt': '',
     'duration': '',
     'userId': '',
-    'finished': '',
+    'ended': '',
     'item': {
       'id': '',
       'name': '',
@@ -51,7 +51,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       } else {
         print('Error getRent(): ${response.statusCode}');
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Erreur',
             message: 'la location n\'a pas pu être récupérées.',
@@ -67,24 +67,20 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     try {
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/return'),
+        Uri.parse('http://$serverIp:8080/api/rent/${rent['id']}/return'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(<String, String>{
-          'rentId': rent['id'],
-        }),
       );
       if (response.statusCode == 201) {
         setState(() {
-          rent['finished'] = true;
+          rent['ended'] = true;
         });
-        print("success");
       } else {
         print('Error returnArticle(): ${response.statusCode}');
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: 'Erreur',
             message: 'la location n\'a pas pu être rendue.',
@@ -189,11 +185,11 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.black
-                                              : Colors.white,
+                                          color: themeProvider
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
                                         ),
                                       ),
                                     ),
@@ -208,11 +204,11 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.black
-                                              : Colors.white,
+                                          color: themeProvider
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
                                         ),
                                       ),
                                     ),
@@ -232,11 +228,11 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.black
-                                              : Colors.white,
+                                          color: themeProvider
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
                                         ),
                                       ),
                                     ),
@@ -252,11 +248,11 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.black
-                                              : Colors.white,
+                                          color: themeProvider
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
                                         ),
                                       ),
                                     ),
@@ -272,7 +268,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 ),
               ),
               const SizedBox(height: 8),
-              if (rent['finished'] == false)
+              if (rent['ended'] == false) ...[
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
@@ -282,7 +278,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       bool returnRent =
                           await MyAlertDialog.showChoiceAlertDialog(
                         context: context,
-                        title: 'Rendre l\'article',
+                        title: 'Confirmer le rendu de l\'article',
                         message: 'Voules-vous rendre votre location ?',
                         onOkName: 'Accepter',
                         onCancelName: 'Annuler',
@@ -293,6 +289,30 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                     },
                   ),
                 ),
+              ] else ...[
+                SizedBox(
+                  width: double.infinity,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: themeProvider.currentTheme.colorScheme.background,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    padding: const EdgeInsets.all(8.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Location déjà rendue',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.currentTheme.brightness ==
+                                Brightness.light
+                            ? Colors.black
+                            : Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              ]
             ],
           ),
         ),
