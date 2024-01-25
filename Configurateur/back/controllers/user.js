@@ -219,3 +219,77 @@ exports.findUserDetailsByEmail = email => {
     }
   });
 };
+
+/**
+ *
+ * Update firstName and LastName
+ *
+ * @param {*} user
+ * @returns user object with updated firstName and lastName
+ */
+exports.updateName = user => {
+  return db.User.update({
+    where: {
+      email: user.email
+    },
+    data: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+    }
+  })
+}
+
+/**
+ *
+ * Update mail
+ *
+ * @param {*} user
+ * @returns user object with updated mail
+ */
+exports.updateMail = user => {
+  return db.User.update({
+    where: {
+      email: user.oldMail
+    },
+    data: {
+      email: user.newMail,
+    }
+  })
+}
+
+/**
+ *
+ * Update company
+ *
+ * @param {*} user
+ * @returns user object with updated company
+ */
+exports.updateCompany = user => {
+  return db.User.update({
+    where: {
+      email: user.email
+    },
+    data: {
+      company: user.company,
+    }
+  })
+}
+
+/**
+ *
+ * Update company
+ *
+ * @param {*} user
+ * @returns user object with updated company
+ */
+exports.updateUserPassword = user => {
+  user.password = bcrypt.hashSync(user.password, 12)
+  return db.User.update({
+    where: {
+      email: user.email
+    },
+    data: {
+      password: user.password,
+    }
+  })
+}

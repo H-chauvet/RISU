@@ -226,4 +226,99 @@ router.get('/user-details/:email', async (req, res) => {
   }
 });
 
+router.post('/update-details/:email', async (req, res, next) => {
+  const email = req.params.email;
+
+  try {
+    const { firstName, lastName } = req.body;
+
+    if ((!firstName && !lastName)) {
+      res.status(400).json({ error: 'Email and at least one of firstName or lastName are required' });
+      return;
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email);
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await userCtrl.updateName({ email, firstName, lastName });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/update-mail', async (req, res, next) => {
+
+  try {
+    const { oldMail, newMail } = req.body;
+
+    if ((!oldMail && !newMail)) {
+      res.status(400).json({ error: 'Email is required' });
+      return;
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(oldMail);
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await userCtrl.updateMail({ oldMail, newMail });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/update-company/:email', async (req, res, next) => {
+  const email = req.params.email;
+
+  try {
+    const { company } = req.body;
+
+    if (!company) {
+      res.status(400).json({ error: 'Company is required' });
+      return;
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email);
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await userCtrl.updateCompany({ email, company });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post('/update-password/:email', async (req, res, next) => {
+  const email = req.params.email;
+
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      res.status(400).json({ error: 'Password is required' });
+      return;
+    }
+
+    const existingUser = await userCtrl.findUserByEmail(email);
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await userCtrl.updateUserPassword({ email, password });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+});
+
 module.exports = router
