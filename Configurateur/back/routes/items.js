@@ -44,7 +44,6 @@ router.put("/update", async function (req, res, next) {
       id,
       name,
       available,
-      createdAt,
       containerId,
       price,
       image,
@@ -59,7 +58,6 @@ router.put("/update", async function (req, res, next) {
     const item = await containerCtrl.updateItem(id, {
       name,
       available,
-      createdAt,
       containerId,
       price,
       image,
