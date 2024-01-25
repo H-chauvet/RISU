@@ -115,7 +115,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$_city, $_address',
+                  '$_address, $_city',
                   key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 32,
