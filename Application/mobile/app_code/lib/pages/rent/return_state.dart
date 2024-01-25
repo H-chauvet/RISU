@@ -155,10 +155,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: themeProvider.currentTheme.brightness ==
-                                    Brightness.light
-                                ? Colors.black
-                                : Colors.white,
+                            color: themeProvider.currentTheme
+                                .inputDecorationTheme.labelStyle!.color,
                           ),
                         ),
                       ),
@@ -304,10 +302,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: themeProvider.currentTheme.brightness ==
-                                Brightness.light
-                            ? Colors.black
-                            : Colors.white,
+                        color: themeProvider.currentTheme.inputDecorationTheme
+                            .labelStyle!.color,
                       ),
                     ),
                   ),
