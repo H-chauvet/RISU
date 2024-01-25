@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 
 import 'container_list.dart';
 import 'container_page.dart';
@@ -35,8 +36,8 @@ class ContainerPageState extends State<ContainerPage> {
       } else {
         print('Error getContainer(): ${response.statusCode}');
       }
-    } catch (err) {
-      print('Error getContainer(): $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace);
     }
   }
 

@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'rent_page.dart';
@@ -75,15 +76,8 @@ class RentArticlePageState extends State<RentArticlePage> {
           'duration': _rentalHours.toString(),
         }),
       );
-    } catch (err) {
-      print('Error rentArticle(): $err');
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Connection refused.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -94,14 +88,8 @@ class RentArticlePageState extends State<RentArticlePage> {
         );
       }
     } else {
-      print('Error rentArticle(): ${response.statusCode}');
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Erreur lors de la location.',
-        );
-      }
+      printServerResponse(context, response, 'rentArticle',
+          message: "Erreur lors de la location.");
     }
   }
 

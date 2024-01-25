@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'opinion_page.dart';
@@ -42,24 +43,12 @@ class OpinionPageState extends State<OpinionPage> {
           opinionsList = opinions;
         });
       } else {
-        print("Error getOpinions(): ${response.statusCode}");
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Erreur lors de la récupération des avis.',
-          );
-        }
+        printServerResponse(context, response, 'getOpinions',
+            message: "Erreur lors de la récupération des avis.");
       }
-    } catch (err) {
-      print("Error getOpinions(): $err");
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Erreur lors de la récupération des avis.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "An error occured when trying to get opinions.");
     }
   }
 
@@ -87,24 +76,11 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        print("Error postOpinion(): ${response.statusCode}");
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Avis non ajouté',
-            message: 'Erreur lors de la sauvegarde de l\'avis.',
-          );
-        }
+        printServerResponse(context, response, 'postOpinion',
+            message: "Erreur lors de la sauvegarde de l'avis.");
       }
-    } catch (err) {
-      print("Error postOpinion(): $err");
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Connection refused.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
     }
   }
 
@@ -194,7 +170,7 @@ class OpinionPageState extends State<OpinionPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
+        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
