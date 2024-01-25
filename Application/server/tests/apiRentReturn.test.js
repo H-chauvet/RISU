@@ -116,17 +116,16 @@ describe('GET /api/rent/', () => {
   })
 });
 
-describe('POST /api/rent/return', () => {
+describe('POST /api/rent/:rentId/return', () => {
   it('Should not return location -- wrong authToken', (done) => {
     async.series(
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent/return')
+            .post(`/api/rent/${rentId}/return`)
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .set('Authorization', `Bearer `)
-            .send({ "rentId": rentId });
+            .set('Authorization', `Bearer `);
           expect(res.statusCode).toBe(401);
         }
       ],
@@ -138,12 +137,11 @@ describe('POST /api/rent/return', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent/return')
+            .post('/api/rent//return')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`)
-            .send({ "rentId": "" });
-          expect(res.statusCode).toBe(401);
+            .set('Authorization', `Bearer ${authToken[0]}`);
+          expect(res.statusCode).toBe(404);
         }
       ],
       done
@@ -154,11 +152,10 @@ describe('POST /api/rent/return', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent/return')
+            .post('/api/rent/wrongId/return')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`)
-            .send({ "rentId": "WrongId" });
+            .set('Authorization', `Bearer ${authToken[0]}`);
           expect(res.statusCode).toBe(401);
         }
       ],
@@ -170,7 +167,7 @@ describe('POST /api/rent/return', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent/return')
+            .post(`/api/rent/${rentId}/return`)
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', `Bearer ${authToken[1]}`)
@@ -186,7 +183,7 @@ describe('POST /api/rent/return', () => {
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent/return')
+            .post(`/api/rent/${rentId}/return`)
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', `Bearer ${authToken[0]}`)
