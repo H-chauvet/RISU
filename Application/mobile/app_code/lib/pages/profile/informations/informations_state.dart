@@ -86,7 +86,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         printServerResponse(context, response, 'updateUser',
-            message: ""
+            message:
                 "Impossible de mettre à jour les informations de l'utilisateur.");
       }
     } catch (err, stacktrace) {
