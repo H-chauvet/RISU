@@ -37,7 +37,7 @@ Future<void> fetchUserData(BuildContext context) async {
       newLastName = '';
       newEmail = '';
     } else {
-      print('Error fetchUserData() : ${response.statusCode}');
+      printServerResponse(context, response, 'fetchUserData');
     }
   } catch (err, stacktrace) {
     printCatchError(context, err, stacktrace);
@@ -85,12 +85,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           );
         }
       } else {
-        print('Error updateUser() : ${response.statusCode}');
+        printServerResponse(context, response, 'updateUser',
+            message: ""
+                "Impossible de mettre à jour les informations de l'utilisateur.");
       }
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
           message:
-              "An error occured when trying to update user's informations.");
+              "Une erreur est survenue lors de la mise à jour des informations de l'utilisateur.");
     }
   }
 

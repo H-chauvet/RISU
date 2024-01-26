@@ -1,18 +1,20 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:risu/utils/check_signin.dart';
+
 import 'rent_page.dart';
 
 class RentArticlePageState extends State<RentArticlePage> {
@@ -79,7 +81,8 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
-  Future<Map<String, dynamic>> createPaymentIntent(String amount, String currency) async {
+  Future<Map<String, dynamic>?> createPaymentIntent(
+      String amount, String currency) async {
     try {
       final response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
@@ -98,11 +101,14 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (response.statusCode == 200) {
         return responseData;
       } else {
-        throw Exception('Failed to create payment intent: ${responseData['error']}');
+        printServerResponse(context, response, 'createPaymentIntent',
+            message: "Echec de la création du paiement.");
       }
-    } catch (err) {
-      throw Exception('Failed to create payment intent: $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "Echec de la création du paiement.");
     }
+    return null;
   }
 
   Future<void> initPaymentSheet(String clientSecret) async {
@@ -114,44 +120,40 @@ class RentArticlePageState extends State<RentArticlePage> {
           merchantDisplayName: 'Ikay',
         ),
       );
-    } catch (e) {
-      debugPrint('Error initializing Payment Sheet: $e');
-      throw Exception('Error initializing Payment Sheet: $e');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace, message: "Erreur Stripe.");
     }
   }
 
   Future<void> makePayment() async {
     try {
-      final amount = _articleData.price * 100 * _rentalHours; // for stripe, price is in cents
-      final Map<String, dynamic> paymentIntentData = await createPaymentIntent(amount.toString(), 'EUR');
-      //print('\n\n\npaymentIntentData: $paymentIntentData');
-      final clientSecret = paymentIntentData['client_secret'];
-      //print('\n\n\nclientSecret: $clientSecret');
+      final amount = _articleData.price *
+          100 *
+          _rentalHours; // for stripe, price is in cents
+      final Map<String, dynamic>? paymentIntentData =
+          await createPaymentIntent(amount.toString(), 'EUR');
+      final clientSecret = paymentIntentData!['client_secret'];
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
         await stripe.Stripe.instance.presentPaymentSheet().then((value) async {
           rentArticle();
           // paiement success
-          await MyAlertDialog.showErrorAlertDialog(
-              context: context,
-              title: 'Paiement effectué',
-              message: 'Le paiement a bien été effectué');
-
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Paiement effectué',
+            message: 'Le paiement a bien été effectué',
+          );
         });
       } else {
         await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Le paiement a échoué',
-            message: 'Client secret is missing');
-        throw Exception('Client secret is missing');
-      }
-    } catch (err) {
-      print('error: $err');
-      await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Le paiement a échoué',
-          message: err.toString());
-      throw Exception(err);
+          message: 'Client secret is missing',
+        );
+      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "Le paiement a échoué.");
     }
   }
 

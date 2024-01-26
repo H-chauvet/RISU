@@ -34,7 +34,7 @@ class ContainerPageState extends State<ContainerPage> {
               .toList();
         });
       } else {
-        print('Error getContainer(): ${response.statusCode}');
+        printServerResponse(context, response, 'getContainer');
       }
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace);
