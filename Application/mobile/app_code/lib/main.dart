@@ -9,7 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 bool isDarkTheme = false;
 
 void main() async {
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "lib/.env");
 
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
