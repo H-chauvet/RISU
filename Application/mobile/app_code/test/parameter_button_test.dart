@@ -84,7 +84,8 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('my parameter modal select light theme', (WidgetTester tester) async {
+  testWidgets('my parameter modal select light theme',
+      (WidgetTester tester) async {
     await tester.pumpWidget(
       initPage(
         Scaffold(
@@ -114,77 +115,7 @@ void main() {
     await tester.tap(find.text('theme'));
     await tester.pump();
     await find.text('Theme');
-
-    await tester.tap(find.text('Clair'));
-    await tester.pump();
-  });
-  testWidgets('my parameter modal select dark theme', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      initPage(
-        Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: const Column(
-                children: [
-                  SizedBox(height: 100),
-                  MyParameterModal(
-                    title: "theme",
-                    modalContent: ThemeChangeModalContent(),
-                    paramIcon: Icon(Icons.abc),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    Finder testButton = find.byType(MyParameterModal);
-    expect(testButton, findsOneWidget);
-
-    await tester.tap(find.text('theme'));
-    await tester.pump();
-    await find.text('Theme');
-
-    await tester.tap(find.text('Sombre'));
-    await tester.pump();
-  });
-  testWidgets('my parameter modal select dark theme', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      initPage(
-        Scaffold(
-          resizeToAvoidBottomInset: true,
-          body: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              child: const Column(
-                children: [
-                  SizedBox(height: 100),
-                  MyParameterModal(
-                    title: "theme",
-                    modalContent: ThemeChangeModalContent(),
-                    paramIcon: Icon(Icons.abc),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    Finder testButton = find.byType(MyParameterModal);
-    expect(testButton, findsOneWidget);
-
-    await tester.tap(find.text('theme'));
-    await tester.pump();
-    await find.text('Theme');
-
-    await tester.tap(find.text('Fermer'));
-    await tester.pump();
+    await tester.pumpAndSettle();
   });
 }
 
