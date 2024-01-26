@@ -94,6 +94,10 @@ void main() {
         find.byKey(const Key('profile_info-text_field-new_password_conf'));
     expect(newPasswordFieldConf, findsOneWidget);
 
+    Finder updatePassword =
+        find.byKey(const Key('profile_info-button-update_password'));
+    expect(updatePassword, findsOneWidget);
+
     // scroll down to the button
     await tester.dragUntilVisible(
         newPasswordField, // what you want to find
@@ -108,10 +112,7 @@ void main() {
     await tester.enterText(newPasswordFieldConf, "newOne");
     await tester.pumpAndSettle();
 
-    Finder updatePassword =
-        find.byKey(const Key('profile_info-button-update_password'));
-    expect(updatePassword, findsOneWidget);
-    await tester.tap(updatePassword);
+    await tester.tap(updatePassword, warnIfMissed: false);
     await tester.pumpAndSettle();
   });
 

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'container_list.dart';
@@ -39,8 +39,8 @@ class ContainerPageState extends State<ContainerPage> {
       } else {
         print('Error getContainer(): ${response.statusCode}');
       }
-    } catch (err) {
-      print('Error getContainer(): $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace);
     }
   }
 

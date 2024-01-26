@@ -10,6 +10,7 @@ import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'rent_page.dart';
@@ -54,15 +55,8 @@ class RentArticlePageState extends State<RentArticlePage> {
           'duration': _rentalHours.toString(),
         }),
       );
-    } catch (err) {
-      print('Error rentArticle(): $err');
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Erreur lors de la location',
-          message: 'Connection refused.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -80,14 +74,8 @@ class RentArticlePageState extends State<RentArticlePage> {
         );
       }
     } else {
-      print('Error rentArticle(): ${response.statusCode}');
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: '',
-          message: 'Erreur lors de la location.',
-        );
-      }
+      printServerResponse(context, response, 'rentArticle',
+          message: "Erreur lors de la location.");
     }
   }
 

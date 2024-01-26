@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'contact_page.dart';
@@ -33,16 +34,8 @@ class ContactPageState extends State<ContactPage> {
         body: jsonEncode(
             <String, String>{'name': name, 'email': email, 'message': message}),
       );
-    } catch (err) {
-      print('Error apiContact(): $err');
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          key: const Key("contact-alert_dialog-refused"),
-          title: 'Contact',
-          message: 'Connection refused.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -54,14 +47,8 @@ class ContactPageState extends State<ContactPage> {
         return true;
       }
     } else {
-      print('Error apiContact(): ${response.statusCode}');
-      if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Contact',
-          message: 'Erreur lors de l\'envoi du message.',
-        );
-      }
+      printServerResponse(context, response, 'apiContact',
+          message: "Erreur lors de l'envoi du message.");
     }
     return false;
   }
@@ -144,10 +131,10 @@ class ContactPageState extends State<ContactPage> {
                       apiContact(_name!, _email!, _message!)
                           .then((value) => {});
                     } else {
-                      MyAlertDialog.showInfoAlertDialog(
+                      MyAlertDialog.showErrorAlertDialog(
                         key: const Key("contact-alert_dialog-invalid_info"),
                         context: context,
-                        title: 'Champs invalides',
+                        title: 'Erreur',
                         message: 'Veuillez entrer des informations valides.',
                       );
                     }
