@@ -12,32 +12,98 @@ class ThemeChangeModalContent extends StatelessWidget {
     return items[prefs.getBool('isDarkTheme') == true ? 1 : 0];
   }
 
+  Future<bool> isSystemInDarkMode() async {
+    final brightness =
+        WidgetsBinding.instance.platformDispatcher.platformBrightness;
+    return brightness == Brightness.dark;
+  }
+
+  void switchToDarkMode(BuildContext context) async {
+    bool isDarkMode = await getTheme() == 'Sombre';
+    if (!isDarkMode) {
+      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+    }
+  }
+
+  void switchToLightMode(BuildContext context) async {
+    bool isDarkMode = await getTheme() == 'Sombre';
+    if (isDarkMode) {
+      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        TextButton(
-          onPressed: () async {
-            final String currentTheme = await getTheme();
-            if (currentTheme != 'Clair') {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+        FutureBuilder<String>(
+          future: getTheme(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return RadioListTile<String>(
+                key: const Key('button-light'),
+                title: const Text('Clair'),
+                value: 'Clair',
+                groupValue: snapshot.data,
+                onChanged: (value) async {
+                  if (value != snapshot.data) {
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme();
+                  }
+                  Navigator.of(context).pop();
+                },
+              );
+            } else {
+              return Container();
             }
-            Navigator.of(context).pop();
           },
-          child: Text('Clair'),
         ),
-        TextButton(
-          onPressed: () async {
-            final String currentTheme = await getTheme();
-            if (currentTheme != 'Sombre') {
-              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+        FutureBuilder<String>(
+          future: getTheme(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return RadioListTile<String>(
+                key: const Key('button-dark'),
+                title: const Text('Sombre'),
+                value: 'Sombre',
+                groupValue: snapshot.data,
+                onChanged: (value) async {
+                  if (value != snapshot.data) {
+                    Provider.of<ThemeProvider>(context, listen: false)
+                        .toggleTheme();
+                  }
+                  Navigator.of(context).pop();
+                },
+              );
+            } else {
+              return Container();
             }
-            Navigator.of(context).pop();
           },
-          child: Text('Sombre'),
         ),
-        // Add more options as needed
+        FutureBuilder<bool>(
+          future: isSystemInDarkMode(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return RadioListTile<String>(
+                key: const Key('button-system'),
+                title: const Text('Système'),
+                value: 'Système',
+                groupValue: (snapshot.data ?? false) ? 'Sombre' : 'Clair',
+                onChanged: (value) async {
+                  if (snapshot.data == true) {
+                    switchToDarkMode(context);
+                  } else {
+                    switchToLightMode(context);
+                  }
+                  Navigator.of(context).pop();
+                },
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ],
     );
   }
