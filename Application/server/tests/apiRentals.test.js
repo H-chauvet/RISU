@@ -14,7 +14,7 @@ describe('POST /api/user/firstName', () => {
               .set('Accept', 'application/json')
               .send({ email: 'admin@gmail.com', password: 'admin' })
             authToken = res.body.token
-            expect(res.statusCode).toBe(200)
+            expect(res.statusCode).toBe(201)
           }
         ],
         done
@@ -26,8 +26,8 @@ describe('POST /api/user/firstName', () => {
           function (callback) {
             request('http://localhost:8080')
               .get('/api/rents')
-              .set('Authorization', 'Bearer ' +  authToken)
-              .expect(200, callback)
+              .set('Authorization', `Bearer ${authToken}`)
+              .expect(200, callback);
           }
         ],
         done
@@ -40,7 +40,7 @@ describe('POST /api/user/firstName', () => {
             request('http://localhost:8080')
               .get('/api/rents')
               .set('Authorization', '')
-              .expect(401, callback)
+              .expect(401, callback);
           }
         ],
         done

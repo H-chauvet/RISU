@@ -4,6 +4,7 @@ const async = require('async');
 let authToken = [];
 let itemId = '';
 let rentId = '';
+let available = true;
 
 describe('Setup tests', () => {
   it('setup for tests', (done) => {
@@ -29,24 +30,27 @@ describe('Setup tests', () => {
           const res = await request('http://localhost:8080')
             .get('/api/article/listall');
           itemId = res.body[0].id;
+          available = res.body[0].available;
           expect(res.statusCode).toBe(200);
         },
         async function () {
-          const res = await request('http://localhost:8080')
-            .post('/api/rent/article')
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`)
-            .send({ "itemId": itemId, "duration": "1" });
-          expect(res.statusCode).toBe(201);
+          if (available) {
+            const res = await request('http://localhost:8080')
+              .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`)
+              .send({ "itemId": itemId, "duration": "1" });
+            expect(res.statusCode).toBe(201);
+          }
         },
-        // async function () { // get rentId
-        //   const res = await request('http://localhost:8080')
-        //     .get('/api/rents')
-        //     .set('Authorization', `Bearer ${authToken[0]}`);
-        //   rentId = res.body.rentals[0].id
-        //   expect(res.statusCode).toBe(201);
-        // }
+        async function () { // get rentId
+          const res = await request('http://localhost:8080')
+            .get('/api/rents')
+            .set('Authorization', `Bearer ${authToken[0]}`);
+          rentId = res.body.rentals[0].id
+          expect(res.statusCode).toBe(200);
+        }
       ],
       done
     )
@@ -69,51 +73,51 @@ describe('GET /api/rent/', () => {
       done
     )
   }),
-  it('Should not get location -- wrong itemId', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .get(`/api/rent/wrongId`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`);
-          expect(res.statusCode).toBe(401);
-        }
-      ],
-      done
-    )
-  }),
-  it('Should not get location -- wrong user', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .get(`/api/rent/${rentId}`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[1]}`);
-          expect(res.statusCode).toBe(401);
-        }
-      ],
-      done
-    )
-  }),
-  it('Should get location', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .get(`/api/rent/${rentId}`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`);
-          expect(res.statusCode).toBe(201);
-        }
-      ],
-      done
-    )
-  })
+    it('Should not get location -- wrong itemId', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .get(`/api/rent/wrongId`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`);
+            expect(res.statusCode).toBe(401);
+          }
+        ],
+        done
+      )
+    }),
+    it('Should not get location -- wrong user', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .get(`/api/rent/${rentId}`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[1]}`);
+            expect(res.statusCode).toBe(401);
+          }
+        ],
+        done
+      )
+    }),
+    it('Should get location', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .get(`/api/rent/${rentId}`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`);
+            expect(res.statusCode).toBe(201);
+          }
+        ],
+        done
+      )
+    })
 });
 
 describe('POST /api/rent/:rentId/return', () => {
@@ -132,63 +136,87 @@ describe('POST /api/rent/:rentId/return', () => {
       done
     )
   }),
-  it('Should not return location -- no rentId', (done) => {
+    it('Should not return location -- no rentId', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/rent//return')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`);
+            expect(res.statusCode).toBe(404);
+          }
+        ],
+        done
+      )
+    }),
+    it('Should not return location -- wrong rentId', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/rent/wrongId/return')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`);
+            expect(res.statusCode).toBe(401);
+          }
+        ],
+        done
+      )
+    }),
+    it('Should not return location -- wrong user', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post(`/api/rent/${rentId}/return`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[1]}`)
+              .send({ "rentId": rentId });
+            expect(res.statusCode).toBe(401);
+          }
+        ],
+        done
+      )
+    }),
+    it('Should return location', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post(`/api/rent/${rentId}/return`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken[0]}`)
+              .send({ "rentId": rentId });
+            expect(res.statusCode).toBe(201);
+          }
+        ],
+        done
+      )
+    })
+});
+
+describe('CLEAR DATA', () => {
+  it('should get all rents and return them', (done) => {
     async.series(
       [
         async function () {
           const res = await request('http://localhost:8080')
-            .post('/api/rent//return')
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
+            .get('/api/rents')
             .set('Authorization', `Bearer ${authToken[0]}`);
-          expect(res.statusCode).toBe(404);
-        }
-      ],
-      done
-    )
-  }),
-  it('Should not return location -- wrong rentId', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .post('/api/rent/wrongId/return')
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`);
-          expect(res.statusCode).toBe(401);
-        }
-      ],
-      done
-    )
-  }),
-  it('Should not return location -- wrong user', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .post(`/api/rent/${rentId}/return`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[1]}`)
-            .send({ "rentId": rentId });
-          expect(res.statusCode).toBe(401);
-        }
-      ],
-      done
-    )
-  }),
-  it('Should return location', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .post(`/api/rent/${rentId}/return`)
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .set('Authorization', `Bearer ${authToken[0]}`)
-            .send({ "rentId": rentId });
-          expect(res.statusCode).toBe(201);
+          expect(res.statusCode).toBe(200);
+
+          for (const rent of res.body.rentals) {
+            const res = await request('http://localhost:8080')
+              .post(`/api/rent/${rent.id}/return`)
+              .set('Authorization', `Bearer ${authToken[0]}`)
+              .send({ "rentId": rentId });
+            expect(res.statusCode).toBe(201);
+          }
         }
       ],
       done
