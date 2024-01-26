@@ -50,7 +50,6 @@ class LoginPageState extends State<LoginPage> {
     if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
-        print(jsonData);
         if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
