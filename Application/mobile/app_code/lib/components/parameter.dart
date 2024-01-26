@@ -149,3 +149,80 @@ class MyParameter extends StatelessWidget {
     );
   }
 }
+
+class MyParameterModal extends StatelessWidget {
+  final String title;
+  final Widget modalContent;
+  final Widget paramIcon;
+  final bool locked;
+
+  const MyParameterModal({
+    Key? key,
+    required this.title,
+    required this.modalContent,
+    required this.paramIcon,
+    this.locked = false,
+  }) : super(key: key);
+
+  Widget correspondingIcon() {
+    if (locked) {
+      return const Icon(Icons.lock);
+    }
+    return const Icon(Icons.chevron_right);
+  }
+
+  void _showModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: modalContent,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Fermer'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        if (locked) {
+          return;
+        }
+        _showModal(context);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: paramIcon,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              correspondingIcon(),
+            ],
+          ),
+          const MyDivider(),
+        ],
+      ),
+    );
+  }
+}
