@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/return_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'rental_page.dart';
@@ -43,17 +43,11 @@ class RentalPageState extends State<RentalPage> {
           rentals = jsonDecode(response.body)['rentals'];
         });
       } else {
-        print('Error getRentals(): ${response.statusCode}');
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Erreur',
-            message: 'Les locations n\'ont pas pu être récupérées.',
-          );
-        }
+        printServerResponse(context, response, 'getRentals',
+            message: "Les locations n'ont pas pu être récupérées.");
       }
-    } catch (err) {
-      print('Error getRentals(): $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace);
     }
   }
 
@@ -84,13 +78,9 @@ class RentalPageState extends State<RentalPage> {
       setState(() {
         rentalsInProgress = rentals.where(isRentalInProgress).toList();
       });
-    } catch (err) {
-      print('Error getRentalsInProgress(): $err');
-      await MyAlertDialog.showInfoAlertDialog(
-        context: context,
-        title: 'Erreur',
-        message: 'Les locations en cours n\'ont pas pu être récupérées.',
-      );
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "Current locations couldn't be retrieved.");
     }
   }
 

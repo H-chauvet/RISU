@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -27,31 +27,17 @@ Future<dynamic> getContainerData(
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      print('Error getContainerData(): ${response.statusCode}');
-      if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('container-details_invaliddata'),
-          context: context,
-          title: 'Container-details',
-          message: 'Failed to get container',
-        );
-      }
+      printServerResponse(context, response, 'getContainerData',
+          message:
+              "Une erreur est survenue lors de la récupération des données");
       return {
         'owner': '',
         'localization': '',
         '_count': {'items': 0}
       };
     }
-  } catch (err) {
-    print('Error getContainerData(): $err');
-    if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-        key: const Key('container-details_connectionrefused'),
-        context: context,
-        title: 'Container-details',
-        message: 'Connexion refused',
-      );
-    }
+  } catch (err, stacktrace) {
+    printCatchError(context, err, stacktrace, message: "Connexion refused.");
     return {
       'owner': '',
       'localization': '',

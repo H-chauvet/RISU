@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
@@ -17,7 +18,7 @@ String newFirstName = '';
 String newLastName = '';
 String newEmail = '';
 
-Future<void> fetchUserData() async {
+Future<void> fetchUserData(BuildContext context) async {
   try {
     final token = userInformation!.token;
     final response = await http.get(
@@ -38,8 +39,8 @@ Future<void> fetchUserData() async {
     } else {
       print('Error fetchUserData() : ${response.statusCode}');
     }
-  } catch (err) {
-    print('Error fetchUserData() : $err');
+  } catch (err, stacktrace) {
+    printCatchError(context, err, stacktrace);
   }
 }
 
@@ -47,7 +48,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   @override
   void initState() {
     super.initState();
-    fetchUserData();
+    fetchUserData(context);
   }
 
   Future<void> updateUser() async {
@@ -75,7 +76,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
       if (response.statusCode == 200) {
         final updatedData = json.decode(response.body);
-        await fetchUserData();
+        await fetchUserData(context);
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -86,8 +87,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       } else {
         print('Error updateUser() : ${response.statusCode}');
       }
-    } catch (err) {
-      print('Erreur updateUser() : $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message:
+              "An error occured when trying to update user's informations.");
     }
   }
 
@@ -119,26 +122,16 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
-          if (context.mounted) {
-            await MyAlertDialog.showInfoAlertDialog(
-              context: context,
-              title: 'Mise à jour refusée',
-              message: 'Le mot de passe actuel est incorrect',
-            );
-          }
+          printServerResponse(context, response, 'updatePassword',
+              message: "Le mot de passe actuel est incorrect.");
         } else {
-          print('Error updatePassword() : ${response.statusCode}');
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-              context: context,
-              title: 'Impossible de mettre à jour le mot de passe',
-              message: 'Erreur inconnue',
-            );
-          }
+          printServerResponse(context, response, 'updatePassword',
+              message: 'Impossible de mettre à jour le mot de passe.');
         }
       }
-    } catch (err) {
-      print('Error updatePassword() : $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "An error occured when trying to update user's password.");
     }
   }
 
@@ -354,7 +347,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           if (currentPassword.isEmpty ||
                               newPassword.isEmpty ||
                               newPasswordConfirmation.isEmpty) {
-                            await MyAlertDialog.showInfoAlertDialog(
+                            await MyAlertDialog.showErrorAlertDialog(
                               key: const Key(
                                   'profile_info-alert_dialog-no_password'),
                               context: context,
@@ -367,7 +360,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                           if (newPassword == newPasswordConfirmation) {
                             updatePassword(currentPassword, newPassword);
                           } else {
-                            await MyAlertDialog.showInfoAlertDialog(
+                            await MyAlertDialog.showErrorAlertDialog(
                               key: const Key(
                                   'profile_info-alert_dialog-diff_password'),
                               context: context,

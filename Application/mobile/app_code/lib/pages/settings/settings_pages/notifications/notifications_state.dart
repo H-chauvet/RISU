@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'notifications_page.dart';
@@ -51,25 +51,13 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        print('Error saveNotifications: ${response.statusCode}');
-        if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Notifications',
+        printServerResponse(context, response, 'saveNotifications',
             message:
-                'A server error occurred when trying to save notifications.',
-          );
-        }
+                "Une erreur est survenue lors de la sauvegarde des données");
       }
-    } catch (err) {
-      print('Error saveNotifications: $err');
-      if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Notifications',
-          message: 'An error occurred when tying to save notifications.',
-        );
-      }
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "An error occured when trying to save notifications.");
     }
     return null;
   }
