@@ -1,28 +1,66 @@
-const request = require('supertest')
-const async = require('async')
+const express = require("express");
+const supertest = require("supertest");
+const contactRouter = require("../routes/contact");
+const contactCtrl = require("../controllers/contact");
 
-describe('POST /contact', function () {
-  it('should delete', function (done) {
-    async.series(
-      [
-        function (callback) {
-          request('http://localhost:3000')
-            .post('/api/contact')
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .send({ firstName: "henri", lastName: "chauvet", email: 'test@gmail.com', message: "Ceci est un message" })
-            .expect(200, callback)
-        },
-        function (callback) {
-          request('http://localhost:3000')
-            .post('/api/contact')
-            .set('Content-Type', 'application/json')
-            .set('Accept', 'application/json')
-            .send({ firstName: "henri", lastName: "chauvet", message: "Ceci est un message bugué" })
-            .expect(400, callback)
-        },
-      ],
-      done
-    )
-  })
-})
+jest.mock("../controllers/contact");
+
+const app = express();
+app.use(express.json());
+app.use("/", contactRouter);
+
+describe("Contact Route Tests", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should handle valid contact registration", async () => {
+    const requestBody = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      message: "Hello, this is a test message.",
+    };
+
+    contactCtrl.registerMessage.mockResolvedValueOnce(
+      "Mocked message response"
+    );
+
+    const response = await supertest(app).post("/contact").send(requestBody);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual("Message enregistré !");
+    expect(contactCtrl.registerMessage).toHaveBeenCalledWith(requestBody);
+  });
+
+  it("should handle missing email in the request", async () => {
+    const requestBody = {
+      firstName: "John",
+      lastName: "Doe",
+      message: "Hello, this is a test message.",
+    };
+
+    const response = await supertest(app).post("/contact").send(requestBody);
+
+    expect(response.status).toBe(400);
+    expect(contactCtrl.registerMessage).not.toHaveBeenCalled();
+  });
+
+  it("should handle errors during contact registration", async () => {
+    const requestBody = {
+      firstName: "John",
+      lastName: "Doe",
+      email: "john.doe@example.com",
+      message: "Hello, this is a test message.",
+    };
+
+    contactCtrl.registerMessage.mockRejectedValueOnce(
+      new Error("Mocked error")
+    );
+
+    const response = await supertest(app).post("/contact").send(requestBody);
+
+    expect(response.status).toBe(500);
+    expect(contactCtrl.registerMessage).toHaveBeenCalledWith(requestBody);
+  });
+});
