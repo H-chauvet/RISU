@@ -39,7 +39,7 @@ Future<dynamic> getContainerData(
     }
   } catch (err, stacktrace) {
     if (context.mounted) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      printCatchError(context, err, stacktrace, message: "Connexion refusée.");
     }
     return {
       'address': '',

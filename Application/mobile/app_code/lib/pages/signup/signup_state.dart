@@ -62,7 +62,7 @@ class SignupPageState extends State<SignupPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
       return false;
     }
