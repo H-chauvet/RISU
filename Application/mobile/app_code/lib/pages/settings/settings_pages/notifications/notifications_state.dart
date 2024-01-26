@@ -60,7 +60,8 @@ class NotificationsPageState extends State<NotificationsPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "An error occured when trying to save notifications.");
+            message:
+                "Une erreur est survenue lors de la sauvegarde des données.");
       }
     }
     return null;
