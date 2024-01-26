@@ -19,8 +19,11 @@ class MyAlertDialog {
             key: key,
             title: Text(title),
             titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.titleTextStyle),
+            titleTextStyle: const TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
             backgroundColor: context.select((ThemeProvider themeProvider) =>
                 themeProvider.currentTheme.dialogTheme.backgroundColor),
             content: Text(message),
