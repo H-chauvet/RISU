@@ -51,8 +51,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         });
       } else {
         printServerResponse(context, response, 'getRent',
-            message: ''
-                "La location n\'a pas pu être récupérée.");
+            message: "La location n\'a pas pu être récupérée.");
       }
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
