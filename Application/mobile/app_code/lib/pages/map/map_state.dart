@@ -70,6 +70,7 @@ class MapPageState extends State<MapPage> {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
+      if (!mounted) return;
       setState(() {
         _center = LatLng(position.latitude, position.longitude);
       });
