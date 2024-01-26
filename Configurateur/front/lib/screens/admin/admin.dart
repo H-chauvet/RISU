@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
@@ -15,23 +16,12 @@ class _AdminPageState extends State<AdminPage> {
   @override
   void initState() {
     super.initState();
-    _checkToken();
-  }
-  Future<void> _checkToken() async {
-
-    if (token.isNotEmpty && userMail == "risu.admin@gmail.com") {
-      setState(() {
-        print(token);
-      });
-    } else {
-      context.go('/login');
-    }
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Administration',
         context: context,

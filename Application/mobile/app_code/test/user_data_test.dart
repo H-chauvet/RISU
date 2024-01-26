@@ -34,22 +34,38 @@ void main() {
     });
 
     test('UserData.fromJson should create an instance from a JSON map', () {
-      final jsonData = {
-        'user': {'email': 'test@example.com'},
+      final Map<String, dynamic> jsonData = {
+        'user': {
+          'email': 'test@example.com',
+          'Notifications': {
+            'favoriteItemsAvailable': true,
+            'endOfRenting': true,
+            'newsOffersRisu': true,
+          }
+        },
         'token': 'test_token',
       };
-      final userData = UserData.fromJson(jsonData);
+      String token = 'test_token';
+      final userData = UserData.fromJson(jsonData['user'], token);
       expect(userData.email, 'test@example.com');
       expect(userData.token, 'test_token');
     });
 
     test('UserData.fromJson should handle missing token in JSON', () {
-      final jsonData = {
-        'user': {'email': 'test@example.com'},
+      final Map<String, dynamic> jsonData = {
+        'user': {
+          'email': 'test@example.com',
+          'Notifications': {
+            'favoriteItemsAvailable': true,
+            'endOfRenting': true,
+            'newsOffersRisu': true,
+          }
+        },
       };
-      final userData = UserData.fromJson(jsonData);
+      String token = '';
+      final userData = UserData.fromJson(jsonData['user'], token);
       expect(userData.email, 'test@example.com');
-      expect(userData.token, isNull);
+      expect(userData.token, '');
     });
   });
 }

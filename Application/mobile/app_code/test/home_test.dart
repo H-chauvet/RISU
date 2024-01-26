@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/components/bottomnavbar.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
-import 'package:risu/utils/theme.dart';
-import 'package:risu/utils/user_data.dart';
+
+import 'globals.dart';
 
 void main() {
   setUpAll(() async {
@@ -20,20 +19,8 @@ void main() {
 
   testWidgets('Logged in user should see HomePage',
       (WidgetTester tester) async {
-    userInformation = UserData(
-        email: 'example@gmail.com', firstName: 'Example', lastName: 'Gmail');
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: HomePage(),
-        ),
-      ),
-    );
+    userInformation = initExampleUser();
+    await tester.pumpWidget(initPage(const HomePage()));
 
     expect(find.byType(BottomNavBar), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
@@ -44,20 +31,8 @@ void main() {
   testWidgets(
       'Logged in but without firstName and lastName, cancel the alert dialog',
       (WidgetTester tester) async {
-    userInformation =
-        UserData(email: 'example@gmail.com', firstName: null, lastName: null);
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: HomePage(),
-        ),
-      ),
-    );
+    userInformation = initNullUser();
+    await tester.pumpWidget(initPage(const HomePage()));
 
     await tester.pumpAndSettle();
     expect(find.byType(BottomNavBar), findsOneWidget);
@@ -71,20 +46,8 @@ void main() {
   testWidgets(
       'Logged in but without firstName and lastName, accept the alert dialog',
       (WidgetTester tester) async {
-    userInformation =
-        UserData(email: 'example@gmail.com', firstName: null, lastName: null);
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: HomePage(),
-        ),
-      ),
-    );
+    userInformation = initNullUser();
+    await tester.pumpWidget(initPage(const HomePage()));
 
     await tester.pumpAndSettle();
     expect(find.byType(BottomNavBar), findsOneWidget);

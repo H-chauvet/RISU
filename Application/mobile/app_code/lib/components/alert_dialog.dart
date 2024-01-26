@@ -65,6 +65,7 @@ class MyAlertDialog {
   }
 
   static Future<bool> showChoiceAlertDialog({
+    Key? key,
     required BuildContext context,
     required String title,
     required String message,
@@ -76,6 +77,7 @@ class MyAlertDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          key: key,
           title: Text(title),
           titlePadding: const EdgeInsets.all(16.0),
           titleTextStyle: context.select((ThemeProvider themeProvider) =>

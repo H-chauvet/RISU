@@ -1,51 +1,91 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:risu/utils/errors.dart';
 
 import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
-  final Completer<GoogleMapController> _controller =
-      Completer<GoogleMapController>();
+  GoogleMapController? mapController;
+  final bool displayGoogleMap = true;
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
-
-  static const CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    await controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
+  LatLng _center = const LatLng(37.7749, -122.4194);
 
   @override
   void initState() {
     super.initState();
+    _requestLocationPermission();
+  }
+
+  Widget displayMap() {
+    if (!displayGoogleMap) {
+      return const Center(
+        child: Text(
+          'Risu decided to not display the map',
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
+    return GoogleMap(
+      onMapCreated: _onMapCreated,
+      initialCameraPosition: CameraPosition(
+        target: _center,
+        zoom: 10.0,
+      ),
+      markers: _markers,
+    );
+  }
+
+  final Set<Marker> _markers = {
+    const Marker(
+      markerId: MarkerId('marker_1'),
+      position: LatLng(47.2104851, -1.56675127492582),
+      infoWindow: InfoWindow(
+        title: 'Epitech',
+        snippet: 'Nantes',
+      ),
+    ),
+  };
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+    });
+  }
+
+  Future<void> _requestLocationPermission() async {
+    PermissionStatus permission = await Permission.locationWhenInUse.status;
+    if (permission != PermissionStatus.granted) {
+      permission = await Permission.locationWhenInUse.request();
+      if (permission != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      if (!mounted) return;
+      setState(() {
+        _center = LatLng(position.latitude, position.longitude);
+      });
+      mapController?.animateCamera(CameraUpdate.newLatLng(_center));
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "An error occured when trying to get the user's location.");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.background),
-        body:
-            Container() /*GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),*/
-        );
+      resizeToAvoidBottomInset: false,
+      body: displayMap(),
+    );
   }
 }

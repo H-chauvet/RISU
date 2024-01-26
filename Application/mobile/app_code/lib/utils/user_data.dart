@@ -8,6 +8,7 @@ class UserData {
   String? firstName;
   String? lastName;
   String? ID;
+  List<bool>? notifications = [true, true, true];
 
   /// Constructor of the UserData class
   UserData({
@@ -16,6 +17,7 @@ class UserData {
     required this.firstName,
     required this.lastName,
     this.ID,
+    this.notifications,
   });
 
   /// Function to display user email
@@ -28,21 +30,18 @@ class UserData {
   }
 
   /// Convert a json map into the class
-  factory UserData.fromJson(Map<String, dynamic> json) {
-    late bool isToken;
-    try {
-      json['token'];
-      isToken = true;
-    } catch (err) {
-      isToken = false;
-    }
-
+  factory UserData.fromJson(Map<String, dynamic> user, String token) {
     return UserData(
-      email: json['user']['email'],
-      token: (isToken ? json['token'] : null),
-      firstName: json['user']['firstName'],
-      lastName: json['user']['lastName'],
-      ID: json['user']['id'],
+      email: user['email'],
+      token: token,
+      firstName: user['firstName'],
+      lastName: user['lastName'],
+      ID: user['id'],
+      notifications: [
+        user['Notifications']['favoriteItemsAvailable'],
+        user['Notifications']['endOfRenting'],
+        user['Notifications']['newsOffersRisu']
+      ],
     );
   }
 }

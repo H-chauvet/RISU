@@ -5,8 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MyDropdownButton extends StatefulWidget {
   const MyDropdownButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _MyDropdownButtonState createState() => _MyDropdownButtonState();

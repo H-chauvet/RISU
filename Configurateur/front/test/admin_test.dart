@@ -7,9 +7,6 @@ import 'package:front/app_routes.dart';
 
 void main() {
   testWidgets('correct data', (WidgetTester tester) async {
-    token = "token";
-    userMail = "risu.admin@gmail.com";
-
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(const MaterialApp(home: AdminPage()));
 
@@ -20,12 +17,15 @@ void main() {
     // Check the presence of certain widgets
     expect(find.text('Administration'), findsOneWidget);
     expect(find.byType(CustomAppBar), findsOneWidget);
-        
+
     // Assuming there are 3 buttons for managing messages, users, and articles
-    expect(find.widgetWithText(ElevatedButton, 'Gestion des messages'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Gestion des utilisateurs'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Gestion des conteneurs'), findsOneWidget);
-    
+    expect(find.widgetWithText(ElevatedButton, 'Gestion des messages'),
+        findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Gestion des utilisateurs'),
+        findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Gestion des conteneurs'),
+        findsOneWidget);
+
     expect(find.byKey(const Key('btn-messages')), findsOneWidget);
     expect(find.byKey(const Key('btn-user')), findsOneWidget);
     expect(find.byKey(const Key('btn-article')), findsOneWidget);

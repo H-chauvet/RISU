@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/screens/company/container-company.dart';
-import 'package:front/services/storage_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -45,11 +44,11 @@ class CompanyPageState extends State<CompanyPage> {
         containers = containersData.map((data) => MyContainerList.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -82,6 +81,7 @@ class CompanyPageState extends State<CompanyPage> {
               (index) => Column(children: [
                   Image.asset(
                     members[index],
+                    key: Key('member_image_$index'),
                     width: 95,
                     height: 95,
                 ),
@@ -109,7 +109,7 @@ class CompanyPageState extends State<CompanyPage> {
                 decorationThickness: 2.0,
                 decorationStyle: TextDecorationStyle.solid,
               )),
-          SizedBox(height: 80,),
+          SizedBox(height: 65,),
           Wrap(
           spacing: 16.0,
           runSpacing: 16.0,

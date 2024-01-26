@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
 class MessagePage extends StatefulWidget {
@@ -16,11 +18,13 @@ class MessagePage extends StatefulWidget {
 
 class _MessagePageState extends State<MessagePage> {
   List<Message> messages = [];
+  bool jwtToken = false;
 
   @override
   void initState() {
     super.initState();
     fetchMessages();
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> deleteMessage(Message message) async {
@@ -68,24 +72,22 @@ class _MessagePageState extends State<MessagePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Gestion des messages',
         context: context,
       ),
       body: ListView.builder(
-        itemCount: messages.length,
-        itemBuilder: (context, index) {
-          final product = messages[index];
-          return MessageCard(
-            message: product,
-            onDelete: deleteMessage,
-          );
-        },
-      ),
+              itemCount: messages.length,
+              itemBuilder: (context, index) {
+                final product = messages[index];
+                return MessageCard(
+                  message: product,
+                  onDelete: deleteMessage,
+                );
+              },
+            )
+          ,
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }
-
-      

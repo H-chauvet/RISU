@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/user-list/user-component.dart';
+import 'package:front/screens/container-list/container_web.dart';
+import 'package:front/screens/messages/messages_card.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/screens/user-list/user-component.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -19,12 +22,14 @@ class UserPage extends StatefulWidget {
 class _UserPageState extends State<UserPage> {
   List<User> users = [];
   List<UserMobile> users_mobile = [];
+  bool jwtToken = false;
 
   @override
   void initState() {
     super.initState();
     fetchUser();
     fetchUserMobile();
+    MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> deleteUserWeb(User user) async {
@@ -36,18 +41,19 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      // Fluttertoast.showToast(
-      //   msg: 'Message supprimé avec succès',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'utilisateur supprimé avec succès',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
       fetchUser();
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg:
+            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -60,18 +66,19 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      // Fluttertoast.showToast(
-      //   msg: 'Message supprimé avec succès',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'utilisateur supprimé avec succès',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
       fetchUserMobile();
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg:
+            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -85,17 +92,17 @@ class _UserPageState extends State<UserPage> {
         users = usersData.map((data) => User.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
   Future<void> fetchUserMobile() async {
-    final response =
-        await http.get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
+    final response = await http
+        .get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> usersData = responseData["user"];
@@ -104,18 +111,17 @@ class _UserPageState extends State<UserPage> {
             usersData.map((data) => UserMobile.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Gestion des utilisateurs',
         context: context,
@@ -124,7 +130,9 @@ class _UserPageState extends State<UserPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -139,10 +147,11 @@ class _UserPageState extends State<UserPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             ListView.builder(
-              shrinkWrap:
-                  true,
+              shrinkWrap: true,
               itemCount: users.length,
               itemBuilder: (context, index) {
                 final product = users[index];
@@ -152,7 +161,9 @@ class _UserPageState extends State<UserPage> {
                 );
               },
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
@@ -167,7 +178,9 @@ class _UserPageState extends State<UserPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             ListView.builder(
               shrinkWrap: true,
               itemCount: users_mobile.length,

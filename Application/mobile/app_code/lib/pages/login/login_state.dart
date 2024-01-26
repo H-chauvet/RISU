@@ -10,9 +10,9 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
-import 'package:risu/utils/validators.dart';
 import 'package:risu/components/loader.dart';
 
 import 'login_page.dart';
@@ -27,10 +27,11 @@ class LoginPageState extends State<LoginPage> {
     if (_email == null || _password == null) {
       if (context.mounted) {
         await MyAlertDialog.showErrorAlertDialog(
-            key: const Key('login-alertdialog_emptyfields'),
-            context: context,
-            title: 'Connexion',
-            message: 'Please fill all the fields!');
+          key: const Key('login-alertdialog_emptyfields'),
+          context: context,
+          title: 'Erreur',
+          message: 'Certains champs sont vides.',
+        );
         return false;
       }
     }
@@ -46,44 +47,35 @@ class LoginPageState extends State<LoginPage> {
         body: jsonEncode(
             <String, String>{'email': _email!, 'password': _password!}),
       );
-    } catch (err) {
-      print(err);
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-            key: const Key('login-alertdialog_connectionrefused'),
-            context: context,
-            title: 'Connexion',
-            message: 'Connection refused.');
-        return false;
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
       }
     }
-
     if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
-        if (jsonData.containsKey('data')) {
-          userInformation = UserData.fromJson(jsonData['data']);
+        if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
+          userInformation =
+              UserData.fromJson(jsonData['user'], jsonData['token']);
           return true;
         } else {
           if (context.mounted) {
             await MyAlertDialog.showErrorAlertDialog(
                 key: const Key('login-alertdialog_invaliddata'),
                 context: context,
-                title: 'Connexion',
-                message: 'Invalid token... Please retry (data not found)');
+                title: 'Erreur',
+                message: 'Token de connexion invalide, veuillez réessayer.');
             return false;
           }
         }
-      } catch (err) {
-        print(err);
+      } catch (err, stacktrace) {
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-              key: const Key('login-alertdialog_invalidtoken'),
-              context: context,
-              title: 'Connexion',
-              message: 'Invalid token... Please retry.');
-          return false;
+          printCatchError(context, err, stacktrace,
+              message: "Invalid token... Please retry.");
         }
+        return false;
       }
     } else {
       try {
@@ -100,46 +92,62 @@ class LoginPageState extends State<LoginPage> {
         } else {
           if (context.mounted) {
             await MyAlertDialog.showErrorAlertDialog(
-                key: const Key('login-alertdialog_invalidcredentials'),
-                context: context,
-                title: 'Connexion',
-                message: 'Invalid credentials.');
+              key: const Key('login-alertdialog_invalidcredentials'),
+              context: context,
+              title: 'Connexion',
+              message: 'Informations de connexion invalides.',
+            );
             return false;
           }
         }
-      } catch (err) {
-        print(err);
+      } catch (err, stacktrace) {
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-              key: const Key('login-alertdialog_error'),
-              context: context,
-              title: 'Connexion',
-              message: 'Error while trying to login..');
-          return false;
+          printCatchError(context, err, stacktrace,
+              message: "An error occurred when trying to login.");
         }
+        return false;
       }
     }
     return false;
   }
 
-  Future<String> apiResetPassword(BuildContext context) async {
-    if (_email == null) {
-      return 'Please provide a valid email !';
-    }
-    var response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{'email': _email!}),
-    );
-    if (context.mounted) {
-      await MyAlertDialog.showInfoAlertDialog(
+  void apiResetPassword(BuildContext context) async {
+    try {
+      if (_email == null) {
+        await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Email',
-          message: 'A reset password has been sent to your email box.');
+          message: 'Veuillez renseigner votre email.',
+        );
+        return;
+      }
+      var response = await http.post(
+        Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'email': _email!}),
+      );
+      if (response.statusCode == 200) {
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: 'Email',
+            message: 'Un mot de passe temporaire a été envoyé à $_email.',
+          );
+        }
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'apiResetPassword',
+              message: "La réinitialisation du mot de passe a échoué.");
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occurred when trying to reset the password");
+      }
     }
-    return jsonDecode(response.body)['message'].toString();
   }
 
   @override
@@ -198,22 +206,21 @@ class LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 16),
                 MyTextInput(
-                    key: const Key('login-textinput_password'),
-                    labelText: "Mot de passe",
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: !_isPasswordVisible,
-                    icon: Icons.lock_outline,
-                    rightIcon: _isPasswordVisible
-                        ? Icons.visibility_off
-                        : Icons.visibility,
-                    rightIconOnPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
-                    onChanged: (value) => _password = value,
-                    validator: (value) =>
-                        Validators().notEmpty(context, value)),
+                  key: const Key('login-textinput_password'),
+                  labelText: "Mot de passe",
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: !_isPasswordVisible,
+                  icon: Icons.lock_outline,
+                  rightIcon: _isPasswordVisible
+                      ? Icons.visibility_off
+                      : Icons.visibility,
+                  rightIconOnPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                  onChanged: (value) => _password = value,
+                ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Column(

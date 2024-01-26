@@ -3,11 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
+import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/article/list_page.dart';
+import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/utils/check_signin.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'home_page.dart';
@@ -15,8 +17,7 @@ import 'home_page.dart';
 class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final List<Widget> _pages = [
-    ArticleListPage(),
-    Container(),
+    const ContainerPage(),
     const MapPage(),
     const ProfilePage(),
   ];
@@ -27,12 +28,12 @@ class HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
-        configProfile();
+        configProfile(context);
       }
     });
   }
 
-  void configProfile() async {
+  void configProfile(BuildContext context) async {
     try {
       String? firstName = userInformation?.firstName;
       String? lastName = userInformation?.lastName;
@@ -58,25 +59,18 @@ class HomePageState extends State<HomePage> {
       setState(() {
         didAskForProfile = true;
       });
-    } catch (e) {
-      print('Error configProfile(): $e');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "An error occurred when trying to get user information.");
     }
-  }
-
-  Future<bool> _onWillPop() async {
-    bool response = false;
-    await MyAlertDialog.showChoiceAlertDialog(
-      context: context,
-      title: "Confirmation",
-      message: "Voulez-vous vraiment quitter l'application ?",
-    ).then((value) => response = value);
-    return response;
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: () {
+        return Future<bool>.value(false);
+      },
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
@@ -86,6 +80,7 @@ class HomePageState extends State<HomePage> {
           showLogo: true,
           showBurgerMenu: false,
         ),
+        endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(

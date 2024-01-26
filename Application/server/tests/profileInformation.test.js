@@ -3,7 +3,7 @@ const async = require('async');
 
 let authToken = '';
 
-describe('POST /api/user/firstName', () => {
+describe('PUT /api/user', () => {
     it('should connect and get a token', (done) => {
       async.series(
         [
@@ -13,7 +13,7 @@ describe('POST /api/user/firstName', () => {
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ email: 'admin@gmail.com', password: 'admin' })
-            authToken = res.body.data.token
+            authToken = res.body.token
             expect(res.statusCode).toBe(201)
           }
         ],
@@ -26,8 +26,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/firstName')
-              .set('Authorization', authToken)
+              .put('/api/user')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ firstName: 'NewFirstName' })
               .expect(200, callback)
           }
@@ -35,26 +35,12 @@ describe('POST /api/user/firstName', () => {
         done
       )
     }),
-    it('should not update firstname, invalid data', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .post('/api/user/firstName')
-              .set('Authorization', authToken)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    }),
-    it('should not update firstname, invalid token', (done) => {
+    it('should not update firstname, no token', (done) => {
       async.series(
         [
           function (callback) {
           request('http://localhost:8080')
-            .post('/api/user/firstName')
+            .put('/api/user')
             .send({ firstName: 'NewFirstName' })
             .expect(401, callback)
           }
@@ -67,8 +53,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/firstName')
-              .set('Authorization', 'wrong token')
+              .put('/api/user')
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ firstName: 'NewFirstName' })
               .expect(401, callback)
           }
@@ -82,8 +68,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/lastName')
-              .set('Authorization', authToken)
+              .put('/api/user')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ lastName: 'NewLastName' })
               .expect(200, callback)
           }
@@ -91,26 +77,12 @@ describe('POST /api/user/firstName', () => {
         done
       )
     }),
-    it('should not update the last name, invalid data', (done) => {
+    it('should not update the last name, no token', (done) => {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/lastName')
-              .set('Authorization', authToken)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    }),
-    it('should not update the last name, invalid token', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .post('/api/user/lastName')
+              .put('/api/user')
               .send({ lastName: 'NewLastName' })
               .expect(401, callback)
           }
@@ -123,8 +95,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/lastName')
-              .set('Authorization', 'wrong token')
+              .put('/api/user')
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ lastName: 'NewLastName' })
               .expect(401, callback)
           }
@@ -138,8 +110,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/email')
-              .set('Authorization', authToken)
+              .put('/api/user')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ email: 'admin@gmail.com' })
               .expect(200, callback)
           }
@@ -147,26 +119,12 @@ describe('POST /api/user/firstName', () => {
         done
       )
     }),
-    it('should not update the email, invalid data', (done) => {
+    it('should not update the email, no token', (done) => {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/email')
-              .set('Authorization', authToken)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    });
-    it('should not update the email, invalid token', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .post('/api/user/email')
+              .put('/api/user')
               .send({ email: 'admin@gmail.com' })
               .expect(401, callback)
           }
@@ -179,8 +137,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/email')
-              .set('Authorization', 'wrong token')
+              .put('/api/user')
+              .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ email: 'admin@gmail.com' })
               .expect(401, callback)
           }
@@ -194,8 +152,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/password')
-              .set('Authorization', authToken)
+              .put('/api/user/password')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ currentPassword: 'admin', newPassword: 'admin' })
               .expect(200, callback)
           }
@@ -208,8 +166,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/password')
-              .set('Authorization', authToken)
+              .put('/api/user/password')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({})
               .expect(401, callback)
           }
@@ -217,12 +175,12 @@ describe('POST /api/user/firstName', () => {
         done
       )
     });
-    it('should not update the password, invalid token', (done) => {
+    it('should not update the password, no token', (done) => {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/password')
+              .put('/api/user/password')
               .send({ currentPassword: 'admin', newPassword: 'admin' })
               .expect(401, callback)
           }
@@ -230,12 +188,12 @@ describe('POST /api/user/firstName', () => {
         done
       )
     });
-    it('should not update the password, wrong token', (done) => {
+    it('should not update the password, no token', (done) => {
       async.series(
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/password')
+              .put('/api/user/password')
               .send({ currentPassword: 'admin', newPassword: 'admin' })
               .expect(401, callback)
           }
@@ -248,8 +206,8 @@ describe('POST /api/user/firstName', () => {
         [
           function (callback) {
             request('http://localhost:8080')
-              .post('/api/user/password')
-              .set('Authorization', authToken)
+              .put('/api/user/password')
+              .set('Authorization', `Bearer ${authToken}`)
               .send({ currentPassword: 'wrong password', newPassword: 'admin' })
               .expect(401, callback)
           }

@@ -1,6 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-creation/confirmation_screen.dart';
+import 'package:front/screens/container-creation/design_screen.dart';
+import 'package:front/screens/container-creation/recap_screen.dart';
+import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
+import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
@@ -15,6 +22,8 @@ import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:front/screens/company/company.dart';
+import 'package:front/screens/save_container/confirmation_save.dart';
+import 'package:front/screens/save_container/my_container.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
@@ -104,9 +113,20 @@ class AppRouter {
         ),
       ),
       GoRoute(
-          path: '/creation',
-          pageBuilder: (context, state) =>
-              const NoTransitionPage(child: ContainerCreation())),
+        path: '/container-creation',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const ContainerCreation();
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return ContainerCreation(
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
       GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(
@@ -147,6 +167,97 @@ class AppRouter {
         path: '/company',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: CompanyPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/feedbacks',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: FeedbacksPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-creation/design',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const DesignScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return DesignScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/payment',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const PaymentScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return PaymentScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/recap',
+        builder: (context, state) {
+          if (state.extra == null) {
+            return const RecapScreen(
+              lockers: null,
+              amount: null,
+              containerMapping: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+          return RecapScreen(
+            lockers: user['lockers'],
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/confirmation',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ConfirmationScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/confirmation-save',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ConfirmationSave(),
+        ),
+      ),
+      GoRoute(
+        path: '/my-container',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: MyContainer(),
         ),
       ),
     ],

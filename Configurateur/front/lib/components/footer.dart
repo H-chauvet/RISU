@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:front/main.dart';
 import 'package:go_router/go_router.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:path/path.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
@@ -42,6 +45,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
             },
             child: const Text(
               'Contact',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          const SizedBox(width: 20),
+          TextButton(
+            onPressed: () async {
+              if (await storageService.readStorage('token') == '') {
+                context.go("/login");
+              } else {
+                context.go("/feedbacks");
+              }
+            },
+            child: const Text(
+              'Avis',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,

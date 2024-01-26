@@ -31,25 +31,46 @@ model User {
 }
 
 model Containers {
-	id					String		@id @unique @default(cuid())
-	localization		String
-	items				Items[]
-	owner				String
+	id               String           @id @default(cuid())
+	createdAt        DateTime      @default(now())
+	containerMapping String?
+	address          String?
+	city             String?
+	price            Float?
+	width            Float?
+	height           Float?
+	designs          String? @db.LongText
+	informations     String? @db.LongText
+	items			 Items[]
+	paid             Boolean       @default(false)
+	saveName         String?
 }
 
 model Items {
 	id					String		@id @unique @default(cuid())
 	name				String
 	price				Int
+	available			Boolean		@default(false)
 	container			Containers	@relation(fields: [containerId], references: [id])
 	containerId			String
+	createdAt			DateTime		@default(now())
 	Locations			Location[]
+	image       		String?
+  	description 		String?
 }
 
 model Comments {
 	id					String		@id @unique @default(cuid())
 	userId				String
 	date				DateTime
+}
+
+model Opinions {
+	id					String		@id @unique @default(cuid())
+	userId				String
+	date				DateTime
+	note        		String
+	comment     		String     @default("")
 }
 
 model Contact {
@@ -63,12 +84,13 @@ model Contact {
 model Location {
 	id					String		@id @unique @default(cuid())
 	price				Int
-	item				Items?		@relation(fields: [itemId], references: [id])
-	itemId				String?
+	item				Items		@relation(fields: [itemId], references: [id])
+	itemId				String
 	user				User		@relation(fields: [userId], references: [id])
 	userId				String
 	createdAt			DateTime	@default(now())
 	duration			Int
+	ended			Boolean		@default(false)
 }
 
 model Notifications {

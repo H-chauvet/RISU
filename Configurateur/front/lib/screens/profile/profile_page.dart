@@ -1,7 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({Key? key}) : super(key: key);
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
+  @override
+  void initState() {
+    super.initState();
+    MyAlertTest.checkSignInStatus(context);
+  }
 
   @override
   Widget build(BuildContext context) {
