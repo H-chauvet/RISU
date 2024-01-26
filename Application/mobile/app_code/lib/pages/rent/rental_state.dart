@@ -43,11 +43,15 @@ class RentalPageState extends State<RentalPage> {
           rentals = jsonDecode(response.body)['rentals'];
         });
       } else {
-        printServerResponse(context, response, 'getRentals',
-            message: "Les locations n'ont pas pu être récupérées.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'getRentals',
+              message: "Les locations n'ont pas pu être récupérées.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace);
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace);
+      }
     }
   }
 

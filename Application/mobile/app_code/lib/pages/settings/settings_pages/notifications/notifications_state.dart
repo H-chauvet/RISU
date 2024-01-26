@@ -51,13 +51,17 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        printServerResponse(context, response, 'saveNotifications',
-            message:
-                "Une erreur est survenue lors de la sauvegarde des données");
+        if (context.mounted) {
+          printServerResponse(context, response, 'saveNotifications',
+              message:
+                  "Une erreur est survenue lors de la sauvegarde des données");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occured when trying to save notifications.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occured when trying to save notifications.");
+      }
     }
     return null;
   }

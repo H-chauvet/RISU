@@ -43,12 +43,16 @@ class OpinionPageState extends State<OpinionPage> {
           opinionsList = opinions;
         });
       } else {
-        printServerResponse(context, response, 'getOpinions',
-            message: "Erreur lors de la récupération des avis.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'getOpinions',
+              message: "Erreur lors de la récupération des avis.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occured when trying to get opinions.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occured when trying to get opinions.");
+      }
     }
   }
 
@@ -76,11 +80,16 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        printServerResponse(context, response, 'postOpinion',
-            message: "Erreur lors de la sauvegarde de l'avis.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'postOpinion',
+              message: "Erreur lors de la sauvegarde de l'avis.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
+      }
     }
   }
 

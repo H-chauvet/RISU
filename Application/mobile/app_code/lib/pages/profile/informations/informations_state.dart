@@ -37,10 +37,14 @@ Future<void> fetchUserData(BuildContext context) async {
       newLastName = '';
       newEmail = '';
     } else {
-      print('Error fetchUserData() : ${response.statusCode}');
+      if (context.mounted) {
+        printServerResponse(context, response, 'fetchUserData');
+      }
     }
   } catch (err, stacktrace) {
-    printCatchError(context, err, stacktrace);
+    if (context.mounted) {
+      printCatchError(context, err, stacktrace);
+    }
   }
 }
 
@@ -76,7 +80,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
       if (response.statusCode == 200) {
         final updatedData = json.decode(response.body);
-        await fetchUserData(context);
+        if (context.mounted) {
+          await fetchUserData(context);
+        }
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -85,12 +91,18 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           );
         }
       } else {
-        print('Error updateUser() : ${response.statusCode}');
+        if (context.mounted) {
+          printServerResponse(context, response, 'updateUser',
+              message:
+                  "Impossible de mettre à jour les informations de l'utilisateur.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message:
-              "An error occured when trying to update user's informations.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message:
+                "Une erreur est survenue lors de la mise à jour des informations de l'utilisateur.");
+      }
     }
   }
 
@@ -122,16 +134,22 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
-          printServerResponse(context, response, 'updatePassword',
-              message: "Le mot de passe actuel est incorrect.");
+          if (context.mounted) {
+            printServerResponse(context, response, 'updatePassword',
+                message: "Le mot de passe actuel est incorrect.");
+          }
         } else {
-          printServerResponse(context, response, 'updatePassword',
-              message: 'Impossible de mettre à jour le mot de passe.');
+          if (context.mounted) {
+            printServerResponse(context, response, 'updatePassword',
+                message: 'Impossible de mettre à jour le mot de passe.');
+          }
         }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occured when trying to update user's password.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occured when trying to update user's password.");
+      }
     }
   }
 

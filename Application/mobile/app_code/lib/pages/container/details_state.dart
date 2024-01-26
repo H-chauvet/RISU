@@ -26,9 +26,11 @@ Future<dynamic> getContainerData(
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      printServerResponse(context, response, 'getContainerData',
-          message:
-              "Une erreur est survenue lors de la récupération des données");
+      if (context.mounted) {
+        printServerResponse(context, response, 'getContainerData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
+      }
       return {
         'address': '',
         'city': '',
@@ -36,7 +38,9 @@ Future<dynamic> getContainerData(
       };
     }
   } catch (err, stacktrace) {
-    printCatchError(context, err, stacktrace, message: "Connexion refused.");
+    if (context.mounted) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+    }
     return {
       'address': '',
       'city': '',

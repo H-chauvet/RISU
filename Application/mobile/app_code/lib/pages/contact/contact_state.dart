@@ -35,7 +35,10 @@ class ContactPageState extends State<ContactPage> {
             <String, String>{'name': name, 'email': email, 'message': message}),
       );
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
+      }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -47,8 +50,10 @@ class ContactPageState extends State<ContactPage> {
         return true;
       }
     } else {
-      printServerResponse(context, response, 'apiContact',
-          message: "Erreur lors de l'envoi du message.");
+      if (context.mounted) {
+        printServerResponse(context, response, 'apiContact',
+            message: "Erreur lors de l'envoi du message.");
+      }
     }
     return false;
   }

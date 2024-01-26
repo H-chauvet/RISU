@@ -7,6 +7,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'return_page.dart';
@@ -49,17 +50,16 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent = jsonDecode(response.body)['rental'];
         });
       } else {
-        print('Error getRent(): ${response.statusCode}');
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Erreur',
-            message: 'la location n\'a pas pu être récupérées.',
-          );
+          printServerResponse(context, response, 'getRent',
+              message: "La location n'a pas pu être récupérée.");
         }
       }
-    } catch (err) {
-      print('Error getRent(): $err');
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "La location n'a pas pu être récupérée.");
+      }
     }
   }
 
@@ -78,17 +78,16 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent['ended'] = true;
         });
       } else {
-        print('Error returnArticle(): ${response.statusCode}');
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Erreur',
-            message: 'la location n\'a pas pu être rendue.',
-          );
+          printServerResponse(context, response, 'returnArticle',
+              message: "La location n'a pas pu être rendue.");
         }
       }
-    } catch (err) {
-      print('Error returnArticle(): $err');
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "La location n'a pas pu être rendue.");
+      }
     }
   }
 
