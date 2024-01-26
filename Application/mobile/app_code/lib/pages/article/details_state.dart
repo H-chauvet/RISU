@@ -28,9 +28,11 @@ Future<dynamic> getArticleData(BuildContext context, String articleId) async {
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      printServerResponse(context, response, 'getArticleData',
-          message:
-              "Une erreur est survenue lors de la récupération des données");
+      if (context.mounted) {
+        printServerResponse(context, response, 'getArticleData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
+      }
     }
     return {
       'id': '',
@@ -40,7 +42,9 @@ Future<dynamic> getArticleData(BuildContext context, String articleId) async {
       'price': 0,
     };
   } catch (err, stacktrace) {
-    printCatchError(context, err, stacktrace, message: "Connexion refused.");
+    if (context.mounted) {
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+    }
     return {
       'id': '',
       'containerId': '',

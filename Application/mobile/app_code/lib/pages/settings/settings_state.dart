@@ -36,13 +36,17 @@ class SettingsPageState extends State<SettingsPage> {
       if (response.statusCode == 200) {
         return true;
       } else {
-        printServerResponse(context, response, 'apiDeleteAccount',
-            message:
-                "Une erreur est survenue lors de la suppression du compte");
+        if (context.mounted) {
+          printServerResponse(context, response, 'apiDeleteAccount',
+              message:
+                  "Une erreur est survenue lors de la suppression du compte");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occured when trying to delete account.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occured when trying to delete account.");
+      }
       return false;
     }
     return false;

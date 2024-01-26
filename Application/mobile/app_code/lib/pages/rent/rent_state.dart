@@ -58,7 +58,10 @@ class RentArticlePageState extends State<RentArticlePage> {
         }),
       );
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
+      }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
@@ -76,8 +79,10 @@ class RentArticlePageState extends State<RentArticlePage> {
         );
       }
     } else {
-      printServerResponse(context, response, 'rentArticle',
-          message: "Erreur lors de la location.");
+      if (context.mounted) {
+        printServerResponse(context, response, 'rentArticle',
+            message: "Erreur lors de la location.");
+      }
     }
   }
 
@@ -101,12 +106,16 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (response.statusCode == 200) {
         return responseData;
       } else {
-        printServerResponse(context, response, 'createPaymentIntent',
-            message: "Echec de la création du paiement.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'createPaymentIntent',
+              message: "Echec de la création du paiement.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "Echec de la création du paiement.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Echec de la création du paiement.");
+      }
     }
     return null;
   }
@@ -121,7 +130,9 @@ class RentArticlePageState extends State<RentArticlePage> {
         ),
       );
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Erreur Stripe.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace, message: "Erreur Stripe.");
+      }
     }
   }
 
@@ -145,15 +156,19 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         });
       } else {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Le paiement a échoué',
-          message: 'Client secret is missing',
-        );
+        if (context.mounted) {
+          await MyAlertDialog.showErrorAlertDialog(
+            context: context,
+            title: 'Le paiement a échoué',
+            message: 'Client secret is missing',
+          );
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "Le paiement a échoué.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Le paiement a échoué.");
+      }
     }
   }
 

@@ -45,7 +45,10 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
+      }
     }
     if (response.statusCode == 201) {
       try {
@@ -65,8 +68,10 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err, stacktrace) {
-        printCatchError(context, err, stacktrace,
-            message: "Invalid token... Please retry.");
+        if (context.mounted) {
+          printCatchError(context, err, stacktrace,
+              message: "Invalid token... Please retry.");
+        }
         return false;
       }
     } else {
@@ -93,8 +98,10 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err, stacktrace) {
-        printCatchError(context, err, stacktrace,
-            message: "An error occurred when trying to login.");
+        if (context.mounted) {
+          printCatchError(context, err, stacktrace,
+              message: "An error occurred when trying to login.");
+        }
         return false;
       }
     }
@@ -127,12 +134,16 @@ class LoginPageState extends State<LoginPage> {
           );
         }
       } else {
-        printServerResponse(context, response, 'apiResetPassword',
-            message: "La réinitialisation du mot de passe a échoué.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'apiResetPassword',
+              message: "La réinitialisation du mot de passe a échoué.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occurred when trying to reset the password");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "An error occurred when trying to reset the password");
+      }
     }
   }
 

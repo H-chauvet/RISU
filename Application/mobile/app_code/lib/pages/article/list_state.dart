@@ -28,13 +28,17 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
     } else if (response.statusCode == 204) {
       return [];
     } else {
-      printServerResponse(context, response, 'getItemsData',
-          message:
-              "Une erreur est survenue lors de la récupération des données");
+      if (context.mounted) {
+        printServerResponse(context, response, 'getItemsData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
+      }
       return [];
     }
   } catch (err, stacktrace) {
-    printCatchError(context, err, stacktrace, message: 'Connexion refused.');
+    if (context.mounted) {
+      printCatchError(context, err, stacktrace, message: 'Connexion refused.');
+    }
     return [];
   }
 }

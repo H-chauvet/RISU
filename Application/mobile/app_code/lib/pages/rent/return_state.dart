@@ -50,13 +50,16 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent = jsonDecode(response.body)['rental'];
         });
       } else {
-        printServerResponse(context, response, 'getRent',
-            message: "La location n\'a pas pu être récupérée.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'getRent',
+              message: "La location n'a pas pu être récupérée.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: ""
-              "La location n'a pas pu être récupérée.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "La location n'a pas pu être récupérée.");
+      }
     }
   }
 
@@ -75,12 +78,16 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent['ended'] = true;
         });
       } else {
-        printServerResponse(context, response, 'returnArticle',
-            message: "La location n\'a pas pu être rendue.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'returnArticle',
+              message: "La location n'a pas pu être rendue.");
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "La location n'a pas pu être rendue.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "La location n'a pas pu être rendue.");
+      }
     }
   }
 

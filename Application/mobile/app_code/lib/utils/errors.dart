@@ -10,7 +10,7 @@ void printCatchError(
 }) {
   print("====${e.toString()}====");
   print(stacktrace);
-  if (message != null && context.mounted) {
+  if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
         context: context, title: "Erreur", message: message);
   }
@@ -24,7 +24,7 @@ void printServerResponse(
 }) {
   print(
       "-------- $functionName(): ${response.body} (${response.statusCode})--------");
-  if (message != null && context.mounted) {
+  if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
         context: context, title: "Erreur", message: message);
   }

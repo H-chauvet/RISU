@@ -52,13 +52,18 @@ class SignupPageState extends State<SignupPage> {
           return true;
         }
       } else {
-        printServerResponse(context, response, 'apiSignup',
-            message: "Adresse email invalide.");
+        if (context.mounted) {
+          printServerResponse(context, response, 'apiSignup',
+              message: "Adresse email invalide.");
+        }
         return false;
       }
       return false;
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace, message: "Connexion refused.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refused.");
+      }
       return false;
     }
   }

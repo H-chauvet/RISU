@@ -34,10 +34,14 @@ class ContainerPageState extends State<ContainerPage> {
               .toList();
         });
       } else {
-        printServerResponse(context, response, 'getContainer');
+        if (context.mounted) {
+          printServerResponse(context, response, 'getContainer');
+        }
       }
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace);
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace);
+      }
     }
   }
 
