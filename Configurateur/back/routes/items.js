@@ -38,6 +38,37 @@ router.post('/create', async (req, res) => {
   }
 })
 
+router.put("/update", async function (req, res, next) {
+  try {
+    const {
+      id,
+      name,
+      available,
+      containerId,
+      price,
+      image,
+      description,
+    } = req.body;
+
+    if (!id) {
+      res.status(400);
+      throw new Error("id and name are required");
+    }
+
+    const item = await containerCtrl.updateItem(id, {
+      name,
+      available,
+      containerId,
+      price,
+      image,
+      description,
+    });
+    res.status(200).json(item);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get('/listAll', async function(req, res, next) {
   try {
     const containerId = req.query.containerId;

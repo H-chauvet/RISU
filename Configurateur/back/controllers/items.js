@@ -26,3 +26,13 @@ exports.createItem = item => {
     data: item
   })
 }
+
+exports.updateItem = (id, item) => {
+  item.price = parseFloat(item.price);
+  return db.Item.update({
+    where: {
+      id: id,
+    },
+    data: item,
+  });
+};

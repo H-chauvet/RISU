@@ -25,8 +25,8 @@ describe("Create container", function () {
             .send({
               designs: "[[0,1,2,3,4,5,6,7,8,9]]",
               containerMapping: "10000000000000",
-              width: "12",
-              height: "5",
+              width: "12.0",
+              height: "5.0",
               saveName: "test",
             });
           expect(req.statusCode).toBe(200);
@@ -79,7 +79,7 @@ describe("Create container", function () {
               width: "12",
               height: "5",
               city: "Paris",
-              adress: "rue de la paix",
+              address: "rue de la paix",
               saveName: "test",
             });
 
@@ -89,6 +89,8 @@ describe("Create container", function () {
           expect(req.body.price).toBe(15000.0);
           expect(req.body.width).toBe(12);
           expect(req.body.height).toBe(5);
+          expect(req.body.city).toBe("Paris");
+          expect(req.body.address).toBe("rue de la paix");
         },
         async function () {
           const req = await request("http://localhost:3000")

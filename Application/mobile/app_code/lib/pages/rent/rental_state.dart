@@ -251,7 +251,7 @@ class RentalPageState extends State<RentalPage> {
                               key: const Key('rental-list-tile'),
                               contentPadding: const EdgeInsets.all(16.0),
                               title: Text(
-                                '${rental['item']['name']}  |  ${rental['item']['container']['localization']}',
+                                '${rental['item']['name']}  |  ${rental['item']['container']['address']}',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),

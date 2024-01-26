@@ -258,8 +258,9 @@ async function createFixtures() {
     })
     const container = await database.prisma.Containers.create({
       data: {
-        localization: 'Nantes',
-        owner: 'Risu',
+        id: '1',
+        city: 'Nantes',
+        address: 'Rue George',
         items: {
           create: [
             { name: 'ballon de volley', price: 3, available: true },
@@ -271,8 +272,9 @@ async function createFixtures() {
     })
     const emptyContainer = await database.prisma.Containers.create({
       data: {
-        localization: 'Nantes',
-        owner: 'Risu',
+        id: '2',
+        city: 'Nantes',
+        address: 'Rue george',
         items: {
           create: []
         }
@@ -477,8 +479,8 @@ app.get('/api/container/:containerId', async (req, res) => {
     const container = await database.prisma.Containers.findUnique({
       where: { id: req.params.containerId },
       select: {
-        localization: true,
-        owner: true,
+        city: true,
+        address: true,
         _count: {
           select: {   // count the number of items available related to the container
             items: { where: { available: true } }
@@ -586,11 +588,11 @@ app.post('/api/rent/article',
       if (!item) {
         return res.status(401).send('Item not found');
       }
-      if (!item.available) {
-        return res.status(401).send('Item not available');
-      }
       if (!req.body.duration || req.body.duration < 0) {
         return res.status(401).json({ message: 'Missing duration' })
+      }
+      if (!item.available) {
+        return res.status(401).send('Item not available');
       }
       const locationPrice = item.price * req.body.duration
       await database.prisma.Items.update({
@@ -641,7 +643,8 @@ app.get('/api/rents',
               container: {
                 select: {
                   id: true,
-                  localization: true,
+                  address: true,
+                  city:true,
                 }
               }
             }
@@ -651,7 +654,7 @@ app.get('/api/rents',
           createdAt: 'desc',
         }
       })
-      return res.status(201).json({ rentals: rentals })
+      return res.status(200).json({ rentals: rentals })
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
@@ -686,7 +689,8 @@ app.get('/api/rent/:rentId',
               container: {
                 select: {
                   id: true,
-                  localization: true,
+                  address: true,
+                  city:true,
                 }
               }
             }

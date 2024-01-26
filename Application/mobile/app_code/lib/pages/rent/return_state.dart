@@ -24,7 +24,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       'name': '',
       'container': {
         'id': '',
-        'localization': '',
+        'address': '',
       },
     },
   };
@@ -151,7 +151,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                         padding: const EdgeInsets.all(8.0),
                         alignment: Alignment.center,
                         child: Text(
-                          '${rent['item']['name']} | ${rent['item']['container']['localization']}',
+                          '${rent['item']['name']} | ${rent['item']['container']['address']}',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,

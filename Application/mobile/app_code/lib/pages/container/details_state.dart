@@ -15,7 +15,6 @@ import 'details_page.dart';
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
   late http.Response response;
-
   try {
     response = await http.get(
       Uri.parse('http://$serverIp:8080/api/container/$containerId'),
@@ -31,16 +30,16 @@ Future<dynamic> getContainerData(
           message:
               "Une erreur est survenue lors de la récupération des données");
       return {
-        'owner': '',
-        'localization': '',
+        'address': '',
+        'city': '',
         '_count': {'items': 0}
       };
     }
   } catch (err, stacktrace) {
     printCatchError(context, err, stacktrace, message: "Connexion refused.");
     return {
-      'owner': '',
-      'localization': '',
+      'address': '',
+      'city': '',
       '_count': {'items': 0}
     };
   }
@@ -48,8 +47,8 @@ Future<dynamic> getContainerData(
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
   String _containerId = "";
-  String _owner = "";
-  String _localization = "";
+  String _address = "";
+  String _city = "";
   int _availableItems = 0;
 
   @override
@@ -58,8 +57,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     _containerId = widget.containerId;
     getContainerData(context, _containerId).then((dynamic value) {
       setState(() {
-        _owner = value['owner'].toString();
-        _localization = value['localization'].toString();
+        _address = value['address'].toString();
+        _city = value['city'].toString();
         _availableItems = value['_count']['items'];
       });
     });
@@ -69,12 +68,12 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _containerId;
   }
 
-  String getOwner() {
-    return _owner;
+  String getAddress() {
+    return _address;
   }
 
-  String getLocalization() {
-    return _localization;
+  String getCity() {
+    return _city;
   }
 
   int getAvailableItems() {
@@ -102,7 +101,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$_localization par $_owner',
+                  '$_address, $_city',
                   key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 32,
