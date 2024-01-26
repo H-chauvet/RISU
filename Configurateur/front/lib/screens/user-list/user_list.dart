@@ -92,11 +92,11 @@ class _UserPageState extends State<UserPage> {
         users = usersData.map((data) => User.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 
@@ -111,11 +111,11 @@ class _UserPageState extends State<UserPage> {
             usersData.map((data) => UserMobile.fromJson(data)).toList();
       });
     } else {
-      // Fluttertoast.showToast(
-      //   msg: 'Erreur lors de la récupération: ${response.statusCode}',
-      //   toastLength: Toast.LENGTH_SHORT,
-      //   gravity: ToastGravity.CENTER,
-      // );
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
     }
   }
 

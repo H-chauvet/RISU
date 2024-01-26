@@ -35,7 +35,7 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  String adress = '';
+  String address = '';
   String city = '';
   String informations = '';
 
@@ -77,7 +77,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goNext() async {
-    if (controller.complete && adress != '' && city != '') {
+    if (controller.complete && address != '' && city != '') {
       bool response = await makePayment();
       if (response == false) {
         Fluttertoast.showToast(
@@ -107,7 +107,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'height': '5',
           'city': city,
           'informations': informations,
-          'adress': adress,
+          'address': address,
         },
       ).then((value) {
         if (value.statusCode == 200) {
@@ -164,10 +164,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          key: const Key('adress'),
+                          key: const Key('address'),
                           decoration: InputDecoration(
-                            hintText: 'Entrez votre adresse',
-                            labelText: 'Adresse',
+                            hintText: 'Entrez votre addresse',
+                            labelText: 'addresse',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
@@ -175,7 +175,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           onChanged: (String? value) {
                             setState(
                               () {
-                                adress = value!;
+                                address = value!;
                               },
                             );
                           },

@@ -258,8 +258,9 @@ async function createFixtures() {
     })
     const container = await database.prisma.Containers.create({
       data: {
-        localization: 'Nantes',
-        owner: 'Risu',
+        id: '1',
+        city: 'Nantes',
+        address: 'Rue George',
         items: {
           create: [
             { name: 'ballon de volley', price: 3, available: true },
@@ -271,8 +272,9 @@ async function createFixtures() {
     })
     const emptyContainer = await database.prisma.Containers.create({
       data: {
-        localization: 'Nantes',
-        owner: 'Risu',
+        id: '2',
+        city: 'Nantes',
+        address: 'Rue george',
         items: {
           create: []
         }
@@ -477,8 +479,8 @@ app.get('/api/container/:containerId', async (req, res) => {
     const container = await database.prisma.Containers.findUnique({
       where: { id: req.params.containerId },
       select: {
-        localization: true,
-        owner: true,
+        city: true,
+        address: true,
         _count: {
           select: {   // count the number of items available related to the container
             items: { where: { available: true } }
@@ -586,11 +588,11 @@ app.post('/api/rent/article',
       if (!item) {
         return res.status(401).send('Item not found');
       }
-      if (!item.available) {
-        return res.status(401).send('Item not available');
-      }
       if (!req.body.duration || req.body.duration < 0) {
         return res.status(401).json({ message: 'Missing duration' })
+      }
+      if (!item.available) {
+        return res.status(401).send('Item not available');
       }
       const locationPrice = item.price * req.body.duration
       await database.prisma.Items.update({
@@ -614,7 +616,7 @@ app.post('/api/rent/article',
 )
 
 // get rental
-app.get('/api/rent',
+app.get('/api/rents',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -627,9 +629,116 @@ app.get('/api/rent',
         return res.status(404).send('User not found')
       }
       const rentals = await database.prisma.Location.findMany({
-        where: { userId: user.id }
+        where: { userId: user.id },
+        select: {
+          id: true,
+          price: true,
+          createdAt: true,
+          duration: true,
+          ended: true,
+          item: {
+            select: {
+              id: true,
+              name: true,
+              container: {
+                select: {
+                  id: true,
+                  address: true,
+                  city:true,
+                }
+              }
+            }
+          }
+        },
+        orderBy: {
+          createdAt: 'desc',
+        }
       })
-      return res.status(201).json({ rentals: rentals })
+      return res.status(200).json({ rentals: rentals })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  }
+)
+
+app.get('/api/rent/:rentId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token')
+      }
+      if (!req.params.rentId || req.params.rentId == '') {
+        return res.status(401).json({ message: 'Missing rentId' })
+      }
+      const rental = await database.prisma.Location.findUnique({
+        where: {
+          id: req.params.rentId
+        },
+        select: {
+          id: true,
+          price: true,
+          createdAt: true,
+          duration: true,
+          userId: true,
+          ended: true,
+          item: {
+            select: {
+              id: true,
+              name: true,
+              container: {
+                select: {
+                  id: true,
+                  address: true,
+                  city:true,
+                }
+              }
+            }
+          }
+        }
+      })
+      if (!rental) {
+        return res.status(401).send('Location not found')
+      }
+      if (rental.userId != req.user.id) {
+        return res.status(401).send('Location from wrong user')
+      }
+      return res.status(201).json({ rental: rental })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  }
+)
+
+app.post('/api/rent/:rentId/return',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token')
+      }
+      if (!req.params.rentId || req.params.rentId == '') {
+        return res.status(401).json({ message: 'Missing rentId' })
+      }
+      const rent = await database.prisma.Location.findUnique({
+        where: { id: req.params.rentId }
+      })
+      if (!rent) {
+        return res.status(401).send('Location not found')
+      }
+      if (rent.userId != req.user.id) {
+        return res.status(401).send('Location from wrong user')
+      }
+      await database.prisma.Location.update({
+        where: { id: req.params.rentId },
+        data: {
+          ended: true,
+          item: {
+            update: { available: true }
+          }
+        },
+      })
+      return res.status(201).json({ message: 'location returned' })
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')

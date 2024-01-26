@@ -30,11 +30,15 @@ void main() {
     containers.add(
       ContainerList(
         id: 1,
-        price: 10.0,
-        createdAt: null,
-        organization: null,
-        organizationId: 2,
-        containerMapping: null,
+        createdAt: '2022-01-01',
+        organization: 'Test Organization',
+        organizationId: 123,
+        containerMapping: {},
+        price: 29.99,
+        address: "blabla",
+        city: "Nantes",
+        design: null,
+        informations: "c'est un conteneur",
       ),
     );
 
@@ -60,10 +64,9 @@ void main() {
       ),
     );
 
-    // expect(find.text("""), findsOneWidget);
-    expect(find.text("1"), findsOneWidget);
-    expect(find.text("name"), findsWidgets);
-    expect(find.text("10.0"), findsWidgets);
+    expect(find.text("id du conteneur : 1"), findsWidgets);
+    expect(find.text("prix du conteneur : 29.99"), findsWidgets);
+    expect(find.text("Nantes"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
@@ -71,21 +74,29 @@ void main() {
   test('ContainerTest toJson and fromJson', () {
     final container = ContainerList(
       id: 1,
-        price: 10.0,
-        createdAt: null,
-        organization: null,
-        organizationId: 2,
-        containerMapping: null,
+      createdAt: '2022-01-01',
+      organization: 'Test Organization',
+      organizationId: 123,
+      containerMapping: {},
+      price: 29.99,
+      address: "blabla",
+      city: null,
+      design: null,
+      informations: "c'est un conteneur",
     );
 
     final Map<String, dynamic> containerJson = container.toMap();
     final ContainerList parsedContainer = ContainerList.fromJson(containerJson);
 
     expect(parsedContainer.id, container.id);
-    expect(parsedContainer.price, container.price);
     expect(parsedContainer.createdAt, container.createdAt);
     expect(parsedContainer.organization, container.organization);
     expect(parsedContainer.organizationId, container.organizationId);
     expect(parsedContainer.containerMapping, container.containerMapping);
+    expect(parsedContainer.price, container.price);
+    expect(parsedContainer.address, container.address);
+    expect(parsedContainer.city, container.city);
+    expect(parsedContainer.design, container.design);
+    expect(parsedContainer.informations, container.informations);
   });
 }

@@ -7,6 +7,8 @@ import 'package:front/screens/company/company.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'login_test.dart';
+
 void main() {
   late MockSharedPreferences sharedPreferences;
 
@@ -28,15 +30,42 @@ void main() {
             available: true,
             containerId: 2,
             container: 0,
+            image: "image",
+            description: "c'est un objet",
           ),
           onDelete: (message) {},
         ),
       ),
     );
 
-    expect(find.text(1.toString()), findsOneWidget);
+    expect(find.text("1"), findsOneWidget);
     expect(find.text("Hello world"), findsOneWidget);
   });
-}
 
-class MockSharedPreferences extends Mock implements SharedPreferences {}
+  test('ContainerTest toJson and fromJson', () {
+    final container = ItemList(
+      id: 1,
+      name: "Hello world",
+      price: 10.0,
+      createdAt: null,
+      available: true,
+      containerId: 2,
+      container: 0,
+      image: "image",
+      description: "c'est un objet",
+    );
+
+    final Map<String, dynamic> containerJson = container.toMap();
+    final ItemList parsedContainer = ItemList.fromJson(containerJson);
+
+    expect(parsedContainer.id, container.id);
+    expect(parsedContainer.name, container.name);
+    expect(parsedContainer.price, container.price);
+    expect(parsedContainer.createdAt, container.createdAt);
+    expect(parsedContainer.available, container.available);
+    expect(parsedContainer.container, container.container);
+    expect(parsedContainer.containerId, container.containerId);
+    expect(parsedContainer.image, container.image);
+    expect(parsedContainer.description, container.description);
+  });
+}

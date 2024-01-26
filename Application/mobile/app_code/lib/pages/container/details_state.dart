@@ -3,11 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -15,7 +15,6 @@ import 'details_page.dart';
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
   late http.Response response;
-
   try {
     response = await http.get(
       Uri.parse('http://$serverIp:8080/api/container/$containerId'),
@@ -27,34 +26,24 @@ Future<dynamic> getContainerData(
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      print('Error getContainerData(): ${response.statusCode}');
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('container-details_invaliddata'),
-          context: context,
-          title: 'Container-details',
-          message: 'Failed to get container',
-        );
+        printServerResponse(context, response, 'getContainerData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
       }
       return {
-        'owner': '',
-        'localization': '',
+        'address': '',
+        'city': '',
         '_count': {'items': 0}
       };
     }
-  } catch (err) {
-    print('Error getContainerData(): $err');
+  } catch (err, stacktrace) {
     if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-        key: const Key('container-details_connectionrefused'),
-        context: context,
-        title: 'Container-details',
-        message: 'Connexion refused',
-      );
+      printCatchError(context, err, stacktrace, message: "Connexion refused.");
     }
     return {
-      'owner': '',
-      'localization': '',
+      'address': '',
+      'city': '',
       '_count': {'items': 0}
     };
   }
@@ -62,8 +51,8 @@ Future<dynamic> getContainerData(
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
   String _containerId = "";
-  String _owner = "";
-  String _localization = "";
+  String _address = "";
+  String _city = "";
   int _availableItems = 0;
 
   @override
@@ -72,8 +61,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     _containerId = widget.containerId;
     getContainerData(context, _containerId).then((dynamic value) {
       setState(() {
-        _owner = value['owner'].toString();
-        _localization = value['localization'].toString();
+        _address = value['address'].toString();
+        _city = value['city'].toString();
         _availableItems = value['_count']['items'];
       });
     });
@@ -83,12 +72,12 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _containerId;
   }
 
-  String getOwner() {
-    return _owner;
+  String getAddress() {
+    return _address;
   }
 
-  String getLocalization() {
-    return _localization;
+  String getCity() {
+    return _city;
   }
 
   int getAvailableItems() {
@@ -116,7 +105,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$_localization par $_owner',
+                  '$_address, $_city',
                   key: const Key('container-details_title'),
                   style: TextStyle(
                     fontSize: 32,

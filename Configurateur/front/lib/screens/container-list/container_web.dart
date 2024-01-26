@@ -10,6 +10,10 @@ class ContainerList {
   final int? organizationId;
   final dynamic? containerMapping;
   final double? price;
+  final String? address;
+  final String? city;
+  final String? design;
+  final String? informations;
 
   ContainerList({
     required this.id,
@@ -18,6 +22,10 @@ class ContainerList {
     required this.organizationId,
     required this.containerMapping,
     required this.price,
+    required this.address,
+    required this.city,
+    required this.design,
+    required this.informations,
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
@@ -28,6 +36,10 @@ class ContainerList {
       organizationId: json['organizationId'],
       containerMapping: json['containerMapping'],
       price: json['price'],
+      address: json['address'],
+      city: json['city'],
+      design: json['design'],
+      informations: json['informations'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -38,6 +50,9 @@ class ContainerList {
       'organizationId': organizationId,
       'containerMapping': containerMapping,
       'price': price,
+      'address': address,
+      'city': design,
+      'informations': informations,
     };
   }
 }
@@ -65,8 +80,8 @@ class ContainerCard extends StatelessWidget {
               child: Column(
                 children: [
                   ListTile(
-                    title: Text(container.id.toString()),
-                    subtitle: Text(container.price.toString()),
+                    title: Text("id du conteneur : " + container.id.toString()),
+                    subtitle: Text("prix du conteneur : " + container.price.toString()),
                     leading: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -75,7 +90,8 @@ class ContainerCard extends StatelessWidget {
                           onPressed: () => onDelete(container),
                         ),
                       SizedBox(width: 10,),
-                      Text("name"),
+                      if (container.city != null)
+                        Text(container.city!),
                       ],
                     ),
                   ),

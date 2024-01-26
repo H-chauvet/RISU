@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
 import 'package:risu/components/parameter.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
-import 'package:http/http.dart' as http;
 
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/globals.dart';
 import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {
@@ -35,20 +37,15 @@ class SettingsPageState extends State<SettingsPage> {
         return true;
       } else {
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Suppression de compte',
-            message: 'Erreur lors de la suppression du compte.',
-          );
+          printServerResponse(context, response, 'apiDeleteAccount',
+              message:
+                  "Une erreur est survenue lors de la suppression du compte");
         }
       }
-    } catch (err) {
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Suppression de compte',
-          message: 'Erreur lors de la suppresion du compte.',
-        );
+        printCatchError(context, err, stacktrace,
+            message: "An error occured when trying to delete account.");
       }
       return false;
     }
@@ -58,6 +55,15 @@ class SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: MyAppBar(
+        curveColor: context.select(
+          (ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor,
+        ),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
@@ -143,7 +149,7 @@ class SettingsPageState extends State<SettingsPage> {
                 paramIcon: Icon(Icons.question_mark),
                 locked: true,
               ),
-              const SizedBox(height: 64, key: Key("settings-sized_box-bottom")),
+              const SizedBox(height: 16, key: Key("settings-sized_box-bottom")),
               TextButton(
                 key: const Key('settings-textbutton_delete-account'),
                 onPressed: () {

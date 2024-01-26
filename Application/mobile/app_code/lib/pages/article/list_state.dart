@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'article_list_data.dart';
@@ -28,26 +28,16 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
     } else if (response.statusCode == 204) {
       return [];
     } else {
-      print('Error getItemsData(): ${response.statusCode}');
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-list_invaliddata'),
-          context: context,
-          title: 'Article-list',
-          message: 'Failed to get article list',
-        );
+        printServerResponse(context, response, 'getItemsData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
       }
       return [];
     }
-  } catch (err) {
-    print('Error getItemsData(): $err');
+  } catch (err, stacktrace) {
     if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-        key: const Key('article-list_connectionrefused'),
-        context: context,
-        title: 'Article-list',
-        message: 'connexion refused',
-      );
+      printCatchError(context, err, stacktrace, message: 'Connexion refused.');
     }
     return [];
   }

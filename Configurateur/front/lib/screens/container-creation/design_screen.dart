@@ -322,7 +322,7 @@ class DesignScreenState extends State<DesignScreen> {
         'height': '5',
         'city': '',
         'informations': '',
-        'adress': '',
+        'address': '',
         'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
@@ -383,7 +383,7 @@ class DesignScreenState extends State<DesignScreen> {
           'height': '5',
           'city': '',
           'informations': '',
-          'adress': '',
+          'address': '',
         },
       ).then((value) {
         if (value.statusCode != 200) {
