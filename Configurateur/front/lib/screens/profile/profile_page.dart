@@ -10,30 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-Future<void> fetchUserDetails(String? email) async {
-  final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
-
-  try {
-    final response = await http.get(Uri.parse(apiUrl));
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> userDetails = json.decode(response.body);
-      debugPrint('User details: $userDetails');
-
-      setState(() {
-        firstName = userDetails['firstName'];
-        lastName = userDetails['lastName'];
-        createdDate = DateTime.parse(userDetails['createdAt']);
-        formattedDate = DateFormat('dd/MM/yyyy').format(createdDate);
-        company = userDetails['company'];
-      });
-    } else {
-      debugPrint('Failed to fetch user details. Status code: ${response.statusCode}');
-    }
-  } catch (error) {
-    debugPrint('Error fetching user details: $error');
-  }
-}
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -48,7 +24,32 @@ class _ProfilePageState extends State<ProfilePage> {
   late DateTime createdDate;
   late String formattedDate;
   late String company;
-  String? userMail = '';
+  String userMail = '';
+
+  Future<void> fetchUserDetails(String email) async {
+    final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
+  
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+  
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userDetails = json.decode(response.body);
+        debugPrint('User details: $userDetails');
+  
+        setState(() {
+          firstName = userDetails['firstName'];
+          lastName = userDetails['lastName'];
+          createdDate = DateTime.parse(userDetails['createdAt']);
+          formattedDate = DateFormat('dd/MM/yyyy').format(createdDate);
+          company = userDetails['company'];
+        });
+      } else {
+        debugPrint('Failed to fetch user details. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      debugPrint('Error fetching user details: $error');
+    }
+  }
 
   @override
   void initState() {
