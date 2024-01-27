@@ -161,8 +161,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: context.select(
-                                                  (ThemeProvider
-                                                          themeProvider) =>
+                                                  (ThemeProviderthemeProvider) =>
                                                       themeProvider.currentTheme
                                                           .primaryColor),
                                               child: const Text(
@@ -179,8 +178,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: context.select(
-                                                  (ThemeProvider
-                                                          themeProvider) =>
+                                                  (ThemeProviderthemeProvider) =>
                                                       themeProvider.currentTheme
                                                           .primaryColor),
                                               child: Row(
@@ -221,10 +219,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: context
-                                                  .select((ThemeProvider
-                                                          themeProvider) =>
-                                                      themeProvider.currentTheme
-                                                          .primaryColor)
+                                                  .select(
+                                                      (ThemeProviderthemeProvider) =>
+                                                          themeProvider
+                                                              .currentTheme
+                                                              .primaryColor)
                                                   .withOpacity(0.6),
                                               child: const Text(
                                                 'Prix à l\'heure :',
@@ -240,10 +239,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: context
-                                                  .select((ThemeProvider
-                                                          themeProvider) =>
-                                                      themeProvider.currentTheme
-                                                          .primaryColor)
+                                                  .select(
+                                                      (ThemeProviderthemeProvider) =>
+                                                          themeProvider
+                                                              .currentTheme
+                                                              .primaryColor)
                                                   .withOpacity(0.6),
                                               child: Text(
                                                 '${articleData.price} €',
