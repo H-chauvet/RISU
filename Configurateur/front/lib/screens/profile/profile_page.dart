@@ -43,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late DateTime createdDate;
   late String formattedDate;
   late String company;
+  String? userMail = '';
 
   @override
   void initState() {
