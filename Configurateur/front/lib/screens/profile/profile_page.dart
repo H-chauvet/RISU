@@ -54,9 +54,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    storageService.getUserMail().then((value) => userMail = value);
-    MyAlertTest.checkSignInStatus(context);
-    fetchUserDetails(userMail);
+    storageService.getUserMail().then((value) {
+      userMail = value;
+      MyAlertTest.checkSignInStatus(context);
+      fetchUserDetails(userMail);
+    });
   }
 
   Future<void> showEditPopupName(BuildContext context, String initialFirstName, String initialLastName, Function(String, String) onEdit) async {

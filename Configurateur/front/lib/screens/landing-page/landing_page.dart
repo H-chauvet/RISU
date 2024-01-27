@@ -55,10 +55,10 @@ class LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
-    profileButton = 'Mon profil';
     profileFunction = () => context.go("/profile");
     adminButton = "Administration";
     adminFunction = () => context.go("/admin");
+    profileButton = 'Mon profil';
     checkToken();
   }
 

@@ -95,7 +95,7 @@ exports.registerConfirmation = email => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://20.111.37.124:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://localhost:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         '</p>'
