@@ -347,22 +347,31 @@ class RentArticlePageState extends State<RentArticlePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    key: const Key('decrement-hours-button'),
-                                    icon: const Icon(Icons.remove),
-                                    onPressed: _decrementHours,
-                                  ),
-                                  Text(
-                                      '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}'),
-                                  IconButton(
-                                    key: const Key('increment-hours-button'),
-                                    icon: const Icon(Icons.add),
-                                    onPressed: _incrementHours,
-                                  ),
-                                ],
+                              IconTheme(
+                                data: const IconThemeData(
+                                  color: Colors.black,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      key: const Key('decrement-hours-button'),
+                                      icon: const Icon(Icons.remove),
+                                      onPressed: _decrementHours,
+                                    ),
+                                    Text(
+                                      '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      key: const Key('increment-hours-button'),
+                                      icon: const Icon(Icons.add),
+                                      onPressed: _incrementHours,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
