@@ -60,7 +60,7 @@ class RentArticlePageState extends State<RentArticlePage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
     }
     if (response.statusCode == 201) {
@@ -347,31 +347,32 @@ class RentArticlePageState extends State<RentArticlePage> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              IconTheme(
-                                data: const IconThemeData(
-                                  color: Colors.black,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      key: const Key('decrement-hours-button'),
-                                      icon: const Icon(Icons.remove),
-                                      onPressed: _decrementHours,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  IconButton(
+                                    key: const Key('decrement-hours-button'),
+                                    icon: const Icon(
+                                      Icons.remove,
+                                      color: Colors.black,
                                     ),
-                                    Text(
-                                      '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                      ),
+                                    onPressed: _decrementHours,
+                                  ),
+                                  Text(
+                                    '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
+                                    style: const TextStyle(
+                                      color: Colors.black,
                                     ),
-                                    IconButton(
-                                      key: const Key('increment-hours-button'),
-                                      icon: const Icon(Icons.add),
-                                      onPressed: _incrementHours,
+                                  ),
+                                  IconButton(
+                                    key: const Key('increment-hours-button'),
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.black,
                                     ),
-                                  ],
-                                ),
+                                    onPressed: _incrementHours,
+                                  ),
+                                ],
                               ),
                             ],
                           ),

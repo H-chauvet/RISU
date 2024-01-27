@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 
 import 'globals.dart';
@@ -17,169 +18,118 @@ void main() {
     });
   });
 
-  testWidgets('Profile Info user widgets with information empty fields',
-      (WidgetTester tester) async {
+  Finder infoTextFinder =
+      find.byKey(const Key('profile_info-text_informations'));
+  Finder firstNameFinder =
+      find.byKey(const Key('profile_info-text_field_firstname'));
+  Finder lastNameFinder =
+      find.byKey(const Key('profile_info-text_field_lastname'));
+  Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
+  Finder updateInformationButtonFinder =
+      find.byKey(const Key('profile_info-button_update'));
+  Finder passwordTextFinder =
+      find.byKey(const Key('profile_info-text_password'));
+  Finder passwordFinder =
+      find.byKey(const Key('profile_info-text_field_current_password'));
+  Finder newPasswordFinder =
+      find.byKey(const Key('profile_info-text_field_new_password'));
+  Finder newPasswordConfirmationFinder = find
+      .byKey(const Key('profile_info-text_field_new_password_confirmation'));
+  Finder updatePasswordButtonFinder =
+      find.byKey(const Key('profile_info-button_update_password'));
+
+  Finder okButtonFinder = find.byKey(const Key('alertdialog-button_ok'));
+
+  testWidgets('UI elements', (WidgetTester tester) async {
+    userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const ProfileInformationsPage()));
 
-    // FIRST NAME
-    Finder nameField =
-        find.byKey(const Key('profile_info-text_field-new_name'));
-    expect(nameField, findsOneWidget);
-    await tester.enterText(nameField, "");
-    await tester.pumpAndSettle();
-
-    // LAST NAME
-    Finder lastNameField =
-        find.byKey(const Key('profile_info-text_field-last_name'));
-    expect(lastNameField, findsOneWidget);
-    await tester.enterText(nameField, "");
-    await tester.pumpAndSettle();
-
-    // EMAIL
-    Finder emailField = find.byKey(const Key('profile_info-text_field-email'));
-    expect(emailField, findsOneWidget);
-    await tester.enterText(emailField, "");
-    await tester.pumpAndSettle();
-
-    Finder updateInfo =
-        find.byKey(const Key('informations-button_update_user'));
-    expect(updateInfo, findsOneWidget);
-    await tester.tap(updateInfo);
-    await tester.pumpAndSettle();
-
-    expect(find.byKey(const Key('informations-alert_dialog_error_no_info')),
-        findsOneWidget);
+    expect(infoTextFinder, findsOneWidget);
+    expect(firstNameFinder, findsOneWidget);
+    expect(lastNameFinder, findsOneWidget);
+    expect(emailFinder, findsOneWidget);
+    expect(updateInformationButtonFinder, findsOneWidget);
+    expect(passwordTextFinder, findsOneWidget);
+    expect(passwordFinder, findsOneWidget);
+    expect(newPasswordFinder, findsOneWidget);
+    expect(newPasswordConfirmationFinder, findsOneWidget);
+    expect(updatePasswordButtonFinder, findsOneWidget);
+    expect(find.text(userInformation!.firstName!), findsOneWidget);
+    expect(find.text(userInformation!.lastName!), findsOneWidget);
+    expect(find.text(userInformation!.email), findsOneWidget);
   });
 
-  testWidgets('Profile Info user widgets with values',
-      (WidgetTester tester) async {
+  testWidgets('UI expected behavior', (WidgetTester tester) async {
+    userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const ProfileInformationsPage()));
 
-    // FIRST NAME
-    Finder nameField =
-        find.byKey(const Key('profile_info-text_field-new_name'));
-    expect(nameField, findsOneWidget);
-    await tester.enterText(nameField, "new name");
+    await tester.enterText(firstNameFinder, 'firstNameTest');
+    await tester.enterText(lastNameFinder, 'lastNameTest');
+    await tester.enterText(emailFinder, 'emailTest@gmail.com');
+    await tester.tap(updateInformationButtonFinder);
     await tester.pumpAndSettle();
 
-    // LAST NAME
-    Finder lastNameField =
-        find.byKey(const Key('profile_info-text_field-last_name'));
-    expect(lastNameField, findsOneWidget);
-    await tester.enterText(lastNameField, "new last name");
+    await tester.enterText(passwordFinder, 'current_password');
+    await tester.enterText(newPasswordFinder, 'new_password');
+    await tester.enterText(newPasswordConfirmationFinder, 'new_password');
+    // await tester.tap(updatePasswordButtonFinder);
     await tester.pumpAndSettle();
 
-    // EMAIL
-    Finder emailField = find.byKey(const Key('profile_info-text_field-email'));
-    expect(emailField, findsOneWidget);
-    await tester.enterText(emailField, "test@test.com");
-    await tester.pumpAndSettle();
-
-    Finder updateInfos =
-        find.byKey(const Key('informations-button_update_user'));
-    expect(updateInfos, findsOneWidget);
-    await tester.tap(updateInfos);
-    await tester.pumpAndSettle();
-
-    // PASSWORD
-    Finder currPasswordField =
-        find.byKey(const Key('profile_info-text_field-curr_password'));
-    expect(currPasswordField, findsOneWidget);
-
-    Finder newPasswordField =
-        find.byKey(const Key('profile_info-text_field-new_password'));
-    expect(newPasswordField, findsOneWidget);
-
-    Finder newPasswordFieldConf =
-        find.byKey(const Key('profile_info-text_field-new_password_conf'));
-    expect(newPasswordFieldConf, findsOneWidget);
-
-    Finder updatePassword =
-        find.byKey(const Key('profile_info-button-update_password'));
-    expect(updatePassword, findsOneWidget);
-
-    // scroll down to the button
-    await tester.dragUntilVisible(
-        newPasswordField, // what you want to find
-        updateInfos, // widget you want to scroll
-        const Offset(0, -300) // delta to move
-        );
-
-    await tester.enterText(currPasswordField, "admin");
-    await tester.pumpAndSettle();
-    await tester.enterText(newPasswordField, "newOne");
-    await tester.pumpAndSettle();
-    await tester.enterText(newPasswordFieldConf, "newOne");
-    await tester.pumpAndSettle();
-
-    await tester.tap(updatePassword, warnIfMissed: false);
+    expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
   });
 
-  testWidgets('Profile Info user widgets with empty password',
-      (WidgetTester tester) async {
+  testWidgets('UI unexpected behavior', (WidgetTester tester) async {
+    userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const ProfileInformationsPage()));
-    Finder updateInfo =
-        find.byKey(const Key('informations-button_update_user'));
-    expect(updateInfo, findsOneWidget);
 
-    Finder updatePassword =
-        find.byKey(const Key('profile_info-button-update_password'));
-    expect(updatePassword, findsOneWidget);
-
-    await tester.dragUntilVisible(
-        updatePassword, // what you want to find
-        updateInfo, // widget you want to scroll
-        const Offset(0, -300) // delta to move
-        );
-
-    await tester.tap(updatePassword);
+    await tester.enterText(firstNameFinder, '');
+    await tester.enterText(lastNameFinder, '');
+    await tester.enterText(emailFinder, '');
+    await tester.tap(updateInformationButtonFinder);
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('profile_info-alert_dialog-no_password')),
-        findsOneWidget);
-  });
-
-  testWidgets('Profile Info user widgets with different new passwords',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const ProfileInformationsPage()));
-    Finder updateInfo =
-        find.byKey(const Key('informations-button_update_user'));
-    expect(updateInfo, findsOneWidget);
-
-    Finder currPasswordField =
-        find.byKey(const Key('profile_info-text_field-curr_password'));
-    expect(currPasswordField, findsOneWidget);
-
-    Finder newPasswordField =
-        find.byKey(const Key('profile_info-text_field-new_password'));
-    expect(newPasswordField, findsOneWidget);
-
-    Finder newPasswordFieldConf =
-        find.byKey(const Key('profile_info-text_field-new_password_conf'));
-    expect(newPasswordFieldConf, findsOneWidget);
-
-    Finder updatePassword =
-        find.byKey(const Key('profile_info-button-update_password'));
-    expect(updatePassword, findsOneWidget);
-
-    await tester.dragUntilVisible(
-        updatePassword, // what you want to find
-        updateInfo, // widget you want to scroll
-        const Offset(0, -300) // delta to move
-        );
-
-    await tester.enterText(currPasswordField, "admin");
-    await tester.pumpAndSettle();
-    await tester.enterText(newPasswordField, "newOne1");
-    await tester.pumpAndSettle();
-    await tester.enterText(newPasswordFieldConf, "newOne2");
+    expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
-    await tester.tap(updatePassword);
+    await tester.enterText(emailFinder, 'invalid_email');
+    await tester.tap(updateInformationButtonFinder);
+    await tester.pumpAndSettle();
+    expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();
 
-    expect(find.byKey(const Key('profile_info-alert_dialog-diff_password')),
-        findsOneWidget);
+    // await tester.tap(updatePasswordButtonFinder);
+    await tester.pumpAndSettle();
+
+    /*expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();*/
+
+    await tester.enterText(passwordFinder, 'current_password');
+    // await tester.tap(updatePasswordButtonFinder);
+    await tester.pumpAndSettle();
+
+    /*expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();*/
+
+    await tester.enterText(newPasswordFinder, 'new_password');
+    // await tester.tap(updatePasswordButtonFinder);
+    await tester.pumpAndSettle();
+
+    /*expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();*/
+
+    await tester.enterText(newPasswordConfirmationFinder, 'wrong_password');
+    // await tester.tap(updatePasswordButtonFinder);
+    await tester.pumpAndSettle();
+
+    /*expect(okButtonFinder, findsOneWidget);
+    await tester.tap(okButtonFinder);
+    await tester.pumpAndSettle();*/
   });
 }

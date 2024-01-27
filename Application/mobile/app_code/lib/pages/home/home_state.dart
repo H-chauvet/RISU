@@ -60,8 +60,11 @@ class HomePageState extends State<HomePage> {
         didAskForProfile = true;
       });
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: "An error occurred when trying to get user information.");
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message:
+                "Une erreur est survenue lors de la configuration du profile.");
+      }
     }
   }
 

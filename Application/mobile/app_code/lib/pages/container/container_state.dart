@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/appbar.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
@@ -51,13 +50,6 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: false,
-        showLogo: true,
-        showBurgerMenu: false,
-      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(

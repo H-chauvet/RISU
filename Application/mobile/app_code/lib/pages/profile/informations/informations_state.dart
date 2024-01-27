@@ -4,55 +4,68 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
+import 'package:risu/utils/validators.dart';
 
 import 'informations_page.dart';
 
-String firstName = '';
-String lastName = '';
-String email = '';
-String newFirstName = '';
-String newLastName = '';
-String newEmail = '';
-
-Future<void> fetchUserData(BuildContext context) async {
-  try {
-    final token = userInformation!.token;
-    final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
-        });
-    if (response.statusCode == 200) {
-      final userData = json.decode(response.body);
-      firstName = userData['firstName'];
-      lastName = userData['lastName'];
-      email = userData['email'];
-      UserData.fromJson(userData['user'], userData['token']);
-      newFirstName = '';
-      newLastName = '';
-      newEmail = '';
-    } else {
-      if (context.mounted) {
-        printServerResponse(context, response, 'fetchUserData');
-      }
-    }
-  } catch (err, stacktrace) {
-    if (context.mounted) {
-      printCatchError(context, err, stacktrace);
-    }
-  }
-}
-
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
+  String newFirstName = '';
+  String newLastName = '';
+  String newEmail = '';
+  final TextEditingController currentPasswordController =
+      TextEditingController(text: "");
+  final TextEditingController newPasswordController =
+      TextEditingController(text: "");
+  final TextEditingController newPasswordConfirmationController =
+      TextEditingController(text: "");
+
   @override
   void initState() {
     super.initState();
     fetchUserData(context);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    currentPasswordController.dispose();
+    newPasswordController.dispose();
+    newPasswordConfirmationController.dispose();
+  }
+
+  Future<void> fetchUserData(BuildContext context) async {
+    try {
+      final token = userInformation!.token;
+      final response = await http.get(
+          Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer $token',
+          });
+      if (response.statusCode == 200) {
+        final userData = json.decode(response.body)['user'];
+        final String? userToken = userInformation!.token;
+        userInformation = UserData.fromJson(userData, userToken!);
+        newFirstName = '';
+        newLastName = '';
+        newEmail = '';
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'fetchUserData');
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace);
+      }
+    }
   }
 
   Future<void> updateUser() async {
@@ -66,6 +79,16 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         body['lastName'] = newLastName;
       }
       if (newEmail != '') {
+        if (Validators().email(context, newEmail) != null) {
+          if (context.mounted) {
+            await MyAlertDialog.showErrorAlertDialog(
+              context: context,
+              title: 'Mise à jour impossible',
+              message: 'Veuillez entrer un email valide.',
+            );
+          }
+          return;
+        }
         body['email'] = newEmail;
       }
 
@@ -79,15 +102,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       );
 
       if (response.statusCode == 200) {
-        final updatedData = json.decode(response.body);
+        json.decode(response.body);
         if (context.mounted) {
           await fetchUserData(context);
         }
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          MyToastMessage.show(
             context: context,
-            title: 'Mise à jour réussie',
-            message: 'Informations mises à jour.',
+            message: "Informations mises à jour.",
           );
         }
       } else {
@@ -109,6 +131,30 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   Future<void> updatePassword(
       String currentPassword, String newPassword) async {
     try {
+      final newPasswordConfirmation = newPasswordConfirmationController.text;
+      if (currentPassword == '' ||
+          newPassword == '' ||
+          newPasswordConfirmation == '') {
+        if (context.mounted) {
+          await MyAlertDialog.showErrorAlertDialog(
+            context: context,
+            title: "Mise à jour impossible",
+            message: "Veuillez remplir tous les champs.",
+          );
+        }
+        return;
+      }
+      if (newPassword != newPasswordConfirmation) {
+        if (context.mounted) {
+          await MyAlertDialog.showErrorAlertDialog(
+            context: context,
+            title: "Mise à jour impossible",
+            message: "Les mots de passe ne correspondent pas.",
+          );
+        }
+        return;
+      }
+
       final token = userInformation!.token;
 
       final response = await http.put(
@@ -124,12 +170,14 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       );
 
       if (response.statusCode == 200) {
-        final updatedData = json.decode(response.body);
+        json.decode(response.body);
+        currentPasswordController.clear();
+        newPasswordController.clear();
+        newPasswordConfirmationController.clear();
         if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
+          MyToastMessage.show(
             context: context,
-            title: 'Mise à jour réussie',
-            message: 'Le mot de passe a été mis à jour',
+            message: "Le mot de passe a été mis à jour.",
           );
         }
       } else {
@@ -148,273 +196,148 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "An error occured when trying to update user's password.");
+            message:
+                "Une erreur est survenue lors de la mise à jour du mot de passe.");
       }
     }
   }
 
+  Widget buildField(String label,
+      {Key? key,
+      String? initialValue,
+      Function(String)? onChanged,
+      TextEditingController? controller,
+      bool isPassword = false}) {
+    return TextFormField(
+      key: key,
+      initialValue: initialValue,
+      onChanged: onChanged,
+      obscureText: isPassword,
+      controller: controller,
+      style: TextStyle(
+        color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.inputDecorationTheme.labelStyle!.color),
+        fontWeight: FontWeight.normal,
+        fontSize: 16.0,
+      ),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          color: context.select((ThemeProvider themeProvider) => themeProvider
+              .currentTheme.inputDecorationTheme.labelStyle!.color),
+          fontSize: 16.0,
+        ),
+        enabledBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.black)),
+        focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.primaryColor))),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    String currentPassword = '';
-    String newPassword = '';
-    String newPasswordConfirmation = '';
-
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      appBar: MyAppBar(
+        curveColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.secondaryHeaderColor),
+        showBackButton: true,
+        showLogo: true,
+        showBurgerMenu: false,
+      ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 16, right: 16, top: 32, bottom: 16),
+          child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Prénom
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              enabled: false,
-                              initialValue: firstName,
-                              decoration: const InputDecoration(
-                                  labelText: 'Prénom actuel'),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: TextField(
-                              key:
-                                  const Key('profile_info-text_field-new_name'),
-                              decoration: const InputDecoration(
-                                  labelText: 'Nouveau prénom'),
-                              onChanged: (value) {
-                                newFirstName = value;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Mes informations',
+                    key: Key('profile_info-text_informations'),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-
-                // Nom
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              enabled: false,
-                              initialValue: lastName,
-                              decoration: const InputDecoration(
-                                labelText: 'Nom actuel',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: TextField(
-                              key: const Key(
-                                'profile_info-text_field-last_name',
-                              ),
-                              decoration: const InputDecoration(
-                                labelText: 'Nouveau nom',
-                              ),
-                              onChanged: (value) {
-                                newLastName = value;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                buildField(
+                  "Prénom",
+                  key: const Key('profile_info-text_field_firstname'),
+                  initialValue: userInformation!.firstName ?? '',
+                  onChanged: (value) {
+                    setState(() => newFirstName = value);
+                  },
+                ),
+                buildField(
+                  "Nom",
+                  key: const Key('profile_info-text_field_lastname'),
+                  initialValue: userInformation!.lastName ?? '',
+                  onChanged: (value) {
+                    setState(() => newLastName = value);
+                  },
+                ),
+                buildField(
+                  "Email",
+                  key: const Key('profile_info-text_field_email'),
+                  initialValue: userInformation!.email,
+                  onChanged: (value) {
+                    setState(() => newEmail = value);
+                  },
+                ),
+                const SizedBox(height: 16),
+                MyButton(
+                  key: const Key('profile_info-button_update'),
+                  text: "Enregistrer les modifications",
+                  onPressed: () async {
+                    await updateUser();
+                  },
+                ),
+                const SizedBox(height: 16),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Mot de passe',
+                    key: Key('profile_info-text_password'),
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-
-                // Email
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              enabled: false,
-                              initialValue: email,
-                              decoration: const InputDecoration(
-                                labelText: 'Email actuel',
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: TextField(
-                              key: const Key('profile_info-text_field-email'),
-                              decoration: const InputDecoration(
-                                labelText: 'Nouveau email',
-                              ),
-                              onChanged: (value) {
-                                newEmail = value;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton(
-                        key: const Key('informations-button_update_user'),
-                        onPressed: () {
-                          if (newFirstName == '' &&
-                              newLastName == '' &&
-                              newEmail == '') {
-                            MyAlertDialog.showErrorAlertDialog(
-                              key: const Key(
-                                  'informations-alert_dialog_error_no_info'),
-                              context: context,
-                              title: 'Erreur',
-                              message: 'Veuillez renseigner au moins un champ.',
-                            );
-                            return;
-                          }
-                          updateUser();
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          side: BorderSide(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            width: 3.0,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48.0,
-                            vertical: 16.0,
-                          ),
-                        ),
-                        child: Text(
-                          'Appliquer les changements',
-                          style: TextStyle(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                buildField(
+                  "Actuel",
+                  key: const Key('profile_info-text_field_current_password'),
+                  isPassword: true,
+                  controller: currentPasswordController,
                 ),
-
-                // Mot de passe
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 25),
-                  child: Column(
-                    children: [
-                      // Mot de passe actuel
-                      TextFormField(
-                        key: const Key('profile_info-text_field-curr_password'),
-                        decoration: const InputDecoration(
-                            labelText: 'Mot de passe actuel'),
-                        onChanged: (value) {
-                          currentPassword = value;
-                        },
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 10),
-                      // Nouveau mot de passe
-                      TextField(
-                        key: const Key('profile_info-text_field-new_password'),
-                        decoration: const InputDecoration(
-                            labelText: 'Nouveau mot de passe'),
-                        onChanged: (value) {
-                          newPassword = value;
-                        },
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        key: const Key(
-                            'profile_info-text_field-new_password_conf'),
-                        decoration: const InputDecoration(
-                            labelText: 'Confirmation du nouveau mot de passe'),
-                        onChanged: (value) {
-                          newPasswordConfirmation = value;
-                        },
-                        obscureText: true,
-                      ),
-                      const SizedBox(height: 20),
-                      OutlinedButton(
-                        key: const Key('profile_info-button-update_password'),
-                        onPressed: () async {
-                          if (currentPassword.isEmpty ||
-                              newPassword.isEmpty ||
-                              newPasswordConfirmation.isEmpty) {
-                            await MyAlertDialog.showErrorAlertDialog(
-                              key: const Key(
-                                  'profile_info-alert_dialog-no_password'),
-                              context: context,
-                              title:
-                                  'Impossible de mettre à jour le mot de passe',
-                              message: 'Veuillez remplir tous les champs',
-                            );
-                            return;
-                          }
-                          if (newPassword == newPasswordConfirmation) {
-                            updatePassword(currentPassword, newPassword);
-                          } else {
-                            await MyAlertDialog.showErrorAlertDialog(
-                              key: const Key(
-                                  'profile_info-alert_dialog-diff_password'),
-                              context: context,
-                              title: 'Les mots de passe ne correspondent pas',
-                              message:
-                                  'Veuillez choisir le même mot de passe pour le mot de passe et la confirmation du mot de passe',
-                            );
-                          }
-                        },
-                        style: OutlinedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32.0),
-                          ),
-                          side: BorderSide(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            width: 3.0,
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 48.0,
-                            vertical: 16.0,
-                          ),
-                        ),
-                        child: Text(
-                          'Mettre à jour le mot de passe',
-                          style: TextStyle(
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                buildField(
+                  "Nouveau",
+                  key: const Key('profile_info-text_field_new_password'),
+                  isPassword: true,
+                  controller: newPasswordController,
+                ),
+                buildField(
+                  "Confirmation du nouveau",
+                  key: const Key(
+                      'profile_info-text_field_new_password_confirmation'),
+                  isPassword: true,
+                  controller: newPasswordConfirmationController,
+                ),
+                const SizedBox(height: 16),
+                MyButton(
+                  key: const Key('profile_info-button_update_password'),
+                  text: "Enregistrer le nouveau mot de passe",
+                  onPressed: () async {
+                    await updatePassword(currentPasswordController.text,
+                        newPasswordController.text);
+                  },
                 ),
               ],
             ),

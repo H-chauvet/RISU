@@ -45,7 +45,8 @@ class SettingsPageState extends State<SettingsPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "An error occured when trying to delete account.");
+            message:
+                "Une erreur est survenue lors de la suppression du compte.");
       }
       return false;
     }

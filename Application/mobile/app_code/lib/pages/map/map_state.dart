@@ -77,7 +77,8 @@ class MapPageState extends State<MapPage> {
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
-          message: "An error occured when trying to get the user's location.");
+          message:
+              "Une erreur est survenue lors de la récupération de la position de l'utilisateur.");
     }
   }
 

@@ -37,7 +37,7 @@ class ContactPageState extends State<ContactPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
     }
     if (response.statusCode == 201) {
