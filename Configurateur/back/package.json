@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "migration": "dotenv -e .env -- prisma migrate reset --force && dotenv -e .env -- npx prisma migrate dev --name init"
   },
   "author": "",
@@ -26,6 +26,7 @@
     "stripe": "^14.8.0",
     "supertest": "^6.3.3",
     "swagger-ui-express": "^4.6.3",
+    "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },

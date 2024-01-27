@@ -54,7 +54,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
       _loaderManager.setIsLoading(false);
       return {

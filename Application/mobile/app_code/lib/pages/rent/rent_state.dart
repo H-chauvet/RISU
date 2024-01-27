@@ -60,7 +60,7 @@ class RentArticlePageState extends State<RentArticlePage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
     }
     if (response.statusCode == 201) {
@@ -352,14 +352,24 @@ class RentArticlePageState extends State<RentArticlePage> {
                                 children: [
                                   IconButton(
                                     key: const Key('decrement-hours-button'),
-                                    icon: const Icon(Icons.remove),
+                                    icon: const Icon(
+                                      Icons.remove,
+                                      color: Colors.black,
+                                    ),
                                     onPressed: _decrementHours,
                                   ),
                                   Text(
-                                      '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}'),
+                                    '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                   IconButton(
                                     key: const Key('increment-hours-button'),
-                                    icon: const Icon(Icons.add),
+                                    icon: const Icon(
+                                      Icons.add,
+                                      color: Colors.black,
+                                    ),
                                     onPressed: _incrementHours,
                                   ),
                                 ],

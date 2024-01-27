@@ -31,13 +31,13 @@ Future<dynamic> getItemsData(BuildContext context, String containerId) async {
       if (context.mounted) {
         printServerResponse(context, response, 'getItemsData',
             message:
-                "Une erreur est survenue lors de la récupération des données");
+                "Une erreur est survenue lors de la récupération des données.");
       }
       return [];
     }
   } catch (err, stacktrace) {
     if (context.mounted) {
-      printCatchError(context, err, stacktrace, message: 'Connexion refused.');
+      printCatchError(context, err, stacktrace, message: 'Connexion refusée.');
     }
     return [];
   }

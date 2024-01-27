@@ -51,7 +51,8 @@ class OpinionPageState extends State<OpinionPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "An error occured when trying to get opinions.");
+            message:
+                "Une erreur est survenue lors de la récupération des avis.");
       }
     }
   }
@@ -88,7 +89,7 @@ class OpinionPageState extends State<OpinionPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
     }
   }

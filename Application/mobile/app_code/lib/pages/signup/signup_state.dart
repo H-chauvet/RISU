@@ -10,6 +10,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/validators.dart';
 
 import 'signup_page.dart';
 
@@ -28,7 +29,15 @@ class SignupPageState extends State<SignupPage> {
       await MyAlertDialog.showErrorAlertDialog(
         context: context,
         title: 'Creation de compte',
-        message: 'Veuillez rensigner tous les champs.',
+        message: 'Veuillez renseigner tous les champs.',
+      );
+      return false;
+    }
+    if (Validators().email(context, _email!) != null) {
+      await MyAlertDialog.showErrorAlertDialog(
+        context: context,
+        title: 'Creation de compte',
+        message: 'Veuillez renseigner une adresse email valide.',
       );
       return false;
     }
@@ -62,7 +71,7 @@ class SignupPageState extends State<SignupPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
       return false;
     }
@@ -161,7 +170,7 @@ class SignupPageState extends State<SignupPage> {
                         {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Account created !'),
+                              content: Text('Compte créé avec succès !'),
                             ),
                           ),
                           Navigator.pushReplacement(

@@ -50,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Connexion refused.");
+            message: "Connexion refusée.");
       }
     }
     if (response.statusCode == 201) {
@@ -103,7 +103,7 @@ class LoginPageState extends State<LoginPage> {
       } catch (err, stacktrace) {
         if (context.mounted) {
           printCatchError(context, err, stacktrace,
-              message: "An error occurred when trying to login.");
+              message: "Une erreur est survenue lors de la connexion.");
         }
         return false;
       }
@@ -145,7 +145,8 @@ class LoginPageState extends State<LoginPage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "An error occurred when trying to reset the password");
+            message:
+                "Une erreur est survenue lors de la réinitialisation du mot de passe.");
       }
     }
   }
