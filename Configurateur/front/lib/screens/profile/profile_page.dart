@@ -47,6 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+    storageService.getUserMail().then((value) => userMail = value);
     MyAlertTest.checkSignInStatus(context);
     fetchUserDetails(userMail);
   }
