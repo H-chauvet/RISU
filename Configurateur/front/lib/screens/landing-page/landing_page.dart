@@ -14,25 +14,26 @@ class LandingPage extends StatefulWidget {
 
 class LandingPageState extends State<LandingPage> {
   String connectedButton = '';
-  late Function() connectedFunction;
+  Function() connectedFunction = () {};
   String inscriptionButton = '';
-  late Function() inscriptionFunction;
+  Function() inscriptionFunction = () {};
   String adminButton = '';
+  Function() adminFunction = () {};
+  String? token = '';
+  String? userMail = '';
   late Function() adminFunction;
   String profileButton= '';
   late Function() profileFunction;
 
-  @override
-  void initState() {
-    super.initState();
-    profileButton = 'Mon profil';
-    profileFunction = () => context.go("/profile");
-    adminButton = "Administration";
-    adminFunction = () => context.go("/admin");
+ 
+  void checkToken() async {
+    token = await storageService.readStorage('token');
 
     if (token != '') {
       inscriptionButton = 'Déconnexion';
       inscriptionFunction = () {
+        storageService.removeStorage('token');
+        storageService.removeStorage('tokenExpiration');
         token = '';
         inscriptionButton = 'Inscription';
         inscriptionFunction = () => context.go("/register");
@@ -46,7 +47,20 @@ class LandingPageState extends State<LandingPage> {
       connectedButton = 'Connexion';
       connectedFunction = () => context.go("/login");
     }
+
+    storageService.getUserMail().then((value) => userMail = value);
+
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    profileButton = 'Mon profil';
+    profileFunction = () => context.go("/profile");
+    adminButton = "Administration";
+    adminFunction = () => context.go("/admin");
+    checkToken();
   }
 
   List<Widget> buttons() {
@@ -87,6 +101,23 @@ class LandingPageState extends State<LandingPage> {
           ),
         );
       }
+    } else if (token != '' && userMail != "risu.admin@gmail.com") {
+      list.add(
+        ElevatedButton(
+          onPressed: () => context.go("/my-container"),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+          child: const Text(
+            'Mes conteneurs',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      );
     }
 
     list.add(const SizedBox(width: 20));
@@ -133,8 +164,8 @@ class LandingPageState extends State<LandingPage> {
     return list;
   }
 
-  void goToCreation() {
-    if (token == '') {
+  void goToCreation() async {
+    if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
       context.go("/container-creation");

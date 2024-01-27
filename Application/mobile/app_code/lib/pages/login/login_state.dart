@@ -10,6 +10,7 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
@@ -26,8 +27,8 @@ class LoginPageState extends State<LoginPage> {
         await MyAlertDialog.showErrorAlertDialog(
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
-          title: 'Connexion',
-          message: 'Please fill all the fields!',
+          title: 'Erreur',
+          message: 'Certains champs sont vides.',
         );
         return false;
       }
@@ -43,23 +44,15 @@ class LoginPageState extends State<LoginPage> {
         body: jsonEncode(
             <String, String>{'email': _email!, 'password': _password!}),
       );
-    } catch (err) {
-      print(err);
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('login-alertdialog_connectionrefused'),
-          context: context,
-          title: 'Connexion',
-          message: 'Connection refused.',
-        );
-        return false;
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refusée.");
       }
     }
-
     if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
-        print(jsonData);
         if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
@@ -67,25 +60,19 @@ class LoginPageState extends State<LoginPage> {
         } else {
           if (context.mounted) {
             await MyAlertDialog.showErrorAlertDialog(
-              key: const Key('login-alertdialog_invaliddata'),
-              context: context,
-              title: 'Connexion',
-              message: 'Invalid token... Please retry (data not found)',
-            );
+                key: const Key('login-alertdialog_invaliddata'),
+                context: context,
+                title: 'Erreur',
+                message: 'Token de connexion invalide, veuillez réessayer.');
             return false;
           }
         }
-      } catch (err) {
-        print(err);
+      } catch (err, stacktrace) {
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            key: const Key('login-alertdialog_invalidtoken'),
-            context: context,
-            title: 'Connexion',
-            message: 'Invalid token... Please retry.',
-          );
-          return false;
+          printCatchError(context, err, stacktrace,
+              message: "Invalid token... Please retry.");
         }
+        return false;
       }
     } else {
       try {
@@ -105,22 +92,17 @@ class LoginPageState extends State<LoginPage> {
               key: const Key('login-alertdialog_invalidcredentials'),
               context: context,
               title: 'Connexion',
-              message: 'Invalid credentials.',
+              message: 'Informations de connexion invalides.',
             );
             return false;
           }
         }
-      } catch (err) {
-        print(err);
+      } catch (err, stacktrace) {
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            key: const Key('login-alertdialog_error'),
-            context: context,
-            title: 'Connexion',
-            message: 'Error while trying to login..',
-          );
-          return false;
+          printCatchError(context, err, stacktrace,
+              message: "Une erreur est survenue lors de la connexion.");
         }
+        return false;
       }
     }
     return false;
@@ -129,10 +111,10 @@ class LoginPageState extends State<LoginPage> {
   void apiResetPassword(BuildContext context) async {
     try {
       if (_email == null) {
-        await MyAlertDialog.showInfoAlertDialog(
+        await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: 'Email',
-          message: 'Please enter your email address.',
+          message: 'Veuillez renseigner votre email.',
         );
         return;
       }
@@ -148,27 +130,20 @@ class LoginPageState extends State<LoginPage> {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Email',
-            message: 'A reset password has been sent to your email box.',
+            message: 'Un mot de passe temporaire a été envoyé à $_email.',
           );
         }
       } else {
-        print("Error apiResetPassword(): ${response.statusCode}");
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Email',
-            message: 'The reset of the password failed.',
-          );
+          printServerResponse(context, response, 'apiResetPassword',
+              message: "La réinitialisation du mot de passe a échoué.");
         }
       }
-    } catch (err) {
-      print("Error apiResetPassword(): $err");
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Email',
-          message: 'Error while trying to send reset password.',
-        );
+        printCatchError(context, err, stacktrace,
+            message:
+                "Une erreur est survenue lors de la réinitialisation du mot de passe.");
       }
     }
   }

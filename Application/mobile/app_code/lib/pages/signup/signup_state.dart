@@ -8,7 +8,9 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/validators.dart';
 
 import 'signup_page.dart';
 
@@ -27,7 +29,15 @@ class SignupPageState extends State<SignupPage> {
       await MyAlertDialog.showErrorAlertDialog(
         context: context,
         title: 'Creation de compte',
-        message: 'Please fill all the field !',
+        message: 'Veuillez renseigner tous les champs.',
+      );
+      return false;
+    }
+    if (Validators().email(context, _email!) != null) {
+      await MyAlertDialog.showErrorAlertDialog(
+        context: context,
+        title: 'Creation de compte',
+        message: 'Veuillez renseigner une adresse email valide.',
       );
       return false;
     }
@@ -46,30 +56,22 @@ class SignupPageState extends State<SignupPage> {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: 'Email',
-            message: 'A confirmation e-mail has been sent to you.',
+            message: 'Un email de confirmation a été envoyé à $_email.',
           );
           return true;
         }
       } else {
-        print('Error apiSignup(): ${response.statusCode}');
         if (context.mounted) {
-          await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Creation de compte',
-            message: 'Invalid e-mail address !',
-          );
+          printServerResponse(context, response, 'apiSignup',
+              message: "Adresse email invalide.");
         }
         return false;
       }
       return false;
-    } catch (err) {
-      print('Error apiSignup(): $err');
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: 'Connexion',
-          message: 'Connection refused.',
-        );
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refusée.");
       }
       return false;
     }
@@ -168,7 +170,7 @@ class SignupPageState extends State<SignupPage> {
                         {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Account created !'),
+                              content: Text('Compte créé avec succès !'),
                             ),
                           ),
                           Navigator.pushReplacement(

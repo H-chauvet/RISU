@@ -31,7 +31,7 @@ widget_tests ()
 
 integration_tests ()
 {
-  flutter test test/* --coverage
+  flutter test test/*_test.dart --coverage
   genhtml coverage/lcov.info -o coverage/html
 }
 

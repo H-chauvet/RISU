@@ -6,7 +6,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
-import 'package:risu/pages/rental/rental_page.dart';
+import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/theme.dart';
 

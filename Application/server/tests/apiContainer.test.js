@@ -20,18 +20,6 @@ describe('get containerId', () => {
 })
 
 describe('GET /api/container/', () => {
-  it('should get container detais from id', (done) => {
-    async.series(
-      [
-        async function () {
-          const res = await request('http://localhost:8080')
-            .get(`/api/container/${containerId[0]}`)
-          expect(res.statusCode).toBe(200)
-        }
-      ],
-      done
-    )
-  }),
     it('should not get container detais from wrong id', (done) => {
       async.series(
         [

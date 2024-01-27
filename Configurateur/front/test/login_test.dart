@@ -11,10 +11,18 @@ import 'package:front/app_routes.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
 
   testWidgets('Login screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
@@ -57,3 +65,5 @@ void main() {
     await tester.pumpAndSettle();
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

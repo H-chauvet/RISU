@@ -20,7 +20,8 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
       debugPrint('User details: $userDetails');
       return userDetails;
     } else {
-      debugPrint('Failed to fetch user details. Status code: ${response.statusCode}');
+      debugPrint(
+          'Failed to fetch user details. Status code: ${response.statusCode}');
       return {};
     }
   } catch (error) {
@@ -30,16 +31,17 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
 }
 
 void sendData(String rating, String message) async {
+  String userMail = await storageService.getUserMail();
   final userDetails = await fetchUserDetails(userMail);
   String firstName = userDetails['firstName'];
   String lastName = userDetails['lastName'];
-  
+
   var body = {
-   'firstName': firstName,
-   'lastName': lastName,
-   'email': userMail,
-   'message': message,
-   'mark': rating,
+    'firstName': firstName,
+    'lastName': lastName,
+    'email': userMail,
+    'message': message,
+    'mark': rating,
   };
 
   var response = await http.post(
@@ -49,29 +51,26 @@ void sendData(String rating, String message) async {
 
   if (response.statusCode == 200) {
     Fluttertoast.showToast(
-        msg: 'Avis envoyé avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      msg: 'Avis envoyé avec succès',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 3,
+    );
   } else {
     Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de l'avis",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red
-      );
+        backgroundColor: Colors.red);
   }
 }
 
 class RatingDialogContent extends StatelessWidget {
   @override
-
   Widget build(BuildContext context) {
     return BlocBuilder<DialogCubit, DialogState>(
       builder: (context, state) {
-        
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -100,7 +99,6 @@ class RatingDialogContent extends StatelessWidget {
                 onChanged: (value) {
                   context.read<DialogCubit>().updateMessage(value);
                 },
-                
                 decoration: const InputDecoration(
                   hintText: 'Entrez votre message...',
                 ),
@@ -116,20 +114,20 @@ class RatingDialogContent extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                sendData(context.read<DialogCubit>().state.rating.toString(), context.read<DialogCubit>().state.message);
+                sendData(context.read<DialogCubit>().state.rating.toString(),
+                    context.read<DialogCubit>().state.message);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                'Soumettre',
-                style: TextStyle(color: Colors.black)
-              ),
+              child: const Text('Soumettre',
+                  style: TextStyle(color: Colors.black)),
             ),
           ],
         );

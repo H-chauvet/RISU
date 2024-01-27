@@ -9,6 +9,7 @@ import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/utils/check_signin.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'home_page.dart';
@@ -27,12 +28,12 @@ class HomePageState extends State<HomePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
-        configProfile();
+        configProfile(context);
       }
     });
   }
 
-  void configProfile() async {
+  void configProfile(BuildContext context) async {
     try {
       String? firstName = userInformation?.firstName;
       String? lastName = userInformation?.lastName;
@@ -58,8 +59,12 @@ class HomePageState extends State<HomePage> {
       setState(() {
         didAskForProfile = true;
       });
-    } catch (err) {
-      print('Error configProfile(): $err');
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message:
+                "Une erreur est survenue lors de la configuration du profile.");
+      }
     }
   }
 

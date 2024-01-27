@@ -322,4 +322,4 @@ router.post('/update-password/:email', async (req, res, next) => {
   }
 });
 
-module.exports = router
+module.exports = router;

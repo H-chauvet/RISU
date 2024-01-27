@@ -1,134 +1,162 @@
-const request = require("supertest");
-const async = require("async");
+const express = require("express");
+const supertest = require("supertest");
+const containerRouter = require("../routes/container");
+const containerCtrl = require("../controllers/container");
+const jwtMiddleware = require("../middleware/jwt");
 
-token = "";
+jest.mock("../controllers/container");
+jest.mock("../middleware/jwt");
 
-describe("Create container", function () {
-  it("should create", function (done) {
-    async.series(
-      [
-        async function () {
-          const res = await request("http://localhost:3000")
-            .post("/api/auth/register")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .send({ email: "container@gmail.com", password: "test" });
-          token = res.body.accessToken;
-          expect(res.statusCode).toBe(200);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .post("/api/container/create")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            .send({
-              designs: "[[0,1,2,3,4,5,6,7,8,9]]",
-            });
-          expect(req.statusCode).toBe(200);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .get("/api/container/get?id=1")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token);
+const app = express();
+app.use(express.json());
+app.use("/", containerRouter);
 
-          expect(req.body[0].designs).toBe("[[0,1,2,3,4,5,6,7,8,9]]");
-          expect(req.statusCode).toBe(200);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .post("/api/items/create")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            .send({
-              name: "hello world",
-              available: true,
-              price: "1000.0",
-              containerId: 1,
-            });
-          expect(req.statusCode).toBe(200);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .post("/api/items/delete")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            .send({ id: 1 });
+describe("Container Route Tests", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-          expect(req.statusCode).toBe(200);
-          expect(req.body).toBe("items deleted");
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .put("/api/container/update")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            .send({
-              id: 1,
-              price: "15000.0",
-              containerMapping: "00011100000000030000000200",
-              width: "12",
-              height: "5",
-            });
+  it("should handle valid container retrieval", async () => {
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    containerCtrl.getContainer.mockResolvedValueOnce({
+      id: 1,
+      name: "Container 1",
+    });
 
-          expect(req.statusCode).toBe(200);
-          expect(req.body.containerMapping).toBe("00011100000000030000000200");
-          expect(req.body.designs).toBe("[[0,1,2,3,4,5,6,7,8,9]]");
-          expect(req.body.price).toBe(15000.0);
-          expect(req.body.width).toBe(12);
-          expect(req.body.height).toBe(5);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .get("/api/container/get?id=1")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token);
+    const response = await supertest(app)
+      .get("/get?id=1")
+      .set("Authorization", "Bearer mockedAccessToken");
 
-          expect(req.body[0].price).toBe(15000.0);
-          expect(req.body[0].containerMapping).toBe(
-            "00011100000000030000000200"
-          );
-          expect(req.statusCode).toBe(200);
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .post("/api/container/delete")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token)
-            .send({ id: 1 });
-
-          expect(req.statusCode).toBe(200);
-          expect(req.body).toBe("container deleted");
-        },
-        async function () {
-          const req = await request("http://localhost:3000")
-            .get("/api/container/get?id=1")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .set("Authorization", token);
-
-          expect(req.body).toStrictEqual([]);
-          expect(req.statusCode).toBe(200);
-        },
-
-        async function () {
-          const req = await request("http://localhost:3000")
-            .post("/api/auth/delete")
-            .set("Content-Type", "application/json")
-            .set("Accept", "application/json")
-            .send({ email: "container@gmail.com" });
-          expect(req.status).toBe(200);
-          expect(req.body).toBe("ok");
-        },
-      ],
-      done
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ id: 1, name: "Container 1" });
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
+      "Bearer mockedAccessToken"
     );
+    expect(containerCtrl.getContainer).toHaveBeenCalledWith(1);
+  });
+
+  it("should handle missing ID during container retrieval", async () => {
+    const requestBody = {};
+
+    const response = await supertest(app)
+      .get("/get")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
+
+    expect(response.status).toBe(400);
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
+      "Bearer mockedAccessToken"
+    );
+    expect(containerCtrl.getContainer).not.toHaveBeenCalled();
+  });
+
+  it("should handle valid container deletion", async () => {
+    const requestBody = { id: 1 };
+
+    containerCtrl.deleteContainer.mockResolvedValueOnce();
+
+    const response = await supertest(app).post("/delete").send(requestBody);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual("container deleted");
+    expect(containerCtrl.deleteContainer).toHaveBeenCalledWith(1);
+  });
+
+  it("should handle valid container creation", async () => {
+    const requestBody = {
+      designs: ["design1", "design2"],
+      containerMapping: "mapping1",
+      height: 10,
+      width: 20,
+      saveName: "container1",
+    };
+
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    containerCtrl.createContainer.mockResolvedValueOnce({
+      id: 1,
+      name: "Container 1",
+    });
+
+    const response = await supertest(app)
+      .post("/create")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ id: 1, name: "Container 1" });
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
+      "Bearer mockedAccessToken"
+    );
+    expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
+  });
+
+  it("should handle valid container update", async () => {
+    const requestBody = {
+      id: 1,
+      price: 50,
+      containerMapping: "mapping2",
+      height: 15,
+      width: 25,
+      city: "City",
+      adress: "123 Street",
+      informations: "Updated info",
+      designs: ["design3", "design4"],
+      saveName: "container2",
+    };
+
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    containerCtrl.updateContainer.mockResolvedValueOnce({
+      id: 1,
+      name: "Container 2",
+    });
+
+    const response = await supertest(app)
+      .put("/update")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
+
+    expect(response.status).toBe(200);
+    console.log("body: " + response.body.name);
+    expect(response.body).toEqual({ id: 1, name: "Container 2" });
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
+      "Bearer mockedAccessToken"
+    );
+  });
+
+  it("should handle valid container creation (version 2)", async () => {
+    const requestBody = {
+      price: 50,
+      width: 15,
+      height: 25,
+    };
+
+    containerCtrl.createContainer2.mockResolvedValueOnce({
+      id: 1,
+      name: "Container V2",
+    });
+
+    const response = await supertest(app).post("/create-ctn").send(requestBody);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({ id: 1, name: "Container V2" });
+    expect(containerCtrl.createContainer2).toHaveBeenCalledWith(requestBody);
+  });
+
+  it("should handle valid container list retrieval", async () => {
+    containerCtrl.getAllContainers.mockResolvedValueOnce([
+      { id: 1, name: "Container 1" },
+      { id: 2, name: "Container 2" },
+    ]);
+
+    const response = await supertest(app).get("/listAll");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      container: [
+        { id: 1, name: "Container 1" },
+        { id: 2, name: "Container 2" },
+      ],
+    });
+    expect(containerCtrl.getAllContainers).toHaveBeenCalled();
   });
 });

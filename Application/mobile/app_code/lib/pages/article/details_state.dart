@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/article/rent_page.dart';
 import 'package:risu/pages/container/details_page.dart';
+import 'package:risu/pages/rent/rent_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
@@ -28,14 +28,10 @@ Future<dynamic> getArticleData(BuildContext context, String articleId) async {
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
-      print('Error getArticleData(): ${response.statusCode}');
       if (context.mounted) {
-        await MyAlertDialog.showErrorAlertDialog(
-          key: const Key('article-details_invaliddata'),
-          context: context,
-          title: 'Container-details',
-          message: 'Failed to get article',
-        );
+        printServerResponse(context, response, 'getArticleData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
       }
     }
     return {
@@ -45,15 +41,9 @@ Future<dynamic> getArticleData(BuildContext context, String articleId) async {
       'available': false,
       'price': 0,
     };
-  } catch (err) {
-    print('Error getArticleData(): $err');
+  } catch (err, stacktrace) {
     if (context.mounted) {
-      await MyAlertDialog.showErrorAlertDialog(
-        key: const Key('article-details_connectionrefused'),
-        context: context,
-        title: 'Container-details',
-        message: 'Connexion refused',
-      );
+      printCatchError(context, err, stacktrace, message: "Connexion refusée.");
     }
     return {
       'id': '',
@@ -270,25 +260,24 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: MyOutlinedButton(
-                    text: 'Louer cet article',
-                    key: const Key('article-button_article-rent'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => RentArticlePage(
-                              name: articleData.name,
-                              price: articleData.price,
-                              containerId: articleData.containerId,
-                              locations: const ['La Baule - Casier N°A4']),
-                        ),
-                      );
-                    },
-                  ),
-                )
+                if (articleData.available)
+                  SizedBox(
+                    width: double.infinity,
+                    child: MyOutlinedButton(
+                      text: 'Louer cet article',
+                      key: const Key('article-button_article-rent'),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RentArticlePage(
+                              articleData: articleData,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
               ],
             ),
           ),

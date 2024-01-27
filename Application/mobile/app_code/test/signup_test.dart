@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/signup/signup_page.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   group('Signup Page Integration Test', () {
@@ -24,18 +24,7 @@ void main() {
     Finder textInputPasswordFinder =
         find.byKey(const Key('signup-textinput_password'));
     testWidgets('Widget Rendering Test', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: SignupPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const SignupPage()));
 
       // Check if key widgets are present
       expect(find.byKey(const Key('signup-appbar')), findsOneWidget);
@@ -49,18 +38,7 @@ void main() {
     });
 
     testWidgets('Signup Process Test', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: SignupPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const SignupPage()));
 
       await tester.pumpAndSettle();
 

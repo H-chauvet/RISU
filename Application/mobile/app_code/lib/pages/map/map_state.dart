@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:risu/utils/errors.dart';
 
 import 'map_page.dart';
 
@@ -69,12 +70,15 @@ class MapPageState extends State<MapPage> {
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
+      if (!mounted) return;
       setState(() {
         _center = LatLng(position.latitude, position.longitude);
       });
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
-    } catch (err) {
-      print('Error _getUserLocation(): $err');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message:
+              "Une erreur est survenue lors de la récupération de la position de l'utilisateur.");
     }
   }
 

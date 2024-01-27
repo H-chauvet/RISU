@@ -3,16 +3,26 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user_list.dart';
-
+import 'package:front/services/storage_service.dart';
+import 'package:mockito/mockito.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> deleteUserMobile(UserMobile container) async {}
 Future<void> deleteUserWeb(User container) async {}
 
 void main() {
-  
-  testWidgets('UserMobileCard displays message details', (WidgetTester tester) async {
+  late MockSharedPreferences sharedPreferences;
 
+  setUp(() {
+    sharedPreferences = MockSharedPreferences();
+  });
+
+  testWidgets('UserMobileCard displays message details',
+      (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
     await tester.pumpWidget(
       MaterialApp(
         home: UserMobileCard(
@@ -33,7 +43,6 @@ void main() {
   });
 
   testWidgets('UserCard displays message details', (WidgetTester tester) async {
-
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(
       MaterialApp(
@@ -53,7 +62,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
-  
+
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
     // Build our app and trigger a frame.
@@ -87,10 +96,10 @@ void main() {
   test('UserWeb toJson and fromJson', () {
     final user = User(
       id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
-            company: 'copany',
-            email: 'john.doe@example.com',
+      firstName: 'John',
+      lastName: 'Doe',
+      company: 'copany',
+      email: 'john.doe@example.com',
     );
 
     final Map<String, dynamic> userJson = user.toMap();
@@ -103,3 +112,5 @@ void main() {
     expect(parsedUser.email, user.email);
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

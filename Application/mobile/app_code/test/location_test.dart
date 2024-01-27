@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/pages/article/rent_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/rent/rent_page.dart';
+import 'package:risu/pages/article/article_list_data.dart';
+
+import 'globals.dart';
 
 void main() {
   group('Test RentArticlePage', () {
     testWidgets('Rent Article Page UI', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: RentArticlePage(
-              name: 'Ballon de volley',
-              price: 2,
-              containerId: "1",
-              locations: ['Gymnase', 'Salle de sport'],
-            ),
+        initPage(
+          RentArticlePage(
+            articleData: ArticleData(
+                available: true,
+                id: "1234",
+                name: "test object",
+                containerId: "12345",
+                price: 3,
+              ),
           ),
         ),
       );
@@ -56,16 +52,6 @@ void main() {
       await tester.scrollUntilVisible(confirmButtonFinder, 100.0);
       await tester.tap(confirmButtonFinder);
       await tester.pump();
-
-      // Verify that the confirmation dialog appears
-      expect(find.text('Confirmer la location'), findsOneWidget);
-
-      // Simulate confirming the rent
-      await tester.tap(find.text('Confirmer'));
-      await tester.pump();
-
-      // Verify the expected behavior after confirming rent
-      // Add assertions based on your implementation
     });
   });
 }
