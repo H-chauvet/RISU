@@ -19,11 +19,10 @@ class LandingPageState extends State<LandingPage> {
   Function() inscriptionFunction = () {};
   String adminButton = '';
   Function() adminFunction = () {};
+  String profileButton= '';
+  Function() profileFunction = () {};
   String? token = '';
   String? userMail = '';
-  late Function() adminFunction;
-  String profileButton= '';
-  late Function() profileFunction;
 
  
   void checkToken() async {
