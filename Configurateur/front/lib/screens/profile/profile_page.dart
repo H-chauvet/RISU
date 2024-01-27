@@ -10,7 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-Future<Map<String, dynamic>> fetchUserDetails(String email) async {
+Future<void> fetchUserDetails(String? email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
   try {
@@ -19,14 +19,19 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
     if (response.statusCode == 200) {
       final Map<String, dynamic> userDetails = json.decode(response.body);
       debugPrint('User details: $userDetails');
-      return userDetails;
+
+      setState(() {
+        firstName = userDetails['firstName'];
+        lastName = userDetails['lastName'];
+        createdDate = DateTime.parse(userDetails['createdAt']);
+        formattedDate = DateFormat('dd/MM/yyyy').format(createdDate);
+        company = userDetails['company'];
+      });
     } else {
       debugPrint('Failed to fetch user details. Status code: ${response.statusCode}');
-      return {};
     }
   } catch (error) {
     debugPrint('Error fetching user details: $error');
-    return {};
   }
 }
 
@@ -223,7 +228,7 @@ Future<void> showEditPopupCompany(BuildContext context, String initialCompany, F
   );
 }
 
-Future<void> showEditPopupMail(BuildContext context, String initialMail, Function(String) onEdit) async {
+Future<void> showEditPopupMail(BuildContext context, String? initialMail, Function(String) onEdit) async {
   TextEditingController mailController = TextEditingController();
 
   return showDialog(
@@ -390,7 +395,7 @@ Future<void> showEditPopupPassword(BuildContext context, String initialPassword,
 
 
 
-  Future<void> fetchUserDetails(String email) async {
+  Future<void> fetchUserDetails(String? email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
     try {
@@ -691,8 +696,8 @@ Future<void> showEditPopupPassword(BuildContext context, String initialPassword,
                       padding: const EdgeInsets.all(16.0),
                       child: ElevatedButton(
                         onPressed: () {
-                          userMail = '';
-                          token = '';
+                          storageService.removeStorage('token');
+                          storageService.removeStorage('tokenExpiration');
                           context.go("/");
                         },
                         style: ElevatedButton.styleFrom(
