@@ -37,7 +37,9 @@ void main() {
       ),
     );
 
-    expect(find.text('John'), findsOneWidget);
+    expect(find.text('prénom : John'), findsOneWidget);
+    expect(find.text('nom : Doe'), findsOneWidget);
+    expect(find.text('email : john.doe@example.com'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
@@ -51,14 +53,17 @@ void main() {
             id: 1,
             firstName: 'John',
             lastName: 'Doe',
-            company: 'copany',
+            company: 'company',
             email: 'john.doe@example.com',
           ),
           onDelete: deleteUserWeb,
         ),
       ),
     );
-    expect(find.text('John'), findsOneWidget);
+    expect(find.text('prénom : John'), findsOneWidget);
+    expect(find.text('nom : Doe'), findsOneWidget);
+    expect(find.text('entreprise : company'), findsOneWidget);
+    expect(find.text('email : john.doe@example.com'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
@@ -74,6 +79,8 @@ void main() {
     expect(find.byType(UserPage), findsOneWidget);
     await tester.pump();
     expect(find.text("Gestion des utilisateurs"), findsOneWidget);
+    expect(find.text('Utilisateurs Web'), findsOneWidget);
+    expect(find.text('Utilisateurs Mobile'), findsOneWidget);
   });
 
   test('UserMobile toJson and fromJson', () {
