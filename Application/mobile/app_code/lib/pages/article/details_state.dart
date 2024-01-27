@@ -25,6 +25,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     late http.Response response;
 
     try {
+      _loaderManager.setIsLoading(true);
       response = await http.get(
         Uri.parse('http://$serverIp:8080/api/article/$articleId'),
         headers: <String, String>{
@@ -33,7 +34,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       );
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
-        await Future.delayed(const Duration(milliseconds: 500));
         _loaderManager.setIsLoading(false);
         return responseData;
       } else {
@@ -70,8 +70,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   @override
   void initState() {
     super.initState();
-
-    _loaderManager.setIsLoading(true);
     getArticleData(context, widget.articleId).then((dynamic value) {
       setState(() {
         articleData = ArticleData.fromJson(value);
@@ -81,6 +79,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: MyAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
@@ -92,11 +92,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: SingleChildScrollView(
-        child: Center(
-          child: (_loaderManager.getIsLoading())
-              ? _loaderManager.getLoader()
-              : Container(
+      body: (_loaderManager.getIsLoading())
+          ? Center(child: _loaderManager.getLoader())
+          : SingleChildScrollView(
+              child: Center(
+                child: Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
                   child: Column(
@@ -160,10 +160,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             child: Container(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              color: context.select(
-                                                  (ThemeProviderthemeProvider) =>
-                                                      themeProvider.currentTheme
-                                                          .primaryColor),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor,
                                               child: const Text(
                                                 'Actuellement :',
                                                 style: TextStyle(
@@ -177,10 +175,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             child: Container(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              color: context.select(
-                                                  (ThemeProviderthemeProvider) =>
-                                                      themeProvider.currentTheme
-                                                          .primaryColor),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor,
                                               child: Row(
                                                 children: [
                                                   Container(
@@ -218,12 +214,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             child: Container(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              color: context
-                                                  .select(
-                                                      (ThemeProviderthemeProvider) =>
-                                                          themeProvider
-                                                              .currentTheme
-                                                              .primaryColor)
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
                                                   .withOpacity(0.6),
                                               child: const Text(
                                                 'Prix à l\'heure :',
@@ -238,12 +230,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             child: Container(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              color: context
-                                                  .select(
-                                                      (ThemeProviderthemeProvider) =>
-                                                          themeProvider
-                                                              .currentTheme
-                                                              .primaryColor)
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
                                                   .withOpacity(0.6),
                                               child: Text(
                                                 '${articleData.price} €',
@@ -308,8 +296,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                     ],
                   ),
                 ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }

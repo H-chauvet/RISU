@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/loader.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
@@ -25,6 +26,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       TextEditingController(text: "");
   final TextEditingController newPasswordConfirmationController =
       TextEditingController(text: "");
+  final LoaderManager _loaderManager = LoaderManager();
 
   @override
   void initState() {
@@ -42,6 +44,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
   Future<void> fetchUserData(BuildContext context) async {
     try {
+      _loaderManager.setIsLoading(true);
       final token = userInformation!.token;
       final response = await http.get(
           Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
@@ -50,6 +53,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             'Authorization': 'Bearer $token',
           });
       if (response.statusCode == 200) {
+        _loaderManager.setIsLoading(false);
         final userData = json.decode(response.body)['user'];
         final String? userToken = userInformation!.token;
         userInformation = UserData.fromJson(userData, userToken!);
@@ -57,11 +61,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         newLastName = '';
         newEmail = '';
       } else {
+        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'fetchUserData');
         }
       }
     } catch (err, stacktrace) {
+      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace);
       }
@@ -92,6 +98,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         body['email'] = newEmail;
       }
 
+      _loaderManager.setIsLoading(true);
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user'),
         headers: <String, String>{
@@ -102,6 +109,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       );
 
       if (response.statusCode == 200) {
+        _loaderManager.setIsLoading(false);
         json.decode(response.body);
         if (context.mounted) {
           await fetchUserData(context);
@@ -113,6 +121,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           );
         }
       } else {
+        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'updateUser',
               message:
@@ -120,6 +129,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
+      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
@@ -157,6 +167,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
       final token = userInformation!.token;
 
+      _loaderManager.setIsLoading(true);
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/password'),
         headers: <String, String>{
@@ -170,6 +181,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       );
 
       if (response.statusCode == 200) {
+        _loaderManager.setIsLoading(false);
         json.decode(response.body);
         currentPasswordController.clear();
         newPasswordController.clear();
@@ -182,11 +194,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
+          _loaderManager.setIsLoading(false);
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: "Le mot de passe actuel est incorrect.");
           }
         } else {
+          _loaderManager.setIsLoading(false);
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: 'Impossible de mettre à jour le mot de passe.');
@@ -194,6 +208,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
+      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
@@ -249,101 +264,104 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 32, bottom: 16),
-          child: Center(
-            child: Column(
-              children: [
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Mes informations',
-                    key: Key('profile_info-text_informations'),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+      body: (_loaderManager.getIsLoading())
+          ? Center(child: _loaderManager.getLoader())
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 16, right: 16, top: 32, bottom: 16),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Mes informations',
+                          key: Key('profile_info-text_informations'),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      buildField(
+                        "Prénom",
+                        key: const Key('profile_info-text_field_firstname'),
+                        initialValue: userInformation!.firstName ?? '',
+                        onChanged: (value) {
+                          setState(() => newFirstName = value);
+                        },
+                      ),
+                      buildField(
+                        "Nom",
+                        key: const Key('profile_info-text_field_lastname'),
+                        initialValue: userInformation!.lastName ?? '',
+                        onChanged: (value) {
+                          setState(() => newLastName = value);
+                        },
+                      ),
+                      buildField(
+                        "Email",
+                        key: const Key('profile_info-text_field_email'),
+                        initialValue: userInformation!.email,
+                        onChanged: (value) {
+                          setState(() => newEmail = value);
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      MyButton(
+                        key: const Key('profile_info-button_update'),
+                        text: "Enregistrer les modifications",
+                        onPressed: () async {
+                          await updateUser();
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Mot de passe',
+                          key: Key('profile_info-text_password'),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      buildField(
+                        "Actuel",
+                        key: const Key(
+                            'profile_info-text_field_current_password'),
+                        isPassword: true,
+                        controller: currentPasswordController,
+                      ),
+                      buildField(
+                        "Nouveau",
+                        key: const Key('profile_info-text_field_new_password'),
+                        isPassword: true,
+                        controller: newPasswordController,
+                      ),
+                      buildField(
+                        "Confirmation du nouveau",
+                        key: const Key(
+                            'profile_info-text_field_new_password_confirmation'),
+                        isPassword: true,
+                        controller: newPasswordConfirmationController,
+                      ),
+                      const SizedBox(height: 16),
+                      MyButton(
+                        key: const Key('profile_info-button_update_password'),
+                        text: "Enregistrer le nouveau mot de passe",
+                        onPressed: () async {
+                          await updatePassword(currentPasswordController.text,
+                              newPasswordController.text);
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                buildField(
-                  "Prénom",
-                  key: const Key('profile_info-text_field_firstname'),
-                  initialValue: userInformation!.firstName ?? '',
-                  onChanged: (value) {
-                    setState(() => newFirstName = value);
-                  },
-                ),
-                buildField(
-                  "Nom",
-                  key: const Key('profile_info-text_field_lastname'),
-                  initialValue: userInformation!.lastName ?? '',
-                  onChanged: (value) {
-                    setState(() => newLastName = value);
-                  },
-                ),
-                buildField(
-                  "Email",
-                  key: const Key('profile_info-text_field_email'),
-                  initialValue: userInformation!.email,
-                  onChanged: (value) {
-                    setState(() => newEmail = value);
-                  },
-                ),
-                const SizedBox(height: 16),
-                MyButton(
-                  key: const Key('profile_info-button_update'),
-                  text: "Enregistrer les modifications",
-                  onPressed: () async {
-                    await updateUser();
-                  },
-                ),
-                const SizedBox(height: 16),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Mot de passe',
-                    key: Key('profile_info-text_password'),
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                buildField(
-                  "Actuel",
-                  key: const Key('profile_info-text_field_current_password'),
-                  isPassword: true,
-                  controller: currentPasswordController,
-                ),
-                buildField(
-                  "Nouveau",
-                  key: const Key('profile_info-text_field_new_password'),
-                  isPassword: true,
-                  controller: newPasswordController,
-                ),
-                buildField(
-                  "Confirmation du nouveau",
-                  key: const Key(
-                      'profile_info-text_field_new_password_confirmation'),
-                  isPassword: true,
-                  controller: newPasswordConfirmationController,
-                ),
-                const SizedBox(height: 16),
-                MyButton(
-                  key: const Key('profile_info-button_update_password'),
-                  text: "Enregistrer le nouveau mot de passe",
-                  onPressed: () async {
-                    await updatePassword(currentPasswordController.text,
-                        newPasswordController.text);
-                  },
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

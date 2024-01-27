@@ -25,14 +25,9 @@ class Loader extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
-    return Column(
-      children: [
-        const SizedBox(height: 32),
-        CircularProgressIndicator(
-          color: themeProvider
-              .currentTheme.inputDecorationTheme.floatingLabelStyle!.color,
-        ),
-      ],
+    return CircularProgressIndicator(
+      color: themeProvider
+          .currentTheme.inputDecorationTheme.floatingLabelStyle!.color,
     );
   }
 }

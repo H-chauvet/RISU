@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
@@ -21,6 +22,7 @@ class RentArticlePageState extends State<RentArticlePage> {
   dynamic paymentIntent;
   int _rentalHours = 1;
   late ArticleData _articleData;
+  final LoaderManager _loaderManager = LoaderManager();
 
   @override
   void initState() {
@@ -46,6 +48,7 @@ class RentArticlePageState extends State<RentArticlePage> {
     final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
     try {
+      _loaderManager.setIsLoading(true);
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/rent/article'),
         headers: <String, String>{
@@ -57,31 +60,34 @@ class RentArticlePageState extends State<RentArticlePage> {
           'duration': _rentalHours.toString(),
         }),
       );
+      if (response.statusCode == 201) {
+        _loaderManager.setIsLoading(false);
+        if (context.mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return ConfirmRentPage(
+                  hours: _rentalHours,
+                  data: _articleData,
+                );
+              },
+            ),
+            (route) => false,
+          );
+        }
+      } else {
+        _loaderManager.setIsLoading(false);
+        if (context.mounted) {
+          printServerResponse(context, response, 'rentArticle',
+              message: "Erreur lors de la location.");
+        }
+      }
     } catch (err, stacktrace) {
+      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
-      }
-    }
-    if (response.statusCode == 201) {
-      if (context.mounted) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return ConfirmRentPage(
-                hours: _rentalHours,
-                data: _articleData,
-              );
-            },
-          ),
-          (route) => false,
-        );
-      }
-    } else {
-      if (context.mounted) {
-        printServerResponse(context, response, 'rentArticle',
-            message: "Erreur lors de la location.");
       }
     }
   }
@@ -89,6 +95,7 @@ class RentArticlePageState extends State<RentArticlePage> {
   Future<Map<String, dynamic>?> createPaymentIntent(
       String amount, String currency) async {
     try {
+      _loaderManager.setIsLoading(true);
       final response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
@@ -104,14 +111,17 @@ class RentArticlePageState extends State<RentArticlePage> {
       final responseData = json.decode(response.body);
 
       if (response.statusCode == 200) {
+        _loaderManager.setIsLoading(false);
         return responseData;
       } else {
+        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'createPaymentIntent',
               message: "Echec de la création du paiement.");
         }
       }
     } catch (err, stacktrace) {
+      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Echec de la création du paiement.");
@@ -202,207 +212,217 @@ class RentArticlePageState extends State<RentArticlePage> {
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Location de l\'article',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.primaryColor),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                // image
-                Container(
-                  width: 256,
-                  height: 192,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    image: const DecorationImage(
-                      image: AssetImage('assets/volley.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 8),
-
-                Card(
-                  elevation: 2,
-                  margin: const EdgeInsets.all(8),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            _articleData.name,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+      body: (_loaderManager.getIsLoading())
+          ? Center(child: _loaderManager.getLoader())
+          : SingleChildScrollView(
+              child: Center(
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Location de l\'article',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      // image
+                      Container(
+                        width: 256,
+                        height: 192,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/volley.png'),
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Container(
-                            color: Colors.white,
-                            child: Table(
-                              columnWidths: const {
-                                0: FlexColumnWidth(1.0),
-                                1: FlexColumnWidth(1.0),
-                              },
-                              children: [
-                                TableRow(
-                                  children: [
-                                    TableCell(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        color: const Color(0xFF4682B4),
-                                        child: const Text(
-                                          'Prix par heure',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    TableCell(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        color: const Color(0xFF4682B4),
-                                        child: const Text(
-                                          'Coût total',
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                TableRow(
-                                  children: [
-                                    TableCell(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        color: const Color(0xFF4682B4)
-                                            .withOpacity(0.6),
-                                        child: Text(
-                                          '${_articleData.price} €',
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    TableCell(
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8.0),
-                                        color: const Color(0xFF4682B4)
-                                            .withOpacity(0.6),
-                                        child: Text(
-                                          '${_articleData.price * _rentalHours} €',
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
+                      ),
+
+                      const SizedBox(height: 8),
+
+                      Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IconButton(
-                                    key: const Key('decrement-hours-button'),
-                                    icon: const Icon(
-                                      Icons.remove,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: _decrementHours,
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  _articleData.name,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
                                   ),
-                                  Text(
-                                    '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
+                                ),
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                  color: Colors.white,
+                                  child: Table(
+                                    columnWidths: const {
+                                      0: FlexColumnWidth(1.0),
+                                      1: FlexColumnWidth(1.0),
+                                    },
+                                    children: [
+                                      TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: const Color(0xFF4682B4),
+                                              child: const Text(
+                                                'Prix par heure',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: const Color(0xFF4682B4),
+                                              child: const Text(
+                                                'Coût total',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: const Color(0xFF4682B4)
+                                                  .withOpacity(0.6),
+                                              child: Text(
+                                                '${_articleData.price} €',
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: const Color(0xFF4682B4)
+                                                  .withOpacity(0.6),
+                                              child: Text(
+                                                '${_articleData.price * _rentalHours} €',
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    key: const Key('increment-hours-button'),
-                                    icon: const Icon(
-                                      Icons.add,
-                                      color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          key: const Key(
+                                              'decrement-hours-button'),
+                                          icon: const Icon(
+                                            Icons.remove,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: _decrementHours,
+                                        ),
+                                        Text(
+                                          '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          key: const Key(
+                                              'increment-hours-button'),
+                                          icon: const Icon(
+                                            Icons.add,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: _incrementHours,
+                                        ),
+                                      ],
                                     ),
-                                    onPressed: _incrementHours,
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+
+                      const SizedBox(height: 8),
+                      if (_articleData.available)
+                        SizedBox(
+                          width: double.infinity,
+                          child: MyOutlinedButton(
+                            key: const Key('confirm-rent-button'),
+                            text: 'Louer',
+                            onPressed: () async {
+                              bool signIn = await checkSignin(context);
+                              if (!signIn) {
+                                return;
+                              }
+                              confirmRent();
+                            },
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-
-                const SizedBox(height: 8),
-                if (_articleData.available)
-                  SizedBox(
-                    width: double.infinity,
-                    child: MyOutlinedButton(
-                      key: const Key('confirm-rent-button'),
-                      text: 'Louer',
-                      onPressed: () async {
-                        bool signIn = await checkSignin(context);
-                        if (!signIn) {
-                          return;
-                        }
-                        confirmRent();
-                      },
-                    ),
-                  ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 }
