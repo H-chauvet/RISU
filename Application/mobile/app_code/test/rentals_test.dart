@@ -7,7 +7,17 @@ import 'globals.dart';
 void main() {
   group('Test RentalPage', () {
     testWidgets('Rental Page UI', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const RentalPage()));
+      var aaaa = initPage(const RentalPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Test de la présence du titre 'Mes locations'
       expect(find.text('Mes locations'), findsOneWidget);
@@ -17,9 +27,20 @@ void main() {
       expect(find.text('En cours'), findsOneWidget);
     });
   });
+
   testWidgets('Rentals, Test if buttons are clickable',
       (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const RentalPage()));
+    var aaaa = initPage(const RentalPage());
+    await tester.pumpWidget(aaaa);
+
+    while (true) {
+      try {
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
+        await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+      } catch (e) {
+        break;
+      }
+    }
 
     // Verify initial state
     expect(find.text('Toutes'), findsOneWidget);
@@ -41,10 +62,11 @@ void main() {
     expect(find.text('Toutes'), findsOneWidget);
     expect(find.text('En cours'), findsOneWidget);
   });
+
   testWidgets('Rental 1', (WidgetTester tester) async {
     await tester.pumpWidget(initPage(const RentalPage()));
 
-    await tester.pumpAndSettle();
+    await tester.pump();
 
     // expect List of rentals to be displayed
     expect(find.byKey(const Key('rentals-list')), findsOneWidget);

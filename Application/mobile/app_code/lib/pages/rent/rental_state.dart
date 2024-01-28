@@ -57,6 +57,9 @@ class RentalPageState extends State<RentalPage> {
         }
       }
     } catch (err, stacktrace) {
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (context.mounted) {
         printCatchError(context, err, stacktrace);
       }
