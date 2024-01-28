@@ -2,47 +2,34 @@ const request = require('supertest');
 const async = require('async');
 
 let authToken = '';
+let itemId = '';
+let rentId = '';
 
 describe('POST /api/rent/article', () => {
-    it('should connect and get a token', (done) => {
+  it('should connect and get a token', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:8080')
+            .post('/api/login')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({ email: 'admin@gmail.com', password: 'admin' });
+          authToken = res.body.token;
+          expect(res.statusCode).toBe(201);
+        }
+      ],
+      done
+    )
+  }),
+    it('should get itemId from list', (done) => {
       async.series(
         [
           async function () {
             const res = await request('http://localhost:8080')
-              .post('/api/login')
-              .set('Content-Type', 'application/json')
-              .set('Accept', 'application/json')
-              .send({ email: 'admin@gmail.com', password: 'admin' })
-            authToken = res.body.token
-            expect(res.statusCode).toBe(201)
-          }
-        ],
-        done
-      )
-    }),
-    it('should not create location, no token', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .post('/api/rent/article')
-              .set('Authorization', null)
-              .send({})
-              .expect(401, callback)
-          }
-        ],
-        done
-      )
-    }),
-    it('should not create location, no price', (done) => {
-      async.series(
-        [
-          function (callback) {
-            request('http://localhost:8080')
-              .post('/api/rent/article')
-              .set('Authorization', `Bearer ${authToken}`)
-              .send({})
-              .expect(401, callback)
+              .get('/api/article/listall');
+            expect(res.statusCode).toBe(200);
+            itemId = res.body[2].id;
           }
         ],
         done
@@ -51,26 +38,49 @@ describe('POST /api/rent/article', () => {
     it('should not create location, no itemId', (done) => {
       async.series(
         [
-          function (callback) {
-            request('http://localhost:8080')
+          async function () {
+            const res = await request('http://localhost:8080')
               .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
-              .send({price: '10'})
-              .expect(401, callback)
+              .send({});
+            expect(res.statusCode).toBe(401);
+            expect(res.error.text).toBe('{"message":"Missing itemId"}');
           }
         ],
         done
       )
     }),
-    it('should not create location, no price', (done) => {
+    it('should not create location, wrong itemId', (done) => {
       async.series(
         [
-          function (callback) {
-            request('http://localhost:8080')
+          async function () {
+            const res = await request('http://localhost:8080')
               .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
-              .send({price: '10', itemId: '1'})
-              .expect(401, callback)
+              .send({ "itemId": "wrongId" });
+            expect(res.statusCode).toBe(401);
+            expect(res.error.text).toBe('Item not found');
+          }
+        ],
+        done
+      )
+    }),
+    it('should not create location, no duration', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
+              .send({ "itemId": itemId });
+            expect(res.statusCode).toBe(401);
+            expect(res.error.text).toBe('{"message":"Missing duration"}');
           }
         ],
         done
@@ -79,27 +89,58 @@ describe('POST /api/rent/article', () => {
     it('should create location', (done) => {
       async.series(
         [
-          function (callback) {
-            request('http://localhost:8080')
+          async function () {
+            const res = await request('http://localhost:8080')
               .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
-              .send({price: '10', itemId: '1', duration: '2'})
-              .expect(201, callback)
+              .send({ "itemId": itemId, "duration": "2" });
+            expect(res.statusCode).toBe(201);
           }
         ],
         done
       )
     }),
-    it('should get all locations', (done) => {
+    it('should not create location, item not available', (done) => {
       async.series(
         [
-          function (callback) {
-            request('http://localhost:8080')
-              .get('/api/locations')
-              .expect(201, callback)
+          async function () {
+            const res = await request('http://localhost:8080')
+              .post('/api/rent/article')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
+              .send({ "itemId": itemId, "duration": "2" });
+            expect(res.statusCode).toBe(401);
+            expect(res.error.text).toBe('Item not available');
           }
         ],
         done
       )
     })
+});
+
+describe('CLEAR DATA', () => {
+  it('should get all rents and return them', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:8080')
+            .get('/api/rents')
+            .set('Authorization', `Bearer ${authToken}`);
+          expect(res.statusCode).toBe(200);
+
+          for (const rent of res.body.rentals) {
+            const res = await request('http://localhost:8080')
+              .post(`/api/rent/${rent.id}/return`)
+              .set('Authorization', `Bearer ${authToken}`)
+              .send({ "rentId": rentId });
+            expect(res.statusCode).toBe(201);
+          }
+        }
+      ],
+      done
+    )
+  })
 });

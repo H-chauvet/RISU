@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/pages/rental/rental_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/pages/rent/rental_page.dart';
+
+import 'globals.dart';
 
 void main() {
   group('Test RentalPage', () {
     testWidgets('Rental Page UI', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<ThemeProvider>(
-              create: (_) => ThemeProvider(false),
-            ),
-          ],
-          child: const MaterialApp(
-            home: RentalPage(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(initPage(const RentalPage()));
 
       // Test de la présence du titre 'Mes locations'
       expect(find.text('Mes locations'), findsOneWidget);
@@ -29,19 +17,9 @@ void main() {
       expect(find.text('En cours'), findsOneWidget);
     });
   });
-  testWidgets('Rentals, Test if buttons are clickable', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: RentalPage(),
-        ),
-      ),
-    );
+  testWidgets('Rentals, Test if buttons are clickable',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(initPage(const RentalPage()));
 
     // Verify initial state
     expect(find.text('Toutes'), findsOneWidget);
@@ -64,23 +42,11 @@ void main() {
     expect(find.text('En cours'), findsOneWidget);
   });
   testWidgets('Rental 1', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: RentalPage(),
-        ),
-      ),
-    );
+    await tester.pumpWidget(initPage(const RentalPage()));
 
     await tester.pumpAndSettle();
 
     // expect List of rentals to be displayed
     expect(find.byKey(const Key('rentals-list')), findsOneWidget);
   });
-
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/utils/theme.dart';
 
 class ArticleData {
   final String id;
@@ -25,6 +27,7 @@ class ArticleData {
       price: json['price'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -39,7 +42,7 @@ class ArticleData {
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 
-  ArticleDataCard({super.key, required this.articleData});
+  const ArticleDataCard({super.key, required this.articleData});
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +58,23 @@ class ArticleDataCard extends StatelessWidget {
             ));
       },
       child: Container(
-        margin:
-            EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
+        margin: const EdgeInsets.only(
+            left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
         alignment: Alignment.center,
         height: 150.0,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.cardColor),
           borderRadius: BorderRadius.circular(30.0),
           boxShadow: [
             BoxShadow(
-              color: Color(0xff4682B4).withOpacity(0.5),
+              color: context
+                  .select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.primaryColor)
+                  .withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -87,12 +94,13 @@ class ArticleDataCard extends StatelessWidget {
                     Text(
                       articleData.name,
                       style: TextStyle(
-                        color: Color(0xFF4682B4),
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.primaryColor),
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
                       ),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                   ],
                 ),
                 const SizedBox(height: 18),
@@ -100,8 +108,8 @@ class ArticleDataCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Prix : ' + articleData.price.toString() + '€ de l\'heure',
-                      style: TextStyle(
+                      'Prix : ${articleData.price}€ de l\'heure',
+                      style: const TextStyle(
                         fontSize: 15.0,
                       ),
                     )
@@ -111,7 +119,7 @@ class ArticleDataCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
+                    const Text(
                       'Statut: ',
                       style: TextStyle(
                         fontSize: 15.0,
@@ -119,15 +127,6 @@ class ArticleDataCard extends StatelessWidget {
                     ),
                     Row(
                       children: [
-                        Text(
-                          articleData.available == true
-                              ? 'Disponible'
-                              : 'Indisponible',
-                          style: TextStyle(
-                            fontSize: 15.0,
-                          ),
-                        ),
-                        SizedBox(width: 5),
                         Container(
                           width: 10,
                           height: 10,
@@ -136,6 +135,15 @@ class ArticleDataCard extends StatelessWidget {
                             color: articleData.available == true
                                 ? Colors.green
                                 : Colors.red,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          articleData.available == true
+                              ? 'Disponible'
+                              : 'Indisponible',
+                          style: const TextStyle(
+                            fontSize: 15.0,
                           ),
                         ),
                       ],

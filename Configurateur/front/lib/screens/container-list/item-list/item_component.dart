@@ -10,6 +10,8 @@ class ItemList {
   final dynamic? createdAt;
   final dynamic? containerId;
   final double? price;
+  final String? image;
+  final String? description;
 
   ItemList({
     required this.id,
@@ -19,6 +21,8 @@ class ItemList {
     required this.createdAt,
     required this.containerId,
     required this.price,
+    required this.image,
+    required this.description,
   });
 
   factory ItemList.fromJson(Map<String, dynamic> json) {
@@ -30,6 +34,8 @@ class ItemList {
       createdAt: json['createdAt'],
       containerId: json['containerId'],
       price: json['price'],
+      image: json['image'],
+      description: json['description'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -41,6 +47,8 @@ class ItemList {
       'createdAt': createdAt,
       'containerId': containerId,
       'price': price,
+      'image': image,
+      'description': description,
     };
   }
 }
@@ -67,6 +75,8 @@ class ItemCard extends StatelessWidget {
                   onPressed: () => onDelete(item),
                 ),
               SizedBox(width: 10,),
+              if (item.description != null)
+                Text(item.description!),
               ],
             ),
           ),

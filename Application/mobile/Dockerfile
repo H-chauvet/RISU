@@ -1,4 +1,4 @@
-FROM cirrusci/flutter
+FROM ghcr.io/cirruslabs/flutter:stable
 
 COPY app_code /app
 WORKDIR /app

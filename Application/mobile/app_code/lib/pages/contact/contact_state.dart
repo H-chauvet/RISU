@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'contact_page.dart';
@@ -16,6 +17,11 @@ class ContactPageState extends State<ContactPage> {
   String? _name;
   String? _email;
   String? _message;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future<bool> apiContact(String name, String email, String message) async {
     late http.Response response;
@@ -28,38 +34,28 @@ class ContactPageState extends State<ContactPage> {
         body: jsonEncode(
             <String, String>{'name': name, 'email': email, 'message': message}),
       );
-    } catch (err) {
+    } catch (err, stacktrace) {
       if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            key: const Key("contact-alert_dialog-refused"),
-            title: 'Contact',
-            message: 'Connection refused.');
-        print(err);
-        print(response.statusCode);
+        printCatchError(context, err, stacktrace,
+            message: "Connexion refusée.");
       }
     }
     if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
-            context: context, title: 'Contact', message: 'Message envoyé.');
+          context: context,
+          title: 'Contact',
+          message: 'Message envoyé.',
+        );
         return true;
       }
     } else {
       if (context.mounted) {
-        print(response.statusCode);
-        await MyAlertDialog.showErrorAlertDialog(
-            context: context,
-            title: 'Contact',
-            message: 'Erreur lors de l\'envoi du message.');
+        printServerResponse(context, response, 'apiContact',
+            message: "Erreur lors de l'envoi du message.");
       }
     }
     return false;
-  }
-
-  @override
-  void initState() {
-    super.initState();
   }
 
   @override
@@ -140,11 +136,12 @@ class ContactPageState extends State<ContactPage> {
                       apiContact(_name!, _email!, _message!)
                           .then((value) => {});
                     } else {
-                      MyAlertDialog.showInfoAlertDialog(
-                          key: const Key("contact-alert_dialog-invalid_info"),
-                          context: context,
-                          title: 'Champs invalides',
-                          message: 'Veuillez entrer des informations valides.');
+                      MyAlertDialog.showErrorAlertDialog(
+                        key: const Key("contact-alert_dialog-invalid_info"),
+                        context: context,
+                        title: 'Erreur',
+                        message: 'Veuillez entrer des informations valides.',
+                      );
                     }
                   },
                 ),

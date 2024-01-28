@@ -6,21 +6,27 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:front/services/storage_service.dart';
 
 import '../../network/informations.dart';
 import '../../services/http_service.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping, this.id});
+      {super.key,
+      this.lockers,
+      this.amount,
+      this.containerMapping,
+      this.id,
+      this.container});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
   final String? id;
+  final String? container;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -29,18 +35,23 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  String adress = '';
+  String address = '';
   String city = '';
   String informations = '';
 
-  @override
-  void initState() {
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token == '') {
       context.go('/login');
     } else {
-      jwtToken = token;
+      jwtToken = token!;
     }
+  }
+
+  @override
+  void initState() {
     MyAlertTest.checkSignInStatus(context);
+    checkToken();
     controller.addListener(update);
     super.initState();
   }
@@ -60,12 +71,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'containerMapping': widget.containerMapping,
       'lockers': widget.lockers,
       'id': widget.id,
+      'container': widget.container,
     };
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
   void goNext() async {
-    if (controller.complete && adress != '' && city != '') {
+    if (controller.complete && address != '' && city != '') {
       bool response = await makePayment();
       if (response == false) {
         Fluttertoast.showToast(
@@ -95,7 +107,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'height': '5',
           'city': city,
           'informations': informations,
-          'adress': adress,
+          'address': address,
         },
       ).then((value) {
         if (value.statusCode == 200) {
@@ -152,10 +164,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     children: [
                       Expanded(
                         child: TextFormField(
-                          key: const Key('adress'),
+                          key: const Key('address'),
                           decoration: InputDecoration(
-                            hintText: 'Entrez votre adresse',
-                            labelText: 'Adresse',
+                            hintText: 'Entrez votre addresse',
+                            labelText: 'addresse',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
@@ -163,7 +175,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           onChanged: (String? value) {
                             setState(
                               () {
-                                adress = value!;
+                                address = value!;
                               },
                             );
                           },
@@ -282,6 +294,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'paymentMethodId': paymentMethodId,
         'currency': currency,
         'amount': widget.amount,
+        'containerId': widget.id,
       }),
     );
     return json.decode(response.body);

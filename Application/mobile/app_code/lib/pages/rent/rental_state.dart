@@ -1,13 +1,14 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/components/appbar.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/globals.dart';
-import 'package:risu/utils/theme.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/components/appbar.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/pages/rent/return_page.dart';
+import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/theme.dart';
 
 import 'rental_page.dart';
 
@@ -15,6 +16,12 @@ class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
   bool showAllRentals = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getRentals();
+  }
 
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
@@ -25,7 +32,7 @@ class RentalPageState extends State<RentalPage> {
     try {
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent'),
+        Uri.parse('http://$serverIp:8080/api/rents/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -34,17 +41,17 @@ class RentalPageState extends State<RentalPage> {
       if (response.statusCode == 201) {
         setState(() {
           rentals = jsonDecode(response.body)['rentals'];
-          print(rentals);
         });
       } else {
-        await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: 'Erreur',
-            message: 'Les locations n\'ont pas pu être récupérées.');
-        print('Error getRentals(): ${response.statusCode}');
+        if (context.mounted) {
+          printServerResponse(context, response, 'getRentals',
+              message: "Les locations n'ont pas pu être récupérées.");
+        }
       }
-    } catch (e) {
-      print('Error getRentals(): $e');
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace);
+      }
     }
   }
 
@@ -59,7 +66,9 @@ class RentalPageState extends State<RentalPage> {
   }
 
   bool isRentalInProgress(dynamic rental) {
-    if (rental['createdAt'] != null && rental['duration'] != null) {
+    if (rental['createdAt'] != null &&
+        rental['duration'] != null &&
+        rental['ended'] == false) {
       DateTime rentalStart = DateTime.parse(rental['createdAt']);
       int rentalDuration = rental['duration'];
       DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
@@ -71,36 +80,27 @@ class RentalPageState extends State<RentalPage> {
   void getRentalsInProgress() async {
     try {
       setState(() {
-        this.rentalsInProgress = rentals.where(isRentalInProgress).toList();
+        rentalsInProgress = rentals.where(isRentalInProgress).toList();
       });
-    } catch (e) {
-      await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: 'Erreur',
-          message: 'Les locations en cours n\'ont pas pu être récupérées.');
-      print('Error getRentalsInProgress(): $e');
+    } catch (err, stacktrace) {
+      printCatchError(context, err, stacktrace,
+          message: "Current locations couldn't be retrieved.");
     }
   }
 
   @override
-  void initState() {
-    super.initState();
-    getRentals();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
+        curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
         showLogo: true,
         showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+      backgroundColor: themeProvider.currentTheme.colorScheme.background,
       body: Center(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
@@ -114,12 +114,10 @@ class RentalPageState extends State<RentalPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 32,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                  color: themeProvider.currentTheme.secondaryHeaderColor,
                   shadows: [
                     Shadow(
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
+                      color: themeProvider.currentTheme.secondaryHeaderColor,
                       blurRadius: 24,
                       offset: const Offset(0, 4),
                     ),
@@ -150,8 +148,8 @@ class RentalPageState extends State<RentalPage> {
                         ),
                         decoration: BoxDecoration(
                           color: showAllRentals
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).secondaryHeaderColor,
+                              ? themeProvider.currentTheme.primaryColor
+                              : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
@@ -159,12 +157,12 @@ class RentalPageState extends State<RentalPage> {
                             style: TextStyle(
                               color: showAllRentals
                                   ? Colors.white
-                                  : Theme.of(context).brightness ==
+                                  : themeProvider.currentTheme.brightness ==
                                           Brightness.light
                                       ? Colors.grey[
                                           400] // Gris foncé pour le mode clair
-                                      : Colors.grey[
-                                          800], // Gris clair pour le mode sombre
+                                      : Colors.grey[800],
+                              // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -191,8 +189,8 @@ class RentalPageState extends State<RentalPage> {
                         ),
                         decoration: BoxDecoration(
                           color: !showAllRentals
-                              ? Theme.of(context).primaryColor
-                              : Theme.of(context).secondaryHeaderColor,
+                              ? themeProvider.currentTheme.primaryColor
+                              : themeProvider.currentTheme.secondaryHeaderColor,
                         ),
                         child: Center(
                           child: Text(
@@ -200,12 +198,12 @@ class RentalPageState extends State<RentalPage> {
                             style: TextStyle(
                               color: !showAllRentals
                                   ? Colors.white
-                                  : Theme.of(context).brightness ==
+                                  : themeProvider.currentTheme.brightness ==
                                           Brightness.light
                                       ? Colors.grey[
                                           400] // Gris foncé pour le mode clair
-                                      : Colors.grey[
-                                          800], // Gris clair pour le mode sombre
+                                      : Colors.grey[800],
+                              // Gris clair pour le mode sombre
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -243,14 +241,23 @@ class RentalPageState extends State<RentalPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            color: Theme.of(context).cardColor,
+                            color: themeProvider.currentTheme.cardColor,
                             child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ReturnArticlePage(rentId: rental['id']),
+                                  ),
+                                );
+                              },
                               key: const Key('rental-list-tile'),
                               contentPadding: const EdgeInsets.all(16.0),
-                              title: const Text(
-                                'Ballon de volley' +
-                                    '  |  La Baule - Casier N°A4',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                              title: Text(
+                                '${rental['item']['name']}  |  ${rental['item']['container']['address']}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

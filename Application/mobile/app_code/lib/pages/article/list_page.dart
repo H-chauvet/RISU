@@ -5,7 +5,10 @@ import 'list_state.dart';
 class ArticleListPage extends StatefulWidget {
   final String containerId;
 
-  const ArticleListPage({Key? key, required this.containerId}) : super(key: key);
+  const ArticleListPage({
+    super.key,
+    required this.containerId,
+  });
 
   @override
   State<ArticleListPage> createState() => ArticleListState();

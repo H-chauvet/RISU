@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/utils/theme.dart';
+
+import 'globals.dart';
 
 void main() {
   setUpAll(() async {
@@ -18,20 +18,13 @@ void main() {
   testWidgets('AppBar should display and handle taps',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (_) => ThemeProvider(false),
-          ),
-        ],
-        child: const MaterialApp(
-          home: Scaffold(
-            appBar: MyAppBar(
-              curveColor: Colors.blue,
-              showBackButton: true,
-              showLogo: true,
-              showBurgerMenu: true,
-            ),
+      initPage(
+        const Scaffold(
+          appBar: MyAppBar(
+            curveColor: Colors.blue,
+            showBackButton: true,
+            showLogo: true,
+            showBurgerMenu: true,
           ),
         ),
       ),

@@ -3,61 +3,47 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/theme.dart';
 
 import 'details_page.dart';
 
 Future<dynamic> getContainerData(
     BuildContext context, String containerId) async {
-  final token = userInformation?.token ?? 'defaultToken';
   late http.Response response;
-
   try {
-    response = await http.post(
-      Uri.parse('http://$serverIp:8080/api/container/details'),
+    response = await http.get(
+      Uri.parse('http://$serverIp:8080/api/container/$containerId'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(<String, String>{
-        'containerId': containerId,
-      }),
     );
     if (response.statusCode == 200) {
       dynamic responseData = jsonDecode(response.body);
       return responseData;
     } else {
       if (context.mounted) {
-        print(response.statusCode);
-        print(response.reasonPhrase);
-        MyAlertDialog.showErrorAlertDialog(
-            key: const Key('container-details_invaliddata'),
-            context: context,
-            title: 'Container-details',
-            message: 'Failed to get container');
+        printServerResponse(context, response, 'getContainerData',
+            message:
+                "Une erreur est survenue lors de la récupération des données");
       }
       return {
-        'owner': '',
-        'localization': '',
+        'address': '',
+        'city': '',
         '_count': {'items': 0}
       };
     }
-  } catch (err) {
+  } catch (err, stacktrace) {
     if (context.mounted) {
-      MyAlertDialog.showErrorAlertDialog(
-          key: const Key('container-details_connectionrefused'),
-          context: context,
-          title: 'Container-details',
-          message: 'Connexion refused');
+      printCatchError(context, err, stacktrace, message: "Connexion refusée.");
     }
     return {
-      'owner': '',
-      'localization': '',
+      'address': '',
+      'city': '',
       '_count': {'items': 0}
     };
   }
@@ -65,8 +51,8 @@ Future<dynamic> getContainerData(
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
   String _containerId = "";
-  String _owner = "";
-  String _localization = "";
+  String _address = "";
+  String _city = "";
   int _availableItems = 0;
 
   @override
@@ -75,8 +61,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     _containerId = widget.containerId;
     getContainerData(context, _containerId).then((dynamic value) {
       setState(() {
-        _owner = value['owner'].toString();
-        _localization = value['localization'].toString();
+        _address = value['address'].toString();
+        _city = value['city'].toString();
         _availableItems = value['_count']['items'];
       });
     });
@@ -86,18 +72,19 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
     return _containerId;
   }
 
-  String getOwner() {
-    return _owner;
+  String getAddress() {
+    return _address;
   }
 
-  String getLocalization() {
-    return _localization;
+  String getCity() {
+    return _city;
   }
 
-  int getAvalableItems() {
+  int getAvailableItems() {
     return _availableItems;
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -118,12 +105,21 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '$_localization par $_owner',
+                  '$_address, $_city',
                   key: const Key('container-details_title'),
                   style: TextStyle(
-                    fontSize: 36,
+                    fontSize: 32,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4682B4),
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                    shadows: [
+                      Shadow(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        blurRadius: 24,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -132,7 +128,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                   height: 200,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
+                      image: const DecorationImage(
                         image: AssetImage('assets/container.png'),
                         fit: BoxFit.cover,
                       )),
@@ -148,18 +144,19 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.colorScheme.background),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            'Il y a Actuellement $_availableItems articles disponibles',
+                            'Il y a actuellement $_availableItems articles disponible${_availableItems > 1 ? 's' : ''}',
                             key: const Key('container-details_article-list'),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
                             ),
                           ),
                         )
@@ -171,7 +168,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                 SizedBox(
                   width: double.infinity,
                   child: MyOutlinedButton(
-                    text: 'Afficher la liste des article',
+                    text: 'Afficher la liste des articles',
                     key: const Key('container-button_article-list-page'),
                     onPressed: () {
                       Navigator.push(

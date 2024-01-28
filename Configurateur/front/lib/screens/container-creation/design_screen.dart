@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -13,7 +16,6 @@ import 'package:go_router/go_router.dart';
 import '../../components/progress_bar.dart';
 import '../../components/recap_panel.dart';
 import '../../network/informations.dart';
-import '../../services/storage_service.dart';
 
 const List<String> faceList = <String>[
   'Devant',
@@ -24,13 +26,39 @@ const List<String> faceList = <String>[
   'Bas'
 ];
 
+class Design {
+  Design(this.face, this.design);
+
+  String face;
+  List<int> design;
+
+  Map<String, dynamic> toJson() => {
+        'face': face,
+        'design': design,
+      };
+
+  factory Design.fromJson(Map<String, dynamic> json) {
+    return Design(
+      json['face'] as String,
+      json['design'] as List<int>,
+    );
+  }
+}
+
 class DesignScreen extends StatefulWidget {
   const DesignScreen(
-      {super.key, this.lockers, this.amount, this.containerMapping});
+      {super.key,
+      this.lockers,
+      this.amount,
+      this.containerMapping,
+      this.id,
+      this.container});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
+  final String? id;
+  final String? container;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -51,25 +79,22 @@ class DesignScreenState extends State<DesignScreen> {
   int materialIndex = 1;
   FilePickerResult? picked;
   String face = faceList.first;
-  List<List<int>> designss = [];
+  List<Design> designss = [];
 
-  @override
-  void initState() {
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
     if (token != "") {
-      jwtToken = token;
+      jwtToken = token!;
     } else {
       context.go(
         '/login',
       );
     }
-    /*StorageService().readStorage('token').then((value) => {
-          if (value == null)
-            {context.go("/login")}
-          else
-            {
-              jwtToken = value,
-            }
-        });*/
+  }
+
+  @override
+  void initState() {
+    checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -81,48 +106,71 @@ class DesignScreenState extends State<DesignScreen> {
     if (widget.lockers != null) {
       decodeLockers();
     }
+    if (widget.container != null) {
+      decodeDesigns();
+    }
   }
 
   void decodeLockers() {
-    final decode = jsonDecode(widget.lockers!);
+    dynamic decode = jsonDecode(widget.lockers!);
 
     for (int i = 0; i < decode.length; i++) {
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
   }
 
-  Future<void> loadImage(bool unitTesting, {Uint8List? fileData}) async {
+  void decodeDesigns() {
+    dynamic container = jsonDecode(widget.container!);
+
+    dynamic decode = jsonDecode(container['designs']);
+
+    if (decode != null) {
+      for (int i = 0; i < decode.length; i++) {
+        loadImage(false,
+            fileData: Uint8List.fromList(decode[i]['design']),
+            faceLoad: int.parse(decode[i]['face']));
+      }
+    }
+
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
+  Future<void> loadImage(bool unitTesting,
+      {Uint8List? fileData, int? faceLoad}) async {
     if (fileData != null) {
       int faceIndex = 0;
       switch (face) {
         case 'Devant':
-          lockerss.add(Locker('design face avant', 50));
           faceIndex = 0;
           break;
         case 'Derrière':
-          lockerss.add(Locker('design face arrière', 50));
           faceIndex = 1;
           break;
         case 'Bas':
-          lockerss.add(Locker('design face du dessous', 50));
           faceIndex = 4;
           break;
         case 'Gauche':
-          lockerss.add(Locker('design côté gauche', 50));
           faceIndex = 3;
           break;
         case 'Haut':
-          lockerss.add(Locker('design face du haut', 50));
           faceIndex = 2;
           break;
         case 'Droite':
-          lockerss.add(Locker('design côté droit', 50));
           faceIndex = 5;
           break;
         default:
-          lockerss.add(Locker('design face avant', 50));
           faceIndex = 0;
           break;
+      }
+      if (faceLoad != null) {
+        faceIndex = faceLoad;
+      } else {
+        lockerss.add(Locker('design personnalisé', 50));
+      }
+      if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
+        removeDesign(faceIndex);
       }
       objs[0].materials.add(FSp3dMaterial.black);
       objs[0].materials[materialIndex] = FSp3dMaterial.green.deepCopy()
@@ -130,7 +178,7 @@ class DesignScreenState extends State<DesignScreen> {
         ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
       objs[0].fragments[0].faces[faceIndex].materialIndex = materialIndex;
       objs[0].images.add(fileData);
-      designss.add(picked!.files.first.bytes!.toList());
+      designss.add(Design(faceIndex.toString(), fileData));
       imageIndex++;
       materialIndex++;
     }
@@ -172,6 +220,16 @@ class DesignScreenState extends State<DesignScreen> {
         faceIndex = 0;
         break;
     }
+    if (objs[0].fragments[0].faces[faceIndex].materialIndex == 0 &&
+        unitTesting == false) {
+      return;
+    }
+    for (int i = 0; i < designss.length; i++) {
+      if (designss[i].face == faceIndex.toString()) {
+        designss.removeAt(i);
+        break;
+      }
+    }
     removeDesign(faceIndex);
     objs[0].fragments[0].faces[faceIndex].materialIndex = 0;
 
@@ -189,24 +247,15 @@ class DesignScreenState extends State<DesignScreen> {
 
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
-      if (lockerss[i].type == 'design face avant' && faceIndex == 0) {
+      if (lockerss[i].type == 'design personnalisé') {
         lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face arrière' && faceIndex == 1) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face du dessous' &&
-          faceIndex == 4) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design côté gauche' && faceIndex == 3) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design face du haut' && faceIndex == 2) {
-        lockerss.removeAt(i);
-        return;
-      } else if (lockerss[i].type == 'design côté droit' && faceIndex == 5) {
-        lockerss.removeAt(i);
+        break;
+      }
+    }
+
+    for (int i = 0; i < designss.length; i++) {
+      if (designss[i].face == faceIndex.toString()) {
+        designss.removeAt(i);
         return;
       }
     }
@@ -228,40 +277,157 @@ class DesignScreenState extends State<DesignScreen> {
     return mapping;
   }
 
-  void goNext() async {
-    HttpService().request(
-      'http://$serverIp:3000/api/container/create',
-      <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      <String, dynamic>{
-        'designs': json.encode(designss),
-      },
-    ).then((value) {
-      if (value.statusCode != 200) {
-        return;
-      }
-      dynamic response = jsonDecode(value.body);
+  Widget openDialog() {
+    if (widget.container != null) {
+      return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
+    } else {
+      return SaveDialog();
+    }
+  }
 
-      var data = {
-        'id': response['id'],
-        'amount': sumPrice(),
-        'containerMapping': widget.containerMapping,
-        'lockers': jsonEncode(lockerss),
-      };
-      context.go("/container-creation/recap", extra: jsonEncode(data));
-    });
+  void saveContainer(String name) async {
+    var header = <String, String>{
+      'Authorization': jwtToken,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    if (widget.id == null) {
+      HttpService().request('http://$serverIp:3000/api/container/create',
+          header, <String, String>{
+        'containerMapping': widget.containerMapping!,
+        'designs': json.encode(designss),
+        'height': '5',
+        'width': '12',
+        'saveName': name,
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    } else {
+      HttpService().putRequest('http://$serverIp:3000/api/container/update',
+          header, <String, String>{
+        'id': widget.id!,
+        'containerMapping': widget.containerMapping!,
+        'price': sumPrice().toString(),
+        'designs': json.encode(designss),
+        'width': '12',
+        'height': '5',
+        'city': '',
+        'informations': '',
+        'address': '',
+        'saveName': name,
+      }).then((value) {
+        if (value.statusCode == 200) {
+          context.go("/confirmation-save");
+        } else {
+          Fluttertoast.showToast(
+            msg: "Echec de la sauvegarde",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+          );
+        }
+      });
+    }
+  }
+
+  void goNext() async {
+    if (widget.id == null) {
+      HttpService().request(
+        'http://$serverIp:3000/api/container/create',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, dynamic>{
+          'designs': json.encode(designss),
+          'height': '5',
+          'width': '12',
+        },
+      ).then((value) {
+        if (value.statusCode != 200) {
+          return;
+        }
+        dynamic response = jsonDecode(value.body);
+        var data = {
+          'id': response['id'],
+          'amount': sumPrice(),
+          'containerMapping': widget.containerMapping,
+          'lockers': jsonEncode(lockerss),
+          'container': jsonEncode(response),
+        };
+        context.go("/container-creation/recap", extra: jsonEncode(data));
+      });
+    } else {
+      HttpService().putRequest(
+        'http://$serverIp:3000/api/container/update',
+        <String, String>{
+          'Authorization': jwtToken,
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+        <String, dynamic>{
+          'id': widget.id!,
+          'containerMapping': widget.containerMapping!,
+          'price': sumPrice().toString(),
+          'designs': json.encode(designss),
+          'width': '12',
+          'height': '5',
+          'city': '',
+          'informations': '',
+          'address': '',
+        },
+      ).then((value) {
+        if (value.statusCode != 200) {
+          return;
+        }
+        dynamic response = jsonDecode(value.body);
+        var data = {
+          'id': response['id'],
+          'amount': sumPrice(),
+          'containerMapping': widget.containerMapping,
+          'lockers': jsonEncode(lockerss),
+          'container': jsonEncode(response),
+        };
+        context.go("/container-creation/recap", extra: jsonEncode(data));
+      });
+    }
   }
 
   void goPrevious() {
-    var data = {
-      'amount': sumPrice(),
-      'containerMapping': getContainerMapping(),
-      'lockers': jsonEncode(lockerss),
-    };
-    context.go("/container-creation", extra: jsonEncode(data));
+    if (widget.container != null) {
+      dynamic decode = jsonDecode(widget.container!);
+      decode['designs'] = jsonEncode(designss);
+      decode['containerMapping'] = widget.containerMapping;
+
+      var data = {
+        'id': widget.id,
+        'container': jsonEncode(decode),
+      };
+      context.go("/container-creation", extra: jsonEncode(data));
+    } else {
+      dynamic design = jsonEncode(designss);
+
+      var container = {
+        'containerMapping': widget.containerMapping!,
+        'designs': design!,
+        'height': '5',
+        'width': '12',
+      };
+
+      var data = {
+        'container': jsonEncode(container),
+      };
+      context.go("/container-creation", extra: jsonEncode(data));
+    }
   }
 
   Widget fileName() {
@@ -399,7 +565,12 @@ class DesignScreenState extends State<DesignScreen> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockerss,
-                      onSaved: () => {},
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
                     )),
               ),
             ),

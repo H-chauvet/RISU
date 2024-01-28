@@ -43,6 +43,8 @@ model Item {
 	createdAt			DateTime		@default(now())
 	containerId			Int?
 	price				Float
+  image       String?
+  description String?
 }
 
 model Container {
@@ -51,14 +53,16 @@ model Container {
   organization     Organization? @relation(fields: [organizationId], references: [id])
   organizationId   Int?
   containerMapping String?
-  adress           String?
+  address           String?
   city             String?
   price            Float?
   width            Float?
   height           Float?
-  designs          String @db.LongText
+  designs          String? @db.LongText
   informations     String? @db.LongText
   object				   Item[]
+  paid             Boolean       @default(false)
+  saveName         String?
 }
 
 model Feedbacks {

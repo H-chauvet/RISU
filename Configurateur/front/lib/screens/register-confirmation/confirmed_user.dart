@@ -22,20 +22,32 @@ class ConfirmedUser extends StatefulWidget {
 /// page de confirmation d'enregistrement pour le configurateur
 class ConfirmedUserState extends State<ConfirmedUser> {
   String jwtToken = '';
+  dynamic response;
 
   @override
   void initState() {
-    http.post(
-      Uri.parse('http://$serverIp:3000/api/auth/confirmed-register'),
-      headers: <String, String>{
-        'Authorization': jwtToken,
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: jsonEncode(<String, String>{
-        'uuid': widget.params,
-      }),
-    );
+    http
+        .post(
+          Uri.parse('http://$serverIp:3000/api/auth/confirmed-register'),
+          headers: <String, String>{
+            'Authorization': jwtToken,
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: jsonEncode(<String, String>{
+            'uuid': widget.params,
+          }),
+        )
+        .then((value) => {
+              if (value.statusCode == 200)
+                {
+                  response = jsonDecode(value.body),
+                  storageService.writeStorage(
+                    'token',
+                    response['accessToken'],
+                  ),
+                }
+            });
     super.initState();
   }
 
