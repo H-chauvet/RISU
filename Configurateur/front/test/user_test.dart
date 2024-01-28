@@ -37,9 +37,9 @@ void main() {
       ),
     );
 
-    expect(find.text('prénom : John'), findsOneWidget);
-    expect(find.text('nom : Doe'), findsOneWidget);
-    expect(find.text('email : john.doe@example.com'), findsOneWidget);
+    expect(find.text('Prénom : John'), findsOneWidget);
+    expect(find.text('Nom : Doe'), findsOneWidget);
+    expect(find.text('Email : john.doe@example.com'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
@@ -60,10 +60,10 @@ void main() {
         ),
       ),
     );
-    expect(find.text('prénom : John'), findsOneWidget);
-    expect(find.text('nom : Doe'), findsOneWidget);
-    expect(find.text('entreprise : company'), findsOneWidget);
-    expect(find.text('email : john.doe@example.com'), findsOneWidget);
+    expect(find.text('Prénom : John'), findsOneWidget);
+    expect(find.text('Nom : Doe'), findsOneWidget);
+    expect(find.text(' Entreprise : company'), findsOneWidget);
+    expect(find.text('Email : john.doe@example.com'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
