@@ -19,9 +19,12 @@ class LandingPageState extends State<LandingPage> {
   Function() inscriptionFunction = () {};
   String adminButton = '';
   Function() adminFunction = () {};
+  String profileButton= '';
+  Function() profileFunction = () {};
   String? token = '';
   String? userMail = '';
 
+ 
   void checkToken() async {
     token = await storageService.readStorage('token');
 
@@ -52,18 +55,20 @@ class LandingPageState extends State<LandingPage> {
   @override
   void initState() {
     super.initState();
+    profileFunction = () => context.go("/profile");
     adminButton = "Administration";
     adminFunction = () => context.go("/admin");
+    profileButton = 'Mon profil';
     checkToken();
   }
 
   List<Widget> buttons() {
     List<Widget> list = [];
 
-    if (token != '' && userMail == "risu.admin@gmail.com") {
+    if (token != '') {
       list.add(
         ElevatedButton(
-          onPressed: adminFunction,
+          onPressed: profileFunction,
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color.fromARGB(255, 190, 189, 189),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -72,11 +77,29 @@ class LandingPageState extends State<LandingPage> {
             ),
           ),
           child: Text(
-            adminButton,
+            profileButton,
             style: const TextStyle(color: Colors.black),
           ),
         ),
       );
+      if (userMail == "risu.admin@gmail.com") {
+        list.add(
+          ElevatedButton(
+            onPressed: adminFunction,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            child: Text(
+              adminButton,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ),
+        );
+      }
     } else if (token != '' && userMail != "risu.admin@gmail.com") {
       list.add(
         ElevatedButton(

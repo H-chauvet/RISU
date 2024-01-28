@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:intl/intl.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import './app_routes.dart';
