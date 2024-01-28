@@ -24,6 +24,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       BuildContext context, String containerId) async {
     late http.Response response;
     try {
+      _loaderManager.setIsLoading(true);
       response = await http.get(
         Uri.parse('http://$serverIp:8080/api/container/$containerId'),
         headers: <String, String>{
@@ -45,7 +46,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         return {
           'address': '',
           'city': '',
-          '_count': {'items': 0}
+          '_count': {'available': 0}
         };
       }
     } catch (err, stacktrace) {
@@ -57,7 +58,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       return {
         'address': '',
         'city': '',
-        '_count': {'items': 0}
+        '_count': {'available': 0}
       };
     }
   }
@@ -70,7 +71,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       setState(() {
         _address = value['address'].toString();
         _city = value['city'].toString();
-        _availableItems = value['_count']['items'];
+        _availableItems = value['_count']['available'];
       });
     });
   }
