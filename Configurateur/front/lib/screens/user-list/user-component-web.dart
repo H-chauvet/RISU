@@ -47,8 +47,8 @@ class UserCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text("prénom : " + user.firstName),
-            subtitle: Text("nom : " + user.lastName),
+            title: Text("Prénom : " + user.firstName),
+            subtitle: Text("Nom : " + user.lastName),
             leading: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -56,9 +56,9 @@ class UserCard extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(user),
                 ),
-                Text("email : " + user.email),
+                Text("Email : " + user.email),
                 if (user.company != null)
-                  Text("entreprise : " + user.company),
+                  Text(" Entreprise : " + user.company),
               ],
             ),
           ),
