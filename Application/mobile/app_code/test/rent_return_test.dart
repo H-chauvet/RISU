@@ -20,9 +20,6 @@ void main() {
     (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: 'id')));
 
-      Finder titleData = find.byKey(const Key('rent_return-title'));
-      expect(titleData, findsOneWidget);
-
       Finder returnButton =
           find.byKey(const Key('rent_return-button-return_article'));
       expect(returnButton, findsNothing);

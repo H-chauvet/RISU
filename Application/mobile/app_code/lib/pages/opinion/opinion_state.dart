@@ -35,6 +35,9 @@ class OpinionPageState extends State<OpinionPage> {
           'Authorization': 'Bearer ${userInformation?.token}',
         },
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 201) {
         _loaderManager.setIsLoading(false);
         final data = json.decode(response.body);
@@ -66,7 +69,9 @@ class OpinionPageState extends State<OpinionPage> {
   void postOpinion(note, comment) async {
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/opinion'),
         headers: <String, String>{
@@ -78,6 +83,9 @@ class OpinionPageState extends State<OpinionPage> {
           'comment': comment,
         }),
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 201) {
         _loaderManager.setIsLoading(false);
         if (context.mounted) {
