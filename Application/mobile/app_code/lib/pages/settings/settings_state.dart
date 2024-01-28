@@ -128,9 +128,9 @@ class SettingsPageState extends State<SettingsPage> {
                       locked: false,
                     ),
                     const SizedBox(height: 8),
-                    const MyParameter(
-                      goToPage: ThemeSettingsPage(),
+                    const MyParameterModal(
                       title: 'Thème',
+                      modalContent: ThemeChangeModalContent(),
                       paramIcon: Icon(Icons.brush),
                     ),
                     const SizedBox(height: 24),

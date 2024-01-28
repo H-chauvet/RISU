@@ -1,5 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -9,279 +18,706 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late String firstName;
+  late String lastName;
+  late DateTime createdDate;
+  late String formattedDate;
+  late String company;
+  String userMail = '';
+
+  Future<void> fetchUserDetails(String email) async {
+    final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
+
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> userDetails = json.decode(response.body);
+        debugPrint('User details: $userDetails');
+
+        setState(() {
+          firstName = userDetails['firstName'];
+          lastName = userDetails['lastName'];
+          createdDate = DateTime.parse(userDetails['createdAt']);
+          formattedDate = DateFormat('dd/MM/yyyy').format(createdDate);
+          company = userDetails['company'];
+        });
+      } else {
+        debugPrint(
+            'Failed to fetch user details. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      debugPrint('Error fetching user details: $error');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    MyAlertTest.checkSignInStatus(context);
+    storageService.getUserMail().then((value) {
+      userMail = value;
+      MyAlertTest.checkSignInStatus(context);
+      fetchUserDetails(userMail);
+    });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(70, 130, 180, 1),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Image.asset(
-              'assets/logo.png',
-              width: 150,
-              height: 150,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+  Future<void> showEditPopupName(BuildContext context, String initialFirstName,
+      String initialLastName, Function(String, String) onEdit) async {
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController lastNameController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 120.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return const Color.fromARGB(255, 199, 199, 199);
-                        }
-                        return const Color.fromARGB(255, 255, 255, 255);
-                      },
-                    ),
-                  ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
-                  child: const Text('Accueil'),
+                TextField(
+                  controller: firstNameController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau prénom", hintText: initialFirstName),
                 ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return const Color.fromARGB(255, 199, 199, 199);
-                        }
-                        return const Color.fromARGB(255, 255, 255, 255);
-                      },
-                    ),
-                  ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
-                  child: const Text('Créer un conteneur'),
-                ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return const Color.fromARGB(255, 199, 199, 199);
-                        }
-                        return const Color.fromARGB(255, 255, 255, 255);
-                      },
-                    ),
-                  ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
-                  child: const Text('Nos offres'),
-                ),
-                TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                        if (states.contains(MaterialState.hovered)) {
-                          return const Color.fromARGB(255, 199, 199, 199);
-                        }
-                        return const Color.fromARGB(255, 255, 255, 255);
-                      },
-                    ),
-                  ),
-                  onPressed: () {
-                    // Actions à effectuer lors du clic sur le texte
-                  },
-                  child: const Text('Nous contacter'),
+                const SizedBox(height: 10.0),
+                TextField(
+                  controller: lastNameController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom", hintText: initialLastName),
                 ),
               ],
             ),
+          ),
+          actions: [
             ElevatedButton(
               onPressed: () {
-                // Actions to perform when the button is pressed
+                Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
+                backgroundColor: Colors.red,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text('Déconnexion',
-                  style: TextStyle(color: Color.fromRGBO(143, 47, 47, 1))),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-details/$userMail";
+                var body = {
+                  'firstName': firstNameController.text,
+                  'lastName': lastNameController.text,
+                };
+
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
+
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Modification effectuée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Erreur durant l'envoi la modification des informations",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+
+                onEdit(firstNameController.text, lastNameController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
             ),
           ],
-        ),
+        );
+      },
+    );
+  }
+
+  Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
+      Function(String) onEdit) async {
+    TextEditingController companyController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 60.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: companyController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom d'entreprise",
+                      hintText: initialCompany),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-company/$userMail";
+                var body = {
+                  'company': companyController.text,
+                };
+
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
+
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Entreprise modifiée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Erreur durant l'envoi la modification de l'entreprise",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+                onEdit(companyController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showEditPopupMail(BuildContext context, String? initialMail,
+      Function(String) onEdit) async {
+    TextEditingController mailController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 60.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: mailController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau mail", hintText: initialMail),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-mail";
+                var body = {
+                  'oldMail': userMail,
+                  'newMail': mailController.text,
+                };
+
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
+
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Email modifié avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "Erreur durant l'envoi la modification de l'email",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+                onEdit(mailController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showEditPopupPassword(BuildContext context,
+      String initialPassword, Function(String) onEdit) async {
+    TextEditingController passwordController = TextEditingController();
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 60.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau mot de passe",
+                      hintText: initialPassword),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-password/$userMail";
+                var body = {
+                  'password': passwordController.text,
+                };
+
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
+
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Mot de passe modifié avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Erreur durant l'envoi la modification du mot de passe",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+
+                onEdit(passwordController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(
+        'Mon profil',
+        context: context,
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Row(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom:
-                          660.0), // Ajuster la valeur top pour déplacer les textes vers le haut
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Centrer l'icône et le texte
-                        children: const [
-                          Text(
-                            'Informations personnelles',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(70, 130, 180, 1),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.edit,
-                              color: Color.fromARGB(
-                                  255, 65, 69, 71)), // Icône de crayon
-                        ],
-                      ),
-                      const SizedBox(
-                          height: 50), // Ajouter un espace de 10 pixels
-                      const Text(
-                        'Nom : Chauvet',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Prénom : Henri',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'E-Mail : henri.chauvet@epitech.eu',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'Mot de passe : ************',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                height: 800.0,
-                width: 2.0,
-                color: Colors.grey,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom:
-                          710.0), // Ajuster la valeur top pour déplacer les textes vers le haut
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .center, // Centrer l'icône et le texte
-                        children: const [
-                          Text(
-                            'Informations bancaires',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Color.fromRGBO(70, 130, 180, 1),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Icon(Icons.edit,
-                              color: Color.fromARGB(
-                                  255, 65, 69, 71)), // Icône de crayon
-                        ],
-                      ),
-                      const SizedBox(
-                          height: 50), // Ajouter un espace de 10 pixels
-                      const Text(
-                        'Type de paiement : Carte Bancaire',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      const Text(
-                        'N° Carte : 5132 **** **** **78',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+      body: Center(
+        child: Container(
+          width: 700.0,
+          height: 600.0,
+          decoration: BoxDecoration(
+            color: const Color.fromARGB(255, 231, 223, 223),
+            borderRadius: BorderRadius.circular(30.0),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xff4682B4).withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
               ),
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: const Color.fromRGBO(70, 130, 180, 1),
-        child: Container(
-          height: 45.0, // Hauteur de la barre de navigation
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Politique de confidentialité
-                },
-                child: const Text(
-                  'Politique de confidentialité',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
+              const SizedBox(height: 30),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    firstName,
+                    style: const TextStyle(
+                      color: Color(0xff4682B4),
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Verdana',
+                    ),
                   ),
-                ),
+                  const SizedBox(width: 10),
+                  Row(
+                    children: [
+                      Text(
+                        lastName,
+                        style: const TextStyle(
+                          color: Color(0xff4682B4),
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Verdana',
+                        ),
+                      ),
+                      const SizedBox(width: 5.0),
+                      InkWell(
+                        onTap: () async {
+                          await showEditPopupName(context, firstName, lastName,
+                              (String newFirstName, String newLastName) {
+                            setState(() {
+                              firstName = newFirstName;
+                              lastName = newLastName;
+                            });
+                          });
+                        },
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.grey,
+                          size: 26.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Conditions générales d'utilisation
-                },
-                child: const Text(
-                  'Conditions générales d\'utilisation',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
+              const SizedBox(height: 90),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'E-mail',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Verdana',
+                      ),
+                    ),
                   ),
-                ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          userMail,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        InkWell(
+                          onTap: () async {
+                            await showEditPopupMail(context, userMail,
+                                (String newMail) {
+                              setState(() {
+                                userMail = newMail;
+                              });
+                            });
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.grey,
+                            size: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () {
-                  // Action à effectuer lors de la sélection de Contact
-                },
-                child: const Text(
-                  'Contact',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.white, // Couleur de texte de votre choix
+              const SizedBox(height: 20),
+              const Divider(
+                color: Colors.black,
+                thickness: 2,
+                indent: 20,
+                endIndent: 20,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Entreprise',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Verdana',
+                      ),
+                    ),
                   ),
-                ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          company,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        InkWell(
+                          onTap: () async {
+                            await showEditPopupCompany(context, company,
+                                (String newCompany) {
+                              setState(() {
+                                company = newCompany;
+                              });
+                            });
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.grey,
+                            size: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              const Divider(
+                color: Colors.black,
+                thickness: 2,
+                indent: 20,
+                endIndent: 20,
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 20.0),
+                    child: Text(
+                      'Mot de passe',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Verdana',
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          '*********',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                        const SizedBox(width: 5.0),
+                        InkWell(
+                          onTap: () async {
+                            await showEditPopupPassword(context, "",
+                                (String newPassword) {
+                              setState(() {});
+                            });
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.grey,
+                            size: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.go("/my-container");
+                  },
+                  child: const Text("Mes sauvegardes")),
+              const Spacer(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.go("/");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: const Text(
+                          "Retour à l'accueil",
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    'Créé le : $formattedDate',
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Verdana',
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          storageService.removeStorage('token');
+                          storageService.removeStorage('tokenExpiration');
+                          context.go("/");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: const Text(
+                          "Déconnexion",
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
