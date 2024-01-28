@@ -93,7 +93,7 @@ void main() {
         find.byKey(const Key('login-textinput_email')), 'user@gmail.com');
 
     await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
-    await tester.pumpAndSettle(const Duration(milliseconds: 4000));
+    await tester.pump(const Duration(milliseconds: 4000));
 
     expect(find.byType(AlertDialog), findsOneWidget);
   });

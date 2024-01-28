@@ -16,10 +16,12 @@ void main() {
   });
 
   testWidgets(
-    'Container details should not be displayed from empty id',
+    'Article details from an empty articleId',
     (WidgetTester tester) async {
       await tester
           .pumpWidget(initPage(const ArticleDetailsPage(articleId: '')));
+
+      await tester.pumpAndSettle();
 
       Finder titleData = find.byKey(const Key('article-details_title'));
 

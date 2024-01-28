@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/loader.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
@@ -20,6 +21,7 @@ class LoginPageState extends State<LoginPage> {
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
+  final LoaderManager _loaderManager = LoaderManager();
 
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
@@ -36,6 +38,9 @@ class LoginPageState extends State<LoginPage> {
 
     late http.Response response;
     try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/login'),
         headers: <String, String>{
@@ -50,6 +55,9 @@ class LoginPageState extends State<LoginPage> {
             message: "Connexion refusée.");
       }
     }
+    setState(() {
+      _loaderManager.setIsLoading(false);
+    });
     if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
@@ -110,6 +118,9 @@ class LoginPageState extends State<LoginPage> {
 
   void apiResetPassword(BuildContext context) async {
     try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       if (_email == null) {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
@@ -125,6 +136,9 @@ class LoginPageState extends State<LoginPage> {
         },
         body: jsonEncode(<String, String>{'email': _email!}),
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 200) {
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
@@ -167,151 +181,154 @@ class LoginPageState extends State<LoginPage> {
         showLogo: true,
         showBurgerMenu: false,
       ),
-      body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        transformAlignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Connexion',
-              key: const Key('login-text_title'),
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 32,
-                color: context.select((ThemeProvider themeProvider) =>
-                    themeProvider.currentTheme.secondaryHeaderColor),
-                shadows: [
-                  Shadow(
-                    color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
-                    blurRadius: 24,
-                    offset: const Offset(0, 4),
+      body: (_loaderManager.getIsLoading())
+          ? Center(child: _loaderManager.getLoader())
+          : Container(
+              margin: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+              transformAlignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Connexion',
+                    key: const Key('login-text_title'),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 32,
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.secondaryHeaderColor),
+                      shadows: [
+                        Shadow(
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.secondaryHeaderColor),
+                          blurRadius: 24,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                ],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 32),
-            Column(
-              children: [
-                MyTextInput(
-                  key: const Key('login-textinput_email'),
-                  labelText: "Email",
-                  keyboardType: TextInputType.emailAddress,
-                  icon: Icons.email_outlined,
-                  onChanged: (value) => _email = value,
-                ),
-                const SizedBox(height: 16),
-                MyTextInput(
-                  key: const Key('login-textinput_password'),
-                  labelText: "Mot de passe",
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: !_isPasswordVisible,
-                  icon: Icons.lock_outline,
-                  rightIcon: _isPasswordVisible
-                      ? Icons.visibility_off
-                      : Icons.visibility,
-                  rightIconOnPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                  onChanged: (value) => _password = value,
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Column(
+                  const SizedBox(height: 32),
+                  Column(
                     children: [
-                      TextButton(
-                        key: const Key('login-textbutton_resetpassword'),
-                        onPressed: () {
+                      MyTextInput(
+                        key: const Key('login-textinput_email'),
+                        labelText: "Email",
+                        keyboardType: TextInputType.emailAddress,
+                        icon: Icons.email_outlined,
+                        onChanged: (value) => _email = value,
+                      ),
+                      const SizedBox(height: 16),
+                      MyTextInput(
+                        key: const Key('login-textinput_password'),
+                        labelText: "Mot de passe",
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: !_isPasswordVisible,
+                        icon: Icons.lock_outline,
+                        rightIcon: _isPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        rightIconOnPressed: () {
                           setState(() {
-                            apiResetPassword(context);
+                            _isPasswordVisible = !_isPasswordVisible;
                           });
                         },
-                        child: Text(
-                          'Mot de passe oublié ?',
-                          style: TextStyle(
-                            fontSize: 12,
-                            decoration: TextDecoration.underline,
-                            color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
-                          ),
+                        onChanged: (value) => _password = value,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Column(
+                          children: [
+                            TextButton(
+                              key: const Key('login-textbutton_resetpassword'),
+                              onPressed: () {
+                                setState(() {
+                                  apiResetPassword(context);
+                                });
+                              },
+                              child: Text(
+                                'Mot de passe oublié ?',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  decoration: TextDecoration.underline,
+                                  color: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider.currentTheme
+                                              .secondaryHeaderColor),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
-            OutlinedButton(
-              key: const Key('login-button_signin'),
-              onPressed: () {
-                apiLogin().then((value) => {
-                      if (value)
-                        {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const HomePage();
-                              },
-                            ),
-                            (route) => false,
-                          ),
-                        }
-                    });
-              },
-              style: OutlinedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0),
-                ),
-                side: BorderSide(
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
-                  width: 3.0,
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 48.0,
-                  vertical: 16.0,
-                ),
-              ),
-              child: Text(
-                'Se connecter',
-                style: TextStyle(
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
-                  fontSize: 16.0,
-                ),
-              ),
-            ),
-            TextButton(
-              key: const Key('login-textbutton_gotosignup'),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const SignupPage();
+                  OutlinedButton(
+                    key: const Key('login-button_signin'),
+                    onPressed: () {
+                      apiLogin().then((value) => {
+                            if (value)
+                              {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return const HomePage();
+                                    },
+                                  ),
+                                  (route) => false,
+                                ),
+                              }
+                          });
                     },
+                    style: OutlinedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                      side: BorderSide(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        width: 3.0,
+                      ),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 48.0,
+                        vertical: 16.0,
+                      ),
+                    ),
+                    child: Text(
+                      'Se connecter',
+                      style: TextStyle(
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                        fontSize: 16.0,
+                      ),
+                    ),
                   ),
-                );
-              },
-              child: Text(
-                'Pas de compte ? S\'inscrire',
-                style: TextStyle(
-                  fontSize: 14,
-                  decoration: TextDecoration.underline,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
-                ),
+                  TextButton(
+                    key: const Key('login-textbutton_gotosignup'),
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const SignupPage();
+                          },
+                        ),
+                      );
+                    },
+                    child: Text(
+                      'Pas de compte ? S\'inscrire',
+                      style: TextStyle(
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.secondaryHeaderColor),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            ),
     );
   }
 }
