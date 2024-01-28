@@ -16,120 +16,150 @@ void main() {
     tearDown(() {
       // This code runs after each test case.
     });
-  });
 
-  Finder infoTextFinder =
-      find.byKey(const Key('profile_info-text_informations'));
-  Finder firstNameFinder =
-      find.byKey(const Key('profile_info-text_field_firstname'));
-  Finder lastNameFinder =
-      find.byKey(const Key('profile_info-text_field_lastname'));
-  Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
-  Finder updateInformationButtonFinder =
-      find.byKey(const Key('profile_info-button_update'));
-  Finder passwordTextFinder =
-      find.byKey(const Key('profile_info-text_password'));
-  Finder passwordFinder =
-      find.byKey(const Key('profile_info-text_field_current_password'));
-  Finder newPasswordFinder =
-      find.byKey(const Key('profile_info-text_field_new_password'));
-  Finder newPasswordConfirmationFinder = find
-      .byKey(const Key('profile_info-text_field_new_password_confirmation'));
-  Finder updatePasswordButtonFinder =
-      find.byKey(const Key('profile_info-button_update_password'));
+    Finder infoTextFinder =
+        find.byKey(const Key('profile_info-text_informations'));
+    Finder firstNameFinder =
+        find.byKey(const Key('profile_info-text_field_firstname'));
+    Finder lastNameFinder =
+        find.byKey(const Key('profile_info-text_field_lastname'));
+    Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
+    Finder updateInformationButtonFinder =
+        find.byKey(const Key('profile_info-button_update'));
+    Finder passwordTextFinder =
+        find.byKey(const Key('profile_info-text_password'));
+    Finder passwordFinder =
+        find.byKey(const Key('profile_info-text_field_current_password'));
+    Finder newPasswordFinder =
+        find.byKey(const Key('profile_info-text_field_new_password'));
+    Finder newPasswordConfirmationFinder = find
+        .byKey(const Key('profile_info-text_field_new_password_confirmation'));
+    Finder updatePasswordButtonFinder =
+        find.byKey(const Key('profile_info-button_update_password'));
 
-  Finder okButtonFinder = find.byKey(const Key('alertdialog-button_ok'));
+    Finder okButtonFinder = find.byKey(const Key('alertdialog-button_ok'));
 
-  testWidgets('UI elements', (WidgetTester tester) async {
-    userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const ProfileInformationsPage()));
+    testWidgets('UI elements', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      var aaaa = initPage(const ProfileInformationsPage());
+      await tester.pumpWidget(aaaa);
 
-    expect(infoTextFinder, findsOneWidget);
-    expect(firstNameFinder, findsOneWidget);
-    expect(lastNameFinder, findsOneWidget);
-    expect(emailFinder, findsOneWidget);
-    expect(updateInformationButtonFinder, findsOneWidget);
-    expect(passwordTextFinder, findsOneWidget);
-    expect(passwordFinder, findsOneWidget);
-    expect(newPasswordFinder, findsOneWidget);
-    expect(newPasswordConfirmationFinder, findsOneWidget);
-    expect(updatePasswordButtonFinder, findsOneWidget);
-    expect(find.text(userInformation!.firstName!), findsOneWidget);
-    expect(find.text(userInformation!.lastName!), findsOneWidget);
-    expect(find.text(userInformation!.email), findsOneWidget);
-  });
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
-  testWidgets('UI expected behavior', (WidgetTester tester) async {
-    userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const ProfileInformationsPage()));
+      expect(infoTextFinder, findsOneWidget);
+      expect(firstNameFinder, findsOneWidget);
+      expect(lastNameFinder, findsOneWidget);
+      expect(emailFinder, findsOneWidget);
+      expect(updateInformationButtonFinder, findsOneWidget);
+      expect(passwordTextFinder, findsOneWidget);
+      expect(passwordFinder, findsOneWidget);
+      expect(newPasswordFinder, findsOneWidget);
+      expect(newPasswordConfirmationFinder, findsOneWidget);
+      expect(updatePasswordButtonFinder, findsOneWidget);
+      expect(find.text(userInformation!.firstName!), findsOneWidget);
+      expect(find.text(userInformation!.lastName!), findsOneWidget);
+      expect(find.text(userInformation!.email), findsOneWidget);
+    });
 
-    await tester.enterText(firstNameFinder, 'firstNameTest');
-    await tester.enterText(lastNameFinder, 'lastNameTest');
-    await tester.enterText(emailFinder, 'emailTest@gmail.com');
-    await tester.tap(updateInformationButtonFinder);
-    await tester.pumpAndSettle();
+    testWidgets('UI expected behavior', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      var aaaa = initPage(const ProfileInformationsPage());
+      await tester.pumpWidget(aaaa);
 
-    await tester.enterText(passwordFinder, 'current_password');
-    await tester.enterText(newPasswordFinder, 'new_password');
-    await tester.enterText(newPasswordConfirmationFinder, 'new_password');
-    // await tester.tap(updatePasswordButtonFinder);
-    await tester.pumpAndSettle();
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
-    expect(okButtonFinder, findsOneWidget);
-    await tester.tap(okButtonFinder);
-    await tester.pumpAndSettle();
-  });
+      await tester.enterText(firstNameFinder, 'firstNameTest');
+      await tester.enterText(lastNameFinder, 'lastNameTest');
+      await tester.enterText(emailFinder, 'emailTest@gmail.com');
+      await tester.tap(updateInformationButtonFinder);
+      await tester.pumpAndSettle();
 
-  testWidgets('UI unexpected behavior', (WidgetTester tester) async {
-    userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const ProfileInformationsPage()));
+      await tester.enterText(passwordFinder, 'current_password');
+      await tester.enterText(newPasswordFinder, 'new_password');
+      await tester.enterText(newPasswordConfirmationFinder, 'new_password');
+      // await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
 
-    await tester.enterText(firstNameFinder, '');
-    await tester.enterText(lastNameFinder, '');
-    await tester.enterText(emailFinder, '');
-    await tester.tap(updateInformationButtonFinder);
-    await tester.pumpAndSettle();
+      expect(okButtonFinder, findsOneWidget);
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+    });
 
-    expect(okButtonFinder, findsOneWidget);
-    await tester.tap(okButtonFinder);
-    await tester.pumpAndSettle();
+    testWidgets('UI unexpected behavior', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      var aaaa = initPage(const ProfileInformationsPage());
+      await tester.pumpWidget(aaaa);
 
-    await tester.enterText(emailFinder, 'invalid_email');
-    await tester.tap(updateInformationButtonFinder);
-    await tester.pumpAndSettle();
-    expect(okButtonFinder, findsOneWidget);
-    await tester.tap(okButtonFinder);
-    await tester.pumpAndSettle();
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
-    // await tester.tap(updatePasswordButtonFinder);
-    await tester.pumpAndSettle();
+      await tester.enterText(firstNameFinder, '');
+      await tester.enterText(lastNameFinder, '');
+      await tester.enterText(emailFinder, '');
+      await tester.tap(updateInformationButtonFinder);
+      await tester.pumpAndSettle();
 
-    /*expect(okButtonFinder, findsOneWidget);
+      expect(okButtonFinder, findsOneWidget);
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      await tester.enterText(emailFinder, 'invalid_email');
+      await tester.tap(updateInformationButtonFinder);
+      await tester.pumpAndSettle();
+      expect(okButtonFinder, findsOneWidget);
+      await tester.tap(okButtonFinder);
+      await tester.pumpAndSettle();
+
+      // await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
+
+      /*expect(okButtonFinder, findsOneWidget);
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();*/
 
-    await tester.enterText(passwordFinder, 'current_password');
-    // await tester.tap(updatePasswordButtonFinder);
-    await tester.pumpAndSettle();
+      await tester.enterText(passwordFinder, 'current_password');
+      // await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
 
-    /*expect(okButtonFinder, findsOneWidget);
+      /*expect(okButtonFinder, findsOneWidget);
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();*/
 
-    await tester.enterText(newPasswordFinder, 'new_password');
-    // await tester.tap(updatePasswordButtonFinder);
-    await tester.pumpAndSettle();
+      await tester.enterText(newPasswordFinder, 'new_password');
+      // await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
 
-    /*expect(okButtonFinder, findsOneWidget);
+      /*expect(okButtonFinder, findsOneWidget);
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();*/
 
-    await tester.enterText(newPasswordConfirmationFinder, 'wrong_password');
-    // await tester.tap(updatePasswordButtonFinder);
-    await tester.pumpAndSettle();
+      await tester.enterText(newPasswordConfirmationFinder, 'wrong_password');
+      // await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
 
-    /*expect(okButtonFinder, findsOneWidget);
+      /*expect(okButtonFinder, findsOneWidget);
     await tester.tap(okButtonFinder);
     await tester.pumpAndSettle();*/
+    });
   });
 }
