@@ -48,7 +48,9 @@ class RentArticlePageState extends State<RentArticlePage> {
     final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/rent/article'),
         headers: <String, String>{
@@ -60,8 +62,10 @@ class RentArticlePageState extends State<RentArticlePage> {
           'duration': _rentalHours.toString(),
         }),
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         if (context.mounted) {
           Navigator.pushAndRemoveUntil(
             context,
@@ -77,14 +81,12 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         }
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'rentArticle',
               message: "Erreur lors de la location.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
@@ -95,7 +97,9 @@ class RentArticlePageState extends State<RentArticlePage> {
   Future<Map<String, dynamic>?> createPaymentIntent(
       String amount, String currency) async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final response = await http.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
@@ -107,21 +111,19 @@ class RentArticlePageState extends State<RentArticlePage> {
           'currency': currency,
         },
       );
-
-      final responseData = json.decode(response.body);
-
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
+        final responseData = json.decode(response.body);
         return responseData;
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'createPaymentIntent',
               message: "Echec de la création du paiement.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Echec de la création du paiement.");

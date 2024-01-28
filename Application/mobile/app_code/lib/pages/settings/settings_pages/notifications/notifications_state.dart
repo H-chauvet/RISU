@@ -32,7 +32,9 @@ class NotificationsPageState extends State<NotificationsPage> {
 
   Future<http.Response?> saveNotifications() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/notifications'),
         headers: <String, String>{
@@ -45,8 +47,10 @@ class NotificationsPageState extends State<NotificationsPage> {
           'newsOffersRisu': isNewsOffersChecked,
         }),
       );
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         setState(() {
           userInformation!.notifications = [
             isFavoriteItemsAvailableChecked,
@@ -56,7 +60,6 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'saveNotifications',
               message:
@@ -64,7 +67,6 @@ class NotificationsPageState extends State<NotificationsPage> {
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:

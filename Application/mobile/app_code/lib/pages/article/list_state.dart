@@ -21,7 +21,9 @@ class ArticleListState extends State<ArticleListPage> {
     late http.Response response;
 
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.get(
         Uri.parse(
             'http://$serverIp:8080/api/container/$containerId/articleslist'),
@@ -29,16 +31,15 @@ class ArticleListState extends State<ArticleListPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
-        await Future.delayed(const Duration(milliseconds: 500));
-        _loaderManager.setIsLoading(false);
         return responseData;
       } else if (response.statusCode == 204) {
-        _loaderManager.setIsLoading(false);
         return [];
       }
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printServerResponse(context, response, 'getItemsData',
             message:
@@ -46,7 +47,6 @@ class ArticleListState extends State<ArticleListPage> {
       }
       return [];
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: 'Connexion refusée.');

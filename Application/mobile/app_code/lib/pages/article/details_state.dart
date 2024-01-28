@@ -25,16 +25,20 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     late http.Response response;
 
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.get(
         Uri.parse('http://$serverIp:8080/api/article/$articleId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
-        _loaderManager.setIsLoading(false);
         return responseData;
       } else {
         if (context.mounted) {
@@ -43,7 +47,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   "Une erreur est survenue lors de la récupération des données");
         }
       }
-      _loaderManager.setIsLoading(false);
       return {
         'id': '',
         'containerId': '',
@@ -56,7 +59,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
       }
-      _loaderManager.setIsLoading(false);
       return {
         'id': '',
         'containerId': '',

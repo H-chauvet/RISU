@@ -45,7 +45,9 @@ class SignupPageState extends State<SignupPage> {
     }
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/signup'),
         headers: <String, String>{
@@ -54,8 +56,10 @@ class SignupPageState extends State<SignupPage> {
         body: jsonEncode(
             <String, String>{'email': _email!, 'password': _password!}),
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -65,7 +69,6 @@ class SignupPageState extends State<SignupPage> {
           return true;
         }
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'apiSignup',
               message: "Adresse email invalide.");
@@ -74,7 +77,6 @@ class SignupPageState extends State<SignupPage> {
       }
       return false;
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");

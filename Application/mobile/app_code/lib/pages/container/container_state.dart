@@ -23,17 +23,20 @@ class ContainerPageState extends State<ContainerPage> {
 
   void getContainer() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final response = await http.get(
         Uri.parse('http://$serverIp:8080/api/container/listall'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
       if (response.statusCode == 200) {
         dynamic responseData = json.decode(response.body);
-        await Future.delayed(const Duration(milliseconds: 500));
-        _loaderManager.setIsLoading(false);
         final List<dynamic> containersData = responseData;
         setState(() {
           containers = containersData
@@ -41,13 +44,11 @@ class ContainerPageState extends State<ContainerPage> {
               .toList();
         });
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'getContainer');
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace);
       }

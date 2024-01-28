@@ -38,7 +38,9 @@ class LoginPageState extends State<LoginPage> {
 
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/login'),
         headers: <String, String>{
@@ -48,14 +50,15 @@ class LoginPageState extends State<LoginPage> {
             <String, String>{'email': _email!, 'password': _password!}),
       );
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
       }
     }
-    if (response.statusCode == 201) {
+    setState(() {
       _loaderManager.setIsLoading(false);
+    });
+    if (response.statusCode == 201) {
       try {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
@@ -80,7 +83,6 @@ class LoginPageState extends State<LoginPage> {
         return false;
       }
     } else {
-      _loaderManager.setIsLoading(false);
       try {
         final jsonData = jsonDecode(response.body);
         if (jsonData.containsKey('message')) {
@@ -104,7 +106,6 @@ class LoginPageState extends State<LoginPage> {
           }
         }
       } catch (err, stacktrace) {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printCatchError(context, err, stacktrace,
               message: "Une erreur est survenue lors de la connexion.");
@@ -117,7 +118,9 @@ class LoginPageState extends State<LoginPage> {
 
   void apiResetPassword(BuildContext context) async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       if (_email == null) {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
@@ -133,8 +136,10 @@ class LoginPageState extends State<LoginPage> {
         },
         body: jsonEncode(<String, String>{'email': _email!}),
       );
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -149,7 +154,6 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:

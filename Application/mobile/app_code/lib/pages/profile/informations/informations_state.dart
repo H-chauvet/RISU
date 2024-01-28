@@ -44,7 +44,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
 
   Future<void> fetchUserData(BuildContext context) async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final token = userInformation!.token;
       final response = await http.get(
           Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
@@ -52,8 +54,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
           });
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         final userData = json.decode(response.body)['user'];
         final String? userToken = userInformation!.token;
         userInformation = UserData.fromJson(userData, userToken!);
@@ -61,13 +65,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         newLastName = '';
         newEmail = '';
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'fetchUserData');
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace);
       }
@@ -97,8 +99,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
         body['email'] = newEmail;
       }
-
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user'),
         headers: <String, String>{
@@ -107,9 +110,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         },
         body: jsonEncode(body),
       );
-
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         json.decode(response.body);
         if (context.mounted) {
           await fetchUserData(context);
@@ -121,7 +125,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           );
         }
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'updateUser',
               message:
@@ -129,7 +132,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
@@ -166,8 +168,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
 
       final token = userInformation!.token;
-
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final response = await http.put(
         Uri.parse('http://$serverIp:8080/api/user/password'),
         headers: <String, String>{
@@ -179,9 +182,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           'newPassword': newPassword,
         }),
       );
-
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         json.decode(response.body);
         currentPasswordController.clear();
         newPasswordController.clear();
@@ -194,13 +198,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
-          _loaderManager.setIsLoading(false);
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: "Le mot de passe actuel est incorrect.");
           }
         } else {
-          _loaderManager.setIsLoading(false);
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: 'Impossible de mettre à jour le mot de passe.');
@@ -208,7 +210,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:

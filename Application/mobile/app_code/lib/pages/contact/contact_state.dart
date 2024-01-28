@@ -28,7 +28,9 @@ class ContactPageState extends State<ContactPage> {
   Future<bool> apiContact(String name, String email, String message) async {
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/contact'),
         headers: <String, String>{
@@ -38,14 +40,15 @@ class ContactPageState extends State<ContactPage> {
             <String, String>{'name': name, 'email': email, 'message': message}),
       );
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
       }
     }
-    if (response.statusCode == 201) {
+    setState(() {
       _loaderManager.setIsLoading(false);
+    });
+    if (response.statusCode == 201) {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
@@ -55,7 +58,6 @@ class ContactPageState extends State<ContactPage> {
         return true;
       }
     } else {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printServerResponse(context, response, 'apiContact',
             message: "Erreur lors de l'envoi du message.");

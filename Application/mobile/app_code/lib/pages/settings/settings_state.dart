@@ -27,7 +27,10 @@ class SettingsPageState extends State<SettingsPage> {
 
   Future<bool> apiDeleteAccount() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      ;
       final token = userInformation!.token;
       final userId = userInformation!.ID;
       final response = await http.delete(
@@ -37,11 +40,12 @@ class SettingsPageState extends State<SettingsPage> {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         return true;
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'apiDeleteAccount',
               message:
@@ -49,7 +53,6 @@ class SettingsPageState extends State<SettingsPage> {
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:

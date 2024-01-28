@@ -32,7 +32,9 @@ class RentalPageState extends State<RentalPage> {
 
   void getRentals() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final token = userInformation!.token;
       final response = await http.get(
         Uri.parse('http://$serverIp:8080/api/rents/'),
@@ -41,20 +43,20 @@ class RentalPageState extends State<RentalPage> {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 200) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
         setState(() {
           rentals = jsonDecode(response.body)['rentals'];
         });
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'getRentals',
               message: "Les locations n'ont pas pu être récupérées.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace);
       }

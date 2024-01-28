@@ -21,7 +21,9 @@ class OpinionPageState extends State<OpinionPage> {
 
   void getOpinions() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       var url = '';
       if (selectedStarFilter == 6) {
         url = 'http://$serverIp:8080/api/opinion';
@@ -35,8 +37,10 @@ class OpinionPageState extends State<OpinionPage> {
           'Authorization': 'Bearer ${userInformation?.token}',
         },
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         final data = json.decode(response.body);
         final opinions = data['result'];
         if (opinions == null) {
@@ -47,14 +51,12 @@ class OpinionPageState extends State<OpinionPage> {
           opinionsList = opinions;
         });
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'getOpinions',
               message: "Erreur lors de la récupération des avis.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
@@ -66,7 +68,9 @@ class OpinionPageState extends State<OpinionPage> {
   void postOpinion(note, comment) async {
     late http.Response response;
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       response = await http.post(
         Uri.parse('http://$serverIp:8080/api/opinion'),
         headers: <String, String>{
@@ -78,8 +82,10 @@ class OpinionPageState extends State<OpinionPage> {
           'comment': comment,
         }),
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         if (context.mounted) {
           getOpinions();
           await MyAlertDialog.showInfoAlertDialog(
@@ -89,14 +95,12 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'postOpinion',
               message: "Erreur lors de la sauvegarde de l'avis.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");

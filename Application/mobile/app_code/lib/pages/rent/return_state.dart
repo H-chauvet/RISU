@@ -40,7 +40,9 @@ class ReturnArticleState extends State<ReturnArticlePage> {
 
   void getRent() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.get(
         Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
@@ -48,20 +50,20 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         setState(() {
           rent = jsonDecode(response.body)['rental'];
         });
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'getRent',
               message: "La location n'a pas pu être récupérée.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "La location n'a pas pu être récupérée.");
@@ -71,7 +73,9 @@ class ReturnArticleState extends State<ReturnArticlePage> {
 
   void returnArticle() async {
     try {
-      _loaderManager.setIsLoading(true);
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.post(
         Uri.parse('http://$serverIp:8080/api/rent/${rent['id']}/return'),
@@ -80,20 +84,20 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           'Authorization': 'Bearer $token',
         },
       );
-      if (response.statusCode == 201) {
+      setState(() {
         _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
         setState(() {
           rent['ended'] = true;
         });
       } else {
-        _loaderManager.setIsLoading(false);
         if (context.mounted) {
           printServerResponse(context, response, 'returnArticle',
               message: "La location n'a pas pu être rendue.");
         }
       }
     } catch (err, stacktrace) {
-      _loaderManager.setIsLoading(false);
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "La location n'a pas pu être rendue.");
