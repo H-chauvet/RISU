@@ -481,17 +481,19 @@ app.get('/api/container/:containerId', async (req, res) => {
       select: {
         city: true,
         address: true,
-        _count: {
-          select: {   // count the number of items available related to the container
-            items: { where: { available: true } }
-          }
-        }
+        items: {
+          where: { available: true }
+        },
       },
     })
     if (!container) {
       return res.status(401).json("container not found")
     }
-    return res.status(200).json(container)
+    const _count = await database.prisma.Items.count({
+      where: { containerId: req.params.containerId },
+      select: { available: true }
+    })
+    return res.status(200).json({...container, _count})
   } catch (err) {
     console.error(err.message)
     return res.status(401).send(err.message)

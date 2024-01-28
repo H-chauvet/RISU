@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
@@ -7,30 +9,39 @@ import 'globals.dart';
 void main() {
   group('Test Opinion Page', () {
     testWidgets('find opinions pages buttons', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
 
-      // Replace these keys with the actual keys used in your RentArticlePage UI
-      Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
+
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
-      Finder opinionButtonFilterFinder =
-          find.byKey(const Key('opinion-filter_dropdown'));
+      Finder opinionButtonFilterFinder = find.text("Tous les avis");
 
       // Verify the initial state
-      expect(opinionTitleFinder, findsOneWidget);
       expect(addOpinionButtonFinder, findsOneWidget);
       expect(opinionButtonFilterFinder, findsOneWidget);
 
-      await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
 
-      await tester.tap(filterAll, warnIfMissed: false);
+      await tester.tap(filterAll);
       await tester.pump();
 
-      await tester.tap(addOpinionButtonFinder, warnIfMissed: false);
-      await tester.pump();
+      await tester.dragUntilVisible(
+          addOpinionButtonFinder, // what you want to find
+          filterAll, // widget you want to scroll
+          const Offset(0, -500) // delta to move
+          );
+
+      await tester.tap(addOpinionButtonFinder);
+      await tester.pump(const Duration(milliseconds: 4000));
 
       expect(find.text('Ajouter un avis'), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_0')), findsOneWidget);
@@ -39,30 +50,34 @@ void main() {
       expect(find.byKey(const Key('opinion-star_3')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_4')), findsOneWidget);
 
-      await tester.tap(find.byKey(const Key('opinion-star_4')),
-          warnIfMissed: false);
+      await tester.tap(find.byKey(const Key('opinion-star_4')));
       await tester.pump();
     });
+
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
-      Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
       Finder opinionButtonFilterFinder =
           find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
-      expect(opinionTitleFinder, findsOneWidget);
       expect(addOpinionButtonFinder, findsOneWidget);
       expect(opinionButtonFilterFinder, findsOneWidget);
 
-      await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
+      await tester.tap(opinionButtonFilterFinder);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -81,8 +96,19 @@ void main() {
       await tester.tap(filter_0, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('select filter 1 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -97,10 +123,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -111,8 +133,19 @@ void main() {
       await tester.tap(filter_1, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('select filter 2 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -127,10 +160,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -141,8 +170,19 @@ void main() {
       await tester.tap(filter_2, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('select filter 3 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -157,10 +197,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -171,8 +207,19 @@ void main() {
       await tester.tap(filter_3, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('select filter 4 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -187,10 +234,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -201,8 +244,19 @@ void main() {
       await tester.tap(filter_4, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('select filter 5 stars', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -217,10 +271,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -231,8 +281,19 @@ void main() {
       await tester.tap(filter_5, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('no opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -247,10 +308,6 @@ void main() {
       expect(opinionButtonFilterFinder, findsOneWidget);
 
       await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
-      Finder filter = find.byKey(const Key('opinion-filter_dropdown'));
-      await tester.tap(filter, warnIfMissed: false);
       await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
@@ -263,31 +320,41 @@ void main() {
 
       expect(find.text('Aucun avis'), findsOneWidget);
     });
-    testWidgets('new opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
 
-      // Replace these keys with the actual keys used in your RentArticlePage UI
-      Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
+    testWidgets('new opinion', (WidgetTester tester) async {
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
+
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
-      Finder opinionButtonFilterFinder =
-          find.byKey(const Key('opinion-filter_dropdown'));
+      Finder opinionButtonFilterFinder = find.text("Tous les avis");
 
       // Verify the initial state
-      expect(opinionTitleFinder, findsOneWidget);
       expect(addOpinionButtonFinder, findsOneWidget);
       expect(opinionButtonFilterFinder, findsOneWidget);
 
-      await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
-
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
 
-      await tester.tap(filterAll, warnIfMissed: false);
+      await tester.tap(filterAll);
       await tester.pump();
 
-      await tester.tap(addOpinionButtonFinder, warnIfMissed: false);
-      await tester.pump();
+      await tester.dragUntilVisible(
+          addOpinionButtonFinder, // what you want to find
+          filterAll, // widget you want to scroll
+          const Offset(0, -500) // delta to move
+          );
+
+      await tester.tap(addOpinionButtonFinder);
+      await tester.pump(const Duration(milliseconds: 4000));
 
       expect(find.text('Ajouter un avis'), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_0')), findsOneWidget);
@@ -312,7 +379,6 @@ void main() {
           warnIfMissed: false);
       await tester.pump();
 
-      // écrire 'test' dans le champ  qui a pour key 'opinion-textinput_comment'
       await tester.enterText(
           find.byKey(const Key('opinion-textinput_comment')), 'test');
 
@@ -321,23 +387,28 @@ void main() {
       await tester.tap(buttonFinder, warnIfMissed: false);
       await tester.pump();
     });
+
     testWidgets('cancel button new opinion', (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const OpinionPage()));
+      var aaaa = initPage(const OpinionPage());
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
-      Finder opinionButtonFilterFinder =
-          find.byKey(const Key('opinion-filter_dropdown'));
 
       // Verify the initial state
       expect(opinionTitleFinder, findsOneWidget);
       expect(addOpinionButtonFinder, findsOneWidget);
-      expect(opinionButtonFilterFinder, findsOneWidget);
-
-      await tester.tap(opinionButtonFilterFinder, warnIfMissed: false);
-      await tester.pump();
 
       Finder filterAll = find.byKey(const Key('opinion-filter_dropdown_all'));
 

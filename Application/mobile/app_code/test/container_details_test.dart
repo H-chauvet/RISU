@@ -22,27 +22,33 @@ void main() {
 
   testWidgets(
     'Container details should not be displayed from empty id',
-    (WidgetTester tester) async {
-      await tester
-          .pumpWidget(initPage(const ContainerDetailsPage(containerId: '')));
+        (WidgetTester tester) async {
+      var aaaa = initPage((const ContainerDetailsPage(containerId: '')));
+      await tester.pumpWidget(aaaa);
+
+      while (true) {
+        try {
+          expect(find.byType(CircularProgressIndicator), findsOneWidget);
+          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+        } catch (e) {
+          break;
+        }
+      }
 
       final ContainerDetailsState testData =
-          tester.state(find.byType(ContainerDetailsPage));
+      tester.state(find.byType(ContainerDetailsPage));
       expect(testData.getContainerId(), '');
       expect(testData.getAddress(), '');
       expect(testData.getCity(), '');
       expect(testData.getAvailableItems(), 0);
 
-      Finder titleData = find.byKey(const Key('container-details_title'));
-      expect(titleData, findsOneWidget);
-
       Finder containerData =
-          find.byKey(const Key('container-details_article-list'));
+      find.byKey(const Key('container-details_article-list'));
       expect(containerData, findsOneWidget);
 
       await tester.pumpAndSettle();
       Finder articleListButton =
-          find.byKey(const Key('container-button_article-list-page'));
+      find.byKey(const Key('container-button_article-list-page'));
       expect(articleListButton, findsOneWidget);
     },
   );

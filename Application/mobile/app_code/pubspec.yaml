@@ -45,6 +45,7 @@ dependencies:
   geolocator: ^10.1.0
   permission_handler: ^11.0.1
   flutter_stripe: ^7.0.0
+  flutter_local_notifications: ^16.3.2
 
 dev_dependencies:
   integration_test:
