@@ -10,7 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -28,14 +27,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> fetchUserDetails(String email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
-  
+
     try {
       final response = await http.get(Uri.parse(apiUrl));
-  
+
       if (response.statusCode == 200) {
         final Map<String, dynamic> userDetails = json.decode(response.body);
         debugPrint('User details: $userDetails');
-  
+
         setState(() {
           firstName = userDetails['firstName'];
           lastName = userDetails['lastName'];
@@ -44,7 +43,8 @@ class _ProfilePageState extends State<ProfilePage> {
           company = userDetails['company'];
         });
       } else {
-        debugPrint('Failed to fetch user details. Status code: ${response.statusCode}');
+        debugPrint(
+            'Failed to fetch user details. Status code: ${response.statusCode}');
       }
     } catch (error) {
       debugPrint('Error fetching user details: $error');
@@ -61,10 +61,11 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  Future<void> showEditPopupName(BuildContext context, String initialFirstName, String initialLastName, Function(String, String) onEdit) async {
+  Future<void> showEditPopupName(BuildContext context, String initialFirstName,
+      String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
-  
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -77,12 +78,14 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: firstNameController,
-                  decoration: InputDecoration(labelText: "Nouveau prénom", hintText: initialFirstName),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau prénom", hintText: initialFirstName),
                 ),
                 const SizedBox(height: 10.0),
                 TextField(
                   controller: lastNameController,
-                  decoration: InputDecoration(labelText: "Nouveau nom", hintText: initialLastName),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom", hintText: initialLastName),
                 ),
               ],
             ),
@@ -94,8 +97,8 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -104,40 +107,41 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl = "http://$serverIp:3000/api/auth/update-details/$userMail";
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-details/$userMail";
                 var body = {
                   'firstName': firstNameController.text,
                   'lastName': lastNameController.text,
                 };
-  
+
                 var response = await http.post(
                   Uri.parse(apiUrl),
                   body: body,
                 );
-  
+
                 if (response.statusCode == 200) {
                   Fluttertoast.showToast(
-                      msg: 'Modification effectuée avec succès',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                    );
+                    msg: 'Modification effectuée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification des informations",
+                      msg:
+                          "Erreur durant l'envoi la modification des informations",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red
-                    );
+                      backgroundColor: Colors.red);
                 }
-  
+
                 onEdit(firstNameController.text, lastNameController.text);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -150,9 +154,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Future<void> showEditPopupCompany(BuildContext context, String initialCompany, Function(String) onEdit) async {
+  Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
+      Function(String) onEdit) async {
     TextEditingController companyController = TextEditingController();
-  
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -165,7 +170,9 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: companyController,
-                  decoration: InputDecoration(labelText: "Nouveau nom d'entreprise", hintText: initialCompany),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom d'entreprise",
+                      hintText: initialCompany),
                 ),
               ],
             ),
@@ -177,8 +184,8 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -187,38 +194,39 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl = "http://$serverIp:3000/api/auth/update-company/$userMail";
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-company/$userMail";
                 var body = {
                   'company': companyController.text,
                 };
-  
+
                 var response = await http.post(
                   Uri.parse(apiUrl),
                   body: body,
                 );
-  
+
                 if (response.statusCode == 200) {
                   Fluttertoast.showToast(
-                      msg: 'Entreprise modifiée avec succès',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                    );
+                    msg: 'Entreprise modifiée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification de l'entreprise",
+                      msg:
+                          "Erreur durant l'envoi la modification de l'entreprise",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red
-                    );
+                      backgroundColor: Colors.red);
                 }
                 onEdit(companyController.text);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -230,10 +238,11 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-  
-  Future<void> showEditPopupMail(BuildContext context, String? initialMail, Function(String) onEdit) async {
+
+  Future<void> showEditPopupMail(BuildContext context, String? initialMail,
+      Function(String) onEdit) async {
     TextEditingController mailController = TextEditingController();
-  
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -246,7 +255,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: mailController,
-                  decoration: InputDecoration(labelText: "Nouveau mail", hintText: initialMail),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau mail", hintText: initialMail),
                 ),
               ],
             ),
@@ -258,8 +268,8 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -268,39 +278,39 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl = "http://$serverIp:3000/api/auth/update-mail";
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-mail";
                 var body = {
                   'oldMail': userMail,
                   'newMail': mailController.text,
                 };
-  
+
                 var response = await http.post(
                   Uri.parse(apiUrl),
                   body: body,
                 );
-  
+
                 if (response.statusCode == 200) {
                   Fluttertoast.showToast(
-                      msg: 'Email modifié avec succès',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                    );
+                    msg: 'Email modifié avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
                 } else {
                   Fluttertoast.showToast(
                       msg: "Erreur durant l'envoi la modification de l'email",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red
-                    );
+                      backgroundColor: Colors.red);
                 }
                 onEdit(mailController.text);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -312,10 +322,11 @@ class _ProfilePageState extends State<ProfilePage> {
       },
     );
   }
-  
-  Future<void> showEditPopupPassword(BuildContext context, String initialPassword, Function(String) onEdit) async {
+
+  Future<void> showEditPopupPassword(BuildContext context,
+      String initialPassword, Function(String) onEdit) async {
     TextEditingController passwordController = TextEditingController();
-  
+
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -328,7 +339,9 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextField(
                   controller: passwordController,
-                  decoration: InputDecoration(labelText: "Nouveau mot de passe", hintText: initialPassword),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau mot de passe",
+                      hintText: initialPassword),
                 ),
               ],
             ),
@@ -340,8 +353,8 @@ class _ProfilePageState extends State<ProfilePage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -350,39 +363,40 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl = "http://$serverIp:3000/api/auth/update-password/$userMail";
+                final String apiUrl =
+                    "http://$serverIp:3000/api/auth/update-password/$userMail";
                 var body = {
                   'password': passwordController.text,
                 };
-  
+
                 var response = await http.post(
                   Uri.parse(apiUrl),
                   body: body,
                 );
-  
+
                 if (response.statusCode == 200) {
                   Fluttertoast.showToast(
-                      msg: 'Mot de passe modifié avec succès',
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                    );
+                    msg: 'Mot de passe modifié avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification du mot de passe",
+                      msg:
+                          "Erreur durant l'envoi la modification du mot de passe",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red
-                    );
+                      backgroundColor: Colors.red);
                 }
-  
+
                 onEdit(passwordController.text);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
@@ -449,7 +463,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       const SizedBox(width: 5.0),
                       InkWell(
                         onTap: () async {
-                          await showEditPopupName(context, firstName, lastName, (String newFirstName, String newLastName) {
+                          await showEditPopupName(context, firstName, lastName,
+                              (String newFirstName, String newLastName) {
                             setState(() {
                               firstName = newFirstName;
                               lastName = newLastName;
@@ -484,36 +499,37 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const Spacer(),
                   Padding(
-                      padding: const EdgeInsets.only(right: 20.0),
-                      child: Row(
-                        children: [
-                          Text(
-                            userMail,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Verdana',
-                            ),
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Row(
+                      children: [
+                        Text(
+                          userMail,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
                           ),
-                          const SizedBox(width: 5.0),
-                          InkWell(
-                            onTap: () async {
-                              await showEditPopupMail(context, userMail, (String newMail) {
-                                setState(() {
-                                  userMail = newMail;
-                                });
+                        ),
+                        const SizedBox(width: 5.0),
+                        InkWell(
+                          onTap: () async {
+                            await showEditPopupMail(context, userMail,
+                                (String newMail) {
+                              setState(() {
+                                userMail = newMail;
                               });
-                            },
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.grey,
-                              size: 18.0,
-                            ),
+                            });
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            color: Colors.grey,
+                            size: 18.0,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
                 ],
               ),
               const SizedBox(height: 20),
@@ -556,12 +572,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(width: 5.0),
                         InkWell(
                           onTap: () async {
-                          await showEditPopupCompany(context, company, (String newCompany) {
-                            setState(() {
-                              company = newCompany;
+                            await showEditPopupCompany(context, company,
+                                (String newCompany) {
+                              setState(() {
+                                company = newCompany;
+                              });
                             });
-                          });
-                        },
+                          },
                           child: const Icon(
                             Icons.edit,
                             color: Colors.grey,
@@ -573,7 +590,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-              
               const SizedBox(height: 20),
               const Divider(
                 color: Colors.black,
@@ -614,10 +630,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(width: 5.0),
                         InkWell(
                           onTap: () async {
-                              await showEditPopupPassword(context, "", (String newPassword) {
-                                setState(() {});
-                              });
-                            },
+                            await showEditPopupPassword(context, "",
+                                (String newPassword) {
+                              setState(() {});
+                            });
+                          },
                           child: const Icon(
                             Icons.edit,
                             color: Colors.grey,
@@ -627,9 +644,21 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  
                 ],
               ),
+              const Spacer(),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.go("/my-container");
+                  },
+                  child: const Text("Mes sauvegardes")),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -652,7 +681,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: const Text(
                           "Retour à l'accueil",
                         ),
-                        
                       ),
                     ),
                   ),

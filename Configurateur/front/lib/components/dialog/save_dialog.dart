@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class SaveDialog extends StatefulWidget {
   SaveDialog({super.key, this.name});
 
-  String? name;
+  String? name = '';
 
   @override
   State<SaveDialog> createState() => SaveDialogState();
@@ -45,7 +45,7 @@ class SaveDialogState extends State<SaveDialog> {
               'Sauvegarder',
             ),
             onPressed: () {
-              if (widget.name == '') {
+              if (widget.name == '' || widget.name == null) {
                 widget.name =
                     'Sauvegarde - ${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}';
               }
