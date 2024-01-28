@@ -82,6 +82,9 @@ class LandingPageState extends State<LandingPage> {
           ),
         ),
       );
+      
+      list.add(const SizedBox(width: 20));
+      
       if (userMail == "risu.admin@gmail.com") {
         list.add(
           ElevatedButton(
