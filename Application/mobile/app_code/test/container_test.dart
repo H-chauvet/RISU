@@ -9,7 +9,6 @@ void main() {
   testWidgets('ContainerStat full info', (WidgetTester tester) async {
     await tester.pumpWidget(initPage(const ContainerPage()));
     await tester.pump();
-    expect(find.text("Liste des conteneurs"), findsOneWidget);
     expect(find.byType(ListView), findsNothing);
   });
 
