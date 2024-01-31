@@ -24,7 +24,6 @@ void main() {
             curveColor: Colors.blue,
             showBackButton: true,
             showLogo: true,
-            showBurgerMenu: true,
           ),
         ),
       ),
