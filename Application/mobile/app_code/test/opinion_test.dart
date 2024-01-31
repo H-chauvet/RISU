@@ -9,17 +9,8 @@ import 'globals.dart';
 void main() {
   group('Test Opinion Page', () {
     testWidgets('find opinions pages buttons', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
@@ -55,17 +46,8 @@ void main() {
     });
 
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder addOpinionButtonFinder =
@@ -98,17 +80,8 @@ void main() {
     });
 
     testWidgets('select filter 1 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -135,17 +108,8 @@ void main() {
     });
 
     testWidgets('select filter 2 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -172,17 +136,8 @@ void main() {
     });
 
     testWidgets('select filter 3 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -209,17 +164,8 @@ void main() {
     });
 
     testWidgets('select filter 4 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -246,17 +192,8 @@ void main() {
     });
 
     testWidgets('select filter 5 stars', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
@@ -283,13 +220,13 @@ void main() {
     });
 
     testWidgets('no opinion', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
+      final testPage = initPage(const OpinionPage());
+      await tester.pumpWidget(testPage);
 
       while (true) {
         try {
           expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
+          await tester.pumpWidget(testPage, const Duration(milliseconds: 100));
         } catch (e) {
           break;
         }
@@ -322,17 +259,8 @@ void main() {
     });
 
     testWidgets('new opinion', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
@@ -389,17 +317,8 @@ void main() {
     });
 
     testWidgets('cancel button new opinion', (WidgetTester tester) async {
-      var aaaa = initPage(const OpinionPage());
-      await tester.pumpWidget(aaaa);
-
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
+      final testPage = initPage(const OpinionPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder opinionTitleFinder = find.byKey(const Key('opinion-title'));
