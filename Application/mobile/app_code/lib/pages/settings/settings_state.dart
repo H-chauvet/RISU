@@ -73,7 +73,6 @@ class SettingsPageState extends State<SettingsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
