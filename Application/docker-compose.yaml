@@ -22,7 +22,8 @@ services:
   server:
     build: ./server
     ports:
-      - "8080:8080"
+      - "8080:80"
+      - "443:443"
     depends_on:
       database:
         condition: service_healthy
