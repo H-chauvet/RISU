@@ -50,7 +50,11 @@ class ContainerPageState extends State<ContainerPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace);
+        return;
       }
     }
   }

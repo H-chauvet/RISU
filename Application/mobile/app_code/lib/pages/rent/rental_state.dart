@@ -57,11 +57,12 @@ class RentalPageState extends State<RentalPage> {
         }
       }
     } catch (err, stacktrace) {
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace);
+        return;
       }
     }
   }

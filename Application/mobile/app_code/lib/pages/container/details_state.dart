@@ -53,14 +53,17 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return {
+          'address': '',
+          'city': '',
+          '_count': {'available': 0}
+        };
       }
-      return {
-        'address': '',
-        'city': '',
-        '_count': {'available': 0}
-      };
     }
   }
 
