@@ -19,7 +19,7 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       initPage(
-        const Scaffold(
+        Scaffold(
           appBar: MyAppBar(
             curveColor: Colors.blue,
             showBackButton: true,

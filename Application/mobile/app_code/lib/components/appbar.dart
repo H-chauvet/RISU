@@ -5,26 +5,29 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showLogo;
   final bool showBurgerMenu;
   final Color curveColor;
+  late void Function()? onBackButtonPressed;
 
-  const MyAppBar({
+  MyAppBar({
     super.key,
     required this.curveColor,
     this.showBackButton = true,
     this.showLogo = true,
     this.showBurgerMenu = false,
+    this.onBackButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    onBackButtonPressed ??= () {
+      Navigator.pop(context);
+    };
     return CustomPaint(
       painter: CurvePainter(curveColor),
       child: AppBar(
         leading: showBackButton
             ? BackButton(
                 key: const Key('appbar-button_back'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: onBackButtonPressed!,
               )
             : null,
         title: showLogo

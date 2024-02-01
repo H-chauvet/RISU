@@ -71,7 +71,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace);
+        return;
       }
     }
   }
@@ -133,9 +137,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
                 "Une erreur est survenue lors de la mise à jour des informations de l'utilisateur.");
+        return;
       }
     }
   }
@@ -211,9 +219,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
                 "Une erreur est survenue lors de la mise à jour du mot de passe.");
+        return;
       }
     }
   }
@@ -262,6 +274,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         showBackButton: true,
         showLogo: true,
         showBurgerMenu: false,
+        onBackButtonPressed: () {
+          Navigator.pop(context, true);
+        },
       ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
