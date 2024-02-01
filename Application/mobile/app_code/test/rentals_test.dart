@@ -7,68 +7,42 @@ import 'globals.dart';
 void main() {
   group('Test RentalPage', () {
     testWidgets('Rental Page UI', (WidgetTester tester) async {
-      var aaaa = initPage(const RentalPage());
-      await tester.pumpWidget(aaaa);
+      final testPage = initPage(const RentalPage());
+      await waitForLoader(tester: tester, testPage: testPage);
 
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
-
-      // Test de la présence du titre 'Mes locations'
       expect(find.text('Mes locations'), findsOneWidget);
 
-      // Test de la présence des boutons 'Toutes' et 'En cours'
       expect(find.text('Toutes'), findsOneWidget);
       expect(find.text('En cours'), findsOneWidget);
     });
   });
 
   testWidgets('Rentals, Test if buttons are clickable',
-      (WidgetTester tester) async {
-    var aaaa = initPage(const RentalPage());
-    await tester.pumpWidget(aaaa);
+          (WidgetTester tester) async {
+        final testPage = initPage(const RentalPage());
+        await waitForLoader(tester: tester, testPage: testPage);
 
-    while (true) {
-      try {
-        expect(find.byType(CircularProgressIndicator), findsOneWidget);
-        await tester.pumpWidget(aaaa, const Duration(milliseconds: 100));
-      } catch (e) {
-        break;
-      }
-    }
+        expect(find.text('Toutes'), findsOneWidget);
+        expect(find.text('En cours'), findsOneWidget);
 
-    // Verify initial state
-    expect(find.text('Toutes'), findsOneWidget);
-    expect(find.text('En cours'), findsOneWidget);
+        await tester.tap(find.text('Toutes'));
+        await tester.pump();
 
-    // Tap on the 'Toutes' button
-    await tester.tap(find.text('Toutes'));
-    await tester.pump();
+        expect(find.text('Toutes'), findsOneWidget);
+        expect(find.text('En cours'), findsOneWidget);
 
-    // Verify the updated state
-    expect(find.text('Toutes'), findsOneWidget);
-    expect(find.text('En cours'), findsOneWidget);
+        await tester.tap(find.text('En cours'));
+        await tester.pump();
 
-    // Tap on the 'En cours' button
-    await tester.tap(find.text('En cours'));
-    await tester.pump();
-
-    // Verify the updated state
-    expect(find.text('Toutes'), findsOneWidget);
-    expect(find.text('En cours'), findsOneWidget);
-  });
+        expect(find.text('Toutes'), findsOneWidget);
+        expect(find.text('En cours'), findsOneWidget);
+      });
 
   testWidgets('Rental 1', (WidgetTester tester) async {
     await tester.pumpWidget(initPage(const RentalPage()));
 
     await tester.pump();
 
-    // expect List of rentals to be displayed
     expect(find.byKey(const Key('rentals-list')), findsOneWidget);
   });
 }
