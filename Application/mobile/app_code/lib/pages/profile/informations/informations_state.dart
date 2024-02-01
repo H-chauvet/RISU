@@ -48,8 +48,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final token = userInformation!.token;
-      final response = await http.get(
-          Uri.parse('http://$serverIp:8080/api/user/${userInformation!.ID}'),
+      final response = await ioClient.get(
+          Uri.parse('$serverIp/api/user/${userInformation!.ID}'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
@@ -107,7 +107,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:8080/api/user'),
+        Uri.parse('$serverIp/api/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -180,7 +180,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:8080/api/user/password'),
+        Uri.parse('$serverIp/api/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

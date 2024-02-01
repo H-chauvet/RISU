@@ -41,8 +41,8 @@ class LoginPageState extends State<LoginPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/login'),
+      response = await ioClient.post(
+        Uri.parse('$serverIp/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -142,8 +142,8 @@ class LoginPageState extends State<LoginPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      var response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
+      var response = await ioClient.post(
+        Uri.parse('$serverIp/api/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

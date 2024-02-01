@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
@@ -26,8 +25,8 @@ class ContainerPageState extends State<ContainerPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/container/listall'),
+      final response = await ioClient.get(
+        Uri.parse('$serverIp/api/container/listall'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

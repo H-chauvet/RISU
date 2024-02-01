@@ -27,8 +27,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/container/$containerId'),
+      response = await ioClient.get(
+        Uri.parse('$serverIp/api/container/$containerId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

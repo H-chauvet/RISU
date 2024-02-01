@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
@@ -36,8 +35,8 @@ class RentalPageState extends State<RentalPage> {
         _loaderManager.setIsLoading(true);
       });
       final token = userInformation!.token;
-      final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rents/'),
+      final response = await ioClient.get(
+        Uri.parse('$serverIp/api/rents/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

@@ -34,7 +34,7 @@ class SettingsPageState extends State<SettingsPage> {
       final token = userInformation!.token;
       final userId = userInformation!.ID;
       final response = await http.delete(
-        Uri.parse('http://$serverIp:8080/api/user/$userId'),
+        Uri.parse('$serverIp/api/user/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

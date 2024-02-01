@@ -51,8 +51,8 @@ class RentArticlePageState extends State<RentArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/article'),
+      response = await ioClient.post(
+        Uri.parse('$serverIp/api/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -104,7 +104,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final response = await http.post(
+      final response = await ioClient.post(
         Uri.parse('https://api.stripe.com/v1/payment_intents'),
         headers: {
           'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET_KEY']}',

@@ -24,9 +24,8 @@ class ArticleListState extends State<ArticleListPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.get(
-        Uri.parse(
-            'http://$serverIp:8080/api/container/$containerId/articleslist'),
+      response = await ioClient.get(
+        Uri.parse('$serverIp/api/container/$containerId/articleslist'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

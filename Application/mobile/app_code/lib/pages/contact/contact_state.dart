@@ -31,8 +31,8 @@ class ContactPageState extends State<ContactPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/contact'),
+      response = await ioClient.post(
+        Uri.parse('$serverIp/api/contact'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

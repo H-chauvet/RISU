@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
@@ -44,8 +43,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         _loaderManager.setIsLoading(true);
       });
       final token = userInformation?.token ?? 'defaultToken';
-      final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
+      final response = await ioClient.get(
+        Uri.parse('$serverIp/api/rent/${widget.rentId}'),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
@@ -81,8 +80,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         _loaderManager.setIsLoading(true);
       });
       final token = userInformation?.token ?? 'defaultToken';
-      final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/${rent['id']}/return'),
+      final response = await ioClient.post(
+        Uri.parse('$serverIp/api/rent/${rent['id']}/return'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

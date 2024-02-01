@@ -48,8 +48,8 @@ class SignupPageState extends State<SignupPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/signup'),
+      response = await ioClient.post(
+        Uri.parse('$serverIp/api/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
