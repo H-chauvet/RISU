@@ -13,8 +13,17 @@ const utils = require('./utils')
 const axios = require('axios')
 require('dotenv').config({ path: '../.env' })
 const nodemailer = require('nodemailer')
+const https = require('https');
+const fs = require('fs');
+
+const options = {
+  key: fs.readFileSync('nginx/key.pem'),
+  cert: fs.readFileSync('nginx/cert.pem')
+};
 
 const app = express()
+
+https.createServer(options, app).listen(443);
 
 passport.serializeUser((user, done) => {
   done(null, user.id)
@@ -256,30 +265,32 @@ async function createFixtures() {
         newsOffersRisu: true
       }
     })
-    const container = await database.prisma.Containers.create({
-      data: {
-        id: '1',
-        city: 'Nantes',
-        address: 'Rue George',
-        items: {
-          create: [
-            { name: 'ballon de volley', price: 3, available: true },
-            { name: 'raquette', price: 6, available: false },
-            { name: 'ballon de football', price: 16, available: true },
-          ]
+    if (!await database.prisma.Containers.findUnique({ where: { id: '1' } }))
+      await database.prisma.Containers.create({
+        data: {
+          id: '1',
+          city: 'Nantes',
+          address: 'Rue George',
+          items: {
+            create: [
+              { name: 'ballon de volley', price: 3, available: true },
+              { name: 'raquette', price: 6, available: false },
+              { name: 'ballon de football', price: 16, available: true },
+            ]
+          }
         }
-      }
-    })
-    const emptyContainer = await database.prisma.Containers.create({
-      data: {
-        id: '2',
-        city: 'Nantes',
-        address: 'Rue george',
-        items: {
-          create: []
+      })
+    if (!await database.prisma.Containers.findUnique({ where: { id: '2' } }))
+      await database.prisma.Containers.create({
+        data: {
+          id: '2',
+          city: 'Nantes',
+          address: 'Rue George',
+          items: {
+            create: []
+          }
         }
-      }
-    })
+      })
     if (!await database.prisma.User.findUnique({ where: { email: 'admin@gmail.com' } }))
       await database.prisma.User.create({
         data: {

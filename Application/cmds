@@ -44,6 +44,7 @@ case "$command" in
 
   "ds")
     echo "Executing command Docker + server..."
+    sudo systemctl start nginx
     sudo service docker start
     sudo docker-compose build
     sudo docker-compose up --remove-orphans
