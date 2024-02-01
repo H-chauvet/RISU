@@ -157,12 +157,12 @@ class MyParameterModal extends StatelessWidget {
   final bool locked;
 
   const MyParameterModal({
-    Key? key,
+    super.key,
     required this.title,
     required this.modalContent,
     required this.paramIcon,
     this.locked = false,
-  }) : super(key: key);
+  });
 
   Widget correspondingIcon() {
     if (locked) {

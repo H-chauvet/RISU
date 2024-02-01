@@ -42,7 +42,7 @@ class HomePageState extends State<HomePage> {
         await MyAlertDialog.showChoiceAlertDialog(
           context: context,
           title: 'Profil incomplet',
-          message: 'Veuillez compléter votre profil avant de continuer.',
+          message: 'Souhaitez-vous completer votre profile ?',
           onOkName: 'Compléter le profil',
           onCancelName: 'Annuler',
         ).then(
