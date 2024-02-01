@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let articleId = '';
 
 describe('get containerId', () => {
@@ -8,7 +10,7 @@ describe('get containerId', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .get('/api/article/listall')
             articleId = res.body[0].id
             expect(res.statusCode).toBe(200)
@@ -24,7 +26,7 @@ describe('GET /api/article/', () => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .get(`/api/article/${articleId}`)
           expect(res.statusCode).toBe(200)
         }
@@ -32,11 +34,11 @@ describe('GET /api/article/', () => {
       done
     )
   }),
-  it('should not get article detais from wrong id', (done) => {
+  it('should not get article details from wrong id', (done) => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .get(`/api/article/wrongId`)
           expect(res.statusCode).toBe(401)
         }

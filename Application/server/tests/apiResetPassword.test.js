@@ -1,12 +1,14 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 describe('POST /api/user/resetPassword, invalid email', () => {
     it('should not reset password', function (done) {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .post('/api/user/resetPassword')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -21,7 +23,7 @@ describe('POST /api/user/resetPassword, invalid email', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .post('/api/user/resetPassword')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -36,7 +38,7 @@ describe('POST /api/user/resetPassword, invalid email', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .post('/api/user/resetPassword')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')

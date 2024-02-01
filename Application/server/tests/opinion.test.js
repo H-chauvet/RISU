@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let authToken = '';
 
 describe('POST /api/opinion', () => {
@@ -8,7 +10,7 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/login')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -24,7 +26,7 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .post('/api/opinion')
               .set('Authorization', 'Bearer ' + authToken)
               .send({
@@ -42,7 +44,7 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get('/api/opinion')
               .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)
@@ -55,7 +57,7 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get('/api/opinion?note=5')
               .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)
@@ -68,7 +70,7 @@ describe('POST /api/opinion', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get('/api/opinion?note=1')
               .set('Authorization', 'Bearer ' + authToken)
               .expect(201, callback)

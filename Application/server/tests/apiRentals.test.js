@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let authToken = '';
 
 describe('POST /api/user/firstName', () => {
@@ -8,7 +10,7 @@ describe('POST /api/user/firstName', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/login')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -24,7 +26,7 @@ describe('POST /api/user/firstName', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get('/api/rents')
               .set('Authorization', `Bearer ${authToken}`)
               .expect(200, callback);
@@ -37,7 +39,7 @@ describe('POST /api/user/firstName', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get('/api/rents')
               .set('Authorization', '')
               .expect(401, callback);

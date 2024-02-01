@@ -1,12 +1,14 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 describe('POST /contact', function () {
   it('should delete', function (done) {
     async.series(
       [
         function (callback) {
-          request('http://localhost:8080')
+          request('https://risu-epitech.com')
             .post('/api/contact')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
@@ -21,7 +23,7 @@ describe('POST /contact', function () {
     async.series(
       [
         function (callback) {
-          request('http://localhost:8080')
+          request('https://risu-epitech.com')
             .post('/api/contact')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')

@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let authToken = '';
 
 describe('PUT /api/user', () => {
@@ -8,7 +10,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/login')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -25,7 +27,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ firstName: 'NewFirstName' })
@@ -39,7 +41,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-          request('http://localhost:8080')
+          request('https://risu-epitech.com')
             .put('/api/user')
             .send({ firstName: 'NewFirstName' })
             .expect(401, callback)
@@ -52,7 +54,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ firstName: 'NewFirstName' })
@@ -67,7 +69,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ lastName: 'NewLastName' })
@@ -81,7 +83,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .send({ lastName: 'NewLastName' })
               .expect(401, callback)
@@ -94,7 +96,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ lastName: 'NewLastName' })
@@ -109,7 +111,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ email: 'admin@gmail.com' })
@@ -123,7 +125,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .send({ email: 'admin@gmail.com' })
               .expect(401, callback)
@@ -136,7 +138,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user')
               .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ email: 'admin@gmail.com' })
@@ -151,7 +153,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user/password')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ currentPassword: 'admin', newPassword: 'admin' })
@@ -165,7 +167,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user/password')
               .set('Authorization', `Bearer ${authToken}`)
               .send({})
@@ -179,7 +181,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user/password')
               .send({ currentPassword: 'admin', newPassword: 'admin' })
               .expect(401, callback)
@@ -192,7 +194,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user/password')
               .send({ currentPassword: 'admin', newPassword: 'admin' })
               .expect(401, callback)
@@ -205,7 +207,7 @@ describe('PUT /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .put('/api/user/password')
               .set('Authorization', `Bearer ${authToken}`)
               .send({ currentPassword: 'wrong password', newPassword: 'admin' })

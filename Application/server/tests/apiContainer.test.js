@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let containerId = [];
 
 describe('get containerId', () => {
@@ -8,7 +10,7 @@ describe('get containerId', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .get('/api/container/listall')
             containerId = [res.body[0].id, res.body[1].id]
             expect(res.statusCode).toBe(200)
@@ -20,11 +22,11 @@ describe('get containerId', () => {
 })
 
 describe('GET /api/container/', () => {
-    it('should not get container detais from wrong id', (done) => {
+    it('should not get container details from wrong id', (done) => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .get(`/api/container/wrongId/`)
             expect(res.statusCode).toBe(401)
           }
@@ -35,11 +37,11 @@ describe('GET /api/container/', () => {
 })
 
 describe('GET /api/container/articleslist/', () => {
-  it('should get article list detais from containerId', (done) => {
+  it('should get article list details from containerId', (done) => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .get(`/api/container/${containerId[0]}/articleslist`)
           expect(res.statusCode).toBe(200)
         }
@@ -47,11 +49,11 @@ describe('GET /api/container/articleslist/', () => {
       done
     )
   }),
-  it('should get empty article list detais from wrong containerId', (done) => {
+  it('should get empty article list details from wrong containerId', (done) => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .get(`/api/container/wrongId/articleslist/`)
           expect(res.statusCode).toBe(401)
         }
@@ -59,11 +61,11 @@ describe('GET /api/container/articleslist/', () => {
       done
     )
   }),
-    it('should get article list detais from empty container', (done) => {
+    it('should get article list details from empty container', (done) => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .get(`/api/container/${containerId[1]}/articleslist`)
             expect(res.statusCode).toBe(204)
           }

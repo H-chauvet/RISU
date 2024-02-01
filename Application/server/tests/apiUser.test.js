@@ -1,12 +1,14 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 describe('POST /api/user', () => {
     let authToken;
     let userID;
 
     beforeAll(async () => {
-      const loginResponse = await request('http://localhost:8080')
+      const loginResponse = await request('https://risu-epitech.com')
         .post('/api/login')
         .send({ email: 'user@gmail.com', password: 'user' });
 
@@ -16,7 +18,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/login')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -33,7 +35,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -48,7 +50,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -62,7 +64,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .get(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -77,7 +79,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .delete('/api/user/invalidID')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -92,7 +94,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
+            request('https://risu-epitech.com')
               .delete(`/api/user/${userID}`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -107,7 +109,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .put('/api/user/notifications')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -123,7 +125,7 @@ describe('POST /api/user', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .put('/api/user/notifications')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')

@@ -1,6 +1,8 @@
 const request = require('supertest');
 const async = require('async');
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 let authToken = '';
 let itemId = '';
 let rentId = '';
@@ -10,7 +12,7 @@ describe('POST /api/rent/article', () => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .post('/api/login')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
@@ -26,7 +28,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .get('/api/article/listall');
             expect(res.statusCode).toBe(200);
             itemId = res.body[2].id;
@@ -39,7 +41,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/rent/article')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -56,7 +58,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/rent/article')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -73,7 +75,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/rent/article')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -90,7 +92,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/rent/article')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -106,7 +108,7 @@ describe('POST /api/rent/article', () => {
       async.series(
         [
           async function () {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post('/api/rent/article')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
@@ -126,13 +128,13 @@ describe('CLEAR DATA', () => {
     async.series(
       [
         async function () {
-          const res = await request('http://localhost:8080')
+          const res = await request('https://risu-epitech.com')
             .get('/api/rents')
             .set('Authorization', `Bearer ${authToken}`);
           expect(res.statusCode).toBe(200);
 
           for (const rent of res.body.rentals) {
-            const res = await request('http://localhost:8080')
+            const res = await request('https://risu-epitech.com')
               .post(`/api/rent/${rent.id}/return`)
               .set('Authorization', `Bearer ${authToken}`)
               .send({ "rentId": rentId });
