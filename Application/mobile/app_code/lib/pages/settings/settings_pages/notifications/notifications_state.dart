@@ -138,7 +138,6 @@ class NotificationsPageState extends State<NotificationsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(

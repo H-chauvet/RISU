@@ -109,7 +109,6 @@ class RentalPageState extends State<RentalPage> {
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,

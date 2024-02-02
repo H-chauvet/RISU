@@ -76,7 +76,6 @@ class SettingsPageState extends State<SettingsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },

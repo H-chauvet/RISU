@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final bool showLogo;
-  final bool showBurgerMenu;
   final Color curveColor;
   late void Function()? onBackButtonPressed;
 
@@ -12,7 +11,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.curveColor,
     this.showBackButton = true,
     this.showLogo = true,
-    this.showBurgerMenu = false,
     this.onBackButtonPressed,
   });
 
@@ -38,15 +36,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : null,
         centerTitle: true,
-        actions: showBurgerMenu
-            ? [
-                IconButton(
-                  key: const Key('appbar-button_burgermenu'),
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {},
-                ),
-              ]
-            : null,
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,
         elevation: 0,

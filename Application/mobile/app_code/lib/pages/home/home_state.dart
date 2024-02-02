@@ -81,7 +81,6 @@ class HomePageState extends State<HomePage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           showLogo: true,
-          showBurgerMenu: false,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],

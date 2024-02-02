@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
@@ -46,4 +47,17 @@ UserData initNullUser({String? email, List<bool>? notifications}) {
           false,
         ],
   );
+}
+
+Future<void> waitForLoader(
+    {required WidgetTester tester, required Widget testPage}) async {
+  await tester.pumpWidget(testPage);
+  while (true) {
+    try {
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      await tester.pumpWidget(testPage, const Duration(milliseconds: 100));
+    } catch (e) {
+      break;
+    }
+  }
 }

@@ -273,7 +273,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },
