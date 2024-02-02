@@ -48,10 +48,13 @@ class ArticleListState extends State<ArticleListPage> {
       return [];
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: 'Connexion refusée.');
+        return [];
       }
-      return [];
     }
   }
 

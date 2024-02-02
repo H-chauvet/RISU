@@ -65,8 +65,12 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "La location n'a pas pu être récupérée.");
+        return;
       }
     }
   }
@@ -99,8 +103,12 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "La location n'a pas pu être rendue.");
+        return;
       }
     }
   }

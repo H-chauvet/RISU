@@ -58,9 +58,13 @@ class OpinionPageState extends State<OpinionPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
                 "Une erreur est survenue lors de la récupération des avis.");
+        return;
       }
     }
   }
@@ -102,8 +106,12 @@ class OpinionPageState extends State<OpinionPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return;
       }
     }
   }
