@@ -35,20 +35,6 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
     return brightness == Brightness.dark;
   }
 
-  void switchToDarkMode(BuildContext context) async {
-    bool isDarkMode = await getTheme() == 'Sombre';
-    if (!isDarkMode) {
-      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-    }
-  }
-
-  void switchToLightMode(BuildContext context) async {
-    bool isDarkMode = await getTheme() == 'Sombre';
-    if (isDarkMode) {
-      Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
