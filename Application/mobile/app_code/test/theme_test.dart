@@ -52,7 +52,7 @@ void main() {
           Brightness.dark);
 
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getBool('appTheme'), 'Sombre');
+      expect(prefs.getString('appTheme'), 'Sombre');
     });
   });
 }
