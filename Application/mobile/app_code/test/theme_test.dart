@@ -17,12 +17,12 @@ void main() {
     });
 
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
-      SharedPreferences.setMockInitialValues({'isDarkTheme': false});
+      SharedPreferences.setMockInitialValues({'appTheme': 'Clair'});
 
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider(
-            create: (_) => ThemeProvider(false), // Start with light theme.
+            create: (_) => ThemeProvider('Clair'), // Start with light theme.
             child: Consumer<ThemeProvider>(
               builder: (_, themeProvider, __) {
                 return MaterialApp(
@@ -30,7 +30,7 @@ void main() {
                   home: Scaffold(
                     body: TextButton(
                       onPressed: () {
-                        themeProvider.toggleTheme();
+                        themeProvider.setTheme(AppTheme.sombre);
                       },
                       child: const Text('Toggle Theme'),
                     ),
@@ -52,7 +52,7 @@ void main() {
           Brightness.dark);
 
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getBool('isDarkTheme'), true);
+      expect(prefs.getBool('appTheme'), 'Sombre');
     });
   });
 }
