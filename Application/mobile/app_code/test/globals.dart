@@ -3,11 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
-Widget initPage(Widget page, {bool isDarkMode = false}) {
+Widget initPage(Widget page, {String appTheme = 'Clair'}) {
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<ThemeProvider>(
-        create: (_) => ThemeProvider(isDarkMode),
+        create: (_) => ThemeProvider(appTheme),
       ),
     ],
     child: MaterialApp(
