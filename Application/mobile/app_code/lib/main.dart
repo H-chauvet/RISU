@@ -6,7 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-bool isDarkTheme = false;
+//bool isDarkTheme = false;
+String appTheme = 'Clair';
 
 void main() async {
   await dotenv.load(fileName: "lib/.env");
@@ -19,11 +20,12 @@ void main() async {
 
   // Continue with SharedPreferences and ThemeProvider
   final prefs = await SharedPreferences.getInstance();
-  isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+  //isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+  appTheme = prefs.getString('appTheme') ?? 'Clair';
 
   runApp(
     ChangeNotifierProvider(
-      create: (context) => ThemeProvider(isDarkTheme),
+      create: (context) => ThemeProvider(appTheme),
       child: const MyApp(),
     ),
   );
