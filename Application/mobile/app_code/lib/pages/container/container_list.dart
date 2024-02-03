@@ -103,7 +103,9 @@ class ContainerCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(width: 10),
-                      Text("Prix : " + container.price.toString() + "€"),
+                      container.price.toString() == null
+                          ? Text("Prix : " + container.price.toString() + "€")
+                          : Text("Prix : Non défini"),
                     ],
                   ),
                 ),
