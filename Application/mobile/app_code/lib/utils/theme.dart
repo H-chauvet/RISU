@@ -26,10 +26,19 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get currentTheme => _currentTheme;
 
+  bool isAppInDarkMode() {
+    return _currentTheme == darkTheme;
+  }
+
   void startSystemThemeListener() {
-    WidgetsBinding.instance?.window.onPlatformBrightnessChanged = () {
-      setTheme(AppTheme.systeme);
-    };
+    SharedPreferences.getInstance().then((prefs) {
+      final appTheme = prefs.getString('appTheme') ?? 'Clair';
+      if (appTheme == 'Système') {
+        WidgetsBinding.instance.window.onPlatformBrightnessChanged = () {
+          setTheme(AppTheme.systeme);
+        };
+      }
+    });
   }
 
   Future<bool> getIsSystemInDarkMode() async {
