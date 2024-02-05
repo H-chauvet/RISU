@@ -138,7 +138,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       await stripe.Stripe.instance.initPaymentSheet(
         paymentSheetParameters: stripe.SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
-          style: currentTheme == AppTheme.sombre
+          style: currentTheme == appTheme['clair']
               ? ThemeMode.light
               : ThemeMode.dark,
           merchantDisplayName: 'Ikay',

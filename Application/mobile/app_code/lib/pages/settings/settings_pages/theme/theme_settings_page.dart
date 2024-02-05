@@ -14,7 +14,11 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
   String selectedTheme = '';
   Future<String> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String> items = ['Clair', 'Sombre', 'Système'];
+    final List<String> items = [
+      appTheme['clair'],
+      appTheme['sombre'],
+      appTheme['systeme']
+    ];
 
     return prefs.getString('appTheme') ?? items[0];
   }
@@ -47,9 +51,9 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
           groupValue: selectedTheme,
           onChanged: (value) {
             Provider.of<ThemeProvider>(context, listen: false)
-                .setTheme(AppTheme.clair);
+                .setTheme(appTheme['clair']);
             setState(() {
-              selectedTheme = 'Clair';
+              selectedTheme = appTheme['clair'];
             });
           },
         ),
@@ -60,9 +64,9 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
           groupValue: selectedTheme,
           onChanged: (value) {
             Provider.of<ThemeProvider>(context, listen: false)
-                .setTheme(AppTheme.sombre);
+                .setTheme(appTheme['sombre']);
             setState(() {
-              selectedTheme = 'Sombre';
+              selectedTheme = appTheme['sombre'];
             });
           },
         ),
@@ -73,9 +77,9 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
           groupValue: selectedTheme,
           onChanged: (value) {
             Provider.of<ThemeProvider>(context, listen: false)
-                .setTheme(AppTheme.systeme);
+                .setTheme(appTheme['systeme']);
             setState(() {
-              selectedTheme = 'Système';
+              selectedTheme = appTheme['systeme'];
             });
           },
         ),

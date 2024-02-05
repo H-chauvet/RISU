@@ -3,15 +3,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'colors.dart';
 
-enum AppTheme { clair, sombre, systeme }
+dynamic appTheme = {
+  'clair': 'Clair',
+  'sombre': 'Sombre',
+  'systeme': 'Système',
+};
 
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _currentTheme;
 
-  ThemeProvider(String appTheme) {
-    if (appTheme == 'Systeme') {
+  ThemeProvider(String currentTheme) {
+    if (currentTheme == appTheme['sombre']) {
       _currentTheme = darkTheme;
-    } else if (appTheme == 'Clair') {
+    } else if (currentTheme == appTheme['clair']) {
       _currentTheme = lightTheme;
     } else {
       final brightness =
@@ -32,10 +36,10 @@ class ThemeProvider extends ChangeNotifier {
 
   void startSystemThemeListener() {
     SharedPreferences.getInstance().then((prefs) {
-      final appTheme = prefs.getString('appTheme') ?? 'Clair';
-      if (appTheme == 'Système') {
+      final theme = prefs.getString('appTheme') ?? 'Clair';
+      if (theme == 'Système') {
         WidgetsBinding.instance.window.onPlatformBrightnessChanged = () {
-          setTheme(AppTheme.systeme);
+          setTheme(appTheme['systeme']);
         };
       }
     });
@@ -47,13 +51,13 @@ class ThemeProvider extends ChangeNotifier {
     return brightness == Brightness.dark;
   }
 
-  void setTheme(AppTheme theme) async {
-    if (theme != AppTheme.clair &&
-        theme != AppTheme.sombre &&
-        theme != AppTheme.systeme) {
+  void setTheme(String theme) async {
+    if (theme != appTheme['clair'] &&
+        theme != appTheme['sombre'] &&
+        theme != appTheme['systeme']) {
       return;
     }
-    if (theme == AppTheme.systeme) {
+    if (theme == appTheme['systeme']) {
       bool isSystemInDarkMode = await getIsSystemInDarkMode();
       if (isSystemInDarkMode) {
         _currentTheme = darkTheme;
@@ -61,7 +65,7 @@ class ThemeProvider extends ChangeNotifier {
         _currentTheme = lightTheme;
       }
     } else {
-      if (theme == AppTheme.clair) {
+      if (theme == appTheme['clair']) {
         _currentTheme = lightTheme;
       } else {
         _currentTheme = darkTheme;
@@ -70,12 +74,14 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
 
-    if (theme == AppTheme.systeme) {
-      prefs.setString('appTheme', 'Système');
-    } else if (theme == AppTheme.clair) {
-      prefs.setString('appTheme', 'Clair');
+    if (theme == appTheme['systeme']) {
+      prefs.setString('appTheme', appTheme['systeme']);
+    } else if (theme == appTheme['clair']) {
+      prefs.setString('appTheme', appTheme['clair']);
+    } else if (theme == appTheme['sombre']) {
+      prefs.setString('appTheme', appTheme['sombre']);
     } else {
-      prefs.setString('appTheme', 'Sombre');
+      throw Exception('Theme not found');
     }
   }
 }

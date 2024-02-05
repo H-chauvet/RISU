@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-String appTheme = 'Clair';
+String theme = appTheme['clair'];
 
 void main() async {
   await dotenv.load(fileName: "lib/.env");
@@ -18,12 +18,12 @@ void main() async {
   await Stripe.instance.applySettings();
 
   final prefs = await SharedPreferences.getInstance();
-  appTheme = prefs.getString('appTheme') ?? 'Clair';
+  theme = prefs.getString('appTheme') ?? appTheme['clair'];
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(value: ThemeProvider(appTheme)),
+        ChangeNotifierProvider.value(value: ThemeProvider(theme)),
       ],
       child: const MyApp(),
     ),
