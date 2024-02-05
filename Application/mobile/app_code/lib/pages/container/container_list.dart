@@ -105,7 +105,7 @@ class ContainerCard extends StatelessWidget {
                     children: [
                       const SizedBox(width: 10),
                       Text(
-                          "${AppLocalizations.of(context)!.price}: ${container.price}€"),
+                          "${AppLocalizations.of(context)!.price}: ${container.price?.toString() ?? "Non défini"}${container.price != null ? "€" : ""}"),
                     ],
                   ),
                 ),

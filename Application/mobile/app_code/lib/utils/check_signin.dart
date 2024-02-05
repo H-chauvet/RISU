@@ -20,7 +20,9 @@ Function checkSignin = (BuildContext context) async {
         context,
         MaterialPageRoute(
           builder: (context) {
-            return const LoginPage();
+            return const LoginPage(
+              keepPath: true,
+            );
           },
         ),
       );
