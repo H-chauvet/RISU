@@ -27,11 +27,6 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: ThemeProvider(appTheme)),
-        /*ChangeNotifierProvider(
-          create: (context) => ThemeProvider(
-            themeChangeNotifier.value == Brightness.dark ? 'Sombre' : 'Clair',
-          ),
-        ),*/
       ],
       child: const MyApp(),
     ),
