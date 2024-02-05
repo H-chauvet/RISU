@@ -98,7 +98,7 @@ app.post('/api/login', (req, res, next) => {
     if (err) throw new Error(err)
     if (user == false) return res.json(info)
     const token = utils.generateToken(user.id)
-    return res.status(201).json({ user: user, token: token, message: 'User logged in' })
+    return res.status(201).json({ user: user, token: token })
   })(req, res, next)
 })
 
