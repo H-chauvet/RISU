@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
@@ -63,13 +64,14 @@ class BurgerDrawer extends StatelessWidget {
             paramIcon: Icon(Icons.settings),
           ),
           const Spacer(),
-          const MyRedirectDivider(
-            goToPage: LoginPage(),
-            title: 'Déconnexion',
-            paramIcon: Icon(Icons.logout),
-            disconnect: true,
-            chosenPlace: DIVIDERPLACE.top,
-          ),
+          if (userInformation != null)
+            const MyRedirectDivider(
+              goToPage: LoginPage(),
+              title: 'Déconnexion',
+              paramIcon: Icon(Icons.logout),
+              disconnect: true,
+              chosenPlace: DIVIDERPLACE.top,
+            ),
           const SizedBox(height: 8),
         ])));
   }
