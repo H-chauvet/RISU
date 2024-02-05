@@ -104,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       var response = await http.post(
-        Uri.parse('$serverIp/api/user/resetPassword'),
+        Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
