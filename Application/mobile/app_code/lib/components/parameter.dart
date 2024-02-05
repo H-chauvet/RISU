@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
 
@@ -183,7 +184,7 @@ class MyParameterModal extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Fermer'),
+              child: Text(AppLocalizations.of(context)!.close),
             ),
           ],
         );

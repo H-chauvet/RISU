@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -53,7 +54,8 @@ class OpinionPageState extends State<OpinionPage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getOpinions',
-              message: "Erreur lors de la récupération des avis.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingReviews);
         }
       }
     } catch (err, stacktrace) {
@@ -62,8 +64,8 @@ class OpinionPageState extends State<OpinionPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message:
-                "Une erreur est survenue lors de la récupération des avis.");
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingReviews);
         return;
       }
     }
@@ -101,7 +103,8 @@ class OpinionPageState extends State<OpinionPage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'postOpinion',
-              message: "Erreur lors de la sauvegarde de l'avis.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringSavingReview);
         }
       }
     } catch (err, stacktrace) {
@@ -110,7 +113,7 @@ class OpinionPageState extends State<OpinionPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
     }
@@ -151,7 +154,7 @@ class OpinionPageState extends State<OpinionPage> {
                   const SizedBox(height: 20),
                   MyTextInput(
                     key: const Key('opinion-textinput_comment'),
-                    labelText: "Commentaire",
+                    labelText: AppLocalizations.of(context)!.comment,
                     keyboardType: TextInputType.text,
                     icon: Icons.comment,
                     onChanged: (value) => comment = value,

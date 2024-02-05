@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
 import 'package:risu/pages/login/login_page.dart';
@@ -39,34 +40,34 @@ class BurgerDrawer extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          const MyRedirectDivider(
-            goToPage: ProfileInformationsPage(),
-            title: 'Détails du profile',
-            paramIcon: Icon(Icons.person),
+          MyRedirectDivider(
+            goToPage: const ProfileInformationsPage(),
+            title: AppLocalizations.of(context)!.profileDetails,
+            paramIcon: const Icon(Icons.person),
           ),
           const SizedBox(height: 8),
-          const MyRedirectDivider(
-            goToPage: NotificationsPage(),
-            title: 'Notifications',
-            paramIcon: Icon(Icons.notifications),
+          MyRedirectDivider(
+            goToPage: const NotificationsPage(),
+            title: AppLocalizations.of(context)!.notifications,
+            paramIcon: const Icon(Icons.notifications),
           ),
           const SizedBox(height: 8),
-          const MyRedirectDivider(
-            goToPage: OpinionPage(),
-            title: 'Avis',
-            paramIcon: Icon(Icons.star),
+          MyRedirectDivider(
+            goToPage: const OpinionPage(),
+            title: AppLocalizations.of(context)!.reviews,
+            paramIcon: const Icon(Icons.star),
           ),
           const SizedBox(height: 8),
-          const MyRedirectDivider(
-            goToPage: SettingsPage(),
-            title: 'Paramètres',
-            paramIcon: Icon(Icons.settings),
+          MyRedirectDivider(
+            goToPage: const SettingsPage(),
+            title: AppLocalizations.of(context)!.settings,
+            paramIcon: const Icon(Icons.settings),
           ),
           const Spacer(),
-          const MyRedirectDivider(
-            goToPage: LoginPage(),
-            title: 'Déconnexion',
-            paramIcon: Icon(Icons.logout),
+          MyRedirectDivider(
+            goToPage: const LoginPage(),
+            title: AppLocalizations.of(context)!.logOut,
+            paramIcon: const Icon(Icons.logout),
             disconnect: true,
             chosenPlace: DIVIDERPLACE.top,
           ),

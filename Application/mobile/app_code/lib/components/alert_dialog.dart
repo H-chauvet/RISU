@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/colors.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -31,7 +32,7 @@ class MyAlertDialog {
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
                 key: const Key('alertdialog-button_ok'),
-                child: const Text('OK'),
+                child: Text(AppLocalizations.of(context)!.ok),
               ),
             ]);
       },
@@ -60,7 +61,7 @@ class MyAlertDialog {
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
                 key: const Key('alertdialog-button_ok'),
-                child: const Text('OK'),
+                child: Text(AppLocalizations.of(context)!.ok),
               ),
             ]);
       },
@@ -72,13 +73,15 @@ class MyAlertDialog {
     required BuildContext context,
     required String title,
     required String message,
-    String onOkName = 'OK',
-    String onCancelName = 'Cancel',
+    String? onOkName,
+    String? onCancelName,
   }) {
     Completer<bool> completer = Completer<bool>();
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        onOkName = onOkName ?? AppLocalizations.of(context)!.ok;
+        onCancelName = onCancelName ?? AppLocalizations.of(context)!.cancel;
         return AlertDialog(
           key: key,
           title: Text(title),
@@ -92,7 +95,7 @@ class MyAlertDialog {
             TextButton(
               key: const Key('alertdialog-button_cancel'),
               child: Text(
-                onCancelName,
+                onCancelName!,
                 style: const TextStyle(
                   color: MyColors.alertDialogChoiceCancel,
                 ),
@@ -103,7 +106,7 @@ class MyAlertDialog {
               },
             ),
             TextButton(
-              child: Text(onOkName,
+              child: Text(onOkName!,
                   key: const Key('alertdialog-button_ok'),
                   style: TextStyle(
                       color: context.select((ThemeProvider themeProvider) =>

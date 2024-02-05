@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/components/alert_dialog.dart';
 
@@ -12,7 +13,10 @@ void printCatchError(
   print(stacktrace);
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
-        context: context, title: "Erreur", message: message);
+      context: context,
+      title: AppLocalizations.of(context)!.error,
+      message: message,
+    );
   }
 }
 
@@ -26,6 +30,9 @@ void printServerResponse(
       "-------- $functionName(): ${response.body} (${response.statusCode})--------");
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
-        context: context, title: "Erreur", message: message);
+      context: context,
+      title: AppLocalizations.of(context)!.error,
+      message: message,
+    );
   }
 }

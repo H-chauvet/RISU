@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
@@ -43,7 +44,7 @@ class ArticleListState extends State<ArticleListPage> {
       if (context.mounted) {
         printServerResponse(context, response, 'getItemsData',
             message:
-                "Une erreur est survenue lors de la récupération des données.");
+                AppLocalizations.of(context)!.errorOccurredDuringGettingData);
       }
       return [];
     } catch (err, stacktrace) {
@@ -52,7 +53,7 @@ class ArticleListState extends State<ArticleListPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: 'Connexion refusée.');
+            message: AppLocalizations.of(context)!.connectionRefused);
         return [];
       }
     }

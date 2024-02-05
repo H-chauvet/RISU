@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +54,8 @@ class RentalPageState extends State<RentalPage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getRentals',
-              message: "Les locations n'ont pas pu être récupérées.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingRents);
         }
       }
     } catch (err, stacktrace) {
@@ -96,7 +98,8 @@ class RentalPageState extends State<RentalPage> {
       });
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
-          message: "Current locations couldn't be retrieved.");
+          message: AppLocalizations.of(context)!
+              .errorOccurredDuringGettingRentsInProgress);
     }
   }
 

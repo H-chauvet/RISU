@@ -27,7 +27,7 @@ class Validators {
         r'x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])';
     final emailRegex = RegExp(pattern);
     return value.isNotEmpty && !emailRegex.hasMatch(value)
-        ? 'Enter a valid email address'
+        ? "Enter a valid email address"
         : null;
   }
 

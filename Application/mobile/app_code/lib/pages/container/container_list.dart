@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -102,8 +103,9 @@ class ContainerCard extends StatelessWidget {
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      SizedBox(width: 10),
-                      Text("Prix : " + container.price.toString() + "€"),
+                      const SizedBox(width: 10),
+                      Text(
+                          "${AppLocalizations.of(context)!.price}: ${container.price}€"),
                     ],
                   ),
                 ),

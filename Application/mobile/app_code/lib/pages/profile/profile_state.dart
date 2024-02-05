@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:profile_photo/profile_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/divider.dart';
@@ -84,7 +85,7 @@ class ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${userInformation!.firstName ?? "Prénom"} ${userInformation!.lastName ?? "Nom"}",
+                            "${userInformation!.firstName ?? AppLocalizations.of(context)!.firstName} ${userInformation!.lastName ?? AppLocalizations.of(context)!.lastName}",
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                               fontSize: 22,
@@ -155,7 +156,7 @@ class ProfilePageState extends State<ProfilePage> {
                 width: double.infinity,
                 child: MyOutlinedButton(
                   key: const Key('profile-button-log_out_button'),
-                  text: 'Déconnexion',
+                  text: AppLocalizations.of(context)!.logOut,
                   onPressed: () {
                     userInformation = null;
                     Navigator.pushAndRemoveUntil(

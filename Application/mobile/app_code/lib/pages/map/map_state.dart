@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -77,8 +78,8 @@ class MapPageState extends State<MapPage> {
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
-          message:
-              "Une erreur est survenue lors de la récupération de la position de l'utilisateur.");
+          message: AppLocalizations.of(context)!
+              .errorOccurredDuringGettingUserLocation);
     }
   }
 

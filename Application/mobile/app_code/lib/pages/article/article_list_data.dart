@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -108,7 +109,8 @@ class ArticleDataCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(
-                      'Prix : ${articleData.price}€ de l\'heure',
+                      AppLocalizations.of(context)!
+                          .priceXPerHour(articleData.price),
                       style: const TextStyle(
                         fontSize: 15.0,
                       ),
@@ -119,9 +121,9 @@ class ArticleDataCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
-                      'Statut: ',
-                      style: TextStyle(
+                    Text(
+                      "${AppLocalizations.of(context)!.status}: ",
+                      style: const TextStyle(
                         fontSize: 15.0,
                       ),
                     ),
@@ -140,8 +142,8 @@ class ArticleDataCard extends StatelessWidget {
                         const SizedBox(width: 5),
                         Text(
                           articleData.available == true
-                              ? 'Disponible'
-                              : 'Indisponible',
+                              ? AppLocalizations.of(context)!.available
+                              : AppLocalizations.of(context)!.unavailable,
                           style: const TextStyle(
                             fontSize: 15.0,
                           ),

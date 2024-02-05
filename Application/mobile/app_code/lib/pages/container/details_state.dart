@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
@@ -43,7 +44,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         if (context.mounted) {
           printServerResponse(context, response, 'getContainerData',
               message:
-                  "Une erreur est survenue lors de la récupération des données");
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
         }
         return {
           'address': '',
@@ -57,7 +58,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
         return {
           'address': '',
           'city': '',

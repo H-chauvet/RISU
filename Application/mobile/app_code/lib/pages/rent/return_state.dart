@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -60,7 +61,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getRent',
-              message: "La location n'a pas pu être récupérée.");
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         }
       }
     } catch (err, stacktrace) {
@@ -69,7 +71,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "La location n'a pas pu être récupérée.");
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         return;
       }
     }
@@ -98,7 +101,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'returnArticle',
-              message: "La location n'a pas pu être rendue.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringRentReturning);
         }
       }
     } catch (err, stacktrace) {
@@ -107,7 +111,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "La location n'a pas pu être rendue.");
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringRentReturning);
         return;
       }
     }
