@@ -15,9 +15,9 @@ import 'package:risu/utils/providers/theme.dart';
 import 'details_page.dart';
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
-  String _containerId = "";
-  String _address = "";
-  String _city = "";
+  String _containerId = '';
+  String _address = '';
+  String _city = '';
   int _availableItems = 0;
   final LoaderManager _loaderManager = LoaderManager();
 
