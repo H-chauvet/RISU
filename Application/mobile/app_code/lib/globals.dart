@@ -8,3 +8,6 @@ String? serverIp = '51.103.94.191'; // A mettre quand push github
 
 /// Global variable referencing the user network data
 UserData? userInformation;
+
+String defaultLanguage = 'fr';
+String language = defaultLanguage;
