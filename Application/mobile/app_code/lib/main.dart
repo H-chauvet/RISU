@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-//bool isDarkTheme = false;
 String appTheme = 'Clair';
 
 void main() async {
@@ -18,9 +17,7 @@ void main() async {
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
 
-  // Continue with SharedPreferences and ThemeProvider
   final prefs = await SharedPreferences.getInstance();
-  //isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
   appTheme = prefs.getString('appTheme') ?? 'Clair';
 
   runApp(
