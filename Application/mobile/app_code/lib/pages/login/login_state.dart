@@ -18,6 +18,7 @@ import 'package:risu/utils/user_data.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
+  late bool keepPath;
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
@@ -36,12 +37,11 @@ class LoginPageState extends State<LoginPage> {
       }
     }
 
-    late http.Response response;
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
+      http.Response response = await http.post(
         Uri.parse('http://$serverIp:8080/api/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
@@ -49,6 +49,25 @@ class LoginPageState extends State<LoginPage> {
         body: jsonEncode(
             <String, String>{'email': _email!, 'password': _password!}),
       );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      final jsonData = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        setState(() {
+          userInformation =
+              UserData.fromJson(jsonData['user'], jsonData['token']);
+        });
+        return true;
+      } else {
+        if (jsonData.containsKey('message')) {
+          if (context.mounted) {
+            printServerResponse(context, response, 'apiLogin',
+                message: jsonData['message']);
+            return false;
+          }
+        }
+      }
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
@@ -56,64 +75,6 @@ class LoginPageState extends State<LoginPage> {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
-        return false;
-      }
-    }
-    setState(() {
-      _loaderManager.setIsLoading(false);
-    });
-    if (response.statusCode == 201) {
-      try {
-        final jsonData = jsonDecode(response.body);
-        if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
-          userInformation =
-              UserData.fromJson(jsonData['user'], jsonData['token']);
-          return true;
-        } else {
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-                key: const Key('login-alertdialog_invaliddata'),
-                context: context,
-                title: 'Erreur',
-                message: 'Token de connexion invalide, veuillez réessayer.');
-            return false;
-          }
-        }
-      } catch (err, stacktrace) {
-        if (context.mounted) {
-          printCatchError(context, err, stacktrace,
-              message: "Invalid token... Please retry.");
-        }
-        return false;
-      }
-    } else {
-      try {
-        final jsonData = jsonDecode(response.body);
-        if (jsonData.containsKey('message')) {
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-                key: const Key('login-alertdialog_invalidresponse'),
-                context: context,
-                title: 'Connexion',
-                message: jsonData['message']);
-            return false;
-          }
-        } else {
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-              key: const Key('login-alertdialog_invalidcredentials'),
-              context: context,
-              title: 'Connexion',
-              message: 'Informations de connexion invalides.',
-            );
-            return false;
-          }
-        }
-      } catch (err, stacktrace) {
-        if (context.mounted) {
-          printCatchError(context, err, stacktrace,
-              message: "Une erreur est survenue lors de la connexion.");
-        }
         return false;
       }
     }
@@ -143,7 +104,7 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       var response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
+        Uri.parse('$serverIp/api/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -178,6 +139,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    keepPath = widget.keepPath ?? false;
   }
 
   @override
@@ -281,15 +243,18 @@ class LoginPageState extends State<LoginPage> {
                       apiLogin().then((value) => {
                             if (value)
                               {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const HomePage();
-                                    },
+                                if (keepPath)
+                                  Navigator.pop(context)
+                                else
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const HomePage();
+                                      },
+                                    ),
+                                    (route) => false,
                                   ),
-                                  (route) => false,
-                                ),
                               }
                           });
                     },
