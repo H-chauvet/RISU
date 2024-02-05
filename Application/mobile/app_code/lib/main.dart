@@ -24,8 +24,15 @@ void main() async {
   appTheme = prefs.getString('appTheme') ?? 'Clair';
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(appTheme),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: ThemeProvider(appTheme)),
+        /*ChangeNotifierProvider(
+          create: (context) => ThemeProvider(
+            themeChangeNotifier.value == Brightness.dark ? 'Sombre' : 'Clair',
+          ),
+        ),*/
+      ],
       child: const MyApp(),
     ),
   );
@@ -38,6 +45,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
+    themeProvider.startSystemThemeListener();
+
     return MaterialApp(
       title: 'Risu',
       theme: context
