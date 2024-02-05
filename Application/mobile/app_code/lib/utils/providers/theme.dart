@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'colors.dart';
+import '../colors.dart';
 
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _currentTheme;

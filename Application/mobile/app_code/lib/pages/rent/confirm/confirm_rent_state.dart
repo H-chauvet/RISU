@@ -6,7 +6,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;

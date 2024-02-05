@@ -12,7 +12,7 @@ import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 

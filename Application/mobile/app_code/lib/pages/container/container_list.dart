@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 
 class ContainerList {
   final String id;
   final dynamic createdAt;
-  final dynamic? containerMapping;
+  final dynamic containerMapping;
   final double? price;
   final String? address;
   final String? city;
   final String? designs;
-  final dynamic? items;
+  final dynamic items;
   final String? informations;
   final bool? paid;
   final String? saveName;

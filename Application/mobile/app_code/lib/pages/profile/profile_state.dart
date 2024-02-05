@@ -8,7 +8,7 @@ import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'profile_page.dart';
 

@@ -9,7 +9,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'rental_page.dart';
 

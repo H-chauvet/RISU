@@ -10,7 +10,7 @@ import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'home_page.dart';
 

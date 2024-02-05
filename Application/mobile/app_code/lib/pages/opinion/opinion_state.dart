@@ -10,7 +10,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'opinion_page.dart';
 

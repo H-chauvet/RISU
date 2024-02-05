@@ -6,7 +6,7 @@ import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class BurgerDrawer extends StatelessWidget {
   const BurgerDrawer({

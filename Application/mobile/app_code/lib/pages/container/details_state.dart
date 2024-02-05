@@ -9,7 +9,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 

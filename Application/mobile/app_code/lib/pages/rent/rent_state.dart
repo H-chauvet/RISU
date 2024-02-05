@@ -14,7 +14,7 @@ import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'rent_page.dart';
 
