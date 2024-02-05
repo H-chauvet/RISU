@@ -205,7 +205,7 @@ async function sendAccountConfirmationEmail(email, token) {
     to: email,
     subject: 'Confirm your account',
     text:
-      'Please follow the link to confirm your account: http://20.111.37.124:8080/api/mailVerification?token=' +
+      'Please follow the link to confirm your account: http://51.103.94.191:8080/api/mailVerification?token=' +
       token
   }
 

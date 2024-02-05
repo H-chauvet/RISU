@@ -88,8 +88,12 @@ class RentArticlePageState extends State<RentArticlePage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return;
       }
     }
   }
@@ -125,8 +129,12 @@ class RentArticlePageState extends State<RentArticlePage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Echec de la création du paiement.");
+        return null;
       }
     }
     return null;
@@ -209,7 +217,6 @@ class RentArticlePageState extends State<RentArticlePage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

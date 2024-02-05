@@ -41,8 +41,12 @@ class ContactPageState extends State<ContactPage> {
       );
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return false;
       }
     }
     setState(() {
@@ -74,7 +78,6 @@ class ContactPageState extends State<ContactPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

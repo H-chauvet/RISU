@@ -57,11 +57,12 @@ class RentalPageState extends State<RentalPage> {
         }
       }
     } catch (err, stacktrace) {
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace);
+        return;
       }
     }
   }
@@ -108,7 +109,6 @@ class RentalPageState extends State<RentalPage> {
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,

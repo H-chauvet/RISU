@@ -54,11 +54,14 @@ class SettingsPageState extends State<SettingsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
                 "Une erreur est survenue lors de la suppression du compte.");
+        return false;
       }
-      return false;
     }
     return false;
   }
@@ -73,7 +76,9 @@ class SettingsPageState extends State<SettingsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
+        onBackButtonPressed: () {
+          Navigator.pop(context, true);
+        },
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

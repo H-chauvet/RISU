@@ -42,7 +42,7 @@ class HomePageState extends State<HomePage> {
         await MyAlertDialog.showChoiceAlertDialog(
           context: context,
           title: 'Profil incomplet',
-          message: 'Veuillez compléter votre profil avant de continuer.',
+          message: 'Souhaitez-vous completer votre profil ?',
           onOkName: 'Compléter le profil',
           onCancelName: 'Annuler',
         ).then(
@@ -63,7 +63,7 @@ class HomePageState extends State<HomePage> {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
-                "Une erreur est survenue lors de la configuration du profile.");
+                "Une erreur est survenue lors de la configuration du profil.");
       }
     }
   }
@@ -81,7 +81,6 @@ class HomePageState extends State<HomePage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           showLogo: true,
-          showBurgerMenu: false,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],

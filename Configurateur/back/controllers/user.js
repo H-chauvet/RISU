@@ -95,7 +95,7 @@ exports.registerConfirmation = email => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://20.111.37.124:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.103.94.191:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         '</p>'
@@ -178,7 +178,7 @@ exports.forgotPassword = email => {
       to: email,
       subject: 'Réinitialisation de mot de passe',
       html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://20.111.37.124:80/#/password-change/' +
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.103.94.191:80/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
         '</p>'

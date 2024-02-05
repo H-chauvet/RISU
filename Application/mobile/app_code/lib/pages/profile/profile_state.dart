@@ -35,7 +35,13 @@ class ProfilePageState extends State<ProfilePage> {
                   return const ProfileInformationsPage();
                 },
               ),
-            );
+            ).then((value) {
+              if (value != null && value == true) {
+                setState(() {
+                  userInformation = userInformation;
+                });
+              }
+            });
           },
         ),
       );
@@ -112,7 +118,13 @@ class ProfilePageState extends State<ProfilePage> {
                             return const SettingsPage();
                           },
                         ),
-                      );
+                      ).then((value) {
+                        if (value != null && value == true) {
+                          setState(() {
+                            userInformation = userInformation;
+                          });
+                        }
+                      });
                     },
                   ),
                 ),

@@ -68,9 +68,13 @@ class NotificationsPageState extends State<NotificationsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
                 "Une erreur est survenue lors de la sauvegarde des données.");
+        return null;
       }
     }
     return null;
@@ -134,7 +138,6 @@ class NotificationsPageState extends State<NotificationsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(

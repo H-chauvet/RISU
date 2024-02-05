@@ -78,8 +78,12 @@ class SignupPageState extends State<SignupPage> {
       return false;
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return false;
       }
       return false;
     }
@@ -97,7 +101,6 @@ class SignupPageState extends State<SignupPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())

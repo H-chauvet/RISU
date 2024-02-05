@@ -53,14 +53,17 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return {
+          'address': '',
+          'city': '',
+          '_count': {'available': 0}
+        };
       }
-      return {
-        'address': '',
-        'city': '',
-        '_count': {'available': 0}
-      };
     }
   }
 
@@ -101,7 +104,6 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

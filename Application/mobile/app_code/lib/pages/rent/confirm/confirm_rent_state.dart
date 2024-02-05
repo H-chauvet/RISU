@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
@@ -29,8 +30,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
+      endDrawer: const BurgerDrawer(),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),

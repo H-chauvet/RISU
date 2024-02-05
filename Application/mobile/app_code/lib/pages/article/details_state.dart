@@ -56,16 +56,19 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       };
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        return {
+          'id': '',
+          'containerId': '',
+          'name': '',
+          'available': false,
+          'price': 0,
+        };
       }
-      return {
-        'id': '',
-        'containerId': '',
-        'name': '',
-        'available': false,
-        'price': 0,
-      };
     }
   }
 
@@ -89,7 +92,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

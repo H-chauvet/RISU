@@ -53,6 +53,10 @@ class LoginPageState extends State<LoginPage> {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: "Connexion refusée.");
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        return false;
       }
     }
     setState(() {
@@ -118,9 +122,6 @@ class LoginPageState extends State<LoginPage> {
 
   void apiResetPassword(BuildContext context) async {
     try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
       if (_email == null) {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
@@ -129,6 +130,18 @@ class LoginPageState extends State<LoginPage> {
         );
         return;
       }
+      if (_email == "admin@gmail.com") {
+        await MyAlertDialog.showErrorAlertDialog(
+          context: context,
+          title: 'Email',
+          message:
+              'Vous ne pouvez pas réinitialiser le mot de passe de l\'administrateur.',
+        );
+        return;
+      }
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       var response = await http.post(
         Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
         headers: <String, String>{
@@ -179,7 +192,6 @@ class LoginPageState extends State<LoginPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
