@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/providers/language.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageChangeModalContent extends StatelessWidget {
@@ -48,7 +49,8 @@ class LanguageChangeModalContent extends StatelessWidget {
           changeLanguage(context, value);
           MyToastMessage.show(
             context: context,
-            message: "Language changed to $languageName",
+            message:
+                AppLocalizations.of(context)!.languageChangedTo(languageName),
           );
         }
         Navigator.of(context).pop();
