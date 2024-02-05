@@ -10,10 +10,11 @@ import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
+import 'package:risu/pages/settings/settings_pages/language/modal.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'settings_page.dart';
 
@@ -137,6 +138,12 @@ class SettingsPageState extends State<SettingsPage> {
                       title: 'Thème',
                       modalContent: ThemeChangeModalContent(),
                       paramIcon: Icon(Icons.brush),
+                    ),
+                    const SizedBox(height: 8),
+                    const MyParameterModal(
+                      title: 'Langue',
+                      modalContent: LanguageChangeModalContent(),
+                      paramIcon: Icon(Icons.language),
                     ),
                     const SizedBox(height: 24),
                     const Align(
