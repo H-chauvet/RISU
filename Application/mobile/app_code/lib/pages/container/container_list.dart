@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -84,33 +83,22 @@ class ContainerCard extends StatelessWidget {
       },
       child: Container(
         height: 120,
-        margin: EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
-        child: Container(
-          child: Card(
-            elevation: 5,
-            shadowColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.primaryColor),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Column(
-              children: [
-                ListTile(
-                  title: container.city != null ? Text(container.city!) : null,
-                  subtitle: container.address != null
-                      ? Text(container.address!)
-                      : null,
-                  leading: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const SizedBox(width: 10),
-                      Text(
-                          "${AppLocalizations.of(context)!.price}: ${container.price?.toString() ?? "Non défini"}${container.price != null ? "€" : ""}"),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        margin: const EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
+        child: Card(
+          elevation: 5,
+          shadowColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.primaryColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                title: container.city != null ? Text(container.city!) : null,
+                subtitle:
+                    container.address != null ? Text(container.address!) : null,
+              ),
+            ],
           ),
         ),
       ),
