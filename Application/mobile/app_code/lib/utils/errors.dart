@@ -9,7 +9,7 @@ void printCatchError(
   StackTrace stacktrace, {
   String? message,
 }) {
-  print("====${e.toString()}====");
+  print('====${e.toString()}====');
   print(stacktrace);
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
@@ -27,7 +27,7 @@ void printServerResponse(
   String? message,
 }) {
   print(
-      "-------- $functionName(): ${response.body} (${response.statusCode})--------");
+      '-------- $functionName(): ${response.body} (${response.statusCode})--------');
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
       context: context,

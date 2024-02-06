@@ -1,10 +1,10 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/providers/language.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageChangeModalContent extends StatelessWidget {

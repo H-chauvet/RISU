@@ -26,7 +26,7 @@ class ProfilePageState extends State<ProfilePage> {
         padding: const EdgeInsets.only(left: 20, top: 20),
         child: MyOutlinedButton(
           key: const Key('profile-button-complete_button'),
-          text: 'A compléter',
+          text: AppLocalizations.of(context)!.toComplete,
           sizeCoefficient: 0.8,
           onPressed: () {
             Navigator.push(
@@ -36,13 +36,15 @@ class ProfilePageState extends State<ProfilePage> {
                   return const ProfileInformationsPage();
                 },
               ),
-            ).then((value) {
-              if (value != null && value == true) {
-                setState(() {
-                  userInformation = userInformation;
-                });
-              }
-            });
+            ).then(
+              (value) {
+                if (value != null && value == true) {
+                  setState(() {
+                    userInformation = userInformation;
+                  });
+                }
+              },
+            );
           },
         ),
       );
@@ -54,9 +56,9 @@ class ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     String email = userInformation!.email;
-    var splitEmail = email.split("@");
+    var splitEmail = email.split('@');
     var hiddenEmail = email.replaceRange(
-        2, splitEmail[0].length, "*" * (splitEmail[0].length - 2));
+        2, splitEmail[0].length, '*' * (splitEmail[0].length - 2));
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -68,8 +70,9 @@ class ProfilePageState extends State<ProfilePage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Row(children: [
-                Padding(
+              Row(
+                children: [
+                  Padding(
                     padding: const EdgeInsets.only(right: 30, top: 20),
                     child: ProfilePhoto(
                       key: const Key('profile-profile_photo-user_photo'),
@@ -77,9 +80,10 @@ class ProfilePageState extends State<ProfilePage> {
                       cornerRadius: 80,
                       color: Colors.blue,
                       image: const AssetImage('assets/avatar-rond.png'),
-                    )),
-                Expanded(
-                  child: Padding(
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
                       padding: const EdgeInsets.only(top: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,10 +102,12 @@ class ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                         ],
-                      )),
-                ),
-                toComplete()
-              ]),
+                      ),
+                    ),
+                  ),
+                  toComplete()
+                ],
+              ),
               const MyDivider(vertical: 16.0, horizontal: 16.0),
               Padding(
                 padding:
@@ -110,7 +116,7 @@ class ProfilePageState extends State<ProfilePage> {
                   width: double.infinity,
                   child: MyOutlinedButton(
                     key: const Key('profile-button-settings_button'),
-                    text: 'Paramètres',
+                    text: AppLocalizations.of(context)!.settings,
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -119,13 +125,15 @@ class ProfilePageState extends State<ProfilePage> {
                             return const SettingsPage();
                           },
                         ),
-                      ).then((value) {
-                        if (value != null && value == true) {
-                          setState(() {
-                            userInformation = userInformation;
-                          });
-                        }
-                      });
+                      ).then(
+                        (value) {
+                          if (value != null && value == true) {
+                            setState(() {
+                              userInformation = userInformation;
+                            });
+                          }
+                        },
+                      );
                     },
                   ),
                 ),
@@ -137,7 +145,7 @@ class ProfilePageState extends State<ProfilePage> {
                   width: double.infinity,
                   child: MyOutlinedButton(
                     key: const Key('profile-button-my_rentals_button'),
-                    text: 'Mes locations',
+                    text: AppLocalizations.of(context)!.myRents,
                     onPressed: () {
                       Navigator.push(
                         context,

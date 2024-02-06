@@ -37,8 +37,11 @@ class ContactPageState extends State<ContactPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'name': name, 'email': email, 'message': message}),
+        body: jsonEncode(<String, String>{
+          'name': name,
+          'email': email,
+          'message': message,
+        }),
       );
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -57,8 +60,8 @@ class ContactPageState extends State<ContactPage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
-          message: 'Message envoyé.',
+          title: AppLocalizations.of(context)!.contact,
+          message: AppLocalizations.of(context)!.messageSent,
         );
         return true;
       }
@@ -96,7 +99,7 @@ class ContactPageState extends State<ContactPage> {
                     children: [
                       const SizedBox(height: 30),
                       Text(
-                        'Nous contacter',
+                        AppLocalizations.of(context)!.contact,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 32,
@@ -141,15 +144,15 @@ class ContactPageState extends State<ContactPage> {
                       ),
                       const SizedBox(height: 36),
                       MyOutlinedButton(
-                        text: 'Envoyer',
+                        text: AppLocalizations.of(context)!.send,
                         key: const Key('contact-button-send_message'),
                         onPressed: () {
                           if (_name != null &&
-                              _name != "" &&
+                              _name != '' &&
                               _email != null &&
-                              _email != "" &&
+                              _email != '' &&
                               _message != null &&
-                              _message != "") {
+                              _message != '') {
                             apiContact(_name!, _email!, _message!)
                                 .then((value) => {});
                           } else {
@@ -159,7 +162,7 @@ class ContactPageState extends State<ContactPage> {
                               context: context,
                               title: AppLocalizations.of(context)!.error,
                               message:
-                                  'Veuillez entrer des informations valides.',
+                                  AppLocalizations.of(context)!.fieldsEmpty,
                             );
                           }
                         },

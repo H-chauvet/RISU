@@ -54,8 +54,10 @@ class SignupPageState extends State<SignupPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'email': _email!, 'password': _password!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+          'password': _password!,
+        }),
       );
       setState(() {
         _loaderManager.setIsLoading(false);

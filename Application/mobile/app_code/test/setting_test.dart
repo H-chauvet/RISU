@@ -22,7 +22,7 @@ void main() {
       Finder deleteTextButton =
       find.byKey(const Key('settings-textbutton_delete-account'));
       Finder bottomSizedBox =
-      find.byKey(const Key("settings-sized_box-bottom"));
+      find.byKey(const Key('settings-sized_box-bottom'));
 
       expect(deleteTextButton, findsOneWidget);
       expect(bottomSizedBox, findsOneWidget);

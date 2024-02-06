@@ -188,12 +188,14 @@ class RentArticlePageState extends State<RentArticlePage> {
             title: AppLocalizations.of(context)!.error,
             message: AppLocalizations.of(context)!.paymentClientSecretInvalid,
           );
+          return;
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.paymentHasFailed);
+        return;
       }
     }
   }
@@ -202,8 +204,8 @@ class RentArticlePageState extends State<RentArticlePage> {
     await MyAlertDialog.showChoiceAlertDialog(
       context: context,
       title: AppLocalizations.of(context)!.rentConfirmation,
-      message:
-          AppLocalizations.of(context)!.rentConfirmationMessage(_rentalHours),
+      message: AppLocalizations.of(context)!
+          .rentAskConfirmationMessage(_rentalHours),
       onOkName: AppLocalizations.of(context)!.confirm,
       onCancelName: AppLocalizations.of(context)!.cancel,
     ).then(
@@ -339,7 +341,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               color: const Color(0xFF4682B4)
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                "${_articleData.price} €",
+                                                "${_articleData.price}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -355,7 +357,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               color: const Color(0xFF4682B4)
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                "${_articleData.price * _rentalHours} €",
+                                                "${_articleData.price * _rentalHours}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -393,7 +395,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                           onPressed: _decrementHours,
                                         ),
                                         Text(
-                                          "$_rentalHours heure${_rentalHours > 1 ? 's' : ''}",
+                                          AppLocalizations.of(context)!
+                                              .rentHours(_rentalHours),
                                           style: const TextStyle(
                                             color: Colors.black,
                                           ),
