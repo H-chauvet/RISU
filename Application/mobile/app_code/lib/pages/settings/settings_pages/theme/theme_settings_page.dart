@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeChangeModalContent extends StatefulWidget {
-  const ThemeChangeModalContent({super.key});
+  const ThemeChangeModalContent({
+    super.key,
+  });
 
   @override
   ThemeChangeModalContentState createState() => ThemeChangeModalContentState();
