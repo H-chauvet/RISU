@@ -19,11 +19,11 @@ class MapPageState extends State<MapPage> {
     _requestLocationPermission();
   }
 
-  Widget displayMap() {
+  Widget displayMap(BuildContext context) {
     if (!displayGoogleMap) {
-      return const Center(
+      return Center(
         child: Text(
-          'Risu decided to not display the map',
+          AppLocalizations.of(context)!.mapNoDisplayedByRisu,
           textAlign: TextAlign.center,
         ),
       );
@@ -43,8 +43,8 @@ class MapPageState extends State<MapPage> {
       markerId: MarkerId('marker_1'),
       position: LatLng(47.2104851, -1.56675127492582),
       infoWindow: InfoWindow(
-        title: 'Epitech',
-        snippet: 'Nantes',
+        title: "Epitech",
+        snippet: "Nantes",
       ),
     ),
   };
@@ -87,7 +87,7 @@ class MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: displayMap(),
+      body: displayMap(context),
     );
   }
 }

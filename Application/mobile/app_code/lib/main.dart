@@ -13,7 +13,7 @@ import 'globals.dart';
 bool isDarkTheme = false;
 
 void main() async {
-  await dotenv.load(fileName: "lib/.env");
+  await dotenv.load(fileName: 'lib/.env');
 
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
@@ -24,7 +24,7 @@ void main() async {
   // Continue with SharedPreferences and ThemeProvider
   final prefs = await SharedPreferences.getInstance();
   isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
-  language = prefs.getString("language") ?? defaultLanguage;
+  language = prefs.getString('language') ?? defaultLanguage;
 
   runApp(
     MultiProvider(
@@ -46,7 +46,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Risu",
       theme: context
           .select((ThemeProvider themeProvider) => themeProvider.currentTheme),
       home: const HomePage(),

@@ -9,7 +9,6 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
@@ -167,9 +166,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   const EdgeInsets.all(8.0),
                                               color: themeProvider
                                                   .currentTheme.primaryColor,
-                                              child: const Text(
-                                                'Actuellement :',
-                                                style: TextStyle(
+                                              child: Text(
+                                                "${AppLocalizations.of(context)!.actually}: ",
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -198,9 +197,14 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   ),
                                                   const SizedBox(width: 5),
                                                   Text(
-                                                    (articleData.available)
-                                                        ? 'Disponible'
-                                                        : 'indisponible',
+                                                    articleData.available ==
+                                                            true
+                                                        ? AppLocalizations.of(
+                                                                context)!
+                                                            .available
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .unavailable,
                                                     style: const TextStyle(
                                                       fontSize: 18,
                                                       fontWeight:
@@ -222,9 +226,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               color: themeProvider
                                                   .currentTheme.primaryColor
                                                   .withOpacity(0.6),
-                                              child: const Text(
-                                                'Prix à l\'heure :',
-                                                style: TextStyle(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .pricePerHour,
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -239,7 +244,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   .currentTheme.primaryColor
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                '${articleData.price} €',
+                                                "${articleData.price}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -258,29 +263,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MyOutlinedButton(
-                          text: 'Afficher le conteneur lié',
-                          key: const Key('article-button_container-details'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ContainerDetailsPage(
-                                  containerId: articleData.containerId,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                       const SizedBox(height: 16),
                       if (articleData.available)
                         SizedBox(
                           width: double.infinity,
                           child: MyOutlinedButton(
-                            text: 'Louer cet article',
+                            text: AppLocalizations.of(context)!.rentThisArticle,
                             key: const Key('article-button_article-rent'),
                             onPressed: () async {
                               bool signIn = await checkSignin(context);

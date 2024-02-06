@@ -96,8 +96,8 @@ class OpinionPageState extends State<OpinionPage> {
           getOpinions();
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            title: 'Avis ajouté',
-            message: 'Votre avis a bien été sauvegardé.',
+            title: AppLocalizations.of(context)!.reviewAdded,
+            message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
           );
         }
       } else {
@@ -129,7 +129,7 @@ class OpinionPageState extends State<OpinionPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text('Ajouter un avis'),
+              title: Text(AppLocalizations.of(context)!.reviewAdd),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -167,14 +167,14 @@ class OpinionPageState extends State<OpinionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     MyOutlinedButton(
-                      text: 'Annuler',
+                      text: AppLocalizations.of(context)!.cancel,
                       key: const Key('cancel-button'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     MyOutlinedButton(
-                      text: 'Ajouter',
+                      text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
                         postOpinion(selectedStar, comment);
@@ -222,10 +222,10 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Avis de l\'application',
-                            key: Key('opinion-title'),
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.reviewsList,
+                            key: const Key('opinion-title'),
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -236,41 +236,63 @@ class OpinionPageState extends State<OpinionPage> {
                                 DropdownButton<int>(
                                   key: const Key('opinion-filter_dropdown'),
                                   value: selectedStarFilter,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem<int>(
                                       value: 0,
-                                      key: Key('opinion-filter_dropdown_0'),
-                                      child: Text('0 étoile'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_0'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(0),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 1,
-                                      key: Key('opinion-filter_dropdown_1'),
-                                      child: Text('1 étoile'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_1'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(1),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 2,
-                                      key: Key('opinion-filter_dropdown_2'),
-                                      child: Text('2 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_2'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(2),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 3,
-                                      key: Key('opinion-filter_dropdown_3'),
-                                      child: Text('3 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_3'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(3),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 4,
-                                      key: Key('opinion-filter_dropdown_4'),
-                                      child: Text('4 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_4'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(4),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 5,
-                                      key: Key('opinion-filter_dropdown_5'),
-                                      child: Text('5 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_5'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(5),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 6,
-                                      key: Key('opinion-filter_dropdown_all'),
-                                      child: Text('Tous les avis'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_all'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .reviewsAll,
+                                      ),
                                     ),
                                   ],
                                   onChanged: (value) {
@@ -295,7 +317,7 @@ class OpinionPageState extends State<OpinionPage> {
                                         key: Key(
                                             'opinion-listTile_${opinion['id']}'),
                                         title: Text(
-                                          '${(opinion['firstName'] ?? 'Anonyme')} ${(opinion['lastName'] ?? '')}',
+                                          '${(opinion['firstName'] ?? AppLocalizations.of(context)!.anonymous)} ${(opinion['lastName'] ?? '')}',
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -336,8 +358,8 @@ class OpinionPageState extends State<OpinionPage> {
                                       ),
                                     ),
                                 if (opinionsList.isEmpty)
-                                  const Text(
-                                    'Aucun avis',
+                                  Text(
+                                    AppLocalizations.of(context)!.reviewsEmpty,
                                     style: TextStyle(fontSize: 16),
                                   ),
                               ],

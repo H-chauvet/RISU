@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
@@ -74,7 +75,7 @@ class ContainerPageState extends State<ContainerPage> {
                     children: [
                       const SizedBox(height: 30),
                       Text(
-                        'Liste des conteneurs',
+                        AppLocalizations.of(context)!.containersList,
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -87,7 +88,7 @@ class ContainerPageState extends State<ContainerPage> {
                         children: [
                           if (containers.isEmpty)
                             Text(
-                              'Aucun conteneur trouvé.',
+                              AppLocalizations.of(context)!.containersListEmpty,
                               style: TextStyle(
                                 fontSize: 18,
                                 color: context.select(

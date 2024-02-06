@@ -32,7 +32,7 @@ class LoginPageState extends State<LoginPage> {
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
           title: AppLocalizations.of(context)!.error,
-          message: 'Certains champs sont vides.',
+          message: AppLocalizations.of(context)!.fieldsEmpty,
         );
         return false;
       }
@@ -47,8 +47,10 @@ class LoginPageState extends State<LoginPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'email': _email!, 'password': _password!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+          'password': _password!,
+        }),
       );
       setState(() {
         _loaderManager.setIsLoading(false);
@@ -88,16 +90,15 @@ class LoginPageState extends State<LoginPage> {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: AppLocalizations.of(context)!.error,
-          message: "Veuillez renseigner votre email.",
+          message: AppLocalizations.of(context)!.emailNotFilled,
         );
         return;
       }
-      if (_email == "admin@gmail.com") {
+      if (_email == 'admin@gmail.com') {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
           title: AppLocalizations.of(context)!.error,
-          message:
-              "Vous ne pouvez pas réinitialiser le mot de passe de l'administrateur.",
+          message: AppLocalizations.of(context)!.passwordCantResetAdmin,
         );
         return;
       }
@@ -109,7 +110,9 @@ class LoginPageState extends State<LoginPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{'email': _email!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+        }),
       );
       setState(() {
         _loaderManager.setIsLoading(false);
@@ -224,7 +227,7 @@ class LoginPageState extends State<LoginPage> {
                                 });
                               },
                               child: Text(
-                                AppLocalizations.of(context)!.passwordForgotten,
+                                "${AppLocalizations.of(context)!.passwordForgotten} ?",
                                 style: TextStyle(
                                   fontSize: 12,
                                   decoration: TextDecoration.underline,

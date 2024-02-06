@@ -94,7 +94,7 @@ class ArticleListState extends State<ArticleListPage> {
                     children: [
                       const SizedBox(height: 16),
                       Text(
-                        'Liste des articles',
+                        AppLocalizations.of(context)!.articlesList,
                         key: const Key('articles-list_title'),
                         style: TextStyle(
                           fontSize: 32,
@@ -115,7 +115,7 @@ class ArticleListState extends State<ArticleListPage> {
                       const SizedBox(height: 16),
                       if (_itemsDatas.isEmpty) ...[
                         Text(
-                          'Aucun article disponible pour ce conteneur',
+                          AppLocalizations.of(context)!.articlesListEmpty,
                           key: const Key('articles-list_no-article'),
                           style: TextStyle(
                             fontSize: 32,

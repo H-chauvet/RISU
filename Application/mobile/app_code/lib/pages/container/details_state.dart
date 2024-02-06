@@ -120,7 +120,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '$_address, $_city',
+                        "$_address, $_city",
                         key: const Key('container-details_title'),
                         style: TextStyle(
                           fontSize: 32,
@@ -169,7 +169,9 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Il y a actuellement $_availableItems article${_availableItems > 1 ? 's' : ''} disponible${_availableItems > 1 ? 's' : ''}',
+                                  AppLocalizations.of(context)!
+                                      .howManyAvailableArticles(
+                                          _availableItems),
                                   key: const Key(
                                       'container-details_article-list'),
                                   style: const TextStyle(
@@ -186,7 +188,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: 'Afficher la liste des articles',
+                          text:
+                              AppLocalizations.of(context)!.articlesDisplayList,
                           key: const Key('container-button_article-list-page'),
                           onPressed: () {
                             Navigator.push(

@@ -141,7 +141,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                   children: [
                     Text(
                       key: const Key('rent_return-title'),
-                      'Retour de location',
+                      AppLocalizations.of(context)!.article,
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -207,7 +207,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             color: themeProvider
                                                 .currentTheme.primaryColor,
                                             child: Text(
-                                              'Prix',
+                                              AppLocalizations.of(context)!
+                                                  .price,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -226,7 +227,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             color: themeProvider
                                                 .currentTheme.primaryColor,
                                             child: Text(
-                                              'Durée',
+                                              AppLocalizations.of(context)!
+                                                  .duration,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -250,7 +252,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .currentTheme.primaryColor
                                                 .withOpacity(0.6),
                                             child: Text(
-                                              '${rent['price']} €',
+                                              "${rent['price']}€",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -270,7 +272,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .currentTheme.primaryColor
                                                 .withOpacity(0.6),
                                             child: Text(
-                                              '${rent['duration']} heures',
+                                              AppLocalizations.of(context)!
+                                                  .rentHours(rent['duration']),
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -298,16 +301,19 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: 'Rendre l\'article',
+                          text: AppLocalizations.of(context)!.rentReturn,
                           key: const Key('rent_return-button-return_article'),
                           onPressed: () async {
                             bool returnRent =
                                 await MyAlertDialog.showChoiceAlertDialog(
                               context: context,
-                              title: 'Confirmer le rendu de l\'article',
-                              message: 'Voules-vous rendre votre location ?',
-                              onOkName: 'Accepter',
-                              onCancelName: 'Annuler',
+                              title: AppLocalizations.of(context)!
+                                  .rentReturnAskConfirmation,
+                              message: AppLocalizations.of(context)!
+                                  .rentReturnAskConfirmationMessage,
+                              onOkName: AppLocalizations.of(context)!.accept,
+                              onCancelName:
+                                  AppLocalizations.of(context)!.cancel,
                             );
                             if (returnRent == true) {
                               returnArticle();
@@ -327,7 +333,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            'Location déjà rendue',
+                            AppLocalizations.of(context)!
+                                .articleAlreadyReturned,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

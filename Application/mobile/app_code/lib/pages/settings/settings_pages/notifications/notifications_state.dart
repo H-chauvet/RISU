@@ -152,9 +152,10 @@ class NotificationsPageState extends State<NotificationsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 16),
-                  const Text(
-                    'Gestion des notifications',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!
+                        .notificationsPreferencesManagement,
+                    style: const TextStyle(
                       fontSize: 32, // Taille de la police
                       fontWeight: FontWeight.bold, // Gras
                       color: Color(0xFF4682B4),
