@@ -17,24 +17,25 @@ class MyAlertDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            key: key,
-            title: Text(title),
-            titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: const TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
+          key: key,
+          title: Text(title),
+          titlePadding: const EdgeInsets.all(16.0),
+          titleTextStyle: const TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+          backgroundColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.backgroundColor),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              key: const Key('alertdialog-button_ok'),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
-            backgroundColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.backgroundColor),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                key: const Key('alertdialog-button_ok'),
-                child: Text(AppLocalizations.of(context)!.ok),
-              ),
-            ]);
+          ],
+        );
       },
     );
   }
@@ -49,21 +50,22 @@ class MyAlertDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            key: key,
-            title: Text(title),
-            titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.titleTextStyle),
-            backgroundColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.backgroundColor),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                key: const Key('alertdialog-button_ok'),
-                child: Text(AppLocalizations.of(context)!.ok),
-              ),
-            ]);
+          key: key,
+          title: Text(title),
+          titlePadding: const EdgeInsets.all(16.0),
+          titleTextStyle: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.titleTextStyle),
+          backgroundColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.backgroundColor),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              key: const Key('alertdialog-button_ok'),
+              child: Text(AppLocalizations.of(context)!.ok),
+            ),
+          ],
+        );
       },
     );
   }

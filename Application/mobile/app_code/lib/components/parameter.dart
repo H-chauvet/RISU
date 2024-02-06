@@ -66,29 +66,35 @@ class MyRedirectDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            onChanging(context);
-          },
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          onChanging(context);
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             placeDivider(DIVIDERPLACE.top),
-            Row(children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: paramIcon,
-              ),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: paramIcon,
                 ),
-              ),
-            ]),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
             placeDivider(DIVIDERPLACE.bottom),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -130,23 +136,28 @@ class MyParameter extends StatelessWidget {
           ),
         );
       },
-      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Row(children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: paramIcon,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: paramIcon,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              correspondingIcon()
+            ],
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          const Expanded(child: SizedBox()),
-          correspondingIcon()
-        ]),
-        const MyDivider()
-      ]),
+          const MyDivider()
+        ],
+      ),
     );
   }
 }

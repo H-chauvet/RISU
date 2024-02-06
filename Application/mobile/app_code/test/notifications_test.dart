@@ -30,11 +30,13 @@ void main() {
   });
 
   testWidgets('isAllChecked value', (WidgetTester tester) async {
-    userInformation = initExampleUser(notifications: [
-      false,
-      false,
-      false,
-    ]);
+    userInformation = initExampleUser(
+      notifications: [
+        false,
+        false,
+        false,
+      ],
+    );
     await tester.pumpWidget(initPage(const NotificationsPage()));
   });
   testWidgets('Check the variables update', (WidgetTester tester) async {
