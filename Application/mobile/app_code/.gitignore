@@ -43,4 +43,7 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
+# Auto-generated file that lists the missing translations
+/lib/l10n/missingTranslation.txt
+
 coverage/
