@@ -13,9 +13,9 @@ void main() {
           RentArticlePage(
             articleData: ArticleData(
                 available: true,
-                id: "1234",
-                name: "test object",
-                containerId: "12345",
+                id: '1234',
+                name: 'test object',
+                containerId: '12345',
                 price: 3,
               ),
           ),

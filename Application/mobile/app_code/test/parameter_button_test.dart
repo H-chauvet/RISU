@@ -29,7 +29,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyParameter(
-                      title: "TestButton",
+                      title: 'TestButton',
                       goToPage: LoginPage(),
                       paramIcon: Icon(Icons.abc),
                       locked: true),
@@ -63,7 +63,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyParameter(
-                    title: "TestButton",
+                    title: 'TestButton',
                     goToPage: LoginPage(),
                     paramIcon: Icon(Icons.abc),
                   ),
@@ -95,7 +95,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyParameterModal(
-                    title: "theme",
+                    title: 'theme',
                     modalContent: ThemeChangeModalContent(),
                     paramIcon: Icon(Icons.abc),
                   ),

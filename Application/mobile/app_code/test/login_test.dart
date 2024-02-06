@@ -85,7 +85,7 @@ void main() {
   });
 
   testWidgets(
-      'Tapping "Mot de passe oublié ?" should show reset password dialog',
+      'Tapping \'Mot de passe oublié ?\' should show reset password dialog',
       (WidgetTester tester) async {
     userInformation = null;
     await tester.pumpWidget(initPage(const LoginPage()));
@@ -99,7 +99,7 @@ void main() {
   });
 
   testWidgets(
-      'Tapping "Pas de compte ? S\'inscrire" should navigate to SignupPage',
+      'Tapping \'Pas de compte ? S\'inscrire\' should navigate to SignupPage',
       (WidgetTester tester) async {
     userInformation = null;
     await tester.pumpWidget(initPage(const LoginPage()));

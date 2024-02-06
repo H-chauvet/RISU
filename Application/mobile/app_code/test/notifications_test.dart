@@ -42,15 +42,15 @@ void main() {
     await tester.pumpWidget(initPage(const NotificationsPage()));
 
     final Finder switchDisponibilityFinder =
-        find.byKey(const Key("notifications-switch_disponibility_favorite"));
+        find.byKey(const Key('notifications-switch_disponibility_favorite'));
     final Finder switchEndRentingFinder =
-        find.byKey(const Key("notifications-switch_end_renting"));
+        find.byKey(const Key('notifications-switch_end_renting'));
     final Finder switchNewsOffersFinder =
-        find.byKey(const Key("notifications-switch_news_offers_risu"));
+        find.byKey(const Key('notifications-switch_news_offers_risu'));
     final Finder switchAllFinder =
-        find.byKey(const Key("notifications-switch_all"));
+        find.byKey(const Key('notifications-switch_all'));
     final Finder buttonSaveFinder =
-        find.byKey(const Key("notifications-button_save"));
+        find.byKey(const Key('notifications-button_save'));
 
     // Check all Switch
     expect(switchDisponibilityFinder, findsOneWidget);
