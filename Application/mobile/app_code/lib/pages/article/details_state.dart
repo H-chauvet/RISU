@@ -167,7 +167,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               color: themeProvider
                                                   .currentTheme.primaryColor,
                                               child: Text(
-                                                "${AppLocalizations.of(context)!.actually}: ",
+                                                "${AppLocalizations.of(context)!.currently}: ",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
