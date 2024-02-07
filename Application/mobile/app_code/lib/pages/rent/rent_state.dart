@@ -208,14 +208,12 @@ class RentArticlePageState extends State<RentArticlePage> {
           .rentAskConfirmationMessage(_rentalHours),
       onOkName: AppLocalizations.of(context)!.confirm,
       onCancelName: AppLocalizations.of(context)!.cancel,
-    ).then(
-      (value) => {
-        if (value)
-          {
-            makePayment(),
-          }
-      },
-    );
+    ).then((value) => {
+          if (value)
+            {
+              makePayment(),
+            }
+        });
   }
 
   @override
