@@ -1,6 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 
@@ -11,10 +10,12 @@ void main() {
     testWidgets('find opinions pages buttons', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage());
       await waitForLoader(tester: tester, testPage: testPage);
+      BuildContext context = tester.element(find.byType(OpinionPage));
 
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
-      Finder opinionButtonFilterFinder = find.text("Tous les avis");
+      Finder opinionButtonFilterFinder =
+          find.text(AppLocalizations.of(context)!.reviewsAll);
 
       // Verify the initial state
       expect(addOpinionButtonFinder, findsOneWidget);
@@ -34,7 +35,8 @@ void main() {
       await tester.tap(addOpinionButtonFinder);
       await tester.pump(const Duration(milliseconds: 4000));
 
-      expect(find.text('Ajouter un avis'), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.reviewAdd), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_0')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_1')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_2')), findsOneWidget);
@@ -48,6 +50,7 @@ void main() {
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage());
       await waitForLoader(tester: tester, testPage: testPage);
+      BuildContext context = tester.element(find.byType(OpinionPage));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder addOpinionButtonFinder =
@@ -66,13 +69,20 @@ void main() {
       await tester.tap(filterAll, warnIfMissed: false);
       await tester.pump();
 
-      expect(find.text('0 étoile'), findsOneWidget);
-      expect(find.text('1 étoile'), findsOneWidget);
-      expect(find.text('2 étoiles'), findsOneWidget);
-      expect(find.text('3 étoiles'), findsOneWidget);
-      expect(find.text('4 étoiles'), findsOneWidget);
-      expect(find.text('5 étoiles'), findsOneWidget);
-      expect(find.text('Tous les avis'), findsNWidgets(2));
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(0)), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(1)), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(2)), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(3)), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(4)), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.starsX(5)), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.reviewsAll),
+          findsNWidgets(2));
 
       Finder filter_0 = find.byKey(const Key('opinion-filter_dropdown_0'));
       await tester.tap(filter_0, warnIfMissed: false);
@@ -222,6 +232,7 @@ void main() {
     testWidgets('no opinion', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage());
       await tester.pumpWidget(testPage);
+      BuildContext context = tester.element(find.byType(OpinionPage));
 
       while (true) {
         try {
@@ -255,16 +266,19 @@ void main() {
       await tester.tap(filter_3, warnIfMissed: false);
       await tester.pump();
 
-      expect(find.text('Aucun avis'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.reviewsEmpty),
+          findsOneWidget);
     });
 
     testWidgets('new opinion', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage());
       await waitForLoader(tester: tester, testPage: testPage);
+      BuildContext context = tester.element(find.byType(OpinionPage));
 
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));
-      Finder opinionButtonFilterFinder = find.text("Tous les avis");
+      Finder opinionButtonFilterFinder =
+          find.text(AppLocalizations.of(context)!.reviewsAll);
 
       // Verify the initial state
       expect(addOpinionButtonFinder, findsOneWidget);
@@ -284,7 +298,8 @@ void main() {
       await tester.tap(addOpinionButtonFinder);
       await tester.pump(const Duration(milliseconds: 4000));
 
-      expect(find.text('Ajouter un avis'), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.reviewAdd), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_0')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_1')), findsOneWidget);
       expect(find.byKey(const Key('opinion-star_2')), findsOneWidget);

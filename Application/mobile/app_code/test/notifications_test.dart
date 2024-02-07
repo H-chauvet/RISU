@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
@@ -20,25 +21,23 @@ void main() {
   testWidgets('Check the page content', (WidgetTester tester) async {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const NotificationsPage()));
+    BuildContext context = tester.element(find.byType(NotificationsPage));
 
-    expect(find.text("Gestion des notifications"), findsOneWidget);
-    expect(find.text("Disponibilité d'un article favoris"), findsOneWidget);
-    expect(find.text("Fin de ma location"), findsOneWidget);
-    expect(find.text("Actus, offres et conseils de Risu"), findsOneWidget);
-    expect(find.text("Tous"), findsOneWidget);
+    expect(
+        find.text(
+            AppLocalizations.of(context)!.notificationsPreferencesManagement),
+        findsOneWidget);
+    expect(
+        find.text(AppLocalizations.of(context)!.availabilityOfAFavoriteArticle),
+        findsOneWidget);
+    expect(
+        find.text(AppLocalizations.of(context)!.endOfRenting), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.newsOffersTipsRisu),
+        findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
     expect(find.byType(Switch), findsNWidgets(4));
   });
 
-  testWidgets('isAllChecked value', (WidgetTester tester) async {
-    userInformation = initExampleUser(
-      notifications: [
-        false,
-        false,
-        false,
-      ],
-    );
-    await tester.pumpWidget(initPage(const NotificationsPage()));
-  });
   testWidgets('Check the variables update', (WidgetTester tester) async {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const NotificationsPage()));

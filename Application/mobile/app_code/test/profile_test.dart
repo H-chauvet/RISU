@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/profile/profile_page.dart';
@@ -21,6 +22,7 @@ void main() {
         (WidgetTester tester) async {
       userInformation = initExampleUser();
       await tester.pumpWidget(initPage(const ProfilePage()));
+      BuildContext context = tester.element(find.byType(ProfilePage));
 
       Finder profilePhotoUser =
           find.byKey(const Key('profile-profile_photo-user_photo'));
@@ -33,7 +35,7 @@ void main() {
           find.byKey(const Key('profile-button-settings_button'));
       expect(buttonSettings, findsOneWidget);
 
-      expect(find.text('Mes locations'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.myRents), findsOneWidget);
       Finder buttonRent =
           find.byKey(const Key('profile-button-my_rentals_button'));
       expect(buttonRent, findsOneWidget);
@@ -46,8 +48,9 @@ void main() {
         (WidgetTester tester) async {
       userInformation = initExampleUser();
       await tester.pumpWidget(initPage(const ProfilePage()));
+      BuildContext context = tester.element(find.byType(ProfilePage));
 
-      expect(find.text('Mes locations'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.myRents), findsOneWidget);
       Finder buttonRent =
           find.byKey(const Key('profile-button-my_rentals_button'));
       expect(buttonRent, findsOneWidget);
