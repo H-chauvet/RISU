@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:risu/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'colors.dart';
-
 dynamic appTheme = {
   'clair': 'Clair',
   'sombre': 'Sombre',
