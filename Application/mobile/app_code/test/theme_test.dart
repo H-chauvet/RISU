@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'globals.dart';
+
 void main() {
   group('ThemeProvider Integration Test', () {
     setUpAll(() async {
@@ -19,7 +21,7 @@ void main() {
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
       SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
 
-      await tester.pumpWidget(
+      await tester.pumpWidget(initPage(
         MaterialApp(
           home: ChangeNotifierProvider(
             create: (_) =>
@@ -41,7 +43,7 @@ void main() {
             ),
           ),
         ),
-      );
+      ));
 
       expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
           Brightness.light);
@@ -56,10 +58,11 @@ void main() {
       expect(prefs.getString('appTheme'), appTheme['sombre']);
     });
   });
+
   testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
     SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
 
-    await tester.pumpWidget(
+    await tester.pumpWidget(initPage(
       MaterialApp(
         home: ChangeNotifierProvider(
           create: (_) =>
@@ -81,7 +84,7 @@ void main() {
           ),
         ),
       ),
-    );
+    ));
 
     expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
         Brightness.light);
