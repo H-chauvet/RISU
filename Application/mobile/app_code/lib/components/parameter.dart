@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
 
@@ -65,29 +66,35 @@ class MyRedirectDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: () {
-            onChanging(context);
-          },
-          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          onChanging(context);
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
             placeDivider(DIVIDERPLACE.top),
-            Row(children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 8),
-                child: paramIcon,
-              ),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 16,
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
+                  child: paramIcon,
                 ),
-              ),
-            ]),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
             placeDivider(DIVIDERPLACE.bottom),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -129,23 +136,28 @@ class MyParameter extends StatelessWidget {
           ),
         );
       },
-      child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Row(children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: paramIcon,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: paramIcon,
+              ),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              const Expanded(child: SizedBox()),
+              correspondingIcon()
+            ],
           ),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-            ),
-          ),
-          const Expanded(child: SizedBox()),
-          correspondingIcon()
-        ]),
-        const MyDivider()
-      ]),
+          const MyDivider()
+        ],
+      ),
     );
   }
 }
@@ -157,12 +169,12 @@ class MyParameterModal extends StatelessWidget {
   final bool locked;
 
   const MyParameterModal({
-    Key? key,
+    super.key,
     required this.title,
     required this.modalContent,
     required this.paramIcon,
     this.locked = false,
-  }) : super(key: key);
+  });
 
   Widget correspondingIcon() {
     if (locked) {
@@ -183,7 +195,7 @@ class MyParameterModal extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Fermer'),
+              child: Text(AppLocalizations.of(context)!.close),
             ),
           ],
         );

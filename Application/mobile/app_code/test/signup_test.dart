@@ -23,6 +23,7 @@ void main() {
     find.byKey(const Key('signup-textinput_email'));
     Finder textInputPasswordFinder =
         find.byKey(const Key('signup-textinput_password'));
+
     testWidgets('Widget Rendering Test', (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const SignupPage()));
 

@@ -8,7 +8,11 @@ class UserData {
   String? firstName;
   String? lastName;
   String? ID;
-  List<bool>? notifications = [true, true, true];
+  List<bool>? notifications = [
+    true,
+    true,
+    true,
+  ];
 
   /// Constructor of the UserData class
   UserData({
@@ -40,7 +44,7 @@ class UserData {
       notifications: [
         user['Notifications']['favoriteItemsAvailable'],
         user['Notifications']['endOfRenting'],
-        user['Notifications']['newsOffersRisu']
+        user['Notifications']['newsOffersRisu'],
       ],
     );
   }

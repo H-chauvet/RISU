@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/rent/rent_page.dart';
 
 import 'globals.dart';
 
@@ -12,15 +13,16 @@ void main() {
         initPage(
           RentArticlePage(
             articleData: ArticleData(
-                available: true,
-                id: "1234",
-                name: "test object",
-                containerId: "12345",
-                price: 3,
-              ),
+              available: true,
+              id: '1234',
+              name: 'test object',
+              containerId: '12345',
+              price: 3,
+            ),
           ),
         ),
       );
+      BuildContext context = tester.element(find.byType(RentArticlePage));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder confirmButtonFinder = find.byKey(const Key('confirm-rent-button'));
@@ -39,14 +41,16 @@ void main() {
       await tester.pump();
 
       // Verify the updated state after interaction
-      expect(find.text('2 heures'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.rentHours(2)),
+          findsOneWidget);
 
       // Simulate user interaction
       await tester.tap(decrementButtonFinder);
       await tester.pump();
 
       // Verify the updated state after interaction
-      expect(find.text('1 heure'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.rentHours(1)),
+          findsOneWidget);
 
       // Simulate another user interaction
       await tester.scrollUntilVisible(confirmButtonFinder, 100.0);

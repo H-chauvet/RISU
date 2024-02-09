@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -10,7 +11,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:risu/utils/validators.dart';
 
@@ -21,11 +22,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   String newLastName = '';
   String newEmail = '';
   final TextEditingController currentPasswordController =
-      TextEditingController(text: "");
+      TextEditingController(text: '');
   final TextEditingController newPasswordController =
-      TextEditingController(text: "");
+      TextEditingController(text: '');
   final TextEditingController newPasswordConfirmationController =
-      TextEditingController(text: "");
+      TextEditingController(text: '');
   final LoaderManager _loaderManager = LoaderManager();
 
   @override
@@ -71,7 +72,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace);
+        return;
       }
     }
   }
@@ -91,8 +96,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
           if (context.mounted) {
             await MyAlertDialog.showErrorAlertDialog(
               context: context,
-              title: 'Mise à jour impossible',
-              message: 'Veuillez entrer un email valide.',
+              title: AppLocalizations.of(context)!.error,
+              message: AppLocalizations.of(context)!.emailInvalid,
             );
           }
           return;
@@ -121,21 +126,25 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         if (context.mounted) {
           MyToastMessage.show(
             context: context,
-            message: "Informations mises à jour.",
+            message: AppLocalizations.of(context)!.profileUpdated,
           );
         }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'updateUser',
-              message:
-                  "Impossible de mettre à jour les informations de l'utilisateur.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringUpdateUserInformation);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
-                "Une erreur est survenue lors de la mise à jour des informations de l'utilisateur.");
+                AppLocalizations.of(context)!.errorOccurredDuringSavingData);
+        return;
       }
     }
   }
@@ -150,8 +159,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
-            title: "Mise à jour impossible",
-            message: "Veuillez remplir tous les champs.",
+            title: AppLocalizations.of(context)!.error,
+            message: AppLocalizations.of(context)!.fieldsEmpty,
           );
         }
         return;
@@ -160,8 +169,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
-            title: "Mise à jour impossible",
-            message: "Les mots de passe ne correspondent pas.",
+            title: AppLocalizations.of(context)!.error,
+            message: AppLocalizations.of(context)!.passwordsDoNotMatch,
           );
         }
         return;
@@ -193,27 +202,33 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         if (context.mounted) {
           MyToastMessage.show(
             context: context,
-            message: "Le mot de passe a été mis à jour.",
+            message: AppLocalizations.of(context)!.passwordUpdated,
           );
         }
       } else {
         if (response.statusCode == 401) {
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
-                message: "Le mot de passe actuel est incorrect.");
+                message:
+                    AppLocalizations.of(context)!.passwordCurrentIncorrect);
           }
         } else {
           if (context.mounted) {
             printServerResponse(context, response, 'updatePassword',
-                message: 'Impossible de mettre à jour le mot de passe.');
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPasswordUpdate);
           }
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
-                "Une erreur est survenue lors de la mise à jour du mot de passe.");
+                AppLocalizations.of(context)!.errorOccurredDuringSavingData);
+        return;
       }
     }
   }
@@ -261,7 +276,9 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
+        onBackButtonPressed: () {
+          Navigator.pop(context, true);
+        },
       ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
@@ -274,19 +291,19 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 child: Center(
                   child: Column(
                     children: [
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Mes informations',
-                          key: Key('profile_info-text_informations'),
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.myInformation,
+                          key: const Key('profile_info-text_informations'),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       buildField(
-                        "Prénom",
+                        AppLocalizations.of(context)!.firstName,
                         key: const Key('profile_info-text_field_firstname'),
                         initialValue: userInformation!.firstName ?? '',
                         onChanged: (value) {
@@ -294,7 +311,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         },
                       ),
                       buildField(
-                        "Nom",
+                        AppLocalizations.of(context)!.lastName,
                         key: const Key('profile_info-text_field_lastname'),
                         initialValue: userInformation!.lastName ?? '',
                         onChanged: (value) {
@@ -302,7 +319,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         },
                       ),
                       buildField(
-                        "Email",
+                        AppLocalizations.of(context)!.email,
                         key: const Key('profile_info-text_field_email'),
                         initialValue: userInformation!.email,
                         onChanged: (value) {
@@ -312,38 +329,38 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       const SizedBox(height: 16),
                       MyButton(
                         key: const Key('profile_info-button_update'),
-                        text: "Enregistrer les modifications",
+                        text: AppLocalizations.of(context)!.saveChanges,
                         onPressed: () async {
                           await updateUser();
                         },
                       ),
                       const SizedBox(height: 16),
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Mot de passe',
-                          key: Key('profile_info-text_password'),
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.password,
+                          key: const Key('profile_info-text_password'),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       buildField(
-                        "Actuel",
+                        AppLocalizations.of(context)!.passwordCurrent,
                         key: const Key(
                             'profile_info-text_field_current_password'),
                         isPassword: true,
                         controller: currentPasswordController,
                       ),
                       buildField(
-                        "Nouveau",
+                        AppLocalizations.of(context)!.passwordNew,
                         key: const Key('profile_info-text_field_new_password'),
                         isPassword: true,
                         controller: newPasswordController,
                       ),
                       buildField(
-                        "Confirmation du nouveau",
+                        AppLocalizations.of(context)!.passwordConfirmation,
                         key: const Key(
                             'profile_info-text_field_new_password_confirmation'),
                         isPassword: true,
@@ -352,7 +369,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                       const SizedBox(height: 16),
                       MyButton(
                         key: const Key('profile_info-button_update_password'),
-                        text: "Enregistrer le nouveau mot de passe",
+                        text: AppLocalizations.of(context)!.passwordSave,
                         onPressed: () async {
                           await updatePassword(currentPasswordController.text,
                               newPasswordController.text);

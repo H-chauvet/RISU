@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/home/home_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/language.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'globals.dart';
 
 String theme = appTheme['clair'];
 
 void main() async {
-  await dotenv.load(fileName: "lib/.env");
+  await dotenv.load(fileName: 'lib/.env');
 
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
@@ -19,11 +23,14 @@ void main() async {
 
   final prefs = await SharedPreferences.getInstance();
   theme = prefs.getString('appTheme') ?? appTheme['clair'];
+  language = prefs.getString('language') ?? defaultLanguage;
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: ThemeProvider(theme)),
+        ChangeNotifierProvider(
+            create: (context) => LanguageProvider(Locale(language))),
       ],
       child: const MyApp(),
     ),
@@ -42,10 +49,13 @@ class MyApp extends StatelessWidget {
     themeProvider.startSystemThemeListener();
 
     return MaterialApp(
-      title: 'Risu',
       theme: context
           .select((ThemeProvider themeProvider) => themeProvider.currentTheme),
       home: const HomePage(),
+      locale: context.select((LanguageProvider languageProvider) =>
+          languageProvider.currentLocale),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

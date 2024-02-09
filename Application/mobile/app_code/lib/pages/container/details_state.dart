@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
@@ -9,14 +10,14 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
-  String _containerId = "";
-  String _address = "";
-  String _city = "";
+  String _containerId = '';
+  String _address = '';
+  String _city = '';
   int _availableItems = 0;
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -43,7 +44,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         if (context.mounted) {
           printServerResponse(context, response, 'getContainerData',
               message:
-                  "Une erreur est survenue lors de la récupération des données");
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
         }
         return {
           'address': '',
@@ -53,14 +54,17 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return {
+          'address': '',
+          'city': '',
+          '_count': {'available': 0}
+        };
       }
-      return {
-        'address': '',
-        'city': '',
-        '_count': {'available': 0}
-      };
     }
   }
 
@@ -101,7 +105,6 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -117,7 +120,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '$_address, $_city',
+                        "$_address, $_city",
                         key: const Key('container-details_title'),
                         style: TextStyle(
                           fontSize: 32,
@@ -166,7 +169,9 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                                 padding: const EdgeInsets.all(8.0),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'Il y a actuellement $_availableItems article${_availableItems > 1 ? 's' : ''} disponible${_availableItems > 1 ? 's' : ''}',
+                                  AppLocalizations.of(context)!
+                                      .howManyAvailableArticles(
+                                          _availableItems),
                                   key: const Key(
                                       'container-details_article-list'),
                                   style: const TextStyle(
@@ -183,7 +188,8 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: 'Afficher la liste des articles',
+                          text:
+                              AppLocalizations.of(context)!.articlesDisplayList,
                           key: const Key('container-button_article-list-page'),
                           onPressed: () {
                             Navigator.push(

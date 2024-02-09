@@ -19,12 +19,11 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(
       initPage(
-        const Scaffold(
+        Scaffold(
           appBar: MyAppBar(
             curveColor: Colors.blue,
             showBackButton: true,
             showLogo: true,
-            showBurgerMenu: true,
           ),
         ),
       ),
@@ -33,16 +32,10 @@ void main() {
 
     final Finder backButtonFinder = find.byKey(const Key('appbar-button_back'));
     final Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
-    final Finder burgerMenuFinder =
-        find.byKey(const Key('appbar-button_burgermenu'));
 
     // Verify that the back button is present.
     expect(backButtonFinder, findsOneWidget);
     expect(logoFinder, findsOneWidget);
-    expect(burgerMenuFinder, findsOneWidget);
-
-    await tester.tap(burgerMenuFinder);
-    await tester.pumpAndSettle();
 
     await tester.tap(backButtonFinder);
     await tester.pumpAndSettle();

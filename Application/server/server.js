@@ -98,7 +98,7 @@ app.post('/api/login', (req, res, next) => {
     if (err) throw new Error(err)
     if (user == false) return res.json(info)
     const token = utils.generateToken(user.id)
-    return res.status(201).json({ user: user, token: token, message: 'User logged in' })
+    return res.status(201).json({ user: user, token: token })
   })(req, res, next)
 })
 
@@ -205,7 +205,7 @@ async function sendAccountConfirmationEmail(email, token) {
     to: email,
     subject: 'Confirm your account',
     text:
-      'Please follow the link to confirm your account: http://20.111.37.124:8080/api/mailVerification?token=' +
+      'Please follow the link to confirm your account: http://51.103.94.191:8080/api/mailVerification?token=' +
       token
   }
 

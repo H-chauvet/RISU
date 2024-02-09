@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -9,7 +10,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'return_page.dart';
 
@@ -60,13 +61,19 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getRent',
-              message: "La location n'a pas pu être récupérée.");
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "La location n'a pas pu être récupérée.");
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
+        return;
       }
     }
   }
@@ -94,13 +101,19 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'returnArticle',
-              message: "La location n'a pas pu être rendue.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringRentReturning);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "La location n'a pas pu être rendue.");
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringRentReturning);
+        return;
       }
     }
   }
@@ -114,7 +127,6 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -129,7 +141,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                   children: [
                     Text(
                       key: const Key('rent_return-title'),
-                      'Retour de location',
+                      AppLocalizations.of(context)!.article,
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -195,7 +207,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             color: themeProvider
                                                 .currentTheme.primaryColor,
                                             child: Text(
-                                              'Prix',
+                                              AppLocalizations.of(context)!
+                                                  .price,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -214,7 +227,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             color: themeProvider
                                                 .currentTheme.primaryColor,
                                             child: Text(
-                                              'Durée',
+                                              AppLocalizations.of(context)!
+                                                  .duration,
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -238,7 +252,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .currentTheme.primaryColor
                                                 .withOpacity(0.6),
                                             child: Text(
-                                              '${rent['price']} €',
+                                              "${rent['price']}€",
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -258,7 +272,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .currentTheme.primaryColor
                                                 .withOpacity(0.6),
                                             child: Text(
-                                              '${rent['duration']} heures',
+                                              AppLocalizations.of(context)!
+                                                  .rentHours(rent['duration']),
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
@@ -286,16 +301,19 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: 'Rendre l\'article',
+                          text: AppLocalizations.of(context)!.rentReturn,
                           key: const Key('rent_return-button-return_article'),
                           onPressed: () async {
                             bool returnRent =
                                 await MyAlertDialog.showChoiceAlertDialog(
                               context: context,
-                              title: 'Confirmer le rendu de l\'article',
-                              message: 'Voules-vous rendre votre location ?',
-                              onOkName: 'Accepter',
-                              onCancelName: 'Annuler',
+                              title: AppLocalizations.of(context)!
+                                  .rentReturnAskConfirmation,
+                              message: AppLocalizations.of(context)!
+                                  .rentReturnAskConfirmationMessage,
+                              onOkName: AppLocalizations.of(context)!.accept,
+                              onCancelName:
+                                  AppLocalizations.of(context)!.cancel,
                             );
                             if (returnRent == true) {
                               returnArticle();
@@ -315,7 +333,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                           padding: const EdgeInsets.all(8.0),
                           alignment: Alignment.center,
                           child: Text(
-                            'Location déjà rendue',
+                            AppLocalizations.of(context)!
+                                .articleAlreadyReturned,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
