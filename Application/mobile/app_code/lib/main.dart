@@ -10,7 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'globals.dart';
 
-bool isDarkTheme = false;
+String theme = appTheme['clair'];
 
 void main() async {
   await dotenv.load(fileName: 'lib/.env');
@@ -21,15 +21,14 @@ void main() async {
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
 
-  // Continue with SharedPreferences and ThemeProvider
   final prefs = await SharedPreferences.getInstance();
-  isDarkTheme = prefs.getBool('isDarkTheme') ?? false;
+  theme = prefs.getString('appTheme') ?? appTheme['clair'];
   language = prefs.getString('language') ?? defaultLanguage;
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => ThemeProvider(isDarkTheme)),
+        ChangeNotifierProvider.value(value: ThemeProvider(theme)),
         ChangeNotifierProvider(
             create: (context) => LanguageProvider(Locale(language))),
       ],
@@ -45,6 +44,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
+    themeProvider.startSystemThemeListener();
+
     return MaterialApp(
       theme: context
           .select((ThemeProvider themeProvider) => themeProvider.currentTheme),

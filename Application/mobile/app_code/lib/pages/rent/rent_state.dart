@@ -146,10 +146,13 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   Future<void> initPaymentSheet(String clientSecret) async {
     try {
+      dynamic currentTheme = context.read<ThemeProvider>().currentTheme;
       await stripe.Stripe.instance.initPaymentSheet(
         paymentSheetParameters: stripe.SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
-          style: ThemeMode.light,
+          style: currentTheme == appTheme['clair']
+              ? ThemeMode.light
+              : ThemeMode.dark,
           merchantDisplayName: 'Ikay',
         ),
       );

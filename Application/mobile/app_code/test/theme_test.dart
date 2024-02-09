@@ -17,12 +17,13 @@ void main() {
     });
 
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
-      SharedPreferences.setMockInitialValues({'isDarkTheme': false});
+      SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
 
       await tester.pumpWidget(
         MaterialApp(
           home: ChangeNotifierProvider(
-            create: (_) => ThemeProvider(false), // Start with light theme.
+            create: (_) =>
+                ThemeProvider(appTheme['clair']), // Start with light theme.
             child: Consumer<ThemeProvider>(
               builder: (_, themeProvider, __) {
                 return MaterialApp(
@@ -30,9 +31,9 @@ void main() {
                   home: Scaffold(
                     body: TextButton(
                       onPressed: () {
-                        themeProvider.toggleTheme();
+                        themeProvider.setTheme(appTheme['sombre']);
                       },
-                      child: const Text('Toggle Theme'),
+                      child: const Text('dark Theme'),
                     ),
                   ),
                 );
@@ -52,7 +53,46 @@ void main() {
           Brightness.dark);
 
       final prefs = await SharedPreferences.getInstance();
-      expect(prefs.getBool('isDarkTheme'), true);
+      expect(prefs.getString('appTheme'), appTheme['sombre']);
     });
+  });
+  testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
+    SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
+
+    await tester.pumpWidget(
+      MaterialApp(
+        home: ChangeNotifierProvider(
+          create: (_) =>
+              ThemeProvider(appTheme['clair']), // Start with light theme.
+          child: Consumer<ThemeProvider>(
+            builder: (_, themeProvider, __) {
+              return MaterialApp(
+                theme: themeProvider.currentTheme,
+                home: Scaffold(
+                  body: TextButton(
+                    onPressed: () {
+                      themeProvider.setTheme(appTheme['systeme']);
+                    },
+                    child: const Text('system Theme'),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    );
+
+    expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
+        Brightness.light);
+
+    await tester.tap(find.byType(TextButton));
+    await tester.pumpAndSettle();
+
+    expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
+        Brightness.light);
+
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('appTheme'), appTheme['systeme']);
   });
 }
