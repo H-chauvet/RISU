@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -10,7 +11,7 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/validators.dart';
 
 import 'signup_page.dart';
@@ -30,16 +31,16 @@ class SignupPageState extends State<SignupPage> {
     if (_email == null || _password == null) {
       await MyAlertDialog.showErrorAlertDialog(
         context: context,
-        title: 'Creation de compte',
-        message: 'Veuillez renseigner tous les champs.',
+        title: AppLocalizations.of(context)!.accountCreation,
+        message: AppLocalizations.of(context)!.fieldsEmpty,
       );
       return false;
     }
     if (Validators().email(context, _email!) != null) {
       await MyAlertDialog.showErrorAlertDialog(
         context: context,
-        title: 'Creation de compte',
-        message: 'Veuillez renseigner une adresse email valide.',
+        title: AppLocalizations.of(context)!.accountCreation,
+        message: AppLocalizations.of(context)!.emailInvalid,
       );
       return false;
     }
@@ -53,8 +54,10 @@ class SignupPageState extends State<SignupPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'email': _email!, 'password': _password!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+          'password': _password!,
+        }),
       );
       setState(() {
         _loaderManager.setIsLoading(false);
@@ -63,15 +66,16 @@ class SignupPageState extends State<SignupPage> {
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            title: 'Email',
-            message: 'Un email de confirmation a été envoyé à $_email.',
+            title: AppLocalizations.of(context)!.email,
+            message: AppLocalizations.of(context)!
+                .accountEmailConfirmationSent(_email!),
           );
           return true;
         }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'apiSignup',
-              message: "Adresse email invalide.");
+              message: AppLocalizations.of(context)!.emailInvalid);
         }
         return false;
       }
@@ -82,7 +86,7 @@ class SignupPageState extends State<SignupPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
         return false;
       }
       return false;
@@ -111,7 +115,7 @@ class SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Création de compte',
+                    AppLocalizations.of(context)!.accountCreation,
                     key: const Key('signup-text_title'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -134,7 +138,7 @@ class SignupPageState extends State<SignupPage> {
                     children: [
                       MyTextInput(
                         key: const Key('signup-textinput_email'),
-                        labelText: "Email",
+                        labelText: AppLocalizations.of(context)!.email,
                         keyboardType: TextInputType.emailAddress,
                         icon: Icons.email_outlined,
                         onChanged: (value) => _email = value,
@@ -142,7 +146,7 @@ class SignupPageState extends State<SignupPage> {
                       const SizedBox(height: 16),
                       MyTextInput(
                         key: const Key('signup-textinput_password'),
-                        labelText: "Mot de passe",
+                        labelText: AppLocalizations.of(context)!.password,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: !_isPasswordVisible,
                         icon: Icons.lock_outline,
@@ -182,8 +186,9 @@ class SignupPageState extends State<SignupPage> {
                             if (value)
                               {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Compte créé avec succès !'),
+                                  SnackBar(
+                                    content: Text(AppLocalizations.of(context)!
+                                        .accountCreatedSuccessfully),
                                   ),
                                 ),
                                 Navigator.pushReplacement(
@@ -212,7 +217,7 @@ class SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     child: Text(
-                      'Créer un compte',
+                      AppLocalizations.of(context)!.accountCreate,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.secondaryHeaderColor),
@@ -233,7 +238,7 @@ class SignupPageState extends State<SignupPage> {
                       );
                     },
                     child: Text(
-                      'Déjà inscrit ? Se connecter',
+                      "${AppLocalizations.of(context)!.alreadyHaveAnAccount}? ${AppLocalizations.of(context)!.signIn}",
                       style: TextStyle(
                         fontSize: 14,
                         decoration: TextDecoration.underline,

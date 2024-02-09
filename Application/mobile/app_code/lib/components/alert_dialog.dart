@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/colors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class MyAlertDialog {
   static Future<void> showErrorAlertDialog({
@@ -16,24 +17,25 @@ class MyAlertDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            key: key,
-            title: Text(title),
-            titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: const TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
+          key: key,
+          title: Text(title),
+          titlePadding: const EdgeInsets.all(16.0),
+          titleTextStyle: const TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+          backgroundColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.backgroundColor),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              key: const Key('alertdialog-button_ok'),
+              child: Text(AppLocalizations.of(context)!.ok),
             ),
-            backgroundColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.backgroundColor),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                key: const Key('alertdialog-button_ok'),
-                child: const Text('OK'),
-              ),
-            ]);
+          ],
+        );
       },
     );
   }
@@ -48,21 +50,22 @@ class MyAlertDialog {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            key: key,
-            title: Text(title),
-            titlePadding: const EdgeInsets.all(16.0),
-            titleTextStyle: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.titleTextStyle),
-            backgroundColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.dialogTheme.backgroundColor),
-            content: Text(message),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, 'OK'),
-                key: const Key('alertdialog-button_ok'),
-                child: const Text('OK'),
-              ),
-            ]);
+          key: key,
+          title: Text(title),
+          titlePadding: const EdgeInsets.all(16.0),
+          titleTextStyle: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.titleTextStyle),
+          backgroundColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.dialogTheme.backgroundColor),
+          content: Text(message),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, 'OK'),
+              key: const Key('alertdialog-button_ok'),
+              child: Text(AppLocalizations.of(context)!.ok),
+            ),
+          ],
+        );
       },
     );
   }
@@ -72,13 +75,15 @@ class MyAlertDialog {
     required BuildContext context,
     required String title,
     required String message,
-    String onOkName = 'OK',
-    String onCancelName = 'Cancel',
+    String? onOkName,
+    String? onCancelName,
   }) {
     Completer<bool> completer = Completer<bool>();
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
+        onOkName = onOkName ?? AppLocalizations.of(context)!.ok;
+        onCancelName = onCancelName ?? AppLocalizations.of(context)!.cancel;
         return AlertDialog(
           key: key,
           title: Text(title),
@@ -92,7 +97,7 @@ class MyAlertDialog {
             TextButton(
               key: const Key('alertdialog-button_cancel'),
               child: Text(
-                onCancelName,
+                onCancelName!,
                 style: const TextStyle(
                   color: MyColors.alertDialogChoiceCancel,
                 ),
@@ -103,7 +108,7 @@ class MyAlertDialog {
               },
             ),
             TextButton(
-              child: Text(onOkName,
+              child: Text(onOkName!,
                   key: const Key('alertdialog-button_ok'),
                   style: TextStyle(
                       color: context.select((ThemeProvider themeProvider) =>

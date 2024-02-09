@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -9,7 +10,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'rental_page.dart';
 
@@ -53,7 +54,8 @@ class RentalPageState extends State<RentalPage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getRentals',
-              message: "Les locations n'ont pas pu être récupérées.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingRents);
         }
       }
     } catch (err, stacktrace) {
@@ -74,7 +76,7 @@ class RentalPageState extends State<RentalPage> {
     Duration remainingTime = rentalEnd.difference(DateTime.now());
     int hours = remainingTime.inHours;
     int minutes = remainingTime.inMinutes.remainder(60);
-    return '$hours heures et $minutes minutes';
+    return AppLocalizations.of(context)!.hoursAndMinutes(hours, minutes);
   }
 
   bool isRentalInProgress(dynamic rental) {
@@ -96,7 +98,8 @@ class RentalPageState extends State<RentalPage> {
       });
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
-          message: "Current locations couldn't be retrieved.");
+          message: AppLocalizations.of(context)!
+              .errorOccurredDuringGettingRentsInProgress);
     }
   }
 
@@ -123,7 +126,7 @@ class RentalPageState extends State<RentalPage> {
                   children: [
                     const SizedBox(height: 30),
                     Text(
-                      'Mes locations',
+                      AppLocalizations.of(context)!.myRents,
                       key: const Key('my-rentals-title'),
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -169,7 +172,7 @@ class RentalPageState extends State<RentalPage> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'Toutes',
+                                  AppLocalizations.of(context)!.allE,
                                   style: TextStyle(
                                     color: showAllRentals
                                         ? Colors.white
@@ -212,7 +215,7 @@ class RentalPageState extends State<RentalPage> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'En cours',
+                                  AppLocalizations.of(context)!.inProgress,
                                   style: TextStyle(
                                     color: !showAllRentals
                                         ? Colors.white
@@ -237,10 +240,10 @@ class RentalPageState extends State<RentalPage> {
                       key: const Key('rentals-list'),
                       child: (showAllRentals ? rentals : rentalsInProgress)
                               .isEmpty
-                          ? const Center(
+                          ? Center(
                               child: Text(
-                                'Aucune location',
-                                style: TextStyle(
+                                AppLocalizations.of(context)!.rentsListEmpty,
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -286,15 +289,17 @@ class RentalPageState extends State<RentalPage> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 10),
-                                        Text('Prix : ${rental['price']} €'),
                                         Text(
-                                          'Début de location : ${formatDateTime(rental['createdAt'])}',
-                                        ),
+                                            "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
-                                          'Durée de location : ${rental['duration']} heures\n'
-                                          'Status : ${isRentalInProgress(rental) ? 'En cours' : 'Terminé'}'
-                                          '${isRentalInProgress(rental) ? '\nTemps restant : ${calculateRemainingTime(rental)}' : ''}',
-                                        ),
+                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
+                                        Text(
+                                            "${AppLocalizations.of(context)!.rentTimeOfRenting(rental['duration'])}"),
+                                        Text(
+                                            "${AppLocalizations.of(context)!.status}: ${isRentalInProgress(rental) ? AppLocalizations.of(context)!.inProgress : AppLocalizations.of(context)!.endedE}"),
+                                        if (isRentalInProgress(rental))
+                                          Text(
+                                              "${AppLocalizations.of(context)!.timeRemaining}: ${calculateRemainingTime(rental)}")
                                       ],
                                     ),
                                   ),

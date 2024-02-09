@@ -30,7 +30,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyRedirectDivider(
-                      title: "TestButton",
+                      title: 'TestButton',
                       goToPage: LoginPage(),
                       paramIcon: Icon(Icons.abc),
                       disconnect: true),
@@ -63,7 +63,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyRedirectDivider(
-                      title: "TestButton",
+                      title: 'TestButton',
                       goToPage: LoginPage(),
                       paramIcon: Icon(Icons.abc),
                       disconnect: true),
@@ -95,7 +95,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyRedirectDivider(
-                    title: "TestButton",
+                    title: 'TestButton',
                     goToPage: LoginPage(),
                     paramIcon: Icon(Icons.abc),
                   ),
@@ -128,7 +128,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyRedirectDivider(
-                    title: "TestButton",
+                    title: 'TestButton',
                     goToPage: LoginPage(),
                     paramIcon: Icon(Icons.abc),
                   ),
@@ -160,7 +160,7 @@ void main() {
                 children: [
                   SizedBox(height: 100),
                   MyRedirectDivider(
-                    title: "TestButton",
+                    title: 'TestButton',
                     goToPage: LoginPage(),
                     paramIcon: Icon(Icons.abc),
                     chosenPlace: DIVIDERPLACE.top,

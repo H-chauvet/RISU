@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 
 class ContainerList {
   final String id;
   final dynamic createdAt;
-  final dynamic? containerMapping;
+  final dynamic containerMapping;
   final double? price;
   final String? address;
   final String? city;
   final String? designs;
-  final dynamic? items;
+  final dynamic items;
   final String? informations;
   final bool? paid;
   final String? saveName;
@@ -83,33 +83,22 @@ class ContainerCard extends StatelessWidget {
       },
       child: Container(
         height: 120,
-        margin: EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
-        child: Container(
-          child: Card(
-            elevation: 5,
-            shadowColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.primaryColor),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Column(
-              children: [
-                ListTile(
-                  title: container.city != null ? Text(container.city!) : null,
-                  subtitle: container.address != null
-                      ? Text(container.address!)
-                      : null,
-                  leading: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(width: 10),
-                      Text(
-                          "Prix: ${container.price?.toString() ?? "Non défini"}${container.price != null ? "€" : ""}")
-                    ],
-                  ),
-                ),
-              ],
-            ),
+        margin: const EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
+        child: Card(
+          elevation: 5,
+          shadowColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.primaryColor),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          child: Column(
+            children: [
+              ListTile(
+                title: container.city != null ? Text(container.city!) : null,
+                subtitle:
+                    container.address != null ? Text(container.address!) : null,
+              ),
+            ],
           ),
         ),
       ),

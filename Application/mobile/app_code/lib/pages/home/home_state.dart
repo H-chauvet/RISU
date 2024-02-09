@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
@@ -10,7 +11,7 @@ import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'home_page.dart';
 
@@ -41,10 +42,10 @@ class HomePageState extends State<HomePage> {
           (firstName == null || lastName == null)) {
         await MyAlertDialog.showChoiceAlertDialog(
           context: context,
-          title: 'Profil incomplet',
-          message: 'Souhaitez-vous completer votre profil ?',
-          onOkName: 'Compléter le profil',
-          onCancelName: 'Annuler',
+          title: AppLocalizations.of(context)!.profileIncomplete,
+          message: AppLocalizations.of(context)!.profileAskCompletion,
+          onOkName: AppLocalizations.of(context)!.profileGoComplete,
+          onCancelName: AppLocalizations.of(context)!.cancel,
         ).then(
           (value) => {
             if (value)
@@ -62,8 +63,8 @@ class HomePageState extends State<HomePage> {
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message:
-                "Une erreur est survenue lors de la configuration du profil.");
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringSettingProfile);
       }
     }
   }

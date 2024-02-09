@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -10,7 +11,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'contact_page.dart';
 
@@ -36,8 +37,11 @@ class ContactPageState extends State<ContactPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'name': name, 'email': email, 'message': message}),
+        body: jsonEncode(<String, String>{
+          'name': name,
+          'email': email,
+          'message': message,
+        }),
       );
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -45,7 +49,7 @@ class ContactPageState extends State<ContactPage> {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
         return false;
       }
     }
@@ -56,15 +60,16 @@ class ContactPageState extends State<ContactPage> {
       if (context.mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
-          title: 'Contact',
-          message: 'Message envoyé.',
+          title: AppLocalizations.of(context)!.contact,
+          message: AppLocalizations.of(context)!.messageSent,
         );
         return true;
       }
     } else {
       if (context.mounted) {
         printServerResponse(context, response, 'apiContact',
-            message: "Erreur lors de l'envoi du message.");
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringSendingMessage);
       }
     }
     return false;
@@ -94,7 +99,7 @@ class ContactPageState extends State<ContactPage> {
                     children: [
                       const SizedBox(height: 30),
                       Text(
-                        'Nous contacter',
+                        AppLocalizations.of(context)!.contact,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 32,
@@ -115,7 +120,7 @@ class ContactPageState extends State<ContactPage> {
                       const SizedBox(height: 32),
                       MyTextInput(
                         key: const Key('contact-text_input-input_name'),
-                        labelText: "Nom",
+                        labelText: AppLocalizations.of(context)!.lastName,
                         keyboardType: TextInputType.name,
                         icon: Icons.person,
                         onChanged: (value) => _name = value,
@@ -123,7 +128,7 @@ class ContactPageState extends State<ContactPage> {
                       const SizedBox(height: 16),
                       MyTextInput(
                         key: const Key('contact-text_input-input_email'),
-                        labelText: "Email",
+                        labelText: AppLocalizations.of(context)!.email,
                         keyboardType: TextInputType.emailAddress,
                         icon: Icons.email_outlined,
                         onChanged: (value) => _email = value,
@@ -131,7 +136,7 @@ class ContactPageState extends State<ContactPage> {
                       const SizedBox(height: 16),
                       MyTextInput(
                         key: const Key('contact-text_input-input_message'),
-                        labelText: "Message",
+                        labelText: AppLocalizations.of(context)!.message,
                         keyboardType: TextInputType.multiline,
                         icon: Icons.message_outlined,
                         onChanged: (value) => _message = value,
@@ -139,25 +144,25 @@ class ContactPageState extends State<ContactPage> {
                       ),
                       const SizedBox(height: 36),
                       MyOutlinedButton(
-                        text: 'Envoyer',
+                        text: AppLocalizations.of(context)!.send,
                         key: const Key('contact-button-send_message'),
                         onPressed: () {
                           if (_name != null &&
-                              _name != "" &&
+                              _name != '' &&
                               _email != null &&
-                              _email != "" &&
+                              _email != '' &&
                               _message != null &&
-                              _message != "") {
+                              _message != '') {
                             apiContact(_name!, _email!, _message!)
                                 .then((value) => {});
                           } else {
                             MyAlertDialog.showErrorAlertDialog(
                               key: const Key(
-                                  "contact-alert_dialog-invalid_info"),
+                                  'contact-alert_dialog-invalid_info'),
                               context: context,
-                              title: 'Erreur',
+                              title: AppLocalizations.of(context)!.error,
                               message:
-                                  'Veuillez entrer des informations valides.',
+                                  AppLocalizations.of(context)!.fieldsEmpty,
                             );
                           }
                         },

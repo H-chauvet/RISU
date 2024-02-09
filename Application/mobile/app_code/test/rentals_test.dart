@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 
@@ -9,34 +10,37 @@ void main() {
     testWidgets('Rental Page UI', (WidgetTester tester) async {
       final testPage = initPage(const RentalPage());
       await waitForLoader(tester: tester, testPage: testPage);
+      BuildContext context = tester.element(find.byType(RentalPage));
 
-      expect(find.text('Mes locations'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.myRents), findsOneWidget);
 
-      expect(find.text('Toutes'), findsOneWidget);
-      expect(find.text('En cours'), findsOneWidget);
+      expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
+      expect(
+          find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
     });
   });
 
   testWidgets('Rentals, Test if buttons are clickable',
-          (WidgetTester tester) async {
-        final testPage = initPage(const RentalPage());
-        await waitForLoader(tester: tester, testPage: testPage);
+      (WidgetTester tester) async {
+    final testPage = initPage(const RentalPage());
+    await waitForLoader(tester: tester, testPage: testPage);
+    BuildContext context = tester.element(find.byType(RentalPage));
 
-        expect(find.text('Toutes'), findsOneWidget);
-        expect(find.text('En cours'), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
 
-        await tester.tap(find.text('Toutes'));
-        await tester.pump();
+    await tester.tap(find.text(AppLocalizations.of(context)!.allE));
+    await tester.pump();
 
-        expect(find.text('Toutes'), findsOneWidget);
-        expect(find.text('En cours'), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
 
-        await tester.tap(find.text('En cours'));
-        await tester.pump();
+    await tester.tap(find.text(AppLocalizations.of(context)!.inProgress));
+    await tester.pump();
 
-        expect(find.text('Toutes'), findsOneWidget);
-        expect(find.text('En cours'), findsOneWidget);
-      });
+    expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
+    expect(find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
+  });
 
   testWidgets('Rental 1', (WidgetTester tester) async {
     await tester.pumpWidget(initPage(const RentalPage()));
