@@ -63,6 +63,7 @@ class SettingsPageState extends State<SettingsPage> {
                 .errorOccurredDuringAccountDeletion);
         return false;
       }
+      return false;
     }
     return false;
   }

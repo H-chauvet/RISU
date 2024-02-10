@@ -69,6 +69,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'price': 0,
         };
       }
+      return {
+        'id': '',
+        'containerId': '',
+        'name': '',
+        'available': false,
+        'price': 0,
+      };
     }
   }
 

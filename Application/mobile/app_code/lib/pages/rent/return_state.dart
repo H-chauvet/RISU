@@ -75,6 +75,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         return;
       }
+      return;
     }
   }
 
@@ -115,6 +116,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringRentReturning);
         return;
       }
+      return;
     }
   }
 

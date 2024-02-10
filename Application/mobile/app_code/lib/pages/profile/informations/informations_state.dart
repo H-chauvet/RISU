@@ -78,6 +78,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -146,6 +147,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 
@@ -230,6 +232,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 

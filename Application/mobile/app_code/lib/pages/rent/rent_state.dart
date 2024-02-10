@@ -97,6 +97,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
+      return;
     }
   }
 
@@ -140,6 +141,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 .errorOccurredDuringPaymentCreation);
         return null;
       }
+      return null;
     }
     return null;
   }
@@ -161,7 +163,9 @@ class RentArticlePageState extends State<RentArticlePage> {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringSettingStripe);
+        return;
       }
+      return;
     }
   }
 
@@ -200,6 +204,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             message: AppLocalizations.of(context)!.paymentHasFailed);
         return;
       }
+      return;
     }
   }
 

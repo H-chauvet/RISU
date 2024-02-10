@@ -66,6 +66,7 @@ class RentalPageState extends State<RentalPage> {
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -100,6 +101,7 @@ class RentalPageState extends State<RentalPage> {
       printCatchError(context, err, stacktrace,
           message: AppLocalizations.of(context)!
               .errorOccurredDuringGettingRentsInProgress);
+      return;
     }
   }
 

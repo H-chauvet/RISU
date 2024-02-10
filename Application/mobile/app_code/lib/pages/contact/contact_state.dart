@@ -52,6 +52,7 @@ class ContactPageState extends State<ContactPage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return false;
       }
+      return false;
     }
     setState(() {
       _loaderManager.setIsLoading(false);
