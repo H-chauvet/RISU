@@ -10,4 +10,6 @@ jobs:
       - name: Download dependencies
         run: npm i prettier
       - name: run prettier
-        run: npx prettier -c 'Configurateur/**/*.{dart}'
+        run: |
+          ls
+          npx prettier -c './Configurateur/**/*.{dart}'
