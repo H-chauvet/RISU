@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'globals.dart';
+
 void main() {
   group('ThemeProvider Integration Test', () {
     setUpAll(() async {
@@ -19,29 +21,23 @@ void main() {
     testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
       SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider(
-            create: (_) =>
-                ThemeProvider(appTheme['clair']), // Start with light theme.
-            child: Consumer<ThemeProvider>(
-              builder: (_, themeProvider, __) {
-                return MaterialApp(
-                  theme: themeProvider.currentTheme,
-                  home: Scaffold(
-                    body: TextButton(
-                      onPressed: () {
-                        themeProvider.setTheme(appTheme['sombre']);
-                      },
-                      child: const Text('dark Theme'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+      await tester.pumpWidget(initPage(
+        Consumer<ThemeProvider>(
+          builder: (_, themeProvider, __) {
+            return MaterialApp(
+              theme: themeProvider.currentTheme,
+              home: Scaffold(
+                body: TextButton(
+                  onPressed: () {
+                    themeProvider.setTheme(appTheme['sombre']);
+                  },
+                  child: const Text('dark Theme'),
+                ),
+              ),
+            );
+          },
         ),
-      );
+      ));
 
       expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
           Brightness.light);
@@ -56,32 +52,28 @@ void main() {
       expect(prefs.getString('appTheme'), appTheme['sombre']);
     });
   });
+
   testWidgets('Toggle theme and save to SharedPreferences', (tester) async {
     SharedPreferences.setMockInitialValues({'appTheme': appTheme['clair']});
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: ChangeNotifierProvider(
-          create: (_) =>
-              ThemeProvider(appTheme['clair']), // Start with light theme.
-          child: Consumer<ThemeProvider>(
-            builder: (_, themeProvider, __) {
-              return MaterialApp(
-                theme: themeProvider.currentTheme,
-                home: Scaffold(
-                  body: TextButton(
-                    onPressed: () {
-                      themeProvider.setTheme(appTheme['systeme']);
-                    },
-                    child: const Text('system Theme'),
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
+    await tester.pumpWidget(initPage(
+      Consumer<ThemeProvider>(
+        builder: (_, themeProvider, __) {
+          return MaterialApp(
+            theme: themeProvider.currentTheme,
+            home: Scaffold(
+              body: TextButton(
+                onPressed: () {
+                  themeProvider.setTheme(appTheme['systeme']);
+                },
+                child: const Text('system Theme'),
+              ),
+            ),
+          );
+        },
       ),
-    );
+      appTheme: 'clair',
+    ));
 
     expect(Theme.of(tester.element(find.byType(TextButton))).brightness,
         Brightness.light);
