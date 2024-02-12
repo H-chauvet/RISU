@@ -1,9 +1,9 @@
 const express = require("express");
 const supertest = require("supertest");
 const feedbacksRouter = require("../routes/feedbacks");
-const feedbacksCtrl = require("../controllers/feedbacks");
+const feedbacksCtrl = require("../controllers/Web/feedbacks");
 
-jest.mock("../controllers/feedbacks");
+jest.mock("../controllers/Web/feedbacks");
 
 const app = express();
 app.use(express.json());

@@ -1,9 +1,9 @@
 const express = require("express");
 const supertest = require("supertest");
 const messagesRouter = require("../routes/messages");
-const userCtrl = require("../controllers/messages");
+const userCtrl = require("../controllers/Web/messages");
 
-jest.mock("../controllers/messages");
+jest.mock("../controllers/Web/messages");
 
 const app = express();
 app.use(express.json());
