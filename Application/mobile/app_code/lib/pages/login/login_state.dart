@@ -80,6 +80,7 @@ class LoginPageState extends State<LoginPage> {
         });
         return false;
       }
+      return false;
     }
     return false;
   }
@@ -138,7 +139,10 @@ class LoginPageState extends State<LoginPage> {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
+
+        return;
       }
+      return;
     }
   }
 

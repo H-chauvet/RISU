@@ -65,6 +65,11 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
           '_count': {'available': 0}
         };
       }
+      return {
+        'address': '',
+        'city': '',
+        '_count': {'available': 0}
+      };
     }
   }
 

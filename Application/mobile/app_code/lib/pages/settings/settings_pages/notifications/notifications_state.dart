@@ -76,6 +76,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return null;
       }
+      return null;
     }
     return null;
   }

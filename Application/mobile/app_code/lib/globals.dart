@@ -1,10 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:risu/utils/user_data.dart';
 
 // Variable globale pour stocker l'adresse IP du serveur
 
-// String? serverIp = '10.0.2.2'; // A garder en local
-
-String? serverIp = '51.103.94.191'; // A mettre quand push github
+String? serverIp = kReleaseMode ? '51.103.94.191' : '10.0.2.2';
 
 /// Global variable referencing the user network data
 UserData? userInformation;

@@ -11,7 +11,7 @@ class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   final bool displayGoogleMap = true;
 
-  LatLng _center = const LatLng(37.7749, -122.4194);
+  LatLng _center = const LatLng(47.2104851, -1.56675127492582);
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class MapPageState extends State<MapPage> {
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: _center,
-        zoom: 10.0,
+        zoom: 16.0,
       ),
       markers: _markers,
     );

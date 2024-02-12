@@ -68,6 +68,7 @@ class OpinionPageState extends State<OpinionPage> {
                 .errorOccurredDuringGettingReviews);
         return;
       }
+      return;
     }
   }
 
@@ -116,6 +117,7 @@ class OpinionPageState extends State<OpinionPage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
+      return;
     }
   }
 
