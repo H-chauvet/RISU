@@ -1,0 +1,21 @@
+name: Code quality check
+
+on: push
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+
+jobs:
+  Prettier-WEB-FRONT:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions@setup-node@v3
+        with:
+          node-version: 20
+      - name: Download dependencies
+        run: npm i prettier
+      - name: run prettier
+        run: npx prettier -c 'Configurateur/**/*.{dart}'
