@@ -1,8 +1,8 @@
-const { db } = require('../middleware/database')
+const { db } = require('../../middleware/database')
 
 exports.deleteMessageById = async (id) => {
     try {
-      await db.Contact.delete({
+      await db.Contact_Web.delete({
         where: { id },
       });
     } catch (error) {
@@ -13,7 +13,7 @@ exports.deleteMessageById = async (id) => {
 
   exports.getAllMessages = async () => {
     try {
-      const messages = await db.Contact.findMany();
+      const messages = await db.Contact_Web.findMany();
       return messages;
     } catch (error) {
       console.error('Error retrieving messages:', error);
@@ -23,7 +23,7 @@ exports.deleteMessageById = async (id) => {
 
   exports.findById = id => {
     try {
-      const message = db.Contact.findUnique({ where: { id } });
+      const message = db.Contact_Web.findUnique({ where: { id } });
       return message;
     } catch (error) {
       console.error('Error retrieving message by ID:', error);

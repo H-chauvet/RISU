@@ -1,5 +1,5 @@
 const Stripe = require("stripe");
-const { db } = require("../middleware/database");
+const { db } = require("../../middleware/database");
 
 const generateResponse = async (intent, id) => {
   switch (intent.status) {
@@ -16,7 +16,7 @@ const generateResponse = async (intent, id) => {
     case "succeeded":
       console.log("Payment received!");
       try {
-        await db.Container.update({
+        await db.Containers_Web.update({
           where: {
             id: id,
           },

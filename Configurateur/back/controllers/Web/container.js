@@ -1,7 +1,7 @@
-const { db } = require("../middleware/database");
+const { db } = require("../../middleware/database");
 
 exports.getContainer = (id) => {
-  return db.Container.findMany({
+  return db.Containers_Web.findMany({
     where: {
       id: id,
     },
@@ -9,18 +9,18 @@ exports.getContainer = (id) => {
 };
 
 exports.getAllContainer = (id) => {
-  return db.Container.findMany();
+  return db.Containers_Web.findMany();
 };
 
 exports.createContainer2 = (container) => {
   container.price = 10;
-  return db.Container.create({
+  return db.Containers_Web.create({
     data: container,
   });
 };
 
 exports.deleteContainer = (id) => {
-  return db.Container.delete({
+  return db.Containers_Web.delete({
     where: {
       id: id,
     },
@@ -30,7 +30,7 @@ exports.deleteContainer = (id) => {
 exports.createContainer = (container) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
-  return db.Container.create({
+  return db.Containers_Web.create({
     data: container,
   });
 };
@@ -39,7 +39,7 @@ exports.updateContainer = (id, container) => {
   container.price = parseFloat(container.price);
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
-  return db.Container.update({
+  return db.Containers_Web.update({
     where: {
       id: id,
     },
@@ -49,7 +49,7 @@ exports.updateContainer = (id, container) => {
 
 exports.getAllContainers = async () => {
   try {
-    const users = await db.Container.findMany();
+    const users = await db.Containers_Web.findMany();
     return users;
   } catch (error) {
     console.error("Error retrieving users:", error);
@@ -59,7 +59,7 @@ exports.getAllContainers = async () => {
 
 exports.createContainer2 = (container) => {
   container.price = parseFloat(container.price);
-  return db.Container.create({
+  return db.Containers_Web.create({
     data: container,
   });
 };

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { db } = require('../middleware/database')
+const { db } = require('../../middleware/database')
 const uuid = require('uuid')
-const transporter = require('../middleware/transporter')
+const transporter = require('../../middleware/transporter')
 
 /**
  *
@@ -12,7 +12,7 @@ const transporter = require('../middleware/transporter')
  * @returns user finded by email
  */
 exports.findUserByEmail = email => {
-  return db.User.findUnique({
+  return db.User_Web.findUnique({
     where: {
       email
     }
@@ -27,7 +27,7 @@ exports.findUserByEmail = email => {
  * @returns user finded by uuid
  */
 exports.findUserByUuid = uuid => {
-  return db.User.findUnique({
+  return db.User_Web.findUnique({
     where: {
       uuid
     }
@@ -42,7 +42,7 @@ exports.findUserByUuid = uuid => {
  * @returns user finded by id
  */
 exports.findUserById = id => {
-  return db.User.findUnique({
+  return db.User_Web.findUnique({
     where: {
       id
     }
@@ -57,7 +57,7 @@ exports.findUserById = id => {
  * @returns user deleted
  */
 exports.deleteUser = email => {
-  return db.User.delete({
+  return db.User_Web.delete({
     where: {
       email
     }
@@ -74,7 +74,7 @@ exports.deleteUser = email => {
 exports.registerByEmail = user => {
   user.password = bcrypt.hashSync(user.password, 12)
   user.uuid = uuid.v4()
-  return db.User.create({
+  return db.User_Web.create({
     data: user
   })
 }
@@ -112,7 +112,7 @@ exports.registerConfirmation = email => {
  * @returns user object
  */
 exports.confirmedRegister = uuid => {
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       uuid: uuid
     },
@@ -130,7 +130,7 @@ exports.confirmedRegister = uuid => {
  * @returns user object logged in
  */
 exports.loginByEmail = user => {
-  return db.User.findUnique({
+  return db.User_Web.findUnique({
     where: {
       email: user.email
     }
@@ -152,7 +152,7 @@ exports.loginByEmail = user => {
  */
 exports.updatePassword = user => {
   user.password = bcrypt.hashSync(user.password, 12)
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       uuid: user.uuid
     },
@@ -189,7 +189,7 @@ exports.forgotPassword = email => {
 
 exports.getAllUsers = async () => {
   try {
-    const users = await db.User.findMany();
+    const users = await db.User_Web.findMany();
     return users;
   } catch (error) {
     console.error('Error retrieving users:', error);
@@ -205,7 +205,7 @@ exports.getAllUsers = async () => {
  * @returns user details (including first name and last name)
  */
 exports.findUserDetailsByEmail = email => {
-  return db.User.findUnique({
+  return db.User_Web.findUnique({
     where: {
       email
     },
@@ -228,7 +228,7 @@ exports.findUserDetailsByEmail = email => {
  * @returns user object with updated firstName and lastName
  */
 exports.updateName = user => {
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       email: user.email
     },
@@ -247,7 +247,7 @@ exports.updateName = user => {
  * @returns user object with updated mail
  */
 exports.updateMail = user => {
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       email: user.oldMail
     },
@@ -265,7 +265,7 @@ exports.updateMail = user => {
  * @returns user object with updated company
  */
 exports.updateCompany = user => {
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       email: user.email
     },
@@ -284,7 +284,7 @@ exports.updateCompany = user => {
  */
 exports.updateUserPassword = user => {
   user.password = bcrypt.hashSync(user.password, 12)
-  return db.User.update({
+  return db.User_Web.update({
     where: {
       email: user.email
     },

@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const feedbacksCtrl = require('../controllers/feedbacks')
+const feedbacksCtrl = require('../controllers/Web/feedbacks')
 
 router.post('/create', async function (req, res, next) {
   try {

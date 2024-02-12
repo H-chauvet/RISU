@@ -1,7 +1,7 @@
-const { db } = require('../middleware/database')
+const { db } = require('../../middleware/database')
 
 exports.registerFeedbacks = data => {
-    return db.Feedbacks.create({
+    return db.Feedbacks_Web.create({
       data: data
     })
   }
@@ -9,11 +9,11 @@ exports.registerFeedbacks = data => {
   exports.getAllFeedbacks = async (mark) => {
     try {
       const filter = mark ? { mark } : {};
-  
-      const feedbacks = await db.Feedbacks.findMany({
+
+      const feedbacks = await db.Feedbacks_Web.findMany({
         where: filter
       });
-  
+
       return feedbacks;
     } catch (error) {
       console.error('Error retrieving feedbacks:', error);
