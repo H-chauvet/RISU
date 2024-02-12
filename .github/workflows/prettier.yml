@@ -6,11 +6,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
 
 jobs:
-  Prettier-WEB-FRONT:
+  Prettier-WEB:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: Setup node
         uses: actions@setup-node@v3
         with:
