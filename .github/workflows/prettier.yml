@@ -8,8 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download dependencies
-        run: npm i prettier
+        run: |
+        npm i prettier-plugin-dart
+        npm i prettier
       - name: run prettier
         run: |
-          ls ./Configurateur/front/lib/
           npx prettier -c './Configurateur/front/lib/**/*'

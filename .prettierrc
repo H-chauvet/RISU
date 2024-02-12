@@ -6,7 +6,7 @@
     {
       "files": "*.dart",
       "options": {
-        "parser": "dart"
+        "plugins": ["prettier-plugin-dart"]
       }
     }
   ]
