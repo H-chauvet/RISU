@@ -11,5 +11,6 @@ jobs:
         run: |
           npm install prettier-plugin-dart prettier
       - name: run prettier
+        working-directory: ./Configurateur/front/lib
         run: |
-          npx prettier -c './Configurateur/front/lib/**/*'
+          dart format './**/*'
