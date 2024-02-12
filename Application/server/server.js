@@ -13,7 +13,6 @@ const utils = require('./utils')
 const axios = require('axios')
 require('dotenv').config({ path: '../.env' })
 const nodemailer = require('nodemailer')
-
 const app = express()
 
 passport.serializeUser((user, done) => {
