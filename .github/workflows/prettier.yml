@@ -7,11 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Download dependencies
-        run: |
-          sudo apt-get update
-          npm install prettier python dart
-      - name: run prettier
-        working-directory: ./Configurateur/front/lib
-        run: |
-          dart format './**/*'
+      - uses: dart-lang/setup-dart@v1
+
+      - run: dart pub get
+      - run: dart format --output=none --set-exit-if-changed ./Configurateur/front/lib/**/*
