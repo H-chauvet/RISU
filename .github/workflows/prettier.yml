@@ -12,4 +12,4 @@ jobs:
       - name: run prettier
         run: |
           ls
-          npx prettier -c './Configurateur/**/*.{dart}'
+          npx prettier -c './Configurateur/front/**/*.{dart}'
