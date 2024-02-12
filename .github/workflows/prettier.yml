@@ -10,7 +10,7 @@ jobs:
       - name: Download dependencies
         run: |
           sudo apt-get update
-          npm install prettier dart
+          npm install prettier python dart
       - name: run prettier
         working-directory: ./Configurateur/front/lib
         run: |
