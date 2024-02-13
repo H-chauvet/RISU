@@ -227,14 +227,18 @@ router.get("/user-details/:email", async (req, res) => {
   }
 });
 
-router.post('/update-details/:email', async (req, res, next) => {
+router.post("/update-details/:email", async (req, res, next) => {
   const email = req.params.email;
 
   try {
     const { firstName, lastName } = req.body;
 
-    if ((!firstName && !lastName)) {
-      res.status(400).json({ error: 'Email and at least one of firstName or lastName are required' });
+    if (!firstName && !lastName) {
+      res
+        .status(400)
+        .json({
+          error: "Email and at least one of firstName or lastName are required",
+        });
       return;
     }
 
@@ -244,20 +248,23 @@ router.post('/update-details/:email', async (req, res, next) => {
       return;
     }
 
-    const updatedUser = await userCtrl.updateName({ email, firstName, lastName });
+    const updatedUser = await userCtrl.updateName({
+      email,
+      firstName,
+      lastName,
+    });
     res.status(200).json(updatedUser);
   } catch (err) {
     next(err);
   }
 });
 
-router.post('/update-mail', async (req, res, next) => {
-
+router.post("/update-mail", async (req, res, next) => {
   try {
     const { oldMail, newMail } = req.body;
 
-    if ((!oldMail && !newMail)) {
-      res.status(400).json({ error: 'Email is required' });
+    if (!oldMail && !newMail) {
+      res.status(400).json({ error: "Email is required" });
       return;
     }
 
@@ -274,14 +281,14 @@ router.post('/update-mail', async (req, res, next) => {
   }
 });
 
-router.post('/update-company/:email', async (req, res, next) => {
+router.post("/update-company/:email", async (req, res, next) => {
   const email = req.params.email;
 
   try {
     const { company } = req.body;
 
     if (!company) {
-      res.status(400).json({ error: 'Company is required' });
+      res.status(400).json({ error: "Company is required" });
       return;
     }
 
@@ -298,14 +305,14 @@ router.post('/update-company/:email', async (req, res, next) => {
   }
 });
 
-router.post('/update-password/:email', async (req, res, next) => {
+router.post("/update-password/:email", async (req, res, next) => {
   const email = req.params.email;
 
   try {
     const { password } = req.body;
 
     if (!password) {
-      res.status(400).json({ error: 'Password is required' });
+      res.status(400).json({ error: "Password is required" });
       return;
     }
 
