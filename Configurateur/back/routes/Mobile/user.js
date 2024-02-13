@@ -57,4 +57,28 @@ router.get('/listAll', async (req, res) => {
     }
   })
 
+  router.post('/resetPassword', async (req, res) => {
+    const { email } = req.body
+    if (!email || email === '') {
+      return res.status(401).json({ message: 'Missing fields' })
+    }
+
+    try {
+      const user = await userCtrl.findUserByEmail(email)
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' })
+      }
+
+      const clearPassword = userCtrl.generateRandomPassword(8);
+      await userCtrl.setTemporaryUserPassword(user, clearPassword);
+
+      await userCtrl.sendResetPasswordEmail(email, newPassword)
+
+      return res.status(200).json({ message: 'Reset password email sent' })
+    } catch (error) {
+      console.error('Failed to reset password:', error)
+      return res.status(500).json({ message: 'Failed to reset password' })
+    }
+  })
+
 module.exports = router;
