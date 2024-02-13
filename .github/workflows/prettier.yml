@@ -21,10 +21,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - uses: actionsx/prettier@v2
+      - name: Prettify code
+        uses: creyD/prettier_action@v4.3
         with:
-          # prettier CLI arguments.
-          args: --check .
+          # This part is also where you can pass other options, for example:
+          prettier_options: --check ./Configurateur/back/**/*.{js,md}
 
 
   
