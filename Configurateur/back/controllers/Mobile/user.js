@@ -100,6 +100,14 @@ exports.updateUserInfo = (user, body) => {
       firstName: body.firstName ?? user.firstName,
       lastName: body.lastName ?? user.lastName,
       email: body.email ?? user.email,
-    }
+      Notifications: {
+        update: {
+          favoriteItemsAvailable: body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
+          endOfRenting: body.endOfRenting ?? user.Notifications.endOfRenting,
+          newsOffersRisu: body.newsOffersRisu ?? user.Notifications.newsOffersRisu
+        }
+      }
+    },
+    include: { Notifications: true }
   })
 }
