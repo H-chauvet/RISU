@@ -3,15 +3,29 @@ name: Code quality check
 on: push
 
 jobs:
-  Prettier-WEB:
+  Prettier-FRONT-WEB:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
       - uses: dart-lang/setup-dart@v1
 
-      - name: Test
+      - name: Check code quality
         working-directory: ./Configurateur/front/
         run: |
           flutter pub get
           dart format --output=none --set-exit-if-changed ./lib/**/*
+  Prettier-BACK-WEB:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+      - uses: actions/checkout@v3
+
+      - name: Prettify code
+        working-directory: ./Configurateur/back
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --check **/*.js
+
+  
