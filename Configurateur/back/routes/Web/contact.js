@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const contactCtrl = require('../controllers/Web/contact')
+const contactCtrl = require('../../controllers/Web/contact')
 
 router.post('/contact', async function (req, res, next) {
   try {

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const paymentCtrl = require("../controllers/Web/payment");
+const paymentCtrl = require("../../controllers/Web/payment");
 
 router.post("/card-pay", async function (req, res, next) {
   const { containerId, paymentMethodId, currency, useStripeSdk, amount } =

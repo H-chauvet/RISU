@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const userCtrl = require("../controllers/Web/user");
-const jwtMiddleware = require("../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
+const jwtMiddleware = require("../../middleware/jwt");
 const generator = require("generate-password");
 
 router.post("/login", async function (req, res, next) {

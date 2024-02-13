@@ -5,13 +5,13 @@ const auth_token = require('./passport/bearer_token');
 const session = require('express-session');
 
 const app = express();
-const userRoutes = require('./routes/user');
-const contactRoutes = require('./routes/contact');
-const messagesRoutes = require('./routes/messages');
-const containerRoutes = require('./routes/container');
-const feedbacksRoutes = require('./routes/feedbacks');
-const itemsRoutes = require('./routes/items');
-const paymentRoutes = require("./routes/payment");
+const userRoutes = require('./routes/Web/user');
+const contactRoutes = require('./routes/Web/contact');
+const messagesRoutes = require('./routes/Web/messages');
+const containerRoutes = require('./routes/Web/container');
+const feedbacksRoutes = require('./routes/Web/feedbacks');
+const itemsRoutes = require('./routes/Web/items');
+const paymentRoutes = require("./routes/Web/payment");
 const userMobileRoutes = require("./routes/Mobile/user");
 
 var cors = require("cors");

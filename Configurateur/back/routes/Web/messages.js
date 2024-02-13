@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const userCtrl = require('../controllers/Web/messages');
+const userCtrl = require('../../controllers/Web/messages');
 
 router.post('/delete', async (req, res, next) => {
   try {
