@@ -23,7 +23,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Prettify code
-        uses: creyD/prettier_action@v4.3
+      - uses: creyD/prettier_action@v4.3
         with:
           prettier_options: --check ./Configurateur/back/**/*.js
 
