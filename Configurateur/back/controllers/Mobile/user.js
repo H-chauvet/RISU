@@ -92,3 +92,14 @@ exports.deleteUser = id => {
     }
   })
 }
+
+exports.updateUserInfo = (user, body) => {
+  return db.User_Mobile.update({
+    where: { id: user.id },
+    data: {
+      firstName: body.firstName ?? user.firstName,
+      lastName: body.lastName ?? user.lastName,
+      email: body.email ?? user.email,
+    }
+  })
+}

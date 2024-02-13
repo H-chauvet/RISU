@@ -47,11 +47,30 @@ router.get('/:userId',
         return res.status(401).send('Unauthorized');
       }
       const user = await userCtrl.findUserById(req.params.userId)
-      
+
       return res.status(200).json({ user });
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred.')
+    }
+  }
+)
+
+router.put('/',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      const updatedUser = await userCtrl.updateUserInfo(user, req.body)
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      console.error('Failed to update notifications: ', error)
+      return res.status(500).send('Failed to update notifications.')
     }
   }
 )
