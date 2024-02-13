@@ -12,6 +12,9 @@ exports.findUserById = id => {
   return db.User_Mobile.findUnique({
     where: {
       id: id
+    },
+    include: {
+      Notifications: true,
     }
   })
 }

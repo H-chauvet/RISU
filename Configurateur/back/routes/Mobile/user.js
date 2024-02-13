@@ -37,6 +37,25 @@ router.post('/resetPassword', async (req, res) => {
   }
 })
 
+router.get('/:userId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      if (req.user.id != req.params.userId) {
+        return res.status(401).send('Unauthorized');
+      }
+      const user = await userCtrl.findUserById(req.params.userId)
+      
+      return res.status(200).json({ user });
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred.')
+    }
+  }
+)
+
 router.delete('/:userId',
   passport.authenticate(
     'jwt',
