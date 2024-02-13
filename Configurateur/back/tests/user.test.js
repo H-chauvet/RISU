@@ -1,6 +1,6 @@
 const express = require("express");
 const supertest = require("supertest");
-const userRouter = require("../routes/user");
+const userRouter = require("../routes/Web/user");
 const userCtrl = require("../controllers/Web/user");
 const jwtMiddleware = require("../middleware/jwt");
 const generator = require("generate-password");

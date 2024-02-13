@@ -1,6 +1,6 @@
 const express = require("express");
 const supertest = require("supertest");
-const messagesRouter = require("../routes/messages");
+const messagesRouter = require("../routes/Web/messages");
 const userCtrl = require("../controllers/Web/messages");
 
 jest.mock("../controllers/Web/messages");

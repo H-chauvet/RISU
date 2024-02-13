@@ -1,6 +1,6 @@
 const express = require("express");
 const supertest = require("supertest");
-const feedbacksRouter = require("../routes/feedbacks");
+const feedbacksRouter = require("../routes/Web/feedbacks");
 const feedbacksCtrl = require("../controllers/Web/feedbacks");
 
 jest.mock("../controllers/Web/feedbacks");
