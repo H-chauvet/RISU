@@ -14,6 +14,7 @@ const itemsRoutes = require('./routes/Web/items');
 const paymentRoutes = require("./routes/Web/payment");
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
+const contactMobileRoutes = require("./routes/Mobile/contact");
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
@@ -38,6 +39,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((id, done) => {
   done(null, { id: id })
 })
+
 app.use(passport.initialize())
 app.use(passport.session())
 
@@ -50,5 +52,6 @@ app.use('/api/items', itemsRoutes)
 app.use("/api/payment", paymentRoutes);
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
+app.use("/api/mobile", contactMobileRoutes)
 
 module.exports = app;
