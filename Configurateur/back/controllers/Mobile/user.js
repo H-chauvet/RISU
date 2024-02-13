@@ -107,3 +107,14 @@ exports.deleteUser = id => {
     }
   })
 }
+
+exports.verifyEmail = id => {
+  return db.User_Mobile.update({
+    where: {
+      user: user.id
+    },
+    data: {
+      mailVerification: true
+    }
+  })
+}

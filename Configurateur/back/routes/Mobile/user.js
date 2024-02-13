@@ -80,6 +80,21 @@ router.post('/resetPassword', async (req, res) => {
   }
 })
 
+router.get('/mailVerification', async (req, res) => {
+  const token = req.query.token
+  try {
+    const decoded = jwt.decode(token, process.env.JWT_SECRET)
+    const user = await userCtrl.findUserById(decoded.id)
+    await userCtrl.verifyEmail(user.id)
+    return res.status(200).send(
+      'Email now successfully verified !\nYou can go back to login page.'
+      )
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send('No matching user found.')
+  }
+})
+
 router.delete('/:userId',
   passport.authenticate(
     'jwt',
