@@ -57,8 +57,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     } else {
       Fluttertoast.showToast(
         msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        toastLength: Toast.LENGTH_SHORT,gravity: ToastGravity.CENTER,
       );
     }
   }
