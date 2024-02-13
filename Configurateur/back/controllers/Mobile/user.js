@@ -99,3 +99,11 @@ exports.setTemporaryUserPassword = (user, clearPassword) => {
     }
   })
 }
+
+exports.deleteUser = id => {
+  return db.User_Mobile.delete({
+    where: {
+      id: id
+    }
+  })
+}
