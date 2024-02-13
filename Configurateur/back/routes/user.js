@@ -234,11 +234,9 @@ router.post("/update-details/:email", async (req, res, next) => {
     const { firstName, lastName } = req.body;
 
     if (!firstName && !lastName) {
-      res
-        .status(400)
-        .json({
-          error: "Email and at least one of firstName or lastName are required",
-        });
+      res.status(400).json({
+        error: "Email and at least one of firstName or lastName are required",
+      });
       return;
     }
 
