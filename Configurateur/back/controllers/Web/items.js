@@ -1,7 +1,7 @@
 const { db } = require('../../middleware/database')
 
 exports.getAllItem = containerId => {
-  return db.Items_Web.findMany({
+  return db.Item.findMany({
     where: {
         containerId: containerId
     }
@@ -9,11 +9,11 @@ exports.getAllItem = containerId => {
 }
 
 exports.getItem = id => {
-  return db.Items_Web.findMany()
+  return db.Item.findMany()
 }
 
 exports.deleteItem = id => {
-  return db.Items_Web.delete({
+  return db.Item.delete({
     where: {
       id: id
     }
@@ -22,14 +22,14 @@ exports.deleteItem = id => {
 
 exports.createItem = item => {
   item.price = parseFloat(item.price)
-  return db.Items_Web.create({
+  return db.Item.create({
     data: item
   })
 }
 
 exports.updateItem = (id, item) => {
   item.price = parseFloat(item.price);
-  return db.Items_Web.update({
+  return db.Item.update({
     where: {
       id: id,
     },

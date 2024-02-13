@@ -12,49 +12,13 @@ datasource db {
 }
 
 /////////////////////////////////////////////
-/////////////////////WEB/////////////////////
+///////////////////COMMON////////////////////
 /////////////////////////////////////////////
 
-model User_Web {
-    id             Int               @id @default(autoincrement())
-    uuid           String?           @unique
-    firstName      String?           @default("")
-    lastName       String?           @default("")
-    company        String?           @default("")
-    email          String            @unique
-    token          String?           @unique
-    password       String
-    organization   Organization_Web? @relation(fields: [organizationId], references: [id])
-    organizationId Int?
-    confirmed      Boolean           @default(false)
-    createdAt      DateTime          @default(now())
-}
-
-model Organization_Web {
-    id                 Int              @id @default(autoincrement())
-    name               String
-    type               String
-    affiliate          User_Web[]
-    containers         Containers_Web[]
-    contactInformation String
-}
-
-model Items_Web {
-    id          Int             @id @default(autoincrement())
-    name        String
-    available   Boolean
-    container   Containers_Web? @relation(fields: [containerId], references: [id])
-    createdAt   DateTime        @default(now())
-    containerId Int?
-    price       Float
-    image       String?
-    description String?
-}
-
-model Containers_Web {
-    id               Int               @id @default(autoincrement())
-    createdAt        DateTime          @default(now())
-    organization     Organization_Web? @relation(fields: [organizationId], references: [id])
+model Containers {
+    id               Int           @id @default(autoincrement())
+    createdAt        DateTime      @default(now())
+    organization     Organization? @relation(fields: [organizationId], references: [id])
     organizationId   Int?
     containerMapping String?
     address          String?
@@ -62,11 +26,52 @@ model Containers_Web {
     price            Float?
     width            Float?
     height           Float?
-    designs          String?           @db.LongText
-    informations     String?           @db.LongText
-    object           Items_Web[]
-    paid             Boolean           @default(false)
+    designs          String?       @db.LongText
+    informations     String?       @db.LongText
+    object           Item[]
+    paid             Boolean       @default(false)
     saveName         String?
+}
+
+model Item {
+    id              Int               @id @default(autoincrement())
+    name            String
+    available       Boolean
+    container       Containers?       @relation(fields: [containerId], references: [id])
+    createdAt       DateTime          @default(now())
+    containerId     Int?
+    price           Float
+    image           String?
+    description     String?
+    Location_Mobile Location_Mobile[]
+}
+
+model Organization {
+    id                 Int          @id @default(autoincrement())
+    name               String
+    type               String
+    affiliate          User_Web[]
+    containers         Containers[]
+    contactInformation String
+}
+
+/////////////////////////////////////////////
+/////////////////////WEB/////////////////////
+/////////////////////////////////////////////
+
+model User_Web {
+    id             Int           @id @default(autoincrement())
+    uuid           String?       @unique
+    firstName      String?       @default("")
+    lastName       String?       @default("")
+    company        String?       @default("")
+    email          String        @unique
+    token          String?       @unique
+    password       String
+    organization   Organization? @relation(fields: [organizationId], references: [id])
+    organizationId Int?
+    confirmed      Boolean       @default(false)
+    createdAt      DateTime      @default(now())
 }
 
 model Feedbacks_Web {
@@ -123,50 +128,22 @@ model User_Mobile {
 }
 
 model Notifications_Mobile {
-    id                     String        @id @unique @default(cuid())
-    Users                  User_Mobile[]
-    favoriteItemsAvailable Boolean
-    endOfRenting           Boolean
-    newsOffersRisu         Boolean
+    id                    String        @id @unique @default(cuid())
+    Users                 User_Mobile[]
+    favoriteItemAvailable Boolean
+    endOfRenting          Boolean
+    newsOffersRisu        Boolean
 }
 
 model Location_Mobile {
-    id        String       @id @unique @default(cuid())
+    id        Int         @id @default(autoincrement())
+    uuid      String      @unique @default(cuid())
     price     Int
-    item      Items_Mobile @relation(fields: [itemId], references: [id])
-    itemId    String
-    user      User_Mobile  @relation(fields: [userId], references: [id])
+    item      Item        @relation(fields: [itemId], references: [id])
+    itemId    Int
+    user      User_Mobile @relation(fields: [userId], references: [id])
     userId    String
-    createdAt DateTime     @default(now())
+    createdAt DateTime    @default(now())
     duration  Int
-    ended     Boolean      @default(false)
-}
-
-model Items_Mobile {
-    id          String            @id @unique @default(cuid())
-    name        String
-    price       Int
-    available   Boolean           @default(false)
-    container   Containers_Mobile @relation(fields: [containerId], references: [id])
-    containerId String
-    createdAt   DateTime          @default(now())
-    Locations   Location_Mobile[]
-    image       String?
-    description String?
-}
-
-model Containers_Mobile {
-    id               String         @id @default(cuid())
-    createdAt        DateTime       @default(now())
-    containerMapping String?
-    address          String?
-    city             String?
-    price            Float?
-    width            Float?
-    height           Float?
-    designs          String?        @db.LongText
-    informations     String?        @db.LongText
-    Items_Mobile     Items_Mobile[]
-    paid             Boolean        @default(false)
-    saveName         String?
+    ended     Boolean     @default(false)
 }

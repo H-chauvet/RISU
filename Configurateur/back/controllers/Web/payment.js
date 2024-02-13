@@ -16,7 +16,7 @@ const generateResponse = async (intent, id) => {
     case "succeeded":
       console.log("Payment received!");
       try {
-        await db.Containers_Web.update({
+        await db.Containers.update({
           where: {
             id: id,
           },
