@@ -7,7 +7,7 @@ const passport = require("passport")
 
 const jwt = require('jsonwebtoken')
 
-router.post('/mobile/signup', (req, res, next) => {
+router.post('/signup', (req, res, next) => {
     passport.authenticate(
         'signup',
         { session: false },
@@ -27,8 +27,34 @@ router.post('/mobile/signup', (req, res, next) => {
                 console.error(err.message)
                 return res.status(401).send('An error occurred.')
             }
-                return res.status(201).send('User created')
+            return res.status(201).send('User created')
         }
     )(req, res, next)
 })
+
+router.post('/login', (req, res, next) => {
+    passport.authenticate(
+        'login',
+        { session: false },
+        (err, user, info) => {
+    if (err)
+        throw new Error(err)
+    if (user == false)
+        return res.status(401).json(info)
+
+    const token = jwtMiddleware.generateToken(user.id)
+    return res.status(201).json({ user: user, token: token })
+    })(req, res, next)
+  })
+
+router.get('/listAll', async (req, res) => {
+    try {
+      const user = await userCtrl.getAllUsers();
+      return res.status(200).json({ user });
+    } catch (err) {
+      console.log(err)
+      return res.status(400).json('An error occured.')
+    }
+  })
+
 module.exports = router;

@@ -47,6 +47,6 @@ app.use('/api/messages', messagesRoutes)
 app.use('/api/feedbacks', feedbacksRoutes)
 app.use('/api/items', itemsRoutes)
 app.use("/api/payment", paymentRoutes);
-app.use("/api/", userMobileRoutes);
+app.use("/api/mobile/user", userMobileRoutes);
 
 module.exports = app;

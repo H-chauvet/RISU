@@ -2,13 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native"]
+    provider      = "prisma-client-js"
+    binaryTargets = ["native"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
 /////////////////////////////////////////////
@@ -16,76 +16,76 @@ datasource db {
 /////////////////////////////////////////////
 
 model User_Web {
-  id             Int               @id @default(autoincrement())
-  uuid           String?           @unique
-  firstName      String?           @default("")
-  lastName       String?           @default("")
-  company        String?           @default("")
-  email          String            @unique
-  token          String?           @unique
-  password       String
-  organization   Organization_Web? @relation(fields: [organizationId], references: [id])
-  organizationId Int?
-  confirmed      Boolean           @default(false)
-  createdAt      DateTime          @default(now())
+    id             Int               @id @default(autoincrement())
+    uuid           String?           @unique
+    firstName      String?           @default("")
+    lastName       String?           @default("")
+    company        String?           @default("")
+    email          String            @unique
+    token          String?           @unique
+    password       String
+    organization   Organization_Web? @relation(fields: [organizationId], references: [id])
+    organizationId Int?
+    confirmed      Boolean           @default(false)
+    createdAt      DateTime          @default(now())
 }
 
 model Organization_Web {
-  id                 Int    @id @default(autoincrement())
-  name               String
-  type               String
-  affiliate          User_Web[]
-  containers         Containers_Web[]
-  contactInformation String
+    id                 Int              @id @default(autoincrement())
+    name               String
+    type               String
+    affiliate          User_Web[]
+    containers         Containers_Web[]
+    contactInformation String
 }
 
 model Items_Web {
-	id					  Int				      @id @default(autoincrement())
-	name				  String
-	available			Boolean
-	container			Containers_Web? @relation(fields: [containerId], references: [id])
-	createdAt			DateTime		    @default(now())
-	containerId		Int?
-	price				  Float
-  image         String?
-  description   String?
+    id          Int             @id @default(autoincrement())
+    name        String
+    available   Boolean
+    container   Containers_Web? @relation(fields: [containerId], references: [id])
+    createdAt   DateTime        @default(now())
+    containerId Int?
+    price       Float
+    image       String?
+    description String?
 }
 
 model Containers_Web {
-  id               Int               @id @default(autoincrement())
-  createdAt        DateTime          @default(now())
-  organization     Organization_Web? @relation(fields: [organizationId], references: [id])
-  organizationId   Int?
-  containerMapping String?
-  address          String?
-  city             String?
-  price            Float?
-  width            Float?
-  height           Float?
-  designs          String?           @db.LongText
-  informations     String?           @db.LongText
-  object				   Items_Web[]
-  paid             Boolean           @default(false)
-  saveName         String?
+    id               Int               @id @default(autoincrement())
+    createdAt        DateTime          @default(now())
+    organization     Organization_Web? @relation(fields: [organizationId], references: [id])
+    organizationId   Int?
+    containerMapping String?
+    address          String?
+    city             String?
+    price            Float?
+    width            Float?
+    height           Float?
+    designs          String?           @db.LongText
+    informations     String?           @db.LongText
+    object           Items_Web[]
+    paid             Boolean           @default(false)
+    saveName         String?
 }
 
 model Feedbacks_Web {
-	id					Int				@id @default(autoincrement())
-	firstName		String
-	lastName		String
-	email				String
-	message			String
-	mark				String
-	createdAt		DateTime	@default(now())
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    email     String
+    message   String
+    mark      String
+    createdAt DateTime @default(now())
 }
 
 model Contact_Web {
-  id        Int      @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String
-  message   String
-  createdAt DateTime @default(now())
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    email     String
+    message   String
+    createdAt DateTime @default(now())
 }
 
 /////////////////////////////////////////////
@@ -93,79 +93,80 @@ model Contact_Web {
 /////////////////////////////////////////////
 
 model Contact_Mobile {
-  id        String      @id @unique @default(cuid())
-  name      String
-  email     String
-  message   String
-  createdAt DateTime    @default(now())
+    id        String   @id @unique @default(cuid())
+    name      String
+    email     String
+    message   String
+    createdAt DateTime @default(now())
 }
 
 model Opinions_Mobile {
-	id					String		@id @unique @default(cuid())
-	userId			String
-	date				DateTime
-	note        String
-	comment     String    @default("")
+    id      String   @id @unique @default(cuid())
+    userId  String
+    date    DateTime
+    note    String
+    comment String   @default("")
 }
+
 model User_Mobile {
-	id					      String		             @id @unique @default(cuid())
-	email				      String		             @unique
-	firstName			    String?
-	lastName			    String?
-	password			    String
-	mailVerification	Boolean		             @default(false)
-	confirmProcess		String		             @default("")
-	createdAt			    DateTime	             @default(now())
-	Locations			    Location_Mobile[]
-	Notifications		  Notifications_Mobile?  @relation(fields: [notificationsId], references: [id])
-	notificationsId		String?
+    id               String                @id @unique @default(cuid())
+    email            String                @unique
+    firstName        String?
+    lastName         String?
+    password         String
+    mailVerification Boolean               @default(false)
+    confirmProcess   String                @default("")
+    createdAt        DateTime              @default(now())
+    Locations        Location_Mobile[]
+    Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
+    notificationsId  String?
 }
 
 model Notifications_Mobile {
-	id						          String		    @id @unique @default(cuid())
-	Users					          User_Mobile[]
-	favoriteItemsAvailable 	Boolean
-	endOfRenting			      Boolean
-	newsOffersRisu			    Boolean
+    id                     String        @id @unique @default(cuid())
+    Users                  User_Mobile[]
+    favoriteItemsAvailable Boolean
+    endOfRenting           Boolean
+    newsOffersRisu         Boolean
 }
 
 model Location_Mobile {
-	id				String        @id @unique @default(cuid())
-	price			Int
-	item			Items_Mobile  @relation(fields: [itemId], references: [id])
-	itemId		String
-	user			User_Mobile	  @relation(fields: [userId], references: [id])
-	userId		String
-	createdAt	DateTime	    @default(now())
-	duration	Int
-	ended			Boolean		    @default(false)
+    id        String       @id @unique @default(cuid())
+    price     Int
+    item      Items_Mobile @relation(fields: [itemId], references: [id])
+    itemId    String
+    user      User_Mobile  @relation(fields: [userId], references: [id])
+    userId    String
+    createdAt DateTime     @default(now())
+    duration  Int
+    ended     Boolean      @default(false)
 }
 
 model Items_Mobile {
-	id					  String		        @id @unique @default(cuid())
-	name				  String
-	price				  Int
-	available		  Boolean		        @default(false)
-	container		  Containers_Mobile @relation(fields: [containerId], references: [id])
-	containerId		String
-	createdAt			DateTime		      @default(now())
-	Locations			Location_Mobile[]
-	image       	String?
-  description 	String?
+    id          String            @id @unique @default(cuid())
+    name        String
+    price       Int
+    available   Boolean           @default(false)
+    container   Containers_Mobile @relation(fields: [containerId], references: [id])
+    containerId String
+    createdAt   DateTime          @default(now())
+    Locations   Location_Mobile[]
+    image       String?
+    description String?
 }
 
 model Containers_Mobile {
-	id               String        @id @default(cuid())
-	createdAt        DateTime      @default(now())
-	containerMapping String?
-	address          String?
-	city             String?
-	price            Float?
-	width            Float?
-	height           Float?
-	designs          String?        @db.LongText
-	informations     String?        @db.LongText
-	Items_Mobile		 Items_Mobile[]
-	paid             Boolean        @default(false)
-	saveName         String?
+    id               String         @id @default(cuid())
+    createdAt        DateTime       @default(now())
+    containerMapping String?
+    address          String?
+    city             String?
+    price            Float?
+    width            Float?
+    height           Float?
+    designs          String?        @db.LongText
+    informations     String?        @db.LongText
+    Items_Mobile     Items_Mobile[]
+    paid             Boolean        @default(false)
+    saveName         String?
 }

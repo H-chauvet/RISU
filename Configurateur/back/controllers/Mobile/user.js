@@ -18,6 +18,7 @@ exports.findUserById = id => {
     }
   })
 }
+
 exports.sendAccountConfirmationEmail = (email, token) => {
   let mailOptions = {
     from: process.env.MAIL_ADDRESS,
@@ -33,3 +34,13 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     console.error('Error sending reset password email:', error)
   }
 }
+
+exports.getAllUsers = async () => {
+  try {
+    const users = await db.User_Mobile.findMany();
+    return users;
+  } catch (error) {
+    console.error('Error retrieving mobile users:', error);
+    throw new Error('Failed to retrieve mobile users');
+  }
+};
