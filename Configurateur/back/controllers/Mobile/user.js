@@ -73,8 +73,8 @@ exports.sendResetPasswordEmail = async(email, newPassword) => {
 
 /// END OF WILL BE REMOVED
 
-exports.setTemporaryUserPassword = (user, clearPassword) => {
-  const password = bcrypt.hashSync(clearPassword, 12)
+exports.setNewUserPassword = (user, newPassword) =>{
+  const password = bcrypt.hashSync(newPassword, 12)
   return db.User_Mobile.update({
     where: {
       user: user.id
