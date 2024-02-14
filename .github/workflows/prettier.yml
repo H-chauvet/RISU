@@ -24,7 +24,7 @@ jobs:
       - name: Prettify code
         working-directory: ./Configurateur/back/
         run: |
-          npx prettier --check ./**/*.js
+          npm run prettier
 
 
 
