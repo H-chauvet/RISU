@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test": "jest --coverage",
     "migration": "dotenv -e .env -- prisma migrate reset --force && dotenv -e .env -- npx prisma migrate dev --name init",
-    "prettier": "prettier --write ./**/*.js"
+    "prettier": "prettier --check ./**/*.js"
   },
   "author": "",
   "license": "ISC",
