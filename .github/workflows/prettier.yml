@@ -22,11 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Prettify code
-        uses: creyD/prettier_action@v4.3
-        with:
-          dry: True
-          prettier_options: --check ./Configurateur/back/**/*.js
-
+        working-directory: ./Configurateur/back/
+        run: |
+          npm install prettier
+          npm run prettier
 
 
 
