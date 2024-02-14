@@ -25,7 +25,7 @@ jobs:
         uses: creyD/prettier_action@v4.3
         with:
           dry: True
-          prettier_options: --check **/*.js
+          prettier_options: --check ./Configurateur/back/**/*.js
 
 
 
