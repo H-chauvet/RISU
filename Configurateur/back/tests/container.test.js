@@ -1,10 +1,10 @@
 const express = require("express");
 const supertest = require("supertest");
 const containerRouter = require("../routes/Web/container");
-const containerCtrl = require("../controllers/Web/container");
+const containerCtrl = require("../controllers/Common/container");
 const jwtMiddleware = require("../middleware/jwt");
 
-jest.mock("../controllers/Web/container");
+jest.mock("../controllers/Common/container");
 jest.mock("../middleware/jwt");
 
 const app = express();

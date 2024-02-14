@@ -1,9 +1,9 @@
 const express = require("express");
 const supertest = require("supertest");
 const itemsRouter = require("../routes/Web/items");
-const itemCtrl = require("../controllers/Web/items");
+const itemCtrl = require("../controllers/Common/items");
 
-jest.mock("../controllers/Web/items");
+jest.mock("../controllers/Common/items");
 
 const app = express();
 app.use(express.json());

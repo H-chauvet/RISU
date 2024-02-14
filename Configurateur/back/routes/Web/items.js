@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
-const itemCtrl = require('../../controllers/Web/items')
+const itemCtrl = require('../../controllers/Common/items')
 const jwtMiddleware = require('../../middleware/jwt')
 
 router.post('/delete', async function (req, res, next) {
