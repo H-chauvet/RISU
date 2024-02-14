@@ -49,11 +49,11 @@ exports.updateContainer = (id, container) => {
 
 exports.getAllContainers = async () => {
   try {
-    const users = await db.Containers.findMany();
-    return users;
+    const containers = await db.Containers.findMany();
+    return containers;
   } catch (error) {
-    console.error("Error retrieving users:", error);
-    throw new Error("Failed to retrieve users");
+    console.error("Error retrieving containers:", error);
+    throw new Error("Failed to retrieve containers");
   }
 };
 
@@ -63,3 +63,12 @@ exports.createContainer2 = (container) => {
     data: container,
   });
 };
+
+exports.getItemsFromContainer = (containerId) => {
+  return db.Containers.findUnique({
+    where: { id: containerId },
+    select: {
+      items
+    },
+  })
+}

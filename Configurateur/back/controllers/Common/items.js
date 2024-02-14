@@ -36,3 +36,10 @@ exports.updateItem = (id, item) => {
     data: item,
   });
 };
+
+exports.getAvailableItemsCount = (containerId) => {
+  return db.Items.count({
+    where: { containerId: containerId },
+    select: { available: true }
+  })
+}

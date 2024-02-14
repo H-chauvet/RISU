@@ -28,7 +28,7 @@ model Containers {
     height           Float?
     designs          String?       @db.LongText
     informations     String?       @db.LongText
-    object           Item[]
+    items            Item[]
     paid             Boolean       @default(false)
     saveName         String?
 }
