@@ -45,7 +45,7 @@ router.post('/login', (req, res, next) => {
         return res.status(401).json(info)
 
       const token = jwtMiddleware.generateToken(user.id)
-      return res.status(201).json({ user, token })
+      return res.status(201).json({ user : user, token : token })
     }
   )(req, res, next)
 })

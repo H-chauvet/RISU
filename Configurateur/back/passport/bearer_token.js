@@ -17,7 +17,7 @@ const options = {
 passport.use(
   new Strategy(options, async (jwt_payload, done) => {
     try {
-      const user = await db.user.findUnique({
+      const user = await db.User_Mobile.findUnique({
         where: {
           id: jwt_payload.id
         }
