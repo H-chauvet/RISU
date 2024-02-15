@@ -1,11 +1,16 @@
 const { db } = require("../../middleware/database");
 
-exports.getContainer = (id) => {
-  return db.Containers.findMany({
-    where: {
-      id: id,
-    },
-  });
+exports.getContainerById = (id) => {
+  return db.Containers.findUnique({
+    where: { id: id },
+      select: {
+        city: true,
+        address: true,
+        items: {
+          where: { available: true }
+        },
+      }
+    })
 };
 
 exports.getAllContainer = (id) => {
@@ -49,8 +54,7 @@ exports.updateContainer = (id, container) => {
 
 exports.getAllContainers = async () => {
   try {
-    const containers = await db.Containers.findMany();
-    return containers;
+    return db.Containers.findMany();
   } catch (error) {
     console.error("Error retrieving containers:", error);
     throw new Error("Failed to retrieve containers");
@@ -68,7 +72,7 @@ exports.getItemsFromContainer = (containerId) => {
   return db.Containers.findUnique({
     where: { id: containerId },
     select: {
-      items
+      items : true
     },
   })
 }

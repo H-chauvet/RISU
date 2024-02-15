@@ -18,7 +18,7 @@ describe("Container Route Tests", () => {
 
   it("should handle valid container retrieval", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
-    containerCtrl.getContainer.mockResolvedValueOnce({
+    containerCtrl.getContainerById.mockResolvedValueOnce({
       id: 1,
       name: "Container 1",
     });
@@ -32,7 +32,7 @@ describe("Container Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken"
     );
-    expect(containerCtrl.getContainer).toHaveBeenCalledWith(1);
+    expect(containerCtrl.getContainerById).toHaveBeenCalledWith(1);
   });
 
   it("should handle missing ID during container retrieval", async () => {
@@ -47,7 +47,7 @@ describe("Container Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken"
     );
-    expect(containerCtrl.getContainer).not.toHaveBeenCalled();
+    expect(containerCtrl.getContainerById).not.toHaveBeenCalled();
   });
 
   it("should handle valid container deletion", async () => {

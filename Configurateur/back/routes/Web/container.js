@@ -18,7 +18,7 @@ router.get("/get", async function (req, res, next) {
       res.status(400);
       throw new Error("id is required");
     }
-    const container = await containerCtrl.getContainer(parseInt(id));
+    const container = await containerCtrl.getContainerById(parseInt(id));
     res.status(200).json(container);
   } catch (err) {
     next(err);

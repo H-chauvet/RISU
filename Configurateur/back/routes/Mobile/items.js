@@ -3,7 +3,7 @@ const router = express.Router()
 
 const itemCtrl = require('../../controllers/Common/items')
 
-router.get('/listall', async (req, res) => {
+router.get('/listAll', async (req, res) => {
   try {
     const articles = await itemCtrl.getItems()
     return res.status(200).json(articles)

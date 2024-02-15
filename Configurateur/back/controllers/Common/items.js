@@ -44,7 +44,7 @@ exports.updateItem = (id, item) => {
 };
 
 exports.getAvailableItemsCount = (containerId) => {
-  return db.Items.count({
+  return db.Item.count({
     where: { containerId: containerId },
     select: { available: true }
   })

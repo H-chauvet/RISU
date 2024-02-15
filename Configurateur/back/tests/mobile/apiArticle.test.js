@@ -9,7 +9,7 @@ describe('get containerId', () => {
         [
           async function () {
             const res = await request('http://localhost:3000')
-              .get('/api/mobile/article/listall')
+              .get('/api/mobile/article/listAll')
             articleId = res.body[0].id
             expect(res.statusCode).toBe(200)
           }

@@ -42,7 +42,7 @@ router.post('/article',
   }
 )
 
-router.get('/listall',
+router.get('/listAll',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

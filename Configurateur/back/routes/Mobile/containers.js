@@ -8,7 +8,7 @@ router.get("/listAll", async function (req, res, next) {
   try {
     const container = await containerCtrl.getAllContainers();
 
-    res.status(200).json({ container });
+    return res.status(200).json(container);
   } catch (err) {
     next(err);
   }
@@ -23,14 +23,14 @@ router.get('/:containerId', async (req, res, next) => {
   // }
   try {
     if (!req.params.containerId || req.params.containerId === '') {
-      res.status(400);
+      return res.status(400);
       throw new Error("id is required");
     }
-    const container = await containerCtrl.getContainer(req.params.containerId)
+    const container = await containerCtrl.getContainerById(parseInt(req.params.containerId))
     if (!container) {
       return res.status(401).json("container not found")
     }
-    const count = await itemCtrl.getAvailableItemsCount(req.params.containerId)
+    const count = await itemCtrl.getAvailableItemsCount(parseInt(req.params.containerId))
 
     return res.status(200).json({...container, count})
   } catch (err) {
@@ -43,7 +43,7 @@ router.get('/:containerId/articleslist/', async (req, res) => {
     if (!req.params.containerId || req.params.containerId === '') {
       return res.status(401).json({ message: 'Missing containerId' })
     }
-    const container = await containerCtrl.getItemsFromContainer(req.params.containerId)
+    const container = await containerCtrl.getItemsFromContainer(parseInt(req.params.containerId))
     if (!container) {
       return res.status(401).json("itemList not found")
     } else if (!container.items || container.items.length === 0) {
