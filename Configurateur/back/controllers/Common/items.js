@@ -9,8 +9,9 @@ exports.getAllItem = containerId => {
 }
 
 exports.getItemFromId = (id) => {
+  intId = parseInt(id)
   return db.Item.findUnique({
-    where: { id: id }
+    where: { id: intId }
   })
 }
 
@@ -34,10 +35,11 @@ exports.createItem = item => {
 }
 
 exports.updateItem = (id, item) => {
+  intId = parseInt(id)
   item.price = parseFloat(item.price);
   return db.Item.update({
     where: {
-      id: id,
+      id: intId,
     },
     data: item,
   });

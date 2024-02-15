@@ -20,7 +20,7 @@ router.post('/article',
         return res.status(401).json({ message: 'Missing itemId' })
       }
 
-      const item = await itemCtrl.getItemFromId(req.body.itemId)
+      const item = await itemCtrl.getItemFromId(parseInt(req.body.itemId))
       if (!item) {
         return res.status(401).send('Item not found');
       }
@@ -40,7 +40,7 @@ router.post('/article',
       return res.status(201).json({ message: 'location saved' })
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred')
+      return res.status(401).send('An error occurred' + err.message)
     }
   }
 )
