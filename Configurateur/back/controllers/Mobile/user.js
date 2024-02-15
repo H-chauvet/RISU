@@ -77,7 +77,7 @@ exports.setNewUserPassword = (user, newPassword) =>{
   const password = bcrypt.hashSync(newPassword, 12)
   return db.User_Mobile.update({
     where: {
-      user: user.id
+      id: user.id
     },
     data: {
       password: password,
