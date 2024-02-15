@@ -24,7 +24,7 @@ describe("Feedbacks Route Tests", () => {
     };
 
     feedbacksCtrl.registerFeedbacks.mockResolvedValueOnce(
-      "Mocked feedback response"
+      "Mocked feedback response",
     );
 
     const response = await supertest(app).post("/create").send(requestBody);
@@ -63,7 +63,7 @@ describe("Feedbacks Route Tests", () => {
 
   it("should handle errors during feedback list retrieval", async () => {
     feedbacksCtrl.getAllFeedbacks.mockRejectedValueOnce(
-      new Error("Mocked error")
+      new Error("Mocked error"),
     );
 
     const response = await supertest(app).get("/listAll").query({ mark: 5 });

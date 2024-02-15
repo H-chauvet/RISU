@@ -1,14 +1,14 @@
-const nodemailer = require('nodemailer')
+const nodemailer = require("nodemailer");
 
 let transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
     user: process.env.MAIL_ADDRESS,
-    pass: process.env.MAIL_PASS
-  }
-})
+    pass: process.env.MAIL_PASS,
+  },
+});
 
 /**
  *
@@ -16,14 +16,14 @@ let transporter = nodemailer.createTransport({
  *
  * @param {*} mail mail object
  */
-function sendMail (mail) {
+function sendMail(mail) {
   transporter.sendMail(mail, (error, info) => {
     if (error) {
-      console.log(error)
+      console.log(error);
     } else {
-      console.log('Email sent: ' + info.response)
+      console.log("Email sent: " + info.response);
     }
-  })
+  });
 }
 
-module.exports = { sendMail }
+module.exports = { sendMail };

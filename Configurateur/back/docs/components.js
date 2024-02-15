@@ -2,35 +2,35 @@ module.exports = {
   components: {
     schemas: {
       User: {
-        type: 'object',
+        type: "object",
         properties: {
           email: {
-            type: 'string'
-          }
-        }
+            type: "string",
+          },
+        },
       },
       UserInfo: {
-        type: 'object',
+        type: "object",
         properties: {
           email: {
-            type: 'string'
+            type: "string",
           },
           password: {
-            type: 'string'
-          }
-        }
+            type: "string",
+          },
+        },
       },
       UserWithUuid: {
-        type: 'object',
+        type: "object",
         properties: {
           uuid: {
-            type: 'string'
+            type: "string",
           },
           password: {
-            type: 'string'
-          }
-        }
-      }
-    }
-  }
-}
+            type: "string",
+          },
+        },
+      },
+    },
+  },
+};
