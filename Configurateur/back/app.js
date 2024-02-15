@@ -17,6 +17,7 @@ const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
 const contactMobileRoutes = require("./routes/Mobile/contact");
 const containerMobileRoutes = require("./routes/Mobile/containers")
+const itemMobileRoutes = require("./routes/Mobile/items")
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
@@ -56,6 +57,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
 app.use("/api/mobile", contactMobileRoutes)
-app.use("/api/mobile/container", contactMobileRoutes)
+app.use("/api/mobile/container", containerMobileRoutes)
+app.use("/api/mobile/article", itemMobileRoutes)
 
 module.exports = app;

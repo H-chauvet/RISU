@@ -8,7 +8,13 @@ exports.getAllItem = containerId => {
   })
 }
 
-exports.getItem = id => {
+exports.getItemFromId = (id) => {
+  return db.Item.findUnique({
+    where: { id: id }
+  })
+}
+
+exports.getItems = () => {
   return db.Item.findMany()
 }
 
