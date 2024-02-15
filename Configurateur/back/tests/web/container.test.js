@@ -1,11 +1,11 @@
 const express = require("express");
 const supertest = require("supertest");
-const containerRouter = require("../routes/Web/container");
-const containerCtrl = require("../controllers/Common/container");
-const jwtMiddleware = require("../middleware/jwt");
+const containerRouter = require("../../routes/Web/container");
+const containerCtrl = require("../../controllers/Common/container");
+const jwtMiddleware = require("../../middleware/jwt");
 
-jest.mock("../controllers/Common/container");
-jest.mock("../middleware/jwt");
+jest.mock("../../controllers/Common/container");
+jest.mock("../../middleware/jwt");
 
 const app = express();
 app.use(express.json());

@@ -1,12 +1,12 @@
 const express = require("express");
 const supertest = require("supertest");
-const userRouter = require("../routes/Web/user");
-const userCtrl = require("../controllers/Web/user");
-const jwtMiddleware = require("../middleware/jwt");
+const userRouter = require("../../routes/Web/user");
+const userCtrl = require("../../controllers/Web/user");
+const jwtMiddleware = require("../../middleware/jwt");
 const generator = require("generate-password");
 
-jest.mock("../controllers/Web/user");
-jest.mock("../middleware/jwt");
+jest.mock("../../controllers/Web/user");
+jest.mock("../../middleware/jwt");
 jest.mock("generate-password");
 
 const app = express();

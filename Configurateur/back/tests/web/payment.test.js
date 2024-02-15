@@ -1,9 +1,9 @@
 const express = require("express");
 const supertest = require("supertest");
-const paymentRouter = require("../routes/Web/payment");
-const paymentCtrl = require("../controllers/Web/payment");
+const paymentRouter = require("../../routes/Web/payment");
+const paymentCtrl = require("../../controllers/Web/payment");
 
-jest.mock("../controllers/Web/payment");
+jest.mock("../../controllers/Web/payment");
 const app = express();
 app.use(express.json());
 app.use("/", paymentRouter);

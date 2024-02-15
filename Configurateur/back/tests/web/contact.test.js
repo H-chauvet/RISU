@@ -1,9 +1,9 @@
 const express = require("express");
 const supertest = require("supertest");
-const contactRouter = require("../routes/Web/contact");
-const contactCtrl = require("../controllers/Web/contact");
+const contactRouter = require("../../routes/Web/contact");
+const contactCtrl = require("../../controllers/Web/contact");
 
-jest.mock("../controllers/Web/contact");
+jest.mock("../../controllers/Web/contact");
 
 const app = express();
 app.use(express.json());
