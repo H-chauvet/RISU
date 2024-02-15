@@ -14,7 +14,6 @@ describe('POST /api/user/firstName', () => {
               .set('Accept', 'application/json')
               .send({ email: 'admin@gmail.com', password: 'admin' })
             authToken = res.body.token
-            console.log(authToken)
             expect(res.statusCode).toBe(201)
           }
         ],

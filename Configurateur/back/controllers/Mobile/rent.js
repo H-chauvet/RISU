@@ -41,9 +41,10 @@ exports.getUserRents = (userId) => {
 }
 
 exports.getRentFromId = (rentId) => {
+  id = parseInt(rentId)
   return db.Location_Mobile.findUnique({
     where: {
-      id: rentId
+      id: id
     },
     select: {
       id: true,
@@ -70,8 +71,9 @@ exports.getRentFromId = (rentId) => {
 }
 
 exports.returnRent = (rentId) => {
+  id = parseInt(rentId)
   return db.Location_Mobile.update({
-    where: { id: rentId },
+    where: { id: id },
     data: {
       ended: true,
       item: {

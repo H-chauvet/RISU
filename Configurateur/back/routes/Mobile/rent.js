@@ -32,7 +32,10 @@ router.post('/article',
       }
       const locationPrice = item.price * req.body.duration
 
-      await itemCtrl.updateItem(item.id, { available: false })
+      await itemCtrl.updateItem(item.id, {
+        price: item.price,
+        available: false
+       })
       await rentCtrl.rentItem(locationPrice, item.id, user.id, parseInt(req.body.duration))
       return res.status(201).json({ message: 'location saved' })
     } catch (err) {
@@ -70,7 +73,7 @@ router.get('/:rentId',
       if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).json({ message: 'Missing rentId' })
       }
-      const rental = await rentCtrl.getRentFromId(req.params.rentId)
+      const rental = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rental) {
         return res.status(401).send('Location not found')
       }
@@ -94,14 +97,14 @@ router.post('/:rentId/return',
       if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).json({ message: 'Missing rentId' })
       }
-      const rent = await rentCtrl.getRentFromId(req.params.rentId)
+      const rent = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rent) {
         return res.status(401).send('Location not found')
       }
       if (rent.userId != req.user.id) {
         return res.status(401).send('Location from wrong user')
       }
-      await rentCtrl.returnRent(req.params.rentId)
+      await rentCtrl.returnRent(parseInt(req.params.rentId))
       return res.status(201).json({ message: 'location returned' })
     } catch (err) {
       console.error(err.message)
