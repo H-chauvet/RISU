@@ -18,6 +18,7 @@ const authMobileRoutes = require("./routes/Mobile/auth");
 const contactMobileRoutes = require("./routes/Mobile/contact");
 const containerMobileRoutes = require("./routes/Mobile/containers")
 const itemMobileRoutes = require("./routes/Mobile/items")
+const rentMobileRoutes = require("./routes/Mobile/rent")
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
@@ -59,5 +60,6 @@ app.use("/api/mobile/auth", authMobileRoutes)
 app.use("/api/mobile", contactMobileRoutes)
 app.use("/api/mobile/container", containerMobileRoutes)
 app.use("/api/mobile/article", itemMobileRoutes)
+app.use("/api/mobile/rent", rentMobileRoutes)
 
 module.exports = app;
