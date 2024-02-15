@@ -15,7 +15,7 @@ router.get('/listall', async (req, res) => {
 
 router.get('/:articleId', async (req, res) => {
   try {
-    const article = await itemCtrl.getItemFromId(req.params.articleId)
+    const article = await itemCtrl.getItemFromId(parseInt(req.params.articleId))
     if (!article) {
       return res.status(401).json("article not found")
     }

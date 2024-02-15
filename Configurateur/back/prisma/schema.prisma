@@ -128,11 +128,11 @@ model User_Mobile {
 }
 
 model Notifications_Mobile {
-    id                    String        @id @unique @default(cuid())
-    Users                 User_Mobile[]
-    favoriteItemAvailable Boolean
-    endOfRenting          Boolean
-    newsOffersRisu        Boolean
+    id                     String        @id @unique @default(cuid())
+    Users                  User_Mobile[]
+    favoriteItemsAvailable Boolean
+    endOfRenting           Boolean
+    newsOffersRisu         Boolean
 }
 
 model Location_Mobile {
