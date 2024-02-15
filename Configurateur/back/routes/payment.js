@@ -14,7 +14,7 @@ router.post("/card-pay", async function (req, res, next) {
         useStripeSdk,
         amount,
         containerId,
-      })
+      }),
     );
   } catch (e) {
     res.status(500).send({

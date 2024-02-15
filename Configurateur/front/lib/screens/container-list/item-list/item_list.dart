@@ -30,7 +30,8 @@ class _ItemPageState extends State<ItemPage> {
 
   Future<void> fetchItems() async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/items/listAll?containerId=$containerId'),
+      Uri.parse(
+          'http://${serverIp}:3000/api/items/listAll?containerId=$containerId'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -38,8 +39,7 @@ class _ItemPageState extends State<ItemPage> {
       setState(() {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
-    } else {
-    }
+    } else {}
   }
 
   Future<void> deleteItem(ItemList message) async {
@@ -77,10 +77,11 @@ class _ItemPageState extends State<ItemPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 30,),
+            const SizedBox(
+              height: 30,
+            ),
             ListView.builder(
-              shrinkWrap:
-                  true,
+              shrinkWrap: true,
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final product = items[index];

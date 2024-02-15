@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { db } = require('../middleware/database')
-const uuid = require('uuid')
-const transporter = require('../middleware/transporter')
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { db } = require("../middleware/database");
+const uuid = require("uuid");
+const transporter = require("../middleware/transporter");
 
 /**
  *
@@ -11,13 +11,13 @@ const transporter = require('../middleware/transporter')
  * @param {*} email of the user
  * @returns user finded by email
  */
-exports.findUserByEmail = email => {
+exports.findUserByEmail = (email) => {
   return db.User.findUnique({
     where: {
-      email
-    }
-  })
-}
+      email,
+    },
+  });
+};
 
 /**
  *
@@ -26,13 +26,13 @@ exports.findUserByEmail = email => {
  * @param {*} uuid of the user
  * @returns user finded by uuid
  */
-exports.findUserByUuid = uuid => {
+exports.findUserByUuid = (uuid) => {
   return db.User.findUnique({
     where: {
-      uuid
-    }
-  })
-}
+      uuid,
+    },
+  });
+};
 
 /**
  *
@@ -41,13 +41,13 @@ exports.findUserByUuid = uuid => {
  * @param {*} id of the user
  * @returns user finded by id
  */
-exports.findUserById = id => {
+exports.findUserById = (id) => {
   return db.User.findUnique({
     where: {
-      id
-    }
-  })
-}
+      id,
+    },
+  });
+};
 
 /**
  *
@@ -56,13 +56,13 @@ exports.findUserById = id => {
  * @param {*} email of user to delete
  * @returns user deleted
  */
-exports.deleteUser = email => {
+exports.deleteUser = (email) => {
   return db.User.delete({
     where: {
-      email
-    }
-  })
-}
+      email,
+    },
+  });
+};
 
 /**
  *
@@ -71,13 +71,13 @@ exports.deleteUser = email => {
  * @param {*} user information
  * @returns created user object
  */
-exports.registerByEmail = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
-  user.uuid = uuid.v4()
+exports.registerByEmail = (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
+  user.uuid = uuid.v4();
   return db.User.create({
-    data: user
-  })
-}
+    data: user,
+  });
+};
 
 /**
  *
@@ -85,24 +85,24 @@ exports.registerByEmail = user => {
  *
  * @param {*} email of the receiver
  */
-exports.registerConfirmation = email => {
-  let generatedUuid = ''
-  this.findUserByEmail(email).then(user => {
-    console.log(user)
-    generatedUuid = user.uuid
+exports.registerConfirmation = (email) => {
+  let generatedUuid = "";
+  this.findUserByEmail(email).then((user) => {
+    console.log(user);
+    generatedUuid = user.uuid;
     let mail = {
-      from: 'risu.epitech@gmail.com',
+      from: "risu.epitech@gmail.com",
       to: email,
       subject: "Confirmation d'inscription",
       html:
         '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.103.94.191:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
-        '</p>'
-    }
-    transporter.sendMail(mail)
-  })
-}
+        "</p>",
+    };
+    transporter.sendMail(mail);
+  });
+};
 
 /**
  *
@@ -111,16 +111,16 @@ exports.registerConfirmation = email => {
  * @param {*} uuid
  * @returns user object
  */
-exports.confirmedRegister = uuid => {
+exports.confirmedRegister = (uuid) => {
   return db.User.update({
     where: {
-      uuid: uuid
+      uuid: uuid,
     },
     data: {
-      confirmed: true
-    }
-  })
-}
+      confirmed: true,
+    },
+  });
+};
 
 /**
  *
@@ -129,19 +129,19 @@ exports.confirmedRegister = uuid => {
  * @param {*} user
  * @returns user object logged in
  */
-exports.loginByEmail = user => {
+exports.loginByEmail = (user) => {
   return db.User.findUnique({
     where: {
-      email: user.email
-    }
-  }).then(findUser => {
+      email: user.email,
+    },
+  }).then((findUser) => {
     if (!bcrypt.compareSync(user.password, findUser.password)) {
-      throw new Error('Invalid password')
+      throw new Error("Invalid password");
     }
 
-    return findUser
-  })
-}
+    return findUser;
+  });
+};
 
 /**
  *
@@ -150,17 +150,17 @@ exports.loginByEmail = user => {
  * @param {*} user
  * @returns user object with updated password
  */
-exports.updatePassword = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
+exports.updatePassword = (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
   return db.User.update({
     where: {
-      uuid: user.uuid
+      uuid: user.uuid,
     },
     data: {
-      password: user.password
-    }
-  })
-}
+      password: user.password,
+    },
+  });
+};
 
 /**
  *
@@ -168,32 +168,32 @@ exports.updatePassword = user => {
  *
  * @param {*} email of the receiver
  */
-exports.forgotPassword = email => {
-  let generatedUuid = ''
-  this.findUserByEmail(email).then(user => {
-    console.log(user)
-    generatedUuid = user.uuid
+exports.forgotPassword = (email) => {
+  let generatedUuid = "";
+  this.findUserByEmail(email).then((user) => {
+    console.log(user);
+    generatedUuid = user.uuid;
     let mail = {
-      from: 'risu.epitech@gmail.com',
+      from: "risu.epitech@gmail.com",
       to: email,
-      subject: 'Réinitialisation de mot de passe',
+      subject: "Réinitialisation de mot de passe",
       html:
         '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.103.94.191:80/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
-        '</p>'
-    }
-    transporter.sendMail(mail)
-  })
-}
+        "</p>",
+    };
+    transporter.sendMail(mail);
+  });
+};
 
 exports.getAllUsers = async () => {
   try {
     const users = await db.User.findMany();
     return users;
   } catch (error) {
-    console.error('Error retrieving users:', error);
-    throw new Error('Failed to retrieve users');
+    console.error("Error retrieving users:", error);
+    throw new Error("Failed to retrieve users");
   }
 };
 
@@ -204,10 +204,10 @@ exports.getAllUsers = async () => {
  * @param {*} email of the user
  * @returns user details (including first name and last name)
  */
-exports.findUserDetailsByEmail = email => {
+exports.findUserDetailsByEmail = (email) => {
   return db.User.findUnique({
     where: {
-      email
+      email,
     },
     select: {
       id: true,
@@ -216,7 +216,7 @@ exports.findUserDetailsByEmail = email => {
       createdAt: true,
       company: true,
       email: true,
-    }
+    },
   });
 };
 
@@ -227,17 +227,17 @@ exports.findUserDetailsByEmail = email => {
  * @param {*} user
  * @returns user object with updated firstName and lastName
  */
-exports.updateName = user => {
+exports.updateName = (user) => {
   return db.User.update({
     where: {
-      email: user.email
+      email: user.email,
     },
     data: {
       firstName: user.firstName,
       lastName: user.lastName,
-    }
-  })
-}
+    },
+  });
+};
 
 /**
  *
@@ -246,16 +246,16 @@ exports.updateName = user => {
  * @param {*} user
  * @returns user object with updated mail
  */
-exports.updateMail = user => {
+exports.updateMail = (user) => {
   return db.User.update({
     where: {
-      email: user.oldMail
+      email: user.oldMail,
     },
     data: {
       email: user.newMail,
-    }
-  })
-}
+    },
+  });
+};
 
 /**
  *
@@ -264,16 +264,16 @@ exports.updateMail = user => {
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateCompany = user => {
+exports.updateCompany = (user) => {
   return db.User.update({
     where: {
-      email: user.email
+      email: user.email,
     },
     data: {
       company: user.company,
-    }
-  })
-}
+    },
+  });
+};
 
 /**
  *
@@ -282,14 +282,14 @@ exports.updateCompany = user => {
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateUserPassword = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
+exports.updateUserPassword = (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
   return db.User.update({
     where: {
-      email: user.email
+      email: user.email,
     },
     data: {
       password: user.password,
-    }
-  })
-}
+    },
+  });
+};

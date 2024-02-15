@@ -62,7 +62,7 @@ describe("User Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(
-      "john.doe@example.com"
+      "john.doe@example.com",
     );
     expect(userCtrl.registerByEmail).toHaveBeenCalledWith({
       firstName: "John",
@@ -214,7 +214,7 @@ describe("User Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedToken");
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith("test@example.com");
     expect(userCtrl.registerConfirmation).toHaveBeenCalledWith(
-      "test@example.com"
+      "test@example.com",
     );
   });
 
@@ -251,7 +251,7 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.text).toEqual(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     );
   });
 
@@ -283,154 +283,207 @@ describe("User Route Tests", () => {
 
   it("should handle valid request to update user details by email", async () => {
     const mockEmail = "test@example.com";
-    const mockRequestData = { firstName: "NewFirstName", lastName: "NewLastName" };
-    const mockExistingUser = { id: 1, email: mockEmail, firstName: "OldFirstName", lastName: "OldLastName" };
+    const mockRequestData = {
+      firstName: "NewFirstName",
+      lastName: "NewLastName",
+    };
+    const mockExistingUser = {
+      id: 1,
+      email: mockEmail,
+      firstName: "OldFirstName",
+      lastName: "OldLastName",
+    };
     userCtrl.findUserByEmail.mockResolvedValueOnce(mockExistingUser);
-    userCtrl.updateName.mockResolvedValueOnce({ ...mockExistingUser, ...mockRequestData });
-  
+    userCtrl.updateName.mockResolvedValueOnce({
+      ...mockExistingUser,
+      ...mockRequestData,
+    });
+
     const response = await supertest(app)
       .post(`/update-details/${mockEmail}`)
       .send(mockRequestData);
-  
+
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ ...mockExistingUser, ...mockRequestData });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(mockEmail);
-    expect(userCtrl.updateName).toHaveBeenCalledWith({ email: mockEmail, ...mockRequestData });
+    expect(userCtrl.updateName).toHaveBeenCalledWith({
+      email: mockEmail,
+      ...mockRequestData,
+    });
   });
-  
+
   it("should handle request with missing firstName and lastName", async () => {
     const mockEmail = "test@example.com";
     const mockRequestData = {};
     const response = await supertest(app)
       .post(`/update-details/${mockEmail}`)
       .send(mockRequestData);
-  
+
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: 'Email and at least one of firstName or lastName are required' });
+    expect(response.body).toEqual({
+      error: "Email and at least one of firstName or lastName are required",
+    });
   });
 
   it("should handle valid request to update user email", async () => {
     const mockOldMail = "old@example.com";
     const mockNewMail = "new@example.com";
-    const mockExistingUser = { id: 1, email: mockOldMail, firstName: "John", lastName: "Doe" };
-    
+    const mockExistingUser = {
+      id: 1,
+      email: mockOldMail,
+      firstName: "John",
+      lastName: "Doe",
+    };
+
     userCtrl.findUserByEmail.mockResolvedValueOnce(mockExistingUser);
-    userCtrl.updateMail.mockResolvedValueOnce({ ...mockExistingUser, email: mockNewMail });
-  
+    userCtrl.updateMail.mockResolvedValueOnce({
+      ...mockExistingUser,
+      email: mockNewMail,
+    });
+
     const response = await supertest(app)
-      .post('/update-mail')
+      .post("/update-mail")
       .send({ oldMail: mockOldMail, newMail: mockNewMail });
-  
+
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ ...mockExistingUser, email: mockNewMail });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(mockOldMail);
-    expect(userCtrl.updateMail).toHaveBeenCalledWith({ oldMail: mockOldMail, newMail: mockNewMail });
+    expect(userCtrl.updateMail).toHaveBeenCalledWith({
+      oldMail: mockOldMail,
+      newMail: mockNewMail,
+    });
   });
-  
+
   it("should handle request with missing oldMail and newMail", async () => {
     const mockRequestData = {};
     const response = await supertest(app)
-      .post('/update-mail')
+      .post("/update-mail")
       .send(mockRequestData);
-  
+
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: 'Email is required' });
+    expect(response.body).toEqual({ error: "Email is required" });
   });
-  
+
   it("should handle request for non-existing user", async () => {
     const mockNonExistingMail = "nonexisting@example.com";
     userCtrl.findUserByEmail.mockResolvedValueOnce(null);
-  
+
     const response = await supertest(app)
-      .post('/update-mail')
+      .post("/update-mail")
       .send({ oldMail: mockNonExistingMail, newMail: "new@example.com" });
-  
+
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'User not found' });
+    expect(response.body).toEqual({ error: "User not found" });
   });
 
   it("should handle valid request to update user company", async () => {
     const mockEmail = "test@example.com";
     const mockCompany = "NewCompany";
-    const mockExistingUser = { id: 1, email: mockEmail, firstName: "John", lastName: "Doe", company: "OldCompany" };
-  
+    const mockExistingUser = {
+      id: 1,
+      email: mockEmail,
+      firstName: "John",
+      lastName: "Doe",
+      company: "OldCompany",
+    };
+
     userCtrl.findUserByEmail.mockResolvedValueOnce(mockExistingUser);
-    userCtrl.updateCompany.mockResolvedValueOnce({ ...mockExistingUser, company: mockCompany });
-  
+    userCtrl.updateCompany.mockResolvedValueOnce({
+      ...mockExistingUser,
+      company: mockCompany,
+    });
+
     const response = await supertest(app)
       .post(`/update-company/${mockEmail}`)
       .send({ company: mockCompany });
-  
+
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ ...mockExistingUser, company: mockCompany });
+    expect(response.body).toEqual({
+      ...mockExistingUser,
+      company: mockCompany,
+    });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(mockEmail);
-    expect(userCtrl.updateCompany).toHaveBeenCalledWith({ email: mockEmail, company: mockCompany });
+    expect(userCtrl.updateCompany).toHaveBeenCalledWith({
+      email: mockEmail,
+      company: mockCompany,
+    });
   });
-  
+
   it("should handle request with missing company", async () => {
     const mockEmail = "test@example.com";
     const mockRequestData = {};
     const response = await supertest(app)
       .post(`/update-company/${mockEmail}`)
       .send(mockRequestData);
-  
+
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: 'Company is required' });
+    expect(response.body).toEqual({ error: "Company is required" });
   });
-  
+
   it("should handle request for non-existing user", async () => {
     const mockNonExistingEmail = "nonexisting@example.com";
     userCtrl.findUserByEmail.mockResolvedValueOnce(null);
-  
+
     const response = await supertest(app)
       .post(`/update-company/${mockNonExistingEmail}`)
       .send({ company: "NewCompany" });
-  
+
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'User not found' });
+    expect(response.body).toEqual({ error: "User not found" });
   });
 
   it("should handle valid request to update user password", async () => {
     const mockEmail = "test@example.com";
     const mockPassword = "newPassword";
-    const mockExistingUser = { id: 1, email: mockEmail, firstName: "John", lastName: "Doe" };
-  
+    const mockExistingUser = {
+      id: 1,
+      email: mockEmail,
+      firstName: "John",
+      lastName: "Doe",
+    };
+
     userCtrl.findUserByEmail.mockResolvedValueOnce(mockExistingUser);
-    userCtrl.updateUserPassword.mockResolvedValueOnce({ ...mockExistingUser, password: "hashedNewPassword" });
-  
+    userCtrl.updateUserPassword.mockResolvedValueOnce({
+      ...mockExistingUser,
+      password: "hashedNewPassword",
+    });
+
     const response = await supertest(app)
       .post(`/update-password/${mockEmail}`)
       .send({ password: mockPassword });
-  
+
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ ...mockExistingUser, password: "hashedNewPassword" });
+    expect(response.body).toEqual({
+      ...mockExistingUser,
+      password: "hashedNewPassword",
+    });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(mockEmail);
-    expect(userCtrl.updateUserPassword).toHaveBeenCalledWith({ email: mockEmail, password: mockPassword });
+    expect(userCtrl.updateUserPassword).toHaveBeenCalledWith({
+      email: mockEmail,
+      password: mockPassword,
+    });
   });
-  
+
   it("should handle request with missing password", async () => {
     const mockEmail = "test@example.com";
     const mockRequestData = {};
     const response = await supertest(app)
       .post(`/update-password/${mockEmail}`)
       .send(mockRequestData);
-  
+
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: 'Password is required' });
+    expect(response.body).toEqual({ error: "Password is required" });
   });
-  
+
   it("should handle request for non-existing user", async () => {
     const mockNonExistingEmail = "nonexisting@example.com";
     userCtrl.findUserByEmail.mockResolvedValueOnce(null);
-  
+
     const response = await supertest(app)
       .post(`/update-password/${mockNonExistingEmail}`)
       .send({ password: "newPassword" });
-  
-    expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: 'User not found' });
-  });
-  
 
-  
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({ error: "User not found" });
+  });
 });

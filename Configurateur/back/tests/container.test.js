@@ -30,7 +30,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "Bearer mockedAccessToken",
     );
     expect(containerCtrl.getContainer).toHaveBeenCalledWith(1);
   });
@@ -45,7 +45,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(400);
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "Bearer mockedAccessToken",
     );
     expect(containerCtrl.getContainer).not.toHaveBeenCalled();
   });
@@ -85,7 +85,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "Bearer mockedAccessToken",
     );
     expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
   });
@@ -119,7 +119,7 @@ describe("Container Route Tests", () => {
     console.log("body: " + response.body.name);
     expect(response.body).toEqual({ id: 1, name: "Container 2" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "Bearer mockedAccessToken",
     );
   });
 

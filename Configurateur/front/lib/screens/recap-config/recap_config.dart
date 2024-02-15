@@ -10,7 +10,6 @@ class RecapConfigPage extends StatefulWidget {
 }
 
 class _RecapConfigPageState extends State<RecapConfigPage> {
-
   @override
   void initState() {
     super.initState();
