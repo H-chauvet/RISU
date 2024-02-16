@@ -15,16 +15,8 @@ router.get("/listAll", async function (req, res, next) {
   }
 });
 
-router.get('/:containerId',
-  passport.authenticate('jwt', { session: false }), async (req, res, next) => {
+router.get('/:containerId', async (req, res, next) => {
   try {
-    if (!req.user) {
-      return res.status(401).send('Invalid token');
-    }
-    const user = await userCtrl.findUserById(req.user.id)
-    if (!user) {
-      return res.status(401).send('User not found');
-    }
     if (!req.params.containerId || req.params.containerId === '') {
       return res.status(400).message("id is required");
     }
