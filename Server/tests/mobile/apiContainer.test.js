@@ -31,6 +31,18 @@ describe('GET /api/mobile/container/', () => {
         ],
         done
       )
+    }),
+    it('should get container detais from id', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:3000')
+              .get(`/api/mobile/container/${containerId[0]}`)
+            expect(res.statusCode).toBe(200)
+          }
+        ],
+        done
+      )
     })
 })
 
