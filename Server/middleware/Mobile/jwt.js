@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 /**
- *
  * Generate token
  *
  * @param {*} user user object

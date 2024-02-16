@@ -87,7 +87,7 @@ router.get('/:userId',
     }
   }
 )
-/// api/user AND api/user/notifications
+
 router.put('/',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {

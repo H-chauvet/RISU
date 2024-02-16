@@ -6,8 +6,8 @@ describe('GET /api/mailVerification', () => {
       async.series(
         [
           function (callback) {
-            request('http://localhost:8080')
-              .get('/api/mailVerification')
+            request('http://localhost:3000')
+              .get('/api/mobile/auth/mailVerification')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ token: '' })

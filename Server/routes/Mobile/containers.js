@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const containerCtrl = require("../../controllers/Common/container");
-const itemCtrl = require("../../controllers/Common/items")
+const itemCtrl = require("../../controllers/Common/items");
 const passport = require('passport')
 
 router.get("/listAll", async function (req, res, next) {

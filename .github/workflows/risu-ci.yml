@@ -68,23 +68,23 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create .env file
-        run: echo "${{ secrets.ENV_WEB }}" > ./Configurateur/.env
+        run: echo "${{ secrets.ENV_SERVER }}" > ./.env
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get -y install docker-compose
       - name: Start Docker Compose
-        working-directory: ./Configurateur
+        working-directory: ./
         run: docker-compose up -d
       - name: Verify Docker Compose
-        working-directory: ./Configurateur
+        working-directory: ./
         run: docker-compose ps
       - name: Run Back-End unit tests
-        working-directory: ./Configurateur/back
+        working-directory: ./Server/
         run: |
           npm install
           npm test
       - name: Stop Docker Compose
-        working-directory: ./Configurateur
+        working-directory: ./
         run: docker-compose down
-  
+

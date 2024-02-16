@@ -70,6 +70,10 @@ router.get('/:rentId',
       if (!req.user) {
         return res.status(401).send('Invalid token')
       }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
       if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).json({ message: 'Missing rentId' })
       }
