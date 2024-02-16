@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create .env file
-        run: echo "${{ secrets.ENV_SERVER }}" > ./.env
+        run: echo "${{ secrets.ENV_SERVER }}" > .env
       - name: Install Docker Compose
         run: |
           sudo apt-get update
@@ -82,8 +82,6 @@ jobs:
       - name: Run Back-End unit tests
         working-directory: ./Server/
         run: |
-          ls -la ../
-          cat ../.env
           npm install
           npm test
       - name: Stop Docker Compose
