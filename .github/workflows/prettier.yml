@@ -15,14 +15,14 @@ jobs:
         run: |
           flutter pub get
           dart format --output=none --set-exit-if-changed ./lib/**/*
-  Prettier-BACK-WEB:
+  Prettier-BACK:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Check code quality
-        working-directory: ./Configurateur/back/
+        working-directory: ./Server
         run: |
           npm install prettier
           npm run prettier-check
