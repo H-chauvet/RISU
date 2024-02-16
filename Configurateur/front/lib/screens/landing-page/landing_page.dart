@@ -19,12 +19,11 @@ class LandingPageState extends State<LandingPage> {
   Function() inscriptionFunction = () {};
   String adminButton = '';
   Function() adminFunction = () {};
-  String profileButton= '';
+  String profileButton = '';
   Function() profileFunction = () {};
   String? token = '';
   String? userMail = '';
 
- 
   void checkToken() async {
     token = await storageService.readStorage('token');
 
@@ -82,9 +81,9 @@ class LandingPageState extends State<LandingPage> {
           ),
         ),
       );
-      
+
       list.add(const SizedBox(width: 20));
-      
+
       if (userMail == "risu.admin@gmail.com") {
         list.add(
           ElevatedButton(

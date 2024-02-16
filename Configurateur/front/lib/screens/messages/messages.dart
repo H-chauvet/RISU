@@ -77,16 +77,15 @@ class _MessagePageState extends State<MessagePage> {
         context: context,
       ),
       body: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final product = messages[index];
-                return MessageCard(
-                  message: product,
-                  onDelete: deleteMessage,
-                );
-              },
-            )
-          ,
+        itemCount: messages.length,
+        itemBuilder: (context, index) {
+          final product = messages[index];
+          return MessageCard(
+            message: product,
+            onDelete: deleteMessage,
+          );
+        },
+      ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }

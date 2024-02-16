@@ -57,8 +57,7 @@ class UserCard extends StatelessWidget {
                   onPressed: () => onDelete(user),
                 ),
                 Text("Email : " + user.email),
-                if (user.company != null)
-                  Text(" Entreprise : " + user.company),
+                if (user.company != null) Text(" Entreprise : " + user.company),
               ],
             ),
           ),

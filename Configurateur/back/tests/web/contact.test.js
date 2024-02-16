@@ -23,7 +23,7 @@ describe("Contact Route Tests", () => {
     };
 
     contactCtrl.registerMessage.mockResolvedValueOnce(
-      "Mocked message response"
+      "Mocked message response",
     );
 
     const response = await supertest(app).post("/contact").send(requestBody);
@@ -55,7 +55,7 @@ describe("Contact Route Tests", () => {
     };
 
     contactCtrl.registerMessage.mockRejectedValueOnce(
-      new Error("Mocked error")
+      new Error("Mocked error"),
     );
 
     const response = await supertest(app).post("/contact").send(requestBody);
