@@ -18,7 +18,7 @@ void main() {
       initPage(
         ContainerCard(
           container: ContainerList(
-            id: '1',
+            id: 1,
             price: 10,
             createdAt: null,
             containerMapping: null,

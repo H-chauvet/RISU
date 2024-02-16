@@ -28,38 +28,6 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Configurateur
         run: docker-compose down
-  FRONT-WEB-TEST:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: subosito/flutter-action@v1
-      - name: Run unit tests (WEB)
-        working-directory: ./Configurateur/front
-        run: flutter test
-  BACK-WEB-TEST:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create .env file
-        run: echo "${{ secrets.ENV_WEB }}" > ./Configurateur/.env
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get -y install docker-compose
-      - name: Start Docker Compose
-        working-directory: ./Configurateur
-        run: docker-compose up -d
-      - name: Verify Docker Compose
-        working-directory: ./Configurateur
-        run: docker-compose ps
-      - name: Run Back-End unit tests
-        working-directory: ./Configurateur/back
-        run: |
-          npm install
-          npm test
-      - name: Stop Docker Compose
-        working-directory: ./Configurateur
-        run: docker-compose down
   MOBILE-BUILD:
     runs-on: ubuntu-latest
     steps:
@@ -79,6 +47,14 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./Application
         run: docker-compose down
+  FRONT-WEB-TEST:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v1
+      - name: Run unit tests (WEB)
+        working-directory: ./Configurateur/front
+        run: flutter test
   FRONT-MOBILE-TEST:
     runs-on: ubuntu-latest
     steps:
@@ -87,28 +63,28 @@ jobs:
       - name: Run unit tests (MOBILE)
         working-directory: ./Application/mobile/app_code
         run: flutter test
-  BACK-MOBILE-TEST:
+  SERVER-TEST:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Create .env file
-        run: echo "${{ secrets.ENV_MOBILE }}" > ./Application/.env
+        run: echo "${{ secrets.ENV_SERVER }}" > .env
       - name: Install Docker Compose
         run: |
           sudo apt-get update
           sudo apt-get -y install docker-compose
       - name: Start Docker Compose
-        working-directory: ./Application
+        working-directory: ./
         run: docker-compose up -d
       - name: Verify Docker Compose
-        working-directory: ./Application
+        working-directory: ./
         run: docker-compose ps
       - name: Run Back-End unit tests
-        working-directory: ./Application/server
-        run:  |
+        working-directory: ./Server/
+        run: |
           npm install
           npm test
       - name: Stop Docker Compose
-        working-directory: ./Application
+        working-directory: ./
         run: docker-compose down
-  
+

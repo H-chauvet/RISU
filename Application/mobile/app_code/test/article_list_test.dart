@@ -17,7 +17,7 @@ void main() {
 
   testWidgets('Container details should not be displayed from empty id',
       (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const ArticleListPage(containerId: '')));
+    await tester.pumpWidget(initPage(const ArticleListPage(containerId: -1)));
 
     Finder articleCard = find.byKey(const Key('articles-list_card'));
     expect(articleCard, findsNothing);

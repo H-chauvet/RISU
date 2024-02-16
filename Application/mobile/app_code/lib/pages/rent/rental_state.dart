@@ -38,7 +38,7 @@ class RentalPageState extends State<RentalPage> {
       });
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rents/'),
+        Uri.parse('http://$serverIp:3000/api/mobile/rent/listAll'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

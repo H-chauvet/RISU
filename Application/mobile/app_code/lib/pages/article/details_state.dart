@@ -18,10 +18,10 @@ import 'details_page.dart';
 
 class ArticleDetailsState extends State<ArticleDetailsPage> {
   ArticleData articleData = ArticleData(
-      id: '', containerId: '', name: '', available: false, price: 0);
+      id: -1, containerId: -1, name: '', available: false, price: 0);
   final LoaderManager _loaderManager = LoaderManager();
 
-  Future<dynamic> getArticleData(BuildContext context, String articleId) async {
+  Future<dynamic> getArticleData(BuildContext context, int articleId) async {
     late http.Response response;
 
     try {
@@ -29,7 +29,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/article/$articleId'),
+        Uri.parse('http://$serverIp:3000/api/mobile/article/$articleId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -48,8 +48,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         }
       }
       return {
-        'id': '',
-        'containerId': '',
+        'id': -1,
+        'containerId': -1,
         'name': '',
         'available': false,
         'price': 0,
@@ -62,8 +62,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.connectionRefused);
         return {
-          'id': '',
-          'containerId': '',
+          'id': -1,
+          'containerId': -1,
           'name': '',
           'available': false,
           'price': 0,

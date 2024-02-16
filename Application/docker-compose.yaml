@@ -1,42 +1,5 @@
 version: "2.4"
 services:
-  database:
-    build: ./server/database
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    volumes:
-      - .:/code
-    env_file:
-      - .env
-    ports:
-      - "3306:3306"
-    networks:
-      - database_net
-    healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=password
-      interval: 5s
-      timeout: 45s
-      retries: 40
-
-  server:
-    build: ./server
-    ports:
-      - "8080:8080"
-    depends_on:
-      database:
-        condition: service_healthy
-    env_file:
-      - .env
-    environment:
-      - IS_MIGRATION=true #SET TO true when a migration needed
-    volumes:
-      - .:/code
-    stdin_open: true
-    tty: true
-    networks:
-      - database_net
-
   client_mobile:
     build:
       context: ./mobile
@@ -45,7 +8,3 @@ services:
       - common:/apk
 volumes:
   common:
-
-
-networks:
-  database_net:

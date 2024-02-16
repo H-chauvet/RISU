@@ -36,7 +36,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:8080/api/user/notifications'),
+        Uri.parse('http://$serverIp:3000/api/mobile/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation!.token}',
