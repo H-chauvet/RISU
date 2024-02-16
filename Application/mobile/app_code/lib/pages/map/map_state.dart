@@ -5,11 +5,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:risu/utils/errors.dart';
 
+import '../../components/showModalBottomSheet.dart';
 import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   final bool displayGoogleMap = true;
+  PermissionStatus? permission;
+  String? markerId;
 
   LatLng _center = const LatLng(47.2104851, -1.56675127492582);
 
@@ -28,26 +31,39 @@ class MapPageState extends State<MapPage> {
         ),
       );
     }
+
+    Set<Marker> markers = {
+      Marker(
+        markerId: const MarkerId('marker_1'),
+        position: const LatLng(47.2104851, -1.56675127492582),
+        onTap: () {
+          setState(() {
+            markerId = 'myId';
+          });
+          myShowModalBottomSheet(
+            context,
+            'Epitech Nantes',
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "jivfdvfd",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          );
+        },
+      ),
+    };
     return GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: _center,
         zoom: 16.0,
       ),
-      markers: _markers,
+      markers: markers,
+      mapToolbarEnabled: false,
     );
   }
-
-  final Set<Marker> _markers = {
-    const Marker(
-      markerId: MarkerId('marker_1'),
-      position: LatLng(47.2104851, -1.56675127492582),
-      infoWindow: InfoWindow(
-        title: "Epitech",
-        snippet: "Nantes",
-      ),
-    ),
-  };
 
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
@@ -56,7 +72,7 @@ class MapPageState extends State<MapPage> {
   }
 
   Future<void> _requestLocationPermission() async {
-    PermissionStatus permission = await Permission.locationWhenInUse.status;
+    permission = await Permission.locationWhenInUse.status;
     if (permission != PermissionStatus.granted) {
       permission = await Permission.locationWhenInUse.request();
       if (permission != PermissionStatus.granted) {
@@ -69,7 +85,7 @@ class MapPageState extends State<MapPage> {
   Future<void> _getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.low,
       );
       if (!mounted) return;
       setState(() {
@@ -77,17 +93,33 @@ class MapPageState extends State<MapPage> {
       });
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (err, stacktrace) {
-      printCatchError(context, err, stacktrace,
-          message: AppLocalizations.of(context)!
-              .errorOccurredDuringGettingUserLocation);
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingUserLocation);
+        return;
+      }
+      return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget? floatingActionButton;
+    if (permission != null && permission == PermissionStatus.granted) {
+      floatingActionButton = FloatingActionButton(
+        onPressed: () {
+          _getUserLocation();
+        },
+        child: const Icon(Icons.location_searching),
+      );
+    } else {
+      floatingActionButton = null;
+    }
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: displayMap(context),
+      floatingActionButton: floatingActionButton,
     );
   }
 }
