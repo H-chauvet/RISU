@@ -3,6 +3,7 @@ const router = express.Router()
 
 const containerCtrl = require("../../controllers/Common/container");
 const itemCtrl = require("../../controllers/Common/items")
+const passport = require('passport')
 
 router.get("/listAll", async function (req, res, next) {
   try {
@@ -14,17 +15,18 @@ router.get("/listAll", async function (req, res, next) {
   }
 });
 
-router.get('/:containerId', async (req, res, next) => {
-  // try {
-  //   jwtMiddleware.verifyToken(req.headers.authorization);
-  // } catch (err) {
-  //   res.status(401);
-  //   throw new Error("Unauthorized");
-  // }
+router.get('/:containerId',
+  passport.authenticate('jwt', { session: false }), async (req, res, next) => {
   try {
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+    const user = await userCtrl.findUserById(req.user.id)
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
     if (!req.params.containerId || req.params.containerId === '') {
-      return res.status(400);
-      throw new Error("id is required");
+      return res.status(400).message("id is required");
     }
     const container = await containerCtrl.getContainerById(parseInt(req.params.containerId))
     if (!container) {
