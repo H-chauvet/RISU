@@ -17,17 +17,17 @@ import 'return_page.dart';
 class ReturnArticleState extends State<ReturnArticlePage> {
   final LoaderManager _loaderManager = LoaderManager();
   dynamic rent = {
-    'id': '',
+    'id': -1,
     'price': '',
     'createdAt': '',
-    'duration': '',
+    'duration': 0,
     'userId': '',
     'ended': '',
     'item': {
       'id': '',
       'name': '',
       'container': {
-        'id': '',
+        'id': -1,
         'address': '',
       },
     },
@@ -46,7 +46,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
+        Uri.parse('http://$serverIp:3000/api/mobile/rent/${widget.rentId}'),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
@@ -85,7 +85,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/${rent['id']}/return'),
+        Uri.parse('http://$serverIp:3000/api/mobile/rent/${rent['id']}/return'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

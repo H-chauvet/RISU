@@ -18,7 +18,7 @@ void main() {
 
   testWidgets('Confirm rent test', (WidgetTester tester) async {
     final ArticleData data = ArticleData(
-        id:'' , containerId: '', name: 'Ballon', available: true, price: 8);
+        id: 0, containerId: 1, name: 'Ballon', available: true, price: 8);
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
     Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
     expect(homeButton, findsOneWidget);

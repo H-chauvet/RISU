@@ -19,7 +19,7 @@ void main() {
     'Article details from an empty articleId',
     (WidgetTester tester) async {
       await tester
-          .pumpWidget(initPage(const ArticleDetailsPage(articleId: '')));
+          .pumpWidget(initPage(const ArticleDetailsPage(articleId: -1)));
 
       await tester.pumpAndSettle();
 

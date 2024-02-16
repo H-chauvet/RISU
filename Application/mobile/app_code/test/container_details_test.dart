@@ -23,12 +23,12 @@ void main() {
   testWidgets(
     'Container details should not be displayed from empty id',
     (WidgetTester tester) async {
-      final testPage = initPage((const ContainerDetailsPage(containerId: '')));
+      final testPage = initPage((const ContainerDetailsPage(containerId: -1)));
       await waitForLoader(tester: tester, testPage: testPage);
 
       final ContainerDetailsState testData =
           tester.state(find.byType(ContainerDetailsPage));
-      expect(testData.getContainerId(), '');
+      expect(testData.getContainerId(), -1);
       expect(testData.getAddress(), '');
       expect(testData.getCity(), '');
       expect(testData.getAvailableItems(), 0);

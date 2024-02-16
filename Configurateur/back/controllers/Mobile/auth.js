@@ -7,7 +7,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     to: email,
     subject: 'Confirm your account',
     text:
-      'Please follow the link to confirm your account: http://51.103.94.191:8080/api/mailVerification?token=' +
+      'Please follow the link to confirm your account: http://51.103.94.191:3000/api/mobile/auth/mailVerification?token=' +
       token
   }
   try {
@@ -20,7 +20,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
 exports.verifyEmail = id => {
   return db.User_Mobile.update({
     where: {
-      user: user.id
+      id: id
     },
     data: {
       mailVerification: true

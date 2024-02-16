@@ -5,7 +5,7 @@ import 'package:risu/utils/providers/theme.dart';
 import 'details_page.dart';
 
 class ContainerList {
-  final String id;
+  final int id;
   final dynamic createdAt;
   final dynamic containerMapping;
   final double? price;

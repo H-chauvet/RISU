@@ -55,7 +55,7 @@ router.get('/mailVerification', async (req, res) => {
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     const user = await userCtrl.findUserById(decoded.id)
-    await userCtrl.verifyEmail(user.id)
+    await authCtrl.verifyEmail(user.id)
     return res.status(200).send(
       'Email now successfully verified !\nYou can go back to login page.'
       )

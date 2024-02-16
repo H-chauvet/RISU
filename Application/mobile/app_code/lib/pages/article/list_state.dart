@@ -14,11 +14,11 @@ import 'article_list_data.dart';
 import 'list_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
-  late String _containerId;
+  late int _containerId;
   List<dynamic> _itemsDatas = [];
   final LoaderManager _loaderManager = LoaderManager();
 
-  Future<dynamic> getItemsData(BuildContext context, String containerId) async {
+  Future<dynamic> getItemsData(BuildContext context, int containerId) async {
     late http.Response response;
 
     try {
@@ -27,7 +27,7 @@ class ArticleListState extends State<ArticleListPage> {
       });
       response = await http.get(
         Uri.parse(
-            'http://$serverIp:8080/api/container/$containerId/articleslist'),
+            'http://$serverIp:3000/api/mobile/container/$containerId/articleslist'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

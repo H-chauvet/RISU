@@ -27,9 +27,10 @@ class OpinionPageState extends State<OpinionPage> {
       });
       var url = '';
       if (selectedStarFilter == 6) {
-        url = 'http://$serverIp:8080/api/opinion';
+        url = 'http://$serverIp:3000/api/mobile/opinion';
       } else {
-        url = 'http://$serverIp:8080/api/opinion?note=$selectedStarFilter';
+        url =
+            'http://$serverIp:3000/api/mobile/opinion?note=$selectedStarFilter';
       }
       final response = await http.get(
         Uri.parse(url),
@@ -78,7 +79,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/opinion'),
+        Uri.parse('http://$serverIp:3000/api/mobile/opinion'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
