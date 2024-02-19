@@ -99,6 +99,7 @@ router.put("/update", async function (req, res, next) {
       informations,
       designs,
       saveName,
+      organizationId,
     });
     res.status(200).json(container);
   } catch (err) {
@@ -124,6 +125,18 @@ router.post("/create-ctn", async (req, res) => {
 router.get("/listAll", async function (req, res, next) {
   try {
     const container = await containerCtrl.getAllContainers();
+
+    res.status(200).json({ container });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.get("/list/:organizationId", async function (req, res, next) {
+  try {
+    const organizationId = req.params.organizationId;
+    console.log(req.params.organizationId);
+    const container = await containerCtrl.getContainerByOrganizationId(organizationId);
 
     res.status(200).json({ container });
   } catch (err) {
