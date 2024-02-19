@@ -45,7 +45,7 @@ void main() {
         find.byKey(const Key('rent_return-button-send_invoice'));
     expect(invoiceButton, findsOneWidget);
 
-    await tester.tap(invoiceButton);
+    await tester.tap(invoiceButton, warnIfMissed: false);
     //await tester.pumpAndSettle();
   });
 }
