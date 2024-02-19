@@ -13,6 +13,24 @@ exports.getContainerById = (id) => {
     })
 };
 
+exports.getContainerByOrganizationId = (organizationId) => {
+  return db.Containers.findMany({
+    where: {
+      organizationId: parseInt(organizationId),
+    },
+    select: {
+      id: true,
+      city: true,
+      address: true,
+      items: {
+        where: {
+          available: true,
+        },
+      },
+    },
+  });
+};
+
 exports.getAllContainer = (id) => {
   return db.Containers.findMany();
 };
