@@ -33,6 +33,49 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     },
   };
 
+  void sendInvoice() async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final token = userInformation?.token ?? 'defaultToken';
+      final response = await http.get(
+        Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
+        headers: <String, String>{
+          'Authorization': 'Bearer $token',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: AppLocalizations.of(context)!.invoiceSent,
+            message: AppLocalizations.of(context)!.invoiceSentMessage,
+          );
+        }
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'sendInvoice',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringSendingInvoice);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
+        return;
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -294,6 +337,18 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      // sendInvoice onclick
+                      width: double.infinity,
+                      child: MyOutlinedButton(
+                        text: AppLocalizations.of(context)!.sendInvoice,
+                        key: const Key('rent_return-button-send_invoice'),
+                        onPressed: () async {
+                          sendInvoice();
+                        },
                       ),
                     ),
                     const SizedBox(height: 8),

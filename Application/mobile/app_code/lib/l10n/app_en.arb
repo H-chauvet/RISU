@@ -156,5 +156,9 @@
   "timeRemaining": "Time remaining",
   "toComplete": "To complete",
   "total": "Total",
-  "unavailable": "Unavailable"
+  "unavailable": "Unavailable",
+  "invoiceSent": "Invoice sent",
+  "invoiceSentMessage": "The invoice has been sent to your email.",
+  "errorOccurredDuringSendingInvoice": "An error occurred while sending the invoice.",
+  "sendInvoice": "Send invoice"
 }
