@@ -28,7 +28,7 @@ void main() {
     Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
     expect(homeButton, findsOneWidget);
 
-    await tester.tap(homeButton);
+    await tester.tap(homeButton, warnIfMissed: false);
     await tester.pumpAndSettle();
   });
 
@@ -46,6 +46,6 @@ void main() {
     expect(invoiceButton, findsOneWidget);
 
     await tester.tap(invoiceButton, warnIfMissed: false);
-    //await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
   });
 }
