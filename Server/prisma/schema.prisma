@@ -146,4 +146,5 @@ model Location_Mobile {
     createdAt DateTime    @default(now())
     duration  Int
     ended     Boolean     @default(false)
+    invoice   Bytes?
 }
