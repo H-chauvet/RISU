@@ -118,6 +118,21 @@ describe('POST /api/rent/article', () => {
         ],
         done
       )
+    }),
+    it('should get invoice rental', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:3000')
+              .put('/api/mobile/rent/invoice/1')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
+            expect(res.statusCode).toBe(201);
+          }
+        ],
+        done
+      )
     })
 });
 

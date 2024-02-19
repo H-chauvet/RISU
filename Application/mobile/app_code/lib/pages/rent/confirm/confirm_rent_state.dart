@@ -24,7 +24,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final response = await http.get(
+      final response = await http.put(
         Uri.parse(
             'http://$serverIp:3000/api/mobile/rent/invoice/${widget.data.id}'),
         headers: <String, String>{
@@ -183,7 +183,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         },
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 32),
                     SizedBox(
                       width: double.infinity,
                       child: MyOutlinedButton(

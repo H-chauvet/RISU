@@ -8,38 +8,7 @@ const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
 const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
-
-function formatDate(date) {
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // +1 car les mois commencent à 0
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
-
-  return formattedDate;
-}
-
-function drawTable(doc, tableData) {
-  const startY = doc.y;
-  const startX = doc.x;
-  const cellPadding = 5;
-  const fontSize = 12;
-  const tableWidth = 500;
-
-  const columnWidth = tableWidth / tableData[0].length;
-
-  tableData.forEach((row, i) => {
-    row.forEach((cell, j) => {
-      doc.fontSize(fontSize).text(cell, startX + j * columnWidth, startY + i * (fontSize + cellPadding), { width: columnWidth, align: 'center' });
-    });
-  });
-
-  const tableHeight = tableData.length * (fontSize + cellPadding);
-
-  doc.rect(startX, startY, tableWidth, tableHeight).stroke();
-}
+const { formatDate, drawTable } = require('./utils');
 
 async function generateInvoice(
   email,
@@ -105,7 +74,7 @@ async function sendEmailConfirmationLocation(
         from: process.env.SMTP_EMAIL,
         to: email,
         subject: 'Confirmation de votre location',
-        text: 'Votre location a bien été enregistrée. \n Vous avez loué l\'article ' + itemId + ' pour une durée de ' + duration + ' heures le ' + formattedDate + ' dans le conteneur situé à l\'addresse suivante :  ' + address + ', ' + city + '. \n Le prix total est de ' + price + ' euros. Vous pouvez demander une facture en consultant la location.\nMerci de votre confiance.',
+        text: 'Votre location a bien été enregistrée. \nVous avez loué l\'article ' + itemId + ' pour une durée de ' + duration + ' heures le ' + formattedDate + ' dans le conteneur situé à l\'addresse suivante :  ' + address + ', ' + city + '. \nLe prix total est de ' + price + ' euros. Vous pouvez demander une facture en consultant la location.\nMerci de votre confiance.',
       }
 
     await transporter.sendMail(mailOptions)
@@ -217,7 +186,7 @@ router.post('/article',
   }
 )
 
-router.get('/invoice/:locationId',
+router.put('/invoice/:locationId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -240,7 +209,7 @@ router.get('/invoice/:locationId',
         return res.status(404).send('Invoice not found');
       }
 
-      sendInvoice(location.invoice, user.email);
+      await sendInvoice(location.invoice, user.email);
 
       return res.status(201).json({ message: 'invoice sent' })
     } catch (err) {

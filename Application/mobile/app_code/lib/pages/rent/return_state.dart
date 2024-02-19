@@ -38,7 +38,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final response = await http.get(
+      final response = await http.put(
         Uri.parse(
             'http://$serverIp:3000/api/mobile/rent/invoice/${widget.rentId}'),
         headers: <String, String>{

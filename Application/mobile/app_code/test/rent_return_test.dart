@@ -33,9 +33,6 @@ void main() {
       Finder sendInvoiceButton =
           find.byKey(const Key('rent_return-button-return_article'));
       expect(sendInvoiceButton, findsNothing);
-      /*await tester.tap(sendInvoiceButton);
-
-      await tester.pump();*/
     },
   );
 }

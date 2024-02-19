@@ -25,10 +25,13 @@ void main() {
       price: 8,
     );
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
+
+    await tester.pumpAndSettle(const Duration(milliseconds: 50));
+
     Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
     expect(homeButton, findsOneWidget);
 
-    await tester.tap(homeButton, warnIfMissed: false);
+    await tester.tap(homeButton);
     await tester.pumpAndSettle();
   });
 
@@ -45,7 +48,7 @@ void main() {
         find.byKey(const Key('rent_return-button-send_invoice'));
     expect(invoiceButton, findsOneWidget);
 
-    await tester.tap(invoiceButton, warnIfMissed: false);
+    await tester.tap(invoiceButton);
     await tester.pumpAndSettle();
   });
 }
