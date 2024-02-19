@@ -38,11 +38,12 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final token = userInformation?.token ?? 'defaultToken';
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
+        Uri.parse(
+            'http://$serverIp:3000/api/mobile/rent/invoice/${widget.rentId}'),
         headers: <String, String>{
-          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
         },
       );
       setState(() {
@@ -57,6 +58,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           );
         }
       } else {
+        print(response.body);
+        print(response.statusCode);
         if (context.mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
