@@ -156,5 +156,9 @@
   "timeRemaining": "Temps restant",
   "toComplete": "À compléter",
   "total": "Total",
-  "unavailable": "Indisponible"
+  "unavailable": "Indisponible",
+  "invoiceSent": "Facture envoyée",
+  "invoiceSentMessage": "La facture vous a été envoyée par email.",
+  "errorOccurredDuringSendingInvoice": "Une erreur est survenue lors de l'envoi de la facture.",
+  "sendInvoice": "Envoyer la facture"
 }
