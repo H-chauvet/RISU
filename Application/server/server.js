@@ -5,6 +5,8 @@ const passport = require('passport')
 const auth = require('./passport/strategy_options')
 const auth_token = require('./passport/bearer_token')
 
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
 const database = require('./database_init')
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -563,6 +565,176 @@ app.get('/api/article/:articleId', async (req, res) => {
   }
 })
 
+function formatDate(date) {
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // +1 car les mois commencent à 0
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+
+  return formattedDate;
+}
+
+function drawTable(doc, tableData) {
+  const startY = doc.y;
+  const startX = doc.x;
+  const cellPadding = 5;
+  const fontSize = 12;
+  const tableWidth = 500;
+
+  const columnWidth = tableWidth / tableData[0].length;
+
+  tableData.forEach((row, i) => {
+    row.forEach((cell, j) => {
+      doc.fontSize(fontSize).text(cell, startX + j * columnWidth, startY + i * (fontSize + cellPadding), { width: columnWidth, align: 'center' });
+    });
+  });
+
+  const tableHeight = tableData.length * (fontSize + cellPadding);
+
+  doc.rect(startX, startY, tableWidth, tableHeight).stroke();
+}
+
+async function generateInvoice(
+  email,
+  date,
+  duration,
+  containerAddress,
+  containerCity,
+  itemInfo,
+  clientInfo,
+  price,
+  totalPriceHT,
+  totalPriceTTC
+) {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument();
+    const buffers = [];
+
+    doc.on('data', buffers.push.bind(buffers));
+    doc.on('end', () => {
+      const pdfData = Buffer.concat(buffers);
+      resolve(pdfData);
+    });
+
+    doc.text('Facture de location', { align: 'center', size: 18 });
+
+    doc.moveDown();
+    doc.text(`Date de location: ${formatDate(date)}`, { align: 'left' });
+    doc.text(`Durée de location: ${duration} heures`, { align: 'left' });
+    doc.text(`Adresse du conteneur: ${containerAddress}, ${containerCity}`, { align: 'left' });
+    doc.text(`Informations sur le client: ${clientInfo}`, { align: 'left' });
+    doc.text(`Email du client: ${email}`, { align: 'left' });
+
+    doc.moveDown();
+    const tableData = [
+      ['Article', 'Prix unitaire', 'Quantité', 'Prix total HT', 'Prix total TTC'],
+      [itemInfo, price, duration, totalPriceHT, totalPriceTTC]
+    ];
+    drawTable(doc, tableData);
+
+    doc.moveDown();
+    doc.text('Merci pour votre confiance!', { align: 'center' });
+
+    doc.end();
+  });
+}
+
+async function sendEmailConfirmationLocation(
+  email,
+  date,
+  duration,
+  address,
+  city,
+  itemId,
+  price
+) {
+  const formattedDate = formatDate(date);
+  console.log('email : ', email)
+  console.log('date : ', date)
+  console.log('duration : ', duration)
+  console.log('address : ', address)
+  console.log('city : ', city)
+  console.log('itemId : ', itemId)
+  console.log('price : ', price)
+  const mailOptions = {
+    from: process.env.SMTP_EMAIL,
+    to: email,
+    subject: 'Confirmation de votre location',
+    text: 'Votre location a bien été enregistrée. \n Vous avez loué l\'article ' + itemId + ' pour une durée de ' + duration + ' heures le ' + formattedDate + ' dans le conteneur situé à l\'addresse suivante :  ' + address + ', ' + city + '. \n Le prix total est de ' + price + ' euros. Vous pouvez demander une facture en consultant la location.\nMerci de votre confiance.',
+  }
+
+  try {
+    const info = await transporter.sendMail(mailOptions)
+    console.log('Location confirmation email sent to ' + email + ' (' + info.response + ')')
+  } catch (error) {
+    console.error('Error sending location confirmation email:', error)
+  }
+}
+
+async function sendInvoice(invoice, email) {
+  const mailOptions = {
+    from: process.env.SMTP_EMAIL,
+    to: email,
+    subject: 'Facture de votre location',
+    text: 'Veuillez trouver la facture de votre location en pièce jointe.',
+    attachments: [
+      {
+        filename: 'facture.pdf',
+        content: invoice,
+      },
+    ],
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Facture email sent to ' + email + ' (' + info.response + ')');
+  } catch (error) {
+    console.error('Error sending location invoice email:', error);
+  }
+}
+
+app.get('/api/invoice/:locationId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).send('Invalid token');
+    }
+
+    const user = await database.prisma.User.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, email: true}
+    })
+
+    if (!user) {
+      return res.status(401).send('User not found');
+    }
+
+    const locationId = req.params.locationId;
+
+    const location = await database.prisma.Location.findUnique({
+      where: { id: locationId },
+      select: {
+        id: true,
+        invoice: true,
+        }
+    })
+
+    if (!location.invoice) {
+      return res.status(404).send('Invoice not found');
+    }
+
+    sendInvoice(location.invoice, user.email);
+
+    return res.status(201).json({ message: 'invoice sent' })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send('An error occurred')
+  }
+});
+
 app.post('/api/rent/article',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -571,7 +743,7 @@ app.post('/api/rent/article',
       }
       const user = await database.prisma.User.findUnique({
         where: { id: req.user.id },
-        select: { id: true }
+        select: { id: true, email: true, firstName: true, lastName: true }
       })
       if (!user) {
         return res.status(401).send('User not found');
@@ -584,7 +756,9 @@ app.post('/api/rent/article',
         select: {
           id: true,
           available: true,
-          price: true
+          price: true,
+          name: true,
+          containerId: true,
         }
       })
       if (!item) {
@@ -601,7 +775,8 @@ app.post('/api/rent/article',
         where: { id: item.id },
         data: { available: false }
       })
-      await database.prisma.Location.create({
+      console.log('user : ', user);
+      const location = await database.prisma.Location.create({
         data: {
           price: locationPrice,
           itemId: item.id,
@@ -609,6 +784,47 @@ app.post('/api/rent/article',
           duration: parseInt(req.body.duration),
         }
       })
+
+      console.log("item : ", item);
+      console.log("containerId : ", item.containerId);
+
+      const container = await database.prisma.Containers.findUnique({
+        where: { id: item.containerId },
+        select: {
+          id: true,
+          address: true,
+          city:true,
+        }
+      })
+
+      sendEmailConfirmationLocation(user.email, new Date(), req.body.duration, container.address, container.city, item.name, locationPrice)
+
+      var clientInfo = null;
+      if (user.firstName == null || user.lastName == null) {
+        clientInfo = 'Non renseigné';
+      } else {
+        clientInfo = user.firstName + ' ' + user.lastName;
+      }
+      const invoiceData = await generateInvoice(
+        user.email,
+        new Date(),
+        req.body.duration,
+        container.address,
+        container.city,
+        item.name,
+        clientInfo,
+        item.price,
+        locationPrice,
+        locationPrice,
+      );
+
+      sendInvoice(invoiceData, user.email);
+
+      await database.prisma.Location.update({
+        where: { id: location.id },
+        data: { invoice: invoiceData }
+      });
+
       return res.status(201).json({ message: 'location saved' })
     } catch (err) {
       console.error(err.message)
