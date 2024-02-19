@@ -6,3 +6,4 @@ services:
       context: ./front
     ports:
       - 80:5000
+
