@@ -58,8 +58,6 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           );
         }
       } else {
-        print(response.body);
-        print(response.statusCode);
         if (context.mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
