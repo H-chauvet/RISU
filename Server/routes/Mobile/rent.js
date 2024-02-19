@@ -207,8 +207,6 @@ router.post('/article',
         locationPrice,
       );
 
-      await sendInvoice(invoiceData, user.email);
-
       await rentCtrl.updateRentInvoice(location.id, invoiceData);
 
       return res.status(201).json({ message: 'location saved' })
@@ -242,7 +240,7 @@ router.get('/invoice/:locationId',
         return res.status(404).send('Invoice not found');
       }
 
-      //sendInvoice(location.invoice, user.email);
+      sendInvoice(location.invoice, user.email);
 
       return res.status(201).json({ message: 'invoice sent' })
     } catch (err) {

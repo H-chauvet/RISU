@@ -41,7 +41,7 @@ exports.getUserRents = (userId) => {
 }
 
 exports.getRentFromId = (rentId) => {
-  id = parseInt(rentId)
+  const id = parseInt(rentId);
   return db.Location_Mobile.findUnique({
     where: {
       id: id
