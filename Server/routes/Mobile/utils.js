@@ -1,6 +1,6 @@
 function formatDate(date) {
   const day = date.getDate();
-  const month = date.getMonth() + 1; // +1 car les mois commencent à 0
+  const month = date.getMonth() + 1; // +1 because month begin at 0
   const year = date.getFullYear();
   const hours = date.getHours();
   const minutes = date.getMinutes();
