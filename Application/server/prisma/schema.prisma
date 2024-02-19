@@ -91,6 +91,7 @@ model Location {
 	createdAt			DateTime	@default(now())
 	duration			Int
 	ended			Boolean		@default(false)
+	invoice     Bytes?
 }
 
 model Notifications {
