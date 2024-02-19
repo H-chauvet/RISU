@@ -59,6 +59,7 @@
   "errorOccurredDuringRenting": "An error occurred while renting.",
   "errorOccurredDuringSavingData": "An error occurred while saving the data.",
   "errorOccurredDuringSavingReview": "An error occurred while saving the review.",
+  "errorOccurredDuringSendingInvoice": "An error occurred while sending the invoice.",
   "errorOccurredDuringSendingMessage": "An error occurred while sending the message.",
   "errorOccurredDuringSettingProfile": "An error occurred while setting up the profile.",
   "errorOccurredDuringSettingStripe": "An error occurred while setting up Stripe.",
@@ -72,6 +73,8 @@
   "howManyAvailableArticles": "{count, plural, one{{count} available article} other{{count} available articles}}",
   "inProgress": "In progress",
   "invalidToken": "Invalid connection token, please reconnect",
+  "invoiceSent": "Invoice sent",
+  "invoiceSentMessage": "The invoice has been sent to your email.",
   "language": "Language",
   "languageChangedTo": "Language changed to {language}.",
   "lastName": "Name",
@@ -118,6 +121,7 @@
   "profileGoComplete": "Complete profile",
   "profileIncomplete": "Profile incomplete",
   "profileUpdated": "Profile updated successfully",
+  "receiveInvoice": "Receive invoice",
   "register": "Register",
   "rent": "Rent",
   "rentArticle": "Renting of this article",
@@ -156,9 +160,5 @@
   "timeRemaining": "Time remaining",
   "toComplete": "To complete",
   "total": "Total",
-  "unavailable": "Unavailable",
-  "invoiceSent": "Invoice sent",
-  "invoiceSentMessage": "The invoice has been sent to your email.",
-  "errorOccurredDuringSendingInvoice": "An error occurred while sending the invoice.",
-  "sendInvoice": "Send invoice"
+  "unavailable": "Unavailable"
 }

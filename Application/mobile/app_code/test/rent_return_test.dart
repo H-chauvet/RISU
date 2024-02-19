@@ -15,24 +15,12 @@ void main() {
     // This code runs after each test case.
   });
 
-  testWidgets(
-    'Container details should not be displayed from empty id',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
+  testWidgets('Container details should not be displayed from empty id',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
 
-      Finder returnButton =
-          find.byKey(const Key('rent_return-button-return_article'));
-      expect(returnButton, findsNothing);
-    },
-  );
-  testWidgets(
-    'Click on the button to receive invoice',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
-
-      Finder sendInvoiceButton =
-          find.byKey(const Key('rent_return-button-return_article'));
-      expect(sendInvoiceButton, findsNothing);
-    },
-  );
+    Finder returnButton =
+        find.byKey(const Key('rent_return-button-return_article'));
+    expect(returnButton, findsNothing);
+  });
 }

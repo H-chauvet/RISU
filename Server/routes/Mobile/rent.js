@@ -89,7 +89,7 @@ async function sendInvoice(invoiceData, email) {
       from: process.env.SMTP_EMAIL,
       to: email,
       subject: 'Facture de votre location',
-      text: 'Veuillez trouver la facture de votre location en pièce jointe.',
+      text: 'Vous trouverez la facture de votre location en pièce jointe.',
       attachments: [
         {
           filename: 'facture.pdf',
@@ -143,7 +143,6 @@ router.post('/article',
         parseInt(req.body.duration)
       )
 
-
       const container = await containerCtrl.getContainerById(item.containerId);
 
       sendEmailConfirmationLocation(
@@ -186,7 +185,7 @@ router.post('/article',
   }
 )
 
-router.put('/invoice/:locationId',
+router.put('/:locationId/invoice',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

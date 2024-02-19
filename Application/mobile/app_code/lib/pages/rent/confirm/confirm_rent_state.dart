@@ -26,7 +26,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       });
       final response = await http.put(
         Uri.parse(
-            'http://$serverIp:3000/api/mobile/rent/invoice/${widget.data.id}'),
+            'http://$serverIp:3000/api/mobile/rent/${widget.data.id}/invoice'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -44,8 +44,6 @@ class ConfirmRentState extends State<ConfirmRentPage> {
           );
         }
       } else {
-        print(response.body);
-        print(response.statusCode);
         if (context.mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
@@ -173,11 +171,10 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                     ),
                     const SizedBox(height: 32),
                     SizedBox(
-                      // sendInvoice onclick
                       width: double.infinity,
                       child: MyOutlinedButton(
-                        text: AppLocalizations.of(context)!.sendInvoice,
-                        key: const Key('rent_return-button-send_invoice'),
+                        text: AppLocalizations.of(context)!.receiveInvoice,
+                        key: const Key('return-rent-button-receive_invoice'),
                         onPressed: () async {
                           sendInvoice();
                         },

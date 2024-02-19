@@ -29,8 +29,8 @@ void main() {
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
     Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
-    expect(homeButton, findsOneWidget);
 
+    await tester.scrollUntilVisible(homeButton, 100);
     await tester.tap(homeButton);
     await tester.pumpAndSettle();
   });
@@ -45,9 +45,9 @@ void main() {
     );
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
     Finder invoiceButton =
-        find.byKey(const Key('rent_return-button-send_invoice'));
-    expect(invoiceButton, findsOneWidget);
+        find.byKey(const Key('return-rent-button-receive_invoice'));
 
+    await tester.scrollUntilVisible(invoiceButton, 100);
     await tester.tap(invoiceButton);
     await tester.pumpAndSettle();
   });
