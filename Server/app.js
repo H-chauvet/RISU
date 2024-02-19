@@ -12,6 +12,7 @@ const containerRoutes = require('./routes/Web/container');
 const feedbacksRoutes = require('./routes/Web/feedbacks');
 const itemsRoutes = require('./routes/Web/items');
 const paymentRoutes = require("./routes/Web/payment");
+const organizationRoutes = require("./routes/Web/organization");
 
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
@@ -55,6 +56,7 @@ app.use('/api/messages', messagesRoutes)
 app.use('/api/feedbacks', feedbacksRoutes)
 app.use('/api/items', itemsRoutes)
 app.use("/api/payment", paymentRoutes);
+app.use("/api/organization", organizationRoutes);
 
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
