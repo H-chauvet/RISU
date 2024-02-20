@@ -261,7 +261,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Bas";
 
@@ -281,7 +281,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Haut";
 
@@ -301,7 +301,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Gauche";
 
@@ -321,7 +321,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Droite";
 
@@ -341,7 +341,7 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Devant";
 
@@ -361,9 +361,9 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
-    designScreenState.lockerss.add(Locker("design personnalisé", 100));
-    designScreenState.lockerss.add(Locker("design personnalisé", 150));
+    designScreenState.lockerss.add(Locker("design perso", 50));
+    designScreenState.lockerss.add(Locker("design perso", 100));
+    designScreenState.lockerss.add(Locker("design perso", 150));
 
     designScreenState.face = "Devant";
 
@@ -384,7 +384,7 @@ void main() {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     obj.fragments[0].faces[0].materialIndex = 1;
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("design perso", 50));
 
     designScreenState.face = "Derrière";
 

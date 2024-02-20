@@ -94,7 +94,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   @override
   void initState() {
-    checkToken();
+    //checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -167,7 +167,7 @@ class DesignScreenState extends State<DesignScreen> {
       if (faceLoad != null) {
         faceIndex = faceLoad;
       } else {
-        lockerss.add(Locker('design personnalisé', 50));
+        lockerss.add(Locker('design perso', 50));
       }
       if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
         removeDesign(faceIndex);
@@ -247,7 +247,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
-      if (lockerss[i].type == 'design personnalisé') {
+      if (lockerss[i].type == 'design perso') {
         lockerss.removeAt(i);
         break;
       }

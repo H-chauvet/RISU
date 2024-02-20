@@ -55,8 +55,8 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    checkToken();
-    MyAlertTest.checkSignInStatus(context);
+    //checkToken();
+    //MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -117,7 +117,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (decodedContainer != null) {
       for (int i = 0; i < decodedContainer.length; i++) {
-        lockers.add(Locker('design personnalisé', 50));
+        lockers.add(Locker('design perso', 50));
       }
     }
 
