@@ -38,7 +38,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      final response = await http.put(
+      final response = await http.post(
         Uri.parse(
             'http://$serverIp:3000/api/mobile/rent/${widget.rentId}/invoice'),
         headers: <String, String>{
@@ -345,7 +345,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       width: double.infinity,
                       child: MyOutlinedButton(
                         text: AppLocalizations.of(context)!.receiveInvoice,
-                        key: const Key('return-rent-button-receive_invoice'),
+                        key: const Key('return_rent-button-receive_invoice'),
                         onPressed: () async {
                           sendInvoice();
                         },

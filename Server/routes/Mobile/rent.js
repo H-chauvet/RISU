@@ -36,10 +36,10 @@ async function generateInvoice(
       resolve(pdfData);
     });
 
-    doc.text('Facture de location', { align: 'center', size: 18 });
+    doc.fontSize(18).text('Facture de location', { align: 'center' });
 
     doc.moveDown();
-    doc.text(`Date de location: ${formatDate(date)}`, { align: 'left' });
+    doc.fontSize(12).text(`Date de location: ${formatDate(date)}`, { align: 'left' });
     doc.text(`Durée de location: ${duration} heures`, { align: 'left' });
     doc.text(`Adresse du conteneur: ${containerAddress}, ${containerCity}`, { align: 'left' });
     doc.text(`Informations sur le client: ${clientInfo}`, { align: 'left' });
@@ -53,7 +53,7 @@ async function generateInvoice(
     drawTable(doc, tableData);
 
     doc.moveDown();
-    doc.text('Merci pour votre confiance!', { align: 'center' });
+    doc.fontSize(14).text('Merci pour votre confiance!', { align: 'center' });
 
     doc.end();
   });
@@ -185,7 +185,7 @@ router.post('/article',
   }
 )
 
-router.put('/:locationId/invoice',
+router.post('/:locationId/invoice',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

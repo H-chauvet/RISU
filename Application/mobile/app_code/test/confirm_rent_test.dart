@@ -45,7 +45,7 @@ void main() {
     );
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
     Finder invoiceButton =
-        find.byKey(const Key('return-rent-button-receive_invoice'));
+        find.byKey(const Key('return_rent-button-receive_invoice'));
 
     await tester.scrollUntilVisible(invoiceButton, 100);
     await tester.tap(invoiceButton);
