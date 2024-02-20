@@ -1,13 +1,6 @@
 function formatDate(date) {
-  const day = date.getDate();
-  const month = date.getMonth() + 1; // +1 because month begin at 0
-  const year = date.getFullYear();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-
-  const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
-
-  return formattedDate;
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+  return date.toLocaleDateString('fr-FR', options);
 }
 
 function drawTable(doc, tableData) {
