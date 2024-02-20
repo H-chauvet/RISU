@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:front/services/storage_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
+import 'package:flutter_dropzone/flutter_dropzone.dart';
 
 import '../../components/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
@@ -70,6 +72,12 @@ class DesignScreen extends StatefulWidget {
 /// page d'inscription pour le configurateur
 class DesignScreenState extends State<DesignScreen> {
   late List<Sp3dObj> objs = [];
+  late DropzoneViewController controller;
+
+  String dropzoneState = '';
+
+  Uint8List image = Uint8List(1);
+
   Sp3dWorld? world;
   bool isLoaded = false;
   List<Locker> lockerss = [];
@@ -94,7 +102,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   @override
   void initState() {
-    checkToken();
+    //checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -430,6 +438,13 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  Widget imagetest() {
+    if (image.length != 1) {
+      return Image.memory(image);
+    }
+    return Container();
+  }
+
   Widget fileName() {
     if (picked?.files.first.name != null) {
       return Text("Image: ${picked!.files.first.name}");
@@ -452,6 +467,10 @@ class DesignScreenState extends State<DesignScreen> {
     } else {
       return Container();
     }
+  }
+
+  Future acceptFile(dynamic event) async {
+    controller.getFileData(event).toString();
   }
 
   @override
@@ -484,7 +503,65 @@ class DesignScreenState extends State<DesignScreen> {
               width: 100,
             ),
             Flexible(
-              child: Align(
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                        color: Colors.green,
+                        child: Stack(
+                          children: [
+                            DropzoneView(
+                              operation: DragOperation.copy,
+                              cursor: CursorType.copy,
+                              onCreated: (controller) {},
+                              onLoaded: () {},
+                              onError: (String? error) {
+                                print('Error: $error');
+                              },
+                              onLeave: () {
+                                print('User left the drop zone.');
+                              },
+                              onHover: () {
+                                print('User is hovering over the drop zone.');
+                              },
+                              onDrop: (ev) async {
+                                if (ev.files.isNotEmpty) {
+                                  setState(() {
+                                    print(ev.files);
+                                  });
+
+                                  // You can upload the file here or trigger any other action.
+                                  // Example: uploadFile(ev.files.first.path);
+                                }
+                              },
+                            ),
+                          ],
+                        ))
+                    /*DropzoneView(
+                        cursor: CursorType.grab,
+                        onCreated: (DropzoneViewController ctrl) =>
+                            controller = ctrl,
+                        onLoaded: () => print('Zone loaded'),
+                        onError: (String? ev) => print('Error: $ev'),
+                        onLeave: () => print('Zone left'),
+                        onHover: () => print('Zone enter'),
+                        onDrop: (ev) async {
+                          print("test1");
+                          if (ev is File) {
+                            print("test");
+                            print('Zone 1 drop: ${ev.name}');
+                            PlatformFile file = PlatformFile(
+                                name: ev.name,
+                                size: ev.size,
+                                bytes: await controller.getFileData(ev));
+
+                            debugPrint(file.toString());
+                          } else {
+                            print('not a file');
+                          }
+                        })*/
+
+                    )
+                /*Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -554,8 +631,9 @@ class DesignScreenState extends State<DesignScreen> {
                     ),
                   ],
                 ),
-              ),
-            ),
+              ),*/
+                ),
+            imagetest(),
             loadCube(),
             Flexible(
               child: Align(
