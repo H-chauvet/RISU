@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -21,11 +22,12 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
+// ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation({super.key, this.id, this.container});
+  ContainerCreation({super.key, this.id, this.container});
 
   final String? id;
-  final String? container;
+  String? container;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -462,6 +464,10 @@ class ContainerCreationState extends State<ContainerCreation> {
     return price;
   }
 
+  void resetContainer() {
+    widget.container = '';
+  }
+
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -594,79 +600,174 @@ class ContainerCreationState extends State<ContainerCreation> {
         ),
         body: Stack(children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
                 width: 50,
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.7,
-                    child: InteractivePanel(
-                      callback: updateCube,
-                      rotateFrontCallback: rotateFront,
-                      rotateBackCallback: rotateBack,
-                      rotateLeftCallback: rotateLeftSide,
-                      rotateRightCallback: rotateRightSide,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) => ContainerDialog(
+                                  callback: updateCube,
+                                  size: 1,
+                                ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Ajouter un casier',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Sauvegarder',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.save,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String face = await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                AutoFillDialog(callback: autoFillContainer));
+                        autoFillContainer(face, false);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Remplissage',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.auto_fix_high,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
+                      width: 225,
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 20,
+                        thickness: 1,
+                        indent: 30,
+                        endIndent: 30,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String face = await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                AutoFillDialog(callback: autoFillContainer));
+                        autoFillContainer(face, false);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Supprimer un casier',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: resetContainer,
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Réinitialiser le conteneur',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            String face = await showDialog(
-                                context: context,
-                                builder: (context) => AutoFillDialog(
-                                    callback: autoFillContainer));
-                            autoFillContainer(face, false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          child: const Text('Remplissage',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
+                    child: Sp3dRenderer(
+                      const Size(1000, 1000),
+                      const Sp3dV2D(400, 400),
+                      world,
+                      // If you want to reduce distortion, shoot from a distance at high magnification.
+                      Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                      Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                      allowUserWorldRotation: true,
+                      allowUserWorldZoom: false,
                     ),
-                  ),
-                  Sp3dRenderer(
-                    const Size(800, 800),
-                    const Sp3dV2D(400, 400),
-                    world,
-                    // If you want to reduce distortion, shoot from a distance at high magnification.
-                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: false,
-                    allowUserWorldZoom: false,
                   ),
                 ],
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FractionallySizedBox(
-                      widthFactor: 0.7,
-                      heightFactor: 0.7,
-                      child: RecapPanel(
-                        articles: lockers,
-                        onSaved: () async {
-                          String name = await showDialog(
-                              context: context,
-                              builder: (context) => openDialog());
-                          saveContainer(name);
-                        },
-                      )),
-                ),
+                child: FractionallySizedBox(
+                    widthFactor: 0.7,
+                    heightFactor: 0.6,
+                    child: RecapPanel(
+                      articles: lockers,
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                    )),
               ),
               const SizedBox(
                 width: 50,

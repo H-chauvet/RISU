@@ -228,7 +228,7 @@ class RecapPanel extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
+                /*ElevatedButton(
                   onPressed: onSaved,
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -236,7 +236,7 @@ class RecapPanel extends StatelessWidget {
                   child: const Text(
                     'Sauvegarde',
                   ),
-                ),
+                ),*/
                 /*const SizedBox(
                   width: 20,
                 ),
