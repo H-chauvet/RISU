@@ -65,7 +65,7 @@ class RecapPanel extends StatelessWidget {
     }
     if (littleCount > 0) {
       parsedLockers.add(LockerList(
-        "Petit Casier  ",
+        "Petit Casier",
         100 * littleCount,
         littleCount,
       ));
@@ -225,30 +225,6 @@ class RecapPanel extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                /*ElevatedButton(
-                  onPressed: onSaved,
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                  child: const Text(
-                    'Sauvegarde',
-                  ),
-                ),*/
-                /*const SizedBox(
-                  width: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                  child: const Text('Imprimer'),
-                ),*/
-              ],
-            )
           ],
         ));
   }
