@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/dialog/container_dialog.dart';
+import 'package:front/components/dialog/delete_container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -57,8 +58,8 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    //checkToken();
-    //MyAlertTest.checkSignInStatus(context);
+    checkToken();
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -466,6 +467,89 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   void resetContainer() {
     widget.container = '';
+
+    for (int i = 0; i < objs[0].fragments.length; i++) {
+      objs[0].fragments[i].faces[0].materialIndex = 0;
+      objs[0].fragments[i].faces[1].materialIndex = 0;
+      objs[0].fragments[i].faces[2].materialIndex = 0;
+      objs[0].fragments[i].faces[3].materialIndex = 0;
+      objs[0].fragments[i].faces[4].materialIndex = 0;
+      objs[0].fragments[i].faces[5].materialIndex = 0;
+    }
+
+    setState(() {
+      lockers.clear();
+    });
+  }
+
+  String deleteLocker(LockerCoordinates coord, bool unitTesting) {
+    int fragment = coord.x - 1 + (coord.y - 1) * 12;
+    int increment = 12;
+
+    if (coord.face == 'Derrière') {
+      fragment += 60;
+    }
+
+    int size = objs[0].fragments[fragment].faces[0].materialIndex!;
+
+    if (objs[0].fragments[fragment].faces[0].materialIndex == 0) {
+      return "deleteError";
+    }
+
+    for (int i = 0; i < size; i++) {
+      if (objs[0].fragments[fragment].faces[0].materialIndex != size) {
+        return "wrongPositionError";
+      }
+      fragment += increment;
+    }
+
+    fragment -= size * increment;
+
+    for (int i = 0; i < size; i++) {
+      objs[0].fragments[fragment].faces[0].materialIndex = 0;
+      objs[0].fragments[fragment].faces[1].materialIndex = 0;
+      objs[0].fragments[fragment].faces[2].materialIndex = 0;
+      objs[0].fragments[fragment].faces[3].materialIndex = 0;
+      objs[0].fragments[fragment].faces[4].materialIndex = 0;
+      objs[0].fragments[fragment].faces[5].materialIndex = 0;
+      fragment += increment;
+    }
+
+    if (unitTesting == false) {
+      setState(() {
+        for (int i = 0; i < lockers.length; i++) {
+          if (lockers[i].type == 'Petit casier' && size == 1) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Moyen casier' && size == 2) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Grand casier' && size == 3) {
+            lockers.removeAt(i);
+            break;
+          }
+        }
+        isLoaded = true;
+      });
+    } else {
+      for (int i = 0; i < lockers.length; i++) {
+        if (lockers[i].type == 'Petit Casier' && size == 1) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Moyen Casier' && size == 2) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Grand Casier' && size == 3) {
+          lockers.removeAt(i);
+          break;
+        }
+      }
+    }
+    return "deleted";
   }
 
   String getContainerMapping() {
@@ -698,11 +782,10 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ),
                     ElevatedButton.icon(
                       onPressed: () async {
-                        String face = await showDialog(
+                        await showDialog(
                             context: context,
                             builder: (context) =>
-                                AutoFillDialog(callback: autoFillContainer));
-                        autoFillContainer(face, false);
+                                DeleteContainerDialog(callback: deleteLocker));
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: const Size.fromWidth(250),

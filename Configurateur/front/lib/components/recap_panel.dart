@@ -94,6 +94,59 @@ class RecapPanel extends StatelessWidget {
     return parsedLockers;
   }
 
+  Widget articlesContent() {
+    if (parsedArticles.isEmpty) {
+      return const Center(
+        child: Text(
+          "Aucun article dans le panier",
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+      );
+    } else {
+      return ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
+        itemCount: parsedArticles.length,
+        itemBuilder: (_, i) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                constraints: const BoxConstraints(minWidth: 100, maxWidth: 100),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    parsedArticles[i].type,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10, bottom: 10),
+                child: Text(
+                  parsedArticles[i].quantity.toString(),
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ),
+              Container(
+                constraints: const BoxConstraints(minWidth: 100),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 10, bottom: 10),
+                  child: Text(
+                    "${parsedArticles[i].price.toString()}€",
+                    style: const TextStyle(color: Colors.black),
+                    textAlign: TextAlign.right,
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     parseArticles();
@@ -167,45 +220,7 @@ class RecapPanel extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: parsedArticles.length,
-                itemBuilder: (_, i) {
-                  return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          constraints: const BoxConstraints(
-                              minWidth: 100, maxWidth: 100),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              parsedArticles[i].type,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 10, bottom: 10),
-                          child: Text(
-                            parsedArticles[i].quantity.toString(),
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        Container(
-                          constraints: const BoxConstraints(minWidth: 100),
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(right: 10, bottom: 10),
-                            child: Text(
-                              "${parsedArticles[i].price.toString()}€",
-                              style: const TextStyle(color: Colors.black),
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                        ),
-                      ]);
-                }),
+            articlesContent(),
             const SizedBox(
               height: 10,
             ),
