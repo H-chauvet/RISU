@@ -129,3 +129,8 @@ const progressBarCheckedDarkTheme = Color.fromARGB(255, 33, 91, 138);
 
 final progressBarUncheckedLightTheme = Colors.grey[300];
 final progressBarUncheckedDarkTheme = Colors.grey[600];
+
+const checkBoxMenuButtonColorLightTheme = Color(0xFF4682B4);
+const checkBoxMenuButtonColorDarkTheme = Color.fromARGB(255, 190, 189, 189);
+
+const containerDialogTextColorDarkTheme = Color.fromARGB(255, 190, 189, 189);
