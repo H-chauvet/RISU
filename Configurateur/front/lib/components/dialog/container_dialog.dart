@@ -287,22 +287,6 @@ class ContainerDialogState extends State<ContainerDialog> {
                       child: Text('Derrière',
                           style: TextStyle(color: getTextColor())),
                     ),
-                    /*Checkbox(
-                      value: face == 'Devant',
-                      onChanged: (bool? value) {
-                        setState(() {
-                          face = 'Devant';
-                        });
-                      },
-                    ),
-                    Checkbox(
-                      value: face == 'Derrière',
-                      onChanged: (bool? value) {
-                        setState(() {
-                          face = 'Derrière';
-                        });
-                      },
-                    ),*/
                   ],
                 ),
                 const SizedBox(
