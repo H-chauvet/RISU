@@ -120,7 +120,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (decodedContainer != null) {
       for (int i = 0; i < decodedContainer.length; i++) {
-        lockers.add(Locker('design perso', 50));
+        lockers.add(Locker('Design personnalise', 50));
       }
     }
 

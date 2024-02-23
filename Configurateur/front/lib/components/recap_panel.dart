@@ -59,7 +59,7 @@ class RecapPanel extends StatelessWidget {
         mediumCount++;
       } else if (articles![i].type == "Grand casier") {
         bigCount++;
-      } else if (articles![i].type == "design perso") {
+      } else if (articles![i].type == "Design personnalisé") {
         designCount++;
       }
     }
@@ -86,7 +86,7 @@ class RecapPanel extends StatelessWidget {
     }
     if (designCount > 0) {
       parsedLockers.add(LockerList(
-        "Design perso",
+        "Design personnalisé",
         50 * designCount,
         designCount,
       ));
@@ -114,7 +114,7 @@ class RecapPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                constraints: const BoxConstraints(minWidth: 100, maxWidth: 100),
+                constraints: const BoxConstraints(minWidth: 125, maxWidth: 125),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
@@ -174,17 +174,21 @@ class RecapPanel extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Type',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                  children: [
+                    Container(
+                      constraints:
+                          const BoxConstraints(minWidth: 125, maxWidth: 125),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Type',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
+                    const Padding(
                       padding: EdgeInsets.only(right: 10),
                       child: Text(
                         'Quantité',
@@ -193,12 +197,16 @@ class RecapPanel extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: Text(
-                        'Prix',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                    Container(
+                      constraints: const BoxConstraints(minWidth: 100),
+                      child: const Padding(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          'Prix',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

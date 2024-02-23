@@ -167,7 +167,7 @@ class DesignScreenState extends State<DesignScreen> {
       if (faceLoad != null) {
         faceIndex = faceLoad;
       } else {
-        lockerss.add(Locker('design perso', 50));
+        lockerss.add(Locker('Design personnalisé', 50));
       }
       if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
         removeDesign(faceIndex);
@@ -247,7 +247,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
-      if (lockerss[i].type == 'design perso') {
+      if (lockerss[i].type == 'Design personnalisé') {
         lockerss.removeAt(i);
         break;
       }
