@@ -14,6 +14,10 @@ final lightTheme = ThemeData(
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color(0xff4682B4),
   ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+    fillColor: MaterialStateProperty.all<Color>(Colors.white),
+  ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black,
   ),

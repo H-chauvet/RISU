@@ -7,21 +7,19 @@ import 'package:provider/provider.dart';
 const List<String> faceList = <String>['Devant', 'Derrière'];
 const List<String> directionList = <String>['Haut', 'Bas'];
 
-class ContainerDialog extends StatefulWidget {
-  const ContainerDialog(
-      {super.key, required this.callback, required this.size});
+class DeleteContainerDialog extends StatefulWidget {
+  const DeleteContainerDialog({super.key, required this.callback});
 
   final Function(LockerCoordinates, bool) callback;
-  final int size;
 
   @override
-  State<ContainerDialog> createState() => ContainerDialogState();
+  State<DeleteContainerDialog> createState() => DeleteContainerDialogState();
 }
 
 ///
-/// ContainerDialog
+/// DeleteContainerDialog
 ///
-class ContainerDialogState extends State<ContainerDialog> {
+class DeleteContainerDialogState extends State<DeleteContainerDialog> {
   final _formKey = GlobalKey<FormState>();
 
   String x = '';
@@ -53,7 +51,7 @@ class ContainerDialogState extends State<ContainerDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Ajouter un conteneur',
+          const Text('Supprimer un conteneur',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           Form(
@@ -61,105 +59,6 @@ class ContainerDialogState extends State<ContainerDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text("Quelle taille de casier voulez-vous ajouter ?"),
-                const SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CheckboxMenuButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          getColor(),
-                        ),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                      value: size == 'Petit',
-                      onChanged: (bool? value) {
-                        if (value == true) {
-                          setState(() {
-                            size = 'Petit';
-                            lockerSize = 1;
-                          });
-                        } else {
-                          setState(() {
-                            size = '';
-                            lockerSize = 0;
-                          });
-                        }
-                      },
-                      child: Text(
-                        'Petit',
-                        style: TextStyle(color: getTextColor()),
-                      ),
-                    ),
-                    CheckboxMenuButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(getColor()),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                      value: size == 'Moyen',
-                      onChanged: (bool? value) {
-                        if (value == true) {
-                          setState(() {
-                            size = 'Moyen';
-                            lockerSize = 2;
-                          });
-                        } else {
-                          setState(() {
-                            size = '';
-                            lockerSize = 0;
-                          });
-                        }
-                      },
-                      child: Text('Moyen',
-                          style: TextStyle(color: getTextColor())),
-                    ),
-                    CheckboxMenuButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(getColor()),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                      ),
-                      value: size == 'Grand',
-                      onChanged: (bool? value) {
-                        if (value == true) {
-                          setState(() {
-                            size = 'Grand';
-                            lockerSize = 3;
-                          });
-                        } else {
-                          setState(() {
-                            size = '';
-                            lockerSize = 0;
-                          });
-                        }
-                      },
-                      child: Text('Grand',
-                          style: TextStyle(color: getTextColor())),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
@@ -204,15 +103,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                     },
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
-                        if (int.parse(value) < 0) {
+                        if (int.parse(value) <= 0) {
                           return 'Position invalide';
                         }
-                        if (direction == 'Haut' &&
-                            int.parse(value) + widget.size > 6) {
-                          return 'Position invalide';
-                        }
-                        if (direction == 'Bas' &&
-                            int.parse(value) - widget.size < 0) {
+                        if (int.parse(value) > 12) {
                           return 'Position invalide';
                         }
                       }
@@ -226,7 +120,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text("Sur quelle face du casier voulez-vous l'ajouter ?"),
+                const Text(
+                    "Sur quelle face du casier voulez-vous le supprimer ?"),
                 const SizedBox(
                   height: 10,
                 ),
@@ -299,21 +194,28 @@ class ContainerDialogState extends State<ContainerDialog> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
                     child: const Text(
-                      'Ajouter',
+                      'Supprimer',
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        if (widget.callback(
-                                LockerCoordinates(int.parse(x), int.parse(y),
-                                    face, direction, lockerSize),
-                                false) ==
-                            'overwriteError') {
+                        String ret = widget.callback(
+                            LockerCoordinates(int.parse(x), int.parse(y), face,
+                                direction, lockerSize),
+                            false);
+                        if (ret == 'deleteError') {
                           await showDialog(
                               context: context,
                               builder: (context) => const AlertDialog(
                                     content: Text(
-                                        "Vous ne pouvez pas réalisé cette action, la position est déjà occupée"),
+                                        "Vous ne pouvez pas réalisé cette action, la position est déjà vide"),
+                                  ));
+                        } else if (ret == 'wrongPositionError') {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text(
+                                        "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier."),
                                   ));
                         } else {
                           Navigator.pop(context);
