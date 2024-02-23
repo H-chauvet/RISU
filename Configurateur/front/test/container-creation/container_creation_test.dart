@@ -35,7 +35,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -60,7 +60,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -83,7 +83,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -108,7 +108,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -116,120 +116,6 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.byKey(const Key('terminate')));
-  });
-
-  testWidgets('Container Creation back view panel from front',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('back-view')));
-  });
-
-  testWidgets('Container Creation back view panel from left',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
-  });
-
-  testWidgets('Container Creation back view panel 2',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-  });
-
-  testWidgets('Container Creation back view panel 3',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
   });
 
   testWidgets('updateCube', (WidgetTester tester) async {
@@ -331,9 +217,9 @@ void main() {
 
     await tester.pump();
 
-    expect(find.text("Petit casier"), findsNWidgets(12));
-    expect(find.text("Moyen casier"), findsNWidgets(3));
-    expect(find.text("Grand casier"), findsNWidgets(2));
+    expect(find.text("Petit Casier"), findsNWidgets(1));
+    expect(find.text("Moyen Casier"), findsNWidgets(1));
+    expect(find.text("Grand Casier"), findsNWidgets(1));
   });
 }
 

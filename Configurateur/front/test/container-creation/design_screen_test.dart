@@ -49,7 +49,7 @@ void main() {
           goRouter: AppRouter.router,
           child: const DesignScreen(
             lockers:
-                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+                '[{"type":"Petit casier","price":100},{"type":"Moyen casier","price":200},{"type":"Grand casier","price":300}]',
             amount: 60,
             containerMapping: '1',
           ),
@@ -65,12 +65,12 @@ void main() {
     expect(find.text("Importer une image"), findsOneWidget);
     expect(find.text("Retirer l'image sélectionner"), findsOneWidget);
     expect(find.text("Appliquer"), findsOneWidget);
-    expect(find.text("Petit casier"), findsOneWidget);
-    expect(find.text("10€"), findsOneWidget);
-    expect(find.text("Moyen casier"), findsOneWidget);
-    expect(find.text("20€"), findsOneWidget);
-    expect(find.text("Grand casier"), findsOneWidget);
-    expect(find.text("30€"), findsOneWidget);
+    expect(find.text("Petit Casier"), findsOneWidget);
+    expect(find.text("100€"), findsOneWidget);
+    expect(find.text("Moyen Casier"), findsOneWidget);
+    expect(find.text("200€"), findsOneWidget);
+    expect(find.text("Grand Casier"), findsOneWidget);
+    expect(find.text("300€"), findsOneWidget);
 
     await tester.tap(find.text("Suivant"));
     await tester.tap(find.text("Précédent"));
@@ -433,9 +433,9 @@ void main() {
 
     await tester.pump();
 
-    expect(find.text("Petit casier"), findsNWidgets(1));
-    expect(find.text("Moyen casier"), findsNWidgets(1));
-    expect(find.text("Grand casier"), findsNWidgets(1));
+    expect(find.text("Petit Casier"), findsNWidgets(1));
+    expect(find.text("Moyen Casier"), findsNWidgets(1));
+    expect(find.text("Grand Casier"), findsNWidgets(1));
   });
 }
 
