@@ -71,6 +71,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -311,6 +312,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                               false,
                               i,
                             );
+                            clicked[i].clicked = false;
                           }
                         }
                         if (mounted) {

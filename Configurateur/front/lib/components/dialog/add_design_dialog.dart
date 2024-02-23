@@ -325,6 +325,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                               fileData: widget.file!.files.first.bytes,
                               faceLoad: i,
                             );
+                            clicked[i].clicked = false;
                           }
                         }
                         if (mounted) {

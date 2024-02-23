@@ -58,8 +58,8 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    //checkToken();
-    //MyAlertTest.checkSignInStatus(context);
+    checkToken();
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -466,8 +466,6 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void resetContainer() {
-    widget.container = '';
-
     for (int i = 0; i < objs[0].fragments.length; i++) {
       objs[0].fragments[i].faces[0].materialIndex = 0;
       objs[0].fragments[i].faces[1].materialIndex = 0;
@@ -478,7 +476,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     setState(() {
-      lockers.clear();
+      lockers = [];
     });
   }
 

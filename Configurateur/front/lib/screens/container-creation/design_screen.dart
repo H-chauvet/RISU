@@ -100,7 +100,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   @override
   void initState() {
-    //checkToken();
+    checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -172,7 +172,7 @@ class DesignScreenState extends State<DesignScreen> {
       }
       if (faceLoad != null) {
         faceIndex = faceLoad;
-        lockerss.add(Locker('design personnalisé', 50));
+        lockerss.add(Locker('Design personnalisé', 50));
       } else {
         lockerss.add(Locker('Design personnalisé', 50));
       }
@@ -537,7 +537,11 @@ class DesignScreenState extends State<DesignScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        ElevatedButton(
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(250),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
                           onPressed: () async {
                             await showDialog(
                               context: context,
@@ -545,9 +549,27 @@ class DesignScreenState extends State<DesignScreen> {
                                   RemoveDesignDialog(callback: removeImage),
                             );
                           },
-                          child: const Text(
+                          icon: const Icon(Icons.delete),
+                          label: const Text(
                             'Retirer une image',
                           ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(250),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          onPressed: () async {
+                            String name = await showDialog(
+                                context: context,
+                                builder: (context) => openDialog());
+                            saveContainer(name);
+                          },
+                          icon: const Icon(Icons.save),
+                          label: const Text("Sauvegarder"),
                         ),
                       ],
                     ),
