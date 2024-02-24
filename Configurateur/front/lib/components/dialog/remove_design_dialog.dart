@@ -112,15 +112,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Devant'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Devant', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Devant', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Devant', value!);
+                            });
                           },
                           child: Text(
                             'Devant',
@@ -146,15 +140,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Derrière'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Derrière', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Derrière', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Derrière', value!);
+                            });
                           },
                           child: Text(
                             'Derrière',
@@ -180,15 +168,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Gauche'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Gauche', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Gauche', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Gauche', value!);
+                            });
                           },
                           child: Text(
                             'Gauche',
@@ -221,15 +203,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Droite'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Droite', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Droite', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Droite', value!);
+                            });
                           },
                           child: Text(
                             'Droite',
@@ -255,15 +231,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Haut'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Haut', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Haut', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Haut', value!);
+                            });
                           },
                           child: Text(
                             'Haut',
@@ -289,15 +259,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           ),
                           value: getClicked('Bas'),
                           onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Bas', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Bas', false);
-                              });
-                            }
+                            setState(() {
+                              setClicked('Bas', value!);
+                            });
                           },
                           child: Text(
                             'Bas',
