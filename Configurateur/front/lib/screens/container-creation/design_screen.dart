@@ -100,7 +100,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   @override
   void initState() {
-    checkToken();
+    //checkToken();
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());

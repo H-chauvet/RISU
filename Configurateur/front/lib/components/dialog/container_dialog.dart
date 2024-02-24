@@ -304,6 +304,15 @@ class ContainerDialogState extends State<ContainerDialog> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        if (face == '' || size == '') {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text(
+                                        "Veuillez remplir tous les champs"),
+                                  ));
+                          return;
+                        }
                         if (widget.callback(
                                 LockerCoordinates(int.parse(x), int.parse(y),
                                     face, direction, lockerSize),

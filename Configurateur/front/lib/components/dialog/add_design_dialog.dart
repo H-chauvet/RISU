@@ -83,262 +83,280 @@ class AddDesignDialogState extends State<AddDesignDialog> {
           const Text('Ajouter un conteneur',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Image.memory(
-                widget.file!.files.first.bytes!,
-                width: 200,
-                height: 200,
-              ),
-              SizedBox(
-                width: 500,
-                child: Column(
-                  children: <Widget>[
-                    Text(widget.file!.files.first.name),
-                    const SizedBox(height: 20),
-                    const Text(
-                      "Où souhaitez-vous ajouter ce design ?",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          Form(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.memory(
+                      widget.file!.files.first.bytes!,
+                      width: 200,
+                      height: 200,
                     ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
-                          ),
-                          value: getClicked('Devant'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Devant', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Devant', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Devant',
+                    SizedBox(
+                      width: 500.0,
+                      child: Column(
+                        children: <Widget>[
+                          Text(widget.file!.files.first.name),
+                          const SizedBox(height: 20),
+                          const Text(
+                            "Où souhaitez-vous ajouter ce design ?",
                             style: TextStyle(
-                              color: getTextColor(),
-                            ),
+                                fontWeight: FontWeight.bold, fontSize: 16),
                           ),
-                        ),
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                          const SizedBox(height: 20),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100.0),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Devant'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Devant', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Devant', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Devant',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          value: getClicked('Derrière'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Derrière', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Derrière', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Derrière',
-                            style: TextStyle(
-                              color: getTextColor(),
-                            ),
-                          ),
-                        ),
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Derrière'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Derrière', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Derrière', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Derrière',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          value: getClicked('Gauche'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Gauche', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Gauche', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Gauche',
-                            style: TextStyle(
-                              color: getTextColor(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Gauche'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Gauche', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Gauche', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Gauche',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                          value: getClicked('Droite'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Droite', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Droite', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Droite',
-                            style: TextStyle(
-                              color: getTextColor(),
-                            ),
-                          ),
-                        ),
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                          const SizedBox(height: 20),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Droite'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Droite', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Droite', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Droite',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          value: getClicked('Haut'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Haut', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Haut', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Haut',
-                            style: TextStyle(
-                              color: getTextColor(),
-                            ),
-                          ),
-                        ),
-                        CheckboxMenuButton(
-                          style: ButtonStyle(
-                            fixedSize: MaterialStateProperty.all<Size>(
-                              const Size.fromWidth(100),
-                            ),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(getColor()),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0),
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Haut'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Haut', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Haut', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Haut',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
                               ),
-                            ),
+                              CheckboxMenuButton(
+                                style: ButtonStyle(
+                                  fixedSize: MaterialStateProperty.all<Size>(
+                                    const Size.fromWidth(100),
+                                  ),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          getColor()),
+                                  shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                ),
+                                value: getClicked('Bas'),
+                                onChanged: (bool? value) {
+                                  if (value == true) {
+                                    setState(() {
+                                      setClicked('Bas', true);
+                                    });
+                                  } else {
+                                    setState(() {
+                                      setClicked('Bas', false);
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Bas',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: getTextColor(),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          value: getClicked('Bas'),
-                          onChanged: (bool? value) {
-                            if (value == true) {
-                              setState(() {
-                                setClicked('Bas', true);
-                              });
-                            } else {
-                              setState(() {
-                                setClicked('Bas', false);
-                              });
-                            }
-                          },
-                          child: Text(
-                            'Bas',
-                            style: TextStyle(
-                              color: getTextColor(),
-                            ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () async {
+                              for (int i = 0; i < clicked.length; i++) {
+                                if (clicked[i].clicked) {
+                                  await widget.callback(
+                                    false,
+                                    fileData: widget.file!.files.first.bytes,
+                                    faceLoad: i,
+                                  );
+                                  clicked[i].clicked = false;
+                                }
+                              }
+                              if (mounted) {
+                                Navigator.pop(context);
+                              }
+                            },
+                            child: const Text('Ajouter'),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () async {
-                        for (int i = 0; i < clicked.length; i++) {
-                          if (clicked[i].clicked) {
-                            await widget.callback(
-                              false,
-                              fileData: widget.file!.files.first.bytes,
-                              faceLoad: i,
-                            );
-                            clicked[i].clicked = false;
-                          }
-                        }
-                        if (mounted) {
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: const Text('Ajouter'),
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          )
         ],
       ),
     );

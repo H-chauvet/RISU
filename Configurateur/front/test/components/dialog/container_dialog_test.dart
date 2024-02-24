@@ -33,6 +33,11 @@ void main() {
     );
 
     await tester.tap(find.text('Ajouter'));
+    await tester.tap(find.text('Petit'));
+    await tester.tap(find.text('Moyen'));
+    await tester.tap(find.text('Grand'));
+    await tester.tap(find.text('Devant'));
+    await tester.tap(find.text('Derrière'));
     await tester.pump();
 
     expect(find.text('Veuillez remplir ce champ'), findsWidgets);

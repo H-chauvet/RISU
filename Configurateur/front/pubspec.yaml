@@ -102,6 +102,7 @@ flutter:
     - assets/Quentin.png
     - assets/Tanguy.png
     - assets/Cédric.png
+    - assets/roboto/Roboto-Medium.ttf
 
   #   - images/a_dot_ham.jpeg
 

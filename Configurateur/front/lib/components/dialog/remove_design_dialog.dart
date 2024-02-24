@@ -75,7 +75,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Ajouter un conteneur',
+          const Text('Retirer une image',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
           Row(
@@ -125,6 +125,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Devant',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
@@ -158,6 +159,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Derrière',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
@@ -191,6 +193,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Gauche',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
@@ -231,6 +234,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Droite',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
@@ -264,6 +268,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Haut',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
@@ -297,6 +302,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           child: Text(
                             'Bas',
                             style: TextStyle(
+                              fontSize: 12,
                               color: getTextColor(),
                             ),
                           ),
