@@ -46,6 +46,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   double actualRotationDegree = 0.0;
   String jwtToken = '';
   dynamic decodedContainer;
+  bool unitTest = false;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -58,8 +59,8 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    //checkToken();
-    //MyAlertTest.checkSignInStatus(context);
+    checkToken();
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -120,7 +121,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (decodedContainer != null) {
       for (int i = 0; i < decodedContainer.length; i++) {
-        lockers.add(Locker('Design personnalise', 50));
+        lockers.add(Locker('Design personnalisé', 50));
       }
     }
 
@@ -219,16 +220,6 @@ class ContainerCreationState extends State<ContainerCreation> {
       }
     }
     return "";
-  }
-
-  void handleFloatingPoint() {
-    if (actualRotationDegree != 180 * 3.14 / 180 &&
-        actualRotationDegree != 0 &&
-        actualRotationDegree != 90 * 3.14 / 180 &&
-        actualRotationDegree != 270 * 3.14 / 180) {
-      actualRotationDegree =
-          double.parse(actualRotationDegree.toStringAsFixed(2));
-    }
   }
 
   Widget openDialog() {
@@ -407,9 +398,13 @@ class ContainerCreationState extends State<ContainerCreation> {
       objs[0].fragments[i].faces[5].materialIndex = 0;
     }
 
-    setState(() {
+    if (unitTest == false) {
+      setState(() {
+        lockers = [];
+      });
+    } else {
       lockers = [];
-    });
+    }
   }
 
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {

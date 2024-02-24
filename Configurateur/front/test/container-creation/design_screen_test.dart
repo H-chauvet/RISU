@@ -71,6 +71,7 @@ void main() {
 
     await tester.tap(find.text("Suivant"));
     await tester.tap(find.text("Précédent"));
+    await tester.tap(find.text("Parcourir"));
 
     await tester.pumpAndSettle();
   });
@@ -396,6 +397,88 @@ void main() {
     expect(find.text("Petit Casier"), findsNWidgets(1));
     expect(find.text("Moyen Casier"), findsNWidgets(1));
     expect(find.text("Grand Casier"), findsNWidgets(1));
+  });
+
+  testWidgets('Save', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: DesignScreen(
+            lockers:
+                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+            amount: 60,
+            containerMapping: '0000000111111111112222333',
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.tap(find.text("Sauvegarder"));
+
+    await tester.pump();
+  });
+
+  testWidgets('Remove image', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: DesignScreen(
+            lockers:
+                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+            amount: 60,
+            containerMapping: '0000000111111111112222333',
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.tap(find.text("Retirer une image"));
+
+    await tester.pump();
   });
 }
 
