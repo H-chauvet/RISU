@@ -14,7 +14,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -62,9 +61,7 @@ void main() {
     expect(find.text("Design"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
     expect(find.text("Précédent"), findsOneWidget);
-    expect(find.text("Importer une image"), findsOneWidget);
-    expect(find.text("Retirer l'image sélectionner"), findsOneWidget);
-    expect(find.text("Appliquer"), findsOneWidget);
+    expect(find.text("Retirer une image"), findsOneWidget);
     expect(find.text("Petit Casier"), findsOneWidget);
     expect(find.text("100€"), findsOneWidget);
     expect(find.text("Moyen Casier"), findsOneWidget);
@@ -74,43 +71,7 @@ void main() {
 
     await tester.tap(find.text("Suivant"));
     await tester.tap(find.text("Précédent"));
-    await tester.tap(find.text("Retirer l'image sélectionner"));
-
-    await tester.pumpAndSettle();
-  });
-
-  testWidgets('Payment confirmation screen', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const DesignScreen(
-            lockers:
-                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
-            amount: 60,
-            containerMapping: '1',
-          ),
-        ),
-      ),
-    ));
-
-    await tester.pumpAndSettle(const Duration(seconds: 2));
-
-    await tester.tap(find.byKey(const Key('design-face')));
-
-    await tester.pump();
-
-    await tester.tap(find.text('Devant').last);
+    await tester.tap(find.text("Parcourir"));
 
     await tester.pumpAndSettle();
   });
@@ -261,11 +222,11 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Bas";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 4);
 
     await tester.pump();
 
@@ -281,11 +242,11 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Haut";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 2);
 
     await tester.pump();
 
@@ -301,11 +262,11 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Gauche";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 3);
 
     await tester.pump();
 
@@ -321,11 +282,11 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Droite";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 5);
 
     await tester.pump();
 
@@ -341,11 +302,11 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Devant";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 0);
 
     await tester.pump();
 
@@ -361,9 +322,9 @@ void main() {
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
-    designScreenState.lockerss.add(Locker("design personnalisé", 100));
-    designScreenState.lockerss.add(Locker("design personnalisé", 150));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 100));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 150));
 
     designScreenState.face = "Devant";
 
@@ -384,11 +345,11 @@ void main() {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     obj.fragments[0].faces[0].materialIndex = 1;
     designScreenState.objs.add(obj);
-    designScreenState.lockerss.add(Locker("design personnalisé", 50));
+    designScreenState.lockerss.add(Locker("Design personnalisé", 50));
 
     designScreenState.face = "Derrière";
 
-    await designScreenState.removeImage(true);
+    await designScreenState.removeImage(true, 1);
 
     await tester.pump();
 
@@ -436,6 +397,88 @@ void main() {
     expect(find.text("Petit Casier"), findsNWidgets(1));
     expect(find.text("Moyen Casier"), findsNWidgets(1));
     expect(find.text("Grand Casier"), findsNWidgets(1));
+  });
+
+  testWidgets('Save', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: DesignScreen(
+            lockers:
+                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+            amount: 60,
+            containerMapping: '0000000111111111112222333',
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.tap(find.text("Sauvegarder"));
+
+    await tester.pump();
+  });
+
+  testWidgets('Remove image', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+    var container = {
+      'id': '1',
+      'saveName': 'test',
+      'height': '12',
+      'width': '5',
+      'containerMapping': '0000000111111111112222333',
+      'designs': jsonEncode([]),
+    };
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: DesignScreen(
+            lockers:
+                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+            amount: 60,
+            containerMapping: '0000000111111111112222333',
+            id: '1',
+            container: jsonEncode(container),
+          ),
+        ),
+      ),
+    ));
+
+    await tester.tap(find.text("Retirer une image"));
+
+    await tester.pump();
   });
 }
 

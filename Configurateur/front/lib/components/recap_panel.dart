@@ -114,7 +114,7 @@ class RecapPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                constraints: const BoxConstraints(minWidth: 125, maxWidth: 125),
+                constraints: const BoxConstraints(minWidth: 140, maxWidth: 140),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
@@ -177,7 +177,7 @@ class RecapPanel extends StatelessWidget {
                   children: [
                     Container(
                       constraints:
-                          const BoxConstraints(minWidth: 125, maxWidth: 125),
+                          const BoxConstraints(minWidth: 140, maxWidth: 140),
                       child: const Padding(
                         padding: EdgeInsets.only(left: 10),
                         child: Text(

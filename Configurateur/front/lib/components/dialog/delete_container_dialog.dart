@@ -62,6 +62,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
+                    key: const Key('locker-column'),
                     decoration: InputDecoration(
                       hintText: 'Entrez la colonne du casier',
                       labelText: 'numéro de colonne',
@@ -91,6 +92,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
+                    key: const Key('locker-row'),
                     decoration: InputDecoration(
                       hintText: 'Entrez la ligne du casier',
                       labelText: 'numéro de ligne',
