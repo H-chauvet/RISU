@@ -21,6 +21,15 @@ unit_tests ()
     flutter test test/models
 }
 
+remote ()
+{
+  sudo adb kill-server
+  sudo adb start-server
+  adb tcpip 5555
+  # shellcheck disable=SC2046
+  adb connect $(adb shell ip route | awk '{print $9}'):5555
+}
+
 widget_tests ()
 {
     # shellcheck disable=SC2044
@@ -64,6 +73,8 @@ elif [ "$1" == "android" ]; then
     android
 elif [ "$1" == "ios" ]; then
     ios
+elif [ "$1" == "remote" ]; then
+    remote
 elif [ "$1" == "doc" ]; then
     run_doc
 else

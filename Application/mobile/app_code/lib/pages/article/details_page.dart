@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'details_state.dart';
 
 class ArticleDetailsPage extends StatefulWidget {
-  final String articleId;
+  final int articleId;
 
   const ArticleDetailsPage({
     super.key,

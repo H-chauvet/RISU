@@ -35,23 +35,26 @@ dependencies:
   url_launcher: ^6.1.9
   shared_preferences: ^2.0.18
   provider: ^6.0.1
-  mockito: ^5.0.0
   cupertino_icons: ^1.0.2
   flutter_signin_button: ^2.0.0
   google_maps_flutter: ^2.2.0
   flutter_dotenv: ^5.1.0
-  intl: ^0.19.0
+  intl: ^0.18.1
   profile_photo: ^1.0.3
   geolocator: ^10.1.0
   permission_handler: ^11.0.1
   flutter_stripe: ^7.0.0
   flutter_local_notifications: ^16.3.2
+  flutter_localizations:
+    sdk: flutter
+  country_flags: ^2.2.0
 
 dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_test:
     sdk: flutter
+  mockito: ^5.4.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -74,6 +77,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  # Use localizations for internationalization
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   # assets:

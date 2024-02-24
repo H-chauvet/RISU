@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -12,12 +13,13 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
+  late bool keepPath;
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
@@ -29,87 +31,53 @@ class LoginPageState extends State<LoginPage> {
         await MyAlertDialog.showErrorAlertDialog(
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
-          title: 'Erreur',
-          message: 'Certains champs sont vides.',
+          title: AppLocalizations.of(context)!.error,
+          message: AppLocalizations.of(context)!.fieldsEmpty,
         );
         return false;
       }
     }
 
-    late http.Response response;
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
-      response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/login'),
+      http.Response response = await http.post(
+        Uri.parse('http://$serverIp:3000/api/mobile/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(
-            <String, String>{'email': _email!, 'password': _password!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+          'password': _password!,
+        }),
       );
-    } catch (err, stacktrace) {
-      if (context.mounted) {
-        printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
-      }
-    }
-    setState(() {
-      _loaderManager.setIsLoading(false);
-    });
-    if (response.statusCode == 201) {
-      try {
-        final jsonData = jsonDecode(response.body);
-        if (jsonData.containsKey('user') && jsonData.containsKey('token')) {
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      final jsonData = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        setState(() {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
-          return true;
-        } else {
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-                key: const Key('login-alertdialog_invaliddata'),
-                context: context,
-                title: 'Erreur',
-                message: 'Token de connexion invalide, veuillez réessayer.');
-            return false;
-          }
-        }
-      } catch (err, stacktrace) {
-        if (context.mounted) {
-          printCatchError(context, err, stacktrace,
-              message: "Invalid token... Please retry.");
-        }
-        return false;
-      }
-    } else {
-      try {
-        final jsonData = jsonDecode(response.body);
+        });
+        return true;
+      } else {
         if (jsonData.containsKey('message')) {
           if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-                key: const Key('login-alertdialog_invalidresponse'),
-                context: context,
-                title: 'Connexion',
+            printServerResponse(context, response, 'apiLogin',
                 message: jsonData['message']);
             return false;
           }
-        } else {
-          if (context.mounted) {
-            await MyAlertDialog.showErrorAlertDialog(
-              key: const Key('login-alertdialog_invalidcredentials'),
-              context: context,
-              title: 'Connexion',
-              message: 'Informations de connexion invalides.',
-            );
-            return false;
-          }
         }
-      } catch (err, stacktrace) {
-        if (context.mounted) {
-          printCatchError(context, err, stacktrace,
-              message: "Une erreur est survenue lors de la connexion.");
-        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!.connectionRefused);
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         return false;
       }
     }
@@ -118,23 +86,33 @@ class LoginPageState extends State<LoginPage> {
 
   void apiResetPassword(BuildContext context) async {
     try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
       if (_email == null) {
         await MyAlertDialog.showErrorAlertDialog(
           context: context,
-          title: 'Email',
-          message: 'Veuillez renseigner votre email.',
+          title: AppLocalizations.of(context)!.error,
+          message: AppLocalizations.of(context)!.emailNotFilled,
         );
         return;
       }
+      if (_email == 'admin@gmail.com') {
+        await MyAlertDialog.showErrorAlertDialog(
+          context: context,
+          title: AppLocalizations.of(context)!.error,
+          message: AppLocalizations.of(context)!.passwordCantResetAdmin,
+        );
+        return;
+      }
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
       var response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/user/resetPassword'),
+        Uri.parse('http://$serverIp:3000/api/mobile/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{'email': _email!}),
+        body: jsonEncode(<String, String>{
+          'email': _email!,
+        }),
       );
       setState(() {
         _loaderManager.setIsLoading(false);
@@ -143,21 +121,23 @@ class LoginPageState extends State<LoginPage> {
         if (context.mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            title: 'Email',
-            message: 'Un mot de passe temporaire a été envoyé à $_email.',
+            title: AppLocalizations.of(context)!.email,
+            message:
+                AppLocalizations.of(context)!.passwordTemporarySent(_email!),
           );
         }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'apiResetPassword',
-              message: "La réinitialisation du mot de passe a échoué.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringPasswordReset);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
             message:
-                "Une erreur est survenue lors de la réinitialisation du mot de passe.");
+                AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
       }
     }
   }
@@ -165,6 +145,7 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+    keepPath = widget.keepPath ?? false;
   }
 
   @override
@@ -179,7 +160,6 @@ class LoginPageState extends State<LoginPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
@@ -190,7 +170,7 @@ class LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Connexion',
+                    AppLocalizations.of(context)!.connection,
                     key: const Key('login-text_title'),
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -213,7 +193,7 @@ class LoginPageState extends State<LoginPage> {
                     children: [
                       MyTextInput(
                         key: const Key('login-textinput_email'),
-                        labelText: "Email",
+                        labelText: AppLocalizations.of(context)!.email,
                         keyboardType: TextInputType.emailAddress,
                         icon: Icons.email_outlined,
                         onChanged: (value) => _email = value,
@@ -221,7 +201,7 @@ class LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 16),
                       MyTextInput(
                         key: const Key('login-textinput_password'),
-                        labelText: "Mot de passe",
+                        labelText: AppLocalizations.of(context)!.password,
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: !_isPasswordVisible,
                         icon: Icons.lock_outline,
@@ -247,7 +227,7 @@ class LoginPageState extends State<LoginPage> {
                                 });
                               },
                               child: Text(
-                                'Mot de passe oublié ?',
+                                "${AppLocalizations.of(context)!.passwordForgotten} ?",
                                 style: TextStyle(
                                   fontSize: 12,
                                   decoration: TextDecoration.underline,
@@ -269,15 +249,18 @@ class LoginPageState extends State<LoginPage> {
                       apiLogin().then((value) => {
                             if (value)
                               {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return const HomePage();
-                                    },
+                                if (keepPath)
+                                  Navigator.pop(context)
+                                else
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return const HomePage();
+                                      },
+                                    ),
+                                    (route) => false,
                                   ),
-                                  (route) => false,
-                                ),
                               }
                           });
                     },
@@ -296,7 +279,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: Text(
-                      'Se connecter',
+                      AppLocalizations.of(context)!.signIn,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.secondaryHeaderColor),
@@ -317,7 +300,7 @@ class LoginPageState extends State<LoginPage> {
                       );
                     },
                     child: Text(
-                      'Pas de compte ? S\'inscrire',
+                      "${AppLocalizations.of(context)!.noAccount}? ${AppLocalizations.of(context)!.register}",
                       style: TextStyle(
                         fontSize: 14,
                         decoration: TextDecoration.underline,

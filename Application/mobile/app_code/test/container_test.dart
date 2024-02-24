@@ -18,15 +18,15 @@ void main() {
       initPage(
         ContainerCard(
           container: ContainerList(
-            id: '1',
+            id: 1,
             price: 10,
             createdAt: null,
             containerMapping: null,
-            address: "rue george",
-            city: "nantes",
+            address: 'rue george',
+            city: 'nantes',
             designs: null,
             items: null,
-            informations: "info",
+            informations: 'info',
             paid: true,
             saveName: null,
           ),

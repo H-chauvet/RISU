@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
@@ -8,20 +9,19 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/container/details_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 
 class ArticleDetailsState extends State<ArticleDetailsPage> {
   ArticleData articleData = ArticleData(
-      id: '', containerId: '', name: '', available: false, price: 0);
+      id: -1, containerId: -1, name: '', available: false, price: 0);
   final LoaderManager _loaderManager = LoaderManager();
 
-  Future<dynamic> getArticleData(BuildContext context, String articleId) async {
+  Future<dynamic> getArticleData(BuildContext context, int articleId) async {
     late http.Response response;
 
     try {
@@ -29,7 +29,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/article/$articleId'),
+        Uri.parse('http://$serverIp:3000/api/mobile/article/$articleId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -44,28 +44,31 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         if (context.mounted) {
           printServerResponse(context, response, 'getArticleData',
               message:
-                  "Une erreur est survenue lors de la récupération des données");
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
         }
       }
       return {
-        'id': '',
-        'containerId': '',
+        'id': -1,
+        'containerId': -1,
         'name': '',
         'available': false,
         'price': 0,
       };
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return {
+          'id': -1,
+          'containerId': -1,
+          'name': '',
+          'available': false,
+          'price': 0,
+        };
       }
-      return {
-        'id': '',
-        'containerId': '',
-        'name': '',
-        'available': false,
-        'price': 0,
-      };
     }
   }
 
@@ -89,7 +92,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -164,9 +166,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   const EdgeInsets.all(8.0),
                                               color: themeProvider
                                                   .currentTheme.primaryColor,
-                                              child: const Text(
-                                                'Actuellement :',
-                                                style: TextStyle(
+                                              child: Text(
+                                                "${AppLocalizations.of(context)!.currently}: ",
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -195,9 +197,14 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   ),
                                                   const SizedBox(width: 5),
                                                   Text(
-                                                    (articleData.available)
-                                                        ? 'Disponible'
-                                                        : 'indisponible',
+                                                    articleData.available ==
+                                                            true
+                                                        ? AppLocalizations.of(
+                                                                context)!
+                                                            .available
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .unavailable,
                                                     style: const TextStyle(
                                                       fontSize: 18,
                                                       fontWeight:
@@ -219,9 +226,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               color: themeProvider
                                                   .currentTheme.primaryColor
                                                   .withOpacity(0.6),
-                                              child: const Text(
-                                                'Prix à l\'heure :',
-                                                style: TextStyle(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .pricePerHour,
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -236,7 +244,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   .currentTheme.primaryColor
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                '${articleData.price} €',
+                                                "${articleData.price}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -255,29 +263,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.infinity,
-                        child: MyOutlinedButton(
-                          text: 'Afficher le conteneur lié',
-                          key: const Key('article-button_container-details'),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ContainerDetailsPage(
-                                  containerId: articleData.containerId,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                       const SizedBox(height: 16),
                       if (articleData.available)
                         SizedBox(
                           width: double.infinity,
                           child: MyOutlinedButton(
-                            text: 'Louer cet article',
+                            text: AppLocalizations.of(context)!.rentThisArticle,
                             key: const Key('article-button_article-rent'),
                             onPressed: () async {
                               bool signIn = await checkSignin(context);

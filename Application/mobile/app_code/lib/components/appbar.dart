@@ -3,28 +3,29 @@ import 'package:flutter/material.dart';
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final bool showLogo;
-  final bool showBurgerMenu;
   final Color curveColor;
+  late void Function()? onBackButtonPressed;
 
-  const MyAppBar({
+  MyAppBar({
     super.key,
     required this.curveColor,
     this.showBackButton = true,
     this.showLogo = true,
-    this.showBurgerMenu = false,
+    this.onBackButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
+    onBackButtonPressed ??= () {
+      Navigator.pop(context);
+    };
     return CustomPaint(
       painter: CurvePainter(curveColor),
       child: AppBar(
         leading: showBackButton
             ? BackButton(
                 key: const Key('appbar-button_back'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: onBackButtonPressed!,
               )
             : null,
         title: showLogo
@@ -35,15 +36,6 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             : null,
         centerTitle: true,
-        actions: showBurgerMenu
-            ? [
-                IconButton(
-                  key: const Key('appbar-button_burgermenu'),
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {},
-                ),
-              ]
-            : null,
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,
         elevation: 0,

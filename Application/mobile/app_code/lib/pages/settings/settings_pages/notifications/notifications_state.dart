@@ -1,17 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/loader.dart';
-import 'package:risu/components/local_notifications.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'notifications_page.dart';
 
@@ -36,7 +36,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:8080/api/user/notifications'),
+        Uri.parse('http://$serverIp:3000/api/mobile/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation!.token}',
@@ -63,14 +63,18 @@ class NotificationsPageState extends State<NotificationsPage> {
         if (context.mounted) {
           printServerResponse(context, response, 'saveNotifications',
               message:
-                  "Une erreur est survenue lors de la sauvegarde des données");
+                  AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
             message:
-                "Une erreur est survenue lors de la sauvegarde des données.");
+                AppLocalizations.of(context)!.errorOccurredDuringSavingData);
+        return null;
       }
     }
     return null;
@@ -134,7 +138,6 @@ class NotificationsPageState extends State<NotificationsPage> {
         ),
         showBackButton: true,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(
@@ -149,9 +152,10 @@ class NotificationsPageState extends State<NotificationsPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 16),
-                  const Text(
-                    'Gestion des notifications',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context)!
+                        .notificationsPreferencesManagement,
+                    style: const TextStyle(
                       fontSize: 32, // Taille de la police
                       fontWeight: FontWeight.bold, // Gras
                       color: Color(0xFF4682B4),
@@ -160,14 +164,15 @@ class NotificationsPageState extends State<NotificationsPage> {
                   const SizedBox(height: 20),
                   createSwitch(
                     const Key('notifications-switch_disponibility_favorite'),
-                    "Disponibilité d'un article favoris",
+                    AppLocalizations.of(context)!
+                        .availabilityOfAFavoriteArticle,
                     isFavoriteItemsAvailableChecked,
                     (newValue) => setState(
                         () => isFavoriteItemsAvailableChecked = newValue),
                   ),
                   createSwitch(
                     const Key('notifications-switch_end_renting'),
-                    "Fin de ma location",
+                    AppLocalizations.of(context)!.endOfRenting,
                     isEndOfRentingChecked,
                     (newValue) =>
                         setState(() => isEndOfRentingChecked = newValue),
@@ -175,7 +180,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                   const MyDivider(),
                   createSwitch(
                     const Key('notifications-switch_news_offers_risu'),
-                    "Actus, offres et conseils de Risu",
+                    AppLocalizations.of(context)!.newsOffersTipsRisu,
                     isNewsOffersChecked,
                     (newValue) =>
                         setState(() => isNewsOffersChecked = newValue),
@@ -183,7 +188,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                   const MyDivider(),
                   createSwitch(
                     const Key('notifications-switch_all'),
-                    "Tous",
+                    AppLocalizations.of(context)!.all,
                     isAllChecked,
                     (newValue) => {
                       setState(() {
@@ -198,16 +203,15 @@ class NotificationsPageState extends State<NotificationsPage> {
                   const Expanded(child: SizedBox()),
                   MyButton(
                     key: const Key('notifications-button_save'),
-                    text: "Enregistrer",
+                    text: AppLocalizations.of(context)!.save,
                     onPressed: () => saveNotifications().then(
                       (response) => {
                         if (response != null && response.statusCode == 200)
                           {
-                            LocalNotificationService().showNotificationAndroid(
-                                "Notifications", "Enregistrées"),
                             MyToastMessage.show(
                               context: context,
-                              message: 'Notifications enregistrées.',
+                              message: AppLocalizations.of(context)!
+                                  .notificationsSaved,
                             ),
                           },
                       },

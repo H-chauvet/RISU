@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
@@ -29,8 +31,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
+      endDrawer: const BurgerDrawer(),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
@@ -42,7 +44,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Confirmation de location:',
+                      "${AppLocalizations.of(context)!.rentConfirmationOf}:",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -65,7 +67,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               ),
               const SizedBox(height: 32),
               Text(
-                'Résumé:',
+                "${AppLocalizations.of(context)!.summary}:",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -75,7 +77,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '- Prix par heure: ${data.price} euros',
+                "- ${AppLocalizations.of(context)!.priceXPerHour(data.price)}",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -85,7 +87,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                '- Nombre d\'heure${hours > 1 ? 's' : ''}: $hours',
+                "- ${AppLocalizations.of(context)!.hoursNumberOfHours(hours)}: $hours",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -95,7 +97,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               ),
               const SizedBox(height: 16),
               Text(
-                'Total: ${hours * data.price} euros',
+                "${AppLocalizations.of(context)!.total}: ${hours * data.price}€",
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
@@ -108,7 +110,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Merci pour votre location !\nN\'oubliez pas de rendre l\'article dans $hours heure${hours > 1 ? 's' : ''} !',
+                      AppLocalizations.of(context)!.rentsThanking(hours),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 22,
@@ -122,7 +124,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                       width: double.infinity,
                       child: MyOutlinedButton(
                         key: const Key('confirm_rent-button-back_home'),
-                        text: 'Retour à l\'accueil',
+                        text: AppLocalizations.of(context)!.homeGoBack,
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
                             context,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -18,11 +19,11 @@ class MapPageState extends State<MapPage> {
     _requestLocationPermission();
   }
 
-  Widget displayMap() {
+  Widget displayMap(BuildContext context) {
     if (!displayGoogleMap) {
-      return const Center(
+      return Center(
         child: Text(
-          'Risu decided to not display the map',
+          AppLocalizations.of(context)!.mapNoDisplayedByRisu,
           textAlign: TextAlign.center,
         ),
       );
@@ -42,8 +43,8 @@ class MapPageState extends State<MapPage> {
       markerId: MarkerId('marker_1'),
       position: LatLng(47.2104851, -1.56675127492582),
       infoWindow: InfoWindow(
-        title: 'Epitech',
-        snippet: 'Nantes',
+        title: "Epitech",
+        snippet: "Nantes",
       ),
     ),
   };
@@ -77,8 +78,8 @@ class MapPageState extends State<MapPage> {
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (err, stacktrace) {
       printCatchError(context, err, stacktrace,
-          message:
-              "Une erreur est survenue lors de la récupération de la position de l'utilisateur.");
+          message: AppLocalizations.of(context)!
+              .errorOccurredDuringGettingUserLocation);
     }
   }
 
@@ -86,7 +87,7 @@ class MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: displayMap(),
+      body: displayMap(context),
     );
   }
 }

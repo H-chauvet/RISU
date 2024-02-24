@@ -1,23 +1,24 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'article_list_data.dart';
 import 'list_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
-  late String _containerId;
+  late int _containerId;
   List<dynamic> _itemsDatas = [];
   final LoaderManager _loaderManager = LoaderManager();
 
-  Future<dynamic> getItemsData(BuildContext context, String containerId) async {
+  Future<dynamic> getItemsData(BuildContext context, int containerId) async {
     late http.Response response;
 
     try {
@@ -26,7 +27,7 @@ class ArticleListState extends State<ArticleListPage> {
       });
       response = await http.get(
         Uri.parse(
-            'http://$serverIp:8080/api/container/$containerId/articleslist'),
+            'http://$serverIp:3000/api/mobile/container/$containerId/articleslist'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -43,15 +44,18 @@ class ArticleListState extends State<ArticleListPage> {
       if (context.mounted) {
         printServerResponse(context, response, 'getItemsData',
             message:
-                "Une erreur est survenue lors de la récupération des données.");
+                AppLocalizations.of(context)!.errorOccurredDuringGettingData);
       }
       return [];
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: 'Connexion refusée.');
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return [];
       }
-      return [];
     }
   }
 
@@ -74,7 +78,6 @@ class ArticleListState extends State<ArticleListPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -91,7 +94,7 @@ class ArticleListState extends State<ArticleListPage> {
                     children: [
                       const SizedBox(height: 16),
                       Text(
-                        'Liste des articles',
+                        AppLocalizations.of(context)!.articlesList,
                         key: const Key('articles-list_title'),
                         style: TextStyle(
                           fontSize: 32,
@@ -112,7 +115,7 @@ class ArticleListState extends State<ArticleListPage> {
                       const SizedBox(height: 16),
                       if (_itemsDatas.isEmpty) ...[
                         Text(
-                          'Aucun article disponible pour ce conteneur',
+                          AppLocalizations.of(context)!.articlesListEmpty,
                           key: const Key('articles-list_no-article'),
                           style: TextStyle(
                             fontSize: 32,

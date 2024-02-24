@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
@@ -10,7 +11,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'opinion_page.dart';
 
@@ -26,9 +27,10 @@ class OpinionPageState extends State<OpinionPage> {
       });
       var url = '';
       if (selectedStarFilter == 6) {
-        url = 'http://$serverIp:8080/api/opinion';
+        url = 'http://$serverIp:3000/api/mobile/opinion';
       } else {
-        url = 'http://$serverIp:8080/api/opinion?note=$selectedStarFilter';
+        url =
+            'http://$serverIp:3000/api/mobile/opinion?note=$selectedStarFilter';
       }
       final response = await http.get(
         Uri.parse(url),
@@ -53,14 +55,19 @@ class OpinionPageState extends State<OpinionPage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'getOpinions',
-              message: "Erreur lors de la récupération des avis.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingReviews);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message:
-                "Une erreur est survenue lors de la récupération des avis.");
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingReviews);
+        return;
       }
     }
   }
@@ -72,7 +79,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/opinion'),
+        Uri.parse('http://$serverIp:3000/api/mobile/opinion'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -90,20 +97,25 @@ class OpinionPageState extends State<OpinionPage> {
           getOpinions();
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            title: 'Avis ajouté',
-            message: 'Votre avis a bien été sauvegardé.',
+            title: AppLocalizations.of(context)!.reviewAdded,
+            message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
           );
         }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'postOpinion',
-              message: "Erreur lors de la sauvegarde de l'avis.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringSavingReview);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return;
       }
     }
   }
@@ -118,7 +130,7 @@ class OpinionPageState extends State<OpinionPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text('Ajouter un avis'),
+              title: Text(AppLocalizations.of(context)!.reviewAdd),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -143,7 +155,7 @@ class OpinionPageState extends State<OpinionPage> {
                   const SizedBox(height: 20),
                   MyTextInput(
                     key: const Key('opinion-textinput_comment'),
-                    labelText: "Commentaire",
+                    labelText: AppLocalizations.of(context)!.comment,
                     keyboardType: TextInputType.text,
                     icon: Icons.comment,
                     onChanged: (value) => comment = value,
@@ -156,14 +168,14 @@ class OpinionPageState extends State<OpinionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     MyOutlinedButton(
-                      text: 'Annuler',
+                      text: AppLocalizations.of(context)!.cancel,
                       key: const Key('cancel-button'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
                     ),
                     MyOutlinedButton(
-                      text: 'Ajouter',
+                      text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
                         postOpinion(selectedStar, comment);
@@ -194,7 +206,6 @@ class OpinionPageState extends State<OpinionPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: false,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -212,10 +223,10 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Avis de l\'application',
-                            key: Key('opinion-title'),
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.reviewsList,
+                            key: const Key('opinion-title'),
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
@@ -226,41 +237,63 @@ class OpinionPageState extends State<OpinionPage> {
                                 DropdownButton<int>(
                                   key: const Key('opinion-filter_dropdown'),
                                   value: selectedStarFilter,
-                                  items: const [
+                                  items: [
                                     DropdownMenuItem<int>(
                                       value: 0,
-                                      key: Key('opinion-filter_dropdown_0'),
-                                      child: Text('0 étoile'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_0'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(0),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 1,
-                                      key: Key('opinion-filter_dropdown_1'),
-                                      child: Text('1 étoile'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_1'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(1),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 2,
-                                      key: Key('opinion-filter_dropdown_2'),
-                                      child: Text('2 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_2'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(2),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 3,
-                                      key: Key('opinion-filter_dropdown_3'),
-                                      child: Text('3 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_3'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(3),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 4,
-                                      key: Key('opinion-filter_dropdown_4'),
-                                      child: Text('4 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_4'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(4),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 5,
-                                      key: Key('opinion-filter_dropdown_5'),
-                                      child: Text('5 étoiles'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_5'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!.starsX(5),
+                                      ),
                                     ),
                                     DropdownMenuItem<int>(
                                       value: 6,
-                                      key: Key('opinion-filter_dropdown_all'),
-                                      child: Text('Tous les avis'),
+                                      key: const Key(
+                                          'opinion-filter_dropdown_all'),
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .reviewsAll,
+                                      ),
                                     ),
                                   ],
                                   onChanged: (value) {
@@ -285,7 +318,7 @@ class OpinionPageState extends State<OpinionPage> {
                                         key: Key(
                                             'opinion-listTile_${opinion['id']}'),
                                         title: Text(
-                                          '${(opinion['firstName'] ?? 'Anonyme')} ${(opinion['lastName'] ?? '')}',
+                                          '${(opinion['firstName'] ?? AppLocalizations.of(context)!.anonymous)} ${(opinion['lastName'] ?? '')}',
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -326,8 +359,8 @@ class OpinionPageState extends State<OpinionPage> {
                                       ),
                                     ),
                                 if (opinionsList.isEmpty)
-                                  const Text(
-                                    'Aucun avis',
+                                  Text(
+                                    AppLocalizations.of(context)!.reviewsEmpty,
                                     style: TextStyle(fontSize: 16),
                                   ),
                               ],

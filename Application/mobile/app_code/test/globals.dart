@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/language.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 
-Widget initPage(Widget page, {bool isDarkMode = false}) {
+Widget initPage(Widget page, {String appTheme = 'Clair'}) {
   return MultiProvider(
     providers: [
       ChangeNotifierProvider<ThemeProvider>(
-        create: (_) => ThemeProvider(isDarkMode),
+        create: (_) => ThemeProvider(appTheme),
       ),
+      ChangeNotifierProvider(
+          create: (context) => LanguageProvider(const Locale('fr'))),
     ],
     child: MaterialApp(
       home: page,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     ),
   );
 }
@@ -46,4 +53,17 @@ UserData initNullUser({String? email, List<bool>? notifications}) {
           false,
         ],
   );
+}
+
+Future<void> waitForLoader(
+    {required WidgetTester tester, required Widget testPage}) async {
+  await tester.pumpWidget(testPage);
+  while (true) {
+    try {
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      await tester.pumpWidget(testPage, const Duration(milliseconds: 100));
+    } catch (e) {
+      break;
+    }
+  }
 }

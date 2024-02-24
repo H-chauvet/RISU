@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/theme.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'rent_page.dart';
 
@@ -52,12 +53,12 @@ class RentArticlePageState extends State<RentArticlePage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/article'),
+        Uri.parse('http://$serverIp:3000/api/mobile/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'itemId': _articleData.id,
           'duration': _rentalHours.toString(),
         }),
@@ -83,13 +84,18 @@ class RentArticlePageState extends State<RentArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'rentArticle',
-              message: "Erreur lors de la location.");
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringRenting);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "Connexion refusée.");
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return;
       }
     }
   }
@@ -120,13 +126,19 @@ class RentArticlePageState extends State<RentArticlePage> {
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'createPaymentIntent',
-              message: "Echec de la création du paiement.");
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringPaymentCreation);
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
         printCatchError(context, err, stacktrace,
-            message: "Echec de la création du paiement.");
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringPaymentCreation);
+        return null;
       }
     }
     return null;
@@ -134,16 +146,21 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   Future<void> initPaymentSheet(String clientSecret) async {
     try {
+      dynamic currentTheme = context.read<ThemeProvider>().currentTheme;
       await stripe.Stripe.instance.initPaymentSheet(
         paymentSheetParameters: stripe.SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
-          style: ThemeMode.light,
+          style: currentTheme == appTheme['clair']
+              ? ThemeMode.light
+              : ThemeMode.dark,
           merchantDisplayName: 'Ikay',
         ),
       );
     } catch (err, stacktrace) {
       if (context.mounted) {
-        printCatchError(context, err, stacktrace, message: "Erreur Stripe.");
+        printCatchError(context, err, stacktrace,
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringSettingStripe);
       }
     }
   }
@@ -163,23 +180,25 @@ class RentArticlePageState extends State<RentArticlePage> {
           // paiement success
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            title: 'Paiement effectué',
-            message: 'Le paiement a bien été effectué',
+            title: AppLocalizations.of(context)!.paymentDone,
+            message: AppLocalizations.of(context)!.paymentSuccessful,
           );
         });
       } else {
         if (context.mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
-            title: 'Le paiement a échoué',
-            message: 'Client secret is missing',
+            title: AppLocalizations.of(context)!.error,
+            message: AppLocalizations.of(context)!.paymentClientSecretInvalid,
           );
+          return;
         }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,
-            message: "Le paiement a échoué.");
+            message: AppLocalizations.of(context)!.paymentHasFailed);
+        return;
       }
     }
   }
@@ -187,18 +206,17 @@ class RentArticlePageState extends State<RentArticlePage> {
   void confirmRent() async {
     await MyAlertDialog.showChoiceAlertDialog(
       context: context,
-      title: 'Confirmer la location',
-      message: 'Êtes-vous sûr de vouloir louer cet article ?',
-      onOkName: 'Confirmer',
-      onCancelName: 'Annuler',
-    ).then(
-      (value) => {
-        if (value)
-          {
-            makePayment(),
-          }
-      },
-    );
+      title: AppLocalizations.of(context)!.rentConfirmation,
+      message: AppLocalizations.of(context)!
+          .rentAskConfirmationMessage(_rentalHours),
+      onOkName: AppLocalizations.of(context)!.confirm,
+      onCancelName: AppLocalizations.of(context)!.cancel,
+    ).then((value) => {
+          if (value)
+            {
+              makePayment(),
+            }
+        });
   }
 
   @override
@@ -209,7 +227,6 @@ class RentArticlePageState extends State<RentArticlePage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         showLogo: true,
-        showBurgerMenu: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -225,7 +242,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Location de l\'article',
+                        AppLocalizations.of(context)!.rentArticle,
                         style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
@@ -234,7 +251,6 @@ class RentArticlePageState extends State<RentArticlePage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      // image
                       Container(
                         width: 256,
                         height: 192,
@@ -246,9 +262,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 8),
-
                       Card(
                         elevation: 2,
                         margin: const EdgeInsets.all(8),
@@ -290,9 +304,10 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: const Color(0xFF4682B4),
-                                              child: const Text(
-                                                'Prix par heure',
-                                                style: TextStyle(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .pricePerHour,
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
@@ -305,9 +320,10 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               color: const Color(0xFF4682B4),
-                                              child: const Text(
-                                                'Coût total',
-                                                style: TextStyle(
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .priceTotal,
+                                                style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black,
@@ -326,7 +342,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               color: const Color(0xFF4682B4)
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                '${_articleData.price} €',
+                                                "${_articleData.price}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -342,7 +358,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                               color: const Color(0xFF4682B4)
                                                   .withOpacity(0.6),
                                               child: Text(
-                                                '${_articleData.price * _rentalHours} €',
+                                                "${_articleData.price * _rentalHours}€",
                                                 style: const TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -380,7 +396,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                                           onPressed: _decrementHours,
                                         ),
                                         Text(
-                                          '$_rentalHours heure${_rentalHours > 1 ? 's' : ''}',
+                                          AppLocalizations.of(context)!
+                                              .rentHours(_rentalHours),
                                           style: const TextStyle(
                                             color: Colors.black,
                                           ),
@@ -403,14 +420,13 @@ class RentArticlePageState extends State<RentArticlePage> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 8),
                       if (_articleData.available)
                         SizedBox(
                           width: double.infinity,
                           child: MyOutlinedButton(
                             key: const Key('confirm-rent-button'),
-                            text: 'Louer',
+                            text: AppLocalizations.of(context)!.rent,
                             onPressed: () async {
                               bool signIn = await checkSignin(context);
                               if (!signIn) {

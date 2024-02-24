@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/components/alert_dialog.dart';
 
@@ -8,11 +9,14 @@ void printCatchError(
   StackTrace stacktrace, {
   String? message,
 }) {
-  print("====${e.toString()}====");
+  print('====${e.toString()}====');
   print(stacktrace);
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
-        context: context, title: "Erreur", message: message);
+      context: context,
+      title: AppLocalizations.of(context)!.error,
+      message: message,
+    );
   }
 }
 
@@ -23,9 +27,12 @@ void printServerResponse(
   String? message,
 }) {
   print(
-      "-------- $functionName(): ${response.body} (${response.statusCode})--------");
+      '-------- $functionName(): ${response.body} (${response.statusCode})--------');
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
-        context: context, title: "Erreur", message: message);
+      context: context,
+      title: AppLocalizations.of(context)!.error,
+      message: message,
+    );
   }
 }
