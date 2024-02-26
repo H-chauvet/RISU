@@ -5,6 +5,13 @@ exports.getAllItem = (containerId) => {
     where: {
       containerId: containerId,
     },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      price: true,
+      description: true,
+    },
   });
 };
 
@@ -51,3 +58,36 @@ exports.getAvailableItemsCount = (containerId) => {
     select: { available: true }
   })
 }
+
+exports.updateName = item => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      name: item.name,
+    },
+  });
+};
+
+exports.updatePrice = item => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      price: item.priceTmp,
+    },
+  });
+};
+
+exports.updateDescription = item => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      description: item.description,
+    },
+  });
+};

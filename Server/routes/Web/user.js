@@ -279,30 +279,6 @@ router.post("/update-mail", async (req, res, next) => {
   }
 });
 
-router.post("/update-company/:email", async (req, res, next) => {
-  const email = req.params.email;
-
-  try {
-    const { company } = req.body;
-
-    if (!company) {
-      res.status(400).json({ error: "Company is required" });
-      return;
-    }
-
-    const existingUser = await userCtrl.findUserByEmail(email);
-    if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
-      return;
-    }
-
-    const updatedUser = await userCtrl.updateCompany({ email, company });
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.post("/update-password/:email", async (req, res, next) => {
   const email = req.params.email;
 

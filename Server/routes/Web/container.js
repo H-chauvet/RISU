@@ -135,12 +135,123 @@ router.get("/listAll", async function (req, res, next) {
 router.get("/list/:organizationId", async function (req, res, next) {
   try {
     const organizationId = req.params.organizationId;
-    console.log(req.params.organizationId);
     const container = await containerCtrl.getContainerByOrganizationId(organizationId);
 
     res.status(200).json({ container });
   } catch (err) {
     next(err);
+  }
+});
+
+router.post("/update-city/:id", async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  try {
+      const { city } = req.body;
+
+      if (!city) {
+      res.status(400).json({
+          error: "Email and at least one of city or city are required",
+      });
+      return;
+      }
+
+      const existingUser = await containerCtrl.getContainerById(id);
+      if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+      }
+
+      const updatedUser = await containerCtrl.updateCity({
+      id,
+      city,
+      });
+      res.status(200).json(updatedUser);
+  } catch (err) {
+      next(err);
+  }
+});
+
+router.post("/update-address/:id", async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  try {
+      const { address } = req.body;
+
+      if (!address) {
+      res.status(400).json({
+          error: "Email and at least one of address or address are required",
+      });
+      return;
+      }
+
+      const existingUser = await containerCtrl.getContainerById(id);
+      if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+      }
+
+      const updatedUser = await containerCtrl.updateAddress({
+      id,
+      address,
+      });
+      res.status(200).json(updatedUser);
+  } catch (err) {
+      next(err);
+  }
+});
+
+router.post("/update-name/:id", async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  try {
+      const { saveName } = req.body;
+
+      if (!saveName) {
+      res.status(400).json({
+          error: "Email and at least one of saveName or saveName are required",
+      });
+      return;
+      }
+
+      const existingUser = await containerCtrl.getContainerById(id);
+      if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+      }
+
+      const updatedUser = await containerCtrl.updateSaveName({
+      id,
+      saveName,
+      });
+      res.status(200).json(updatedUser);
+  } catch (err) {
+      next(err);
+  }
+});
+
+router.post("/update-information/:id", async (req, res, next) => {
+  const id = parseInt(req.params.id);
+  try {
+      const { informations } = req.body;
+
+      if (!informations) {
+      res.status(400).json({
+          error: "Email and at least one of informations or informations are required",
+      });
+      return;
+      }
+
+      const existingUser = await containerCtrl.getContainerById(id);
+      if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+      }
+
+      const updatedUser = await containerCtrl.updateInformation({
+      id,
+      informations,
+      });
+      res.status(200).json(updatedUser);
+  } catch (err) {
+      next(err);
   }
 });
 

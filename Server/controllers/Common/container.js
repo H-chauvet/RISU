@@ -22,6 +22,7 @@ exports.getContainerByOrganizationId = (organizationId) => {
       id: true,
       city: true,
       address: true,
+      informations: true,
       items: {
         where: {
           available: true,
@@ -94,3 +95,47 @@ exports.getItemsFromContainer = (containerId) => {
     },
   })
 }
+
+exports.updateCity = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      city: container.city,
+    },
+  });
+};
+
+exports.updateAddress = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      address: container.address,
+    },
+  });
+};
+
+exports.updateSaveName = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      saveName: container.saveName,
+    },
+  });
+};
+
+exports.updateInformation = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      informations: container.informations,
+    },
+  });
+};

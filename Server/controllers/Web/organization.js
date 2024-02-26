@@ -27,3 +27,36 @@ exports.getOrganizationById = (id) => {
     },
   })
 }
+
+exports.updateName = organization => {
+  return db.Organization.update({
+    where: {
+      id: organization.id,
+    },
+    data: {
+      name: organization.name,
+    },
+  });
+};
+
+exports.updateContactInformation = organization => {
+  return db.Organization.update({
+    where: {
+      id: organization.id,
+    },
+    data: {
+      contactInformation: organization.contactInformation,
+    },
+  });
+};
+
+exports.updateType = organization => {
+  return db.Organization.update({
+    where: {
+      id: organization.id,
+    },
+    data: {
+      type: organization.type,
+    },
+  });
+};
