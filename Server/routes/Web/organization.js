@@ -4,6 +4,12 @@ const organizationCtrl = require("../../controllers/Web/organization");
 
 router.get("/get/:id", async function (req, res, next) {
     try {
+        jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
+    try {
         const id = req.params.id;
         if (!id) {
             res.status(400);
@@ -11,18 +17,18 @@ router.get("/get/:id", async function (req, res, next) {
         }
         const organization = await organizationCtrl.getOrganizationById(parseInt(id));
         res.status(200).json(organization);
-        } catch (err) {
+    } catch (err) {
         next(err);
     }
 });
 
 router.post("/create", async function (req, res, next) {
-    // try {
-    //   jwtMiddleware.verifyToken(req.headers.authorization);
-    // } catch (err) {
-    //   res.status(401);
-    //   throw new Error("Unauthorized");
-    // }
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const { name, type, affiliate, containers, contactInformation } = req.body;
       const organization = await organizationCtrl.createOrganization({
@@ -40,6 +46,12 @@ router.post("/create", async function (req, res, next) {
 
 router.get("/listAll", async function (req, res, next) {
     try {
+        jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
+    try {
         const organization = await organizationCtrl.getAllOrganizations();
         res.status(200).json({ organization });
     } catch (err) {
@@ -49,6 +61,12 @@ router.get("/listAll", async function (req, res, next) {
 
 router.post("/update-name/:id", async (req, res, next) => {
     const id = parseInt(req.params.id);
+    try {
+        jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
     try {
         const { name } = req.body;
 
@@ -78,6 +96,12 @@ router.post("/update-name/:id", async (req, res, next) => {
 router.post("/update-organization-information/:id", async (req, res, next) => {
     const id = parseInt(req.params.id);
     try {
+        jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
+    try {
         const { contactInformation } = req.body;
 
         if (!contactInformation) {
@@ -105,6 +129,12 @@ router.post("/update-organization-information/:id", async (req, res, next) => {
 
 router.post("/update-type/:id", async (req, res, next) => {
     const id = parseInt(req.params.id);
+    try {
+        jwtMiddleware.verifyToken(req.headers.authorization);
+    } catch (err) {
+        res.status(401);
+        throw new Error("Unauthorized");
+    }
     try {
         const { type } = req.body;
 

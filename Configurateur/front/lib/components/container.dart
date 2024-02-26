@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/items.dart';
+import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/container-list/item-list/item_list.dart';
 
 class CtnList {
@@ -74,7 +74,7 @@ class ContainerCards extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ItemPages(container: container),
+            builder: (context) => ContainerProfilPage(container: container),
           ),
         );
       },
@@ -104,7 +104,7 @@ class ContainerCards extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ItemPages(container: container),
+                      builder: (context) => ContainerProfilPage(container: container),
                     ),
                   ),
                 ),

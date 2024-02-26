@@ -97,9 +97,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     TextEditingController contactInformationController =
         TextEditingController();
 
-    print("nom: $name, type: $type, organizationId = $organizationId");
-    debugPrint("nom: $name, type: $type, organizationId = $organizationId");
-
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -278,9 +275,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   Future<void> showEditPopupName(BuildContext context, String initialLastName,
       Function(String) onEdit) async {
     TextEditingController nameController = TextEditingController();
-
-    print("nom: $name, type: $type, organizationId = $organizationId");
-    debugPrint("nom: $name, type: $type, organizationId = $organizationId");
 
     return showDialog(
       context: context,

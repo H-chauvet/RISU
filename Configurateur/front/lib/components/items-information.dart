@@ -87,20 +87,14 @@ class _ItemPagesStates extends State<ItemPagess> {
 
   void initState() {
     super.initState();
-    print("item : ${item}");
     if (item.price != null) {
       itemPrice = item.price!;
-      print("prix : ${item.price}");
     }
   }
 
   Future<void> showEditPopupName(BuildContext context, String initialLastName,
       Function(String) onEdit) async {
     TextEditingController nameController = TextEditingController();
-    print("id: ${item.id}");
-    print("name: ${item.name}");
-    // print("nom: $name, type: $type, organizationId = $organizationId");
-    // debugPrint("nom: $name, type: $type, organizationId = $organizationId");
 
     return showDialog(
       context: context,
