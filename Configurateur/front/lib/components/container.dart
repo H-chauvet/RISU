@@ -13,6 +13,7 @@ class CtnList {
   final String? city;
   final String? design;
   final String? informations;
+  final String? saveName;
 
   CtnList({
     required this.id,
@@ -25,6 +26,7 @@ class CtnList {
     required this.city,
     required this.design,
     required this.informations,
+    required this.saveName,
   });
 
   factory CtnList.fromJson(Map<String, dynamic> json) {
@@ -39,6 +41,7 @@ class CtnList {
       city: json['city'],
       design: json['design'],
       informations: json['informations'],
+      saveName: json['saveName'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -52,6 +55,7 @@ class CtnList {
       'address': address,
       'city': design,
       'informations': informations,
+      'saveName': saveName,
     };
   }
 }
@@ -65,41 +69,48 @@ class ContainerCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ItemPages(container: container,),
+            builder: (context) => ItemPages(container: container),
           ),
         );
       },
       child: Card(
-        child: ListTile(
-          title: Card(
-            child: Column(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListTile(
+                title: container.city != null
+                    ? Text("Ville : ${container.city!}")
+                    : Text("Ville : pas de ville associé"),
+                subtitle: container.address != null
+                    ? Text("adresse : ${container.address!}")
+                    : Text("adresse : pas de address"),
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                ListTile(
-                  title: Text("id du conteneur : " + container.id.toString()),
-                  subtitle:
-                      Text("prix du conteneur : " + container.price.toString()),
-                  leading: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => onDelete(container),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      if (container.city != null) Text(container.city!),
-                    ],
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onDelete(container),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ItemPages(container: container),
+                    ),
                   ),
                 ),
               ],
             ),
-          ),
+          ],
         ),
       ),
     );

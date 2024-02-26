@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/company-profil/company-profil.dart';
 import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
@@ -258,6 +259,12 @@ class AppRouter {
         path: '/my-container',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: MyContainer(),
+        ),
+      ),
+      GoRoute(
+        path: '/company-profil',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyProfilPage(),
         ),
       ),
     ],

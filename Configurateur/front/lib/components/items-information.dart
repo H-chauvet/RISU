@@ -1,286 +1,106 @@
+// import 'dart:ffi';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/container.dart';
-import 'package:front/components/footer.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/services/storage_service.dart';
+import 'package:front/components/footer.dart';
 import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:front/components/container.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:intl/intl.dart';
-// CtnList
+import 'package:front/components/items-information.dart';
+// import 'package:front/screens/container-list/container_web.dart';
+import 'package:front/screens/container-list/item-list/item_component.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 
-class OrganizationList {
+class ItemListInfo {
   final int? id;
-  final String? name;
-  final String? type;
-  final dynamic? affiliate;
-  final dynamic? containers;
-  final String? contactInformation;
+  final dynamic? name;
+  final bool? available;
+  final int? container;
+  final dynamic? createdAt;
+  final dynamic? containerId;
+  final double? price;
+  final String? image;
+  final String? description;
 
-  OrganizationList({
+  ItemListInfo({
     required this.id,
     required this.name,
-    required this.type,
-    required this.affiliate,
-    required this.containers,
-    required this.contactInformation,
+    required this.available,
+    required this.container,
+    required this.createdAt,
+    required this.containerId,
+    required this.price,
+    required this.image,
+    required this.description,
   });
 
-  factory OrganizationList.fromJson(Map<String, dynamic> json) {
-    return OrganizationList(
+  factory ItemListInfo.fromJson(Map<String, dynamic> json) {
+    return ItemListInfo(
       id: json['id'],
       name: json['name'],
-      type: json['type'],
-      affiliate: json['affiliate'],
-      containers: json['containers'],
-      contactInformation: json['contactInformation'],
+      available: json['available'],
+      container: json['container'],
+      createdAt: json['createdAt'],
+      containerId: json['containerId'],
+      price: json['price'],
+      image: json['image'],
+      description: json['description'],
     );
   }
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'type': type,
-      'affiliate': affiliate,
-      'containers': containers,
-      'contactInformation': contactInformation,
+      'available': available,
+      'container': container,
+      'createdAt': createdAt,
+      'containerId': containerId,
+      'price': price,
+      'image': image,
+      'description': description,
     };
   }
 }
 
-class CompanyProfilPage extends StatefulWidget {
-  const CompanyProfilPage({Key? key}) : super(key: key);
+class ItemPagess extends StatefulWidget {
+  final ItemListInfo item;
+  const ItemPagess({Key? key, required this.item}) : super(key: key);
 
   @override
-  State<CompanyProfilPage> createState() => CompanyProfilPageState();
+  _ItemPagesStates createState() => _ItemPagesStates(item: item);
 }
 
-class CompanyProfilPageState extends State<CompanyProfilPage> {
-  late OrganizationList organization;
-  List<CtnList> containersList = [];
+class _ItemPagesStates extends State<ItemPagess> {
+  final ItemListInfo item;
+  _ItemPagesStates({required this.item});
+  late String itemName = '';
+  late String itemDescription = '';
+  late double itemPrice;
+  late int itemId = item.id!;
 
-  String userMail = '';
-
-  late String name = '';
-  late String type = '';
-  late DateTime createdDate;
-  late String contactInformation = '';
-  late String company;
-  late int organizationId;
-
-  Future<void> fetchContainersById() async {
-    final response = await http.get(Uri.parse(
-        'http://${serverIp}:3000/api/container/list/$organizationId'));
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final List<dynamic> containersData = responseData["container"];
-      debugPrint('Container details: $containersData');
-      setState(() {
-        containersList =
-            containersData.map((data) => CtnList.fromJson(data)).toList();
-      });
-    } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+  void initState() {
+    super.initState();
+    print("item : ${item}");
+    if (item.price != null) {
+      itemPrice = item.price!;
+      print("prix : ${item.price}");
     }
-  }
-
-  Future<void> showEditPopupContactInformation(BuildContext context,
-      String initialLastName, Function(String) onEdit) async {
-    TextEditingController contactInformationController =
-        TextEditingController();
-
-    print("nom: $name, type: $type, organizationId = $organizationId");
-    debugPrint("nom: $name, type: $type, organizationId = $organizationId");
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Modifier"),
-          content: Container(
-            height: 120.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: contactInformationController,
-                  decoration: InputDecoration(
-                      labelText: "Nouvelles informations",
-                      hintText: initialLastName),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Annuler"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-organization-information/$organizationId";
-                var body = {
-                  'contactInformation': contactInformationController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-                onEdit(contactInformationController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Modifier"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showEditPopupType(
-      BuildContext context, String initialType, Function(String) onEdit) async {
-    TextEditingController typeController = TextEditingController();
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Modifier"),
-          content: Container(
-            height: 120.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: typeController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau type", hintText: initialType),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Annuler"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-type/$organizationId";
-                var body = {
-                  'type': typeController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-                onEdit(typeController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Modifier"),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   Future<void> showEditPopupName(BuildContext context, String initialLastName,
       Function(String) onEdit) async {
     TextEditingController nameController = TextEditingController();
-
-    print("nom: $name, type: $type, organizationId = $organizationId");
-    debugPrint("nom: $name, type: $type, organizationId = $organizationId");
+    print("id: ${item.id}");
+    print("name: ${item.name}");
+    // print("nom: $name, type: $type, organizationId = $organizationId");
+    // debugPrint("nom: $name, type: $type, organizationId = $organizationId");
 
     return showDialog(
       context: context,
@@ -319,7 +139,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             ElevatedButton(
               onPressed: () async {
                 final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-name/$organizationId";
+                    "http://$serverIp:3000/api/items/update-name/${item.id}";
                 var body = {
                   'name': nameController.text,
                 };
@@ -336,10 +156,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                     gravity: ToastGravity.CENTER,
                     timeInSecForIosWeb: 3,
                   );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
                 } else {
                   Fluttertoast.showToast(
                       msg:
@@ -367,90 +183,202 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
   }
 
-  Future<void> deleteContainer(CtnList message) async {
-    final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
-    final response = await http.post(
-      url,
-      body: json.encode({'id': message.id}),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
-    );
-    if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
-      fetchContainersById();
-    } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
-    }
-  }
+  Future<void> showEditPopupPrice(BuildContext context, String initialPrice,
+      Function(String) onEdit) async {
+    TextEditingController priceController = TextEditingController();
+    double parsedInitialPrice = double.tryParse(initialPrice) ?? 0.0;
+    priceController.text = parsedInitialPrice.toString();
 
-  Future<void> fetchOrganizationDetails(String email) async {
-    final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 120.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10.0),
+                TextField(
+                  controller: priceController,
+                  keyboardType: TextInputType.numberWithOptions(decimal: true),
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom", hintText: initialPrice),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/items/update-price/${item.id}";
+                var body = {
+                  'price': priceController.text,
+                };
 
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> userDetails = json.decode(response.body);
-        debugPrint('User details: $userDetails');
-        final dynamic organizationData = userDetails["organization"];
-        final dynamic organizationIdData = userDetails["organizationId"];
-        organizationId = organizationIdData;
-        fetchContainersById();
-        setState(() {
-          organization = OrganizationList.fromJson(organizationData);
-          if (organization.name != null) {
-            name = organization.name!;
-          }
-          if (organization.type != null) {
-            type = organization.type!;
-            print(organization.type);
-          }
-          if (organization.contactInformation != null) {
-            contactInformation = organization.contactInformation!;
-          }
-        });
-      } else {
-        debugPrint(
-          'Failed to fetch user details. Status code: ${response.statusCode}',
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Modification effectuée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Erreur durant l'envoi la modification des informations",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+                onEdit(priceController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
+            ),
+          ],
         );
-      }
-    } catch (error) {
-      debugPrint('Error fetching user details: $error');
-    }
+      },
+    );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    storageService.getUserMail().then((value) {
-      userMail = value;
-      fetchOrganizationDetails(userMail);
-    });
+  Future<void> showEditPopupDescription(BuildContext context,
+      String initialDescription, Function(String) onEdit) async {
+    TextEditingController descriptionController = TextEditingController();
+    print("id: ${item.id}");
+    print("name: ${item.name}");
+    // print("nom: $name, type: $type, organizationId = $organizationId");
+    // debugPrint("nom: $name, type: $type, organizationId = $organizationId");
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Modifier"),
+          content: Container(
+            height: 120.0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 10.0),
+                TextField(
+                  controller: descriptionController,
+                  decoration: InputDecoration(
+                      labelText: "Nouveau nom", hintText: initialDescription),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Annuler"),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final String apiUrl =
+                    "http://$serverIp:3000/api/items/update-description/${item.id}";
+                var body = {
+                  'description': descriptionController.text,
+                };
+
+                var response = await http.post(
+                  Uri.parse(apiUrl),
+                  body: body,
+                );
+
+                if (response.statusCode == 200) {
+                  Fluttertoast.showToast(
+                    msg: 'Modification effectuée avec succès',
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                    timeInSecForIosWeb: 3,
+                  );
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          "Erreur durant l'envoi la modification des informations",
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 3,
+                      backgroundColor: Colors.red);
+                }
+                onEdit(descriptionController.text);
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                ),
+              ),
+              child: const Text("Modifier"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
-        'Entreprise',
+        'Gestion des objets',
         context: context,
       ),
       body: SingleChildScrollView(
         child: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                width: 500,
+                // width: 00,
                 height: 200,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.all(10.0),
@@ -475,7 +403,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         Row(
                           children: [
                             Text(
-                              "Nom de l'entreprise : ${organization.name!}",
+                              "Nom de l'objet : ${item.name!}",
                               style: const TextStyle(
                                 color: Color(0xff4682B4),
                                 fontSize: 15.0,
@@ -486,10 +414,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                             const SizedBox(width: 5.0),
                             InkWell(
                               onTap: () async {
-                                await showEditPopupName(context, name,
-                                    (String newName) {
+                                await showEditPopupName(context, itemName,
+                                    (String newcity) {
                                   setState(() {
-                                    name = newName;
+                                    itemName = newcity;
                                   });
                                 });
                               },
@@ -504,25 +432,37 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Text(
-                              "Information : ${organization.contactInformation!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
+                            item.description != null
+                                ? Text(
+                                    "Description de l'objet : ${item.description!}",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  )
+                                : Text(
+                                    "Description de l'objet : pas de description",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
                             const SizedBox(width: 5.0),
                             InkWell(
                               onTap: () async {
-                                await showEditPopupContactInformation(
-                                    context, contactInformation,
-                                    (String newContactInformation) {
-                                  setState(() {
-                                    contactInformation = newContactInformation;
-                                  });
-                                });
+                                await showEditPopupDescription(
+                                  context,
+                                  itemDescription,
+                                  (String newPrice) {
+                                    setState(() {
+                                      itemDescription = newPrice;
+                                    });
+                                  },
+                                );
                               },
                               child: const Icon(
                                 Icons.edit,
@@ -535,24 +475,38 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         SizedBox(height: 5.0),
                         Row(
                           children: [
-                            Text(
-                              "Type d'entreprise : ${organization.type!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
+                            item.price != null
+                                ? Text(
+                                    "price de l'objet : ${item.price!}",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  )
+                                : Text(
+                                    "price de l'objet : pas de price",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
                             const SizedBox(width: 5.0),
                             InkWell(
                               onTap: () async {
-                                await showEditPopupType(context, type,
-                                    (String newtype) {
-                                  setState(() {
-                                    type = newtype;
-                                  });
-                                });
+                                await showEditPopupPrice(
+                                  context,
+                                  item.price.toString(),
+                                  (String newPrice) {
+                                    setState(() {
+                                      itemPrice =
+                                          double.tryParse(newPrice) ?? 0.0;
+                                    });
+                                  },
+                                );
                               },
                               child: const Icon(
                                 Icons.edit,
@@ -567,44 +521,70 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   ],
                 ),
               ),
-              const Text("Nos Conteneurs :",
-                  style: TextStyle(
-                    color: Color.fromRGBO(70, 130, 180, 1),
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 2.0,
-                    decorationStyle: TextDecorationStyle.solid,
-                  )),
-              SizedBox(
-                height: 65,
-              ),
-              containersList.isEmpty
-                  ? Center(
-                      child: Text(
-                        'Aucun conteneur trouvé.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 211, 11, 11),
-                        ),
-                      ),
-                    )
-                  : Wrap(
-                      spacing: 10.0,
-                      runSpacing: 8.0,
-                      children: List.generate(
-                        containersList.length,
-                        (index) => ContainerCards(
-                          container: containersList[index],
-                          onDelete: deleteContainer,
-                        ),
-                      ),
-                    ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: const CustomBottomNavigationBar(),
+    );
+  }
+}
+
+class ItemCardInfo extends StatelessWidget {
+  final ItemListInfo item;
+  final Function(ItemListInfo) onDelete;
+
+  const ItemCardInfo({super.key, required this.item, required this.onDelete});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPagess(item: item),
+          ),
+        );
+      },
+      child: Card(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment
+              .spaceBetween,
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text("nom : ${item.name}"),
+                subtitle: item.description != null
+                    ? Text("description : ${item.description!}")
+                    : Text("description : pas de description"),
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => onDelete(item),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ItemPagess(item: item),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                if (item.description != null) Text(item.description!),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
