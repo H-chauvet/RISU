@@ -13,10 +13,12 @@ import 'package:path/path.dart';
 
 class ContainerProfilPage extends StatefulWidget {
   final CtnList container;
-  const ContainerProfilPage({Key? key, required this.container}) : super(key: key);
+  const ContainerProfilPage({Key? key, required this.container})
+      : super(key: key);
 
   @override
-  _ContainerProfilPageState createState() => _ContainerProfilPageState(container: container);
+  _ContainerProfilPageState createState() =>
+      _ContainerProfilPageState(container: container);
 }
 
 class _ContainerProfilPageState extends State<ContainerProfilPage> {

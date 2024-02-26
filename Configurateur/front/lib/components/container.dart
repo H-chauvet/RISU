@@ -104,7 +104,8 @@ class ContainerCards extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ContainerProfilPage(container: container),
+                      builder: (context) =>
+                          ContainerProfilPage(container: container),
                     ),
                   ),
                 ),

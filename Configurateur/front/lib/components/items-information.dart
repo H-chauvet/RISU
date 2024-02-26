@@ -543,8 +543,7 @@ class ItemCardInfo extends StatelessWidget {
       },
       child: Card(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment
-              .spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: ListTile(
