@@ -268,10 +268,6 @@ class _ItemPagesStates extends State<ItemPagess> {
   Future<void> showEditPopupDescription(BuildContext context,
       String initialDescription, Function(String) onEdit) async {
     TextEditingController descriptionController = TextEditingController();
-    print("id: ${item.id}");
-    print("name: ${item.name}");
-    // print("nom: $name, type: $type, organizationId = $organizationId");
-    // debugPrint("nom: $name, type: $type, organizationId = $organizationId");
 
     return showDialog(
       context: context,
@@ -572,7 +568,6 @@ class ItemCardInfo extends StatelessWidget {
                 SizedBox(
                   width: 10,
                 ),
-                if (item.description != null) Text(item.description!),
               ],
             ),
           ],

@@ -78,7 +78,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
-      debugPrint('Container details: $containersData');
       setState(() {
         containersList =
             containersData.map((data) => CtnList.fromJson(data)).toList();
@@ -392,7 +391,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userDetails = json.decode(response.body);
-        debugPrint('User details: $userDetails');
         final dynamic organizationData = userDetails["organization"];
         final dynamic organizationIdData = userDetails["organizationId"];
         organizationId = organizationIdData;
@@ -404,7 +402,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
           }
           if (organization.type != null) {
             type = organization.type!;
-            print(organization.type);
           }
           if (organization.contactInformation != null) {
             contactInformation = organization.contactInformation!;

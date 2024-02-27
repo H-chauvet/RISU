@@ -131,7 +131,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   Future<void> showEditPopupAddress(BuildContext context, String initialAddress,
       Function(String) onEdit) async {
     TextEditingController addressController = TextEditingController();
-    debugPrint("$container");
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -224,7 +223,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       setState(() {
         items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
       });
-      debugPrint("c'est les itemmsss : $items");
     } else {}
   }
 
