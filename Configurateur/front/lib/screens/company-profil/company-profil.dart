@@ -11,7 +11,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
 import 'package:intl/intl.dart';
-// CtnList
 
 class OrganizationList {
   final int? id;
@@ -53,14 +52,22 @@ class OrganizationList {
 }
 
 class CompanyProfilPage extends StatefulWidget {
-  const CompanyProfilPage({Key? key}) : super(key: key);
+  const CompanyProfilPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<CompanyProfilPage> createState() => CompanyProfilPageState();
 }
 
 class CompanyProfilPageState extends State<CompanyProfilPage> {
-  late OrganizationList organization;
+  late OrganizationList organization = OrganizationList(
+      id: 0,
+      name: "",
+      type: "",
+      affiliate: "",
+      containers: "",
+      contactInformation: "");
   List<CtnList> containersList = [];
 
   String userMail = '';
@@ -463,34 +470,14 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Text(
-                              "Nom de l'entreprise : ${organization.name!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              onTap: () async {
-                                await showEditPopupName(context, name,
-                                    (String newName) {
-                                  setState(() {
-                                    name = newName;
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 15.0,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          "Nom de l'entreprise : ${organization.name!}",
+                          style: const TextStyle(
+                            color: Color(0xff4682B4),
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
                         ),
                         SizedBox(height: 5.0),
                         Row(
@@ -588,6 +575,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         (index) => ContainerCards(
                           container: containersList[index],
                           onDelete: deleteContainer,
+                          key: ValueKey<String>(
+                              'delete_${containersList[index].id}'),
                         ),
                       ),
                     ),

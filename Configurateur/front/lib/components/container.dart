@@ -53,7 +53,8 @@ class CtnList {
       'containerMapping': containerMapping,
       'price': price,
       'address': address,
-      'city': design,
+      'city': city,
+      'design': design,
       'informations': informations,
       'saveName': saveName,
     };

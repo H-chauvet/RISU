@@ -262,7 +262,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           child: Column(
             children: [
               Container(
-                width: 300,
+                // width: 300,
                 height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
