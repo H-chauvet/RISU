@@ -72,10 +72,10 @@ model User_Web {
     organizationId Int?
     confirmed      Boolean          @default(false)
     createdAt      DateTime         @default(now())
-    tickets_Mobile Tickets_Mobile[] // ONLY FOR ADMIN ON WEB
+    ticketsMobile Tickets_Mobile[] // ONLY FOR ADMIN ON WEB
 }
 
-model Feedbsks_Web {
+model Feedbacks_Web {
     id        Int      @id @default(autoincrement())
     firstName String
     lastName  String
@@ -126,7 +126,7 @@ model User_Mobile {
     Locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
-    tickets_Mobile   Tickets_Mobile[]
+    ticketsMobile   Tickets_Mobile[]
 }
 
 model Notifications_Mobile {
@@ -155,8 +155,8 @@ model Tickets_Mobile {
     content    String
     creator    User_Mobile @relation(fields: [creatorId], references: [id])
     creatorId  String
-    assigned   User_Web    @relation(fields: [assignedId], references: [uuid])
-    assignedId String
+    assigned   User_Web    @relation(fields: [assignedId], references: [id])
+    assignedId Int
     createdAt  DateTime    @default(now())
     chatUid    String      @default(cuid())
 }
