@@ -60,21 +60,22 @@ model Organization {
 /////////////////////////////////////////////
 
 model User_Web {
-    id             Int           @id @default(autoincrement())
-    uuid           String?       @unique
-    firstName      String?       @default("")
-    lastName       String?       @default("")
-    company        String?       @default("")
-    email          String        @unique
-    token          String?       @unique
+    id             Int              @id @default(autoincrement())
+    uuid           String?          @unique
+    firstName      String?          @default("")
+    lastName       String?          @default("")
+    company        String?          @default("")
+    email          String           @unique
+    token          String?          @unique
     password       String
-    organization   Organization? @relation(fields: [organizationId], references: [id])
+    organization   Organization?    @relation(fields: [organizationId], references: [id])
     organizationId Int?
-    confirmed      Boolean       @default(false)
-    createdAt      DateTime      @default(now())
+    confirmed      Boolean          @default(false)
+    createdAt      DateTime         @default(now())
+    tickets_Mobile Tickets_Mobile[] // ONLY FOR ADMIN ON WEB
 }
 
-model Feedbacks_Web {
+model Feedbsks_Web {
     id        Int      @id @default(autoincrement())
     firstName String
     lastName  String
@@ -125,6 +126,7 @@ model User_Mobile {
     Locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
+    tickets_Mobile   Tickets_Mobile[]
 }
 
 model Notifications_Mobile {
@@ -146,4 +148,15 @@ model Location_Mobile {
     createdAt DateTime    @default(now())
     duration  Int
     ended     Boolean     @default(false)
+}
+
+model Tickets_Mobile {
+    id         Int         @id @default(autoincrement())
+    content    String
+    creator    User_Mobile @relation(fields: [creatorId], references: [id])
+    creatorId  String
+    assigned   User_Web    @relation(fields: [assignedId], references: [uuid])
+    assignedId String
+    createdAt  DateTime    @default(now())
+    chatUid    String      @default(cuid())
 }
