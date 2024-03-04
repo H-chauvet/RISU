@@ -765,8 +765,8 @@ class ContainerCreationState extends State<ContainerCreation> {
               ),
               Flexible(
                 child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.6,
+                    widthFactor: 0.8,
+                    heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
                       onSaved: () async {
