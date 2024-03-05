@@ -1,5 +1,6 @@
 const express = require('express')
 const PDFDocument = require('pdfkit');
+const { createInvoice } = require("./createInvoice.js");
 
 const router = express.Router()
 const passport = require('passport')
@@ -9,55 +10,6 @@ const itemCtrl = require("../../controllers/Common/items")
 const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('./utils');
-
-async function generateInvoice(
-  email,
-  date,
-  duration,
-  containerAddress,
-  containerCity,
-  itemInfo,
-  clientInfo,
-  price,
-  totalPriceHT,
-  totalPriceTTC
-) {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument();
-    const buffers = [];
-
-    doc.on('error', (error) => {
-      reject(error);
-    });
-
-    doc.on('data', buffers.push.bind(buffers));
-    doc.on('end', () => {
-      const pdfData = Buffer.concat(buffers);
-      resolve(pdfData);
-    });
-
-    doc.fontSize(18).text('Facture de location', { align: 'center' });
-
-    doc.moveDown();
-    doc.fontSize(12).text(`Date de location: ${formatDate(date)}`, { align: 'left' });
-    doc.text(`Durée de location: ${duration} heures`, { align: 'left' });
-    doc.text(`Adresse du conteneur: ${containerAddress}, ${containerCity}`, { align: 'left' });
-    doc.text(`Informations sur le client: ${clientInfo}`, { align: 'left' });
-    doc.text(`Email du client: ${email}`, { align: 'left' });
-
-    doc.moveDown();
-    const tableData = [
-      ['Article', 'Prix unitaire', 'Quantité', 'Prix total HT', 'Prix total TTC'],
-      [itemInfo, price, duration, totalPriceHT, totalPriceTTC]
-    ];
-    drawTable(doc, tableData);
-
-    doc.moveDown();
-    doc.fontSize(14).text('Merci pour votre confiance!', { align: 'center' });
-
-    doc.end();
-  });
-}
 
 async function sendEmailConfirmationLocation(
   email,
@@ -89,7 +41,7 @@ async function sendInvoice(invoiceData, email) {
       from: process.env.SMTP_EMAIL,
       to: email,
       subject: 'Facture de votre location',
-      text: 'Vous trouverez la facture de votre location en pièce jointe.',
+      text: 'Bonjour,\n\nSuite à votre demande, Vous trouverez la facture de votre location en pièce jointe.\nNous vous remercions pour votre confiance.\n\nCordialement,\nL\'équipe RISU.',
       attachments: [
         {
           filename: 'facture.pdf',
@@ -162,18 +114,31 @@ router.post('/article',
         clientInfo = user.firstName + ' ' + user.lastName;
       }
 
-      const invoiceData = await generateInvoice(
-        user.email,
-        new Date(),
-        req.body.duration,
-        container.address,
-        container.city,
-        item.name,
-        clientInfo,
-        item.price,
-        locationPrice,
-        locationPrice,
-      );
+      console.log('item.price', item.price);
+      const invoice = {
+        shipping: {
+          name: clientInfo,
+          address: "",
+          city: "",
+          state: "",
+          country: "",
+          postal_code: ""
+        },
+        items: [
+          {
+            item: item.name,
+            description: "description",
+            quantity: req.body.duration,
+            amount: locationPrice
+          }
+        ],
+        subtotal: locationPrice,
+        paid: 0,
+        invoice_nr: ""
+      };
+
+      const invoiceData = await createInvoice(invoice);
+
 
       await rentCtrl.updateRentInvoice(location.id, invoiceData);
 
