@@ -10,6 +10,5 @@ module.exports = {
         url: "http://eip.epitech.eu/2025/risu",
         email: "risu_2025@labeip.epitech.eu"
       }
-
     },
 };
