@@ -1,6 +1,13 @@
 const Stripe = require("stripe");
 const { db } = require("../../middleware/database");
 
+/**
+ * Generate a response depending on the status of the payment
+ *
+ * @param {number} intent
+ * @param {*} id
+ * @returns the corresponding response
+ */
 const generateResponse = async (intent, id) => {
   switch (intent.status) {
     case "requires_action":
@@ -34,6 +41,12 @@ const generateResponse = async (intent, id) => {
   };
 };
 
+/**
+ * Realize a payment with the provided data
+ *
+ * @param {*} data for the payment
+ * @returns a response for the payment
+ */
 exports.makePayments = async (data) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET, {
     apiVersion: "2023-08-16",
