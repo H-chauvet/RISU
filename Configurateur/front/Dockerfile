@@ -54,6 +54,8 @@
     RUN mkdir /app/
     COPY . /app/
     WORKDIR /app/
+    
+    RUN flutter clean
     RUN flutter pub get
     RUN flutter build web
 
