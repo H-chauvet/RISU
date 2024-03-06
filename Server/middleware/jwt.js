@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 /**
- *
  * Generate token
  *
  * @param {*} user user object
@@ -17,7 +16,6 @@ function generateAccessToken(user) {
 }
 
 /**
- *
  * Encrypt token
  *
  * @param {*} token generated token
@@ -27,6 +25,12 @@ function hashToken(token) {
   return crypto.createHash("sha512").update(token).digest("hex");
 }
 
+/**
+ * Verify if the token correspond to the secret
+ *
+ * @param {*} token
+ * @returns undefined if it fails
+ */
 function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
