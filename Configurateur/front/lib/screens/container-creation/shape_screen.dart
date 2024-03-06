@@ -16,6 +16,9 @@ class ShapeScreenState extends State<ShapeScreen> {
   double height = 0;
   int nbLockers = 0;
   bool isRemoveClicked = false;
+  int iteration = 0;
+  late List<Widget> container = initContainer();
+  List<bool> isClicked = List.generate(60, (index) => false);
 
   @override
   void initState() {
@@ -71,6 +74,52 @@ class ShapeScreenState extends State<ShapeScreen> {
     return buttons;
   }
 
+  List<Widget> initContainer() {
+    List<Widget> rows = [];
+    List<Widget> line = [];
+
+    List<List<Color>> colors = List.generate(
+      row,
+      (i) => List.generate(column, (j) => Colors.blue),
+    );
+
+    for (int i = 0; i < row; i++) {
+      for (int j = 0; j < column; j++) {
+        line.add(
+          Column(
+            children: [
+              InkWell(
+                onTap: () => setState(() {
+                  isClicked[(i * column) + j] = !isClicked[(i * column) + j];
+                }),
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  color:
+                      isClicked[(i * column) + j] ? Colors.red : colors[i][j],
+                ),
+              ),
+              Container(width: 20.0, height: 2.0, color: Colors.black),
+            ],
+          ),
+        );
+
+        line.add(
+          Container(
+            width: 2.0, // Largeur du trait
+            height: 22.0, // Hauteur du trait
+            color: Colors.black, // Couleur du trait
+          ),
+        );
+      }
+      rows.add(Row(
+        children: line,
+      ));
+      line = [];
+    }
+    return rows;
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -83,55 +132,97 @@ class ShapeScreenState extends State<ShapeScreen> {
         key: formKey,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Column(
-              children: [
-                const Text('Nombres de lignes'),
-                TextFormField(
-                  key: const Key('test'),
-                  decoration: InputDecoration(
-                    hintText: 'Entrez votre nom',
-                    labelText: 'Nom',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
+            Flexible(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text('Nombres de lignes'),
+                  Flexible(
+                    child: SizedBox(
+                      width: 200,
+                      child: TextFormField(
+                        key: const Key('Row'),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          hintText: 'Entrez votre nom',
+                          labelText: 'Nom',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          row = int.parse(value!);
+                          calculateDimension();
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          return null;
+                        },
+                      ),
                     ),
                   ),
-                  onChanged: (String? value) {
-                    row = int.parse(value!);
-                    calculateDimension();
-                  },
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Veuillez remplir ce champ';
-                    }
-                    return null;
-                  },
-                ),
-                const Text('Nombres de colonnes'),
-                /*TextFormField(
-                    onChanged: (String? value) {
-                      setState(() {
-                        column = int.parse(value!);
-                        calculateDimension();
-                      });
-                    },
-                  ),*/
-              ],
-            ),
-            /*Row(
-              children: removeButtons(),
-            ),
-            Container(
-              color: Colors.grey[200],
-              child: Column(
-                children: [
-                  Text('Largeur: $width mètres'),
-                  Text('Hauteur: $height mètres'),
-                  Text('Nombre de casiers: $nbLockers'),
+                  const Text('Nombres de colonnes'),
+                  SizedBox(
+                    width: 200,
+                    child: TextFormField(
+                      key: const Key('Column'),
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        hintText: 'Entrez votre nom',
+                        labelText: 'Nom',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
+                      onChanged: (String? value) {
+                        setState(
+                          () {
+                            column = int.parse(value!);
+                            calculateDimension();
+                          },
+                        );
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez remplir ce champ';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
                 ],
               ),
-            ),*/
+            ),
+            SizedBox(
+              width: 300,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Row(
+                    children: removeButtons(),
+                  ),
+                  Column(
+                    children: initContainer(),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 300,
+              child: Container(
+                color: Colors.grey[200],
+                child: Column(
+                  children: [
+                    Text('Largeur: $width mètres'),
+                    Text('Hauteur: $height mètres'),
+                    Text('Nombre de casiers: $nbLockers'),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
