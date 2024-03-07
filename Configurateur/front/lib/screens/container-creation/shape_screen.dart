@@ -63,6 +63,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         ElevatedButton(
           onPressed: () {
             setState(() {
+              isClicked = List.generate(60, (index) => false);
               isRemoveClicked = false;
             });
           },
@@ -78,37 +79,77 @@ class ShapeScreenState extends State<ShapeScreen> {
     List<Widget> rows = [];
     List<Widget> line = [];
 
-    List<List<Color>> colors = List.generate(
-      row,
-      (i) => List.generate(column, (j) => Colors.blue),
-    );
-
     for (int i = 0; i < row; i++) {
       for (int j = 0; j < column; j++) {
+        j == 0
+            ? line.add(
+                Container(
+                  width: 2.0,
+                  height: 52.0,
+                  color: Colors.black,
+                ),
+              )
+            : Container();
         line.add(
           Column(
             children: [
+              i == 0
+                  ? Container(
+                      width: 52.0,
+                      height: 2.0,
+                      color: Colors.black,
+                    )
+                  : Container(),
               InkWell(
-                onTap: () => setState(() {
-                  isClicked[(i * column) + j] = !isClicked[(i * column) + j];
-                }),
+                onTap: () => {
+                  debugPrint('test'),
+                  debugPrint((i * column + j).toString()),
+                  if (isRemoveClicked == true)
+                    {
+                      setState(() {
+                        isClicked[(i * column) + j] =
+                            !isClicked[(i * column) + j];
+                      })
+                    }
+                },
                 child: Container(
-                  width: 20,
-                  height: 20,
-                  color:
-                      isClicked[(i * column) + j] ? Colors.red : colors[i][j],
+                  width: 50,
+                  height: 50,
+                  color: Colors.grey[200],
+                  alignment: Alignment.topRight,
+                  child: isRemoveClicked
+                      ? Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ClipOval(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 5.0,
+                                ),
+                              ),
+                              color: isClicked[(i * column) + j]
+                                  ? Colors.red
+                                  : Colors.grey[200],
+                              width: 15,
+                              height: 15,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ),
               ),
-              Container(width: 20.0, height: 2.0, color: Colors.black),
+              Container(width: 52.0, height: 2.0, color: Colors.black),
             ],
           ),
         );
 
         line.add(
           Container(
-            width: 2.0, // Largeur du trait
-            height: 22.0, // Hauteur du trait
-            color: Colors.black, // Couleur du trait
+            width: 2.0,
+            height: 52.0,
+            color: Colors.black,
           ),
         );
       }
@@ -145,12 +186,12 @@ class ShapeScreenState extends State<ShapeScreen> {
                         key: const Key('Row'),
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                          hintText: 'Entrez votre nom',
-                          labelText: 'Nom',
+                          labelText: 'Lignes',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
+                        initialValue: row.toString(),
                         onChanged: (String? value) {
                           row = int.parse(value!);
                           calculateDimension();
@@ -169,15 +210,15 @@ class ShapeScreenState extends State<ShapeScreen> {
                     width: 200,
                     child: TextFormField(
                       key: const Key('Column'),
+                      initialValue: column.toString(),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        hintText: 'Entrez votre nom',
-                        labelText: 'Nom',
+                        labelText: 'Colonnes',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      onChanged: (String? value) {
+                      onSaved: (String? value) {
                         setState(
                           () {
                             column = int.parse(value!);
@@ -197,7 +238,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               ),
             ),
             SizedBox(
-              width: 300,
+              width: 650,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -211,7 +252,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               ),
             ),
             SizedBox(
-              width: 300,
+              width: 250,
               child: Container(
                 color: Colors.grey[200],
                 child: Column(
