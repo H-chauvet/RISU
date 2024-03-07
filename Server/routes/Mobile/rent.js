@@ -26,7 +26,7 @@ async function sendEmailConfirmationLocation(
         from: process.env.SMTP_EMAIL,
         to: email,
         subject: 'Confirmation de votre location',
-        text: 'Votre location a bien été enregistrée. \nVous avez loué l\'article ' + itemId + ' pour une durée de ' + duration + ' heures le ' + formattedDate + ' dans le conteneur situé à l\'addresse suivante :  ' + address + ', ' + city + '. \nLe prix total est de ' + price + ' euros. Vous pouvez demander une facture en consultant la location.\nMerci de votre confiance.',
+        text: 'Votre location a bien été enregistrée. \nVous avez loué l\'article ' + itemId + ' pour une durée de ' + duration + ' heures le ' + formattedDate + ' dans le conteneur situé à l\'adresse suivante :  ' + address + ', ' + city + '. \nLe prix total est de ' + price + ' euros. Vous pouvez demander une facture en consultant la location.\nMerci de votre confiance.',
       }
 
     await transporter.sendMail(mailOptions)
