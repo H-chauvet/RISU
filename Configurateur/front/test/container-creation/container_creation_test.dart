@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/services/locker_service.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -35,7 +34,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -60,7 +59,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -83,7 +82,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -108,7 +107,7 @@ void main() {
       child: MaterialApp(
         home: InheritedGoRouter(
           goRouter: AppRouter.router,
-          child: const ContainerCreation(),
+          child: ContainerCreation(),
         ),
       ),
     ));
@@ -116,120 +115,6 @@ void main() {
     await tester.pump();
 
     await tester.tap(find.byKey(const Key('terminate')));
-  });
-
-  testWidgets('Container Creation back view panel from front',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('back-view')));
-  });
-
-  testWidgets('Container Creation back view panel from left',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
-  });
-
-  testWidgets('Container Creation back view panel 2',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-  });
-
-  testWidgets('Container Creation back view panel 3',
-      (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerCreation(),
-        ),
-      ),
-    ));
-
-    await tester.pump();
-
-    await tester.tap(find.byKey(const Key('back-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('right-view')));
-    await tester.tap(find.byKey(const Key('left-view')));
-    await tester.tap(find.byKey(const Key('front-view')));
   });
 
   testWidgets('updateCube', (WidgetTester tester) async {
@@ -331,9 +216,79 @@ void main() {
 
     await tester.pump();
 
-    expect(find.text("Petit casier"), findsNWidgets(12));
-    expect(find.text("Moyen casier"), findsNWidgets(3));
-    expect(find.text("Grand casier"), findsNWidgets(2));
+    expect(find.text("Petit Casier"), findsNWidgets(1));
+    expect(find.text("Moyen Casier"), findsNWidgets(1));
+    expect(find.text("Grand Casier"), findsNWidgets(1));
+  });
+
+  testWidgets('Reset container', (WidgetTester tester) async {
+    ContainerCreationState containerCreationState = ContainerCreationState();
+
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    obj.materials.add(FSp3dMaterial.green.deepCopy());
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.materials.add(FSp3dMaterial.blue.deepCopy());
+    obj.materials.add(FSp3dMaterial.black.deepCopy());
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    containerCreationState.objs.add(obj);
+    containerCreationState.unitTest = true;
+
+    containerCreationState.objs[0].fragments[1].faces[0].materialIndex = 1;
+
+    containerCreationState.resetContainer();
+
+    await tester.pump();
+
+    expect(containerCreationState.lockers, []);
+    for (int i = 0; i < containerCreationState.objs[0].fragments.length; i++) {
+      expect(containerCreationState.objs[0].fragments[i].faces[0].materialIndex,
+          0);
+      expect(containerCreationState.objs[0].fragments[i].faces[1].materialIndex,
+          0);
+      expect(containerCreationState.objs[0].fragments[i].faces[2].materialIndex,
+          0);
+      expect(containerCreationState.objs[0].fragments[i].faces[3].materialIndex,
+          0);
+      expect(containerCreationState.objs[0].fragments[i].faces[4].materialIndex,
+          0);
+      expect(containerCreationState.objs[0].fragments[i].faces[5].materialIndex,
+          0);
+    }
+  });
+
+  testWidgets('Delete locker', (WidgetTester tester) async {
+    ContainerCreationState containerCreationState = ContainerCreationState();
+
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    obj.materials.add(FSp3dMaterial.green.deepCopy());
+    obj.materials.add(FSp3dMaterial.red.deepCopy());
+    obj.materials.add(FSp3dMaterial.blue.deepCopy());
+    obj.materials.add(FSp3dMaterial.black.deepCopy());
+    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    containerCreationState.objs.add(obj);
+    containerCreationState.unitTest = true;
+
+    containerCreationState.objs[0].fragments[1].faces[0].materialIndex = 1;
+
+    containerCreationState.updateCube(
+        LockerCoordinates(1, 1, 'Devant', 'Haut', 2), true);
+
+    expect(
+        containerCreationState.objs[0].fragments[0].faces[0].materialIndex, 2);
+    expect(
+        containerCreationState.objs[0].fragments[12].faces[0].materialIndex, 2);
+
+    containerCreationState.deleteLocker(
+        LockerCoordinates(1, 1, 'Devant', 'Haut', 2), true);
+
+    await tester.pump();
+
+    expect(
+        containerCreationState.objs[0].fragments[0].faces[0].materialIndex, 0);
+    expect(
+        containerCreationState.objs[0].fragments[12].faces[0].materialIndex, 0);
   });
 }
 
