@@ -68,7 +68,7 @@ class BurgerDrawer extends StatelessWidget {
             const Spacer(),
             if (userInformation != null)
               MyRedirectDivider(
-                key: Key('burgerdrawer-logout'),
+                key: const Key('burgerdrawer-logout'),
                 goToPage: const LoginPage(),
                 title: AppLocalizations.of(context)!.logOut,
                 paramIcon: const Icon(Icons.logout),

@@ -27,7 +27,7 @@ class ArticleListState extends State<ArticleListPage> {
       });
       response = await http.get(
         Uri.parse(
-            'http://$serverIp:3000/api/mobile/container/$containerId/articleslist'),
+            '$baseUrl/api/mobile/container/$containerId/articleslist'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

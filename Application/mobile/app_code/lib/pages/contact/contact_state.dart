@@ -33,7 +33,7 @@ class ContactPageState extends State<ContactPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/contact'),
+        Uri.parse('$baseUrl/api/mobile/contact'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
