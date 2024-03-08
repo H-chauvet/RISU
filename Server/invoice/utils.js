@@ -1,6 +1,12 @@
 function formatDate(date) {
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-  return date.toLocaleDateString('fr-FR', options);
+  const options = {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return date.toLocaleDateString("fr-FR", options);
 }
 
 function drawTable(doc, tableData) {
@@ -14,7 +20,14 @@ function drawTable(doc, tableData) {
 
   tableData.forEach((row, i) => {
     row.forEach((cell, j) => {
-      doc.fontSize(fontSize).text(cell, startX + j * columnWidth, startY + i * (fontSize + cellPadding), { width: columnWidth, align: 'center' });
+      doc
+        .fontSize(fontSize)
+        .text(
+          cell,
+          startX + j * columnWidth,
+          startY + i * (fontSize + cellPadding),
+          { width: columnWidth, align: "center" },
+        );
     });
   });
 
@@ -24,6 +37,6 @@ function drawTable(doc, tableData) {
 }
 
 module.exports = {
-    formatDate,
-    drawTable
+  formatDate,
+  drawTable,
 };
