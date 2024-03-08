@@ -1,4 +1,4 @@
-const { formatDate, drawTable } = require('../../routes/Mobile/utils.js');
+const { formatDate, drawTable } = require('../../invoice/utils');
 
 describe('Invoice Functions', () => {
   describe('formatDate', () => {
