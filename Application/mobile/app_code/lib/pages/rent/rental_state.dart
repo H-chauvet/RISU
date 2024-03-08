@@ -293,8 +293,9 @@ class RentalPageState extends State<RentalPage> {
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
                                             "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
-                                        Text(
-                                            AppLocalizations.of(context)!.rentTimeOfRenting(rental['duration'])),
+                                        Text(AppLocalizations.of(context)!
+                                            .rentTimeOfRenting(
+                                                rental['duration'])),
                                         Text(
                                             "${AppLocalizations.of(context)!.status}: ${isRentalInProgress(rental) ? AppLocalizations.of(context)!.inProgress : AppLocalizations.of(context)!.endedE}"),
                                         if (isRentalInProgress(rental))
