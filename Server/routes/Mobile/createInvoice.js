@@ -25,7 +25,6 @@ async function createInvoice(invoice) {
 }
 
 function generateHeader(doc) {
-  console.log("generateHeader");
 
     doc
       .image("logo.png", 50, 45, { width: 50 })
@@ -38,7 +37,6 @@ function generateHeader(doc) {
 }
 
 function generateCustomerInformation(doc, invoice) {
-  console.log("generateCustomerInformation");
   doc
     .fillColor("#444444")
     .fontSize(20)
@@ -82,7 +80,6 @@ function generateCustomerInformation(doc, invoice) {
 }
 
 function generateInvoiceTable(doc, invoice) {
-  console.log("generateInvoiceTable");
   let i;
   const invoiceTableTop = 330;
 
