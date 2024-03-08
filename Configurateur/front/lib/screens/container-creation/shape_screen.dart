@@ -19,6 +19,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   int iteration = 0;
   late List<Widget> container = initContainer();
   List<bool> isClicked = List.generate(60, (index) => false);
+  List<Color?> colors = List.generate(60, (index) => Colors.grey[200]);
 
   @override
   void initState() {
@@ -31,6 +32,26 @@ class ShapeScreenState extends State<ShapeScreen> {
     width = column / 2;
     height = row / 2;
     nbLockers = row * column * 2;
+    if (colors.length < row * column) {
+      for (int i = colors.length; i < row * column; i++) {
+        colors.add(Colors.grey[200]);
+      }
+    }
+    if (isClicked.length < row * column) {
+      for (int i = isClicked.length; i < row * column; i++) {
+        isClicked.add(false);
+      }
+    }
+  }
+
+  void removeLockers() {
+    for (int i = 0; i < isClicked.length; i++) {
+      if (isClicked[i] == true) {
+        nbLockers -= 2;
+        colors[i] = Colors.grey[600];
+        isClicked[i] = false;
+      }
+    }
   }
 
   List<Widget> removeButtons() {
@@ -48,28 +69,29 @@ class ShapeScreenState extends State<ShapeScreen> {
         ),
       );
     } else {
-      buttons.add(
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              nbLockers -= 2;
-              isRemoveClicked = false;
-            });
-          },
-          child: const Text("Supprimer"),
-        ),
-      );
-      buttons.add(
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              isClicked = List.generate(60, (index) => false);
-              isRemoveClicked = false;
-            });
-          },
-          child: const Text('Annuler'),
-        ),
-      );
+      buttons.add(Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                removeLockers();
+                isRemoveClicked = false;
+              });
+            },
+            child: const Text("Supprimer"),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                isClicked = List.generate(60, (index) => false);
+                isRemoveClicked = false;
+              });
+            },
+            child: const Text('Annuler'),
+          ),
+        ],
+      ));
     }
 
     return buttons;
@@ -92,18 +114,17 @@ class ShapeScreenState extends State<ShapeScreen> {
             : Container();
         line.add(
           Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               i == 0
                   ? Container(
-                      width: 52.0,
+                      width: 50.0,
                       height: 2.0,
                       color: Colors.black,
                     )
                   : Container(),
               InkWell(
                 onTap: () => {
-                  debugPrint('test'),
-                  debugPrint((i * column + j).toString()),
                   if (isRemoveClicked == true)
                     {
                       setState(() {
@@ -115,7 +136,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                 child: Container(
                   width: 50,
                   height: 50,
-                  color: Colors.grey[200],
+                  color: colors[i * column + j],
                   alignment: Alignment.topRight,
                   child: isRemoveClicked
                       ? Padding(
@@ -140,7 +161,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       : Container(),
                 ),
               ),
-              Container(width: 52.0, height: 2.0, color: Colors.black),
+              Container(width: 50.0, height: 2.0, color: Colors.black),
             ],
           ),
         );
@@ -148,12 +169,13 @@ class ShapeScreenState extends State<ShapeScreen> {
         line.add(
           Container(
             width: 2.0,
-            height: 52.0,
+            height: 50.0,
             color: Colors.black,
           ),
         );
       }
       rows.add(Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: line,
       ));
       line = [];
@@ -173,13 +195,57 @@ class ShapeScreenState extends State<ShapeScreen> {
         key: formKey,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text('Nombres de lignes'),
-                  Flexible(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Nombres de lignes'),
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Colors.grey[200],
+                      child: Text(row.toString()),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              row++;
+                              colors = List.generate(
+                                  column * row, (index) => Colors.grey[200]);
+                              isClicked =
+                                  List.generate(column * row, (index) => false);
+                              calculateDimension();
+                            });
+                          },
+                          child: const Icon(Icons.add),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              row--;
+                              colors = List.generate(
+                                  column * row, (index) => Colors.grey[200]);
+                              isClicked =
+                                  List.generate(column * row, (index) => false);
+                              calculateDimension();
+                            });
+                          },
+                          child: const Icon(Icons.remove),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+
+                /*Flexible(
                     child: SizedBox(
                       width: 200,
                       child: TextFormField(
@@ -204,9 +270,51 @@ class ShapeScreenState extends State<ShapeScreen> {
                         },
                       ),
                     ),
-                  ),
-                  const Text('Nombres de colonnes'),
-                  SizedBox(
+                  ),*/
+                const Text('Nombres de colonnes'),
+                Row(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      color: Colors.grey[200],
+                      child: Text(column.toString()),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              column++;
+                              colors = List.generate(
+                                  column * row, (index) => Colors.grey[200]);
+                              isClicked =
+                                  List.generate(column * row, (index) => false);
+                              calculateDimension();
+                            });
+                          },
+                          child: const Icon(Icons.add),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              column--;
+                              colors = List.generate(
+                                  column * row, (index) => Colors.grey[200]);
+                              isClicked =
+                                  List.generate(column * row, (index) => false);
+                              calculateDimension();
+                            });
+                          },
+                          child: const Icon(Icons.remove),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+                /*SizedBox(
                     width: 200,
                     child: TextFormField(
                       key: const Key('Column'),
@@ -233,19 +341,21 @@ class ShapeScreenState extends State<ShapeScreen> {
                         return null;
                       },
                     ),
-                  ),
-                ],
-              ),
+                  ),*/
+              ],
             ),
             SizedBox(
-              width: 650,
+              //width: 650,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: removeButtons(),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: initContainer(),
                   ),
                 ],
@@ -253,13 +363,14 @@ class ShapeScreenState extends State<ShapeScreen> {
             ),
             SizedBox(
               width: 250,
+              height: 300,
               child: Container(
                 color: Colors.grey[200],
                 child: Column(
                   children: [
                     Text('Largeur: $width mètres'),
                     Text('Hauteur: $height mètres'),
-                    Text('Nombre de casiers: $nbLockers'),
+                    Text("Nombre d'emplacements: $nbLockers"),
                   ],
                 ),
               ),
