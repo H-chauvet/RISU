@@ -118,6 +118,6 @@ exports.getFullName = (userId) => {
     select: { firstName: true, lastName: true }
   })
   if (!user) return null
-  if (!user.firstName && !user.lastName) return 'Non renseigné
+  if (!user.firstName && !user.lastName) return 'Non renseigné'
   return user.firstName + ' ' + user.lastName
 }
