@@ -132,12 +132,10 @@ function generateInvoiceTable(doc, invoice) {
 
 function generateFooter(doc) {
   console.log("generateFooter");
-  doc
-    .fontSize(10)
-    .text("Risu vous remercie pour votre confiance.", 50, 780, {
-      align: "center",
-      width: 500,
-    });
+  doc.fontSize(10).text("Risu vous remercie pour votre confiance.", 50, 780, {
+    align: "center",
+    width: 500,
+  });
 }
 
 function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
