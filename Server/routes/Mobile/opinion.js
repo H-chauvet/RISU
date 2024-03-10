@@ -4,7 +4,7 @@ const router = express.Router()
 const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const opinionCtrl = require("../../controllers/Mobile/opinion")
-const itemsCtrl = require("../../controllers/common/items")
+const itemsCtrl = require("../../controllers/Common/items")
 
 // get all opinions from an item (can be filtered by note)
 router.get('/',
