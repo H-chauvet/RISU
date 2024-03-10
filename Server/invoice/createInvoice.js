@@ -67,9 +67,7 @@ function generateCustomerInformation(doc, invoice) {
     .text(invoice.shipping.address, 300, customerInformationTop + 15)
     .text(
       invoice.shipping.city +
-        //", " +
         invoice.shipping.state +
-        //", " +
         invoice.shipping.country,
       300,
       customerInformationTop + 30

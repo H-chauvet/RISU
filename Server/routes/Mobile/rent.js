@@ -1,6 +1,6 @@
 const express = require('express')
 const PDFDocument = require('pdfkit');
-const { createInvoice } = require("./createInvoice.js");
+const { createInvoice } = require("../../invoice/createInvoice")
 
 const router = express.Router()
 const passport = require('passport')
