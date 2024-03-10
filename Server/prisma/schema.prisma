@@ -44,6 +44,7 @@ model Item {
     image           String?
     description     String?
     Location_Mobile Location_Mobile[]
+    Opinions        Opinions_Mobile[]
 }
 
 model Organization {
@@ -111,6 +112,8 @@ model Opinions_Mobile {
     date    DateTime
     note    String
     comment String   @default("")
+    itemId  Int
+    item    Item     @relation(fields: [itemId], references: [id])
 }
 
 model User_Mobile {

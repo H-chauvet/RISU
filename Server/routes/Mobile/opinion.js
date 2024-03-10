@@ -4,7 +4,9 @@ const router = express.Router()
 const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const opinionCtrl = require("../../controllers/Mobile/opinion")
+const itemsCtrl = require("../../controllers/common/items")
 
+// get all opinions from an item (can be filtered by note)
 router.get('/',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     var opinions = []
@@ -17,24 +19,18 @@ router.get('/',
         return res.status(401).send('User not found');
       }
 
+      const itemID = req.query.itemID
+      if (itemID == null) {
+        return res.status(401).json({ message: 'Missing itemID' })
+      }
+
       const note = req.query.note
       if (note != null  && (note < '0' || note > '5')) {
         return res.status(401).json({ message: 'Missing note' })
       }
-      opinions = await opinionCtrl.getOpinions(note)
+      opinions = await opinionCtrl.getOpinions(itemID, note)
 
-      var result = []
-      for (var i = 0; i < opinions.length; i++) {
-        const user = await userCtrl.findUserById(opinions[i].userId)
-        result.push({
-          firstName: user.firstName ?? "Utilisateur",
-          lastName: user.lastName ?? "Supprimé",
-          comment: opinions[i].comment,
-          note: opinions[i].note
-        })
-      }
-
-      return res.status(201).json({ result })
+      return res.status(201).json({ opinions })
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
@@ -42,6 +38,7 @@ router.get('/',
   }
 )
 
+// add an opinion to an item
 router.post('/',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -58,10 +55,47 @@ router.post('/',
       if (!req.body.note || req.body.note === '') {
         return res.status(401).json({ message: 'Missing note' })
       }
+      const itemID = req.query.itemID
+      if (itemID == null) {
+        return res.status(401).json({ message: 'Missing itemID' })
+      }
+      const item = await itemsCtrl.getItemFromId(itemID)
 
-      await opinionCtrl.createOpinion(user.id, req.body.note, req.body.comment)
+      await opinionCtrl.createOpinion(item.id, user.id, req.body.note, req.body.comment)
 
       return res.status(201).json({ message: 'opinion saved' })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  }
+)
+
+// delete an opinion
+router.delete('/:opinionId',
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      const opinionId = req.params.opinionId
+      if (opinionId == null) {
+        return res.status(401).json({ message: 'Missing opinionId' })
+      }
+      const opinion = await opinionCtrl.getOpinionFromId(opinionId)
+      if (!opinion) {
+        return res.status(401).json({ message: 'Opinion not found' })
+      }
+      if (opinion.userId != user.id) {
+        return res.status(401).json({ message: 'Unauthorized' })
+      }
+      await opinionCtrl.deleteOpinion(opinionId)
+
+      return res.status(201).json({ message: 'opinion deleted' })
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
