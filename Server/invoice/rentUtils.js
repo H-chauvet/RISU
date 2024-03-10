@@ -1,4 +1,4 @@
-const { formatDate } = require("../../invoice/utils");
+const { formatDate } = require("../../invoice/invoiceUtils");
 const transporter = require("../../middleware/transporter");
 
 async function sendEmailConfirmationLocation(

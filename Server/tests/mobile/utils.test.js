@@ -1,4 +1,4 @@
-const { formatDate, drawTable } = require('../../invoice/utils');
+const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 
 describe('Invoice Functions', () => {
   describe('formatDate', () => {

@@ -9,7 +9,7 @@ const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
 const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
-const { formatDate, drawTable } = require('../../invoice/utils');
+const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
 
 router.post('/article',
