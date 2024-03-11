@@ -12,6 +12,11 @@ const mobileRentArticle = require('./Mobile/rent/article')
 const mobileRentListAll = require('./Mobile/rent/listAll')
 const mobileRentId = require('./Mobile/rent/rentId')
 const mobileRentReturn = require('./Mobile/rent/returnRent')
+const mobileUserListAll = require('./Mobile/user/listAll')
+const mobileUserPassword = require('./Mobile/user/password')
+const mobileUserResetPassword = require('./Mobile/user/resetPassword')
+const mobileUserUpdate = require('./Mobile/user/update')
+const mobileUserId = require('./Mobile/user/userId')
 
 module.exports = {
     paths: {
@@ -57,21 +62,21 @@ module.exports = {
         '/api/mobile/rent/:rentId/return': {
             ...mobileRentReturn
         },
-        // '/api/mobile/user/listAll': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/user/password': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/user/resetPassword': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/user/:userId': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/user/': {
-        //     ...mobileSignUp
-        // },
+        '/api/mobile/user/listAll': {
+            ...mobileUserListAll
+        },
+        '/api/mobile/user/password': {
+            ...mobileUserPassword
+        },
+        '/api/mobile/user/resetPassword': {
+            ...mobileUserResetPassword
+        },
+        '/api/mobile/user/:userId': {
+            ...mobileUserId
+        },
+        '/api/mobile/user/': {
+            ...mobileUserUpdate
+        },
         // '/api/contact': {
         //     ...mobileSignUp
         // },
