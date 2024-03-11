@@ -12,6 +12,7 @@ const mobileRentArticle = require('./Mobile/rent/article')
 const mobileRentListAll = require('./Mobile/rent/listAll')
 const mobileRentId = require('./Mobile/rent/rentId')
 const mobileRentReturn = require('./Mobile/rent/returnRent')
+const mobileRentInvoice = require('./Mobile/rent/invoice')
 const mobileUserListAll = require('./Mobile/user/listAll')
 const mobileUserPassword = require('./Mobile/user/password')
 const mobileUserResetPassword = require('./Mobile/user/resetPassword')
@@ -77,6 +78,9 @@ module.exports = {
         },
         '/api/mobile/rent/:rentId/return': {
             ...mobileRentReturn
+        },
+        '/api/mobile/rent/:locationId/invoice' : {
+            ...mobileRentInvoice
         },
         '/api/mobile/user/listAll': {
             ...mobileUserListAll

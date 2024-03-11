@@ -111,6 +111,13 @@ exports.returnRent = (rentId) => {
   })
 }
 
+/**
+ * Update the rent invoice
+ *
+ * @param {string} rentId
+ * @param {*} invoiceData the invoice file
+ * @returns none
+ */
 exports.updateRentInvoice = (rentId, invoiceData) => {
   const id = parseInt(rentId);
   return db.Location_Mobile.update({
