@@ -8,27 +8,27 @@ module.exports = {
             type: "string",
           },
           available: {
-            type: "boolean"
+            type: "boolean",
           },
           price: {
             type: "float",
           },
           image: {
-            type: "string"
+            type: "string",
           },
           description: {
-            type: "string"
+            type: "string",
           },
           container: {
-            $ref: "#/components/schemas/Container"
-          }
-        }
+            $ref: "#/components/schemas/Container",
+          },
+        },
       },
       Container: {
         type: "object",
         properties: {
           organization: {
-            $ref: "#/components/schemas/Organization"
+            $ref: "#/components/schemas/Organization",
           },
           containerMapping: {
             type: "string",
@@ -49,24 +49,24 @@ module.exports = {
             type: "float",
           },
           designs: {
-            type: "string"
+            type: "string",
           },
           informations: {
-            type: "string"
+            type: "string",
           },
           items: {
             type: "array",
             items: {
-              $ref: "#/components/schemas/Item"
-            }
+              $ref: "#/components/schemas/Item",
+            },
           },
           paid: {
-            type: "boolean"
+            type: "boolean",
           },
           saveName: {
-            type: "string"
+            type: "string",
           },
-        }
+        },
       },
       Organization: {
         type: "object",
@@ -83,16 +83,16 @@ module.exports = {
           affiliateUsers: {
             type: "array",
             items: {
-              $ref: "#/components/schemas/User_Web"
-            }
+              $ref: "#/components/schemas/User_Web",
+            },
           },
           containers: {
             type: "array",
             items: {
-              $ref: "#/components/schemas/Container"
-            }
+              $ref: "#/components/schemas/Container",
+            },
           },
-        }
+        },
       },
       User_Web: {
         type: "object",
@@ -117,11 +117,11 @@ module.exports = {
             type: "string",
           },
           confirmed: {
-            type: "boolean"
+            type: "boolean",
           },
           organization: {
-            $ref: "#/components/schemas/Organization"
-          }
+            $ref: "#/components/schemas/Organization",
+          },
         },
       },
       Opinions_Web: {
@@ -146,7 +146,7 @@ module.exports = {
             type: "integer",
             format: "date-time",
           },
-        }
+        },
       },
       Contact_Web: {
         type: "object",
@@ -167,7 +167,7 @@ module.exports = {
             type: "integer",
             format: "date-time",
           },
-        }
+        },
       },
       User_Mobile: {
         type: "object",
@@ -186,14 +186,14 @@ module.exports = {
             type: "string",
           },
           mailVerification: {
-            type: "boolean"
+            type: "boolean",
           },
           locations: {
-            $ref: "#/components/schemas/Location_Mobile"
+            $ref: "#/components/schemas/Location_Mobile",
           },
           notifications: {
-            $ref: "#/components/schemas/Notifications_Mobile"
-          }
+            $ref: "#/components/schemas/Notifications_Mobile",
+          },
         },
       },
       Location_Mobile: {
@@ -201,33 +201,33 @@ module.exports = {
         properties: {
           price: {
             type: "integer",
-            format: "int32"
+            format: "int32",
           },
           duration: {
             type: "integer",
             format: "date-time",
           },
           ended: {
-            type: "boolean"
+            type: "boolean",
           },
           item: {
-            $ref: "#/components/schemas/Item"
-          }
-        }
+            $ref: "#/components/schemas/Item",
+          },
+        },
       },
       Notifications_Mobile: {
         type: "object",
         properties: {
           favoriteItemsAvailable: {
-            type: "boolean"
+            type: "boolean",
           },
           endOfRenting: {
-            type: "boolean"
+            type: "boolean",
           },
           newsOffersRisu: {
-            type: "boolean"
+            type: "boolean",
           },
-        }
+        },
       },
       Contact_Mobile: {
         type: "object",
@@ -245,7 +245,7 @@ module.exports = {
             type: "integer",
             format: "date-time",
           },
-        }
+        },
       },
       Opinions_Mobile: {
         type: "object",
@@ -263,8 +263,8 @@ module.exports = {
             type: "integer",
             format: "date-time",
           },
-        }
-      }
+        },
+      },
     },
   },
 };
