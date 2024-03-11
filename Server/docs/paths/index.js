@@ -26,6 +26,10 @@ const WebContainerListAll = require('./Web/container/listAll')
 const WebContainerCreate = require('./Web/container/create')
 const WebFeedbacksPost = require('./Web/feedback/create')
 const WebFeedbacksListAll = require('./Web/feedback/listAll')
+const WebItemDelete = require('./Web/items/delete')
+const WebItemUpdate = require('./Web/items/update')
+const WebItemListAll = require('./Web/items/listAll')
+const WebItemCreate = require('./Web/items/create')
 
 module.exports = {
     paths: {
@@ -110,18 +114,18 @@ module.exports = {
         '/api/feedbacks/listAll': {
             ...WebFeedbacksListAll
         },
-        // '/api/items/listAll': {
-        //     ...mobileSignUp
-        // },
-        // '/api/items/create': {
-        //     ...mobileSignUp
-        // },
-        // '/api/items/delete': {
-        //     ...mobileSignUp
-        // },
-        // '/api/items/update': {
-        //     ...mobileSignUp
-        // },
+        '/api/items/listAll': {
+            ...WebItemListAll
+        },
+        '/api/items/create': {
+            ...WebItemCreate
+        },
+        '/api/items/delete': {
+            ...WebItemDelete
+        },
+        '/api/items/update': {
+            ...WebItemUpdate
+        },
         // '/api/messages/list': {
         //     ...mobileSignUp
         // },

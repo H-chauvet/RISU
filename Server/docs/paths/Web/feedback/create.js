@@ -23,7 +23,7 @@ module.exports = {
                 "application/json": {
                     example: "Avis enregistré !"
                 }
-                }
+              }
             },
             401: {
             description: 'An Error occurred',
