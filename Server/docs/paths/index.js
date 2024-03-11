@@ -5,6 +5,8 @@ const mobileContact = require('./Mobile/contact/contact')
 const mobileContainerListAll = require('./Mobile/container/listAll')
 const mobileContainerId = require('./Mobile/container/containerId')
 const mobileContainerArticleList = require('./Mobile/container/articleList')
+const mobileItemListAll = require('./Mobile/items/listAll')
+const mobileItemId = require('./Mobile/items/itemId')
 
 module.exports = {
     paths: {
@@ -29,12 +31,12 @@ module.exports = {
         '/api/mobile/container/:containerId/articlelist': {
             ...mobileContainerArticleList
         },
-        // '/api/mobile/article/listAll': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/article/:articleId': {
-        //     ...mobileSignUp
-        // },
+        '/api/mobile/article/listAll': {
+            ...mobileItemListAll
+        },
+        '/api/mobile/article/:articleId': {
+            ...mobileItemId
+        },
         // '/api/mobile/opinion/': {
         //     ...mobileSignUp
         // },

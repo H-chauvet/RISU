@@ -1,6 +1,6 @@
 module.exports = {
     post: {
-      tags: ["Mobile", "Authentification"],
+      tags: ["Mobile", "Authentification", "User"],
       summary: 'Login an user in the mobile app',
       description: 'Login an user using passport',
       operationId: "mobileLogIn",

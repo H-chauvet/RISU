@@ -1,6 +1,6 @@
 module.exports = {
     get: {
-      tags: ["Mobile", "Authentification"],
+      tags: ["Mobile", "Authentification", "User"],
       summary: 'Verify the mail of an user',
       description: 'Verify the mmail of a previously registered user on mobile',
       operationId: "mobileMailVerification",
