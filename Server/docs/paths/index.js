@@ -30,6 +30,8 @@ const WebItemDelete = require('./Web/items/delete')
 const WebItemUpdate = require('./Web/items/update')
 const WebItemListAll = require('./Web/items/listAll')
 const WebItemCreate = require('./Web/items/create')
+const WebMessageList = require('./Web/messages/list')
+const WebMessageDelete = require('./Web/messages/delete')
 
 module.exports = {
     paths: {
@@ -126,12 +128,12 @@ module.exports = {
         '/api/items/update': {
             ...WebItemUpdate
         },
-        // '/api/messages/list': {
-        //     ...mobileSignUp
-        // },
-        // '/api/messages/delete': {
-        //     ...mobileSignUp
-        // },
+        '/api/messages/list': {
+            ...WebMessageList
+        },
+        '/api/messages/delete': {
+            ...WebMessageDelete
+        },
         // '/api/payment/card-pay': {
         //     ...mobileSignUp
         // },
