@@ -1,37 +1,35 @@
 module.exports = {
     post: {
-      tags: ["Web"],
-      summary: 'DEPRECATED',
-      description: 'DEPRECATED - Send a message in the database',
-      operationId: "WebContact",
+      tags: ["Web", "Container"],
+      summary: 'Delete a container by its id',
+      description: 'Delete container data thanks to its id',
+      operationId: "WebContainerDelete",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
         {
-          name: 'body',
-          in: 'body',
-          schema: {
-            $ref: '#/components/schemas/Contact_Web'
-          }
+          name: 'id',
+          in: 'query',
+          type: "string",
+          description : "id of the container"
         },
       ],
       responses: {
-        201: {
+        200: {
           description: 'OK',
           content : {
             "application/json": {
-                example: "Message enregistré"
+                example: "Container deleted"
             }
           }
         },
-        401: {
+        400: {
           description: 'An error occured',
           content : {
             "application/json": {
-                example: "Email is required"
+                example: "Id is required"
             }
           }
-
         }
       }
     }

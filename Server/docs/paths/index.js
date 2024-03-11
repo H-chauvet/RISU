@@ -19,6 +19,11 @@ const mobileUserUpdate = require('./Mobile/user/update')
 const mobileUserId = require('./Mobile/user/userId')
 
 const WebContact = require('./Web/contact/contact')
+const WebContainerGet = require('./Web/container/get')
+const WebContainerDelete = require('./Web/container/delete')
+const WebContainerUpdate = require('./Web/container/update')
+const WebContainerListAll = require('./Web/container/listAll')
+const WebContainerCreate = require('./Web/container/create')
 
 module.exports = {
     paths: {
@@ -82,21 +87,21 @@ module.exports = {
         '/api/contact': {
             ...WebContact
         },
-        // '/api/container/get': {
-        //     ...mobileSignUp
-        // },
-        // '/api/container/delete': {
-        //     ...mobileSignUp
-        // },
-        // '/api/container/create': {
-        //     ...mobileSignUp
-        // },
-        // '/api/container/update': {
-        //     ...mobileSignUp
-        // },
-        // '/api/container/listAll': {
-        //     ...mobileSignUp
-        // },
+        '/api/container/get': {
+            ...WebContainerGet
+        },
+        '/api/container/delete': {
+            ...WebContainerDelete
+        },
+        '/api/container/create': {
+            ...WebContainerCreate
+        },
+        '/api/container/update': {
+            ...WebContainerUpdate
+        },
+        '/api/container/listAll': {
+            ...WebContainerListAll
+        },
         // '/api/feedbacks/create': {
         //     ...mobileSignUp
         // },
