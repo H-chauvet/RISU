@@ -1,9 +1,9 @@
 module.exports = {
     post: {
-      tags: ["Mobile", "Authentification"],
-      summary: 'Sign up an user',
-      description: 'Sign up an user using passport and send a confirmation e-mail',
-      operationId: "mobileSignUp",
+      tags: ["Mobile"],
+      summary: 'DEPRECATED',
+      description: 'DEPRECATED - Send a message in the database',
+      operationId: "mobileContact",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
@@ -11,24 +11,24 @@ module.exports = {
           name: 'body',
           in: 'body',
           schema: {
-            $ref: '#/components/schemas/User_Mobile'
+            $ref: '#/components/schemas/Contact_Mobile'
           }
         },
       ],
       responses: {
         201: {
-          description: 'OK - Email to confirm account sent',
+          description: 'OK',
           content : {
             "application/json": {
-                example: "User created"
+                example: "Contact saved"
             }
           }
         },
         401: {
-          description: 'An error occured, check the log for more details.',
+          description: 'An error occured',
           content : {
             "application/json": {
-                example: "An error occurred."
+                example: "Error while saving contact."
             }
           }
 

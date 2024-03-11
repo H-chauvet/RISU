@@ -1,9 +1,9 @@
 module.exports = {
     post: {
       tags: ["Mobile", "Authentification"],
-      summary: 'Sign up an user',
-      description: 'Sign up an user using passport and send a confirmation e-mail',
-      operationId: "mobileSignUp",
+      summary: 'Login an user in the mobile app',
+      description: 'Login an user using passport',
+      operationId: "mobileLogIn",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
@@ -17,14 +17,14 @@ module.exports = {
       ],
       responses: {
         201: {
-          description: 'OK - Email to confirm account sent',
+          description: 'OK',
           content : {
             "application/json": {
-                example: "User created"
+                example: "User token"
             }
           }
         },
-        401: {
+        '4XX': {
           description: 'An error occured, check the log for more details.',
           content : {
             "application/json": {
