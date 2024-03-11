@@ -8,6 +8,10 @@ const mobileContainerArticleList = require('./Mobile/container/articleList')
 const mobileItemListAll = require('./Mobile/items/listAll')
 const mobileItemId = require('./Mobile/items/itemId')
 const mobileOpinion = require('./Mobile/opinion/opinion')
+const mobileRentArticle = require('./Mobile/rent/article')
+const mobileRentListAll = require('./Mobile/rent/listAll')
+const mobileRentId = require('./Mobile/rent/rentId')
+const mobileRentReturn = require('./Mobile/rent/returnRent')
 
 module.exports = {
     paths: {
@@ -41,18 +45,18 @@ module.exports = {
         '/api/mobile/opinion/': {
             ...mobileOpinion
         },
-        // '/api/mobile/rent/article': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/rent/listAll': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/rent/:rentId': {
-        //     ...mobileSignUp
-        // },
-        // '/api/mobile/rent/:rentId/return': {
-        //     ...mobileSignUp
-        // },
+        '/api/mobile/rent/article': {
+            ...mobileRentArticle
+        },
+        '/api/mobile/rent/listAll': {
+            ...mobileRentListAll
+        },
+        '/api/mobile/rent/:rentId': {
+            ...mobileRentId
+        },
+        '/api/mobile/rent/:rentId/return': {
+            ...mobileRentReturn
+        },
         // '/api/mobile/user/listAll': {
         //     ...mobileSignUp
         // },
