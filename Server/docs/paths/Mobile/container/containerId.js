@@ -9,6 +9,7 @@ module.exports = {
       parameters: [
         {
           name: 'containerId',
+          description: 'the id of the searched container',
           in: 'body',
           type: "string"
         },
