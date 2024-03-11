@@ -7,6 +7,7 @@ const mobileContainerId = require('./Mobile/container/containerId')
 const mobileContainerArticleList = require('./Mobile/container/articleList')
 const mobileItemListAll = require('./Mobile/items/listAll')
 const mobileItemId = require('./Mobile/items/itemId')
+const mobileOpinion = require('./Mobile/opinion/opinion')
 
 module.exports = {
     paths: {
@@ -37,9 +38,9 @@ module.exports = {
         '/api/mobile/article/:articleId': {
             ...mobileItemId
         },
-        // '/api/mobile/opinion/': {
-        //     ...mobileSignUp
-        // },
+        '/api/mobile/opinion/': {
+            ...mobileOpinion
+        },
         // '/api/mobile/rent/article': {
         //     ...mobileSignUp
         // },
