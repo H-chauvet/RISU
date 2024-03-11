@@ -32,6 +32,7 @@ const WebItemListAll = require('./Web/items/listAll')
 const WebItemCreate = require('./Web/items/create')
 const WebMessageList = require('./Web/messages/list')
 const WebMessageDelete = require('./Web/messages/delete')
+const WebPayment = require('./Web/payment/card-pay')
 
 module.exports = {
     paths: {
@@ -134,9 +135,9 @@ module.exports = {
         '/api/messages/delete': {
             ...WebMessageDelete
         },
-        // '/api/payment/card-pay': {
-        //     ...mobileSignUp
-        // },
+        '/api/payment/card-pay': {
+            ...WebPayment
+        },
         // '/api/auth/login': {
         //     ...mobileSignUp
         // },
