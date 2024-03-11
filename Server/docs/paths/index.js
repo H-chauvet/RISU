@@ -18,6 +18,8 @@ const mobileUserResetPassword = require('./Mobile/user/resetPassword')
 const mobileUserUpdate = require('./Mobile/user/update')
 const mobileUserId = require('./Mobile/user/userId')
 
+const WebContact = require('./Web/contact/contact')
+
 module.exports = {
     paths: {
         '/api/mobile/auth/signup': {
@@ -77,9 +79,9 @@ module.exports = {
         '/api/mobile/user/': {
             ...mobileUserUpdate
         },
-        // '/api/contact': {
-        //     ...mobileSignUp
-        // },
+        '/api/contact': {
+            ...WebContact
+        },
         // '/api/container/get': {
         //     ...mobileSignUp
         // },
