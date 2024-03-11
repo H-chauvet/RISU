@@ -34,6 +34,21 @@ const WebItemCreate = require('./Web/items/create')
 const WebMessageList = require('./Web/messages/list')
 const WebMessageDelete = require('./Web/messages/delete')
 const WebPayment = require('./Web/payment/card-pay')
+const WebUserConfirmedRegister = require('./Web/user/confirmed-register')
+const WebUserDelete = require('./Web/user/delete')
+const WebUserForgotPassword = require('./Web/user/forgot-password')
+const WebUserGoogleLogin = require('./Web/user/google-login')
+const WebUserListAll = require('./Web/user/listAll')
+const WebUserLogin = require('./Web/user/login')
+const WebUserPrivacy = require('./Web/user/privacy')
+const WebUserRegisterConfirmation = require('./Web/user/register-confirmation')
+const WebUserRegister = require('./Web/user/register')
+const WebUserUpdateCompany = require('./Web/user/update-company')
+const WebUserUpdateDetails = require('./Web/user/update-details')
+const WebUserUpdateMail = require('./Web/user/update-mail')
+const WebUserUpdatePasswordEmail = require('./Web/user/update-password-email')
+const WebUserUpdatePassword = require('./Web/user/update-password')
+const WebUserDetails = require('./Web/user/userdetails')
 
 module.exports = {
     paths: {
@@ -142,44 +157,44 @@ module.exports = {
         '/api/payment/card-pay': {
             ...WebPayment
         },
-        // '/api/auth/login': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/google-login': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/register': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/forgot-password': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/update-password': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/register-confirmation': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/confirmed-register': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/privacy': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/listAll': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/update-details/:email/': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/update-mail': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/update-company/:email': {
-        //     ...mobileSignUp
-        // },
-        // '/api/auth/update-password/:email': {
-        //     ...mobileSignUp
-        // },
+        '/api/auth/login': {
+            ...WebUserLogin
+        },
+        '/api/auth/google-login': {
+            ...WebUserGoogleLogin
+        },
+        '/api/auth/register': {
+            ...WebUserRegister
+        },
+        '/api/auth/forgot-password': {
+            ...WebUserForgotPassword
+        },
+        '/api/auth/update-password': {
+            ...WebUserForgotPassword
+        },
+        '/api/auth/register-confirmation': {
+            ...WebUserRegisterConfirmation
+        },
+        '/api/auth/confirmed-register': {
+            ...WebUserConfirmedRegister
+        },
+        '/api/auth/privacy': {
+            ...WebUserPrivacy
+        },
+        '/api/auth/listAll': {
+            ...WebUserListAll
+        },
+        '/api/auth/update-details/:email/': {
+            ...WebUserUpdateDetails
+        },
+        '/api/auth/update-mail': {
+            ...WebUserUpdateMail
+        },
+        '/api/auth/update-company/:email': {
+            ...WebUserUpdateCompany
+        },
+        '/api/auth/update-password/:email': {
+            ...WebUserUpdatePasswordEmail
+        },
     }
 }
