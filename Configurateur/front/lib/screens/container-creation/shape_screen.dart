@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../components/progress_bar.dart';
 
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
@@ -201,6 +206,55 @@ class ShapeScreenState extends State<ShapeScreen> {
     return rows;
   }
 
+  void goPrevious() {
+    context.go('/');
+  }
+
+  void goNext() {
+    String containerMapping = '';
+
+    debugPrint(isClicked.length.toString());
+    for (int i = 0; i < colors.length; i++) {
+      if (colors[i] == Colors.grey[600]) {
+        int actualColumn = (i % column);
+        int actualRow = (i ~/ column);
+        debugPrint('col ' + actualColumn.toString());
+        debugPrint('row ' + actualRow.toString());
+        int diffToBottom = 0;
+        int tmp = i;
+        for (; true;) {
+          if (tmp > 0) {
+            tmp -= column;
+            diffToBottom++;
+          } else {
+            break;
+          }
+        }
+
+        debugPrint('bottom ' + diffToBottom.toString());
+
+        diffToBottom--;
+
+        int rowToUp = (row - actualRow) - (diffToBottom);
+
+        if (diffToBottom + actualRow == row - 1) {
+          rowToUp = 0;
+        }
+
+        debugPrint('to up ' + rowToUp.toString());
+
+        int index = actualColumn + (rowToUp * column);
+
+        debugPrint('index ' + index.toString());
+
+        containerMapping += '${index},${index + (row * column)},';
+      }
+    }
+    //debugPrint(containerMapping);
+    context.go('/container-creation',
+        extra: jsonEncode({'containerMapping': containerMapping}));
+  }
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -208,6 +262,22 @@ class ShapeScreenState extends State<ShapeScreen> {
       appBar: CustomAppBar(
         "Forme",
         context: context,
+      ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ProgressBar(
+            length: 5,
+            progress: 0,
+            previous: 'Précédent',
+            next: 'Payer',
+            previousFunc: goPrevious,
+            nextFunc: goNext,
+          ),
+          const SizedBox(
+            height: 50,
+          )
+        ],
       ),
       body: Form(
         key: formKey,

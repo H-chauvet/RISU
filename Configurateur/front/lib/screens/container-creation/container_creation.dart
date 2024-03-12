@@ -22,10 +22,12 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import '../../components/dialog/autofill_dialog.dart';
 
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation({super.key, this.id, this.container});
+  const ContainerCreation(
+      {super.key, this.id, this.container, this.containerMapping});
 
   final String? id;
   final String? container;
+  final String? containerMapping;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -55,8 +57,8 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    checkToken();
-    MyAlertTest.checkSignInStatus(context);
+    //checkToken();
+    //MyAlertTest.checkSignInStatus(context);
     super.initState();
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -71,6 +73,21 @@ class ContainerCreationState extends State<ContainerCreation> {
       loadContainer();
 
       loadLockers();
+    }
+
+    if (widget.containerMapping != null) {
+      debugPrint(widget.containerMapping!);
+      List<String> indexList = widget.containerMapping!.split(',');
+      for (int i = 0; i < indexList.length; i++) {
+        if (indexList[i] != '') {
+          objs[0].fragments[int.parse(indexList[i])].faces[0].materialIndex = 1;
+          objs[0].fragments[int.parse(indexList[i])].faces[1].materialIndex = 1;
+          objs[0].fragments[int.parse(indexList[i])].faces[2].materialIndex = 1;
+          objs[0].fragments[int.parse(indexList[i])].faces[3].materialIndex = 1;
+          objs[0].fragments[int.parse(indexList[i])].faces[4].materialIndex = 1;
+          objs[0].fragments[int.parse(indexList[i])].faces[5].materialIndex = 1;
+        }
+      }
     }
   }
 
@@ -580,8 +597,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 0,
+              length: 5,
+              progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,

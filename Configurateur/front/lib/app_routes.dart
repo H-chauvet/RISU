@@ -122,6 +122,12 @@ class AppRouter {
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
 
+          if (user['containerMapping'] != null) {
+            return ContainerCreation(
+              containerMapping: user['containerMapping'],
+            );
+          }
+
           return ContainerCreation(
             id: user['id'],
             container: user['container'],
