@@ -34,9 +34,9 @@ exports.deleteContainer = (id) => {
 };
 
 /**
- * Create a new container by its id
+ * Create a new container
  *
- * @param {number} id of the container object
+ * @param {*} container the object with data
  * @returns the container object
  */
 exports.createContainer = (container) => {
@@ -50,7 +50,7 @@ exports.createContainer = (container) => {
 /**
  * Update an existing container
  *
- * @param {number} id of the container object
+ * @param {number} id of the container
  * @param {*} container the object with updated data
  * @returns the container object
  */
@@ -69,8 +69,8 @@ exports.updateContainer = (id, container) => {
 /**
  * Retrieve every container
  *
- * @returns every exitsting container
  * @throws {Error} with a specific message to find the problem
+ * @returns every exitsting container
  */
 exports.getAllContainers = async () => {
   try {
@@ -82,9 +82,9 @@ exports.getAllContainers = async () => {
 };
 
 /**
- * Retrieve the items of the containers
+ * Retrieve items of the containers
  *
- * @param {number} containerId of the container object
+ * @param {number} containerId id of the container
  * @returns the container object with its items
  */
 exports.getItemsFromContainer = (containerId) => {

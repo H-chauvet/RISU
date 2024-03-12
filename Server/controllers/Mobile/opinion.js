@@ -6,7 +6,7 @@ const { db } = require('../../middleware/database')
  * @param {number} userId of the one of submitted the opinion
  * @param {string} note
  * @param {string} comment
- * @returns
+ * @returns the newly created opinion
  */
 exports.createOpinion = (userId, note, comment) => {
   return db.Opinions_Mobile.create({

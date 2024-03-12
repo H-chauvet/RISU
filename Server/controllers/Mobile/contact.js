@@ -1,11 +1,11 @@
 const { db } = require('../../middleware/database')
 
 /**
- * Create a object with the message sent from a mobile user
+ * Create an object with the message sent from a mobile user
  *
- * @param {string} name
- * @param {string} email
- * @param {string} message
+ * @param {string} name of the user
+ * @param {string} email of the user
+ * @param {string} message sent by the user
  * @returns the contact object
  */
 exports.createContact = (name, email, message) => {

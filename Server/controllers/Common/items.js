@@ -3,7 +3,7 @@ const { db } = require('../../middleware/database')
 /**
  * Retrieve every item from a container
  *
- * @param {number} containerId the container id
+ * @param {number} containerId id of the container
  * @returns every item in a specific container
  */
 exports.getAllItem = (containerId) => {
@@ -82,7 +82,7 @@ exports.updateItem = (id, item) => {
 };
 
 /**
- * Get every item available in a specific container
+ * Get the number of available items in a container
  *
  * @param {number} containerId id of the container
  * @returns the number of available item in the containers

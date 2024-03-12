@@ -1,10 +1,10 @@
 const { db } = require('../../middleware/database')
 
 /**
- * Create an rent related to an item
+ * Create a rent related to an item
  *
  * @param {number} price of the item
- * @param {*} itemId to be rented
+ * @param {*} itemId to be rent
  * @param {*} userId of the one who rent
  * @param {*} duration of the rent
  * @returns the freshly rented item
@@ -21,10 +21,10 @@ exports.rentItem = (price, itemId, userId, duration) => {
 }
 
 /**
- * Get the rents of the user
+ * Get rents of the user
  *
  * @param {number} userId of the one who rent
- * @returns the rent of the user
+ * @returns rents of the user
  */
 exports.getUserRents = (userId) => {
   return db.Location_Mobile.findMany({
@@ -56,7 +56,7 @@ exports.getUserRents = (userId) => {
 }
 
 /**
- * Get the rent data from its id
+ * Get rent data from its id
  *
  * @param {number} rentId of the searched rent
  * @returns the rent of the data if found
@@ -96,7 +96,7 @@ exports.getRentFromId = (rentId) => {
  * Update the rent status to available
  *
  * @param {string} rentId to be updated
- * @returns none
+ * @returns the freshly updated location
  */
 exports.returnRent = (rentId) => {
   id = parseInt(rentId)
@@ -114,9 +114,9 @@ exports.returnRent = (rentId) => {
 /**
  * Update the rent invoice
  *
- * @param {string} rentId
+ * @param {string} rentId id of the rend
  * @param {*} invoiceData the invoice file
- * @returns none
+ * @returns the freshly updated location
  */
 exports.updateRentInvoice = (rentId, invoiceData) => {
   const id = parseInt(rentId);
