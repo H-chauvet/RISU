@@ -43,7 +43,7 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       http.Response response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/auth/login'),
+        Uri.parse('$baseUrl/api/mobile/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -106,7 +106,7 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       var response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/user/resetPassword'),
+        Uri.parse('$baseUrl/api/mobile/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

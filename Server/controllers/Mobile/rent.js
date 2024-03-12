@@ -41,13 +41,14 @@ exports.getUserRents = (userId) => {
 }
 
 exports.getRentFromId = (rentId) => {
-  id = parseInt(rentId)
+  const id = parseInt(rentId);
   return db.Location_Mobile.findUnique({
     where: {
       id: id
     },
     select: {
       id: true,
+      invoice: true,
       price: true,
       createdAt: true,
       duration: true,
@@ -81,4 +82,12 @@ exports.returnRent = (rentId) => {
       }
     },
   })
+}
+
+exports.updateRentInvoice = (rentId, invoiceData) => {
+  const id = parseInt(rentId);
+  return db.Location_Mobile.update({
+    where: { id: id },
+    data: { invoice: invoiceData }
+  });
 }

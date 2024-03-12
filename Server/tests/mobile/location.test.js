@@ -118,6 +118,51 @@ describe('POST /api/rent/article', () => {
         ],
         done
       )
+    }),
+    it('should get invoice rental', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:3000')
+              .post('/api/mobile/rent/1/invoice')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
+            expect(res.statusCode).toBe(201);
+          }
+        ],
+        done
+      )
+    }),
+    it('should not get invoice rental, no location', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:3000')
+              .post('/api/mobile/rent/0/invoice')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer ${authToken}`)
+            expect(res.statusCode).toBe(404);
+          }
+        ],
+        done
+      )
+    }),
+    it('should not get invoice rental, no token', (done) => {
+      async.series(
+        [
+          async function () {
+            const res = await request('http://localhost:3000')
+              .post('/api/mobile/rent/1/invoice')
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
+              .set('Authorization', `Bearer`)
+            expect(res.statusCode).toBe(401);
+          }
+        ],
+        done
+      )
     })
 });
 

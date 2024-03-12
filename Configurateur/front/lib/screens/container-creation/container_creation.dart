@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/container_dialog.dart';
+import 'package:front/components/dialog/delete_container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -21,6 +23,7 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
+// ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation(
       {super.key, this.id, this.container, this.containerMapping});
@@ -45,6 +48,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   double actualRotationDegree = 0.0;
   String jwtToken = '';
   dynamic decodedContainer;
+  bool unitTest = false;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -134,7 +138,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (decodedContainer != null) {
       for (int i = 0; i < decodedContainer.length; i++) {
-        lockers.add(Locker('design personnalisé', 50));
+        lockers.add(Locker('Design personnalisé', 50));
       }
     }
 
@@ -233,16 +237,6 @@ class ContainerCreationState extends State<ContainerCreation> {
       }
     }
     return "";
-  }
-
-  void handleFloatingPoint() {
-    if (actualRotationDegree != 180 * 3.14 / 180 &&
-        actualRotationDegree != 0 &&
-        actualRotationDegree != 90 * 3.14 / 180 &&
-        actualRotationDegree != 270 * 3.14 / 180) {
-      actualRotationDegree =
-          double.parse(actualRotationDegree.toStringAsFixed(2));
-    }
   }
 
   Widget openDialog() {
@@ -394,74 +388,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void rotateBack() {
-    if (actualRotationDegree == 180 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
-      actualRotationDegree += 180 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateFront() {
-    if (actualRotationDegree == 0) {
-      return;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
-      actualRotationDegree += -180 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -270 * 3.14 / 180);
-      actualRotationDegree += -270 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateLeftSide() {
-    if (actualRotationDegree == 90 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
-      actualRotationDegree += -180 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateRightSide() {
-    if (actualRotationDegree == 270 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 270 * 3.14 / 180);
-      actualRotationDegree += 270 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
-      actualRotationDegree += 180 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
   void loadImage() async {
     world = Sp3dWorld(objs);
     world.initImages().then((List<Sp3dObj> errorObjs) {
@@ -477,6 +403,95 @@ class ContainerCreationState extends State<ContainerCreation> {
       price += lockers[i].price;
     }
     return price;
+  }
+
+  void resetContainer() {
+    for (int i = 0; i < objs[0].fragments.length; i++) {
+      objs[0].fragments[i].faces[0].materialIndex = 0;
+      objs[0].fragments[i].faces[1].materialIndex = 0;
+      objs[0].fragments[i].faces[2].materialIndex = 0;
+      objs[0].fragments[i].faces[3].materialIndex = 0;
+      objs[0].fragments[i].faces[4].materialIndex = 0;
+      objs[0].fragments[i].faces[5].materialIndex = 0;
+    }
+
+    if (unitTest == false) {
+      setState(() {
+        lockers = [];
+      });
+    } else {
+      lockers = [];
+    }
+  }
+
+  String deleteLocker(LockerCoordinates coord, bool unitTesting) {
+    int fragment = coord.x - 1 + (coord.y - 1) * 12;
+    int increment = 12;
+
+    if (coord.face == 'Derrière') {
+      fragment += 60;
+    }
+
+    int size = objs[0].fragments[fragment].faces[0].materialIndex!;
+
+    if (objs[0].fragments[fragment].faces[0].materialIndex == 0) {
+      return "deleteError";
+    }
+
+    for (int i = 0; i < size; i++) {
+      if (objs[0].fragments[fragment].faces[0].materialIndex != size) {
+        return "wrongPositionError";
+      }
+      fragment += increment;
+    }
+
+    fragment -= size * increment;
+
+    for (int i = 0; i < size; i++) {
+      objs[0].fragments[fragment].faces[0].materialIndex = 0;
+      objs[0].fragments[fragment].faces[1].materialIndex = 0;
+      objs[0].fragments[fragment].faces[2].materialIndex = 0;
+      objs[0].fragments[fragment].faces[3].materialIndex = 0;
+      objs[0].fragments[fragment].faces[4].materialIndex = 0;
+      objs[0].fragments[fragment].faces[5].materialIndex = 0;
+      fragment += increment;
+    }
+
+    if (unitTesting == false) {
+      setState(() {
+        for (int i = 0; i < lockers.length; i++) {
+          if (lockers[i].type == 'Petit casier' && size == 1) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Moyen casier' && size == 2) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Grand casier' && size == 3) {
+            lockers.removeAt(i);
+            break;
+          }
+        }
+        isLoaded = true;
+      });
+    } else {
+      for (int i = 0; i < lockers.length; i++) {
+        if (lockers[i].type == 'Petit Casier' && size == 1) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Moyen Casier' && size == 2) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Grand Casier' && size == 3) {
+          lockers.removeAt(i);
+          break;
+        }
+      }
+    }
+    return "deleted";
   }
 
   String getContainerMapping() {
@@ -611,79 +626,173 @@ class ContainerCreationState extends State<ContainerCreation> {
         ),
         body: Stack(children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
                 width: 50,
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.7,
-                    child: InteractivePanel(
-                      callback: updateCube,
-                      rotateFrontCallback: rotateFront,
-                      rotateBackCallback: rotateBack,
-                      rotateLeftCallback: rotateLeftSide,
-                      rotateRightCallback: rotateRightSide,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) => ContainerDialog(
+                                  callback: updateCube,
+                                  size: 1,
+                                ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Ajouter un casier',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Sauvegarder',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.save,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String face = await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                AutoFillDialog(callback: autoFillContainer));
+                        autoFillContainer(face, false);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Remplissage',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.auto_fix_high,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
+                      width: 225,
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 20,
+                        thickness: 1,
+                        indent: 30,
+                        endIndent: 30,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                DeleteContainerDialog(callback: deleteLocker));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Supprimer un casier',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: resetContainer,
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Réinitialiser le conteneur',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: const Icon(
+                        Icons.refresh,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            String face = await showDialog(
-                                context: context,
-                                builder: (context) => AutoFillDialog(
-                                    callback: autoFillContainer));
-                            autoFillContainer(face, false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          child: const Text('Remplissage',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
+                    child: Sp3dRenderer(
+                      const Size(1000, 1000),
+                      const Sp3dV2D(400, 400),
+                      world,
+                      // If you want to reduce distortion, shoot from a distance at high magnification.
+                      Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                      Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                      allowUserWorldRotation: true,
+                      allowUserWorldZoom: false,
                     ),
-                  ),
-                  Sp3dRenderer(
-                    const Size(800, 800),
-                    const Sp3dV2D(400, 400),
-                    world,
-                    // If you want to reduce distortion, shoot from a distance at high magnification.
-                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: false,
-                    allowUserWorldZoom: false,
                   ),
                 ],
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FractionallySizedBox(
-                      widthFactor: 0.7,
-                      heightFactor: 0.7,
-                      child: RecapPanel(
-                        articles: lockers,
-                        onSaved: () async {
-                          String name = await showDialog(
-                              context: context,
-                              builder: (context) => openDialog());
-                          saveContainer(name);
-                        },
-                      )),
-                ),
+                child: FractionallySizedBox(
+                    widthFactor: 0.8,
+                    heightFactor: 0.7,
+                    child: RecapPanel(
+                      articles: lockers,
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                    )),
               ),
               const SizedBox(
                 width: 50,
