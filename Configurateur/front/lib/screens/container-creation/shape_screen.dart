@@ -60,6 +60,11 @@ class ShapeScreenState extends State<ShapeScreen> {
     if (isRemoveClicked == false) {
       buttons.add(
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0),
+            ),
+          ),
           onPressed: () {
             setState(() {
               isRemoveClicked = true;
@@ -73,6 +78,11 @@ class ShapeScreenState extends State<ShapeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
             onPressed: () {
               setState(() {
                 removeLockers();
@@ -81,7 +91,15 @@ class ShapeScreenState extends State<ShapeScreen> {
             },
             child: const Text("Supprimer"),
           ),
+          const SizedBox(
+            width: 10.0,
+          ),
           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0),
+              ),
+            ),
             onPressed: () {
               setState(() {
                 isClicked = List.generate(60, (index) => false);
@@ -147,12 +165,12 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                   color: Colors.black,
-                                  width: 5.0,
+                                  width: 1.0,
                                 ),
+                                color: isClicked[(i * column) + j]
+                                    ? Colors.red
+                                    : Colors.grey[200],
                               ),
-                              color: isClicked[(i * column) + j]
-                                  ? Colors.red
-                                  : Colors.grey[200],
                               width: 15,
                               height: 15,
                             ),
@@ -202,157 +220,112 @@ class ShapeScreenState extends State<ShapeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text('Nombres de lignes'),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          row--;
+                          colors = List.generate(
+                              column * row, (index) => Colors.grey[200]);
+                          isClicked =
+                              List.generate(column * row, (index) => false);
+                          calculateDimension();
+                        });
+                      },
+                      child: const Icon(Icons.remove),
+                    ),
+                    const SizedBox(width: 10.0),
                     Container(
+                      padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.grey[200],
                       ),
-                      color: Colors.grey[200],
                       child: Text(row.toString()),
                     ),
                     const SizedBox(width: 10.0),
-                    Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              row++;
-                              colors = List.generate(
-                                  column * row, (index) => Colors.grey[200]);
-                              isClicked =
-                                  List.generate(column * row, (index) => false);
-                              calculateDimension();
-                            });
-                          },
-                          child: const Icon(Icons.add),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              row--;
-                              colors = List.generate(
-                                  column * row, (index) => Colors.grey[200]);
-                              isClicked =
-                                  List.generate(column * row, (index) => false);
-                              calculateDimension();
-                            });
-                          },
-                          child: const Icon(Icons.remove),
-                        ),
-                      ],
-                    )
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          row++;
+                          colors = List.generate(
+                              column * row, (index) => Colors.grey[200]);
+                          isClicked =
+                              List.generate(column * row, (index) => false);
+                          calculateDimension();
+                        });
+                      },
+                      child: const Icon(Icons.add),
+                    ),
                   ],
                 ),
-
-                /*Flexible(
-                    child: SizedBox(
-                      width: 200,
-                      child: TextFormField(
-                        key: const Key('Row'),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          labelText: 'Lignes',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        initialValue: row.toString(),
-                        onChanged: (String? value) {
-                          row = int.parse(value!);
-                          calculateDimension();
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez remplir ce champ';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),*/
+                const SizedBox(
+                  height: 20.0,
+                ),
                 const Text('Nombres de colonnes'),
+                const SizedBox(
+                  height: 10.0,
+                ),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          column--;
+                          colors = List.generate(
+                              column * row, (index) => Colors.grey[200]);
+                          isClicked =
+                              List.generate(column * row, (index) => false);
+                          calculateDimension();
+                        });
+                      },
+                      child: const Icon(Icons.remove),
+                    ),
+                    const SizedBox(width: 10.0),
                     Container(
+                      padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.grey[200],
                       ),
-                      color: Colors.grey[200],
                       child: Text(column.toString()),
                     ),
                     const SizedBox(width: 10.0),
-                    Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              column++;
-                              colors = List.generate(
-                                  column * row, (index) => Colors.grey[200]);
-                              isClicked =
-                                  List.generate(column * row, (index) => false);
-                              calculateDimension();
-                            });
-                          },
-                          child: const Icon(Icons.add),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              column--;
-                              colors = List.generate(
-                                  column * row, (index) => Colors.grey[200]);
-                              isClicked =
-                                  List.generate(column * row, (index) => false);
-                              calculateDimension();
-                            });
-                          },
-                          child: const Icon(Icons.remove),
-                        ),
-                      ],
-                    )
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          column++;
+                          colors = List.generate(
+                              column * row, (index) => Colors.grey[200]);
+                          isClicked =
+                              List.generate(column * row, (index) => false);
+                          calculateDimension();
+                        });
+                      },
+                      child: const Icon(Icons.add),
+                    ),
                   ],
                 ),
-                /*SizedBox(
-                    width: 200,
-                    child: TextFormField(
-                      key: const Key('Column'),
-                      initialValue: column.toString(),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Colonnes',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      onSaved: (String? value) {
-                        setState(
-                          () {
-                            column = int.parse(value!);
-                            calculateDimension();
-                          },
-                        );
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Veuillez remplir ce champ';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),*/
               ],
             ),
             SizedBox(
-              //width: 650,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: removeButtons(),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -365,12 +338,43 @@ class ShapeScreenState extends State<ShapeScreen> {
               width: 250,
               height: 300,
               child: Container(
-                color: Colors.grey[200],
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.grey[200],
+                ),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text('Largeur: $width mètres'),
-                    Text('Hauteur: $height mètres'),
-                    Text("Nombre d'emplacements: $nbLockers"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          'Largeur:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('$width mètres'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          'Hauteur:',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('$height mètres'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        const Text(
+                          "Nombre d'emplacements:",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text('$nbLockers'),
+                      ],
+                    ),
                   ],
                 ),
               ),
