@@ -50,7 +50,7 @@ async function sendEmailConfirmationLocation(
 }
 
 /**
- * Send the mail with the invoice inside
+ * Send an email with the attached invoice
  *
  * @param {*} invoiceData the invoice file
  * @param {*} email of the user

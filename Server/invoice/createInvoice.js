@@ -31,7 +31,7 @@ async function createInvoice(invoice) {
 }
 
 /**
- *  Generate invoice Header
+ * Generate invoice Header
  *
  * @param {*} doc the invoice file
  */
