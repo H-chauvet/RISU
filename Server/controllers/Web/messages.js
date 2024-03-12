@@ -4,6 +4,7 @@ const { db } = require('../../middleware/database')
  * Delete a message by its id
  *
  * @param {number} id of the message to be deleted
+ * @throws {Error} if the delete has failed, log the error
  */
 exports.deleteMessageById = async (id) => {
     try {
@@ -19,6 +20,7 @@ exports.deleteMessageById = async (id) => {
 /**
  * Retrieve every messages from the database
  *
+ * @throws {Error} if the action has failed and log the error
  * @returns messages objects
  */
 exports.getAllMessages = async () => {
@@ -35,6 +37,7 @@ exports.getAllMessages = async () => {
  * Find a message by its id
  *
  * @param {number} id of the message to be found
+ * @throws {Error} if the search has failed and log the error
  * @returns the message if found
  */
 exports.findById = id => {

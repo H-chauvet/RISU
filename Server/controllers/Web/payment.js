@@ -4,8 +4,8 @@ const { db } = require("../../middleware/database");
 /**
  * Generate a response depending on the status of the payment
  *
- * @param {number} intent
- * @param {*} id
+ * @param {number} intent stripe object
+ * @param {*} id id of the container
  * @returns the corresponding response
  */
 const generateResponse = async (intent, id) => {

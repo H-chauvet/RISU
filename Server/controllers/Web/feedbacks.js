@@ -17,6 +17,7 @@ exports.registerFeedbacks = data => {
  * If mark is not defined, retrieve every feedbacks
  *
  * @param {string} mark of the feedback
+ * @throws {Error} if the data retrieve has failed and log the error
  * @returns the found feedbacks
  */
 exports.getAllFeedbacks = async (mark) => {

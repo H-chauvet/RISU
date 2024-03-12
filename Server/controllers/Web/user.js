@@ -178,7 +178,7 @@ exports.forgotPassword = (email) => {
 };
 
 /**
- * Retrieve every web user of the database
+ * Retrieve every web users of the database
  *
  * @returns every user found
  */
