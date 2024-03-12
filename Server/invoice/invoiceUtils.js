@@ -1,5 +1,5 @@
 /**
- * Format the date to human readable for mails
+ * Format the date to human readable for emails
  *
  * @param {*} date of the mail
  * @returns the formatted date
