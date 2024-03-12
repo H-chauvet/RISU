@@ -1,6 +1,17 @@
 const { formatDate } = require("../../invoice/invoiceUtils");
 const transporter = require("../../middleware/transporter");
 
+/**
+ * Send an email to the user to confirm a rent
+ *
+ * @param {*} email of the user
+ * @param {*} date of the rent
+ * @param {*} duration of the rent
+ * @param {*} address of the container for the rent
+ * @param {*} city of the container for the rent
+ * @param {*} itemId of the rent
+ * @param {*} price of the item of the rent
+ */
 async function sendEmailConfirmationLocation(
   email,
   date,
@@ -38,6 +49,12 @@ async function sendEmailConfirmationLocation(
   }
 }
 
+/**
+ * Send an email with the attached invoice
+ *
+ * @param {*} invoiceData the invoice file
+ * @param {*} email of the user
+ */
 async function sendInvoice(invoiceData, email) {
   try {
     const mailOptions = {

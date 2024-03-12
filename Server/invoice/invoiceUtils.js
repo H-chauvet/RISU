@@ -1,3 +1,9 @@
+/**
+ * Format the date to human readable for emails
+ *
+ * @param {*} date of the mail
+ * @returns the formatted date
+ */
 function formatDate(date) {
   const options = {
     day: "2-digit",
@@ -9,6 +15,12 @@ function formatDate(date) {
   return date.toLocaleDateString("fr-FR", options);
 }
 
+/**
+ * Draw a table on a document
+ *
+ * @param {*} doc the document
+ * @param {*} tableData the data to be drew
+ */
 function drawTable(doc, tableData) {
   const startY = doc.y;
   const startX = doc.x;
