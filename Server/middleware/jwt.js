@@ -26,7 +26,7 @@ function hashToken(token) {
 }
 
 /**
- * Verify if the token correspond to the secret
+ * Verify if the token corresponds to the secret
  *
  * @param {*} token
  * @returns undefined if it fails
