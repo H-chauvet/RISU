@@ -211,48 +211,51 @@ class ShapeScreenState extends State<ShapeScreen> {
   }
 
   void goNext() {
-    String containerMapping = '';
+    List<List<String>> containerList;
 
-    debugPrint(isClicked.length.toString());
+    containerList = List.generate(row, (index) => []);
+    int rowIndex = 0;
     for (int i = 0; i < colors.length; i++) {
+      if ((i % (column)) == 0 && i != 0) {
+        rowIndex++;
+      }
       if (colors[i] == Colors.grey[600]) {
-        int actualColumn = (i % column);
-        int actualRow = (i ~/ column);
-        debugPrint('col ' + actualColumn.toString());
-        debugPrint('row ' + actualRow.toString());
-        int diffToBottom = 0;
-        int tmp = i;
-        for (; true;) {
-          if (tmp > 0) {
-            tmp -= column;
-            diffToBottom++;
-          } else {
-            break;
-          }
-        }
-
-        debugPrint('bottom ' + diffToBottom.toString());
-
-        diffToBottom--;
-
-        int rowToUp = (row - actualRow) - (diffToBottom);
-
-        if (diffToBottom + actualRow == row - 1) {
-          rowToUp = 0;
-        }
-
-        debugPrint('to up ' + rowToUp.toString());
-
-        int index = actualColumn + (rowToUp * column);
-
-        debugPrint('index ' + index.toString());
-
-        containerMapping += '${index},${index + (row * column)},';
+        containerList[rowIndex].add('1');
+      } else if (colors[i] == Colors.grey[200]) {
+        containerList[rowIndex].add('0');
       }
     }
-    //debugPrint(containerMapping);
+
+    for (int i = 0; i < containerList.length; i++) {
+      for (int j = 0; j < containerList[i].length; j++) {
+        if (containerList[i][j] == '1') {
+          int rowToUp = 0;
+          bool mid = false;
+          if (i < row / 2) {
+            debugPrint('inférieur milieu');
+            debugPrint('row: $row, i: $i');
+            rowToUp = (row - i) - (i + 1);
+          } else {
+            debugPrint('supérieur milieu');
+            debugPrint('row: $row, i: $i');
+            rowToUp = (i - row) + (i + 1);
+            mid = true;
+          }
+          int index = mid == true ? i - rowToUp : i + rowToUp;
+          String tmp = containerList[index][j];
+          containerList[index][j] = '2';
+          if (index != i) {
+            containerList[i][j] = tmp;
+          }
+        }
+      }
+    }
     context.go('/container-creation',
-        extra: jsonEncode({'containerMapping': containerMapping}));
+        extra: jsonEncode({
+          'containerMapping': jsonEncode(containerList),
+          'height': row,
+          'width': column
+        }));
   }
 
   @override
