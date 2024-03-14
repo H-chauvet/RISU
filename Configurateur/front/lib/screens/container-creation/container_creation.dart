@@ -56,8 +56,8 @@ class ContainerCreationState extends State<ContainerCreation> {
   String jwtToken = '';
   dynamic decodedContainer;
   bool unitTest = false;
-  late int width = int.parse(widget.width!);
-  late int height = int.parse(widget.height!);
+  late int width = 0;
+  late int height = 0;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -77,6 +77,9 @@ class ContainerCreationState extends State<ContainerCreation> {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
       height = int.parse(container['height']);
+    } else if (widget.width != null && widget.height != null) {
+      width = int.parse(widget.width!);
+      height = int.parse(widget.height!);
     }
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -402,8 +405,21 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (objs[0]
                 .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
-                .materialIndex !=
-            0) {
+                .materialIndex ==
+            4) {
+          counter = 1;
+          debugPrint('locker disabled found');
+        }
+        if (objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                0 &&
+            objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                4) {
           int size = objs[0]
               .fragments[j * widths + i + fragmentIncrement]
               .faces[0]
@@ -417,6 +433,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
+          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
         if (j == heights) {
@@ -658,7 +675,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goPrevious() {
-    context.go('/');
+    context.go('/container-creation/shape');
   }
 
   @override

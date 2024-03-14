@@ -43,6 +43,39 @@ void main() {
     expect(find.text('Suivant'), findsOneWidget);
   });
 
+  testWidgets('Disabled lockers', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+
+    List<List<String>> containerList = [
+      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+      ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
+      ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
+      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+    ];
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: ContainerCreation(
+            containerMapping: jsonEncode(containerList),
+            height: '5',
+            width: '12',
+          ),
+        ),
+      ),
+    ));
+  });
+
   testWidgets('Container Creation invalid JWT token',
       (WidgetTester tester) async {
     tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
@@ -269,6 +302,8 @@ void main() {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     containerCreationState.objs.add(obj);
     containerCreationState.unitTest = true;
+    containerCreationState.width = 12;
+    containerCreationState.height = 5;
 
     containerCreationState.objs[0].fragments[1].faces[0].materialIndex = 1;
 

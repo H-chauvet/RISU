@@ -269,7 +269,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             length: 5,
             progress: 0,
             previous: 'Précédent',
-            next: 'Payer',
+            next: 'Suivant',
             previousFunc: goPrevious,
             nextFunc: goNext,
           ),
