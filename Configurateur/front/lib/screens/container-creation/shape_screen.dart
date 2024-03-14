@@ -232,12 +232,8 @@ class ShapeScreenState extends State<ShapeScreen> {
           int rowToUp = 0;
           bool mid = false;
           if (i < row / 2) {
-            debugPrint('inférieur milieu');
-            debugPrint('row: $row, i: $i');
             rowToUp = (row - i) - (i + 1);
           } else {
-            debugPrint('supérieur milieu');
-            debugPrint('row: $row, i: $i');
             rowToUp = (i - row) + (i + 1);
             mid = true;
           }

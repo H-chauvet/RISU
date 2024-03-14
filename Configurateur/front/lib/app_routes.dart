@@ -125,6 +125,8 @@ class AppRouter {
           if (user['containerMapping'] != null) {
             return ContainerCreation(
               containerMapping: user['containerMapping'],
+              width: user['width'],
+              height: user['height'],
             );
           }
 

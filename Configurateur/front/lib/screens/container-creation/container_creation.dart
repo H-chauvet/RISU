@@ -70,11 +70,13 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    //checkToken();
-    //MyAlertTest.checkSignInStatus(context);
+    checkToken();
+    MyAlertTest.checkSignInStatus(context);
     super.initState();
-    Sp3dObj obj = UtilSp3dGeometry.cube(
-        200, 100, 50, int.parse(widget.width!), int.parse(widget.height!), 2);
+    dynamic container = jsonDecode(widget.container!);
+    width = int.parse(container['width']);
+    height = int.parse(container['height']);
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
@@ -90,82 +92,69 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     if (widget.containerMapping != null) {
-      debugPrint(widget.containerMapping!);
-      //debugPrint(widget.containerMapping![0].toString());
       dynamic decoded = jsonDecode(widget.containerMapping!);
-      debugPrint(decoded[0].toString());
-      //debugPrint(decoded[0][0].toString());
-      //List<String> indexList = widget.containerMapping!.split(',');
       for (int i = 0; i < decoded.length; i++) {
         for (int j = 0; j < decoded[i].length; j++) {
-          debugPrint(decoded[i][j].toString());
           if (decoded[i][j].toString() == '2') {
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[0]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[1]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[2]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[3]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[4]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[(decoded[i].length * i) + j]
                 .faces[5]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[0]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[1]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[2]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[3]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[4]
-                .materialIndex = 1;
+                .materialIndex = 4;
             objs[0]
                 .fragments[((decoded[i].length * i) + j) + (width * height)]
                 .faces[5]
-                .materialIndex = 1;
+                .materialIndex = 4;
           }
         }
       }
-      /*for (int i = 0; i < indexList.length; i++) {
-        if (indexList[i] != '') {
-          objs[0].fragments[int.parse(indexList[i])].faces[0].materialIndex = 1;
-          objs[0].fragments[int.parse(indexList[i])].faces[1].materialIndex = 1;
-          objs[0].fragments[int.parse(indexList[i])].faces[2].materialIndex = 1;
-          objs[0].fragments[int.parse(indexList[i])].faces[3].materialIndex = 1;
-          objs[0].fragments[int.parse(indexList[i])].faces[4].materialIndex = 1;
-          objs[0].fragments[int.parse(indexList[i])].faces[5].materialIndex = 1;
-        }
-      }*/
     }
   }
 
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
+    width = int.parse(container['width']);
+    height = int.parse(container['height']);
+
     for (int i = 0; i < container['containerMapping'].length; i++) {
       if (container['containerMapping'] != '0') {
         objs[0].fragments[i].faces[0].materialIndex =
@@ -389,32 +378,32 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
-    int width = int.parse(widget.width!);
-    int height = int.parse(widget.height!);
+    int widths = width;
+    int heights = height;
     Tuple2<int, int> ret = const Tuple2<int, int>(0, 0);
 
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height;) {
+    for (int i = 0; i < widths; i++) {
+      for (int j = 0; j < heights;) {
         int counter = 0;
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
                 .materialIndex ==
             0) {
           int k = 0;
-          for (k = j * width + i + fragmentIncrement;
-              counter + j < height &&
+          for (k = j * widths + i + fragmentIncrement;
+              counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
-              k += width, counter++) {}
+              k += widths, counter++) {}
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
                 .materialIndex !=
             0) {
           int size = objs[0]
-              .fragments[j * width + i + fragmentIncrement]
+              .fragments[j * widths + i + fragmentIncrement]
               .faces[0]
               .materialIndex!;
           if (freeSpace.isNotEmpty) {
@@ -428,7 +417,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         } else {
           j += counter;
         }
-        if (j == height) {
+        if (j == heights) {
           break;
         }
       }
