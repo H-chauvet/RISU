@@ -73,9 +73,11 @@ class ContainerCreationState extends State<ContainerCreation> {
     checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
-    dynamic container = jsonDecode(widget.container!);
-    width = int.parse(container['width']);
-    height = int.parse(container['height']);
+    if (widget.container != null) {
+      dynamic container = jsonDecode(widget.container!);
+      width = int.parse(container['width']);
+      height = int.parse(container['height']);
+    }
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
