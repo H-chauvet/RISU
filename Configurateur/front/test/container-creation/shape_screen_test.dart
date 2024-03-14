@@ -1,17 +1,8 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/shape_screen.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -63,6 +54,22 @@ void main() {
     expect(find.text("2.5 mètres"), findsOneWidget);
     expect(find.text("Nombre d'emplacements:"), findsOneWidget);
     expect(find.text("120"), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('row-add')));
+    await tester.tap(find.byKey(const Key('row-remove')));
+
+    await tester.tap(find.byKey(const Key('column-add')));
+    await tester.tap(find.byKey(const Key('column-remove')));
+
+    await tester.tap(find.byKey(const Key('remove-lockers')));
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('cancel')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('remove-lockers')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('remove')));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text("Précédent"));
     await tester.tap(find.text("Suivant"));

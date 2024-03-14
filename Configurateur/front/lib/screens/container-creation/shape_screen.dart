@@ -65,6 +65,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     if (isRemoveClicked == false) {
       buttons.add(
         ElevatedButton(
+          key: const Key('remove-lockers'),
           style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0),
@@ -83,6 +84,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           ElevatedButton(
+            key: const Key('remove'),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
@@ -100,6 +102,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             width: 10.0,
           ),
           ElevatedButton(
+            key: const Key('cancel'),
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0),
@@ -296,6 +299,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
+                      key: const Key('row-remove'),
                       onTap: () {
                         setState(() {
                           row--;
@@ -319,6 +323,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                     ),
                     const SizedBox(width: 10.0),
                     InkWell(
+                      key: const Key('row-add'),
                       onTap: () {
                         setState(() {
                           row++;
@@ -344,6 +349,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     InkWell(
+                      key: const Key('column-remove'),
                       onTap: () {
                         setState(() {
                           column--;
@@ -367,6 +373,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                     ),
                     const SizedBox(width: 10.0),
                     InkWell(
+                      key: const Key('column-add'),
                       onTap: () {
                         setState(() {
                           column++;
