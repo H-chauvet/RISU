@@ -1,6 +1,12 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
+/**
+ * Create an Invoice in pdf format for a rent
+ *
+ * @param {*} invoice the invoice data
+ * @returns Promise to wait the invoice creation
+ */
 async function createInvoice(invoice) {
   return new Promise((resolve, reject) => {
     let doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -11,12 +17,12 @@ async function createInvoice(invoice) {
     generateFooter(doc);
 
     const buffers = [];
-    doc.on('data', buffers.push.bind(buffers));
-    doc.on('end', () => {
+    doc.on("data", buffers.push.bind(buffers));
+    doc.on("end", () => {
       const pdfBytes = Buffer.concat(buffers);
       resolve(pdfBytes);
     });
-    doc.on('error', (error) => {
+    doc.on("error", (error) => {
       reject(error);
     });
 
@@ -24,25 +30,30 @@ async function createInvoice(invoice) {
   });
 }
 
+/**
+ * Generate invoice Header
+ *
+ * @param {*} doc the invoice file
+ */
 function generateHeader(doc) {
-  console.log("generateHeader");
-
-    doc
-      .image("logo.png", 50, 45, { width: 50 })
-      .fillColor("#444444")
-      .fontSize(10)
-      .text("RISU", 200, 50, { align: "right" })
-      .text("14-16 Rue Voltaire", 200, 65, { align: "right" })
-      .text("94270 Le Kremlin-Bicêtre, France", 200, 80, { align: "right" })
-      .moveDown();
+  doc
+    .image("logo.png", 50, 45, { width: 50 })
+    .fillColor("#444444")
+    .fontSize(10)
+    .text("RISU", 200, 50, { align: "right" })
+    .text("14-16 Rue Voltaire", 200, 65, { align: "right" })
+    .text("94270 Le Kremlin-Bicêtre, France", 200, 80, { align: "right" })
+    .moveDown();
 }
 
+/**
+ * Generate the customer information part on the invoice
+ *
+ * @param {*} doc the invoice file
+ * @param {*} invoice the invoice data
+ */
 function generateCustomerInformation(doc, invoice) {
-  console.log("generateCustomerInformation");
-  doc
-    .fillColor("#444444")
-    .fontSize(20)
-    .text("Facture", 50, 160);
+  doc.fillColor("#444444").fontSize(20).text("Facture", 50, 160);
 
   generateHr(doc, 185);
 
@@ -60,7 +71,7 @@ function generateCustomerInformation(doc, invoice) {
     .text(
       formatCurrency(invoice.subtotal - invoice.paid),
       150,
-      customerInformationTop + 30
+      customerInformationTop + 30,
     )
     .text("Facturé par :", 50, customerInformationTop + 45)
     .text("Risu", 150, customerInformationTop + 45)
@@ -68,21 +79,22 @@ function generateCustomerInformation(doc, invoice) {
     .font("Helvetica")
     .text(invoice.shipping.address, 300, customerInformationTop + 15)
     .text(
-      invoice.shipping.city +
-        //", " +
-        invoice.shipping.state +
-        //", " +
-        invoice.shipping.country,
+      invoice.shipping.city + invoice.shipping.state + invoice.shipping.country,
       300,
-      customerInformationTop + 30
+      customerInformationTop + 30,
     )
     .moveDown();
 
   generateHr(doc, 267);
 }
 
+/**
+ * Generate the invoice table
+ *
+ * @param {*} doc the invoice file
+ * @param {*} invoice the invoice data
+ */
 function generateInvoiceTable(doc, invoice) {
-  console.log("generateInvoiceTable");
   let i;
   const invoiceTableTop = 330;
 
@@ -94,7 +106,7 @@ function generateInvoiceTable(doc, invoice) {
     "Prix unitaire",
     "Quantité",
     "Prix total HT",
-    "Prix total TTC"
+    "Prix total TTC",
   );
   generateHr(doc, invoiceTableTop + 20);
   doc.font("Helvetica");
@@ -109,7 +121,7 @@ function generateInvoiceTable(doc, invoice) {
       formatCurrency(item.amount / item.quantity),
       item.quantity,
       formatCurrency(item.amount),
-      formatCurrency(item.amount)
+      formatCurrency(item.amount),
     );
 
     generateHr(doc, position + 20);
@@ -123,7 +135,7 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Total",
-    formatCurrency(invoice.subtotal)
+    formatCurrency(invoice.subtotal),
   );
 
   const paidToDatePosition = subtotalPosition + 20;
@@ -136,32 +148,36 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Payé à ce jour",
-    formatCurrency(invoice.subtotal)
+    formatCurrency(invoice.subtotal),
   );
   doc.font("Helvetica");
 }
 
+/**
+ * Generate footer for the invoice
+ *
+ * @param {*} doc invoice file
+ */
 function generateFooter(doc) {
   console.log("generateFooter");
-  doc
-    .fontSize(10)
-    .text(
-      "Risu vous remercie pour votre confiance.",
-      50,
-      780,
-      { align: "center", width: 500 }
-    );
+  doc.fontSize(10).text("Risu vous remercie pour votre confiance.", 50, 780, {
+    align: "center",
+    width: 500,
+  });
 }
 
-function generateTableRow(
-  doc,
-  y,
-  item,
-  unitCost,
-  quantity,
-  totalHT,
-  totalTTC
-) {
+/**
+ * Generate the invoice informations for the table
+ *
+ * @param {*} doc the invoice file
+ * @param {*} y the height
+ * @param {*} item the name of the item
+ * @param {*} unitCost the cost of the item
+ * @param {*} quantity the quantity of the item
+ * @param {*} totalHT the cost without taxes of the item
+ * @param {*} totalTTC the cost total of the item
+ */
+function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
   console.log("generateTableRow");
   doc
     .fontSize(10)
@@ -172,21 +188,34 @@ function generateTableRow(
     .text(totalTTC, 0, y, { align: "right" });
 }
 
+/**
+ * Generate a hr similar to html
+ *
+ * @param {*} doc the invoice file
+ * @param {*} y the height where to generate the hr
+ */
 function generateHr(doc, y) {
   console.log("generateHr");
-  doc
-    .strokeColor("#aaaaaa")
-    .lineWidth(1)
-    .moveTo(50, y)
-    .lineTo(550, y)
-    .stroke();
+  doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
 }
 
+/**
+ * Format the currency to human readable with cents
+ *
+ * @param {number} cents
+ * @returns human readable cents
+ */
 function formatCurrency(cents) {
   console.log("formatCurrency");
-  return "€" + (cents).toFixed(2);
+  return "€" + cents.toFixed(2);
 }
 
+/**
+ * Format the date to human readeable
+ *
+ * @param {number} date
+ * @returns human readable date in string
+ */
 function formatDate(date) {
   console.log("formatDate");
   const day = date.getDate();
@@ -197,5 +226,5 @@ function formatDate(date) {
 }
 
 module.exports = {
-  createInvoice
+  createInvoice,
 };

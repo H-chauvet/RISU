@@ -30,7 +30,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:3000/api/mobile/article/$articleId'),
+        Uri.parse('$baseUrl/api/mobile/article/$articleId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

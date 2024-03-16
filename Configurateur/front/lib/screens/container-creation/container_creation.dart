@@ -25,10 +25,19 @@ import '../../components/dialog/autofill_dialog.dart';
 
 // ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  ContainerCreation({super.key, this.id, this.container});
+  const ContainerCreation(
+      {super.key,
+      this.id,
+      this.container,
+      this.containerMapping,
+      this.width,
+      this.height});
 
   final String? id;
-  String? container;
+  final String? container;
+  final String? containerMapping;
+  final String? width;
+  final String? height;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -47,6 +56,8 @@ class ContainerCreationState extends State<ContainerCreation> {
   String jwtToken = '';
   dynamic decodedContainer;
   bool unitTest = false;
+  late int width = 0;
+  late int height = 0;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -62,7 +73,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
-    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    if (widget.container != null) {
+      dynamic container = jsonDecode(widget.container!);
+      width = int.parse(container['width']);
+      height = int.parse(container['height']);
+    } else if (widget.width != null && widget.height != null) {
+      width = int.parse(widget.width!);
+      height = int.parse(widget.height!);
+    }
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
@@ -76,10 +95,71 @@ class ContainerCreationState extends State<ContainerCreation> {
 
       loadLockers();
     }
+
+    if (widget.containerMapping != null) {
+      dynamic decoded = jsonDecode(widget.containerMapping!);
+      for (int i = 0; i < decoded.length; i++) {
+        for (int j = 0; j < decoded[i].length; j++) {
+          if (decoded[i][j].toString() == '2') {
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[0]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[1]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[2]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[3]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[4]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[5]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[0]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[1]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[2]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[3]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[4]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[5]
+                .materialIndex = 4;
+          }
+        }
+      }
+    }
   }
 
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
+    width = int.parse(container['width']);
+    height = int.parse(container['height']);
+
     for (int i = 0; i < container['containerMapping'].length; i++) {
       if (container['containerMapping'] != '0') {
         objs[0].fragments[i].faces[0].materialIndex =
@@ -137,7 +217,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
-    int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
+    int fragment = coordinates.x - 1 + (coordinates.y - 1) * width;
     int increment = 0;
     int color = 0;
 
@@ -158,13 +238,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     if (coordinates.face == 'Derrière') {
-      fragment += 60;
+      fragment += width * height;
     }
 
     if (coordinates.direction == 'Haut') {
-      increment += 12;
+      increment += width;
     } else if (coordinates.direction == 'Bas') {
-      increment -= 12;
+      increment -= width;
     }
 
     for (int i = 0; i < coordinates.size; i++) {
@@ -234,51 +314,51 @@ class ContainerCreationState extends State<ContainerCreation> {
       int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[0]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[1]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[2]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[3]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[4]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[5]
           .materialIndex = 0;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[0]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[1]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[2]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[3]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[4]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[5]
           .materialIndex = size;
     }
@@ -303,32 +383,45 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
-    int width = 12;
-    int height = 5;
+    int widths = width;
+    int heights = height;
     Tuple2<int, int> ret = const Tuple2<int, int>(0, 0);
 
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height;) {
+    for (int i = 0; i < widths; i++) {
+      for (int j = 0; j < heights;) {
         int counter = 0;
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
                 .materialIndex ==
             0) {
           int k = 0;
-          for (k = j * width + i + fragmentIncrement;
-              counter + j < height &&
+          for (k = j * widths + i + fragmentIncrement;
+              counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
-              k += width, counter++) {}
+              k += widths, counter++) {}
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
-                .materialIndex !=
-            0) {
+                .materialIndex ==
+            4) {
+          counter = 1;
+          debugPrint('locker disabled found');
+        }
+        if (objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                0 &&
+            objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                4) {
           int size = objs[0]
-              .fragments[j * width + i + fragmentIncrement]
+              .fragments[j * widths + i + fragmentIncrement]
               .faces[0]
               .materialIndex!;
           if (freeSpace.isNotEmpty) {
@@ -340,9 +433,10 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
+          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
-        if (j == height) {
+        if (j == heights) {
           break;
         }
       }
@@ -353,13 +447,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     int fragmentIncrement = 0;
 
     if (face == 'Derrière') {
-      fragmentIncrement = 60;
+      fragmentIncrement = width * height;
     }
 
     autoFilling(fragmentIncrement);
 
     if (face == "Toutes") {
-      fragmentIncrement = 60;
+      fragmentIncrement = width * height;
       autoFilling(fragmentIncrement);
     }
     if (unitTesting == false) {
@@ -408,11 +502,11 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {
-    int fragment = coord.x - 1 + (coord.y - 1) * 12;
-    int increment = 12;
+    int fragment = coord.x - 1 + (coord.y - 1) * width;
+    int increment = width;
 
     if (coord.face == 'Derrière') {
-      fragment += 60;
+      fragment += width * height;
     }
 
     int size = objs[0].fragments[fragment].faces[0].materialIndex!;
@@ -509,15 +603,15 @@ class ContainerCreationState extends State<ContainerCreation> {
         body = {
           'containerMapping': getContainerMapping(),
           'designs': jsonDecode(widget.container!)['designs'],
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'saveName': name,
         };
       } else {
         body = {
           'containerMapping': getContainerMapping(),
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'saveName': name,
         };
       }
@@ -543,8 +637,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           'containerMapping': getContainerMapping(),
           'price': sumPrice().toString(),
           'designs': jsonDecode(widget.container!)['designs'],
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'city': '',
           'informations': '',
           'address': '',
@@ -555,8 +649,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           'id': widget.id!,
           'containerMapping': getContainerMapping(),
           'price': sumPrice().toString(),
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'city': '',
           'informations': '',
           'address': '',
@@ -581,7 +675,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goPrevious() {
-    context.go('/');
+    context.go('/container-creation/shape');
   }
 
   @override
@@ -595,8 +689,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 0,
+              length: 5,
+              progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,
