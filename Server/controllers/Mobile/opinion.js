@@ -29,3 +29,19 @@ exports.deleteOpinion = (opinionId) => {
     where: { id: opinionId }
   })
 }
+
+exports.getOpinionFromId = (opinionId) => {
+  return db.Opinions_Mobile.findUnique({
+    where: { id: opinionId }
+  })
+}
+
+exports.updateOpinion = (opinionId, note, comment) => {
+  return db.Opinions_Mobile.update({
+    where: { id: opinionId },
+    data: {
+      note: note,
+      comment: comment
+    }
+  })
+}
