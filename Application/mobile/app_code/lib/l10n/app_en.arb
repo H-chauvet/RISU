@@ -29,6 +29,7 @@
   "connection": "Connection",
   "connectionRefused": "Connection refused.",
   "connectionRequired": "Connection required",
+  "consultArticleOpinions": "Consult the opinions on this article",
   "contact": "Contact",
   "contactUs": "Contact us",
   "containersList": "List of containers",
@@ -57,6 +58,8 @@
   "errorOccurredDuringProfileConfiguration": "An error occurred while configuring the profile.",
   "errorOccurredDuringRentReturning": "An error occurred while returning the rental.",
   "errorOccurredDuringRenting": "An error occurred while renting.",
+  "errorOccurredDuringReviewDeletion": "An error occurred while deleting the review.",
+  "errorOccurredDuringReviewUpdate": "An error occurred while updating the review.",
   "errorOccurredDuringSavingData": "An error occurred while saving the data.",
   "errorOccurredDuringSavingReview": "An error occurred while saving the review.",
   "errorOccurredDuringSendingInvoice": "An error occurred while sending the invoice.",
@@ -144,6 +147,11 @@
   "reviewsAll": "All reviews",
   "reviewsEmpty": "No reviews available.",
   "reviewsList": "List of reviews",
+  "reviewUpdate": "Update review",
+  "reviewUpdated": "Review updated",
+  "reviewUpdatedSuccessfully": "Review updated successfully.",
+  "reviewDeleted": "review deleted",
+  "reviewDeletedSuccessfully": "review deleted successfully.",
   "save": "Save",
   "saveChanges": "Save changes",
   "search": "Search",
@@ -160,5 +168,6 @@
   "timeRemaining": "Time remaining",
   "toComplete": "To complete",
   "total": "Total",
-  "unavailable": "Unavailable"
+  "unavailable": "Unavailable",
+  "update": "Update"
 }
