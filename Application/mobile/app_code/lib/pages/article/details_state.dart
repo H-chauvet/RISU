@@ -13,6 +13,7 @@ import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'details_page.dart';
 
@@ -278,14 +279,33 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RentArticlePage(
-                                    articleData: articleData,
-                                  ),
+                                  builder: (context) =>
+                                      RentArticlePage(
+                                        articleData: articleData,
+                                      ),
                                 ),
                               );
                             },
                           ),
-                        )
+                        ),
+                        const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: MyOutlinedButton(
+                          text: AppLocalizations.of(context)!.consultArticleOpinions,
+                          key: const Key('article-button_article-opinion'),
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpinionPage(
+                                  itemId: articleData.id,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),
