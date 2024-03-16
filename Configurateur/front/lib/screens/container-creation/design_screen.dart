@@ -451,8 +451,8 @@ class DesignScreenState extends State<DesignScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 1,
+              length: 5,
+              progress: 2,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,

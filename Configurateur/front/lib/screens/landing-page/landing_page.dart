@@ -169,7 +169,7 @@ class LandingPageState extends State<LandingPage> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
-      context.go("/container-creation");
+      context.go("/container-creation/shape");
     }
   }
 
