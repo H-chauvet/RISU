@@ -156,12 +156,6 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                    MyParameter(
-                      goToPage: const OpinionPage(),
-                      title: AppLocalizations.of(context)!.reviews,
-                      paramIcon: const Icon(Icons.star),
-                    ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const ContactPage(),
