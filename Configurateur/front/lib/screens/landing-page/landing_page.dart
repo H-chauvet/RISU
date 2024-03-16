@@ -13,7 +13,6 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-
   Function() disconnectFunction = () {};
   String? token = '';
   String? userMail = '';
