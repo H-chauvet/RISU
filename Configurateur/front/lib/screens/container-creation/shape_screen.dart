@@ -29,7 +29,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   @override
   void initState() {
     super.initState();
-    MyAlertTest.checkSignInStatus(context);
+    //MyAlertTest.checkSignInStatus(context);
     calculateDimension();
   }
 
@@ -302,12 +302,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                       key: const Key('row-remove'),
                       onTap: () {
                         setState(() {
-                          row--;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
+                          if (row > 1) {
+                            row--;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                          }
                         });
                       },
                       child: const Icon(Icons.remove),
@@ -326,12 +328,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                       key: const Key('row-add'),
                       onTap: () {
                         setState(() {
-                          row++;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
+                          if (row < 10) {
+                            row++;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                          }
                         });
                       },
                       child: const Icon(Icons.add),
@@ -352,12 +356,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                       key: const Key('column-remove'),
                       onTap: () {
                         setState(() {
-                          column--;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
+                          if (column > 1) {
+                            column--;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                          }
                         });
                       },
                       child: const Icon(Icons.remove),
@@ -376,12 +382,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                       key: const Key('column-add'),
                       onTap: () {
                         setState(() {
-                          column++;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
+                          if (column < 20) {
+                            column++;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                          }
                         });
                       },
                       child: const Icon(Icons.add),
@@ -428,7 +436,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           'Largeur:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('$width mètres'),
+                        Text(width <= 1 ? '$width mètre' : '$width mètres'),
                       ],
                     ),
                     Row(
@@ -438,7 +446,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           'Hauteur:',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('$height mètres'),
+                        Text(height <= 1 ? '$height mètre' : '$height mètres'),
                       ],
                     ),
                     Row(
