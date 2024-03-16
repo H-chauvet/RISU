@@ -30,10 +30,10 @@ class OpinionPageState extends State<OpinionPage> {
       });
       var url = '';
       if (selectedStarFilter == 6) {
-        url = 'http://$baseUrl:3000/api/mobile/opinion?itemId=$itemId';
+        url = '$baseUrl/api/mobile/opinion?itemId=$itemId';
       } else {
         url =
-            'http://$baseUrl/api/mobile/opinion?note=$selectedStarFilter&itemId=$itemId';
+            '$baseUrl/api/mobile/opinion?note=$selectedStarFilter&itemId=$itemId';
       }
       final response = await http.get(
         Uri.parse(url),
