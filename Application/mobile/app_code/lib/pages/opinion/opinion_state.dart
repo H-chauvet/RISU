@@ -544,17 +544,20 @@ class OpinionPageState extends State<OpinionPage> {
                                                         TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                                IconButton(
-                                                  icon: const Icon(
-                                                      Icons.more_vert,
-                                                      color: Colors.black),
-                                                  onPressed: () {
-                                                    _showParameterDialog(
-                                                        opinion['id'],
-                                                        opinion['note'],
-                                                        opinion['comment']);
-                                                  },
-                                                ),
+                                                if (opinion['userId'] ==
+                                                    userInformation?.ID)
+                                                  IconButton(
+                                                    key: const Key(
+                                                        'opinion-settings_button'),
+                                                    icon: const Icon(
+                                                        Icons.more_vert),
+                                                    onPressed: () {
+                                                      _showParameterDialog(
+                                                          opinion['id'],
+                                                          opinion['note'],
+                                                          opinion['comment']);
+                                                    },
+                                                  ),
                                               ],
                                             ),
                                           ),
