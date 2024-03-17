@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
+import 'package:front/screens/container-creation/maps_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
@@ -125,6 +126,12 @@ class AppRouter {
             id: user['id'],
             container: user['container'],
           );
+        },
+      ),
+      GoRoute(
+        path: '/container-creation/maps',
+        builder: (BuildContext context, GoRouterState state) {
+          return const MapsScreen();
         },
       ),
       GoRoute(
