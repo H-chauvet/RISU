@@ -77,7 +77,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$baseUrl:3000/api/mobile/opinion?itemId=$itemId'),
+        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -125,7 +125,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/opinion/$opinionId'),
+        Uri.parse('$baseUrl/api/mobile/opinion/$opinionId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -173,7 +173,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.delete(
-        Uri.parse('http://$serverIp:3000/api/mobile/opinion/$opinionId'),
+        Uri.parse('$baseUrl/api/mobile/opinion/$opinionId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
