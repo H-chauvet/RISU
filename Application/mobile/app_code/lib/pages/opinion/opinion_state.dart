@@ -12,7 +12,7 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-
+import 'package:risu/utils/check_signin.dart';
 import 'opinion_page.dart';
 
 class OpinionPageState extends State<OpinionPage> {
@@ -622,7 +622,11 @@ class OpinionPageState extends State<OpinionPage> {
             ),
       floatingActionButton: FloatingActionButton(
         key: const Key('add_opinion-button'),
-        onPressed: () {
+        onPressed: () async {
+          bool signIn = await checkSignin(context);
+          if (!signIn) {
+            return;
+          }
           _showAddOpinionDialog();
         },
         backgroundColor: Colors.green,
