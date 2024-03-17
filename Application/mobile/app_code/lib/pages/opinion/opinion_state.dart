@@ -536,7 +536,15 @@ class OpinionPageState extends State<OpinionPage> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    '${(opinion['firstName'] ?? AppLocalizations.of(context)!.anonymous)} ${(opinion['lastName'] ?? '')}',
+                                                    (userInformation?.firstName !=
+                                                                null &&
+                                                            userInformation
+                                                                    ?.lastName !=
+                                                                null)
+                                                        ? '${userInformation!.firstName} ${userInformation!.lastName}'
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .anonymous,
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold),
