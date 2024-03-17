@@ -19,7 +19,12 @@ import 'details_page.dart';
 
 class ArticleDetailsState extends State<ArticleDetailsPage> {
   ArticleData articleData = ArticleData(
-      id: -1, containerId: -1, name: '', available: false, price: 0);
+    id: -1,
+    containerId: -1,
+    name: '',
+    available: false,
+    price: 0,
+  );
   final LoaderManager _loaderManager = LoaderManager();
 
   Future<dynamic> getArticleData(BuildContext context, int articleId) async {
@@ -43,9 +48,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         return responseData;
       } else {
         if (context.mounted) {
-          printServerResponse(context, response, 'getArticleData',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
+          printServerResponse(
+            context,
+            response,
+            'getArticleData',
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingData,
+          );
         }
       }
       return {
@@ -60,8 +69,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
-        printCatchError(context, err, stacktrace,
-            message: AppLocalizations.of(context)!.connectionRefused);
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
         return {
           'id': -1,
           'containerId': -1,
@@ -131,11 +144,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         width: 300,
                         height: 200,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage('assets/volley.png'),
-                              fit: BoxFit.cover,
-                            )),
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/volley.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Card(
@@ -279,20 +293,20 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      RentArticlePage(
-                                        articleData: articleData,
-                                      ),
+                                  builder: (context) => RentArticlePage(
+                                    articleData: articleData,
+                                  ),
                                 ),
                               );
                             },
                           ),
                         ),
-                        const SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: AppLocalizations.of(context)!.consultArticleOpinions,
+                          text: AppLocalizations.of(context)!
+                              .consultArticleOpinions,
                           key: const Key('article-button_article-opinion'),
                           onPressed: () async {
                             Navigator.push(
