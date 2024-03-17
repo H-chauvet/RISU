@@ -7,38 +7,32 @@ const opinionCtrl = require("../../controllers/Mobile/opinion")
 const itemsCtrl = require("../../controllers/Common/items")
 
 // get all opinions from an item (can be filtered by note)
-router.get('/',
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
-    var opinions = []
-    try {
-      if (!req.user) {
-        return res.status(401).send('Invalid token');
-      }
-      const user = await userCtrl.findUserById(req.user.id)
-      if (!user) {
-        return res.status(401).send('User not found');
-      }
-      if (req.query.itemId == null) {
-        return res.status(401).json({ message: 'Missing itemId' })
-      }
-      const itemId = parseInt(req.query.itemId);
-      if (itemId == null) {
-        return res.status(401).json({ message: 'itemId not found' })
-      }
-
-      const note = req.query.note
-      if (note != null  && (note < '0' || note > '5')) {
-        return res.status(401).json({ message: 'Missing note' })
-      }
-      opinions = await opinionCtrl.getOpinions(itemId, note)
-
-      return res.status(201).json({ opinions })
-    } catch (err) {
-      console.error(err.message)
-      return res.status(401).send('An error occurred')
+router.get('/', async (req, res) => {
+  var opinions = []
+  try {
+    if (req.query.itemId == null) {
+      return res.status(401).json({ message: 'Missing itemId' })
     }
+    const itemId = parseInt(req.query.itemId);
+    if (itemId == null) {
+      return res.status(401).json({ message: 'itemId not found' })
+    }
+
+    const note = req.query.note
+    if (note != null) {
+      note = parseInt(note);
+      if (isNaN(note) || note < 0 || note > 5) {
+        return res.status(401).json({ message: 'Invalid note' });
+      }
+    }
+    opinions = await opinionCtrl.getOpinions(itemId, note)
+
+    return res.status(201).json({ opinions })
+  } catch (err) {
+    console.error(err.message)
+    return res.status(401).send('An error occurred')
   }
-)
+})
 
 // add an opinion to an item
 router.post('/',
