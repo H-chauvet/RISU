@@ -7,7 +7,7 @@ import 'globals.dart';
 
 void main() {
   group('Test Opinion Page', () {
-    /*testWidgets('find opinions pages buttons', (WidgetTester tester) async {
+    testWidgets('find opinions pages buttons', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage(itemId: 1));
       await waitForLoader(tester: tester, testPage: testPage);
       BuildContext context = tester.element(find.byType(OpinionPage));
@@ -31,21 +31,7 @@ void main() {
           filterAll, // widget you want to scroll
           const Offset(0, -500) // delta to move
           );
-
-      await tester.tap(addOpinionButtonFinder);
-      await tester.pump(const Duration(milliseconds: 4000));
-
-      expect(
-          find.text(AppLocalizations.of(context)!.reviewAdd), findsOneWidget);
-      expect(find.byKey(const Key('opinion-star_0')), findsOneWidget);
-      expect(find.byKey(const Key('opinion-star_1')), findsOneWidget);
-      expect(find.byKey(const Key('opinion-star_2')), findsOneWidget);
-      expect(find.byKey(const Key('opinion-star_3')), findsOneWidget);
-      expect(find.byKey(const Key('opinion-star_4')), findsOneWidget);
-
-      await tester.tap(find.byKey(const Key('opinion-star_4')));
-      await tester.pump();
-    });*/
+    });
 
     testWidgets('select filter 0 stars', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage(itemId: 1));
