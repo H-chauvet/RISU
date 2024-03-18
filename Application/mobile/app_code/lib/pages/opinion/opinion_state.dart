@@ -295,7 +295,6 @@ class OpinionPageState extends State<OpinionPage> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Champ de note
                   Row(
                     children: List.generate(
                       5,
