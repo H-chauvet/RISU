@@ -6,7 +6,6 @@ const userCtrl = require("../../controllers/Mobile/user")
 const opinionCtrl = require("../../controllers/Mobile/opinion")
 const itemsCtrl = require("../../controllers/Common/items")
 
-// get all opinions from an item (can be filtered by note)
 router.get('/', async (req, res) => {
   var opinions = []
   try {
@@ -34,7 +33,6 @@ router.get('/', async (req, res) => {
   }
 })
 
-// add an opinion to an item
 router.post('/',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -70,7 +68,6 @@ router.post('/',
   }
 )
 
-// delete an opinion
 router.delete('/:opinionId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
@@ -102,7 +99,6 @@ router.delete('/:opinionId',
   }
 )
 
-// update an opinion
 router.put('/:opinionId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
