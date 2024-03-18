@@ -114,6 +114,7 @@ model Opinions_Mobile {
     comment String   @default("")
     itemId  Int
     item    Item     @relation(fields: [itemId], references: [id])
+    user    User_Mobile @relation(fields: [userId], references: [id])
 }
 
 model User_Mobile {
@@ -128,6 +129,7 @@ model User_Mobile {
     Locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
+    itemOpinions     Opinions_Mobile[]
 }
 
 model Notifications_Mobile {
