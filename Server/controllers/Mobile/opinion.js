@@ -2,7 +2,7 @@ const { db } = require('../../middleware/database')
 
 
 /**
- * Create an opinion for an the article
+ * Create an opinion for an article
  *
  * @param {number} itemId of the item
  * @param {number} userId of the one of submitted the opinion
