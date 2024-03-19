@@ -17,10 +17,9 @@ router.get('/', async (req, res) => {
       return res.status(401).json({ message: 'itemId not found' })
     }
 
-    const note = req.query.note
+    var note = req.query.note
     if (note != null) {
-      note = parseInt(note);
-      if (isNaN(note) || note < 0 || note > 5) {
+      if (note < 0 || note > 5) {
         return res.status(401).json({ message: 'Invalid note' });
       }
     }
