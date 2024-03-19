@@ -25,8 +25,9 @@ exports.createOpinion = (itemID, userId, note, comment) => {
 
 
 /**
- * Get every opinions of a specific note
+ * Get every opinions from an article
  * If note is not specified, retrieve every opinions
+ * If note is specified, retrieve only the opinions that correspond to the note
  *
  * @param {number} itemId of the item
  * @param {string} note
