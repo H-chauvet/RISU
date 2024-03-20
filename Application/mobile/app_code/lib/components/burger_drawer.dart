@@ -55,12 +55,6 @@ class BurgerDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             MyRedirectDivider(
-              goToPage: const OpinionPage(),
-              title: AppLocalizations.of(context)!.reviews,
-              paramIcon: const Icon(Icons.star),
-            ),
-            const SizedBox(height: 8),
-            MyRedirectDivider(
               goToPage: const SettingsPage(),
               title: AppLocalizations.of(context)!.settings,
               paramIcon: const Icon(Icons.settings),

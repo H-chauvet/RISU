@@ -8,6 +8,7 @@ const mobileContainerArticleList = require('./Mobile/container/articleList')
 const mobileItemListAll = require('./Mobile/items/listAll')
 const mobileItemId = require('./Mobile/items/itemId')
 const mobileOpinion = require('./Mobile/opinion/opinion')
+const mobileOpinionId = require('./Mobile/opinion/opinionId')
 const mobileRentArticle = require('./Mobile/rent/article')
 const mobileRentListAll = require('./Mobile/rent/listAll')
 const mobileRentId = require('./Mobile/rent/rentId')
@@ -81,6 +82,9 @@ module.exports = {
         },
         '/api/mobile/opinion/': {
             ...mobileOpinion
+        },
+        '/api/mobile/opinion/:opinionId': {
+            ...mobileOpinionId
         },
         '/api/mobile/rent/article': {
             ...mobileRentArticle

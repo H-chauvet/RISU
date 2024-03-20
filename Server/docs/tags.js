@@ -49,6 +49,14 @@ module.exports = {
       },
     },
     {
+      name: "Article opinions",
+      description: "Handling the user's rating of the different items",
+      externalDocs: {
+        description: "Find out more",
+        url: "https://github.com/H-chauvet/RISU",
+      },
+    },
+    {
       name: "Rent",
       description: "Related to the item's rent of the user",
       externalDocs: {

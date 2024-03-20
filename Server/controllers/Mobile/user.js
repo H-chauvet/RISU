@@ -136,3 +136,13 @@ exports.updateUserInfo = (user, body) => {
     include: { Notifications: true }
   })
 }
+
+exports.getFullName = (userId) => {
+  const user = db.User_Mobile.findUnique({
+    where: { id: userId },
+    select: { firstName: true, lastName: true }
+  })
+  if (!user) return null
+  if (!user.firstName && !user.lastName) return 'Non renseigné'
+  return user.firstName + ' ' + user.lastName
+}
