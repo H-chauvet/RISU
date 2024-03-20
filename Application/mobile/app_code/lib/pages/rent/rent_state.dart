@@ -53,7 +53,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/rent/article'),
+        Uri.parse('$baseUrl/api/mobile/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

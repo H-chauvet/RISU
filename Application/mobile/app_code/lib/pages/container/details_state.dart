@@ -29,7 +29,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:3000/api/mobile/container/$containerId'),
+        Uri.parse('$baseUrl/api/mobile/container/$containerId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

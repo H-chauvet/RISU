@@ -50,7 +50,7 @@ class SignupPageState extends State<SignupPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/auth/signup'),
+        Uri.parse('$baseUrl/api/mobile/auth/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

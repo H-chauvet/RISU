@@ -1,6 +1,12 @@
 const { db } = require('../../middleware/database')
 const transporter = require('../../middleware/transporter')
 
+/**
+ * Send an email to verify the account of a mobile user
+ *
+ * @param {string} email of the new user
+ * @param {string} token of the new user
+ */
 exports.sendAccountConfirmationEmail = (email, token) => {
   let mailOptions = {
     from: process.env.MAIL_ADDRESS,
@@ -17,6 +23,12 @@ exports.sendAccountConfirmationEmail = (email, token) => {
   }
 }
 
+/**
+ * Update the email verification status of the user to true
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
 exports.verifyEmail = id => {
   return db.User_Mobile.update({
     where: {
