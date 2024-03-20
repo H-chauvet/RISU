@@ -26,8 +26,7 @@ class Loader extends StatelessWidget {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return CircularProgressIndicator(
-      color: themeProvider
-          .currentTheme.inputDecorationTheme.floatingLabelStyle!.color,
+      color: themeProvider.currentTheme.primaryColor,
     );
   }
 }

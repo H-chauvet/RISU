@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class MyColors {
-  static const Color primary = Color(0xFF4682B4);
-  static const Color secondary = Color(0xFF23415A);
+  static const Color primary = Color(0xFF033F63);
+  static const Color secondary = Color(0xFFFEDC97);
   static const Color alertDialogChoiceCancel = Color(0xFF808080);
 }
 
@@ -11,12 +11,12 @@ final lightTheme = ThemeData(
   primaryColor: MyColors.primary,
   secondaryHeaderColor: MyColors.secondary,
   colorScheme: const ColorScheme.light(
-    background: Color(0xFFE5E5E5),
+    background: Color(0xFFE5E1D5),
   ),
   dialogTheme: const DialogTheme(
-    backgroundColor: Color(0xFFFFFFFF),
+    backgroundColor: Color(0xFFE5E1D5),
     titleTextStyle: TextStyle(
-      color: MyColors.secondary,
+      color: MyColors.primary,
       fontWeight: FontWeight.bold,
       fontSize: 20.0,
     ),
@@ -46,73 +46,74 @@ final lightTheme = ThemeData(
       color: Color(0xFF000000),
     ),
     floatingLabelStyle: TextStyle(
-      color: Color(0xFF0F3F62),
+      color: Color(0xFFE5E1D5),
     ),
   ),
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.light(
-      secondary: Color(0xFFA1C1DB),
+      secondary: Color(0xFF28666E),
     ),
   ),
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     backgroundColor: MyColors.secondary,
-    selectedItemColor: Colors.white,
-    unselectedItemColor: Colors.white54,
+    selectedItemColor: Color(0xFF28666E),
+    unselectedItemColor: MyColors.primary,
   ),
   dividerColor: Colors.grey,
 );
 
 final darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    primaryColor: MyColors.secondary,
-    secondaryHeaderColor: MyColors.primary,
-    colorScheme: const ColorScheme.dark(
-      background: Color(0xFF1E1E1E),
+  brightness: Brightness.dark,
+  primaryColor: MyColors.secondary,
+  secondaryHeaderColor: MyColors.primary,
+  colorScheme: const ColorScheme.dark(
+    background: Color(0xFF1E1E1E),
+  ),
+  dialogTheme: const DialogTheme(
+    backgroundColor: Color(0xFF4E4E4E),
+    titleTextStyle: TextStyle(
+      color: MyColors.primary,
+      fontWeight: FontWeight.bold,
+      fontSize: 20.0,
     ),
-    dialogTheme: const DialogTheme(
-      backgroundColor: Color(0xFF4E4E4E),
-      titleTextStyle: TextStyle(
-        color: MyColors.primary,
-        fontWeight: FontWeight.bold,
-        fontSize: 20.0,
-      ),
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
-      filled: false,
-      fillColor: Color(0xFF1E1E1E),
-      border: OutlineInputBorder(
-        borderSide: BorderSide.none,
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
-          color: Color(0xFFA1C1DB),
-          width: 2.0,
-        ),
-        borderRadius: BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-      ),
-      hintStyle: TextStyle(
-        color: Color(0xFF808080),
-      ),
-      labelStyle: TextStyle(
-        color: Color(0xFFFFFFFF),
-      ),
-      floatingLabelStyle: TextStyle(
-        color: Color(0xFF4682B4),
+  ),
+  inputDecorationTheme: const InputDecorationTheme(
+    filled: false,
+    fillColor: Color(0xFF1E1E1E),
+    border: OutlineInputBorder(
+      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
       ),
     ),
-    buttonTheme: const ButtonThemeData(
-      colorScheme: ColorScheme.dark(
-        secondary: Color(0xFFA1C1DB),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Color(0xFFA1C1DB),
+        width: 2.0,
+      ),
+      borderRadius: BorderRadius.all(
+        Radius.circular(8.0),
       ),
     ),
-    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: MyColors.primary,
-      selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white54,
+    hintStyle: TextStyle(
+      color: Color(0xFF808080),
     ),
-    dividerColor: Colors.white);
+    labelStyle: TextStyle(
+      color: Color(0xFFFFFFFF),
+    ),
+    floatingLabelStyle: TextStyle(
+      color: Color(0xFF28666E),
+    ),
+  ),
+  buttonTheme: const ButtonThemeData(
+    colorScheme: ColorScheme.dark(
+      secondary: Color(0xFFA1C1DB),
+    ),
+  ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    backgroundColor: MyColors.primary,
+    selectedItemColor: MyColors.secondary,
+    unselectedItemColor: Colors.white54,
+  ),
+  dividerColor: Colors.white,
+);

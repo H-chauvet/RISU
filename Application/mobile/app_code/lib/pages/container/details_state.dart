@@ -126,16 +126,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          shadows: [
-                            Shadow(
-                              color: context.select(
-                                  (ThemeProvider themeProvider) => themeProvider
-                                      .currentTheme.secondaryHeaderColor),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -150,38 +141,36 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
                             )),
                       ),
                       const SizedBox(height: 16),
-                      Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.all(16),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme.colorScheme
-                                              .background),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                padding: const EdgeInsets.all(8.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  AppLocalizations.of(context)!
-                                      .howManyAvailableArticles(
-                                          _availableItems),
-                                  key: const Key(
-                                      'container-details_article-list'),
-                                  style: const TextStyle(
+                      Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.secondaryHeaderColor),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                AppLocalizations.of(context)!
+                                    .howManyAvailableArticles(_availableItems),
+                                key:
+                                    const Key('container-details_article-list'),
+                                style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
+                                    color: context.select(
+                                        (ThemeProvider themeProvider) =>
+                                            themeProvider
+                                                .currentTheme.primaryColor)),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),
