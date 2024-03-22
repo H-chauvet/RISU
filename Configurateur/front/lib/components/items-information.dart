@@ -13,7 +13,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
-// import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -75,7 +74,8 @@ class ItemPagesModification extends StatefulWidget {
   const ItemPagesModification({Key? key, required this.item}) : super(key: key);
 
   @override
-  _ItemPagesModificationtates createState() => _ItemPagesModificationtates(item: item);
+  _ItemPagesModificationtates createState() =>
+      _ItemPagesModificationtates(item: item);
 }
 
 class _ItemPagesModificationtates extends State<ItemPagesModification> {

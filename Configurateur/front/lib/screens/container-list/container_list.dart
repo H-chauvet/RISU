@@ -9,7 +9,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:front/screens/container-list/item-list/item_list.dart';
 import 'package:front/screens/messages/messages_card.dart';

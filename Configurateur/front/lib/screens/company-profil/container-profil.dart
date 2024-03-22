@@ -5,7 +5,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
-// import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -262,6 +261,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           child: Column(
             children: [
               Container(
+                width: 500,
                 height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -286,6 +286,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 5.0),
                         Row(
                           children: [
                             Text(

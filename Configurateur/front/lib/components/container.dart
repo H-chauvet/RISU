@@ -70,7 +70,10 @@ class ContainerCards extends StatelessWidget {
   final String page;
 
   const ContainerCards(
-      {super.key, required this.container, required this.onDelete, required this.page});
+      {super.key,
+      required this.container,
+      required this.onDelete,
+      required this.page});
 
   @override
   Widget build(BuildContext context) {
@@ -101,7 +104,8 @@ class ContainerCards extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.arrow_forward),
-                  onPressed: () => context.go(page, extra: jsonEncode(container)),
+                  onPressed: () =>
+                      context.go(page, extra: jsonEncode(container)),
                 ),
               ],
             ),
