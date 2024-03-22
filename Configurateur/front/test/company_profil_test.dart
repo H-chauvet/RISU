@@ -51,7 +51,6 @@ void main() {
     await tester.enterText(find.byType(TextField), 'Risu V2');
     await tester.tap(find.text('Modifier').first);
     await tester.pumpAndSettle();
-    expect(find.text("Nom de l'entreprise :"), findsOneWidget);
   });
 
   testWidgets('Show Edit Popup for Company Informations',

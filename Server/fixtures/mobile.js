@@ -24,8 +24,8 @@ exports.createFixtures = async () => {
         address: "Rue George",
         items: {
           create: [
-            {name: "ballon de volley", price: 3, available: true },
-            {name: "raquette", price: 6, available: false },
+            { name: "ballon de volley", price: 3, available: true },
+            { name: "raquette", price: 6, available: false },
             { name: "ballon de football", price: 16, available: true },
           ],
         },
