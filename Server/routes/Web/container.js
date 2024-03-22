@@ -99,7 +99,6 @@ router.put("/update", async function (req, res, next) {
       informations,
       designs,
       saveName,
-      organizationId,
     });
     res.status(200).json(container);
   } catch (err) {

@@ -1,30 +1,27 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
-exports.getAllItem = (containerId) => {
+exports.getItemByContainerId = (containerId) => {
   return db.Item.findMany({
     where: {
       containerId: containerId,
     },
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      price: true,
-      description: true,
-    },
   });
 };
 
+exports.getAllItem = (containerId) => {
+  return db.Item.findMany({});
+};
+
 exports.getItemFromId = (id) => {
-  intId = parseInt(id)
+  intId = parseInt(id);
   return db.Item.findUnique({
-    where: { id: intId }
-  })
-}
+    where: { id: intId },
+  });
+};
 
 exports.getItems = () => {
-  return db.Item.findMany()
-}
+  return db.Item.findMany();
+};
 
 exports.deleteItem = (id) => {
   return db.Item.delete({
@@ -36,13 +33,14 @@ exports.deleteItem = (id) => {
 
 exports.createItem = (item) => {
   item.price = parseFloat(item.price);
+  item.containerId = parseInt(item.containerId);
   return db.Item.create({
     data: item,
   });
 };
 
 exports.updateItem = (id, item) => {
-  intId = parseInt(id)
+  intId = parseInt(id);
   item.price = parseFloat(item.price);
   return db.Item.update({
     where: {
@@ -55,11 +53,11 @@ exports.updateItem = (id, item) => {
 exports.getAvailableItemsCount = (containerId) => {
   return db.Item.count({
     where: { containerId: containerId },
-    select: { available: true }
-  })
-}
+    select: { available: true },
+  });
+};
 
-exports.updateName = item => {
+exports.updateName = (item) => {
   return db.Item.update({
     where: {
       id: item.id,
@@ -70,7 +68,7 @@ exports.updateName = item => {
   });
 };
 
-exports.updatePrice = item => {
+exports.updatePrice = (item) => {
   return db.Item.update({
     where: {
       id: item.id,
@@ -81,7 +79,7 @@ exports.updatePrice = item => {
   });
 };
 
-exports.updateDescription = item => {
+exports.updateDescription = (item) => {
   return db.Item.update({
     where: {
       id: item.id,

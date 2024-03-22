@@ -72,7 +72,7 @@ describe("Items Route Tests", () => {
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
     ];
 
-    itemCtrl.getAllItem.mockResolvedValueOnce(mockItems);
+    itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app)
       .get("/listAll")
@@ -80,19 +80,21 @@ describe("Items Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ item: mockItems });
-    expect(itemCtrl.getAllItem).toHaveBeenCalledWith(containerId);
+    expect(itemCtrl.getItemByContainerId).toHaveBeenCalledWith(containerId);
   });
 
   it("should handle errors during item retrieval", async () => {
     const containerId = 1;
 
-    itemCtrl.getAllItem.mockRejectedValueOnce(new Error("Mocked error"));
+    itemCtrl.getItemByContainerId.mockRejectedValueOnce(
+      new Error("Mocked error")
+    );
 
     const response = await supertest(app)
       .get("/listAll")
       .query({ containerId });
 
     expect(response.status).toBe(500);
-    expect(itemCtrl.getAllItem).toHaveBeenCalledWith(containerId);
+    expect(itemCtrl.getItemByContainerId).toHaveBeenCalledWith(containerId);
   });
 });
