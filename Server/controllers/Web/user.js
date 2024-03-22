@@ -5,10 +5,9 @@ const uuid = require('uuid')
 const transporter = require('../../middleware/transporter')
 
 /**
- *
  * Find user by email
  *
- * @param {*} email of the user
+ * @param {string} email of the user
  * @returns user finded by email
  */
 exports.findUserByEmail = email => {
@@ -20,10 +19,9 @@ exports.findUserByEmail = email => {
 };
 
 /**
- *
  * Find user by uuid
  *
- * @param {*} uuid of the user
+ * @param {string} uuid of the user
  * @returns user finded by uuid
  */
 exports.findUserByUuid = uuid => {
@@ -35,10 +33,9 @@ exports.findUserByUuid = uuid => {
 };
 
 /**
- *
  * Find user by id
  *
- * @param {*} id of the user
+ * @param {number} id of the user
  * @returns user finded by id
  */
 exports.findUserById = id => {
@@ -50,10 +47,9 @@ exports.findUserById = id => {
 };
 
 /**
- *
  * Delete a user
  *
- * @param {*} email of user to delete
+ * @param {string} email of user to delete
  * @returns user deleted
  */
 exports.deleteUser = email => {
@@ -65,7 +61,6 @@ exports.deleteUser = email => {
 };
 
 /**
- *
  * Create new user
  *
  * @param {*} user information
@@ -80,10 +75,9 @@ exports.registerByEmail = user => {
 }
 
 /**
- *
  * Define the mail object for register confirmation and call associate middleware
  *
- * @param {*} email of the receiver
+ * @param {string} email of the receiver
  */
 exports.registerConfirmation = (email) => {
   let generatedUuid = "";
@@ -105,10 +99,9 @@ exports.registerConfirmation = (email) => {
 };
 
 /**
- *
  * Set confirmed at true
  *
- * @param {*} uuid
+ * @param {string} uuid
  * @returns user object
  */
 exports.confirmedRegister = uuid => {
@@ -123,7 +116,6 @@ exports.confirmedRegister = uuid => {
 };
 
 /**
- *
  * Authentification of an user
  *
  * @param {*} user
@@ -144,7 +136,6 @@ exports.loginByEmail = user => {
 };
 
 /**
- *
  * Update password
  *
  * @param {*} user
@@ -163,10 +154,9 @@ exports.updatePassword = user => {
 };
 
 /**
- *
  * Define the mail object for password change and call associate middleware
  *
- * @param {*} email of the receiver
+ * @param {string} email of the receiver
  */
 exports.forgotPassword = (email) => {
   let generatedUuid = "";
@@ -187,6 +177,11 @@ exports.forgotPassword = (email) => {
   });
 };
 
+/**
+ * Retrieve every web users of the database
+ *
+ * @returns every user found
+ */
 exports.getAllUsers = async () => {
   try {
     const users = await db.User_Web.findMany();
@@ -198,10 +193,9 @@ exports.getAllUsers = async () => {
 };
 
 /**
- *
  * Find user details by email (including first name and last name)
  *
- * @param {*} email of the user
+ * @param {string} email of the user
  * @returns user details (including first name and last name)
  */
 exports.findUserDetailsByEmail = email => {
@@ -223,7 +217,6 @@ exports.findUserDetailsByEmail = email => {
 };
 
 /**
- *
  * Update firstName and LastName
  *
  * @param {*} user
@@ -253,7 +246,6 @@ exports.updateOrganization = user => {
 };
 
 /**
- *
  * Update mail
  *
  * @param {*} user
@@ -271,7 +263,6 @@ exports.updateMail = user => {
 };
 
 /**
- *
  * Update company
  *
  * @param {*} user
@@ -289,7 +280,6 @@ exports.updateCompany = user => {
 };
 
 /**
- *
  * Update company
  *
  * @param {*} user

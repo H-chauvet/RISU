@@ -20,7 +20,7 @@ const port = normalizePort(process.env.PORT || '3000')
 
 app.set('port', port)
 
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs))
+app.use('/api/developer/documentation', swaggerUI.serve, swaggerUI.setup(docs))
 
 app.listen(port, () => {
   mobile.createFixtures()

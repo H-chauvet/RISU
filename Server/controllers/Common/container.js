@@ -1,5 +1,11 @@
 const { db } = require("../../middleware/database");
 
+/**
+ * Get a unique container by its id
+ *
+ * @param {number} id of the container object
+ * @returns a container object in case it's found, otherwise empty
+ */
 exports.getContainerById = (id) => {
   return db.Containers.findUnique({
     where: { id: id },
@@ -36,13 +42,12 @@ exports.getAllContainer = (id) => {
   return db.Containers.findMany();
 };
 
-exports.createContainer2 = (container) => {
-  container.price = 10;
-  return db.Containers.create({
-    data: container,
-  });
-};
-
+/**
+ * Delete a unique container by its id
+ *
+ * @param {number} id of the container object
+ * @returns none
+ */
 exports.deleteContainer = (id) => {
   return db.Containers.delete({
     where: {
@@ -51,6 +56,12 @@ exports.deleteContainer = (id) => {
   });
 };
 
+/**
+ * Create a new container
+ *
+ * @param {*} container the object with data
+ * @returns the container object
+ */
 exports.createContainer = (container) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
@@ -59,6 +70,13 @@ exports.createContainer = (container) => {
   });
 };
 
+/**
+ * Update an existing container
+ *
+ * @param {number} id of the container
+ * @param {*} container the object with updated data
+ * @returns the container object
+ */
 exports.updateContainer = (id, container) => {
   container.price = parseFloat(container.price);
   container.width = parseFloat(container.width);
@@ -71,6 +89,12 @@ exports.updateContainer = (id, container) => {
   });
 };
 
+/**
+ * Retrieve every container
+ *
+ * @throws {Error} with a specific message to find the problem
+ * @returns every exitsting container
+ */
 exports.getAllContainers = async () => {
   try {
     return db.Containers.findMany();
@@ -80,13 +104,12 @@ exports.getAllContainers = async () => {
   }
 };
 
-exports.createContainer2 = (container) => {
-  container.price = parseFloat(container.price);
-  return db.Containers.create({
-    data: container,
-  });
-};
-
+/**
+ * Retrieve items of the containers
+ *
+ * @param {number} containerId id of the container
+ * @returns the container object with its items
+ */
 exports.getItemsFromContainer = (containerId) => {
   return db.Containers.findUnique({
     where: { id: containerId },

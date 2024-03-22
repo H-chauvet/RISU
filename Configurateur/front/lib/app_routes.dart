@@ -10,6 +10,7 @@ import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
+import 'package:front/screens/container-creation/shape_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/container-list/item-list/item_list.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
@@ -121,10 +122,18 @@ class AppRouter {
         path: '/container-creation',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const ContainerCreation();
+            return ContainerCreation();
           }
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
+
+          if (user['containerMapping'] != null) {
+            return ContainerCreation(
+              containerMapping: user['containerMapping'],
+              width: user['width'],
+              height: user['height'],
+            );
+          }
 
           return ContainerCreation(
             id: user['id'],
@@ -265,6 +274,12 @@ class AppRouter {
         path: '/container-creation/confirmation',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ConfirmationScreen(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-creation/shape',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ShapeScreen(),
         ),
       ),
       GoRoute(

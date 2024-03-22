@@ -87,8 +87,8 @@ class RecapScreenState extends State<RecapScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 4,
-            progress: 2,
+            length: 5,
+            progress: 3,
             previous: 'Précédent',
             next: 'Suivant',
             previousFunc: previousFunc,
