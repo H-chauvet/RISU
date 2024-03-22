@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/storage_service.dart';
@@ -575,6 +576,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         (index) => ContainerCards(
                           container: containersList[index],
                           onDelete: deleteContainer,
+                          page: "/container-profil",
                           key: ValueKey<String>(
                               'delete_${containersList[index].id}'),
                         ),

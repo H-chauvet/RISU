@@ -34,7 +34,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   @override
   void initState() {
     super.initState();
-    fetchItemsi();
+    fetchItemsbyCtnId();
     if (container.city != null) {
       city = container.city!;
     }
@@ -61,7 +61,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 TextField(
                   controller: nameController,
                   decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialLastName),
+                      labelText: "Nouvelle ville", hintText: initialLastName),
                 ),
               ],
             ),
@@ -145,7 +145,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 TextField(
                   controller: addressController,
                   decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialAddress),
+                      labelText: "Adresse postale", hintText: initialAddress),
                 ),
               ],
             ),
@@ -212,10 +212,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
-  Future<void> fetchItemsi() async {
+  Future<void> fetchItemsbyCtnId() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/items/listAll?containerId=${container.id}'),
+          'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=${container.id}'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -239,7 +239,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
-      fetchItemsi();
+      fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
         msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
@@ -262,7 +262,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           child: Column(
             children: [
               Container(
-                // width: 300,
                 height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

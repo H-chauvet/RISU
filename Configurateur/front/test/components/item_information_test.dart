@@ -20,15 +20,15 @@ void main() {
   testWidgets('ItemListInfo should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      home: ItemPagess(item: mockItem),
+      home: ItemPagesModification(item: mockItem),
     ));
 
-    expect(find.byType(ItemPagess), findsOneWidget);
+    expect(find.byType(ItemPagesModification), findsOneWidget);
     await tester.pump();
     expect(find.text("Gestion des objets"), findsOneWidget);
     expect(find.text("Nom de l'objet : Test Item"), findsOneWidget);
     expect(find.text("Description de l'objet : description"), findsOneWidget);
-    expect(find.text("price de l'objet : 19.99"), findsOneWidget);
+    expect(find.text("prix de l'objet : 19.99"), findsOneWidget);
   });
 
   testWidgets('ItemListInfo should render without error',
@@ -49,7 +49,7 @@ void main() {
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      home: ItemPagess(item: mockItem),
+      home: ItemPagesModification(item: mockItem),
     ));
 
     await tester.tap(find.byIcon(Icons.edit).first);
@@ -58,7 +58,7 @@ void main() {
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      home: ItemPagess(item: mockItem),
+      home: ItemPagesModification(item: mockItem),
     ));
 
     await tester.tap(find.byIcon(Icons.edit).at(1));
@@ -67,7 +67,7 @@ void main() {
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
-      home: ItemPagess(item: mockItem),
+      home: ItemPagesModification(item: mockItem),
     ));
 
     await tester.tap(find.byIcon(Icons.edit).at(2));

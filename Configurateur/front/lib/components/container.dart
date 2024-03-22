@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/container-list/item-list/item_list.dart';
+import 'package:go_router/go_router.dart';
 
 class CtnList {
   final int? id;
@@ -64,20 +67,16 @@ class CtnList {
 class ContainerCards extends StatelessWidget {
   final CtnList container;
   final Function(CtnList) onDelete;
+  final String page;
 
   const ContainerCards(
-      {super.key, required this.container, required this.onDelete});
+      {super.key, required this.container, required this.onDelete, required this.page});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ContainerProfilPage(container: container),
-          ),
-        );
+        GoRouter.of(context).go(page, extra: container);
       },
       child: Card(
         child: Row(
@@ -102,13 +101,7 @@ class ContainerCards extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.arrow_forward),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          ContainerProfilPage(container: container),
-                    ),
-                  ),
+                  onPressed: () => context.go(page, extra: jsonEncode(container)),
                 ),
               ],
             ),

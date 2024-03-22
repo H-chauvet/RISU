@@ -31,7 +31,7 @@ class _ItemPageState extends State<ItemPage> {
   Future<void> fetchItems() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/items/listAll?containerId=$containerId'),
+          'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=$containerId'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);

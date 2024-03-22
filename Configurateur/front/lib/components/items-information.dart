@@ -1,5 +1,6 @@
 // import 'dart:ffi';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -69,17 +70,17 @@ class ItemListInfo {
   }
 }
 
-class ItemPagess extends StatefulWidget {
+class ItemPagesModification extends StatefulWidget {
   final ItemListInfo item;
-  const ItemPagess({Key? key, required this.item}) : super(key: key);
+  const ItemPagesModification({Key? key, required this.item}) : super(key: key);
 
   @override
-  _ItemPagesStates createState() => _ItemPagesStates(item: item);
+  _ItemPagesModificationtates createState() => _ItemPagesModificationtates(item: item);
 }
 
-class _ItemPagesStates extends State<ItemPagess> {
+class _ItemPagesModificationtates extends State<ItemPagesModification> {
   final ItemListInfo item;
-  _ItemPagesStates({required this.item});
+  _ItemPagesModificationtates({required this.item});
   late String itemName = '';
   late String itemDescription = '';
   late double itemPrice;
@@ -365,7 +366,6 @@ class _ItemPagesStates extends State<ItemPagess> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                // width: 00,
                 height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -467,7 +467,7 @@ class _ItemPagesStates extends State<ItemPagess> {
                           children: [
                             item.price != null
                                 ? Text(
-                                    "price de l'objet : ${item.price!}",
+                                    "prix de l'objet : ${item.price!}",
                                     style: const TextStyle(
                                       color: Color(0xff4682B4),
                                       fontSize: 15.0,
@@ -476,7 +476,7 @@ class _ItemPagesStates extends State<ItemPagess> {
                                     ),
                                   )
                                 : Text(
-                                    "price de l'objet : pas de price",
+                                    "prix de l'objet : pas de prix",
                                     style: const TextStyle(
                                       color: Color(0xff4682B4),
                                       fontSize: 15.0,
@@ -533,7 +533,7 @@ class ItemCardInfo extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ItemPagess(item: item),
+            builder: (context) => ItemPagesModification(item: item),
           ),
         );
       },
@@ -561,7 +561,7 @@ class ItemCardInfo extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ItemPagess(item: item),
+                      builder: (context) => ItemPagesModification(item: item),
                     ),
                   ),
                 ),
