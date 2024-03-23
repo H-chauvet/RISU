@@ -51,7 +51,6 @@ class LandingPageState extends State<LandingPage> {
             Column(
               children: [
                 LandingAppBar(context: context),
-                
                 const Text(
                   'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !',
                   textAlign: TextAlign.center,
@@ -97,7 +96,8 @@ class LandingPageState extends State<LandingPage> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 15), // Espacement inférieur pour le texte
+                                  top:
+                                      15), // Espacement inférieur pour le texte
                               child: Text(
                                 'Des conteneurs disponibles partout en france !',
                                 style: TextStyle(
@@ -146,7 +146,8 @@ class LandingPageState extends State<LandingPage> {
                             ),
                             Padding(
                               padding: EdgeInsets.only(
-                                  top: 15), // Espacement inférieur pour le texte
+                                  top:
+                                      15), // Espacement inférieur pour le texte
                               child: Text(
                                 'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
                                 style: TextStyle(
@@ -155,8 +156,7 @@ class LandingPageState extends State<LandingPage> {
                                 ),
                               ),
                             ),
-                          ]
-                      ),
+                          ]),
                     ],
                   )),
                 ),

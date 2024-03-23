@@ -154,12 +154,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                     items.add(
                       const PopupMenuItem<String>(
                         value: 'profil',
-                        child: Text(
-                          'Profil',
-                          style: TextStyle(
-                            color: Color(0xff033F63),
-                          )
-                        ),
+                        child: Text('Profil',
+                            style: TextStyle(
+                              color: Color(0xff033F63),
+                            )),
                       ),
                     );
                     if (userMail == "risu.admin@gmail.com") {
