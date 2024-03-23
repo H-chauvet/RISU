@@ -24,9 +24,27 @@ exports.createFixtures = async () => {
         address: "Rue George",
         items: {
           create: [
-            { name: "ballon de volley", price: 3, available: true },
-            { name: "raquette", price: 6, available: false },
-            { name: "ballon de football", price: 16, available: true },
+            {
+              id: 1,
+              name: "ballon de volley",
+              price: 3,
+              available: true,
+              category: "plage",
+            },
+            {
+              id: 2,
+              name: "raquette",
+              price: 6,
+              available: false,
+              category: "tennis",
+            },
+            {
+              id: 3,
+              name: "ballon de football",
+              price: 16,
+              available: true,
+              category: "sport",
+            },
           ],
         },
       },
@@ -36,9 +54,8 @@ exports.createFixtures = async () => {
         id: 2,
         city: "Nantes",
         address: "Rue george",
-        items: {
-          create: [],
-        },
+        // items: {
+        // },
       },
     });
     if (

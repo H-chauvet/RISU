@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-// import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -31,7 +30,7 @@ class _ItemPageState extends State<ItemPage> {
   Future<void> fetchItems() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/items/listAll?containerId=$containerId'),
+          'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=$containerId'),
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);

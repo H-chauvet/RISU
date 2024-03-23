@@ -45,6 +45,7 @@ model Item {
     description     String?
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
+    category         String?
 }
 
 model Organization {

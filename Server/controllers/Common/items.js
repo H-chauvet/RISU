@@ -1,4 +1,4 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
 /**
  * Retrieve every item from a container
@@ -6,12 +6,24 @@ const { db } = require('../../middleware/database')
  * @param {number} containerId id of the container
  * @returns every item in a specific container
  */
-exports.getAllItem = (containerId) => {
+exports.getItemByContainerId = (containerId) => {
   return db.Item.findMany({
     where: {
       containerId: containerId,
     },
   });
+};
+
+exports.getItemByCategory = (category) => {
+  return db.Item.findMany({
+    where: {
+      category: category,
+    },
+  });
+};
+
+exports.getAllItem = (containerId) => {
+  return db.Item.findMany({});
 };
 
 /**
@@ -21,11 +33,11 @@ exports.getAllItem = (containerId) => {
  * @returns one item if an id correspond
  */
 exports.getItemFromId = (id) => {
-  intId = parseInt(id)
+  intId = parseInt(id);
   return db.Item.findUnique({
-    where: { id: intId }
-  })
-}
+    where: { id: intId },
+  });
+};
 
 /**
  * Retrieve every item in the database
@@ -33,8 +45,8 @@ exports.getItemFromId = (id) => {
  * @returns every item in the database
  */
 exports.getItems = () => {
-  return db.Item.findMany()
-}
+  return db.Item.findMany();
+};
 
 /**
  * Delete a specific item
@@ -58,6 +70,7 @@ exports.deleteItem = (id) => {
  */
 exports.createItem = (item) => {
   item.price = parseFloat(item.price);
+  item.containerId = parseInt(item.containerId);
   return db.Item.create({
     data: item,
   });
@@ -71,7 +84,7 @@ exports.createItem = (item) => {
  * @returns the freshly updated object
  */
 exports.updateItem = (id, item) => {
-  intId = parseInt(id)
+  intId = parseInt(id);
   item.price = parseFloat(item.price);
   return db.Item.update({
     where: {
@@ -90,6 +103,39 @@ exports.updateItem = (id, item) => {
 exports.getAvailableItemsCount = (containerId) => {
   return db.Item.count({
     where: { containerId: containerId },
-    select: { available: true }
-  })
-}
+    select: { available: true },
+  });
+};
+
+exports.updateName = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      name: item.name,
+    },
+  });
+};
+
+exports.updatePrice = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      price: item.priceTmp,
+    },
+  });
+};
+
+exports.updateDescription = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      description: item.description,
+    },
+  });
+};
