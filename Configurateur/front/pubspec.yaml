@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  footer:
   flutter_dotenv: ^5.1.0
   flutter_bloc: ^7.0.0
   flutter_rating_bar: ^4.0.0
@@ -89,8 +90,10 @@ flutter:
   assets:
     - assets/google.png
     - assets/logo.png
+    - assets/logonew.png
     - assets/google-logo.png
     - assets/iphone.png
+    - assets/iphonenew.png
     - assets/container.png
     - assets/3d_logo.png
     - assets/cube.png
@@ -100,6 +103,7 @@ flutter:
     - assets/Quentin.png
     - assets/Tanguy.png
     - assets/Cédric.png
+    - assets/containerrisu.png
 
   #   - images/a_dot_ham.jpeg
 

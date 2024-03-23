@@ -1,11 +1,11 @@
-// ignore_for_file: unrelated_type_equality_checks
+// ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
 class LandingAppBar extends StatefulWidget {
-  const LandingAppBar({Key? key, required BuildContext context});
+  const LandingAppBar({super.key, required BuildContext context});
 
   @override
   State<LandingAppBar> createState() => LandingAppBarState();
@@ -19,6 +19,14 @@ class LandingAppBarState extends State<LandingAppBar> {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
     setState(() {});
+  }
+
+  void goToCreation() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/container-creation/");
+    }
   }
 
   @override
@@ -37,7 +45,7 @@ class LandingAppBarState extends State<LandingAppBar> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Image.asset(
-                'assets/logo.png',
+                'assets/logonew.png',
                 width: 100,
                 height: 100,
               ),
@@ -50,7 +58,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                         context.go("/");
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.black,
+                        foregroundColor: const Color(0xff033F63),
                         padding: EdgeInsets.zero,
                       ),
                       child: const Text(
@@ -75,11 +83,34 @@ class LandingAppBarState extends State<LandingAppBar> {
                         context.go("/company");
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: Colors.black,
+                        foregroundColor: const Color(0xff033F63),
                         padding: EdgeInsets.zero,
                       ),
                       child: const Text(
                         'Notre équipe',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const SizedBox(
+                      height: 24,
+                      child: VerticalDivider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 172, 167, 167),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () => goToCreation(),
+                      style: TextButton.styleFrom(
+                        foregroundColor: const Color(0xff033F63),
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        'Créer un conteneur',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
@@ -94,7 +125,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                 icon: const Icon(
                   size: 35,
                   Icons.account_circle,
-                  color: Colors.black,
+                  color: Color(0xff033F63),
                 ),
                 itemBuilder: (BuildContext context) {
                   List<PopupMenuEntry<String>> items = [];
@@ -102,25 +133,45 @@ class LandingAppBarState extends State<LandingAppBar> {
                     items.addAll([
                       const PopupMenuItem<String>(
                         value: 'connexion',
-                        child: Text('Connexion'),
+                        child: Text(
+                          'Connexion',
+                          style: TextStyle(
+                            color: Color(0xff033F63),
+                          ),
+                        ),
                       ),
                       const PopupMenuItem<String>(
                         value: 'inscription',
-                        child: Text('Inscription'),
+                        child: Text(
+                          'Inscription',
+                          style: TextStyle(
+                            color: Color(0xff033F63),
+                          ),
+                        ),
                       ),
                     ]);
                   } else {
                     items.add(
                       const PopupMenuItem<String>(
                         value: 'profil',
-                        child: Text('Profil'),
+                        child: Text(
+                          'Profil',
+                          style: TextStyle(
+                            color: Color(0xff033F63),
+                          )
+                        ),
                       ),
                     );
                     if (userMail == "risu.admin@gmail.com") {
                       items.add(
                         const PopupMenuItem<String>(
                           value: 'admin',
-                          child: Text('Administration'),
+                          child: Text(
+                            'Administration',
+                            style: TextStyle(
+                              color: Color(0xff033F63),
+                            ),
+                          ),
                         ),
                       );
                     }
@@ -159,7 +210,7 @@ class LandingAppBarState extends State<LandingAppBar> {
         Container(
           margin: const EdgeInsets.only(left: 100, right: 100),
           height: 1,
-          color: const Color.fromARGB(255, 172, 167, 167),
+          color: const Color(0xff033F63),
         ),
         const SizedBox(height: 50),
       ],

@@ -376,6 +376,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "9.2.0"
+  footer:
+    dependency: "direct main"
+    description:
+      name: footer
+      sha256: a39e481859cc63ff99627c21d4b20aabac4e85e52641fe623982e1186feea585
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   freezed_annotation:
     dependency: transitive
     description:
