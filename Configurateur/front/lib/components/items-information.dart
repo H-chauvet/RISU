@@ -488,25 +488,6 @@ class _ItemPagesModificationtates extends State<ItemPagesModification> {
                                       fontFamily: 'Verdana',
                                     ),
                                   ),
-                            item.category != null
-                                ? Text(
-                                    "category de l'objet : ${item.category!}",
-                                    style: const TextStyle(
-                                      color: Color(0xff4682B4),
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Verdana',
-                                    ),
-                                  )
-                                : Text(
-                                    "category de l'objet : pas de category",
-                                    style: const TextStyle(
-                                      color: Color(0xff4682B4),
-                                      fontSize: 15.0,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Verdana',
-                                    ),
-                                  ),
                             const SizedBox(width: 5.0),
                             InkWell(
                               onTap: () async {
@@ -529,6 +510,25 @@ class _ItemPagesModificationtates extends State<ItemPagesModification> {
                             ),
                           ],
                         ),
+                        item.category != null
+                            ? Text(
+                                "category de l'objet : ${item.category!}",
+                                style: const TextStyle(
+                                  color: Color(0xff4682B4),
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Verdana',
+                                ),
+                              )
+                            : Text(
+                                "category de l'objet : pas de category",
+                                style: const TextStyle(
+                                  color: Color(0xff4682B4),
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Verdana',
+                                ),
+                              ),
                       ],
                     ),
                   ],

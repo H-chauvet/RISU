@@ -16,6 +16,7 @@ void main() {
     price: 19.99,
     image: 'item_image.png',
     description: "description",
+    category: "sport",
   );
   testWidgets('ItemListInfo should render without error',
       (WidgetTester tester) async {
@@ -29,6 +30,7 @@ void main() {
     expect(find.text("Nom de l'objet : Test Item"), findsOneWidget);
     expect(find.text("Description de l'objet : description"), findsOneWidget);
     expect(find.text("prix de l'objet : 19.99"), findsOneWidget);
+    expect(find.text("category de l'objet : sport"), findsOneWidget);
   });
 
   testWidgets('ItemListInfo should render without error',
