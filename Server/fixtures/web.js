@@ -27,13 +27,19 @@ exports.createFixtures = async () => {
               address: "4 rue George",
               items: {
                 create: [
-                  { id: 4, name: "Ballon de foot", price: 10, available: true, category: "sport" },
+                  {
+                    id: 4,
+                    name: "Ballon de foot",
+                    price: 10,
+                    available: true,
+                    category: "sport",
+                  },
                   {
                     id: 5,
                     name: "Ballon de volley",
                     price: 20,
                     available: false,
-                    category: "plage"
+                    category: "plage",
                   },
                 ],
               },
@@ -44,7 +50,13 @@ exports.createFixtures = async () => {
               address: "8 rue George",
               items: {
                 create: [
-                  { id: 6, name: "Ballon de foot", price: 10, available: true, category: "sport" },
+                  {
+                    id: 6,
+                    name: "Ballon de foot",
+                    price: 10,
+                    available: true,
+                    category: "sport",
+                  },
                   {
                     id: 7,
                     name: "Ballon de volley",
