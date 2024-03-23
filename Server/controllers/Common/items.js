@@ -14,6 +14,14 @@ exports.getItemByContainerId = (containerId) => {
   });
 };
 
+exports.getItemByCategory = (category) => {
+  return db.Item.findMany({
+    where: {
+      category: category,
+    },
+  });
+};
+
 exports.getAllItem = (containerId) => {
   return db.Item.findMany({});
 };

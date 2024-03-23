@@ -75,6 +75,17 @@ router.get("/listAllByContainerId", async function (req, res, next) {
   }
 });
 
+router.get("/listAllByCategory", async function (req, res, next) {
+  try {
+    const category = req.query.category;
+    const item = await itemCtrl.getItemByCategory(category);
+
+    res.status(200).json({ item });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/listAll", async function (req, res, next) {
   try {
     const item = await itemCtrl.getAllItem();

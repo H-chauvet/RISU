@@ -32,6 +32,8 @@ class _ContainerPageState extends State<ContainerPage> {
   double price = 0.0;
   int containerId = 0;
   String description = '';
+  late String selectedCategory = "Tous";
+  List<String> categories = [];
 
   @override
   void initState() {
@@ -92,8 +94,36 @@ class _ContainerPageState extends State<ContainerPage> {
       final List<dynamic> itemsData = responseData["item"];
       setState(() {
         items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+        categories =
+            items.map((item) => item.category ?? 'Autre').toSet().toList();
+        categories.sort();
       });
     } else {}
+  }
+
+  Future<void> fetchItemsByCategory() async {
+    if (selectedCategory == 'Tous') {
+      fetchItems();
+      return;
+    }
+    final response = await http.get(
+      Uri.parse(
+          'http://${serverIp}:3000/api/items/listAllByCategory?category=$selectedCategory'),
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> itemsData = responseData["item"];
+      setState(() {
+        items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg:
+            'Erreur lors de la récupération des items par catégorie: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
   Future<void> deleteItem(ItemListInfo message) async {
@@ -370,43 +400,76 @@ class _ContainerPageState extends State<ContainerPage> {
                           )
                         : Column(
                             children: [
-                              ElevatedButton(
-                                onPressed: () async {
-                                  await showCreateItems(
-                                    context,
-                                    (String newName,
-                                        bool newAvailable,
-                                        double newPrice,
-                                        int newContainerId,
-                                        String newDescription) {
-                                      setState(() {
-                                        name = newName;
-                                        available = newAvailable;
-                                        price = newPrice;
-                                        containerId = newContainerId;
-                                        description = newDescription;
-                                        fetchItems();
-                                      });
-                                    },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 28, 125, 182),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 30,
                                   ),
-                                ),
-                                child: const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(Icons.add),
-                                    SizedBox(width: 8),
-                                    Text('Ajouter un items'),
-                                  ],
-                                ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await showCreateItems(
+                                        context,
+                                        (String newName,
+                                            bool newAvailable,
+                                            double newPrice,
+                                            int newContainerId,
+                                            String newDescription) {
+                                          setState(() {
+                                            name = newName;
+                                            available = newAvailable;
+                                            price = newPrice;
+                                            containerId = newContainerId;
+                                            description = newDescription;
+                                            fetchItems();
+                                          });
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 28, 125, 182),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    child: const Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(Icons.add),
+                                        SizedBox(width: 8),
+                                        Text('Ajouter un items'),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  DropdownButton<String>(
+                                    value: selectedCategory,
+                                    onChanged: (String? newValue) {
+                                      if (newValue != null) {
+                                        setState(() {
+                                          selectedCategory = newValue;
+                                          fetchItemsByCategory();
+                                        });
+                                      }
+                                    },
+                                    items: [
+                                      DropdownMenuItem(
+                                        value: 'Tous',
+                                        child: Text('Tous'),
+                                      ),
+                                      for (var category in categories)
+                                        DropdownMenuItem(
+                                          value: category,
+                                          child: Text(category),
+                                        ),
+                                    ],
+                                  ),
+                                ],
                               ),
                               ListView.builder(
                                 shrinkWrap: true,
