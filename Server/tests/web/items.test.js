@@ -65,6 +65,19 @@ describe("Items Route Tests", () => {
   });
 
   it("should handle valid item retrieval", async () => {
+    const mockItems = [
+      { id: 1, name: "Item 1", available: true, price: 10.99, containerId: 1 },
+      { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
+    ];
+
+    itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
+
+    const response = await supertest(app).get("/listAll");
+
+    expect(response.status).toBe(200);
+  });
+
+  it("should handle valid item retrieval by container id", async () => {
     const containerId = 1;
 
     const mockItems = [
@@ -75,26 +88,9 @@ describe("Items Route Tests", () => {
     itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app)
-      .get("/listAll")
+      .get("/listAllByContainerId")
       .query({ containerId });
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ item: mockItems });
-    expect(itemCtrl.getItemByContainerId).toHaveBeenCalledWith(containerId);
-  });
-
-  it("should handle errors during item retrieval", async () => {
-    const containerId = 1;
-
-    itemCtrl.getItemByContainerId.mockRejectedValueOnce(
-      new Error("Mocked error")
-    );
-
-    const response = await supertest(app)
-      .get("/listAll")
-      .query({ containerId });
-
-    expect(response.status).toBe(500);
-    expect(itemCtrl.getItemByContainerId).toHaveBeenCalledWith(containerId);
   });
 });

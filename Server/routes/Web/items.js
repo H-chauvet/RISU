@@ -77,9 +77,7 @@ router.get("/listAllByContainerId", async function (req, res, next) {
 
 router.get("/listAll", async function (req, res, next) {
   try {
-    const containerId = req.query.containerId;
     const item = await itemCtrl.getAllItem();
-    console.log(item);
 
     res.status(200).json({ item });
   } catch (err) {
