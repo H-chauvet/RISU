@@ -28,6 +28,7 @@ class ItemListInfo {
   final double? price;
   final String? image;
   final String? description;
+  final String? category;
 
   ItemListInfo({
     required this.id,
@@ -39,6 +40,7 @@ class ItemListInfo {
     required this.price,
     required this.image,
     required this.description,
+    required this.category,
   });
 
   factory ItemListInfo.fromJson(Map<String, dynamic> json) {
@@ -52,6 +54,7 @@ class ItemListInfo {
       price: json['price'],
       image: json['image'],
       description: json['description'],
+      category: json['category'],
     );
   }
   Map<String, dynamic> toMap() {
@@ -65,6 +68,7 @@ class ItemListInfo {
       'price': price,
       'image': image,
       'description': description,
+      'category': category,
     };
   }
 }
@@ -477,6 +481,25 @@ class _ItemPagesModificationtates extends State<ItemPagesModification> {
                                   )
                                 : Text(
                                     "prix de l'objet : pas de prix",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
+                            item.category != null
+                                ? Text(
+                                    "category de l'objet : ${item.category!}",
+                                    style: const TextStyle(
+                                      color: Color(0xff4682B4),
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  )
+                                : Text(
+                                    "category de l'objet : pas de category",
                                     style: const TextStyle(
                                       color: Color(0xff4682B4),
                                       fontSize: 15.0,
