@@ -26,9 +26,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: TextStyle(
-          fontSize: 40,
-          color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor
-        ),
+            fontSize: 40,
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.secondaryHeaderColor
+                : lightTheme.secondaryHeaderColor),
       ),
       centerTitle: true,
       leading: Container(),

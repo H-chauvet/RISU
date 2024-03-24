@@ -130,7 +130,9 @@ class RatingDialogContent extends StatelessWidget {
               ),
               child: Text('Soumettre',
                   style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                   )),
             ),
           ],

@@ -47,9 +47,11 @@ class ProgressBar extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
         child: Text(
-            previous,
+          previous,
           style: TextStyle(
-            color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.colorScheme.background,
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.colorScheme.background,
           ),
         ),
       ),
@@ -76,12 +78,12 @@ class ProgressBar extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
-        child: Text(
-            next,
-          style: TextStyle(
-            color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.colorScheme.background,
-          )
-        ),
+        child: Text(next,
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.colorScheme.background,
+            )),
       ),
     ]));
   }

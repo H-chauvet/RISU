@@ -98,7 +98,10 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                               borderRadius: BorderRadius.circular(16.0),
                             ),
                             elevation: 0,
-                            backgroundColor: Provider.of<ThemeService>(context).isDark ? darkTheme.colorScheme.background : lightTheme.colorScheme.background,
+                            backgroundColor:
+                                Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.colorScheme.background
+                                    : lightTheme.colorScheme.background,
                             child: Container(
                               width: 600.0,
                               height: 300.0,
@@ -126,7 +129,9 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                   child: Text(
                     'Poster un avis',
                     style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                     ),
                   ),
                 ),

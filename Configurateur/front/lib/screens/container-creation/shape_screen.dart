@@ -80,10 +80,11 @@ class ShapeScreenState extends State<ShapeScreen> {
             });
           },
           child: Text(
-              "Retirer un casier",
+            "Retirer un casier",
             style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.colorScheme.background
-            ),
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.colorScheme.background),
           ),
         ),
       );
@@ -327,8 +328,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
-                        color: Provider.of<ThemeService>(context).isDark ?
-                          darkTheme.colorScheme.background.withOpacity(0.8) : lightTheme.colorScheme.background.withOpacity(0.8),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.colorScheme.background.withOpacity(0.8)
+                            : lightTheme.colorScheme.background
+                                .withOpacity(0.8),
                       ),
                       child: Text(row.toString()),
                     ),
@@ -382,8 +385,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
-                        color: Provider.of<ThemeService>(context).isDark ?
-                          darkTheme.colorScheme.background.withOpacity(0.8) : lightTheme.colorScheme.background.withOpacity(0.8),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.colorScheme.background.withOpacity(0.8)
+                            : lightTheme.colorScheme.background
+                                .withOpacity(0.8),
                       ),
                       child: Text(column.toString()),
                     ),
@@ -434,8 +439,9 @@ class ShapeScreenState extends State<ShapeScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  color: Provider.of<ThemeService>(context).isDark ?
-                    darkTheme.colorScheme.background.withOpacity(0.8) : lightTheme.colorScheme.background.withOpacity(0.8),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.colorScheme.background.withOpacity(0.8)
+                      : lightTheme.colorScheme.background.withOpacity(0.8),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xff4682B4).withOpacity(0.5),

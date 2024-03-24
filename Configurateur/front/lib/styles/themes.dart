@@ -58,15 +58,13 @@ final lightTheme = ThemeData(
           MaterialStateProperty.all<Color>(const Color(0xff7C9885)),
     ),
   ),
-  colorScheme: const ColorScheme.light(
-    background: Color(0xFFFAFAFA)
-  ),
+  colorScheme: const ColorScheme.light(background: Color(0xFFFAFAFA)),
 );
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: const Color(0xff033F63),
-  secondaryHeaderColor : const Color(0xffFEDC97),
+  secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 32, 75, 110),
     titleTextStyle: TextStyle(
@@ -108,8 +106,8 @@ final darkTheme = ThemeData(
           color: Colors.black,
         ),
       ),
-      backgroundColor: MaterialStateProperty.all<Color>(
-          const Color(0xFFFEDC97)),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(const Color(0xFFFEDC97)),
     ),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
@@ -137,6 +135,6 @@ final progressBarUncheckedLightTheme = Colors.grey[300];
 final progressBarUncheckedDarkTheme = Colors.grey[600];
 
 const checkBoxMenuButtonColorLightTheme = Color(0xff7C9885);
-const checkBoxMenuButtonColorDarkTheme =  Color(0xFFFEDC97);
+const checkBoxMenuButtonColorDarkTheme = Color(0xFFFEDC97);
 
 const containerDialogTextColorDarkTheme = Color(0xFF033F63);

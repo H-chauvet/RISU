@@ -78,7 +78,9 @@ class LandingPageState extends State<LandingPage> {
           child: Text(
             profileButton,
             style: TextStyle(
-              color : Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
             ),
           ),
         ),
@@ -99,7 +101,9 @@ class LandingPageState extends State<LandingPage> {
             child: Text(
               adminButton,
               style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
               ),
             ),
           ),
@@ -118,7 +122,9 @@ class LandingPageState extends State<LandingPage> {
           child: Text(
             'Mes conteneurs',
             style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
             ),
           ),
         ),
@@ -141,7 +147,9 @@ class LandingPageState extends State<LandingPage> {
           child: Text(
             connectedButton,
             style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
             ),
           ),
         ),
@@ -162,7 +170,9 @@ class LandingPageState extends State<LandingPage> {
         child: Text(
           inscriptionButton,
           style: TextStyle(
-            color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.primaryColor,
           ),
         ),
       ),
@@ -210,7 +220,9 @@ class LandingPageState extends State<LandingPage> {
                 'Accueil',
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
                 // backgroundColor:
               ),
@@ -234,7 +246,9 @@ class LandingPageState extends State<LandingPage> {
                 'En savoir plus...',
                 style: TextStyle(
                   decoration: TextDecoration.underline,
-                  color : Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
               ),
             ),
@@ -244,8 +258,10 @@ class LandingPageState extends State<LandingPage> {
                 Text(
                   "Mode sombre",
                   style: TextStyle(
-                      fontSize: 14,
-                      color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                    fontSize: 14,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
                   ),
                 ),
                 const SizedBox(width: 5),
@@ -323,7 +339,9 @@ class LandingPageState extends State<LandingPage> {
                         child: Text(
                           'En savoir plus',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                           ),
                         ),
                       ),
@@ -344,7 +362,9 @@ class LandingPageState extends State<LandingPage> {
                         child: Text(
                           'Créer mon conteneur',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                           ),
                         ),
                       ),

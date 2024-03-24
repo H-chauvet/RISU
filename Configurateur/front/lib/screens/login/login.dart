@@ -165,8 +165,10 @@ class LoginScreenState extends State<LoginScreen> {
                           child: Text(
                             "Se connecter",
                             style: TextStyle(
-                                fontSize: 18,
-                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                              fontSize: 18,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),

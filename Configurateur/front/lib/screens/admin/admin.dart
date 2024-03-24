@@ -59,7 +59,9 @@ class _AdminPageState extends State<AdminPage> {
                           child: Text(
                             'Gestion des messages',
                             style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -99,7 +101,9 @@ class _AdminPageState extends State<AdminPage> {
                           child: Text(
                             'Gestion des utilisateurs',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -139,7 +143,9 @@ class _AdminPageState extends State<AdminPage> {
                           child: Text(
                             'Gestion des conteneurs',
                             style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),

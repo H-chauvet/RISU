@@ -135,24 +135,34 @@ class _UserPageState extends State<UserPage> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                backgroundColor: Provider.of<ThemeService>(context).isDark ? darkTheme.colorScheme.background : lightTheme.colorScheme.background,
+                backgroundColor: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.colorScheme.background
+                    : lightTheme.colorScheme.background,
                 floating: true,
                 bottom: TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         'Utilisateurs Web',
-                        style: TextStyle(color : Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor),
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                     Tab(
                       child: Text(
                         'Utilisateurs Mobile',
-                        style: TextStyle(color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor),
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                   ],
-                  indicatorColor: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                  indicatorColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
                 pinned: true,
               ),

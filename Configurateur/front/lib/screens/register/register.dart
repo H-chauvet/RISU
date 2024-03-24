@@ -230,7 +230,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                           child: Text(
                             "S'inscrire",
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),

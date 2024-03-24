@@ -177,7 +177,9 @@ class _ContactPageState extends State<ContactPage> {
                 child: Text(
                   'Envoyer',
                   style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                   ),
                 ),
               ),

@@ -40,9 +40,9 @@ class GoogleLogo extends StatelessWidget {
               Container(
                   color: Theme.of(context).buttonTheme.colorScheme!.primary,
                   child: Image.asset(
-                'assets/google-logo.png',
-                height: 20,
-              )),
+                    'assets/google-logo.png',
+                    height: 20,
+                  )),
               const SizedBox(
                 width: 5.0,
               ),

@@ -22,7 +22,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
               'Accueil',
               style: TextStyle(
                 fontSize: 16,
-                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -35,7 +37,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
               'Politique de confidentialité',
               style: TextStyle(
                 fontSize: 16,
-                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -48,7 +52,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
               'Contact',
               style: TextStyle(
                 fontSize: 16,
-                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -65,7 +71,9 @@ class CustomBottomNavigationBar extends StatelessWidget {
               'Avis',
               style: TextStyle(
                 fontSize: 16,
-                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),

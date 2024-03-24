@@ -106,8 +106,10 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                         child: Text(
                           "Renvoyer le mail de confirmation",
                           style: TextStyle(
-                              fontSize: 18,
-                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            fontSize: 18,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                           ),
                         ),
                       ),

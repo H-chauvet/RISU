@@ -74,7 +74,9 @@ class CompanyPageState extends State<CompanyPage> {
             ),
             Text("Notre équipe :",
                 style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   decorationThickness: 2.0,
@@ -121,7 +123,9 @@ class CompanyPageState extends State<CompanyPage> {
             ),
             Text("Nos Conteneurs :",
                 style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   decorationThickness: 2.0,

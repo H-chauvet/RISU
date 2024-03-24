@@ -80,8 +80,9 @@ class ContainerCard extends StatelessWidget {
           margin: EdgeInsets.only(left: 7, right: 7),
           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
           decoration: BoxDecoration(
-            color: Provider.of<ThemeService>(context).isDark ?
-              darkTheme.colorScheme.background.withOpacity(0.8) : lightTheme.colorScheme.background.withOpacity(0.8),
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.colorScheme.background.withOpacity(0.8)
+                : lightTheme.colorScheme.background.withOpacity(0.8),
             borderRadius: BorderRadius.circular(30.0),
             boxShadow: [
               BoxShadow(
@@ -99,7 +100,8 @@ class ContainerCard extends StatelessWidget {
                 title: Container(
                   child: Row(
                     children: [
-                      Text("Ville : ${container.city != null ? container.city! : "inconnue"}",
+                      Text(
+                        "Ville : ${container.city != null ? container.city! : "inconnue"}",
                       ),
                     ],
                   ),
