@@ -10,7 +10,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -131,25 +134,25 @@ class _UserPageState extends State<UserPage> {
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              const SliverAppBar(
-                backgroundColor: Colors.white,
+              SliverAppBar(
+                backgroundColor: Provider.of<ThemeService>(context).isDark ? darkTheme.colorScheme.background : lightTheme.colorScheme.background,
                 floating: true,
                 bottom: TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         'Utilisateurs Web',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color : Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                     Tab(
                       child: Text(
                         'Utilisateurs Mobile',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                   ],
-                  indicatorColor: Colors.blue,
+                  indicatorColor: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
                 ),
                 pinned: true,
               ),

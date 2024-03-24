@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/components/footer.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/footer.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/screens/company/container-company.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:front/network/informations.dart';
+
 // import 'package:front/screens/company-company.dart';
 
 class CompanyPage extends StatefulWidget {
@@ -67,12 +72,11 @@ class CompanyPageState extends State<CompanyPage> {
             SizedBox(
               height: 15,
             ),
-            const Text("Notre équipe :",
+            Text("Notre équipe :",
                 style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
+                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
                   decorationThickness: 2.0,
                   decorationStyle: TextDecorationStyle.solid,
                 )),
@@ -115,12 +119,11 @@ class CompanyPageState extends State<CompanyPage> {
             SizedBox(
               height: 80,
             ),
-            const Text("Nos Conteneurs :",
+            Text("Nos Conteneurs :",
                 style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
+                  color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
                   decorationThickness: 2.0,
                   decorationStyle: TextDecorationStyle.solid,
                 )),

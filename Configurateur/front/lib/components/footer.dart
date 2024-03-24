@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front/main.dart';
-import 'package:go_router/go_router.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:path/path.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
@@ -17,11 +18,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             onPressed: () {
               context.go("/");
             },
-            child: const Text(
+            child: Text(
               'Accueil',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -30,11 +31,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             onPressed: () {
               context.go("/confidentiality");
             },
-            child: const Text(
+            child: Text(
               'Politique de confidentialité',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -43,11 +44,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
             onPressed: () {
               context.go("/contact");
             },
-            child: const Text(
+            child: Text(
               'Contact',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),
@@ -60,11 +61,11 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 context.go("/feedbacks");
               }
             },
-            child: const Text(
+            child: Text(
               'Avis',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor,
               ),
             ),
           ),

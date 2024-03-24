@@ -1,9 +1,14 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -41,8 +46,6 @@ class _AdminPageState extends State<AdminPage> {
                         ElevatedButton(
                           key: const Key('btn-messages'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 15),
                             shape: RoundedRectangleBorder(
@@ -53,9 +56,11 @@ class _AdminPageState extends State<AdminPage> {
                           onPressed: () {
                             context.go("/admin/messages");
                           },
-                          child: const Text(
+                          child: Text(
                             'Gestion des messages',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 30),
@@ -81,8 +86,6 @@ class _AdminPageState extends State<AdminPage> {
                         ElevatedButton(
                           key: const Key('btn-user'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 15),
                             shape: RoundedRectangleBorder(
@@ -93,9 +96,11 @@ class _AdminPageState extends State<AdminPage> {
                           onPressed: () {
                             context.go("/userList");
                           },
-                          child: const Text(
+                          child: Text(
                             'Gestion des utilisateurs',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 30),
@@ -121,8 +126,6 @@ class _AdminPageState extends State<AdminPage> {
                         ElevatedButton(
                           key: const Key('btn-article'),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 15),
                             shape: RoundedRectangleBorder(
@@ -133,9 +136,11 @@ class _AdminPageState extends State<AdminPage> {
                           onPressed: () {
                             context.go("/containerList");
                           },
-                          child: const Text(
+                          child: Text(
                             'Gestion des conteneurs',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            ),
                           ),
                         ),
                         const SizedBox(height: 30),

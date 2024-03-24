@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 ///
 /// Custom rounded AppBar
@@ -22,7 +25,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: const TextStyle(fontSize: 40),
+        style: TextStyle(
+          fontSize: 40,
+          color: Provider.of<ThemeService>(context).isDark ? darkTheme.secondaryHeaderColor : lightTheme.secondaryHeaderColor
+        ),
       ),
       centerTitle: true,
       leading: Container(),

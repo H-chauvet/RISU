@@ -1,13 +1,17 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
-import 'package:front/components/custom_app_bar.dart';
-// import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_app_bar.dart';;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
+import 'package:provider/provider.dart';
 
 class MyContainerList {
   final int? id;
@@ -76,7 +80,8 @@ class ContainerCard extends StatelessWidget {
           margin: EdgeInsets.only(left: 7, right: 7),
           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Provider.of<ThemeService>(context).isDark ?
+              darkTheme.colorScheme.background.withOpacity(0.8) : lightTheme.colorScheme.background.withOpacity(0.8),
             borderRadius: BorderRadius.circular(30.0),
             boxShadow: [
               BoxShadow(
@@ -94,10 +99,8 @@ class ContainerCard extends StatelessWidget {
                 title: Container(
                   child: Row(
                     children: [
-                      Text("Ville : "),
-                      container.city != null
-                          ? Text(container.city!)
-                          : Text("inconnue"),
+                      Text("Ville : ${container.city != null ? container.city! : "inconnue"}",
+                      ),
                     ],
                   ),
                 ),

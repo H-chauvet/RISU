@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,7 +38,7 @@ class GoogleLogo extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                  // decoration: BoxDecoration(color: Colors.blue),
+                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
                   child: Image.asset(
                 'assets/google-logo.png',
                 height: 20,
@@ -49,8 +50,8 @@ class GoogleLogo extends StatelessWidget {
                 'Google',
                 style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
-                        ? Colors.black
-                        : Colors.white),
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor),
               )
             ],
           ),

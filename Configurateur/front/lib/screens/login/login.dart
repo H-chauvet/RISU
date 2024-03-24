@@ -4,11 +4,14 @@ import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -88,11 +91,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/password-recuperation");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: const <Widget>[
+                              children: <Widget>[
                                 Text(
                                   'Mot de passe oublié ?',
                                   style: TextStyle(color: Colors.blue),
@@ -159,9 +162,12 @@ class LoginScreenState extends State<LoginScreen> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             "Se connecter",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: 18,
+                              color: Provider.of<ThemeService>(context).isDark ? darkTheme.primaryColor : lightTheme.primaryColor,
+                            ),
                           ),
                         ),
                       ),
