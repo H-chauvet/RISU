@@ -1,5 +1,3 @@
-import 'dart:js_interop';
-
 import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';

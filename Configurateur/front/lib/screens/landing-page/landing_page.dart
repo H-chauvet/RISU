@@ -292,13 +292,15 @@ class LandingPageState extends State<LandingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
                     style: TextStyle(
                       fontSize: 40,
-                      color: Color(0xFF28666E),
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.secondaryHeaderColor
+                          : const Color(0xFF28666E),
                       fontWeight: FontWeight.bold,
-                      shadows: [
+                      shadows: const [
                         Shadow(
                           color: Color.fromARGB(76, 0, 0, 0),
                           offset: Offset(2, 2),
@@ -307,14 +309,16 @@ class LandingPageState extends State<LandingPage> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                         top: 15), // Espacement inférieur pour le texte
                     child: Text(
                       'Des conteneurs disponibles partout en france !',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Color(0xFF28666E),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : const Color(0xFF28666E),
                       ),
                     ),
                   ),
