@@ -53,8 +53,14 @@ void main() {
 
   testWidgets('UserCard displays message details', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
-    await tester.pumpWidget(
-      MaterialApp(
+
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
         home: UserCard(
           user: User(
             id: 1,
@@ -66,7 +72,8 @@ void main() {
           onDelete: deleteUserWeb,
         ),
       ),
-    );
+    ));
+
     expect(find.text('Prénom : John'), findsOneWidget);
     expect(find.text('Nom : Doe'), findsOneWidget);
     expect(find.text(' Entreprise : company'), findsOneWidget);
@@ -78,8 +85,13 @@ void main() {
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MaterialApp(
-      home: UserPage(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(home: UserPage()),
     ));
 
     // Verify that the ContainerPage is rendered.
