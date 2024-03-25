@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -19,9 +21,15 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(const MaterialApp(
-      home: RecapConfigPage(),
-    ));
+    await tester.pumpWidget(MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: const MaterialApp(
+          home: RecapConfigPage(),
+        )));
 
     expect(find.text('Récapitulatif de commande'), findsOneWidget);
     expect(find.text('Nom du produit:'), findsOneWidget);

@@ -7,7 +7,10 @@ import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
@@ -119,15 +122,18 @@ class RatingDialogContent extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text('Soumettre',
-                  style: TextStyle(color: Colors.black)),
+              child: Text('Soumettre',
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  )),
             ),
           ],
         );
