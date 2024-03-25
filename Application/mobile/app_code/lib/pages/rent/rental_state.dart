@@ -38,7 +38,7 @@ class RentalPageState extends State<RentalPage> {
       });
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rents/'),
+        Uri.parse('$baseUrl/api/mobile/rent/listAll'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -295,8 +295,9 @@ class RentalPageState extends State<RentalPage> {
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
                                             "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
-                                        Text(
-                                            "${AppLocalizations.of(context)!.rentTimeOfRenting(rental['duration'])}"),
+                                        Text(AppLocalizations.of(context)!
+                                            .rentTimeOfRenting(
+                                                rental['duration'])),
                                         Text(
                                             "${AppLocalizations.of(context)!.status}: ${isRentalInProgress(rental) ? AppLocalizations.of(context)!.inProgress : AppLocalizations.of(context)!.endedE}"),
                                         if (isRentalInProgress(rental))

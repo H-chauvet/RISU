@@ -5,8 +5,8 @@ import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 class ArticleData {
-  final String id;
-  final String containerId;
+  final int id;
+  final int containerId;
   final String name;
   final bool available;
   final int price;

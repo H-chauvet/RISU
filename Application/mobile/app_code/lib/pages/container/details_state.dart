@@ -15,21 +15,21 @@ import 'package:risu/utils/providers/theme.dart';
 import 'details_page.dart';
 
 class ContainerDetailsState extends State<ContainerDetailsPage> {
-  String _containerId = '';
+  int _containerId = -1;
   String _address = '';
   String _city = '';
   int _availableItems = 0;
   final LoaderManager _loaderManager = LoaderManager();
 
   Future<dynamic> getContainerData(
-      BuildContext context, String containerId) async {
+      BuildContext context, int containerId) async {
     late http.Response response;
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/container/$containerId'),
+        Uri.parse('$baseUrl/api/mobile/container/$containerId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -49,7 +49,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         return {
           'address': '',
           'city': '',
-          '_count': {'available': 0}
+          'count': {'available': 0}
         };
       }
     } catch (err, stacktrace) {
@@ -62,7 +62,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         return {
           'address': '',
           'city': '',
-          '_count': {'available': 0}
+          'count': {'available': 0}
         };
       }
       return {
@@ -81,12 +81,12 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
       setState(() {
         _address = value['address'].toString();
         _city = value['city'].toString();
-        _availableItems = value['_count']['available'];
+        _availableItems = value['count']['available'];
       });
     });
   }
 
-  String getContainerId() {
+  int getContainerId() {
     return _containerId;
   }
 

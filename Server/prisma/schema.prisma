@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider      = "prisma-client-js"
+    binaryTargets = ["native"]
+}
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+/////////////////////////////////////////////
+///////////////////COMMON////////////////////
+/////////////////////////////////////////////
+
+model Containers {
+    id               Int           @id @default(autoincrement())
+    createdAt        DateTime      @default(now())
+    organization     Organization? @relation(fields: [organizationId], references: [id])
+    organizationId   Int?
+    containerMapping String?
+    address          String?
+    city             String?
+    price            Float?
+    width            Float?
+    height           Float?
+    designs          String?       @db.LongText
+    informations     String?       @db.LongText
+    items            Item[]
+    paid             Boolean       @default(false)
+    saveName         String?
+}
+
+model Item {
+    id              Int               @id @default(autoincrement())
+    name            String
+    available       Boolean
+    container       Containers?       @relation(fields: [containerId], references: [id])
+    createdAt       DateTime          @default(now())
+    containerId     Int?
+    price           Float
+    image           String?
+    description     String?
+    Location_Mobile Location_Mobile[]
+    Opinions        Opinions_Mobile[]
+}
+
+model Organization {
+    id                 Int          @id @default(autoincrement())
+    name               String
+    type               String
+    affiliate          User_Web[]
+    containers         Containers[]
+    contactInformation String
+}
+
+/////////////////////////////////////////////
+/////////////////////WEB/////////////////////
+/////////////////////////////////////////////
+
+model User_Web {
+    id             Int           @id @default(autoincrement())
+    uuid           String?       @unique
+    firstName      String?       @default("")
+    lastName       String?       @default("")
+    company        String?       @default("")
+    email          String        @unique
+    token          String?       @unique
+    password       String
+    organization   Organization? @relation(fields: [organizationId], references: [id])
+    organizationId Int?
+    confirmed      Boolean       @default(false)
+    createdAt      DateTime      @default(now())
+}
+
+model Feedbacks_Web {
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    email     String
+    message   String
+    mark      String
+    createdAt DateTime @default(now())
+}
+
+model Contact_Web {
+    id        Int      @id @default(autoincrement())
+    firstName String
+    lastName  String
+    email     String
+    message   String
+    createdAt DateTime @default(now())
+}
+
+/////////////////////////////////////////////
+//////////////////MOBILE/////////////////////
+/////////////////////////////////////////////
+
+model Contact_Mobile {
+    id        String   @id @unique @default(cuid())
+    name      String
+    email     String
+    message   String
+    createdAt DateTime @default(now())
+}
+
+model Opinions_Mobile {
+    id      String      @id @unique @default(cuid())
+    userId  String
+    date    DateTime
+    note    String
+    comment String      @default("")
+    itemId  Int
+    item    Item        @relation(fields: [itemId], references: [id])
+    user    User_Mobile @relation(fields: [userId], references: [id])
+}
+
+model User_Mobile {
+    id               String                @id @unique @default(cuid())
+    email            String                @unique
+    firstName        String?
+    lastName         String?
+    password         String
+    mailVerification Boolean               @default(false)
+    confirmProcess   String                @default("")
+    createdAt        DateTime              @default(now())
+    Locations        Location_Mobile[]
+    Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
+    notificationsId  String?
+    itemOpinions     Opinions_Mobile[]
+}
+
+model Notifications_Mobile {
+    id                     String        @id @unique @default(cuid())
+    Users                  User_Mobile[]
+    favoriteItemsAvailable Boolean
+    endOfRenting           Boolean
+    newsOffersRisu         Boolean
+}
+
+model Location_Mobile {
+    id        Int         @id @default(autoincrement())
+    uuid      String      @unique @default(cuid())
+    price     Int
+    item      Item        @relation(fields: [itemId], references: [id])
+    itemId    Int
+    user      User_Mobile @relation(fields: [userId], references: [id])
+    userId    String
+    createdAt DateTime    @default(now())
+    duration  Int
+    ended     Boolean     @default(false)
+    invoice   Bytes?
+}

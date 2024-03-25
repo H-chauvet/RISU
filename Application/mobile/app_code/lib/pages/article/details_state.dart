@@ -13,15 +13,21 @@ import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'details_page.dart';
 
 class ArticleDetailsState extends State<ArticleDetailsPage> {
   ArticleData articleData = ArticleData(
-      id: '', containerId: '', name: '', available: false, price: 0);
+    id: -1,
+    containerId: -1,
+    name: '',
+    available: false,
+    price: 0,
+  );
   final LoaderManager _loaderManager = LoaderManager();
 
-  Future<dynamic> getArticleData(BuildContext context, String articleId) async {
+  Future<dynamic> getArticleData(BuildContext context, int articleId) async {
     late http.Response response;
 
     try {
@@ -29,7 +35,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/article/$articleId'),
+        Uri.parse('$baseUrl/api/mobile/article/$articleId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -42,14 +48,18 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         return responseData;
       } else {
         if (context.mounted) {
-          printServerResponse(context, response, 'getArticleData',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
+          printServerResponse(
+            context,
+            response,
+            'getArticleData',
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingData,
+          );
         }
       }
       return {
-        'id': '',
-        'containerId': '',
+        'id': -1,
+        'containerId': -1,
         'name': '',
         'available': false,
         'price': 0,
@@ -59,11 +69,15 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
-        printCatchError(context, err, stacktrace,
-            message: AppLocalizations.of(context)!.connectionRefused);
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
         return {
-          'id': '',
-          'containerId': '',
+          'id': -1,
+          'containerId': -1,
           'name': '',
           'available': false,
           'price': 0,
@@ -137,11 +151,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         width: 300,
                         height: 200,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage('assets/volley.png'),
-                              fit: BoxFit.cover,
-                            )),
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/volley.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Card(
@@ -292,7 +307,26 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               );
                             },
                           ),
-                        )
+                        ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        child: MyOutlinedButton(
+                          text: AppLocalizations.of(context)!
+                              .consultArticleOpinions,
+                          key: const Key('article-button_article-opinion'),
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpinionPage(
+                                  itemId: articleData.id,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
                     ],
                   ),
                 ),

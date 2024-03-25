@@ -1,0 +1,41 @@
+name: Code quality check
+
+on: push
+
+jobs:
+  Prettier-FRONT-WEB:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Check code quality
+        working-directory: ./Configurateur/front/
+        run: |
+          flutter pub get
+          dart format --output=none --set-exit-if-changed ./lib/**/*
+  Prettier-BACK:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Check code quality
+        working-directory: ./Server
+        run: |
+          npm install prettier
+          npm run prettier-check
+
+  Prettier-FRONT-MOBILE:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Check code quality
+        working-directory: ./Application/mobile/app_code
+        run: |
+          flutter pub get
+          dart format --output=none --set-exit-if-changed ./lib/**/

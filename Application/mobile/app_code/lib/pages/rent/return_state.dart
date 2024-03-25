@@ -17,21 +17,65 @@ import 'return_page.dart';
 class ReturnArticleState extends State<ReturnArticlePage> {
   final LoaderManager _loaderManager = LoaderManager();
   dynamic rent = {
-    'id': '',
+    'id': -1,
     'price': '',
     'createdAt': '',
-    'duration': '',
+    'duration': 0,
     'userId': '',
     'ended': '',
     'item': {
       'id': '',
       'name': '',
       'container': {
-        'id': '',
+        'id': -1,
         'address': '',
       },
     },
   };
+
+  void sendInvoice() async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final response = await http.post(
+        Uri.parse(
+            'http://$serverIp:3000/api/mobile/rent/${widget.rentId}/invoice'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: AppLocalizations.of(context)!.invoiceSent,
+            message: AppLocalizations.of(context)!.invoiceSentMessage,
+          );
+        }
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'sendInvoice',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringSendingInvoice);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
+        return;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -46,7 +90,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.get(
-        Uri.parse('http://$serverIp:8080/api/rent/${widget.rentId}'),
+        Uri.parse('$baseUrl/api/mobile/rent/${widget.rentId}'),
         headers: <String, String>{
           'Authorization': 'Bearer $token',
         },
@@ -86,7 +130,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.post(
-        Uri.parse('http://$serverIp:8080/api/rent/${rent['id']}/return'),
+        Uri.parse('$baseUrl/api/mobile/rent/${rent['id']}/return'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -296,6 +340,17 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                             ),
                           ],
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MyOutlinedButton(
+                        text: AppLocalizations.of(context)!.receiveInvoice,
+                        key: const Key('return_rent-button-receive_invoice'),
+                        onPressed: () async {
+                          sendInvoice();
+                        },
                       ),
                     ),
                     const SizedBox(height: 8),

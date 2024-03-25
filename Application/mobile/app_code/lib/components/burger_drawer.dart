@@ -55,12 +55,6 @@ class BurgerDrawer extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             MyRedirectDivider(
-              goToPage: const OpinionPage(),
-              title: AppLocalizations.of(context)!.reviews,
-              paramIcon: const Icon(Icons.star),
-            ),
-            const SizedBox(height: 8),
-            MyRedirectDivider(
               goToPage: const SettingsPage(),
               title: AppLocalizations.of(context)!.settings,
               paramIcon: const Icon(Icons.settings),
@@ -68,7 +62,7 @@ class BurgerDrawer extends StatelessWidget {
             const Spacer(),
             if (userInformation != null)
               MyRedirectDivider(
-                key: Key('burgerdrawer-logout'),
+                key: const Key('burgerdrawer-logout'),
                 goToPage: const LoginPage(),
                 title: AppLocalizations.of(context)!.logOut,
                 paramIcon: const Icon(Icons.logout),

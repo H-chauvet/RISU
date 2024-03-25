@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'details_state.dart';
 
 class ContainerDetailsPage extends StatefulWidget {
-  final String containerId;
+  final int containerId;
 
   const ContainerDetailsPage({
     super.key,

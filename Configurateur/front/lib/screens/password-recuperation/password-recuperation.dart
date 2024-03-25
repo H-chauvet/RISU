@@ -165,7 +165,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                                 );
                               } else {
                                 Fluttertoast.showToast(
-                                  msg: 'Echec de la récupération du mot de message',
+                                  msg:
+                                      'Echec de la récupération du mot de message',
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.CENTER,
                                 );

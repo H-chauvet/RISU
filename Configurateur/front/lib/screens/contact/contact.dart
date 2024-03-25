@@ -14,7 +14,10 @@ class ContactPage extends StatefulWidget {
 
 void sendFormData(
   GlobalKey<FormState> formKey,
-  String surname, String name, String email, String message,
+  String surname,
+  String name,
+  String email,
+  String message,
 ) async {
   var body = {
     'firstName': surname,
@@ -31,12 +34,12 @@ void sendFormData(
   if (response.statusCode == 200) {
     print('Code 200, données envoyées.');
     Fluttertoast.showToast(
-        msg: 'Message envoyé avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
-      formKey.currentState!.reset();
+      msg: 'Message envoyé avec succès',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 3,
+    );
+    formKey.currentState!.reset();
   } else {
     print('Erreur lors de l\'envoi des données : ${response.statusCode}');
     Fluttertoast.showToast(
@@ -44,8 +47,7 @@ void sendFormData(
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red
-      );
+        backgroundColor: Colors.red);
   }
 }
 
@@ -161,7 +163,6 @@ class _ContactPageState extends State<ContactPage> {
                     _formKey.currentState!.save();
                     sendFormData(_formKey, _surname, _name, _email, _message);
                   } else {}
-
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 190, 189, 189),

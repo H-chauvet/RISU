@@ -6,24 +6,24 @@ The documentation is mandatory for every function corresponding to the code rule
 
 ## Branch Rules
 
-The branch name must have a keyword before
-  - feature -> `For a new feature / functionnality`
-  - fix -> `For a bug resolution`
-  - refacto -> `For a refactorization of code`
-  - test -> `For tests of code (Unit tests, functional tests etc..)`
-  - docs -> `For documentation of code`
+The branch name must be generated from the issue created
+  - Issue is "Update GitHub Repository ? Branch name will be : `issue-id(Automatic ID)/update-github-repository`
+
+If the issue is correctly named, the branch name will be automatically correct.
 
 The branch name should consider the issue title and the issue number in its name. The issue's number must come first, after the keyword.
 Every single word must be in lowercase.
 
 Example:
 
-    git checkout -b feature/2
+    git checkout -b 2/update-github-repository
 Where :
 
-`2` is the id of the User-Story on Taiga
+`2` is the id of the Issue
 
 You must make one branch per User-Story, not per task linked to User-Story.
+
+You must add all the "tasks" (DoDs) to the description of the issue, using "Task List" option.
 
 Try to push as regularly as possible so everyone can see where you are at. When first committing to a branch, it is recommended to open a PR draft, so it will be easier for your mates to see where you are at.
 

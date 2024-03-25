@@ -3,7 +3,10 @@ import 'package:risu/utils/user_data.dart';
 
 // Variable globale pour stocker l'adresse IP du serveur
 
-String? serverIp = kReleaseMode ? '51.103.94.191' : '10.0.2.2';
+String protocol = kDebugMode ? 'http://' : 'http://';
+String serverIp = kDebugMode ? '10.0.2.2' : 'risu.dns-dynamic.net';
+String port = ':3000';
+String baseUrl = protocol + serverIp + port;
 
 /// Global variable referencing the user network data
 UserData? userInformation;

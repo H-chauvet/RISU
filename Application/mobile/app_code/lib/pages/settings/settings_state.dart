@@ -35,7 +35,7 @@ class SettingsPageState extends State<SettingsPage> {
       final token = userInformation!.token;
       final userId = userInformation!.ID;
       final response = await http.delete(
-        Uri.parse('http://$serverIp:8080/api/user/$userId'),
+        Uri.parse('$baseUrl/api/mobile/user/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -156,12 +156,6 @@ class SettingsPageState extends State<SettingsPage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    MyParameter(
-                      goToPage: const OpinionPage(),
-                      title: AppLocalizations.of(context)!.reviews,
-                      paramIcon: const Icon(Icons.star),
                     ),
                     const SizedBox(height: 8),
                     MyParameter(

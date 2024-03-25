@@ -59,47 +59,50 @@ class ContainerList {
 
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
-   final Function(ContainerList) onDelete;
+  final Function(ContainerList) onDelete;
 
-  const ContainerCard({super.key, required this.container, required this.onDelete});
+  const ContainerCard(
+      {super.key, required this.container, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ItemPage(containerId: container.id),
-            ),
-          );
-        },
-        child: Card(
-          child: ListTile(
-            title: Card(
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Text("id du conteneur : " + container.id.toString()),
-                    subtitle: Text("prix du conteneur : " + container.price.toString()),
-                    leading: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () => onDelete(container),
-                        ),
-                      SizedBox(width: 10,),
-                      if (container.city != null)
-                        Text(container.city!),
-                      ],
-                    ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ItemPage(containerId: container.id),
+          ),
+        );
+      },
+      child: Card(
+        child: ListTile(
+          title: Card(
+            child: Column(
+              children: [
+                ListTile(
+                  title: Text("id du conteneur : " + container.id.toString()),
+                  subtitle:
+                      Text("prix du conteneur : " + container.price.toString()),
+                  leading: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => onDelete(container),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      if (container.city != null) Text(container.city!),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 }
