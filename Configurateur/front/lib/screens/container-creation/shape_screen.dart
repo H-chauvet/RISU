@@ -245,9 +245,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             rowToUp = (i - row) + (i + 1);
             mid = true;
           }
-          debugPrint('mid: $mid');
           int index = mid == true ? i - rowToUp : i + rowToUp;
-          debugPrint('index: $index');
           containerListTmp[index][j] = '2';
         }
       }

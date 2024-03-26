@@ -98,7 +98,6 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (widget.containerMapping != null) {
       dynamic decoded = jsonDecode(widget.containerMapping!);
-      debugPrint(decoded.toString());
       for (int i = 0; i < decoded.length; i++) {
         for (int j = 0; j < decoded[i].length; j++) {
           if (decoded[i][j].toString() == '2') {
