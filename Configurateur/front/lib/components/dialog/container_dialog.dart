@@ -9,10 +9,16 @@ const List<String> directionList = <String>['Haut', 'Bas'];
 
 class ContainerDialog extends StatefulWidget {
   const ContainerDialog(
-      {super.key, required this.callback, required this.size});
+      {super.key,
+      required this.callback,
+      required this.size,
+      required this.width,
+      required this.height});
 
   final Function(LockerCoordinates, bool) callback;
   final int size;
+  final int width;
+  final int height;
 
   @override
   State<ContainerDialog> createState() => ContainerDialogState();
@@ -178,7 +184,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                         if (int.parse(value) <= 0) {
                           return 'Position invalide';
                         }
-                        if (int.parse(value) > 12) {
+                        if (int.parse(value) > widget.width) {
                           return 'Position invalide';
                         }
                       }
@@ -208,7 +214,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                           return 'Position invalide';
                         }
                         if (direction == 'Haut' &&
-                            int.parse(value) + widget.size > 6) {
+                            int.parse(value) + widget.size >= widget.height) {
                           return 'Position invalide';
                         }
                         if (direction == 'Bas' &&
