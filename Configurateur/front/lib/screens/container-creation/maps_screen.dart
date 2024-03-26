@@ -27,6 +27,7 @@ class MapsState extends State<MapsScreen> {
       body: Center(
         child: GoogleMap(
           initialCameraPosition: _kGooglePlex,
+          mapType: MapType.normal,
           onTap: (LatLng latLng) {
             debugPrint(latLng.toString());
           },
