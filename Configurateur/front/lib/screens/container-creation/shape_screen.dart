@@ -229,9 +229,14 @@ class ShapeScreenState extends State<ShapeScreen> {
       }
     }
 
+    List<List<String>> containerListTmp = List.generate(row, (index) => []);
+    for (int i = 0; i < containerList.length; i++) {
+      containerListTmp[i] = List.generate(column, (index) => '0');
+    }
     for (int i = 0; i < containerList.length; i++) {
       for (int j = 0; j < containerList[i].length; j++) {
         if (containerList[i][j] == '1') {
+          debugPrint('i: $i, j: $j');
           int rowToUp = 0;
           bool mid = false;
           if (i < row / 2) {
@@ -240,18 +245,16 @@ class ShapeScreenState extends State<ShapeScreen> {
             rowToUp = (i - row) + (i + 1);
             mid = true;
           }
+          debugPrint('mid: $mid');
           int index = mid == true ? i - rowToUp : i + rowToUp;
-          String tmp = containerList[index][j];
-          containerList[index][j] = '2';
-          if (index != i) {
-            containerList[i][j] = tmp;
-          }
+          debugPrint('index: $index');
+          containerListTmp[index][j] = '2';
         }
       }
     }
     context.go('/container-creation',
         extra: jsonEncode({
-          'containerMapping': jsonEncode(containerList),
+          'containerMapping': jsonEncode(containerListTmp),
           'height': row,
           'width': column
         }));
