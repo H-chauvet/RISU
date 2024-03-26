@@ -236,7 +236,6 @@ class ShapeScreenState extends State<ShapeScreen> {
     for (int i = 0; i < containerList.length; i++) {
       for (int j = 0; j < containerList[i].length; j++) {
         if (containerList[i][j] == '1') {
-          debugPrint('i: $i, j: $j');
           int rowToUp = 0;
           bool mid = false;
           if (i < row / 2) {
