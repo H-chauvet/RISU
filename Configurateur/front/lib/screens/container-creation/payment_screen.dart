@@ -137,8 +137,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 3,
+              length: 5,
+              progress: 4,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,

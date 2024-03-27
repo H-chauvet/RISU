@@ -46,6 +46,7 @@ model Item {
     image           String?
     description     String?
     Location_Mobile Location_Mobile[]
+    Opinions        Opinions_Mobile[]
 }
 
 model Organization {
@@ -108,11 +109,14 @@ model Contact_Mobile {
 }
 
 model Opinions_Mobile {
-    id      String   @id @unique @default(cuid())
+    id      String      @id @unique @default(cuid())
     userId  String
     date    DateTime
     note    String
-    comment String   @default("")
+    comment String      @default("")
+    itemId  Int
+    item    Item        @relation(fields: [itemId], references: [id])
+    user    User_Mobile @relation(fields: [userId], references: [id])
 }
 
 model User_Mobile {
@@ -127,6 +131,7 @@ model User_Mobile {
     Locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
+    itemOpinions     Opinions_Mobile[]
 }
 
 model Notifications_Mobile {

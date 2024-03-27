@@ -11,7 +11,6 @@ let transporter = nodemailer.createTransport({
 });
 
 /**
- *
  * Send email
  *
  * @param {*} mail mail object

@@ -7,9 +7,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/app_routes.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -34,8 +38,19 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(
-        createWidgetForTesting(child: const PasswordChange(params: 'uuid')));
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const PasswordChange(params: 'uuid'),
+        ),
+      ),
+    ));
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 

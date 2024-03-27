@@ -1,6 +1,12 @@
 const fs = require("fs");
 const PDFDocument = require("pdfkit");
 
+/**
+ * Create an Invoice in pdf format for a rent
+ *
+ * @param {*} invoice the invoice data
+ * @returns Promise to wait the invoice creation
+ */
 async function createInvoice(invoice) {
   return new Promise((resolve, reject) => {
     let doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -24,6 +30,11 @@ async function createInvoice(invoice) {
   });
 }
 
+/**
+ * Generate invoice Header
+ *
+ * @param {*} doc the invoice file
+ */
 function generateHeader(doc) {
   doc
     .image("logo.png", 50, 45, { width: 50 })
@@ -35,6 +46,12 @@ function generateHeader(doc) {
     .moveDown();
 }
 
+/**
+ * Generate the customer information part on the invoice
+ *
+ * @param {*} doc the invoice file
+ * @param {*} invoice the invoice data
+ */
 function generateCustomerInformation(doc, invoice) {
   doc.fillColor("#444444").fontSize(20).text("Facture", 50, 160);
 
@@ -71,6 +88,12 @@ function generateCustomerInformation(doc, invoice) {
   generateHr(doc, 267);
 }
 
+/**
+ * Generate the invoice table
+ *
+ * @param {*} doc the invoice file
+ * @param {*} invoice the invoice data
+ */
 function generateInvoiceTable(doc, invoice) {
   let i;
   const invoiceTableTop = 330;
@@ -130,6 +153,11 @@ function generateInvoiceTable(doc, invoice) {
   doc.font("Helvetica");
 }
 
+/**
+ * Generate footer for the invoice
+ *
+ * @param {*} doc invoice file
+ */
 function generateFooter(doc) {
   console.log("generateFooter");
   doc.fontSize(10).text("Risu vous remercie pour votre confiance.", 50, 780, {
@@ -138,6 +166,17 @@ function generateFooter(doc) {
   });
 }
 
+/**
+ * Generate the invoice informations for the table
+ *
+ * @param {*} doc the invoice file
+ * @param {*} y the height
+ * @param {*} item the name of the item
+ * @param {*} unitCost the cost of the item
+ * @param {*} quantity the quantity of the item
+ * @param {*} totalHT the cost without taxes of the item
+ * @param {*} totalTTC the cost total of the item
+ */
 function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
   console.log("generateTableRow");
   doc
@@ -149,16 +188,34 @@ function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
     .text(totalTTC, 0, y, { align: "right" });
 }
 
+/**
+ * Generate a hr similar to html
+ *
+ * @param {*} doc the invoice file
+ * @param {*} y the height where to generate the hr
+ */
 function generateHr(doc, y) {
   console.log("generateHr");
   doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
 }
 
+/**
+ * Format the currency to human readable with cents
+ *
+ * @param {number} cents
+ * @returns human readable cents
+ */
 function formatCurrency(cents) {
   console.log("formatCurrency");
   return "€" + cents.toFixed(2);
 }
 
+/**
+ * Format the date to human readeable
+ *
+ * @param {number} date
+ * @returns human readable date in string
+ */
 function formatDate(date) {
   console.log("formatDate");
   const day = date.getDate();

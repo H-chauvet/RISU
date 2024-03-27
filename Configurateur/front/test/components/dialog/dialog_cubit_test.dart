@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 
 void main() {
-  
   group('DialogCubit', () {
     test('Initial state is correct', () {
       final cubit = DialogCubit();
@@ -34,7 +33,8 @@ void main() {
       final newState = initialState.copyWith(rating: 4);
 
       expect(newState.rating, 4);
-      expect(newState.message, 'Initial Message'); // Message should remain unchanged
+      expect(newState.message,
+          'Initial Message'); // Message should remain unchanged
     });
   });
 }

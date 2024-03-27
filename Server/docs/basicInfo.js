@@ -1,13 +1,14 @@
 module.exports = {
-  openapi: "3.0.3", // present supported openapi version
+  openapi: "3.1.0",
   info: {
-    title: "Configurateur API", // short title.
-    description: "Configurateur API", //  desc.
-    version: "1.0.0", // version number
+    title: "Developer Documentation of Risu's API",
+    version: 0.1,
+    description:
+      "This is the official API of the RISU Project. Documented with Swagger.",
     contact: {
-      name: "Cédric CORGE", // your name
-      email: "risu.epitech@gmail.com", // your email
-      url: "risu", // your website
+      name: "Risu",
+      url: "http://eip.epitech.eu/2025/risu",
+      email: "risu_2025@labeip.epitech.eu",
     },
   },
 };

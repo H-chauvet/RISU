@@ -100,7 +100,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                     Text(
@@ -109,7 +109,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.primaryColor),
+                            themeProvider.currentTheme.bottomNavigationBarTheme
+                                .selectedItemColor),
                       ),
                     ),
                   ],
@@ -122,7 +123,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                      themeProvider.currentTheme.primaryColor),
                 ),
               ),
               const SizedBox(height: 8),
@@ -132,7 +133,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+                      themeProvider.currentTheme.bottomNavigationBarTheme
+                          .selectedItemColor),
                 ),
               ),
               const SizedBox(height: 8),
@@ -142,7 +144,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+                      themeProvider.currentTheme.bottomNavigationBarTheme
+                          .selectedItemColor),
                 ),
               ),
               const SizedBox(height: 16),
@@ -152,7 +155,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                      themeProvider.currentTheme.primaryColor),
                 ),
               ),
               const SizedBox(height: 64),
@@ -166,7 +169,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                     const SizedBox(height: 32),

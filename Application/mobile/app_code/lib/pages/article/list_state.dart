@@ -99,16 +99,7 @@ class ArticleListState extends State<ArticleListPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          shadows: [
-                            Shadow(
-                              color: context.select(
-                                  (ThemeProvider themeProvider) => themeProvider
-                                      .currentTheme.secondaryHeaderColor),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -120,14 +111,16 @@ class ArticleListState extends State<ArticleListPage> {
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                             shadows: [
                               Shadow(
                                 color: context.select(
                                     (ThemeProvider themeProvider) =>
                                         themeProvider
-                                            .currentTheme.secondaryHeaderColor),
+                                            .currentTheme
+                                            .bottomNavigationBarTheme
+                                            .selectedItemColor!),
                                 blurRadius: 24,
                                 offset: const Offset(0, 4),
                               ),

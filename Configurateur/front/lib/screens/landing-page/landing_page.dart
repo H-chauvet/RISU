@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -69,7 +70,6 @@ class LandingPageState extends State<LandingPage> {
         ElevatedButton(
           onPressed: profileFunction,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
@@ -77,7 +77,11 @@ class LandingPageState extends State<LandingPage> {
           ),
           child: Text(
             profileButton,
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
           ),
         ),
       );
@@ -89,7 +93,6 @@ class LandingPageState extends State<LandingPage> {
           ElevatedButton(
             onPressed: adminFunction,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 190, 189, 189),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -97,7 +100,11 @@ class LandingPageState extends State<LandingPage> {
             ),
             child: Text(
               adminButton,
-              style: const TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
+              ),
             ),
           ),
         );
@@ -107,15 +114,18 @@ class LandingPageState extends State<LandingPage> {
         ElevatedButton(
           onPressed: () => context.go("/my-container"),
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
           ),
-          child: const Text(
+          child: Text(
             'Mes conteneurs',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
           ),
         ),
       );
@@ -128,7 +138,6 @@ class LandingPageState extends State<LandingPage> {
         ElevatedButton(
           onPressed: connectedFunction,
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 190, 189, 189),
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
@@ -137,7 +146,11 @@ class LandingPageState extends State<LandingPage> {
           ),
           child: Text(
             connectedButton,
-            style: const TextStyle(color: Colors.black),
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
           ),
         ),
       );
@@ -148,7 +161,6 @@ class LandingPageState extends State<LandingPage> {
       ElevatedButton(
         onPressed: inscriptionFunction,
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 190, 189, 189),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
@@ -157,7 +169,11 @@ class LandingPageState extends State<LandingPage> {
         ),
         child: Text(
           inscriptionButton,
-          style: const TextStyle(color: Colors.black),
+          style: TextStyle(
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.primaryColor,
+          ),
         ),
       ),
     );
@@ -169,7 +185,7 @@ class LandingPageState extends State<LandingPage> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
-      context.go("/container-creation");
+      context.go("/container-creation/shape");
     }
   }
 
@@ -182,8 +198,8 @@ class LandingPageState extends State<LandingPage> {
           children: [
             Image.asset(
               'assets/logo.png',
-              width: 150, // Largeur de l'image
-              height: 150,
+              width: 128, // Largeur de l'image
+              height: 128,
             ),
             const SizedBox(width: 250),
             TextButton(
@@ -200,10 +216,13 @@ class LandingPageState extends State<LandingPage> {
               onPressed: () {
                 // Actions à effectuer lors du clic sur le texte
               },
-              child: const Text(
+              child: Text(
                 'Accueil',
                 style: TextStyle(
                   decoration: TextDecoration.underline,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
                 // backgroundColor:
               ),
@@ -223,24 +242,32 @@ class LandingPageState extends State<LandingPage> {
               onPressed: () {
                 context.go("/company");
               },
-              child: const Text(
+              child: Text(
                 'En savoir plus...',
                 style: TextStyle(
                   decoration: TextDecoration.underline,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
               ),
             ),
             const SizedBox(width: 250),
             Row(
               children: [
-                const Text(
+                Text(
                   "Mode sombre",
-                  style: TextStyle(fontSize: 14),
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                  ),
                 ),
                 const SizedBox(width: 5),
                 Switch(
                     value: Provider.of<ThemeService>(context).isDark,
-                    activeColor: Colors.blue,
+                    activeColor: lightElevatedButtonBackground,
                     onChanged: (bool value) {
                       Provider.of<ThemeService>(context, listen: false)
                           .switchTheme();
@@ -265,13 +292,15 @@ class LandingPageState extends State<LandingPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
                     style: TextStyle(
                       fontSize: 40,
-                      color: Color.fromRGBO(70, 130, 180, 1),
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.secondaryHeaderColor
+                          : const Color(0xFF28666E),
                       fontWeight: FontWeight.bold,
-                      shadows: [
+                      shadows: const [
                         Shadow(
                           color: Color.fromARGB(76, 0, 0, 0),
                           offset: Offset(2, 2),
@@ -280,14 +309,16 @@ class LandingPageState extends State<LandingPage> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(
+                  Padding(
+                    padding: const EdgeInsets.only(
                         top: 15), // Espacement inférieur pour le texte
                     child: Text(
                       'Des conteneurs disponibles partout en france !',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Color.fromRGBO(70, 130, 180, 1),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : const Color(0xFF28666E),
                       ),
                     ),
                   ),
@@ -306,11 +337,16 @@ class LandingPageState extends State<LandingPage> {
                               borderRadius: BorderRadius.circular(
                                   20.0), // Définit le rayon du bouton arrondi
                             ),
-                            textStyle: const TextStyle(
-                                // fontSize: 13.0,
+                            textStyle: TextStyle(
+                                // fontSize: 13.0
                                 )),
-                        child: const Text(
+                        child: Text(
                           'En savoir plus',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
@@ -327,8 +363,13 @@ class LandingPageState extends State<LandingPage> {
                           ),
                         ),
                         onPressed: () => goToCreation(),
-                        child: const Text(
+                        child: Text(
                           'Créer mon conteneur',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
                         ),
                       ),
                     )

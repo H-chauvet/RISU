@@ -121,15 +121,7 @@ class SignupPageState extends State<SignupPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
                       color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      shadows: [
-                        Shadow(
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                          themeProvider.currentTheme.primaryColor),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -208,7 +200,7 @@ class SignupPageState extends State<SignupPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -220,7 +212,7 @@ class SignupPageState extends State<SignupPage> {
                       AppLocalizations.of(context)!.accountCreate,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         fontSize: 16.0,
                       ),
                     ),
@@ -243,7 +235,7 @@ class SignupPageState extends State<SignupPage> {
                         fontSize: 14,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                   ),
