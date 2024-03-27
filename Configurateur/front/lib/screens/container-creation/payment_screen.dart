@@ -92,6 +92,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     try {
+      dynamic container = jsonDecode(widget.container!);
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
@@ -103,8 +104,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'id': widget.id!,
           'price': widget.amount.toString(),
           'containerMapping': widget.containerMapping!,
-          'width': '12',
-          'height': '5',
+          'width': container['width'].toString(),
+          'height': container['height'].toString(),
           'city': city,
           'informations': informations,
           'address': address,

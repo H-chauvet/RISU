@@ -285,13 +285,14 @@ class DesignScreenState extends State<DesignScreen> {
       'Access-Control-Allow-Origin': '*',
     };
 
+    dynamic container = jsonDecode(widget.container!);
     if (widget.id == null) {
       HttpService().request('http://$serverIp:3000/api/container/create',
           header, <String, String>{
         'containerMapping': widget.containerMapping!,
         'designs': json.encode(designss),
-        'height': '5',
-        'width': '12',
+        'height': container['height'],
+        'width': container['width'],
         'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
@@ -311,8 +312,8 @@ class DesignScreenState extends State<DesignScreen> {
         'containerMapping': widget.containerMapping!,
         'price': sumPrice().toString(),
         'designs': json.encode(designss),
-        'width': '12',
-        'height': '5',
+        'width': container['width'],
+        'height': container['height'],
         'city': '',
         'informations': '',
         'address': '',
@@ -332,6 +333,7 @@ class DesignScreenState extends State<DesignScreen> {
   }
 
   void goNext() async {
+    dynamic container = jsonDecode(widget.container!);
     if (widget.id == null) {
       HttpService().request(
         'http://$serverIp:3000/api/container/create',
@@ -342,8 +344,8 @@ class DesignScreenState extends State<DesignScreen> {
         },
         <String, dynamic>{
           'designs': json.encode(designss),
-          'height': '5',
-          'width': '12',
+          'height': container['height'],
+          'width': container['width'],
         },
       ).then((value) {
         if (value.statusCode != 200) {
@@ -372,8 +374,8 @@ class DesignScreenState extends State<DesignScreen> {
           'containerMapping': widget.containerMapping!,
           'price': sumPrice().toString(),
           'designs': json.encode(designss),
-          'width': '12',
-          'height': '5',
+          'width': container['width'],
+          'height': container['height'],
           'city': '',
           'informations': '',
           'address': '',
@@ -396,6 +398,7 @@ class DesignScreenState extends State<DesignScreen> {
   }
 
   void goPrevious() {
+    dynamic decodedContainer = jsonDecode(widget.container!);
     if (widget.container != null) {
       dynamic decode = jsonDecode(widget.container!);
       decode['designs'] = jsonEncode(designss);
@@ -412,8 +415,8 @@ class DesignScreenState extends State<DesignScreen> {
       var container = {
         'containerMapping': widget.containerMapping!,
         'designs': design!,
-        'height': '5',
-        'width': '12',
+        'height': decodedContainer['height'],
+        'width': decodedContainer['width'],
       };
 
       var data = {

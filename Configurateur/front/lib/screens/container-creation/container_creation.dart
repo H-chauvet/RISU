@@ -586,6 +586,8 @@ class ContainerCreationState extends State<ContainerCreation> {
       'lockers': jsonEncode(lockers),
       'id': widget.id,
       'container': widget.container,
+      'width': width.toString(),
+      'height': height.toString(),
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
