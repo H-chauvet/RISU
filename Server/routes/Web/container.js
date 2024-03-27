@@ -106,6 +106,31 @@ router.put("/update", async function (req, res, next) {
   }
 });
 
+router.put("/update-position", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
+  try {
+    const { id, latitude, longitude } = req.body;
+
+    if (!id || !latitude || !longitude) {
+      res.status(400);
+      throw new Error("id and position are required");
+    }
+
+    const container = await containerCtrl.updateContainerPosition(id, {
+      latitude,
+      longitude,
+    });
+    res.status(200).json(container);
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/create-ctn", async (req, res) => {
   try {
     const { id, price, width, height } = req.body;

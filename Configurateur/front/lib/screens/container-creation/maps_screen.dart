@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:front/components/custom_app_bar.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapsScreen extends StatefulWidget {
@@ -21,18 +19,34 @@ class MapsState extends State<MapsScreen> {
     zoom: 14.4746,
   );
 
+  Set<Marker> markers = {};
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
+          child: FractionallySizedBox(
+        widthFactor: 0.7,
+        heightFactor: 0.7,
+        alignment: Alignment.center,
         child: GoogleMap(
           initialCameraPosition: _kGooglePlex,
           mapType: MapType.normal,
+          markers: markers,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
           onTap: (LatLng latLng) {
-            debugPrint(latLng.toString());
+            setState(() {
+              markers.clear();
+              markers.add(Marker(
+                markerId: const MarkerId('1'),
+                position: latLng,
+              ));
+            });
           },
         ),
-      ),
+      )),
     );
   }
 }

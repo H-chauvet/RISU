@@ -23,6 +23,8 @@ model Containers {
     containerMapping String?
     address          String?
     city             String?
+    latitude         Float?
+    longitude        Float?
     price            Float?
     width            Float?
     height           Float?
