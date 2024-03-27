@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/container_dialog.dart';
+import 'package:front/components/dialog/delete_container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
@@ -21,11 +23,21 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 import '../../components/dialog/autofill_dialog.dart';
 
+// ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation({super.key, this.id, this.container});
+  const ContainerCreation(
+      {super.key,
+      this.id,
+      this.container,
+      this.containerMapping,
+      this.width,
+      this.height});
 
   final String? id;
   final String? container;
+  final String? containerMapping;
+  final String? width;
+  final String? height;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -43,6 +55,9 @@ class ContainerCreationState extends State<ContainerCreation> {
   double actualRotationDegree = 0.0;
   String jwtToken = '';
   dynamic decodedContainer;
+  bool unitTest = false;
+  late int width = 0;
+  late int height = 0;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -58,7 +73,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
-    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
+    if (widget.container != null) {
+      dynamic container = jsonDecode(widget.container!);
+      width = int.parse(container['width']);
+      height = int.parse(container['height']);
+    } else if (widget.width != null && widget.height != null) {
+      width = int.parse(widget.width!);
+      height = int.parse(widget.height!);
+    }
+    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
@@ -72,10 +95,71 @@ class ContainerCreationState extends State<ContainerCreation> {
 
       loadLockers();
     }
+
+    if (widget.containerMapping != null) {
+      dynamic decoded = jsonDecode(widget.containerMapping!);
+      for (int i = 0; i < decoded.length; i++) {
+        for (int j = 0; j < decoded[i].length; j++) {
+          if (decoded[i][j].toString() == '2') {
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[0]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[1]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[2]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[3]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[4]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[(decoded[i].length * i) + j]
+                .faces[5]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[0]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[1]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[2]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[3]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[4]
+                .materialIndex = 4;
+            objs[0]
+                .fragments[((decoded[i].length * i) + j) + (width * height)]
+                .faces[5]
+                .materialIndex = 4;
+          }
+        }
+      }
+    }
   }
 
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
+    width = int.parse(container['width']);
+    height = int.parse(container['height']);
+
     for (int i = 0; i < container['containerMapping'].length; i++) {
       if (container['containerMapping'] != '0') {
         objs[0].fragments[i].faces[0].materialIndex =
@@ -117,7 +201,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     if (decodedContainer != null) {
       for (int i = 0; i < decodedContainer.length; i++) {
-        lockers.add(Locker('design personnalisé', 50));
+        lockers.add(Locker('Design personnalisé', 50));
       }
     }
 
@@ -133,7 +217,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
-    int fragment = coordinates.x - 1 + (coordinates.y - 1) * 12;
+    int fragment = coordinates.x - 1 + (coordinates.y - 1) * width;
     int increment = 0;
     int color = 0;
 
@@ -154,13 +238,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
 
     if (coordinates.face == 'Derrière') {
-      fragment += 60;
+      fragment += width * height;
     }
 
     if (coordinates.direction == 'Haut') {
-      increment += 12;
+      increment += width;
     } else if (coordinates.direction == 'Bas') {
-      increment -= 12;
+      increment -= width;
     }
 
     for (int i = 0; i < coordinates.size; i++) {
@@ -218,16 +302,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "";
   }
 
-  void handleFloatingPoint() {
-    if (actualRotationDegree != 180 * 3.14 / 180 &&
-        actualRotationDegree != 0 &&
-        actualRotationDegree != 90 * 3.14 / 180 &&
-        actualRotationDegree != 270 * 3.14 / 180) {
-      actualRotationDegree =
-          double.parse(actualRotationDegree.toStringAsFixed(2));
-    }
-  }
-
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -240,51 +314,51 @@ class ContainerCreationState extends State<ContainerCreation> {
       int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[0]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[1]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[2]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[3]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[4]
           .materialIndex = 0;
       objs[0]
-          .fragments[oldX + (oldY + i) * 12 + fragmentIncrement]
+          .fragments[oldX + (oldY + i) * width + fragmentIncrement]
           .faces[5]
           .materialIndex = 0;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[0]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[1]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[2]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[3]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[4]
           .materialIndex = size;
       objs[0]
-          .fragments[x + (y + i) * 12 + fragmentIncrement]
+          .fragments[x + (y + i) * width + fragmentIncrement]
           .faces[5]
           .materialIndex = size;
     }
@@ -309,32 +383,45 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
-    int width = 12;
-    int height = 5;
+    int widths = width;
+    int heights = height;
     Tuple2<int, int> ret = const Tuple2<int, int>(0, 0);
 
-    for (int i = 0; i < width; i++) {
-      for (int j = 0; j < height;) {
+    for (int i = 0; i < widths; i++) {
+      for (int j = 0; j < heights;) {
         int counter = 0;
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
                 .materialIndex ==
             0) {
           int k = 0;
-          for (k = j * width + i + fragmentIncrement;
-              counter + j < height &&
+          for (k = j * widths + i + fragmentIncrement;
+              counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
-              k += width, counter++) {}
+              k += widths, counter++) {}
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
-                .fragments[j * width + i + fragmentIncrement]
+                .fragments[j * widths + i + fragmentIncrement]
                 .faces[0]
-                .materialIndex !=
-            0) {
+                .materialIndex ==
+            4) {
+          counter = 1;
+          debugPrint('locker disabled found');
+        }
+        if (objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                0 &&
+            objs[0]
+                    .fragments[j * widths + i + fragmentIncrement]
+                    .faces[0]
+                    .materialIndex !=
+                4) {
           int size = objs[0]
-              .fragments[j * width + i + fragmentIncrement]
+              .fragments[j * widths + i + fragmentIncrement]
               .faces[0]
               .materialIndex!;
           if (freeSpace.isNotEmpty) {
@@ -346,9 +433,10 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
+          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
-        if (j == height) {
+        if (j == heights) {
           break;
         }
       }
@@ -359,13 +447,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     int fragmentIncrement = 0;
 
     if (face == 'Derrière') {
-      fragmentIncrement = 60;
+      fragmentIncrement = width * height;
     }
 
     autoFilling(fragmentIncrement);
 
     if (face == "Toutes") {
-      fragmentIncrement = 60;
+      fragmentIncrement = width * height;
       autoFilling(fragmentIncrement);
     }
     if (unitTesting == false) {
@@ -375,74 +463,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     } else {
       isLoaded = true;
     }
-  }
-
-  void rotateBack() {
-    if (actualRotationDegree == 180 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
-      actualRotationDegree += 180 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateFront() {
-    if (actualRotationDegree == 0) {
-      return;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
-      actualRotationDegree += -180 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -270 * 3.14 / 180);
-      actualRotationDegree += -270 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateLeftSide() {
-    if (actualRotationDegree == 90 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -90 * 3.14 / 180);
-      actualRotationDegree += -90 * 3.14 / 180;
-    } else if (actualRotationDegree == 270 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), -180 * 3.14 / 180);
-      actualRotationDegree += -180 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
-  }
-
-  void rotateRightSide() {
-    if (actualRotationDegree == 270 * 3.14 / 180) {
-      return;
-    } else if (actualRotationDegree == 0) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 270 * 3.14 / 180);
-      actualRotationDegree += 270 * 3.14 / 180;
-    } else if (actualRotationDegree == 180 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 90 * 3.14 / 180);
-      actualRotationDegree += 90 * 3.14 / 180;
-    } else if (actualRotationDegree == 90 * 3.14 / 180) {
-      objs[0].rotate(Sp3dV3D(0, 1, 0), 180 * 3.14 / 180);
-      actualRotationDegree += 180 * 3.14 / 180;
-    }
-
-    handleFloatingPoint();
   }
 
   void loadImage() async {
@@ -460,6 +480,95 @@ class ContainerCreationState extends State<ContainerCreation> {
       price += lockers[i].price;
     }
     return price;
+  }
+
+  void resetContainer() {
+    for (int i = 0; i < objs[0].fragments.length; i++) {
+      objs[0].fragments[i].faces[0].materialIndex = 0;
+      objs[0].fragments[i].faces[1].materialIndex = 0;
+      objs[0].fragments[i].faces[2].materialIndex = 0;
+      objs[0].fragments[i].faces[3].materialIndex = 0;
+      objs[0].fragments[i].faces[4].materialIndex = 0;
+      objs[0].fragments[i].faces[5].materialIndex = 0;
+    }
+
+    if (unitTest == false) {
+      setState(() {
+        lockers = [];
+      });
+    } else {
+      lockers = [];
+    }
+  }
+
+  String deleteLocker(LockerCoordinates coord, bool unitTesting) {
+    int fragment = coord.x - 1 + (coord.y - 1) * width;
+    int increment = width;
+
+    if (coord.face == 'Derrière') {
+      fragment += width * height;
+    }
+
+    int size = objs[0].fragments[fragment].faces[0].materialIndex!;
+
+    if (objs[0].fragments[fragment].faces[0].materialIndex == 0) {
+      return "deleteError";
+    }
+
+    for (int i = 0; i < size; i++) {
+      if (objs[0].fragments[fragment].faces[0].materialIndex != size) {
+        return "wrongPositionError";
+      }
+      fragment += increment;
+    }
+
+    fragment -= size * increment;
+
+    for (int i = 0; i < size; i++) {
+      objs[0].fragments[fragment].faces[0].materialIndex = 0;
+      objs[0].fragments[fragment].faces[1].materialIndex = 0;
+      objs[0].fragments[fragment].faces[2].materialIndex = 0;
+      objs[0].fragments[fragment].faces[3].materialIndex = 0;
+      objs[0].fragments[fragment].faces[4].materialIndex = 0;
+      objs[0].fragments[fragment].faces[5].materialIndex = 0;
+      fragment += increment;
+    }
+
+    if (unitTesting == false) {
+      setState(() {
+        for (int i = 0; i < lockers.length; i++) {
+          if (lockers[i].type == 'Petit casier' && size == 1) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Moyen casier' && size == 2) {
+            lockers.removeAt(i);
+            break;
+          }
+          if (lockers[i].type == 'Grand casier' && size == 3) {
+            lockers.removeAt(i);
+            break;
+          }
+        }
+        isLoaded = true;
+      });
+    } else {
+      for (int i = 0; i < lockers.length; i++) {
+        if (lockers[i].type == 'Petit Casier' && size == 1) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Moyen Casier' && size == 2) {
+          lockers.removeAt(i);
+          break;
+        }
+        if (lockers[i].type == 'Grand Casier' && size == 3) {
+          lockers.removeAt(i);
+          break;
+        }
+      }
+    }
+    return "deleted";
   }
 
   String getContainerMapping() {
@@ -494,15 +603,15 @@ class ContainerCreationState extends State<ContainerCreation> {
         body = {
           'containerMapping': getContainerMapping(),
           'designs': jsonDecode(widget.container!)['designs'],
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'saveName': name,
         };
       } else {
         body = {
           'containerMapping': getContainerMapping(),
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'saveName': name,
         };
       }
@@ -528,8 +637,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           'containerMapping': getContainerMapping(),
           'price': sumPrice().toString(),
           'designs': jsonDecode(widget.container!)['designs'],
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'city': '',
           'informations': '',
           'address': '',
@@ -540,8 +649,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           'id': widget.id!,
           'containerMapping': getContainerMapping(),
           'price': sumPrice().toString(),
-          'width': '12',
-          'height': '5',
+          'width': width,
+          'height': height,
           'city': '',
           'informations': '',
           'address': '',
@@ -566,7 +675,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   void goPrevious() {
-    context.go('/');
+    context.go('/container-creation/shape');
   }
 
   @override
@@ -580,8 +689,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 0,
+              length: 5,
+              progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,
@@ -594,79 +703,163 @@ class ContainerCreationState extends State<ContainerCreation> {
         ),
         body: Stack(children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
                 width: 50,
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.7,
-                    child: InteractivePanel(
-                      callback: updateCube,
-                      rotateFrontCallback: rotateFront,
-                      rotateBackCallback: rotateBack,
-                      rotateLeftCallback: rotateLeftSide,
-                      rotateRightCallback: rotateRightSide,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) => ContainerDialog(
+                                  callback: updateCube,
+                                  size: 1,
+                                ));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Ajouter un casier',
+                      ),
+                      icon: const Icon(
+                        Icons.add,
+                      ),
                     ),
-                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Sauvegarder',
+                      ),
+                      icon: const Icon(
+                        Icons.save,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        String face = await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                AutoFillDialog(callback: autoFillContainer));
+                        autoFillContainer(face, false);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Remplissage',
+                      ),
+                      icon: const Icon(
+                        Icons.auto_fix_high,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const SizedBox(
+                      width: 225,
+                      child: Divider(
+                        color: Colors.grey,
+                        height: 20,
+                        thickness: 1,
+                        indent: 30,
+                        endIndent: 30,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () async {
+                        await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                DeleteContainerDialog(callback: deleteLocker));
+                      },
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Supprimer un casier',
+                      ),
+                      icon: const Icon(
+                        Icons.delete,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: resetContainer,
+                      style: ElevatedButton.styleFrom(
+                          fixedSize: const Size.fromWidth(250),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      label: const Text(
+                        'Réinitialiser le conteneur',
+                      ),
+                      icon: const Icon(
+                        Icons.refresh,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Flexible(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            String face = await showDialog(
-                                context: context,
-                                builder: (context) => AutoFillDialog(
-                                    callback: autoFillContainer));
-                            autoFillContainer(face, false);
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          child: const Text('Remplissage',
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ),
+                    child: Sp3dRenderer(
+                      const Size(1000, 1000),
+                      const Sp3dV2D(400, 400),
+                      world,
+                      // If you want to reduce distortion, shoot from a distance at high magnification.
+                      Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                      Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                      allowUserWorldRotation: true,
+                      allowUserWorldZoom: false,
                     ),
-                  ),
-                  Sp3dRenderer(
-                    const Size(800, 800),
-                    const Sp3dV2D(400, 400),
-                    world,
-                    // If you want to reduce distortion, shoot from a distance at high magnification.
-                    Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                    Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                    allowUserWorldRotation: false,
-                    allowUserWorldZoom: false,
                   ),
                 ],
               ),
               Flexible(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FractionallySizedBox(
-                      widthFactor: 0.7,
-                      heightFactor: 0.7,
-                      child: RecapPanel(
-                        articles: lockers,
-                        onSaved: () async {
-                          String name = await showDialog(
-                              context: context,
-                              builder: (context) => openDialog());
-                          saveContainer(name);
-                        },
-                      )),
-                ),
+                child: FractionallySizedBox(
+                    widthFactor: 0.8,
+                    heightFactor: 0.7,
+                    child: RecapPanel(
+                      articles: lockers,
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
+                    )),
               ),
               const SizedBox(
                 width: 50,

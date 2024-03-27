@@ -35,7 +35,7 @@ class SettingsPageState extends State<SettingsPage> {
       final token = userInformation!.token;
       final userId = userInformation!.ID;
       final response = await http.delete(
-        Uri.parse('http://$serverIp:3000/api/mobile/user/$userId'),
+        Uri.parse('$baseUrl/api/mobile/user/$userId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -107,9 +107,11 @@ class SettingsPageState extends State<SettingsPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context)!.myAccount,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                     ),
@@ -117,62 +119,58 @@ class SettingsPageState extends State<SettingsPage> {
                     MyParameter(
                       goToPage: const ProfileInformationsPage(),
                       title: AppLocalizations.of(context)!.seeProfileDetails,
-                      paramIcon: const Icon(Icons.person),
+                      paramIcon: Icons.person,
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
                       title: AppLocalizations.of(context)!.paymentMethods,
-                      paramIcon: const Icon(Icons.payments_outlined),
+                      paramIcon: Icons.payments_outlined,
                       locked: true,
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const NotificationsPage(),
                       title: AppLocalizations.of(context)!.notifications,
-                      paramIcon: const Icon(Icons.notifications),
+                      paramIcon: Icons.notifications,
                       locked: false,
                     ),
                     const SizedBox(height: 8),
                     MyParameterModal(
                       title: AppLocalizations.of(context)!.theme,
                       modalContent: const ThemeChangeModalContent(),
-                      paramIcon: const Icon(Icons.brush),
+                      paramIcon: Icons.brush,
                     ),
                     const SizedBox(height: 8),
                     MyParameterModal(
                       title: AppLocalizations.of(context)!.language,
                       modalContent: const LanguageChangeModalContent(),
-                      paramIcon: const Icon(Icons.language),
+                      paramIcon: Icons.language,
                     ),
                     const SizedBox(height: 24),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context)!.other,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    MyParameter(
-                      goToPage: const OpinionPage(),
-                      title: AppLocalizations.of(context)!.reviews,
-                      paramIcon: const Icon(Icons.star),
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const ContactPage(),
                       title: AppLocalizations.of(context)!.contactUs,
-                      paramIcon: const Icon(Icons.message_outlined),
+                      paramIcon: Icons.message_outlined,
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
                       title: AppLocalizations.of(context)!.aboutUs,
-                      paramIcon: const Icon(Icons.question_mark),
+                      paramIcon: Icons.question_mark,
                       locked: true,
                     ),
                     const SizedBox(

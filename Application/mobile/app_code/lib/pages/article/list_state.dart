@@ -26,8 +26,7 @@ class ArticleListState extends State<ArticleListPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.get(
-        Uri.parse(
-            'http://$serverIp:3000/api/mobile/container/$containerId/articleslist'),
+        Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -100,16 +99,7 @@ class ArticleListState extends State<ArticleListPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          shadows: [
-                            Shadow(
-                              color: context.select(
-                                  (ThemeProvider themeProvider) => themeProvider
-                                      .currentTheme.secondaryHeaderColor),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -121,14 +111,16 @@ class ArticleListState extends State<ArticleListPage> {
                             fontSize: 32,
                             fontWeight: FontWeight.bold,
                             color: context.select(
-                                (ThemeProvider themeProvider) => themeProvider
-                                    .currentTheme.secondaryHeaderColor),
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                             shadows: [
                               Shadow(
                                 color: context.select(
                                     (ThemeProvider themeProvider) =>
                                         themeProvider
-                                            .currentTheme.secondaryHeaderColor),
+                                            .currentTheme
+                                            .bottomNavigationBarTheme
+                                            .selectedItemColor!),
                                 blurRadius: 24,
                                 offset: const Offset(0, 4),
                               ),

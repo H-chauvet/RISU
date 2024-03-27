@@ -70,8 +70,8 @@ class ArticleDataCard extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: context
-                  .select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor)
+                  .select((ThemeProvider themeProvider) => themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor!)
                   .withOpacity(0.5),
               spreadRadius: 5,
               blurRadius: 7,

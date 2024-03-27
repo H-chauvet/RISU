@@ -38,7 +38,7 @@ class RentalPageState extends State<RentalPage> {
       });
       final token = userInformation!.token;
       final response = await http.get(
-        Uri.parse('http://$serverIp:3000/api/mobile/rent/listAll'),
+        Uri.parse('$baseUrl/api/mobile/rent/listAll'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -131,15 +131,7 @@ class RentalPageState extends State<RentalPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 32,
-                        color: themeProvider.currentTheme.secondaryHeaderColor,
-                        shadows: [
-                          Shadow(
-                            color:
-                                themeProvider.currentTheme.secondaryHeaderColor,
-                            blurRadius: 24,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        color: themeProvider.currentTheme.primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -175,13 +167,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.allE,
                                   style: TextStyle(
                                     color: showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -218,13 +211,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.inProgress,
                                   style: TextStyle(
                                     color: !showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -293,8 +287,9 @@ class RentalPageState extends State<RentalPage> {
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
                                             "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
-                                        Text(
-                                            "${AppLocalizations.of(context)!.rentTimeOfRenting(rental['duration'])}"),
+                                        Text(AppLocalizations.of(context)!
+                                            .rentTimeOfRenting(
+                                                rental['duration'])),
                                         Text(
                                             "${AppLocalizations.of(context)!.status}: ${isRentalInProgress(rental) ? AppLocalizations.of(context)!.inProgress : AppLocalizations.of(context)!.endedE}"),
                                         if (isRentalInProgress(rental))

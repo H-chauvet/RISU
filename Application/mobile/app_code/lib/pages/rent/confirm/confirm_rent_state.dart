@@ -8,10 +8,60 @@ import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/components/alert_dialog.dart';
+import 'package:risu/components/loader.dart';
+import 'package:risu/globals.dart';
+import 'package:http/http.dart' as http;
+import 'package:risu/utils/errors.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
   late ArticleData data;
+  final LoaderManager _loaderManager = LoaderManager();
+
+  void sendInvoice() async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final response = await http.post(
+        Uri.parse(
+            'http://$serverIp:3000/api/mobile/rent/${widget.data.id}/invoice'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        if (context.mounted) {
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: AppLocalizations.of(context)!.invoiceSent,
+            message: AppLocalizations.of(context)!.invoiceSentMessage,
+          );
+        }
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'sendInvoice',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringSendingInvoice);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
+        return;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -50,7 +100,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontWeight: FontWeight.bold,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                     Text(
@@ -59,7 +109,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.primaryColor),
+                            themeProvider.currentTheme.bottomNavigationBarTheme
+                                .selectedItemColor),
                       ),
                     ),
                   ],
@@ -72,7 +123,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                      themeProvider.currentTheme.primaryColor),
                 ),
               ),
               const SizedBox(height: 8),
@@ -82,7 +133,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+                      themeProvider.currentTheme.bottomNavigationBarTheme
+                          .selectedItemColor),
                 ),
               ),
               const SizedBox(height: 8),
@@ -92,7 +144,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+                      themeProvider.currentTheme.bottomNavigationBarTheme
+                          .selectedItemColor),
                 ),
               ),
               const SizedBox(height: 16),
@@ -102,7 +155,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                   color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
+                      themeProvider.currentTheme.primaryColor),
                 ),
               ),
               const SizedBox(height: 64),
@@ -116,7 +169,18 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MyOutlinedButton(
+                        text: AppLocalizations.of(context)!.receiveInvoice,
+                        key: const Key('return_rent-button-receive_invoice'),
+                        onPressed: () async {
+                          sendInvoice();
+                        },
                       ),
                     ),
                     const SizedBox(height: 32),

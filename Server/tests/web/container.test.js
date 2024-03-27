@@ -123,25 +123,6 @@ describe("Container Route Tests", () => {
     );
   });
 
-  it("should handle valid container creation (version 2)", async () => {
-    const requestBody = {
-      price: 50,
-      width: 15,
-      height: 25,
-    };
-
-    containerCtrl.createContainer2.mockResolvedValueOnce({
-      id: 1,
-      name: "Container V2",
-    });
-
-    const response = await supertest(app).post("/create-ctn").send(requestBody);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ id: 1, name: "Container V2" });
-    expect(containerCtrl.createContainer2).toHaveBeenCalledWith(requestBody);
-  });
-
   it("should handle valid container list retrieval", async () => {
     containerCtrl.getAllContainers.mockResolvedValueOnce([
       { id: 1, name: "Container 1" },

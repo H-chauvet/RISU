@@ -50,8 +50,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       });
       final token = userInformation!.token;
       final response = await http.get(
-          Uri.parse(
-              'http://$serverIp:3000/api/mobile/user/${userInformation!.ID}'),
+          Uri.parse('$baseUrl/api/mobile/user/${userInformation!.ID}'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
@@ -109,7 +108,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/user'),
+        Uri.parse('$baseUrl/api/mobile/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -182,7 +181,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/user/password'),
+        Uri.parse('$baseUrl/api/mobile/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -297,10 +296,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.myInformation,
                           key: const Key('profile_info-text_informations'),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor)),
                         ),
                       ),
                       buildField(
@@ -341,9 +342,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.password,
                           key: const Key('profile_info-text_password'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                           ),
                         ),
                       ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:front/services/locker_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 const List<String> faceList = <String>['Devant', 'Derrière'];
 const List<String> directionList = <String>['Haut', 'Bas'];
@@ -25,6 +28,24 @@ class ContainerDialogState extends State<ContainerDialog> {
   String y = '';
   String face = faceList.first;
   String direction = directionList.first;
+  String size = '';
+  int lockerSize = 0;
+
+  Color getColor() {
+    if (Provider.of<ThemeService>(context).isDark) {
+      return checkBoxMenuButtonColorDarkTheme;
+    } else {
+      return checkBoxMenuButtonColorLightTheme;
+    }
+  }
+
+  Color? getTextColor() {
+    if (Provider.of<ThemeService>(context).isDark) {
+      return containerDialogTextColorDarkTheme;
+    } else {
+      return lightTheme.colorScheme.background;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +61,105 @@ class ContainerDialogState extends State<ContainerDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                const Text("Quelle taille de casier voulez-vous ajouter ?"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CheckboxMenuButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                          getColor(),
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                      value: size == 'Petit',
+                      onChanged: (bool? value) {
+                        if (value == true) {
+                          setState(() {
+                            size = 'Petit';
+                            lockerSize = 1;
+                          });
+                        } else {
+                          setState(() {
+                            size = '';
+                            lockerSize = 0;
+                          });
+                        }
+                      },
+                      child: Text(
+                        'Petit',
+                        style: TextStyle(color: getTextColor()),
+                      ),
+                    ),
+                    CheckboxMenuButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(getColor()),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                      value: size == 'Moyen',
+                      onChanged: (bool? value) {
+                        if (value == true) {
+                          setState(() {
+                            size = 'Moyen';
+                            lockerSize = 2;
+                          });
+                        } else {
+                          setState(() {
+                            size = '';
+                            lockerSize = 0;
+                          });
+                        }
+                      },
+                      child: Text('Moyen',
+                          style: TextStyle(color: getTextColor())),
+                    ),
+                    CheckboxMenuButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(getColor()),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                      value: size == 'Grand',
+                      onChanged: (bool? value) {
+                        if (value == true) {
+                          setState(() {
+                            size = 'Grand';
+                            lockerSize = 3;
+                          });
+                        } else {
+                          setState(() {
+                            size = '';
+                            lockerSize = 0;
+                          });
+                        }
+                      },
+                      child: Text('Grand',
+                          style: TextStyle(color: getTextColor())),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
@@ -103,42 +223,74 @@ class ContainerDialogState extends State<ContainerDialog> {
                     },
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: DropdownMenu<String>(
-                    hintText: 'Face du casier',
-                    label: const Text('Face du casier'),
-                    initialSelection: faceList.first,
-                    onSelected: (String? value) {
-                      setState(() {
-                        face = value!;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        faceList.map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
-                    }).toList(),
-                  ),
+                const SizedBox(
+                  height: 20,
                 ),
-                Padding(
-                  key: const Key("container-dialog-direction-dropdown"),
-                  padding: const EdgeInsets.all(8),
-                  child: DropdownMenu<String>(
-                    hintText: 'Direction du casier',
-                    label: const Text('Direction du casier'),
-                    initialSelection: directionList.first,
-                    onSelected: (String? value) {
-                      setState(() {
-                        direction = value!;
-                      });
-                    },
-                    dropdownMenuEntries: directionList
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
-                    }).toList(),
-                  ),
+                const Text("Sur quelle face du casier voulez-vous l'ajouter ?"),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CheckboxMenuButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(getColor()),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                      value: face == 'Devant',
+                      onChanged: (bool? value) {
+                        if (value == true) {
+                          setState(() {
+                            face = 'Devant';
+                          });
+                        } else {
+                          setState(() {
+                            face = '';
+                          });
+                        }
+                      },
+                      child: Text(
+                        'Devant',
+                        style: TextStyle(color: getTextColor()),
+                      ),
+                    ),
+                    CheckboxMenuButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(getColor()),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                      ),
+                      value: face == 'Derrière',
+                      onChanged: (bool? value) {
+                        if (value == true) {
+                          setState(() {
+                            face = 'Derrière';
+                          });
+                        } else {
+                          setState(() {
+                            face = '';
+                          });
+                        }
+                      },
+                      child: Text('Derrière',
+                          style: TextStyle(color: getTextColor())),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8),
@@ -146,15 +298,27 @@ class ContainerDialogState extends State<ContainerDialog> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
-                    child: const Text(
+                    child: Text(
                       'Ajouter',
+                      style: TextStyle(
+                        color: getTextColor(),
+                      ),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        if (face == '' || size == '') {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => const AlertDialog(
+                                    content: Text(
+                                        "Veuillez remplir tous les champs"),
+                                  ));
+                          return;
+                        }
                         if (widget.callback(
                                 LockerCoordinates(int.parse(x), int.parse(y),
-                                    face, direction, widget.size),
+                                    face, direction, lockerSize),
                                 false) ==
                             'overwriteError') {
                           await showDialog(

@@ -23,7 +23,7 @@ class MyButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         backgroundColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.buttonTheme.colorScheme!.secondary),
+            themeProvider.currentTheme.primaryColor),
         padding: EdgeInsets.symmetric(
           horizontal: 32.0 * sizeCoefficient,
           vertical: 16.0 * sizeCoefficient,
@@ -34,7 +34,7 @@ class MyButton extends StatelessWidget {
         text,
         style: TextStyle(
           color: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.primaryColor),
+              themeProvider.currentTheme.secondaryHeaderColor),
           fontWeight: FontWeight.bold,
           fontSize: 16.0 * sizeCoefficient,
         ),

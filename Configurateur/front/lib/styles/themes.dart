@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
+const lightElevatedButtonBackground = Color(0xFF28666E);
+
 final lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: const Color(0xff4682B4),
-  secondaryHeaderColor: const Color(0xff4682B4),
+  primaryColor: const Color(0xffFEDC97),
+  secondaryHeaderColor: const Color(0xff033F63),
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color(0xff4682B4),
+    backgroundColor: Color(0xffFEDC97),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: Color(0xff033F63),
       fontSize: 40,
     ),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
-    color: Color(0xff4682B4),
+    color: Color(0xffFEDC97),
+  ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+    fillColor: MaterialStateProperty.all<Color>(Colors.white),
   ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black,
@@ -37,7 +43,7 @@ final lightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.light(
       brightness: Brightness.light,
-      primary: Color(0xFF4682B4),
+      primary: Color(0xff7C9885),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
@@ -49,18 +55,16 @@ final lightTheme = ThemeData(
         ),
       ),
       backgroundColor:
-          MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+          MaterialStateProperty.all<Color>(const Color(0xff7C9885)),
     ),
   ),
-  colorScheme: const ColorScheme.light(
-    background: Color.fromARGB(255, 255, 255, 255),
-  ),
+  colorScheme: const ColorScheme.light(background: Color(0xFFFAFAFA)),
 );
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF4682B4),
-  secondaryHeaderColor: const Color(0xFF4682B4),
+  primaryColor: const Color(0xff033F63),
+  secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 32, 75, 110),
     titleTextStyle: TextStyle(
@@ -91,7 +95,7 @@ final darkTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,
-      primary: Color.fromARGB(255, 190, 189, 189),
+      primary: Color(0xFFFEDC97),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
@@ -102,15 +106,15 @@ final darkTheme = ThemeData(
           color: Colors.black,
         ),
       ),
-      backgroundColor: MaterialStateProperty.all<Color>(
-          const Color.fromARGB(255, 190, 189, 189)),
+      backgroundColor:
+          MaterialStateProperty.all<Color>(const Color(0xFFFEDC97)),
     ),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color.fromARGB(255, 32, 75, 110),
   ),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF1E1E1E),
+    background: Color(0xFF303030),
   ),
 );
 
@@ -124,8 +128,13 @@ final boxDecorationDarkTheme = BoxDecoration(
   borderRadius: BorderRadius.circular(10),
 );
 
-const progressBarCheckedLightTheme = Color(0xFF4682B4);
-const progressBarCheckedDarkTheme = Color.fromARGB(255, 33, 91, 138);
+const progressBarCheckedLightTheme = Color(0xFF28666E);
+const progressBarCheckedDarkTheme = Color(0xFF033F63);
 
 final progressBarUncheckedLightTheme = Colors.grey[300];
 final progressBarUncheckedDarkTheme = Colors.grey[600];
+
+const checkBoxMenuButtonColorLightTheme = Color(0xff7C9885);
+const checkBoxMenuButtonColorDarkTheme = Color(0xFFFEDC97);
+
+const containerDialogTextColorDarkTheme = Color(0xFF033F63);
