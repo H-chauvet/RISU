@@ -56,24 +56,34 @@ model Organization {
     contactInformation String
 }
 
+model Tickets {
+    id         Int      @id @default(autoincrement())
+    content    String
+    title      String
+    creatorId  String
+    assignedId String
+    createdAt  DateTime @default(now())
+    chatUid    String   @default(cuid())
+    closed     Boolean  @default(false)
+}
+
 /////////////////////////////////////////////
 /////////////////////WEB/////////////////////
 /////////////////////////////////////////////
 
 model User_Web {
-    id             Int              @id @default(autoincrement())
-    uuid           String?          @unique
-    firstName      String?          @default("")
-    lastName       String?          @default("")
-    company        String?          @default("")
-    email          String           @unique
-    token          String?          @unique
+    id             Int           @id @default(autoincrement())
+    uuid           String?       @unique
+    firstName      String?       @default("")
+    lastName       String?       @default("")
+    company        String?       @default("")
+    email          String        @unique
+    token          String?       @unique
     password       String
-    organization   Organization?    @relation(fields: [organizationId], references: [id])
+    organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
-    confirmed      Boolean          @default(false)
-    createdAt      DateTime         @default(now())
-    ticketsMobile Tickets_Mobile[] // ONLY FOR ADMIN ON WEB
+    confirmed      Boolean       @default(false)
+    createdAt      DateTime      @default(now())
 }
 
 model Feedbacks_Web {
@@ -130,7 +140,6 @@ model User_Mobile {
     Locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
-    ticketsMobile   Tickets_Mobile[]
     itemOpinions     Opinions_Mobile[]
 }
 
@@ -154,15 +163,4 @@ model Location_Mobile {
     duration  Int
     ended     Boolean     @default(false)
     invoice   Bytes?
-}
-
-model Tickets_Mobile {
-    id         Int         @id @default(autoincrement())
-    content    String
-    creator    User_Mobile @relation(fields: [creatorId], references: [id])
-    creatorId  String
-    assigned   User_Web    @relation(fields: [assignedId], references: [id])
-    assignedId Int
-    createdAt  DateTime    @default(now())
-    chatUid    String      @default(cuid())
 }
