@@ -22,7 +22,6 @@ class ArticleData {
   });
 
   factory ArticleData.fromJson(Map<String, dynamic> json) {
-    print(json['categories']);
     return ArticleData(
       id: json['id'],
       containerId: json['containerId'],
