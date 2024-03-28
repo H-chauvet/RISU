@@ -18,6 +18,7 @@ void main() {
               name: 'test object',
               containerId: 1,
               price: 3,
+              categories: [],
             ),
           ),
         ),
