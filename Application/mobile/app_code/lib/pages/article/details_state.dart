@@ -24,6 +24,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     name: '',
     available: false,
     price: 0,
+    categories: [],
   );
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -63,6 +64,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         'name': '',
         'available': false,
         'price': 0,
+        'categories': [],
       };
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -81,6 +83,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'name': '',
           'available': false,
           'price': 0,
+          'categories': [],
         };
       }
     }
