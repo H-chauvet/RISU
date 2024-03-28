@@ -721,6 +721,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => ContainerDialog(
                                   callback: updateCube,
                                   size: 1,
+                                  width: int.parse(widget.width!),
+                                  height: int.parse(widget.height!),
                                 ));
                       },
                       style: ElevatedButton.styleFrom(
