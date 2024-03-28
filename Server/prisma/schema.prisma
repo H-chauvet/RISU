@@ -56,6 +56,17 @@ model Organization {
     contactInformation String
 }
 
+model Tickets {
+    id         Int      @id @default(autoincrement())
+    content    String
+    title      String
+    creatorId  String
+    assignedId String
+    createdAt  DateTime @default(now())
+    chatUid    String   @default(cuid())
+    closed     Boolean  @default(false)
+}
+
 /////////////////////////////////////////////
 /////////////////////WEB/////////////////////
 /////////////////////////////////////////////
@@ -97,14 +108,6 @@ model Contact_Web {
 /////////////////////////////////////////////
 //////////////////MOBILE/////////////////////
 /////////////////////////////////////////////
-
-model Contact_Mobile {
-    id        String   @id @unique @default(cuid())
-    name      String
-    email     String
-    message   String
-    createdAt DateTime @default(now())
-}
 
 model Opinions_Mobile {
     id      String      @id @unique @default(cuid())
