@@ -15,7 +15,6 @@ const paymentRoutes = require("./routes/Web/payment");
 
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
-const contactMobileRoutes = require("./routes/Mobile/contact");
 const containerMobileRoutes = require("./routes/Mobile/containers")
 const itemMobileRoutes = require("./routes/Mobile/items")
 const rentMobileRoutes = require("./routes/Mobile/rent")
@@ -58,7 +57,6 @@ app.use("/api/payment", paymentRoutes);
 
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
-app.use("/api/mobile", contactMobileRoutes)
 app.use("/api/mobile/container", containerMobileRoutes)
 app.use("/api/mobile/article", itemMobileRoutes)
 app.use("/api/mobile/rent", rentMobileRoutes)

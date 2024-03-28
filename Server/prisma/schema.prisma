@@ -109,14 +109,6 @@ model Contact_Web {
 //////////////////MOBILE/////////////////////
 /////////////////////////////////////////////
 
-model Contact_Mobile {
-    id        String   @id @unique @default(cuid())
-    name      String
-    email     String
-    message   String
-    createdAt DateTime @default(now())
-}
-
 model Opinions_Mobile {
     id      String      @id @unique @default(cuid())
     userId  String
