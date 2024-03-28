@@ -691,7 +691,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
+              length: 6,
               progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
@@ -723,8 +723,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => ContainerDialog(
                                   callback: updateCube,
                                   size: 1,
-                                  width: int.parse(widget.width!),
-                                  height: int.parse(widget.height!),
+                                  width: width,
+                                  height: height,
                                 ));
                       },
                       style: ElevatedButton.styleFrom(

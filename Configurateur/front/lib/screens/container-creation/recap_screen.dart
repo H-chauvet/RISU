@@ -56,15 +56,19 @@ class RecapScreenState extends State<RecapScreen> {
       'id': widget.id,
       'container': widget.container,
     };
-    context.go('/container-creation/payment', extra: jsonEncode(data));
+    context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
   void decodeLockers() {
     final decode = jsonDecode(widget.lockers!);
+    debugPrint('decoded');
+    debugPrint(decode.toString());
 
     for (int i = 0; i < decode.length; i++) {
+      debugPrint(i.toString());
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
+    debugPrint('decodeLockers');
   }
 
   @override
@@ -87,7 +91,7 @@ class RecapScreenState extends State<RecapScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 5,
+            length: 6,
             progress: 3,
             previous: 'Précédent',
             next: 'Suivant',

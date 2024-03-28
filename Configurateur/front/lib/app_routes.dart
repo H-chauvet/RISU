@@ -140,7 +140,24 @@ class AppRouter {
       GoRoute(
         path: '/container-creation/maps',
         builder: (BuildContext context, GoRouterState state) {
-          return const MapsScreen();
+          if (state.extra == null) {
+            return const MapsScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return MapsScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+            container: user['container'],
+          );
         },
       ),
       GoRoute(
@@ -210,6 +227,8 @@ class AppRouter {
             lockers: user['lockers'],
             id: user['id'],
             container: user['container'],
+            width: user['width'],
+            height: user['height'],
           );
         },
       ),

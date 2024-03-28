@@ -73,7 +73,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'id': widget.id,
       'container': widget.container,
     };
-    context.go('/container-creation/recap', extra: jsonEncode(data));
+    context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
   void goNext() async {
@@ -138,8 +138,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
-              progress: 4,
+              length: 6,
+              progress: 5,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,
