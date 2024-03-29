@@ -155,3 +155,5 @@ router.delete('/:chatId',
     }
   }
 )
+
+module.exports = router
