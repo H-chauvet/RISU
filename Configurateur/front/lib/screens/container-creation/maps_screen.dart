@@ -9,6 +9,7 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapsScreen extends StatefulWidget {
   const MapsScreen(
@@ -34,9 +35,9 @@ class MapsState extends State<MapsScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(45.803160, 15.957040),
-    zoom: 14.4746,
+  CameraPosition _kGooglePlex = const CameraPosition(
+    target: LatLng(47.210528, -1.566956),
+    zoom: 15,
   );
 
   void checkToken() async {
@@ -52,15 +53,43 @@ class MapsState extends State<MapsScreen> {
     }
   }
 
+  void getPosition() async {
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        setState(() {
+          _kGooglePlex = const CameraPosition(
+            target: LatLng(47.210528, -1.566956),
+            zoom: 15,
+          );
+        });
+        return;
+      }
+    }
+
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _kGooglePlex = CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        zoom: 15,
+      );
+    });
+  }
+
   @override
   void initState() {
     checkToken();
+    getPosition();
     super.initState();
   }
 
   Set<Marker> markers = {};
 
   void goNext() {
+    if (markers.isEmpty) {
+      return;
+    }
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
       <String, String>{
@@ -128,6 +157,7 @@ class MapsState extends State<MapsScreen> {
         heightFactor: 0.7,
         alignment: Alignment.center,
         child: GoogleMap(
+          key: UniqueKey(),
           initialCameraPosition: _kGooglePlex,
           mapType: MapType.normal,
           markers: markers,
