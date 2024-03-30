@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
@@ -11,6 +12,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -26,6 +28,23 @@ class ContactPageState extends State<ContactPage> {
   void initState() {
     super.initState();
     getUserTickets();
+  }
+
+  String formatDateTime(String dateTimeString) {
+    DateTime dateTime = DateTime.parse(dateTimeString);
+    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+  }
+
+  void sortTickets(Map<String, dynamic> tickets) {
+    tickets.forEach((key, value) {
+      if (tickets[key].length > 1) {
+        tickets[key].sort((a, b) {
+          String strA = a["createdAt"];
+          String strB = b["createdAt"];
+          return strA.compareTo(strB);
+        });
+      }
+    });
   }
 
   void getUserTickets() async {
@@ -62,6 +81,9 @@ class ContactPageState extends State<ContactPage> {
                 : tmpOpenedTickets[element["chatUid"]] = [element];
           }
         }
+
+        sortTickets(tmpClosedTickets);
+        sortTickets(tmpOpenedTickets);
 
         setState(() {
           openedTickets = tmpOpenedTickets;
@@ -271,14 +293,94 @@ class ContactPageState extends State<ContactPage> {
                                 ),
                               ),
                             )
-                          : const Center(
-                              child: Text(
-                                "Working",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: showOpenedTickets
+                                  ? openedTickets.length
+                                  : closedTickets.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                String key = (showOpenedTickets
+                                        ? openedTickets
+                                        : closedTickets)
+                                    .keys
+                                    .elementAt(index);
+
+                                dynamic ticket = showOpenedTickets
+                                    ? openedTickets[key].last
+                                    : closedTickets[key].last;
+                                return Card(
+                                  elevation: 5,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  color: themeProvider.currentTheme.cardColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ticket["title"],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              formatDateTime(
+                                                  ticket["createdAt"]),
+                                            ),
+                                            Text(
+                                              ticket["content"],
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .primaryColor),
+                                            )
+                                          ],
+                                        ),
+                                        Expanded(child: Container()),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: FloatingActionButton.small(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ConversationPage(
+                                                    tickets: showOpenedTickets
+                                                        ? openedTickets[key]
+                                                        : closedTickets[key],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            backgroundColor: themeProvider
+                                                .currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Icon(
+                                              Icons.navigate_next,
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             )),
                   const SizedBox(
                     height: 20,
