@@ -104,16 +104,7 @@ class ContactPageState extends State<ContactPage> {
                           fontWeight: FontWeight.bold,
                           fontSize: 32,
                           color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          shadows: [
-                            Shadow(
-                              color: context.select(
-                                  (ThemeProvider themeProvider) => themeProvider
-                                      .currentTheme.secondaryHeaderColor),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                              themeProvider.currentTheme.primaryColor),
                         ),
                         textAlign: TextAlign.center,
                       ),

@@ -12,13 +12,17 @@ class InteractivePanel extends StatefulWidget {
       required this.rotateFrontCallback,
       required this.rotateBackCallback,
       required this.rotateLeftCallback,
-      required this.rotateRightCallback});
+      required this.rotateRightCallback,
+      required this.width,
+      required this.height});
 
   final Function(LockerCoordinates, bool) callback;
   final Function() rotateFrontCallback;
   final Function() rotateBackCallback;
   final Function() rotateLeftCallback;
   final Function() rotateRightCallback;
+  final int width;
+  final int height;
 
   @override
   State<InteractivePanel> createState() => InteractivePanelState();
@@ -73,6 +77,8 @@ class InteractivePanelState extends State<InteractivePanel> {
                         builder: (context) => ContainerDialog(
                               callback: widget.callback,
                               size: 1,
+                              width: widget.width,
+                              height: widget.height,
                             ));
                   },
                   child: Column(
@@ -114,6 +120,8 @@ class InteractivePanelState extends State<InteractivePanel> {
                         builder: (context) => ContainerDialog(
                               callback: widget.callback,
                               size: 2,
+                              width: widget.width,
+                              height: widget.height,
                             ));
                   },
                   child: Column(
@@ -155,6 +163,8 @@ class InteractivePanelState extends State<InteractivePanel> {
                         builder: (context) => ContainerDialog(
                               callback: widget.callback,
                               size: 3,
+                              width: widget.width,
+                              height: widget.height,
                             ));
                   },
                   child: Column(
