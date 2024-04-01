@@ -19,12 +19,12 @@ exports.createFixtures = async () => {
     });
     const itemCategory1 = await db.Item_Category.create({
       data: {
-        name: "Sport"
+        name: "Sport",
       },
     });
     const itemCategory2 = await db.Item_Category.create({
       data: {
-        name: "Plage"
+        name: "Plage",
       },
     });
     const container = await db.Containers.create({
@@ -39,24 +39,24 @@ exports.createFixtures = async () => {
               price: 3,
               available: true,
               categories: {
-                connect: [{ id: 1 }, { id: 2 }]
-              }
+                connect: [{ id: 1 }, { id: 2 }],
+              },
             },
             {
               name: "raquette",
               price: 6,
               available: false,
               categories: {
-                connect: [{ id: 1 }]
-              }
+                connect: [{ id: 1 }],
+              },
             },
             {
               name: "ballon de football",
               price: 16,
               available: true,
               categories: {
-                connect: [{ id: 2 }]
-              }
+                connect: [{ id: 2 }],
+              },
             },
           ],
         },
