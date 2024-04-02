@@ -31,8 +31,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         title: showLogo
             ? Image.asset(
                 key: const Key('appbar-image_logo'),
-                'assets/logo_noir.png',
-                height: 64,
+                'assets/logo.png',
+                height: 192,
               )
             : null,
         centerTitle: true,

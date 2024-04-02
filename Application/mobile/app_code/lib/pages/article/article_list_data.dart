@@ -56,10 +56,41 @@ class ArticleDataCard extends StatelessWidget {
       key: const Key('articles-list_card'),
       onTap: () {
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ArticleDetailsPage(
-              articleId: articleData.id,
+
+            context,
+            MaterialPageRoute(
+              builder: (context) => ArticleDetailsPage(
+                articleId: articleData.id,
+              ),
+            ));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(
+            left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
+        alignment: Alignment.center,
+        height: 150.0,
+        decoration: BoxDecoration(
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.cardColor),
+          borderRadius: BorderRadius.circular(30.0),
+          boxShadow: [
+            BoxShadow(
+              color: context
+                  .select((ThemeProvider themeProvider) => themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor!)
+                  .withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Transform.scale(
+              scale: 0.6,
+              child: Image.asset('assets/volley.png'),
             ),
           ),
         );

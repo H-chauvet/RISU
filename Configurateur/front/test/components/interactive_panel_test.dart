@@ -29,6 +29,8 @@ void main() {
               rotateFrontCallback: blankRotateFunction,
               rotateRightCallback: blankRotateFunction,
               rotateLeftCallback: blankRotateFunction,
+              width: 12,
+              height: 5,
             )),
       ),
     ));

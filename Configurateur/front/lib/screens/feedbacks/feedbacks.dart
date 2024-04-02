@@ -12,8 +12,11 @@ import 'package:front/main.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class FeedbacksPage extends StatefulWidget {
   const FeedbacksPage({Key? key}) : super(key: key);
@@ -78,7 +81,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                 alignment: Alignment.topCenter,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 25, vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -97,7 +99,9 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                             ),
                             elevation: 0,
                             backgroundColor:
-                                const Color.fromRGBO(179, 174, 174, 1),
+                                Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.colorScheme.background
+                                    : lightTheme.colorScheme.background,
                             child: Container(
                               width: 600.0,
                               height: 300.0,
@@ -122,9 +126,13 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                       },
                     );
                   },
-                  child: const Text(
+                  child: Text(
                     'Poster un avis',
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
                   ),
                 ),
               ),

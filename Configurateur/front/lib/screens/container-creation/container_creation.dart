@@ -721,6 +721,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => ContainerDialog(
                                   callback: updateCube,
                                   size: 1,
+                                  width: int.parse(widget.width!),
+                                  height: int.parse(widget.height!),
                                 ));
                       },
                       style: ElevatedButton.styleFrom(
@@ -729,11 +731,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Ajouter un casier',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.add,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -752,11 +752,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Sauvegarder',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.save,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -776,11 +774,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Remplissage',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.auto_fix_high,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -812,11 +808,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Supprimer un casier',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.delete,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -830,11 +824,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Réinitialiser le conteneur',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.refresh,
-                        color: Colors.white,
                       ),
                     ),
                   ],

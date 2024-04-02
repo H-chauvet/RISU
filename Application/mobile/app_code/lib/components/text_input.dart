@@ -105,7 +105,7 @@ class _MyTextInputState extends State<MyTextInput> {
                 ? Icon(
                     widget.icon,
                     color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.primaryColor),
                   )
                 : null,
             suffixIcon: widget.rightIcon != null
@@ -114,7 +114,7 @@ class _MyTextInputState extends State<MyTextInput> {
                     onPressed: widget.rightIconOnPressed,
                     icon: Icon(widget.rightIcon),
                     color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.primaryColor),
                     splashRadius: 0.1,
                   )
                 : null,
