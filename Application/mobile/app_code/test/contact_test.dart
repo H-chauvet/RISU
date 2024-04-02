@@ -22,51 +22,24 @@ void main() {
 
   testWidgets('ContactPage full info', (WidgetTester tester) async {
     userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const ContactPage()));
+    final testPage = initPage(const ContactPage());
+    await waitForLoader(tester: tester, testPage: testPage);
 
-    Finder nameInput = find.byKey(const Key('contact-text_input-input_name'));
-    expect(nameInput, findsOneWidget);
-    await tester.enterText(nameInput, 'hugo');
+    Finder errorAlertDialog = find.byType(AlertDialog);
+    Finder buttonAddTicket = find.byKey(const Key("contact-add_ticket-button"));
+    Finder textTicketEmpty = find.byKey(const Key("contact-tickets-empty"));
+
+    expect(errorAlertDialog, findsOneWidget);
+
+    await tester.tap(errorAlertDialog);
     await tester.pumpAndSettle();
 
-    Finder emailInput = find.byKey(const Key('contact-text_input-input_email'));
-    expect(emailInput, findsOneWidget);
-    await tester.enterText(emailInput, 'test@example.com');
-    await tester.pumpAndSettle();
-
-    Finder messageInput =
-        find.byKey(const Key('contact-text_input-input_message'));
-    expect(messageInput, findsOneWidget);
-    await tester.enterText(messageInput, 'Hello, World!');
-    await tester.pumpAndSettle();
-
-    Finder sendButton = find.byKey(const Key('contact-button-send_message'));
-    expect(sendButton, findsOneWidget);
-
-    await tester.tap(sendButton);
-    await tester.pumpAndSettle();
-
-    Finder invalidAlertDialog =
-        find.byKey(const Key('contact-alert_dialog-invalid_info'));
-    expect(invalidAlertDialog, findsNothing);
-
-    Finder refusedAlertDialog =
-        find.byKey(const Key('contact-alert_dialog-refused'));
-    expect(refusedAlertDialog, findsNothing);
+    expect(buttonAddTicket, findsOneWidget);
+    expect(textTicketEmpty, findsOneWidget);
   });
 
   testWidgets('ContactPage no info', (WidgetTester tester) async {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const ContactPage()));
-
-    Finder sendButton = find.byKey(const Key('contact-button-send_message'));
-    expect(sendButton, findsOneWidget);
-
-    await tester.tap(sendButton);
-    await tester.pumpAndSettle();
-
-    Finder alertDialog =
-        find.byKey(const Key('contact-alert_dialog-invalid_info'));
-    expect(alertDialog, findsOneWidget);
   });
 }

@@ -282,113 +282,119 @@ class ContactPageState extends State<ContactPage> {
                   ),
                   const SizedBox(height: 20),
                   Expanded(
-                      child: (showOpenedTickets ? openedTickets : closedTickets)
-                              .isEmpty
-                          ? Center(
-                              child: Text(
-                                AppLocalizations.of(context)!.rentsListEmpty,
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    child: (showOpenedTickets ? openedTickets : closedTickets)
+                            .isEmpty
+                        ? Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.ticketListEmpty,
+                              key: const Key("contact-tickets-empty"),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                            )
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: showOpenedTickets
-                                  ? openedTickets.length
-                                  : closedTickets.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                String key = (showOpenedTickets
-                                        ? openedTickets
-                                        : closedTickets)
-                                    .keys
-                                    .elementAt(index);
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: showOpenedTickets
+                                ? openedTickets.length
+                                : closedTickets.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              String key = (showOpenedTickets
+                                      ? openedTickets
+                                      : closedTickets)
+                                  .keys
+                                  .elementAt(index);
 
-                                dynamic ticket = showOpenedTickets
-                                    ? openedTickets[key].last
-                                    : closedTickets[key].last;
-                                return Card(
-                                  elevation: 5,
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 10),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  color: themeProvider.currentTheme.cardColor,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Column(
+                              dynamic firstTicket = showOpenedTickets
+                                  ? openedTickets[key][0]
+                                  : closedTickets[key][0];
+                              dynamic lastTicket = showOpenedTickets
+                                  ? openedTickets[key].last
+                                  : closedTickets[key].last;
+                              return Card(
+                                elevation: 5,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                color: themeProvider.currentTheme.cardColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              ticket["title"],
+                                              firstTicket["title"],
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
+                                                fontSize: 18,
                                                 color: themeProvider
                                                     .currentTheme.primaryColor,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             Text(
-                                              formatDateTime(
-                                                  ticket["createdAt"]),
+                                              AppLocalizations.of(context)!
+                                                  .createdAt(
+                                                formatDateTime(
+                                                    firstTicket["createdAt"]),
+                                              ),
                                             ),
                                             Text(
-                                              ticket["content"],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .primaryColor),
+                                              AppLocalizations.of(context)!
+                                                  .lastActivity(formatDateTime(
+                                                      lastTicket["createdAt"])),
                                             )
                                           ],
                                         ),
-                                        Expanded(child: Container()),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: FloatingActionButton.small(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ConversationPage(
-                                                    tickets: showOpenedTickets
-                                                        ? openedTickets[key]
-                                                        : closedTickets[key],
-                                                  ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: FloatingActionButton.small(
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ConversationPage(
+                                                  tickets: showOpenedTickets
+                                                      ? openedTickets[key]
+                                                      : closedTickets[key],
                                                 ),
-                                              );
-                                            },
-                                            backgroundColor: themeProvider
-                                                .currentTheme
-                                                .secondaryHeaderColor,
-                                            child: Icon(
-                                              Icons.navigate_next,
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor,
-                                            ),
+                                              ),
+                                            );
+                                          },
+                                          backgroundColor: themeProvider
+                                              .currentTheme
+                                              .secondaryHeaderColor,
+                                          child: Icon(
+                                            Icons.navigate_next,
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                );
-                              },
-                            )),
+                                ),
+                              );
+                            },
+                          ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: FloatingActionButton.extended(
-                      key: const Key('add_ticket-button'),
+                      key: const Key('contact-add_ticket-button'),
                       onPressed: () async {},
                       backgroundColor:
                           themeProvider.currentTheme.secondaryHeaderColor,
