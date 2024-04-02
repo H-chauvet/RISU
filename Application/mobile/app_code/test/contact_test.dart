@@ -25,7 +25,7 @@ void main() {
     final testPage = initPage(const ContactPage());
     await waitForLoader(tester: tester, testPage: testPage);
 
-    Finder errorAlertDialog = find.byType(AlertDialog);
+    Finder errorAlertDialog = find.byKey(const Key("alertdialog-button_ok"));
     Finder buttonAddTicket = find.byKey(const Key("contact-add_ticket-button"));
     Finder textTicketEmpty = find.byKey(const Key("contact-tickets-empty"));
 
@@ -34,12 +34,12 @@ void main() {
     await tester.tap(errorAlertDialog);
     await tester.pumpAndSettle();
 
+    expect(errorAlertDialog, findsNothing);
+
     expect(buttonAddTicket, findsOneWidget);
     expect(textTicketEmpty, findsOneWidget);
-  });
 
-  testWidgets('ContactPage no info', (WidgetTester tester) async {
-    userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const ContactPage()));
+    await tester.tap(buttonAddTicket);
+    await tester.pumpAndSettle();
   });
 }

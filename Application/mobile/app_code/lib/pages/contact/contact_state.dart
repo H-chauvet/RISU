@@ -109,55 +109,6 @@ class ContactPageState extends State<ContactPage> {
     }
   }
 
-  Future<bool> apiContact(String name, String email, String message) async {
-    late http.Response response;
-    try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
-      response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/contact'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'name': name,
-          'email': email,
-          'message': message,
-        }),
-      );
-    } catch (err, stacktrace) {
-      if (context.mounted) {
-        setState(() {
-          _loaderManager.setIsLoading(false);
-        });
-        printCatchError(context, err, stacktrace,
-            message: AppLocalizations.of(context)!.connectionRefused);
-        return false;
-      }
-    }
-    setState(() {
-      _loaderManager.setIsLoading(false);
-    });
-    if (response.statusCode == 201) {
-      if (context.mounted) {
-        await MyAlertDialog.showInfoAlertDialog(
-          context: context,
-          title: AppLocalizations.of(context)!.contact,
-          message: AppLocalizations.of(context)!.messageSent,
-        );
-        return true;
-      }
-    } else {
-      if (context.mounted) {
-        printServerResponse(context, response, 'apiContact',
-            message: AppLocalizations.of(context)!
-                .errorOccurredDuringSendingMessage);
-      }
-    }
-    return false;
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
