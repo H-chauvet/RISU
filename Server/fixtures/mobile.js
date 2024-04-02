@@ -17,6 +17,16 @@ exports.createFixtures = async () => {
         newsOffersRisu: true,
       },
     });
+    const itemCategory1 = await db.Item_Category.create({
+      data: {
+        name: "Sport",
+      },
+    });
+    const itemCategory2 = await db.Item_Category.create({
+      data: {
+        name: "Plage",
+      },
+    });
     const container = await db.Containers.create({
       data: {
         id: 1,
@@ -24,13 +34,35 @@ exports.createFixtures = async () => {
         address: "Rue George",
         items: {
           create: [
-            { name: "ballon de volley", price: 3, available: true },
-            { name: "raquette", price: 6, available: false },
-            { name: "ballon de football", price: 16, available: true },
+            {
+              name: "ballon de volley",
+              price: 3,
+              available: true,
+              categories: {
+                connect: [{ id: 1 }, { id: 2 }],
+              },
+            },
+            {
+              name: "raquette",
+              price: 6,
+              available: false,
+              categories: {
+                connect: [{ id: 1 }],
+              },
+            },
+            {
+              name: "ballon de football",
+              price: 16,
+              available: true,
+              categories: {
+                connect: [{ id: 2 }],
+              },
+            },
           ],
         },
       },
     });
+
     const emptyContainer = await db.Containers.create({
       data: {
         id: 2,
