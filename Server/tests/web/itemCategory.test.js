@@ -26,8 +26,6 @@ describe("Items Category Route Tests", () => {
       .set("Authorization", "Bearer mockedAccessToken")
       .send({ name: "Nouvelle Catégorie" });
 
-    console.log(response.body);
-
     expect(response.status).toBe(200);
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken",
@@ -128,5 +126,4 @@ describe("Items Category Route Tests", () => {
     );
     expect(itemCategoryCtrl.deleteItemCategory).not.toHaveBeenCalled();
   });
-
 });

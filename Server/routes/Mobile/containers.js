@@ -43,7 +43,6 @@ router.get('/:containerId/articleslist/', async (req, res) => {
     } else if (!container.items || container.items.length === 0) {
       return res.status(204).json({ message: 'Container doesn\'t have items' })
     }
-    console.log(container.items)
     return res.status(200).json(container.items)
   } catch (err) {
     console.error(err.message)
