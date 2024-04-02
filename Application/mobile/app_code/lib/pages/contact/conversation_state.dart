@@ -56,22 +56,20 @@ class ConversationPageState extends State<ConversationPage> {
                 itemBuilder: (BuildContext context, int index) {
                   final currentTicket = tickets[tickets.length - 1 - index];
                   return Align(
-                    alignment: (currentTicket["creatorId"] ==
-                            userInformation?.ID
-                        ? Alignment.topRight
-                        : Alignment.topLeft),
+                    alignment:
+                        (currentTicket["creatorId"] == userInformation?.ID
+                            ? Alignment.topRight
+                            : Alignment.topLeft),
                     child: Card(
                       elevation: 5,
-                      margin: (currentTicket["creatorId"] ==
-                              userInformation?.ID
+                      margin: (currentTicket["creatorId"] == userInformation?.ID
                           ? const EdgeInsets.only(left: 32, top: 8, bottom: 8)
                           : const EdgeInsets.only(
                               right: 32, top: 8, bottom: 8)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      color: (currentTicket["creatorId"] ==
-                              userInformation?.ID
+                      color: (currentTicket["creatorId"] == userInformation?.ID
                           ? themeProvider.currentTheme.primaryColor
                               .withOpacity(1)
                           : themeProvider.currentTheme.cardColor),
@@ -86,7 +84,7 @@ class ConversationPageState extends State<ConversationPage> {
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 color: (currentTicket["creatorId"] ==
-                                      userInformation?.ID
+                                        userInformation?.ID
                                     ? themeProvider
                                         .currentTheme.colorScheme.background
                                     : themeProvider
