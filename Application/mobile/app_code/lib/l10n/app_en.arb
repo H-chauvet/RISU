@@ -59,6 +59,7 @@
   "errorOccurredDuringPasswordReset": "An error occurred while resetting the password.",
   "errorOccurredDuringPasswordUpdate": "An error occurred while updating the password.",
   "errorOccurredDuringPaymentCreation": "An error occurred during payment creation.",
+  "errorOccurredDuringPostTicket": "An error occurred during posting a new ticket.",
   "errorOccurredDuringProfileConfiguration": "An error occurred while configuring the profile.",
   "errorOccurredDuringRentReturning": "An error occurred while returning the rental.",
   "errorOccurredDuringRenting": "An error occurred while renting.",

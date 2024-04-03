@@ -1,16 +1,12 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
-import 'package:risu/components/outlined_button.dart';
-import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/utils/errors.dart';
@@ -271,68 +267,69 @@ class ContactPageState extends State<ContactPage> {
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 color: themeProvider.currentTheme.cardColor,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              firstTicket["title"],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                color: themeProvider
-                                                    .currentTheme.primaryColor,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .createdAt(
-                                                formatDateTime(
-                                                    firstTicket["createdAt"]),
-                                              ),
-                                            ),
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .lastActivity(formatDateTime(
-                                                      lastTicket["createdAt"])),
-                                            )
-                                          ],
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ConversationPage(
+                                          tickets: showOpenedTickets
+                                              ? openedTickets[key]
+                                              : closedTickets[key],
+                                          isOpen: showOpenedTickets,
                                         ),
                                       ),
-                                      Align(
-                                        alignment: Alignment.centerRight,
-                                        child: FloatingActionButton.small(
-                                          onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ConversationPage(
-                                                  tickets: showOpenedTickets
-                                                      ? openedTickets[key]
-                                                      : closedTickets[key],
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(16),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                firstTicket["title"],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .primaryColor,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
-                                            );
-                                          },
-                                          backgroundColor: themeProvider
-                                              .currentTheme
-                                              .secondaryHeaderColor,
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .createdAt(
+                                                  formatDateTime(
+                                                      firstTicket["createdAt"]),
+                                                ),
+                                              ),
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .lastActivity(
+                                                        formatDateTime(
+                                                            lastTicket[
+                                                                "createdAt"])),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
                                           child: Icon(
                                             Icons.navigate_next,
                                             color: themeProvider
                                                 .currentTheme.primaryColor,
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

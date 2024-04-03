@@ -1,30 +1,87 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/loader.dart';
+import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'package:risu/globals.dart';
 import 'conversation_page.dart';
 
 class ConversationPageState extends State<ConversationPage> {
   List<dynamic> tickets = [];
+  bool isOpen = false;
 
   @override
   void initState() {
     super.initState();
     tickets = widget.tickets;
+    isOpen = widget.isOpen;
   }
+
+  final LoaderManager _loaderManager = LoaderManager();
 
   String formatDateTime(String dateTimeString) {
     DateTime dateTime = DateTime.parse(dateTimeString);
     return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
   }
 
+  Future<bool> postTicket(String content) async {
+    late http.Response response;
+    dynamic previousTicket = tickets.last;
+
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      response = await http.post(Uri.parse('$baseUrl/api/mobile/ticket/'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${userInformation?.token}',
+          },
+          body: jsonEncode(<String, String>{
+            'content': content,
+            'title': previousTicket["title"],
+            'assignedId': previousTicket["assignedId"],
+            'chatUid': previousTicket["chatUid"],
+          }));
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'postTicket',
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
+          return false;
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message:
+                AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
+        return false;
+      }
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final scrollController = ScrollController();
+    final contentController = TextEditingController();
 
     return Scaffold(
       appBar: MyAppBar(
@@ -116,28 +173,52 @@ class ConversationPageState extends State<ConversationPage> {
                 },
               ),
             ),
-            Row(
-              children: [
-                const Expanded(
-                  flex: 7,
-                  child: TextField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Write here',
-                    ),
-                  ),
-                ),
-                const Padding(padding: EdgeInsets.all(8)),
-                Expanded(
-                  flex: 1,
-                  child: FloatingActionButton.extended(
-                    onPressed: () async {},
-                    backgroundColor: themeProvider.currentTheme.primaryColor,
-                    label: const Icon(Icons.send),
-                  ),
-                ),
-              ],
-            ),
+            isOpen
+                ? Row(
+                    children: [
+                      Expanded(
+                        flex: 7,
+                        child: TextField(
+                          controller: contentController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Write here',
+                          ),
+                        ),
+                      ),
+                      const Padding(padding: EdgeInsets.all(8)),
+                      Expanded(
+                        flex: 1,
+                        child: FloatingActionButton.extended(
+                          onPressed: () async {
+                            final newContent = contentController.text;
+                            bool success =
+                                await postTicket(contentController.text);
+                            if (success) {
+                              final lastTicket = tickets.last;
+                              final newTicket = {
+                                "content": newContent,
+                                'title': lastTicket["title"],
+                                'assignedId': lastTicket["assignedId"],
+                                'chatUid': lastTicket["chatUid"],
+                                'creatorId': userInformation!.ID!,
+                                'createdAt': DateTime.now().toString(),
+                              };
+                              setState(() {
+                                tickets.add(newTicket);
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                              });
+                            }
+                          },
+                          backgroundColor:
+                              themeProvider.currentTheme.primaryColor,
+                          label: const Icon(Icons.send),
+                        ),
+                      ),
+                    ],
+                  )
+                : Container(),
           ],
         ),
       ),
