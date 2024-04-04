@@ -14,7 +14,7 @@ class MapPageState extends State<MapPage> {
   PermissionStatus? permission;
   String? markerId;
 
-  LatLng _center = const LatLng(47.2104851, -1.56675127492582);
+  LatLng _center = const LatLng(33.139469, -117.161148);
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class MapPageState extends State<MapPage> {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "jivfdvfd",
+                "myShowModalBottomSheet",
                 textAlign: TextAlign.center,
               ),
             ),
@@ -62,6 +62,8 @@ class MapPageState extends State<MapPage> {
       ),
       markers: markers,
       mapToolbarEnabled: false,
+      myLocationEnabled: true,
+      myLocationButtonEnabled: false,
     );
   }
 
