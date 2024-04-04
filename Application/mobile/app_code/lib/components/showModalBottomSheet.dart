@@ -29,7 +29,7 @@ void myShowModalBottomSheet(BuildContext context, String title, Widget content,
                     Align(
                       alignment: Alignment.topRight,
                       child: IconButton(
-                        icon: const Icon(Icons.close),
+                        icon: const Icon(Icons.close, color: Colors.grey,),
                         onPressed: () {
                           Navigator.pop(context);
                         },
