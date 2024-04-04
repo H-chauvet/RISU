@@ -191,7 +191,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       style: TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
-                        color: themeProvider.currentTheme.secondaryHeaderColor,
+                        color: themeProvider.currentTheme.primaryColor,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -250,8 +250,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         TableCell(
                                           child: Container(
                                             padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
                                             child: Text(
                                               AppLocalizations.of(context)!
                                                   .price,
@@ -259,10 +259,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: themeProvider
-                                                    .currentTheme
-                                                    .inputDecorationTheme
-                                                    .labelStyle!
-                                                    .color,
+                                                    .currentTheme.primaryColor,
                                               ),
                                             ),
                                           ),
@@ -270,8 +267,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                         TableCell(
                                           child: Container(
                                             padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
                                             child: Text(
                                               AppLocalizations.of(context)!
                                                   .duration,
@@ -279,10 +276,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                                 color: themeProvider
-                                                    .currentTheme
-                                                    .inputDecorationTheme
-                                                    .labelStyle!
-                                                    .color,
+                                                    .currentTheme.primaryColor,
                                               ),
                                             ),
                                           ),
@@ -296,18 +290,15 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             padding: const EdgeInsets.all(8.0),
                                             color: themeProvider
                                                 .currentTheme.primaryColor
-                                                .withOpacity(0.6),
+                                                .withOpacity(0.8),
                                             child: Text(
                                               "${rent['price']}€",
                                               style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: themeProvider
-                                                    .currentTheme
-                                                    .inputDecorationTheme
-                                                    .labelStyle!
-                                                    .color,
-                                              ),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .secondaryHeaderColor),
                                             ),
                                           ),
                                         ),
@@ -316,19 +307,16 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                             padding: const EdgeInsets.all(8.0),
                                             color: themeProvider
                                                 .currentTheme.primaryColor
-                                                .withOpacity(0.6),
+                                                .withOpacity(0.8),
                                             child: Text(
                                               AppLocalizations.of(context)!
                                                   .rentHours(rent['duration']),
                                               style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: themeProvider
-                                                    .currentTheme
-                                                    .inputDecorationTheme
-                                                    .labelStyle!
-                                                    .color,
-                                              ),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .secondaryHeaderColor),
                                             ),
                                           ),
                                         ),

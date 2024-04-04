@@ -299,10 +299,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.myInformation,
                           key: const Key('profile_info-text_informations'),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor)),
                         ),
                       ),
                       buildField(
@@ -343,9 +345,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.password,
                           key: const Key('profile_info-text_password'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                           ),
                         ),
                       ),

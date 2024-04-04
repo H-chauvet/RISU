@@ -180,15 +180,7 @@ class LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
                       color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      shadows: [
-                        Shadow(
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                          themeProvider.currentTheme.primaryColor),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -237,8 +229,8 @@ class LoginPageState extends State<LoginPage> {
                                   decoration: TextDecoration.underline,
                                   color: context.select(
                                       (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme
-                                              .secondaryHeaderColor),
+                                          themeProvider
+                                              .currentTheme.primaryColor),
                                 ),
                               ),
                             ),
@@ -274,7 +266,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -286,7 +278,7 @@ class LoginPageState extends State<LoginPage> {
                       AppLocalizations.of(context)!.signIn,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         fontSize: 16.0,
                       ),
                     ),
@@ -309,7 +301,7 @@ class LoginPageState extends State<LoginPage> {
                         fontSize: 14,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                   ),

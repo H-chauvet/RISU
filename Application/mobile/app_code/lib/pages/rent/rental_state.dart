@@ -133,15 +133,7 @@ class RentalPageState extends State<RentalPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 32,
-                        color: themeProvider.currentTheme.secondaryHeaderColor,
-                        shadows: [
-                          Shadow(
-                            color:
-                                themeProvider.currentTheme.secondaryHeaderColor,
-                            blurRadius: 24,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        color: themeProvider.currentTheme.primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -177,13 +169,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.allE,
                                   style: TextStyle(
                                     color: showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -220,13 +213,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.inProgress,
                                   style: TextStyle(
                                     color: !showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
