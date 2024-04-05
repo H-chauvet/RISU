@@ -20,6 +20,7 @@ import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
   late bool keepPath;
+  bool _stayLoggedIn = false;
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
@@ -209,8 +210,50 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       Align(
                         alignment: Alignment.centerRight,
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Row(
+                              children: [
+                                Checkbox(
+                                  key: const Key('login-checkbox_stayloggedin'),
+                                  value: _stayLoggedIn,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _stayLoggedIn = value!;
+                                    });
+                                  },
+                                  side: BorderSide(
+                                    color: context.select(
+                                        (ThemeProvider themeProvider) =>
+                                            themeProvider
+                                                .currentTheme.primaryColor),
+                                  ),
+                                  checkColor: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider.currentTheme
+                                              .secondaryHeaderColor),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
+                                  activeColor: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider
+                                              .currentTheme.primaryColor),
+                                ),
+                                Text(
+                                  "Rester connecté",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: context.select(
+                                        (ThemeProvider themeProvider) =>
+                                            themeProvider
+                                                .currentTheme.primaryColor),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 20),
                             TextButton(
                               key: const Key('login-textbutton_resetpassword'),
                               onPressed: () {
