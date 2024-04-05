@@ -27,6 +27,10 @@ void main() {
           find.byKey(const Key('login-textinput_email'));
       Finder textInputPasswordFinder =
           find.byKey(const Key('login-textinput_password'));
+      Finder CheckBoxFinder =
+          find.byKey(const Key('login-checkbox_stayconnected'));
+      Finder TextStayConnectedFinder =
+          find.byKey(const Key('login-text_stayconnected'));
       Finder textButtonResetPasswordFinder =
           find.byKey(const Key('login-textbutton_resetpassword'));
       Finder buttonSigninFinder = find.byKey(const Key('login-button_signin'));
@@ -40,6 +44,8 @@ void main() {
       expect(subTitleFinder, findsOneWidget);
       expect(textInputEmailFinder, findsOneWidget);
       expect(textInputPasswordFinder, findsOneWidget);
+      expect(CheckBoxFinder, findsOneWidget);
+      expect(TextStayConnectedFinder, findsOneWidget);
       expect(textinputRightIconFinder, findsOneWidget);
       expect(textButtonResetPasswordFinder, findsOneWidget);
       expect(buttonSigninFinder, findsOneWidget);
