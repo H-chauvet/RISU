@@ -208,73 +208,62 @@ class LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (value) => _password = value,
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Checkbox(
-                                  key: const Key('login-checkbox_stayloggedin'),
-                                  value: _stayLoggedIn,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _stayLoggedIn = value!;
-                                    });
-                                  },
-                                  side: BorderSide(
-                                    color: context.select(
-                                        (ThemeProvider themeProvider) =>
-                                            themeProvider
-                                                .currentTheme.primaryColor),
-                                  ),
-                                  checkColor: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme
-                                              .secondaryHeaderColor),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                  ),
-                                  activeColor: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider
-                                              .currentTheme.primaryColor),
-                                ),
-                                Text(
-                                  "Rester connecté",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: context.select(
-                                        (ThemeProvider themeProvider) =>
-                                            themeProvider
-                                                .currentTheme.primaryColor),
-                                  ),
-                                ),
-                              ],
+                      Row(
+                        children: [
+                          Checkbox(
+                            key: const Key('login-checkbox_stayconnected'),
+                            value: _stayLoggedIn,
+                            onChanged: (value) {
+                              setState(() {
+                                _stayLoggedIn = value!;
+                              });
+                            },
+                            side: BorderSide(
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
                             ),
-                            const SizedBox(width: 20),
-                            TextButton(
-                              key: const Key('login-textbutton_resetpassword'),
-                              onPressed: () {
-                                setState(() {
-                                  apiResetPassword(context);
-                                });
-                              },
-                              child: Text(
-                                "${AppLocalizations.of(context)!.passwordForgotten} ?",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  decoration: TextDecoration.underline,
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider
-                                              .currentTheme.primaryColor),
-                                ),
+                            checkColor: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.secondaryHeaderColor),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            activeColor: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
+                          ),
+                          Text(
+                            "Rester connecté",
+                            key: const Key('login-text_stayconnected'),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
+                            ),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            key: const Key('login-textbutton_resetpassword'),
+                            onPressed: () {
+                              setState(() {
+                                apiResetPassword(context);
+                              });
+                            },
+                            child: Text(
+                              "${AppLocalizations.of(context)!.passwordForgotten} ?",
+                              style: TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
