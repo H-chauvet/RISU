@@ -47,8 +47,7 @@ class ArticleData {
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 
-  const ArticleDataCard({Key? key, required this.articleData})
-      : super(key: key);
+  const ArticleDataCard({super.key, required this.articleData});
 
   @override
   Widget build(BuildContext context) {
