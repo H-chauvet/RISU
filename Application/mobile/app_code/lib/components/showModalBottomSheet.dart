@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 void myShowModalBottomSheet(BuildContext context, String title, Widget content,
-    {bool showCloseButton = true, Color color = Colors.white}) {
+    {bool showCloseButton = true, Color color = Colors.white, String? subtitle}) {
   double borderRadius = 32;
   double padding = 8;
 
@@ -37,13 +37,24 @@ void myShowModalBottomSheet(BuildContext context, String title, Widget content,
                     ),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: Column(
+                      children: [
+                        Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        if (subtitle != null)
+                          Text(
+                            subtitle,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ],
