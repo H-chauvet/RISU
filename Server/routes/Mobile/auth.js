@@ -34,7 +34,7 @@ router.post('/signup', (req, res, next) => {
   )(req, res, next)
 })
 
-router.post('/login', (req, res, next) => {
+router.post('/login', jwtMiddleware.refreshTokenMiddleware, (req, res, next) => {
   passport.authenticate(
     'login',
     { session: false },
@@ -67,7 +67,7 @@ router.post('/login', (req, res, next) => {
   )(req, res, next)
 })
 
-router.get('/mailVerification', async (req, res) => {
+router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
   const token = req.query.token
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
