@@ -51,6 +51,7 @@ class LoginPageState extends State<LoginPage> {
         body: jsonEncode(<String, String>{
           'email': _email!,
           'password': _password!,
+          'longTerm': _stayLoggedIn ? 'true' : 'false',
         }),
       );
       setState(() {
