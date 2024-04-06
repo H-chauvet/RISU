@@ -137,6 +137,25 @@ exports.updateUserInfo = (user, body) => {
   })
 }
 
+/**
+ * Update user's refresh token
+ *
+ * @param {string} userId ID of the user
+ * @param {string} refreshToken Refresh token to be saved
+ */
+exports.updateUserRefreshToken = async (userId, refreshToken) => {
+  try {
+    await db.User_Mobile.update({
+      where: { id: userId },
+      data: { refreshToken: refreshToken }
+    });
+  } catch (error) {
+    console.error('Error updating user refresh token:', error);
+    throw new Error('Failed to update user refresh token');
+  }
+};
+
+
 exports.getFullName = (userId) => {
   const user = db.User_Mobile.findUnique({
     where: { id: userId },
