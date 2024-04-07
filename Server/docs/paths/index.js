@@ -1,7 +1,9 @@
 const mobileSignUp = require('./Mobile/auth/signup')
 const mobileLogIn = require('./Mobile/auth/login')
 const mobileMailVerification = require('./Mobile/auth/mailVerification')
-const mobileContact = require('./Mobile/contact/contact')
+const mobileTickets = require('./Mobile/contact/tickets')
+const mobileAssignTicket = require('./Mobile/contact/assignedId')
+const mobileChatUid = require('./Mobile/contact/chatUid')
 const mobileContainerListAll = require('./Mobile/container/listAll')
 const mobileContainerId = require('./Mobile/container/containerId')
 const mobileContainerArticleList = require('./Mobile/container/articleList')
@@ -62,8 +64,14 @@ module.exports = {
         '/api/mobile/auth/mailVerification': {
             ...mobileMailVerification
         },
-        '/api/mobile/contact': {
-            ...mobileContact
+        '/api/mobile/ticket': {
+            ...mobileTickets
+        },
+        '/api/mobile/ticket/:assignedId': {
+            ...mobileAssignTicket
+        },
+        '/api/mobile/ticket/:chatUid' : {
+            ...mobileChatUid
         },
         '/api/mobile/container/listAll': {
             ...mobileContainerListAll
