@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
@@ -11,6 +10,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/pages/contact/new_ticket_page.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/time.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'contact_page.dart';
@@ -24,12 +24,12 @@ class ContactPageState extends State<ContactPage> {
   @override
   void initState() {
     super.initState();
-    getUserTickets();
-  }
-
-  String formatDateTime(String dateTimeString) {
-    DateTime dateTime = DateTime.parse(dateTimeString);
-    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+    if (widget.testTickets.isEmpty) {
+      getUserTickets();
+    } else {
+      openedTickets = widget.testTickets;
+      closedTickets = widget.testTickets;
+    }
   }
 
   void sortTickets(Map<String, dynamic> tickets) {
@@ -143,6 +143,7 @@ class ContactPageState extends State<ContactPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       InkWell(
+                        key: const Key('contact-ink-well-show-open'),
                         onTap: () {
                           setState(() {
                             showOpenedTickets = true;
@@ -185,6 +186,7 @@ class ContactPageState extends State<ContactPage> {
                         ),
                       ),
                       InkWell(
+                        key: const Key('contact-ink-well-show-close'),
                         onTap: () {
                           setState(() {
                             showOpenedTickets = false;
@@ -269,6 +271,7 @@ class ContactPageState extends State<ContactPage> {
                                 ),
                                 color: themeProvider.currentTheme.cardColor,
                                 child: GestureDetector(
+                                  key: const Key('contact-gesture-go-to-chat'),
                                   onTap: () {
                                     Navigator.push(
                                       context,

@@ -3,13 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/time.dart';
 
 import 'conversation_page.dart';
 
@@ -25,11 +25,6 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   final LoaderManager _loaderManager = LoaderManager();
-
-  String formatDateTime(String dateTimeString) {
-    DateTime dateTime = DateTime.parse(dateTimeString);
-    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
-  }
 
   Future<bool> postTicket(String content) async {
     late http.Response response;
@@ -189,6 +184,7 @@ class ConversationPageState extends State<ConversationPage> {
                       Expanded(
                         flex: 1,
                         child: FloatingActionButton.extended(
+                          key: const Key('chat-button-send-message'),
                           onPressed: () async {
                             final newContent = contentController.text;
                             bool success =
