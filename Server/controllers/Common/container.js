@@ -91,7 +91,20 @@ exports.getItemsFromContainer = (containerId) => {
   return db.Containers.findUnique({
     where: { id: containerId },
     select: {
-      items : true
+      items: {
+        select: {
+          id: true,
+          name: true,
+          available: true,
+          createdAt: true,
+          containerId: true,
+          price: true,
+          image: true,
+          description: true,
+          categories: true
+        }
+      }
     },
   })
 }
+
