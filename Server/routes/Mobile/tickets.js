@@ -60,8 +60,8 @@ router.post('/',
         content,
         title,
         creatorId,
-        assignedId,
-        chatUid
+        assignedId : assignedId ?? "",
+        chatUid : chatUid
       })
 
       return res.status(201).send("Success: Ticket Created.")

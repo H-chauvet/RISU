@@ -130,7 +130,6 @@ class ConversationPageState extends State<ConversationPage> {
                           ? themeProvider.currentTheme.primaryColor
                               .withOpacity(1)
                           : themeProvider.currentTheme.cardColor),
-                      //themeProvider.currentTheme.cardColor,
                       child: Padding(
                         padding: const EdgeInsets.all(8),
                         child: Column(

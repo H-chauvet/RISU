@@ -9,6 +9,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
+import 'package:risu/pages/contact/new_ticket_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -343,7 +344,14 @@ class ContactPageState extends State<ContactPage> {
                     alignment: Alignment.centerRight,
                     child: FloatingActionButton.extended(
                       key: const Key('contact-add_ticket-button'),
-                      onPressed: () async {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NewTicketPage(),
+                          ),
+                        );
+                      },
                       backgroundColor:
                           themeProvider.currentTheme.secondaryHeaderColor,
                       label: Text(
