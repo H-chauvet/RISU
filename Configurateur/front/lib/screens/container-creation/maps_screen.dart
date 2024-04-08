@@ -35,10 +35,12 @@ class MapsState extends State<MapsScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  CameraPosition _kGooglePlex = const CameraPosition(
+  static CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(47.210528, -1.566956),
     zoom: 15,
   );
+
+  LatLng location = _kGooglePlex.target;
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
@@ -81,15 +83,11 @@ class MapsState extends State<MapsScreen> {
   void initState() {
     checkToken();
     getPosition();
+
     super.initState();
   }
 
-  Set<Marker> markers = {};
-
   void goNext() {
-    if (markers.isEmpty) {
-      return;
-    }
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
       <String, String>{
@@ -99,8 +97,8 @@ class MapsState extends State<MapsScreen> {
       },
       {
         'id': widget.id,
-        'latitude': markers.first.position.latitude,
-        'longitude': markers.first.position.longitude,
+        'latitude': location.latitude.toString(),
+        'longitude': location.longitude.toString(),
       },
     );
     var data = {
@@ -114,10 +112,6 @@ class MapsState extends State<MapsScreen> {
   }
 
   void goPrevious() {
-    debugPrint('previous');
-    dynamic decode = jsonDecode(widget.lockers!);
-    debugPrint(decode.toString());
-    debugPrint('previous2');
     var data = {
       'amount': widget.amount,
       'containerMapping': widget.containerMapping,
@@ -156,24 +150,25 @@ class MapsState extends State<MapsScreen> {
         widthFactor: 0.7,
         heightFactor: 0.7,
         alignment: Alignment.center,
-        child: GoogleMap(
-          key: UniqueKey(),
-          initialCameraPosition: _kGooglePlex,
-          mapType: MapType.normal,
-          markers: markers,
-          onMapCreated: (GoogleMapController controller) {
-            _controller.complete(controller);
-          },
-          onTap: (LatLng latLng) {
-            setState(() {
-              markers.clear();
-              markers.add(Marker(
-                markerId: const MarkerId('1'),
-                position: latLng,
-              ));
-            });
-          },
-        ),
+        child: Stack(alignment: Alignment.center, children: [
+          GoogleMap(
+              key: UniqueKey(),
+              initialCameraPosition: _kGooglePlex,
+              mapType: MapType.normal,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
+              onCameraMove: (CameraPosition position) {
+                location = position.target;
+              }),
+          const Positioned(
+            child: Icon(
+              size: 40,
+              Icons.room,
+              color: Colors.red,
+            ),
+          )
+        ]),
       )),
     );
   }
