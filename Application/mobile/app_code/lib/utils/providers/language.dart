@@ -13,6 +13,7 @@ class LanguageProvider extends ChangeNotifier {
 
   void changeLanguage(Locale locale) async {
     _currentLocale = locale;
+    language = locale.languageCode;
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('language', locale.languageCode);

@@ -11,10 +11,6 @@ void main() {
       WidgetController.hitTestWarningShouldBeFatal = true;
     });
 
-    tearDown(() {
-      // This code runs after each test case.
-    });
-
     test('Testing Format Time', () {
       initializeDateFormatting();
       final formatTime =

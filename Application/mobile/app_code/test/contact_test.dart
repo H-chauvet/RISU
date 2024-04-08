@@ -15,10 +15,6 @@ void main() {
     WidgetController.hitTestWarningShouldBeFatal = true;
   });
 
-  tearDown(() {
-    // This code runs after each test case.
-  });
-
   var ticket1 = {
     'createdAt': DateTime.now().toString(),
     'chatUid': '1',

@@ -1,8 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:risu/globals.dart';
 
-String formatDateTime(
-    {required String dateTimeString, String locale = "fr_FR"}) {
+String formatDateTime({required String dateTimeString}) {
   DateTime dateTime = DateTime.parse(dateTimeString);
-  DateFormat formatter = DateFormat.yMd(locale).add_Hm();
+  DateFormat formatter = DateFormat.yMd(language).add_Hm();
   return formatter.format(dateTime);
 }
