@@ -40,9 +40,9 @@ exports.assignTicket = (id, assignedId) => {
  * @returns the freshly updated objects
  */
 exports.closeConversation = (chatUid) => {
-  return db.Tickets.update({
+  return db.Tickets.updateMany({
     where: {
-      chatUid
+      chatUid,
     },
     data: {
       closed: true
@@ -57,7 +57,7 @@ exports.closeConversation = (chatUid) => {
  * @returns none
  */
 exports.deleteConversation = (chatUid) => {
-  return db.Tickets.delete({
+  return db.Tickets.deleteMany({
     where: {
       chatUid,
     },

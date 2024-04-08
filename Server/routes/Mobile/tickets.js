@@ -72,7 +72,7 @@ router.post('/',
   }
 )
 
-router.put('/:assignedId',
+router.put('/assign/:assignedId',
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

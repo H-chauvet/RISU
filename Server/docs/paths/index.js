@@ -67,7 +67,7 @@ module.exports = {
         '/api/mobile/ticket': {
             ...mobileTickets
         },
-        '/api/mobile/ticket/:assignedId': {
+        '/api/mobile/ticket/assign/:assignedId': {
             ...mobileAssignTicket
         },
         '/api/mobile/ticket/:chatUid' : {
