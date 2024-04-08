@@ -19,6 +19,46 @@ void main() {
       // This code runs after each test case.
     });
 
+    testWidgets('Click on checkbox to toggle stay connected',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(initPage(const LoginPage()));
+
+      Finder CheckBoxFinder =
+          find.byKey(const Key('login-checkbox_stayconnected'));
+
+      expect(tester.widget<Checkbox>(CheckBoxFinder).value, false);
+
+      await tester.tap(CheckBoxFinder);
+      await tester.pump();
+
+      expect(tester.widget<Checkbox>(CheckBoxFinder).value, true);
+    });
+
+    testWidgets('Click on text to toggle stay connected',
+        (WidgetTester tester) async {
+      await tester.pumpWidget(initPage(const LoginPage()));
+
+      Finder TextStayConnectedFinder =
+          find.byKey(const Key('login-text_stayconnected'));
+
+      expect(
+          tester
+              .widget<Checkbox>(
+                  find.byKey(const Key('login-checkbox_stayconnected')))
+              .value,
+          false);
+
+      await tester.tap(TextStayConnectedFinder);
+      await tester.pump();
+
+      expect(
+          tester
+              .widget<Checkbox>(
+                  find.byKey(const Key('login-checkbox_stayconnected')))
+              .value,
+          true);
+    });
+
     testWidgets('Login', (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const LoginPage()));
 
