@@ -4,23 +4,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:risu/utils/errors.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:permission_handler/permission_handler.dart';
 import 'package:risu/components/loader.dart';
-import 'package:risu/pages/container/container_list.dart';
 import 'package:risu/components/showModalBottomSheet.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/pages/article/list_page.dart';
+import 'package:risu/pages/container/container_list.dart';
+import 'package:risu/utils/errors.dart';
+
 import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   final bool displayGoogleMap = true;
   PermissionStatus? permission;
-  String? markerId;
   List<ContainerList> containers = [];
   final LoaderManager _loaderManager = LoaderManager();
+  List<dynamic> listItems = [];
 
   LatLng _center = const LatLng(33.139469, -117.161148);
 
@@ -67,6 +69,37 @@ class MapPageState extends State<MapPage> {
     }
   }
 
+  void _getContainerItems(int containerId) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        dynamic responseData = json.decode(response.body);
+        setState(() {
+          listItems = responseData;
+        });
+        print(listItems);
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, '_getContainersData');
+        }
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace);
+        return;
+      }
+      return;
+    }
+  }
+
   Widget displayMap(BuildContext context) {
     setState(() {
       _loaderManager.setIsLoading(true);
@@ -90,30 +123,110 @@ class MapPageState extends State<MapPage> {
           markerId: MarkerId(container.id.toString()),
           position: position,
           onTap: () {
-            setState(() {
-              markerId = container.id.toString();
-            });
+            _getContainerItems(container.id);
             myShowModalBottomSheet(
               context,
               container.city!,
               subtitle: "by ${"Risu"}",
-              Align(
-                alignment: Alignment.centerLeft,
+              SingleChildScrollView(
                 child: Column(
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.location_on),
-                      title: Text(container.address!),
+                    const Divider(
+                      color: Colors.black12,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 24,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(container.address!),
+                        ),
+                        // TODO "Directions" IconButton
+                      ],
                     ),
                     const Divider(
                       color: Colors.black12,
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.location_on),
-                      title: Text(container.address!),
+                    Row(
+                      children: [
+                        const Text(
+                          "Articles",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArticleListPage(
+                                  containerId: container.id,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            "View All",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    const Divider(
-                      color: Colors.black12,
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: listItems.length,
+                        itemBuilder: (context, index) {
+                          final item = listItems.elementAt(index);
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ArticleDetailsPage(
+                                    articleId: item['id'],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              margin: const EdgeInsets.all(8),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Stack(
+                                  children: [
+                                    Image.asset('assets/volley.png'),
+                                    Positioned(
+                                      left: 0,
+                                      child: Container(
+                                        width: 10,
+                                        height: 10,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: item['available']
+                                              ? Colors.green
+                                              : Colors.red,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ],
                 ),
