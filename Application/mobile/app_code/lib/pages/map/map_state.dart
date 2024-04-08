@@ -25,6 +25,7 @@ class MapPageState extends State<MapPage> {
   List<ContainerList> containers = [];
   final LoaderManager _loaderManager = LoaderManager();
   List<dynamic> listItems = [];
+  Map<String, dynamic> containersData = {};
   Color dividerColor = Colors.black12;
 
   LatLng _center = const LatLng(33.139469, -117.161148);
@@ -56,12 +57,12 @@ class MapPageState extends State<MapPage> {
         containers =
             containersData.map((data) => ContainerList.fromJson(data)).toList();
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, '_getContainersData');
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -73,6 +74,15 @@ class MapPageState extends State<MapPage> {
   }
 
   Future<void> _getContainerItems(int containerId) async {
+    if (containersData.containsKey('$containerId')) {
+      setState(() {
+        listItems = containersData['$containerId'];
+      });
+      return;
+    }
+    setState(() {
+      listItems = [];
+    });
     try {
       final response = await http.get(
         Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist'),
@@ -84,15 +94,15 @@ class MapPageState extends State<MapPage> {
         dynamic responseData = json.decode(response.body);
         setState(() {
           listItems = responseData;
+          containersData['$containerId'] = listItems;
         });
-        print(listItems);
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, '_getContainersData');
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -295,7 +305,7 @@ class MapPageState extends State<MapPage> {
       });
       mapController?.animateCamera(CameraUpdate.newLatLng(_center));
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!
                 .errorOccurredDuringGettingUserLocation);
