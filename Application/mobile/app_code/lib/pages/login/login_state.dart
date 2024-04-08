@@ -234,14 +234,22 @@ class LoginPageState extends State<LoginPage> {
                                 (ThemeProvider themeProvider) =>
                                     themeProvider.currentTheme.primaryColor),
                           ),
-                          Text(
-                            "Rester connecté",
-                            key: const Key('login-text_stayconnected'),
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: context.select(
-                                  (ThemeProvider themeProvider) =>
-                                      themeProvider.currentTheme.primaryColor),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _stayLoggedIn = !_stayLoggedIn;
+                              });
+                            },
+                            child: Text(
+                              "Rester connecté",
+                              key: const Key('login-text_stayconnected'),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
+                              ),
                             ),
                           ),
                           const Spacer(),
