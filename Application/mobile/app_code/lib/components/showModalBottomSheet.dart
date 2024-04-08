@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 void myShowModalBottomSheet(BuildContext context, String title, Widget content,
-    {bool showCloseButton = true, Color color = Colors.white, String? subtitle}) {
+    {bool showCloseButton = true,
+    Color color = Colors.white,
+    String? subtitle}) {
   double borderRadius = 32;
   double padding = 8;
 
@@ -12,7 +16,8 @@ void myShowModalBottomSheet(BuildContext context, String title, Widget content,
         height: MediaQuery.of(context).size.height * 0.4,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: color,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.bottomSheetTheme.backgroundColor),
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(borderRadius),
             topRight: Radius.circular(borderRadius),
@@ -29,7 +34,10 @@ void myShowModalBottomSheet(BuildContext context, String title, Widget content,
                     Align(
                       alignment: Alignment.topRight,
                       child: IconButton(
-                        icon: const Icon(Icons.close, color: Colors.grey,),
+                        icon: const Icon(
+                          Icons.close,
+                          color: Colors.grey,
+                        ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
