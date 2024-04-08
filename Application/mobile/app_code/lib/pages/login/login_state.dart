@@ -27,7 +27,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
-      if (context.mounted) {
+      if (mounted) {
         await MyAlertDialog.showErrorAlertDialog(
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
@@ -64,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
         return true;
       } else {
         if (jsonData.containsKey('message')) {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'apiLogin',
                 message: jsonData['message']);
             return false;
@@ -72,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.connectionRefused);
         setState(() {

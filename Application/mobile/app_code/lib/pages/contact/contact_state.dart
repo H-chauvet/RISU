@@ -44,7 +44,7 @@ class ContactPageState extends State<ContactPage> {
         }),
       );
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -58,7 +58,7 @@ class ContactPageState extends State<ContactPage> {
       _loaderManager.setIsLoading(false);
     });
     if (response.statusCode == 201) {
-      if (context.mounted) {
+      if (mounted) {
         await MyAlertDialog.showInfoAlertDialog(
           context: context,
           title: AppLocalizations.of(context)!.contact,
@@ -67,7 +67,7 @@ class ContactPageState extends State<ContactPage> {
         return true;
       }
     } else {
-      if (context.mounted) {
+      if (mounted) {
         printServerResponse(context, response, 'apiContact',
             message: AppLocalizations.of(context)!
                 .errorOccurredDuringSendingMessage);

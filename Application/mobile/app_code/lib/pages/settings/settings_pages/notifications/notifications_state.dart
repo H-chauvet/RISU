@@ -60,14 +60,14 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'saveNotifications',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });

@@ -10,13 +10,15 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/utils/check_signin.dart';
+
 import 'opinion_page.dart';
 
 class OpinionPageState extends State<OpinionPage> {
   int itemId;
+
   OpinionPageState({required this.itemId});
 
   List<dynamic> opinionsList = [];
@@ -51,14 +53,14 @@ class OpinionPageState extends State<OpinionPage> {
           opinionsList = data['opinions'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getOpinions',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingReviews);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -92,7 +94,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -101,14 +103,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'postOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSavingReview);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -141,7 +143,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -150,14 +152,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'updateOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringReviewUpdate);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -185,7 +187,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -194,14 +196,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'deleteOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringReviewDeletion);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });

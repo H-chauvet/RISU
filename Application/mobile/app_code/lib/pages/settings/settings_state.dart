@@ -9,7 +9,6 @@ import 'package:risu/components/parameter.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/language/modal.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
@@ -47,14 +46,14 @@ class SettingsPageState extends State<SettingsPage> {
       if (response.statusCode == 200) {
         return true;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'apiDeleteAccount',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringAccountDeletion);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
