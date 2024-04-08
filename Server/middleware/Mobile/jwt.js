@@ -9,9 +9,6 @@ const crypto = require("crypto");
  */
 function generateToken(id, longTerm = false) {
   const expireInSeconds = longTerm ? parseInt(process.env.REFRESH_JWT_EXPIRE) : parseInt(process.env.JWT_EXPIRE);
-  console.log(parseInt(process.env.REFRESH_JWT_EXPIRE))
-  console.log(parseInt(process.env.JWT_EXPIRE))
-  console.log('expireInSeconds', expireInSeconds);
   return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
     expiresIn: expireInSeconds
   });
@@ -36,18 +33,20 @@ function generateRefreshToken(id) {
  */
 const refreshTokenMiddleware = async (req, res, next) => {
   try {
-    if (!req.headers.authorization) {
+    if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer ')) {
       return next();
     }
     const token = req.headers.authorization.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
-
-    const currentTimestamp = Math.floor(Date.now() / 1000);
-    if (decoded.exp < currentTimestamp) {
-      const userId = decoded.id;
-      const newToken = generateToken(userId);
-
-      res.setHeader('Authorization', `Bearer ${newToken}`);
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      const currentTimestamp = Math.floor(Date.now() / 1000);
+      if (decoded.exp < currentTimestamp) {
+        const userId = decoded.id;
+        const newToken = generateToken(userId);
+        res.setHeader('Authorization', `Bearer ${newToken}`);
+      }
+    } catch (err) {
+      console.error('Error verifying token in refreshTokenMiddleware:', err.message);
     }
     next();
   } catch (err) {
