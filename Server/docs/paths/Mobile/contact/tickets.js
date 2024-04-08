@@ -9,7 +9,7 @@ module.exports = {
       parameters: [
       ],
       responses: {
-        201: {
+        200: {
           description: 'OK',
           content : {
             "application/json": {

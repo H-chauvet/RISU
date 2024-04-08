@@ -49,7 +49,7 @@ class NewTicketState extends State<NewTicketPage> {
         return true;
       } else {
         if (context.mounted) {
-          printServerResponse(context, response, 'postTicket',
+          printServerResponse(context, response, 'createTicket',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
           return false;

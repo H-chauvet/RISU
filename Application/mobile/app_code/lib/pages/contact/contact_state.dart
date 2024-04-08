@@ -61,7 +61,7 @@ class ContactPageState extends State<ContactPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final data = json.decode(response.body);
         List<dynamic> tickets = data["tickets"];
         Map<String, dynamic> tmpOpenedTickets = {};
@@ -157,7 +157,7 @@ class ContactPageState extends State<ContactPage> {
                           child: Container(
                             constraints: BoxConstraints.expand(
                               width: MediaQuery.of(context).size.width / 3,
-                              height: 30, // hauteur du bouton
+                              height: 30,
                             ),
                             decoration: BoxDecoration(
                               color: showOpenedTickets
@@ -174,10 +174,8 @@ class ContactPageState extends State<ContactPage> {
                                           .currentTheme.secondaryHeaderColor
                                       : themeProvider.currentTheme.brightness ==
                                               Brightness.light
-                                          ? Colors.grey[
-                                              800] // Gris foncé pour le mode clair
+                                          ? Colors.grey[800]
                                           : Colors.grey[400],
-                                  // Gris clair pour le mode sombre
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -200,7 +198,7 @@ class ContactPageState extends State<ContactPage> {
                           child: Container(
                             constraints: BoxConstraints.expand(
                               width: MediaQuery.of(context).size.width / 3,
-                              height: 30, // hauteur du bouton
+                              height: 30,
                             ),
                             decoration: BoxDecoration(
                               color: !showOpenedTickets
@@ -217,10 +215,8 @@ class ContactPageState extends State<ContactPage> {
                                           .currentTheme.secondaryHeaderColor
                                       : themeProvider.currentTheme.brightness ==
                                               Brightness.light
-                                          ? Colors.grey[
-                                              800] // Gris foncé pour le mode clair
+                                          ? Colors.grey[800]
                                           : Colors.grey[400],
-                                  // Gris clair pour le mode sombre
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -311,13 +307,15 @@ class ContactPageState extends State<ContactPage> {
                                                 AppLocalizations.of(context)!
                                                     .createdAt(
                                                   formatDateTime(
-                                                      firstTicket["createdAt"]),
+                                                      dateTimeString:
+                                                          firstTicket[
+                                                              "createdAt"]),
                                                 ),
                                               ),
                                               Text(
                                                 AppLocalizations.of(context)!
-                                                    .lastActivity(
-                                                        formatDateTime(
+                                                    .lastActivity(formatDateTime(
+                                                        dateTimeString:
                                                             lastTicket[
                                                                 "createdAt"])),
                                               )

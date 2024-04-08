@@ -281,7 +281,7 @@ class RentalPageState extends State<RentalPage> {
                                         Text(
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
-                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
+                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}"),
                                         Text(AppLocalizations.of(context)!
                                             .rentTimeOfRenting(
                                                 rental['duration'])),

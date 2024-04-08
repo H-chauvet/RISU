@@ -146,18 +146,20 @@ class ConversationPageState extends State<ConversationPage> {
                               ),
                             ),
                             Text(
-                              formatDateTime(currentTicket["createdAt"]),
+                              formatDateTime(
+                                  dateTimeString: currentTicket["createdAt"]),
                               style: TextStyle(
-                                  fontStyle: FontStyle.italic,
-                                  color: (currentTicket["creatorId"] ==
-                                          userInformation?.ID
-                                      ? themeProvider
-                                          .currentTheme.colorScheme.background
-                                      : themeProvider
-                                          .currentTheme
-                                          .inputDecorationTheme
-                                          .labelStyle
-                                          ?.color)),
+                                fontStyle: FontStyle.italic,
+                                color: (currentTicket["creatorId"] ==
+                                        userInformation?.ID
+                                    ? themeProvider
+                                        .currentTheme.colorScheme.background
+                                    : themeProvider
+                                        .currentTheme
+                                        .inputDecorationTheme
+                                        .labelStyle
+                                        ?.color),
+                              ),
                             )
                           ],
                         ),

@@ -86,7 +86,7 @@
   "invoiceSentMessage": "La facture vous a été envoyée par email.",
   "language": "Langue",
   "languageChangedTo": "Langue changée pour {language}.",
-  "lastActivity": "Dernière activité : {time}",
+  "lastActivity": "Dernière activité: {time}",
   "lastName": "Nom",
   "light": "Clair",
   "logOut": "Déconnexion",

@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 
-String formatDateTime(String dateTimeString) {
+String formatDateTime(
+    {required String dateTimeString, String locale = "fr_FR"}) {
   DateTime dateTime = DateTime.parse(dateTimeString);
-  return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
+  DateFormat formatter = DateFormat.yMd(locale).add_Hm();
+  return formatter.format(dateTime);
 }

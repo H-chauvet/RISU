@@ -17,7 +17,7 @@ router.get('/',
       }
       const tickets = await ticketCtrl.getAllUserTickets(user.id);
 
-      return res.status(201).json({ tickets })
+      return res.status(200).json({ tickets })
     } catch (err) {
       console.error(err.message)
       return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
@@ -148,7 +148,7 @@ router.delete('/:chatId',
 
       await ticketCtrl.deleteConversation(chatId)
 
-      return res.status(201).send("Success : Conversation deleted")
+      return res.status(200).send("Success : Conversation deleted")
     } catch (err) {
       console.error(err.message)
       return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
