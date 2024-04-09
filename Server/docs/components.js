@@ -94,6 +94,33 @@ module.exports = {
           },
         },
       },
+      Ticket: {
+        type: "object",
+        properties: {
+          content: {
+            type: "string",
+          },
+          title: {
+            type: "string",
+          },
+          creatorId: {
+            type: "string",
+          },
+          assignedId: {
+            type: "string",
+          },
+          createdAt: {
+            type: "integer",
+            format: "date-time",
+          },
+          chatUid: {
+            type: "string",
+          },
+          closed: {
+            type: "boolean",
+          },
+        },
+      },
       User_Web: {
         type: "object",
         required: ["email", "password"],
