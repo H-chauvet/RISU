@@ -8,6 +8,11 @@ const crypto = require("crypto");
  * @returns generated token
  */
 function generateToken(id, longTerm = false) {
+  if (!process.env.REFRESH_JWT_EXPIRE) {
+    throw new Error('REFRESH_JWT_EXPIRE not found in .env');
+  } else if (!process.env.JWT_EXPIRE) {
+    throw new Error('JWT_EXPIRE not found in .env');
+  }
   const expireInSeconds = longTerm ? parseInt(process.env.REFRESH_JWT_EXPIRE) : parseInt(process.env.JWT_EXPIRE);
   return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
     expiresIn: expireInSeconds
