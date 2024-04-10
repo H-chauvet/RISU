@@ -51,8 +51,6 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, (req, res, next) => 
         longTerm = req.body.longTerm === 'true';
       }
 
-      console.log('longTerm', longTerm);
-
       const token = jwtMiddleware.generateToken(user.id, longTerm);
 
       if (longTerm) {
