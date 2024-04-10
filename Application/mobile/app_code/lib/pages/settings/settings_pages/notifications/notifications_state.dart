@@ -137,7 +137,6 @@ class NotificationsPageState extends State<NotificationsPage> {
               themeProvider.currentTheme.secondaryHeaderColor,
         ),
         showBackButton: true,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(

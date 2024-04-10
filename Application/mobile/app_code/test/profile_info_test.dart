@@ -17,25 +17,26 @@ void main() {
       // This code runs after each test case.
     });
 
+    Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
     Finder infoTextFinder =
-    find.byKey(const Key('profile_info-text_informations'));
+        find.byKey(const Key('profile_info-text_informations'));
     Finder firstNameFinder =
-    find.byKey(const Key('profile_info-text_field_firstname'));
+        find.byKey(const Key('profile_info-text_field_firstname'));
     Finder lastNameFinder =
-    find.byKey(const Key('profile_info-text_field_lastname'));
+        find.byKey(const Key('profile_info-text_field_lastname'));
     Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
     Finder updateInformationButtonFinder =
-    find.byKey(const Key('profile_info-button_update'));
+        find.byKey(const Key('profile_info-button_update'));
     Finder passwordTextFinder =
-    find.byKey(const Key('profile_info-text_password'));
+        find.byKey(const Key('profile_info-text_password'));
     Finder passwordFinder =
-    find.byKey(const Key('profile_info-text_field_current_password'));
+        find.byKey(const Key('profile_info-text_field_current_password'));
     Finder newPasswordFinder =
-    find.byKey(const Key('profile_info-text_field_new_password'));
+        find.byKey(const Key('profile_info-text_field_new_password'));
     Finder newPasswordConfirmationFinder = find
         .byKey(const Key('profile_info-text_field_new_password_confirmation'));
     Finder updatePasswordButtonFinder =
-    find.byKey(const Key('profile_info-button_update_password'));
+        find.byKey(const Key('profile_info-button_update_password'));
 
     Finder okButtonFinder = find.byKey(const Key('alertdialog-button_ok'));
 
@@ -44,6 +45,7 @@ void main() {
       final testPage = initPage(const ProfileInformationsPage());
       await waitForLoader(tester: tester, testPage: testPage);
 
+      expect(logoFinder, findsOneWidget);
       expect(infoTextFinder, findsOneWidget);
       expect(firstNameFinder, findsOneWidget);
       expect(lastNameFinder, findsOneWidget);
@@ -104,7 +106,6 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.pumpAndSettle();
-
 
       await tester.enterText(passwordFinder, 'current_password');
       await tester.pumpAndSettle();

@@ -82,7 +82,7 @@ class ContactPageState extends State<ContactPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.contact,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -97,17 +97,6 @@ class ContactPageState extends State<ContactPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 30),
-                      Text(
-                        AppLocalizations.of(context)!.contact,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.primaryColor),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                       const SizedBox(height: 32),
                       MyTextInput(
                         key: const Key('contact-text_input-input_name'),

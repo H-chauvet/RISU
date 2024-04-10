@@ -76,10 +76,10 @@ class SettingsPageState extends State<SettingsPage> {
               themeProvider.currentTheme.secondaryHeaderColor,
         ),
         showBackButton: true,
-        showLogo: true,
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },
+        textTitle: AppLocalizations.of(context)!.settings,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -92,16 +92,6 @@ class SettingsPageState extends State<SettingsPage> {
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
                   children: [
-                    const SizedBox(height: 8),
-                    Text(
-                      AppLocalizations.of(context)!.settings,
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.primaryColor),
-                      ),
-                    ),
                     const SizedBox(height: 20),
                     Align(
                       alignment: Alignment.centerLeft,

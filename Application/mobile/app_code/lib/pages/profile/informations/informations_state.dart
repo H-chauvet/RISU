@@ -275,7 +275,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },

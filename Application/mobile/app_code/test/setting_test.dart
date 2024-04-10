@@ -21,11 +21,13 @@ void main() {
       await tester.pumpWidget(initPage(const SettingsPage()));
       BuildContext context = tester.element(find.byType(SettingsPage));
 
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
       Finder deleteTextButton =
           find.byKey(const Key('settings-textbutton_delete-account'));
       Finder bottomSizedBox =
           find.byKey(const Key('settings-sized_box-bottom'));
 
+      expect(appBarTitleData, findsOneWidget);
       expect(deleteTextButton, findsOneWidget);
       expect(bottomSizedBox, findsOneWidget);
 

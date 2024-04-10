@@ -228,7 +228,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.rentArticle,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -242,14 +242,6 @@ class RentArticlePageState extends State<RentArticlePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.rentArticle,
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.currentTheme.primaryColor,
-                        ),
-                      ),
                       const SizedBox(height: 8),
                       Container(
                         width: 256,

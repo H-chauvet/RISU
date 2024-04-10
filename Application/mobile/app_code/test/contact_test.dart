@@ -24,6 +24,9 @@ void main() {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const ContactPage()));
 
+    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+    expect(appBarTitleData, findsOneWidget);
+
     Finder nameInput = find.byKey(const Key('contact-text_input-input_name'));
     expect(nameInput, findsOneWidget);
     await tester.enterText(nameInput, 'hugo');
