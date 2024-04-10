@@ -58,8 +58,6 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, (req, res, next) => 
         userCtrl.updateUserRefreshToken(user.id, refreshToken)
       }
 
-      console.log('user', user.refreshToken);
-
       return res.status(201).json({ user : user, token : token })
     }
   )(req, res, next)
