@@ -4,7 +4,7 @@ const crypto = require("crypto");
 /**
  * Generate token
  *
- * @param {*} user user object
+ * @param {*} id user id, longTerm: boolean to generate long term token
  * @returns generated token
  */
 function generateToken(id, longTerm = false) {
@@ -17,7 +17,7 @@ function generateToken(id, longTerm = false) {
 /**
  * Generate refresh token
  *
- * @param {*} user user object
+ * @param {*} id user id
  * @returns generated refresh token
  */
 function generateRefreshToken(id) {
