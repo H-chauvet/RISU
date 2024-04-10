@@ -56,10 +56,10 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final Finder titleFinder = find.byKey(const Key('appbar-text_title'));
+      final Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
 
       // Verify that the back button is present.
-      expect(titleFinder, findsOneWidget);
+      expect(appBarTitleData, findsOneWidget);
 
       await tester.pumpAndSettle();
     });

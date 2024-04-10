@@ -83,7 +83,6 @@ class ConversationPageState extends State<ConversationPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
