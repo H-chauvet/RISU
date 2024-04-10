@@ -37,7 +37,7 @@ async function createInvoice(invoice) {
  */
 function generateHeader(doc) {
   doc
-    .image("logo.png", 50, 45, { width: 50 })
+    .image("assets/logo.png", 50, 45, { width: 50 })
     .fillColor("#444444")
     .fontSize(10)
     .text("RISU", 200, 50, { align: "right" })

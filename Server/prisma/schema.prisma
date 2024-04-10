@@ -35,6 +35,12 @@ model Containers {
     saveName         String?
 }
 
+model Item_Category {
+    id    Int    @id @default(autoincrement())
+    name  String
+    items Item[]
+}
+
 model Item {
     id              Int               @id @default(autoincrement())
     name            String
@@ -47,6 +53,7 @@ model Item {
     description     String?
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
+    categories      Item_Category[]
 }
 
 model Organization {
@@ -56,6 +63,17 @@ model Organization {
     affiliate          User_Web[]
     containers         Containers[]
     contactInformation String
+}
+
+model Tickets {
+    id         Int      @id @default(autoincrement())
+    content    String
+    title      String
+    creatorId  String
+    assignedId String
+    createdAt  DateTime @default(now())
+    chatUid    String   @default(cuid())
+    closed     Boolean  @default(false)
 }
 
 /////////////////////////////////////////////
@@ -99,14 +117,6 @@ model Contact_Web {
 /////////////////////////////////////////////
 //////////////////MOBILE/////////////////////
 /////////////////////////////////////////////
-
-model Contact_Mobile {
-    id        String   @id @unique @default(cuid())
-    name      String
-    email     String
-    message   String
-    createdAt DateTime @default(now())
-}
 
 model Opinions_Mobile {
     id      String      @id @unique @default(cuid())
