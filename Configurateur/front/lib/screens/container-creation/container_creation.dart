@@ -408,7 +408,6 @@ class ContainerCreationState extends State<ContainerCreation> {
                 .materialIndex ==
             4) {
           counter = 1;
-          debugPrint('locker disabled found');
         }
         if (objs[0]
                     .fragments[j * widths + i + fragmentIncrement]
@@ -433,7 +432,6 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
-          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
         if (j == heights) {

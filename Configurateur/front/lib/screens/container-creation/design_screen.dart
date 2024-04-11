@@ -521,7 +521,6 @@ class DesignScreenState extends State<DesignScreen> {
                                         return;
                                       }
                                       if (picked != null) {
-                                        debugPrint(picked.toString());
                                         openAddDialog(context);
                                       }
                                       setState(() {});
