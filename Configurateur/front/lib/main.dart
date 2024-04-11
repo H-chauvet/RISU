@@ -3,6 +3,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:intl/intl.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 import './app_routes.dart';
 import 'styles/themes.dart';
 import 'services/theme_service.dart';
@@ -30,12 +31,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routeInformationProvider: AppRouter.router.routeInformationProvider,
-      routeInformationParser: AppRouter.router.routeInformationParser,
-      routerDelegate: AppRouter.router.routerDelegate,
-      title: 'Risu',
-      theme: Provider.of<ThemeService>(context).isDark ? darkTheme : lightTheme,
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp.router(
+          routeInformationProvider: AppRouter.router.routeInformationProvider,
+          routeInformationParser: AppRouter.router.routeInformationParser,
+          routerDelegate: AppRouter.router.routerDelegate,
+          title: 'Risu',
+          theme: Provider.of<ThemeService>(context).isDark
+              ? darkTheme
+              : lightTheme,
+        );
+      },
     );
   }
 }
