@@ -54,6 +54,12 @@ module.exports = {
           informations: {
             type: "string",
           },
+          latitude: {
+            type: "float",
+          },
+          longitude: {
+            type: "float",
+          },
           items: {
             type: "array",
             items: {
