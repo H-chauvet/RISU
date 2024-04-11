@@ -15,7 +15,7 @@ import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -62,6 +62,12 @@ class LoginPageState extends State<LoginPage> {
         setState(() {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
+          final refreshToken = jsonData['user']['refreshToken'];
+          if (refreshToken != null && refreshToken != '') {
+            SharedPreferences.getInstance().then((prefs) {
+              prefs.setString('refreshToken', refreshToken);
+            });
+          }
         });
         return true;
       } else {
