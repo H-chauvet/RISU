@@ -26,6 +26,8 @@ void main() {
             child: ContainerDialog(
               callback: blankFunction,
               size: 1,
+              width: 12,
+              height: 5,
             ),
           ),
         ),
@@ -59,6 +61,8 @@ void main() {
             child: ContainerDialog(
               callback: blankFunction,
               size: 1,
+              width: 12,
+              height: 5,
             ),
           ),
         ),
@@ -90,6 +94,8 @@ void main() {
             child: ContainerDialog(
               callback: blankFunction,
               size: 1,
+              width: 12,
+              height: 5,
             ),
           ),
         ),

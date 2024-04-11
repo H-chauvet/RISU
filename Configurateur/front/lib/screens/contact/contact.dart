@@ -3,7 +3,10 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
@@ -165,15 +168,19 @@ class _ContactPageState extends State<ContactPage> {
                   } else {}
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 190, 189, 189),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Envoyer',
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
                 ),
               ),
             ],

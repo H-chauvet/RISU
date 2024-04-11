@@ -31,7 +31,7 @@ void main() {
                   MyParameter(
                       title: 'TestButton',
                       goToPage: LoginPage(),
-                      paramIcon: Icon(Icons.abc),
+                      paramIcon: Icons.abc,
                       locked: true),
                 ],
               ),
@@ -65,7 +65,7 @@ void main() {
                   MyParameter(
                     title: 'TestButton',
                     goToPage: LoginPage(),
-                    paramIcon: Icon(Icons.abc),
+                    paramIcon: Icons.abc,
                   ),
                 ],
               ),
@@ -97,7 +97,7 @@ void main() {
                   MyParameterModal(
                     title: 'theme',
                     modalContent: ThemeChangeModalContent(),
-                    paramIcon: Icon(Icons.abc),
+                    paramIcon: Icons.abc,
                   ),
                 ],
               ),
