@@ -15,6 +15,8 @@ exports.getContainerById = (id) => {
       items: {
         where: { available: true },
       },
+      latitude: true,
+      longitude: true,
     },
   });
 };
