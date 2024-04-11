@@ -131,21 +131,6 @@ router.put("/update-position", async function (req, res, next) {
   }
 });
 
-router.post("/create-ctn", async (req, res) => {
-  try {
-    const { id, price, width, height } = req.body;
-    const container = await containerCtrl.createContainer2({
-      price,
-      width,
-      height,
-    });
-    res.status(200).json(container);
-  } catch (err) {
-    console.log(err);
-    return res.status(400).json("An error occured.");
-  }
-});
-
 router.get("/listAll", async function (req, res, next) {
   try {
     const container = await containerCtrl.getAllContainers();

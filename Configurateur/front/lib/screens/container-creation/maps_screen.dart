@@ -35,6 +35,7 @@ class MapsState extends State<MapsScreen> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
+  // default location (EPITECH Nantes)
   static CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(47.210528, -1.566956),
     zoom: 15,

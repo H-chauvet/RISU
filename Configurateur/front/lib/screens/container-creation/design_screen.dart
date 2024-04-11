@@ -341,8 +341,6 @@ class DesignScreenState extends State<DesignScreen> {
 
   void goNext() async {
     if (widget.id == null) {
-      debugPrint('width: ${widget.width}');
-      debugPrint('height: ${widget.height}');
       HttpService().request(
         'http://$serverIp:3000/api/container/create',
         <String, String>{
@@ -409,20 +407,16 @@ class DesignScreenState extends State<DesignScreen> {
 
   void goPrevious() {
     if (widget.container != null) {
-      debugPrint('previous != null');
       dynamic decode = jsonDecode(widget.container!);
-      debugPrint('previous3 != null');
       decode['designs'] = jsonEncode(designss);
       decode['containerMapping'] = widget.containerMapping;
 
-      debugPrint('previous2 != null');
       var data = {
         'id': widget.id,
         'container': jsonEncode(decode),
         'width': widget.width,
         'height': widget.height,
       };
-      debugPrint('previous4 != null');
       context.go("/container-creation", extra: jsonEncode(data));
     } else {
       dynamic design = jsonEncode(designss);

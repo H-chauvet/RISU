@@ -61,14 +61,10 @@ class RecapScreenState extends State<RecapScreen> {
 
   void decodeLockers() {
     final decode = jsonDecode(widget.lockers!);
-    debugPrint('decoded');
-    debugPrint(decode.toString());
 
     for (int i = 0; i < decode.length; i++) {
-      debugPrint(i.toString());
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
-    debugPrint('decodeLockers');
   }
 
   @override
