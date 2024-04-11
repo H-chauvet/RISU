@@ -34,11 +34,11 @@ router.post('/signup', (req, res, next) => {
   )(req, res, next)
 })
 
-router.post('/login', jwtMiddleware.refreshTokenMiddleware, (req, res, next) => {
+router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, next) => {
   passport.authenticate(
     'login',
     { session: false },
-    (err, user, info) => {
+    async (err, user, info) =>  {
       if (err)
         throw new Error(err)
       if (user == false)
@@ -53,14 +53,28 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, (req, res, next) => 
 
       const token = jwtMiddleware.generateToken(user.id, longTerm);
 
+      var refreshToken = '';
       if (longTerm) {
-        const refreshToken = jwtMiddleware.generateRefreshToken(user.id);
-        userCtrl.updateUserRefreshToken(user.id, refreshToken)
+        refreshToken = jwtMiddleware.generateRefreshToken(user.id);
+        user = await userCtrl.updateUserRefreshToken(user.id, refreshToken)
       }
 
       return res.status(201).json({ user : user, token : token })
     }
   )(req, res, next)
+})
+
+router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
+  const refreshToken = req.body.refreshToken;
+  if (!refreshToken || refreshToken == '') {
+    return res.status(401).send('No refresh token provided.')
+  }
+  const user = await userCtrl.findUserByRefreshToken(refreshToken)
+  if (!user) {
+    return res.status(401).send('No matching user found.')
+  }
+  const token = jwtMiddleware.generateToken(user.id)
+  return res.status(201).json({ user : user, token : token })
 })
 
 router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
@@ -73,7 +87,6 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
       'Email now successfully verified !\nYou can go back to login page.'
       )
   } catch (err) {
-    console.error(err.message)
     return res.status(401).send('No matching user found.')
   }
 })

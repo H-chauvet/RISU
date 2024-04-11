@@ -145,12 +145,12 @@ exports.updateUserInfo = (user, body) => {
  */
 exports.updateUserRefreshToken = async (userId, refreshToken) => {
   try {
-    await db.User_Mobile.update({
+    return await db.User_Mobile.update({
       where: { id: userId },
-      data: { refreshToken: refreshToken }
+      data: { refreshToken: refreshToken },
+      include: { Notifications: true }
     });
   } catch (error) {
-    console.error('Error updating user refresh token:', error);
     throw new Error('Failed to update user refresh token');
   }
 };
@@ -164,4 +164,21 @@ exports.getFullName = (userId) => {
   if (!user) return null
   if (!user.firstName && !user.lastName) return 'Non renseigné'
   return user.firstName + ' ' + user.lastName
+}
+
+/**
+  * Find a user by his refresh token
+  *
+  * @param {string} refreshToken of the user
+  * @returns the user
+  */
+exports.findUserByRefreshToken = (refreshToken) => {
+  return db.User_Mobile.findUnique({
+    where: {
+      refreshToken: refreshToken
+    },
+    include: {
+      Notifications: true,
+    }
+  })
 }
