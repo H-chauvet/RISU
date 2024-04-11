@@ -32,6 +32,8 @@ exports.createFixtures = async () => {
         id: 1,
         city: "Nantes",
         address: "Rue George",
+        latitude: 47.218371,
+        longitude: -1.553621,
         items: {
           create: [
             {
@@ -68,6 +70,8 @@ exports.createFixtures = async () => {
         id: 2,
         city: "Nantes",
         address: "Rue george",
+        latitude: 47.218371,
+        longitude: -1.553621,
         items: {
           create: [],
         },
