@@ -32,6 +32,7 @@ void main() {
                   MyRedirectDivider(
                       title: 'TestButton',
                       goToPage: LoginPage(),
+                      pageName: '/login',
                       paramIcon: Icon(Icons.abc),
                       disconnect: true),
                 ],
@@ -65,6 +66,7 @@ void main() {
                   MyRedirectDivider(
                       title: 'TestButton',
                       goToPage: LoginPage(),
+                      pageName: '/login',
                       paramIcon: Icon(Icons.abc),
                       disconnect: true),
                 ],
@@ -97,6 +99,7 @@ void main() {
                   MyRedirectDivider(
                     title: 'TestButton',
                     goToPage: LoginPage(),
+                    pageName: '/login',
                     paramIcon: Icon(Icons.abc),
                   ),
                 ],
@@ -130,6 +133,7 @@ void main() {
                   MyRedirectDivider(
                     title: 'TestButton',
                     goToPage: LoginPage(),
+                    pageName: '/login',
                     paramIcon: Icon(Icons.abc),
                   ),
                 ],
@@ -162,6 +166,7 @@ void main() {
                   MyRedirectDivider(
                     title: 'TestButton',
                     goToPage: LoginPage(),
+                    pageName: '/login',
                     paramIcon: Icon(Icons.abc),
                     chosenPlace: DIVIDERPLACE.top,
                   ),

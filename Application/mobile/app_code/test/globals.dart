@@ -19,6 +19,11 @@ Widget initPage(Widget page, {String appTheme = 'Clair'}) {
       home: page,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
+      onGenerateRoute: (settings) {
+        return MaterialPageRoute(builder: (context) {
+          return page;
+        });
+      },
     ),
   );
 }

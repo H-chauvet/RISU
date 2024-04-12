@@ -31,6 +31,7 @@ void main() {
                   MyParameter(
                       title: 'TestButton',
                       goToPage: LoginPage(),
+                      pageName: LoginPage.routeName,
                       paramIcon: Icon(Icons.abc),
                       locked: true),
                 ],
@@ -65,6 +66,7 @@ void main() {
                   MyParameter(
                     title: 'TestButton',
                     goToPage: LoginPage(),
+                    pageName: LoginPage.routeName,
                     paramIcon: Icon(Icons.abc),
                   ),
                 ],
