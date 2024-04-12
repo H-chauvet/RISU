@@ -10,18 +10,25 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/utils/check_signin.dart';
+
 import 'opinion_page.dart';
 
 class OpinionPageState extends State<OpinionPage> {
-  int itemId;
-  OpinionPageState({required this.itemId});
+  int itemId = -1;
 
   List<dynamic> opinionsList = [];
   int selectedStarFilter = 6;
   final LoaderManager _loaderManager = LoaderManager();
+
+  @override
+  void initState() {
+    super.initState();
+    itemId = widget.itemId;
+    getOpinions(itemId);
+  }
 
   void getOpinions(itemId) async {
     try {
@@ -400,12 +407,6 @@ class OpinionPageState extends State<OpinionPage> {
         );
       },
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getOpinions(itemId);
   }
 
   @override

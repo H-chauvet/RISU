@@ -11,5 +11,5 @@ class OpinionPage extends StatefulWidget {
   });
 
   @override
-  State<OpinionPage> createState() => OpinionPageState(itemId: itemId);
+  State<OpinionPage> createState() => OpinionPageState();
 }
