@@ -75,11 +75,12 @@ class ContainerCard extends StatelessWidget {
       key: const Key('container-list_card'),
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                // id must be the same from web to mobile
-                builder: (context) =>
-                    ContainerDetailsPage(containerId: container.id)));
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ContainerDetailsPage(containerId: container.id),
+          ),
+        );
       },
       child: Container(
         height: 120,

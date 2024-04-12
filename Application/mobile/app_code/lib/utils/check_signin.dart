@@ -16,9 +16,10 @@ Function checkSignin = (BuildContext context) async {
     );
 
     if (isUserSignedIn && context.mounted) {
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(
+        LoginPage.routeName,
+        arguments: MaterialPageRoute(
           builder: (context) {
             return const LoginPage(
               keepPath: true,

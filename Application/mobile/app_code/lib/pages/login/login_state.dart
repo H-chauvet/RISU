@@ -252,9 +252,10 @@ class LoginPageState extends State<LoginPage> {
                                 if (keepPath)
                                   Navigator.pop(context)
                                 else
-                                  Navigator.pushAndRemoveUntil(
+                                  Navigator.pushNamedAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(
+                                    HomePage.routeName,
+                                    arguments: MaterialPageRoute(
                                       builder: (context) {
                                         return const HomePage();
                                       },

@@ -13,6 +13,7 @@ enum DIVIDERPLACE {
 class MyRedirectDivider extends StatelessWidget {
   final String title;
   final Widget goToPage;
+  final String pageName;
   final Widget paramIcon;
   final bool disconnect;
   final DIVIDERPLACE chosenPlace;
@@ -21,6 +22,7 @@ class MyRedirectDivider extends StatelessWidget {
     super.key,
     required this.title,
     required this.goToPage,
+    required this.pageName,
     required this.paramIcon,
     this.disconnect = false,
     this.chosenPlace = DIVIDERPLACE.bottom,
@@ -33,9 +35,10 @@ class MyRedirectDivider extends StatelessWidget {
     } else {
       if (disconnect) {
         userInformation = null;
-        Navigator.pushAndRemoveUntil(
+        Navigator.pushNamedAndRemoveUntil(
           context,
-          MaterialPageRoute(
+          pageName,
+          arguments: MaterialPageRoute(
             builder: (context) {
               return goToPage;
             },
@@ -43,9 +46,10 @@ class MyRedirectDivider extends StatelessWidget {
           (route) => false,
         );
       } else {
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
+          pageName,
+          arguments: MaterialPageRoute(
             builder: (context) {
               return goToPage;
             },
@@ -101,6 +105,7 @@ class MyRedirectDivider extends StatelessWidget {
 class MyParameter extends StatelessWidget {
   final String title;
   final Widget goToPage;
+  final String pageName;
   final Widget paramIcon;
   final bool locked;
 
@@ -108,6 +113,7 @@ class MyParameter extends StatelessWidget {
     super.key,
     required this.title,
     required this.goToPage,
+    required this.pageName,
     required this.paramIcon,
     this.locked = false,
   });
@@ -127,9 +133,10 @@ class MyParameter extends StatelessWidget {
         if (locked) {
           return;
         }
-        Navigator.push(
+        Navigator.pushNamed(
           context,
-          MaterialPageRoute(
+          pageName,
+          arguments: MaterialPageRoute(
             builder: (context) {
               return goToPage;
             },

@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
@@ -44,18 +43,21 @@ class BurgerDrawer extends StatelessWidget {
             const SizedBox(height: 16),
             MyRedirectDivider(
               goToPage: const ProfileInformationsPage(),
+              pageName: ProfileInformationsPage.routeName,
               title: AppLocalizations.of(context)!.profileDetails,
               paramIcon: const Icon(Icons.person),
             ),
             const SizedBox(height: 8),
             MyRedirectDivider(
               goToPage: const NotificationsPage(),
+              pageName: NotificationsPage.routeName,
               title: AppLocalizations.of(context)!.notifications,
               paramIcon: const Icon(Icons.notifications),
             ),
             const SizedBox(height: 8),
             MyRedirectDivider(
               goToPage: const SettingsPage(),
+              pageName: SettingsPage.routeName,
               title: AppLocalizations.of(context)!.settings,
               paramIcon: const Icon(Icons.settings),
             ),
@@ -64,6 +66,7 @@ class BurgerDrawer extends StatelessWidget {
               MyRedirectDivider(
                 key: const Key('burgerdrawer-logout'),
                 goToPage: const LoginPage(),
+                pageName: LoginPage.routeName,
                 title: AppLocalizations.of(context)!.logOut,
                 paramIcon: const Icon(Icons.logout),
                 disconnect: true,

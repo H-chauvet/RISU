@@ -29,9 +29,10 @@ class ProfilePageState extends State<ProfilePage> {
           text: AppLocalizations.of(context)!.toComplete,
           sizeCoefficient: 0.8,
           onPressed: () {
-            Navigator.push(
+            Navigator.pushNamed(
               context,
-              MaterialPageRoute(
+              ProfileInformationsPage.routeName,
+              arguments: MaterialPageRoute(
                 builder: (context) {
                   return const ProfileInformationsPage();
                 },
@@ -118,9 +119,10 @@ class ProfilePageState extends State<ProfilePage> {
                     key: const Key('profile-button-settings_button'),
                     text: AppLocalizations.of(context)!.settings,
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
+                        SettingsPage.routeName,
+                        arguments: MaterialPageRoute(
                           builder: (context) {
                             return const SettingsPage();
                           },
@@ -147,9 +149,10 @@ class ProfilePageState extends State<ProfilePage> {
                     key: const Key('profile-button-my_rentals_button'),
                     text: AppLocalizations.of(context)!.myRents,
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(
+                        RentalPage.routeName,
+                        arguments: MaterialPageRoute(
                           builder: (context) {
                             return const RentalPage();
                           },
@@ -167,9 +170,10 @@ class ProfilePageState extends State<ProfilePage> {
                   text: AppLocalizations.of(context)!.logOut,
                   onPressed: () {
                     userInformation = null;
-                    Navigator.pushAndRemoveUntil(
+                    Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MaterialPageRoute(
+                      LoginPage.routeName,
+                      arguments: MaterialPageRoute(
                         builder: (context) {
                           return const LoginPage();
                         },

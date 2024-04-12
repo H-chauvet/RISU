@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/burger_drawer.dart';
+import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
-import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/components/alert_dialog.dart';
-import 'package:risu/components/loader.dart';
-import 'package:risu/globals.dart';
-import 'package:http/http.dart' as http;
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
@@ -187,9 +187,10 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                         key: const Key('confirm_rent-button-back_home'),
                         text: AppLocalizations.of(context)!.homeGoBack,
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
+                          Navigator.pushNamedAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
+                            HomePage.routeName,
+                            arguments: MaterialPageRoute(
                               builder: (context) {
                                 return const HomePage();
                               },

@@ -51,12 +51,13 @@ class ArticleDataCard extends StatelessWidget {
       key: const Key('articles-list_card'),
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ArticleDetailsPage(
-                articleId: articleData.id,
-              ),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArticleDetailsPage(
+              articleId: articleData.id,
+            ),
+          ),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(
@@ -94,6 +95,7 @@ class ArticleDataCard extends StatelessWidget {
                   children: [
                     Text(
                       articleData.name,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),

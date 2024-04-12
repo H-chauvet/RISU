@@ -9,7 +9,6 @@ import 'package:risu/components/parameter.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/pages/login/login_page.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/language/modal.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
@@ -116,12 +115,14 @@ class SettingsPageState extends State<SettingsPage> {
                     const SizedBox(height: 16),
                     MyParameter(
                       goToPage: const ProfileInformationsPage(),
+                      pageName: ProfileInformationsPage.routeName,
                       title: AppLocalizations.of(context)!.seeProfileDetails,
                       paramIcon: const Icon(Icons.person),
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
+                      pageName: LoginPage.routeName,
                       title: AppLocalizations.of(context)!.paymentMethods,
                       paramIcon: const Icon(Icons.payments_outlined),
                       locked: true,
@@ -129,6 +130,7 @@ class SettingsPageState extends State<SettingsPage> {
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const NotificationsPage(),
+                      pageName: NotificationsPage.routeName,
                       title: AppLocalizations.of(context)!.notifications,
                       paramIcon: const Icon(Icons.notifications),
                       locked: false,
@@ -159,12 +161,14 @@ class SettingsPageState extends State<SettingsPage> {
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const ContactPage(),
+                      pageName: ContactPage.routeName,
                       title: AppLocalizations.of(context)!.contactUs,
                       paramIcon: const Icon(Icons.message_outlined),
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
+                      pageName: LoginPage.routeName,
                       title: AppLocalizations.of(context)!.aboutUs,
                       paramIcon: const Icon(Icons.question_mark),
                       locked: true,
@@ -196,9 +200,10 @@ class SettingsPageState extends State<SettingsPage> {
                                       ).then(
                                         (x) {
                                           userInformation = null;
-                                          Navigator.pushAndRemoveUntil(
+                                          Navigator.pushNamedAndRemoveUntil(
                                             context,
-                                            MaterialPageRoute(
+                                            LoginPage.routeName,
+                                            arguments: MaterialPageRoute(
                                               builder: (context) {
                                                 return const LoginPage();
                                               },
