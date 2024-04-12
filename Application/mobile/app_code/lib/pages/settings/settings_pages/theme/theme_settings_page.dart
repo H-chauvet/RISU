@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:risu/utils/providers/theme.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeChangeModalContent extends StatefulWidget {
@@ -14,6 +14,7 @@ class ThemeChangeModalContent extends StatefulWidget {
 
 class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
   String selectedTheme = '';
+
   Future<String> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> items = [
