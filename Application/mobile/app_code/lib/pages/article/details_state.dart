@@ -24,6 +24,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     name: '',
     available: false,
     price: 0,
+    categories: [],
   );
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -63,6 +64,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         'name': '',
         'available': false,
         'price': 0,
+        'categories': [],
       };
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -81,6 +83,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'name': '',
           'available': false,
           'price': 0,
+          'categories': [],
         };
       }
     }
@@ -127,16 +130,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           fontSize: 32,
                           fontWeight: FontWeight.bold,
                           color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          shadows: [
-                            Shadow(
-                              color: context.select(
-                                  (ThemeProvider themeProvider) => themeProvider
-                                      .currentTheme.secondaryHeaderColor),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -152,129 +146,129 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.all(16),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Container(
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme.colorScheme
-                                              .background),
-                                  child: Table(
-                                    columnWidths: const {
-                                      0: FlexColumnWidth(1.0),
-                                      1: FlexColumnWidth(1.0),
-                                    },
-                                    children: [
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor,
-                                              child: Text(
-                                                "${AppLocalizations.of(context)!.currently}: ",
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                      Padding(
+                        padding: const EdgeInsets.all(32),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ClipRRect(
+                              child: Container(
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider.currentTheme.colorScheme
+                                            .background),
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FlexColumnWidth(1.0),
+                                    1: FlexColumnWidth(1.0),
+                                  },
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Text(
+                                              "${AppLocalizations.of(context)!.currently}: ",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
                                               ),
                                             ),
                                           ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor,
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    width: 10,
-                                                    height: 10,
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: articleData
-                                                                  .available ==
-                                                              true
-                                                          ? Colors.green
-                                                          : Colors.red,
-                                                    ),
+                                        ),
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  width: 10,
+                                                  height: 10,
+                                                  decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color:
+                                                        articleData.available ==
+                                                                true
+                                                            ? Colors.green
+                                                            : Colors.red,
                                                   ),
-                                                  const SizedBox(width: 5),
-                                                  Text(
-                                                    articleData.available ==
-                                                            true
-                                                        ? AppLocalizations.of(
-                                                                context)!
-                                                            .available
-                                                        : AppLocalizations.of(
-                                                                context)!
-                                                            .unavailable,
-                                                    style: const TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
+                                                ),
+                                                const SizedBox(width: 5),
+                                                Text(
+                                                  articleData.available == true
+                                                      ? AppLocalizations.of(
+                                                              context)!
+                                                          .available
+                                                      : AppLocalizations.of(
+                                                              context)!
+                                                          .unavailable,
+                                                  style: TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: themeProvider
+                                                        .currentTheme
+                                                        .primaryColor,
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor
-                                                  .withOpacity(0.6),
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .pricePerHour,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
                                                 ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .pricePerHour,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
                                               ),
                                             ),
                                           ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor
-                                                  .withOpacity(0.6),
-                                              child: Text(
-                                                "${articleData.price}€",
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                        ),
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              "${articleData.price}€",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
                                               ),
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),

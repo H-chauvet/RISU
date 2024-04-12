@@ -21,10 +21,13 @@ exports.getAllItem = (containerId) => {
  * @returns one item if an id correspond
  */
 exports.getItemFromId = (id) => {
-  intId = parseInt(id)
+  const intId = parseInt(id);
   return db.Item.findUnique({
-    where: { id: intId }
-  })
+    where: { id: intId },
+    include: {
+      categories: true // inclure les catégories liées à l'élément
+    }
+  });
 }
 
 /**

@@ -18,62 +18,63 @@ class BurgerDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6, // 60 % of the screen
-      child: Drawer(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 128,
-              width: double.infinity,
-              child: DrawerHeader(
-                padding: EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.secondaryHeaderColor),
-                ),
-                child: Align(
-                  alignment: Alignment.topCenter,
+      child: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: Drawer(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 128,
+                width: double.infinity,
+                child: DrawerHeader(
+                  padding: EdgeInsets.zero,
+                  decoration: BoxDecoration(
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                  ),
                   child: Image.asset(
+                    fit: BoxFit.cover,
                     key: const Key('appbar-image_logo'),
-                    'assets/logo_noir.png',
-                    height: 64,
+                    'assets/logo.png',
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
-            MyRedirectDivider(
-              goToPage: const ProfileInformationsPage(),
-              pageName: ProfileInformationsPage.routeName,
-              title: AppLocalizations.of(context)!.profileDetails,
-              paramIcon: const Icon(Icons.person),
-            ),
-            const SizedBox(height: 8),
-            MyRedirectDivider(
-              goToPage: const NotificationsPage(),
-              pageName: NotificationsPage.routeName,
-              title: AppLocalizations.of(context)!.notifications,
-              paramIcon: const Icon(Icons.notifications),
-            ),
-            const SizedBox(height: 8),
-            MyRedirectDivider(
-              goToPage: const SettingsPage(),
-              pageName: SettingsPage.routeName,
-              title: AppLocalizations.of(context)!.settings,
-              paramIcon: const Icon(Icons.settings),
-            ),
-            const Spacer(),
-            if (userInformation != null)
+              const SizedBox(height: 16),
               MyRedirectDivider(
-                key: const Key('burgerdrawer-logout'),
-                goToPage: const LoginPage(),
-                pageName: LoginPage.routeName,
-                title: AppLocalizations.of(context)!.logOut,
-                paramIcon: const Icon(Icons.logout),
-                disconnect: true,
-                chosenPlace: DIVIDERPLACE.top,
+                goToPage: const ProfileInformationsPage(),
+                pageName: ProfileInformationsPage.routeName,
+                title: AppLocalizations.of(context)!.profileDetails,
+                paramIcon: const Icon(Icons.person),
               ),
-            const SizedBox(height: 8),
-          ],
+              const SizedBox(height: 8),
+              MyRedirectDivider(
+                goToPage: const NotificationsPage(),
+                pageName: NotificationsPage.routeName,
+                title: AppLocalizations.of(context)!.notifications,
+                paramIcon: const Icon(Icons.notifications),
+              ),
+              const SizedBox(height: 8),
+              MyRedirectDivider(
+                goToPage: const SettingsPage(),
+                pageName: SettingsPage.routeName,
+                title: AppLocalizations.of(context)!.settings,
+                paramIcon: const Icon(Icons.settings),
+              ),
+              const Spacer(),
+              if (userInformation != null)
+                MyRedirectDivider(
+                  key: const Key('burgerdrawer-logout'),
+                  goToPage: const LoginPage(),
+                  pageName: LoginPage.routeName,
+                  title: AppLocalizations.of(context)!.logOut,
+                  paramIcon: const Icon(Icons.logout),
+                  disconnect: true,
+                  chosenPlace: DIVIDERPLACE.top,
+                ),
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
     );

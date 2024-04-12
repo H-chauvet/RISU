@@ -1,13 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/app_routes.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   testWidgets('ConfidentialityPage widget test', (WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: ConfidentialityPage(),
-      ),
+      MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeService>(
+              create: (_) => ThemeService(),
+            ),
+          ],
+          child: MaterialApp(
+            home: InheritedGoRouter(
+              goRouter: AppRouter.router,
+              child: const ConfidentialityPage(),
+            ),
+          )),
     );
 
     await tester.pump();

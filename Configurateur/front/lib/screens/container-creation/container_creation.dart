@@ -408,7 +408,6 @@ class ContainerCreationState extends State<ContainerCreation> {
                 .materialIndex ==
             4) {
           counter = 1;
-          debugPrint('locker disabled found');
         }
         if (objs[0]
                     .fragments[j * widths + i + fragmentIncrement]
@@ -433,7 +432,6 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
-          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
         if (j == heights) {
@@ -586,6 +584,8 @@ class ContainerCreationState extends State<ContainerCreation> {
       'lockers': jsonEncode(lockers),
       'id': widget.id,
       'container': widget.container,
+      'width': width.toString(),
+      'height': height.toString(),
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
@@ -689,7 +689,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
+              length: 6,
               progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
@@ -721,6 +721,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => ContainerDialog(
                                   callback: updateCube,
                                   size: 1,
+                                  width: width,
+                                  height: height,
                                 ));
                       },
                       style: ElevatedButton.styleFrom(
@@ -729,11 +731,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Ajouter un casier',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.add,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -752,11 +752,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Sauvegarder',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.save,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -776,11 +774,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Remplissage',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.auto_fix_high,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -812,11 +808,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Supprimer un casier',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.delete,
-                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(
@@ -830,11 +824,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                               borderRadius: BorderRadius.circular(30.0))),
                       label: const Text(
                         'Réinitialiser le conteneur',
-                        style: TextStyle(color: Colors.white),
                       ),
                       icon: const Icon(
                         Icons.refresh,
-                        color: Colors.white,
                       ),
                     ),
                   ],

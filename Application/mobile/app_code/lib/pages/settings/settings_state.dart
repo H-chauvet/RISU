@@ -106,9 +106,11 @@ class SettingsPageState extends State<SettingsPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context)!.myAccount,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                     ),
@@ -117,14 +119,14 @@ class SettingsPageState extends State<SettingsPage> {
                       goToPage: const ProfileInformationsPage(),
                       pageName: ProfileInformationsPage.routeName,
                       title: AppLocalizations.of(context)!.seeProfileDetails,
-                      paramIcon: const Icon(Icons.person),
+                      paramIcon: Icons.person,
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
                       pageName: LoginPage.routeName,
                       title: AppLocalizations.of(context)!.paymentMethods,
-                      paramIcon: const Icon(Icons.payments_outlined),
+                      paramIcon: Icons.payments_outlined,
                       locked: true,
                     ),
                     const SizedBox(height: 8),
@@ -132,29 +134,31 @@ class SettingsPageState extends State<SettingsPage> {
                       goToPage: const NotificationsPage(),
                       pageName: NotificationsPage.routeName,
                       title: AppLocalizations.of(context)!.notifications,
-                      paramIcon: const Icon(Icons.notifications),
+                      paramIcon: Icons.notifications,
                       locked: false,
                     ),
                     const SizedBox(height: 8),
                     MyParameterModal(
                       title: AppLocalizations.of(context)!.theme,
                       modalContent: const ThemeChangeModalContent(),
-                      paramIcon: const Icon(Icons.brush),
+                      paramIcon: Icons.brush,
                     ),
                     const SizedBox(height: 8),
                     MyParameterModal(
                       title: AppLocalizations.of(context)!.language,
                       modalContent: const LanguageChangeModalContent(),
-                      paramIcon: const Icon(Icons.language),
+                      paramIcon: Icons.language,
                     ),
                     const SizedBox(height: 24),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocalizations.of(context)!.other,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
                         ),
                       ),
                     ),
@@ -163,14 +167,14 @@ class SettingsPageState extends State<SettingsPage> {
                       goToPage: const ContactPage(),
                       pageName: ContactPage.routeName,
                       title: AppLocalizations.of(context)!.contactUs,
-                      paramIcon: const Icon(Icons.message_outlined),
+                      paramIcon: Icons.message_outlined,
                     ),
                     const SizedBox(height: 8),
                     MyParameter(
                       goToPage: const LoginPage(),
                       pageName: LoginPage.routeName,
                       title: AppLocalizations.of(context)!.aboutUs,
-                      paramIcon: const Icon(Icons.question_mark),
+                      paramIcon: Icons.question_mark,
                       locked: true,
                     ),
                     const SizedBox(

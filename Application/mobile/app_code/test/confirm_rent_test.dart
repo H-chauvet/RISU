@@ -23,6 +23,7 @@ void main() {
       name: 'Ballon',
       available: true,
       price: 8,
+      categories: [],
     );
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
 
@@ -42,6 +43,7 @@ void main() {
       name: 'Ballon',
       available: true,
       price: 8,
+      categories: [],
     );
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
     Finder invoiceButton =
