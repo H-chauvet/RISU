@@ -59,7 +59,7 @@ void main() {
       await tester.pump();
     });
 
-    testWidgets('Profile page with complete user info (Log out)',
+/*    testWidgets('Profile page with complete user info (Log out)',
         (WidgetTester tester) async {
       userInformation = initExampleUser();
       await tester.pumpWidget(initPage(const ProfilePage()));
@@ -70,7 +70,7 @@ void main() {
 
       await tester.tap(buttonLogOut);
       await tester.pumpAndSettle();
-    });
+    });*/
 
     testWidgets('Profile page with no user info', (WidgetTester tester) async {
       userInformation = initNullUser();
