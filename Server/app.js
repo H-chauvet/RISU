@@ -3,6 +3,7 @@ const passport = require('passport');
 const auth = require('./passport/strategy_options');
 const auth_token = require('./passport/bearer_token');
 const session = require('express-session');
+const path = require('path');
 
 const app = express();
 const userRoutes = require('./routes/Web/user');
@@ -33,6 +34,10 @@ app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Configurateur server!");
+});
+
+app.get("/.well-known/assetlinks.json", (req, res) => {
+  res.sendFile(path.join(__dirname, "assetlinks.json"));
 });
 
 app.use(session({ secret: 'SECRET', resave: false, saveUninitialized: false }))

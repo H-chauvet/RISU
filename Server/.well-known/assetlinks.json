@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.example.risu",
+    "sha256_cert_fingerprints": ["7C:C1:66:3E:1F:C2:AF:94:D1:9E:14:33:12:3E:61:20:4C:B4:DE:74:F3:88:35:52:DA:87:3D:59:A7:E0:E1:F2"]
+  }
+}]
