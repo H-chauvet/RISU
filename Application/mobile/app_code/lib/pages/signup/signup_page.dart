@@ -7,6 +7,8 @@ class SignupPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/signup';
+
   @override
   State<SignupPage> createState() => SignupPageState();
 }

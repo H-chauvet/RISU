@@ -10,6 +10,8 @@ class LoginPage extends StatefulWidget {
     this.keepPath,
   });
 
+  static const String routeName = '/login';
+
   @override
   State<LoginPage> createState() => LoginPageState();
 }

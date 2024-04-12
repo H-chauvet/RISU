@@ -7,6 +7,8 @@ class ContainerPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/container';
+
   @override
   State<ContainerPage> createState() => ContainerPageState();
 }

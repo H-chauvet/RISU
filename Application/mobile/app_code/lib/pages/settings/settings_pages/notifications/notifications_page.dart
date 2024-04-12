@@ -7,6 +7,8 @@ class NotificationsPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/settings/notifications';
+
   @override
   State<NotificationsPage> createState() => NotificationsPageState();
 }

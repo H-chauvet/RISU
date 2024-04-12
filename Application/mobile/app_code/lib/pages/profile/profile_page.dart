@@ -7,6 +7,8 @@ class ProfilePage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/profile';
+
   @override
   State<ProfilePage> createState() => ProfilePageState();
 }

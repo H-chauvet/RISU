@@ -7,6 +7,8 @@ class RentalPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/rental';
+
   @override
   State<RentalPage> createState() => RentalPageState();
 }

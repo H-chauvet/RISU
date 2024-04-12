@@ -7,6 +7,8 @@ class ContactPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/contact';
+
   @override
   State<ContactPage> createState() => ContactPageState();
 }

@@ -7,6 +7,8 @@ class ProfileInformationsPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/profile/informations';
+
   @override
   State<ProfileInformationsPage> createState() =>
       ProfileInformationsPageState();

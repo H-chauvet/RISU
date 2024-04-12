@@ -7,6 +7,8 @@ class MapPage extends StatefulWidget {
     super.key,
   });
 
+  static const String routeName = '/map';
+
   @override
   State<MapPage> createState() => MapPageState();
 }
