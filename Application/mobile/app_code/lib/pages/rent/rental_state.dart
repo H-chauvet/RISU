@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
@@ -11,6 +10,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/time.dart';
 
 import 'rental_page.dart';
 
@@ -24,11 +24,6 @@ class RentalPageState extends State<RentalPage> {
   void initState() {
     super.initState();
     getRentals();
-  }
-
-  String formatDateTime(String dateTimeString) {
-    DateTime dateTime = DateTime.parse(dateTimeString);
-    return DateFormat('dd/MM/yyyy HH:mm').format(dateTime);
   }
 
   void getRentals() async {
@@ -131,15 +126,7 @@ class RentalPageState extends State<RentalPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 32,
-                        color: themeProvider.currentTheme.secondaryHeaderColor,
-                        shadows: [
-                          Shadow(
-                            color:
-                                themeProvider.currentTheme.secondaryHeaderColor,
-                            blurRadius: 24,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
+                        color: themeProvider.currentTheme.primaryColor,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -175,13 +162,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.allE,
                                   style: TextStyle(
                                     color: showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -218,13 +206,14 @@ class RentalPageState extends State<RentalPage> {
                                   AppLocalizations.of(context)!.inProgress,
                                   style: TextStyle(
                                     color: !showAllRentals
-                                        ? Colors.white
+                                        ? themeProvider
+                                            .currentTheme.secondaryHeaderColor
                                         : themeProvider
                                                     .currentTheme.brightness ==
                                                 Brightness.light
                                             ? Colors.grey[
-                                                400] // Gris foncé pour le mode clair
-                                            : Colors.grey[800],
+                                                800] // Gris foncé pour le mode clair
+                                            : Colors.grey[400],
                                     // Gris clair pour le mode sombre
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -292,7 +281,7 @@ class RentalPageState extends State<RentalPage> {
                                         Text(
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
-                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(rental['createdAt'])}"),
+                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}"),
                                         Text(AppLocalizations.of(context)!
                                             .rentTimeOfRenting(
                                                 rental['duration'])),

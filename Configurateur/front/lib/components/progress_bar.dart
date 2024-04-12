@@ -46,7 +46,14 @@ class ProgressBar extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
-        child: Text(previous),
+        child: Text(
+          previous,
+          style: TextStyle(
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.colorScheme.background,
+          ),
+        ),
       ),
       const SizedBox(
         width: 10,
@@ -71,7 +78,12 @@ class ProgressBar extends StatelessWidget {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0))),
-        child: Text(next),
+        child: Text(next,
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.colorScheme.background,
+            )),
       ),
     ]));
   }

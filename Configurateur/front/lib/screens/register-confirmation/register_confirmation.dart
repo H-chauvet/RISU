@@ -3,9 +3,13 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
@@ -99,9 +103,14 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Renvoyer le mail de confirmation",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
                         ),
                       ),
                     ),
