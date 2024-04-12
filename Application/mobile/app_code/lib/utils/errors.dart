@@ -10,7 +10,7 @@ void printCatchError(
   String? message,
 }) {
   print('====${e.toString()}====');
-  print(stacktrace);
+  // print(stacktrace);
   if (message != null) {
     MyAlertDialog.showErrorAlertDialog(
       context: context,
