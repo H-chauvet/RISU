@@ -27,7 +27,7 @@ class MapPageState extends State<MapPage> {
   Map<String, dynamic> containersData = {};
   Color dividerColor = Colors.black12;
 
-  LatLng _center = const LatLng(33.139469, -117.161148);
+  LatLng _center = const LatLng(47.210546, -1.566842); // Epitech Nantes
 
   @override
   void initState() {
