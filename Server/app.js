@@ -38,7 +38,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/.well-known/assetlinks.json", (req, res) => {
-  res.sendFile(path.join(__dirname, "assetlinks.json"));
+  res.sendFile(path.join(__dirname, "/.well-known/assetlinks.json"));
 });
 
 app.use(session({ secret: 'SECRET', resave: false, saveUninitialized: false }))
