@@ -20,7 +20,6 @@ import 'map_page.dart';
 
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
-  final bool displayGoogleMap = true;
   PermissionStatus? permission;
   List<ContainerList> containers = [];
   final LoaderManager _loaderManager = LoaderManager();
@@ -117,7 +116,7 @@ class MapPageState extends State<MapPage> {
     setState(() {
       _loaderManager.setIsLoading(true);
     });
-    if (!displayGoogleMap) {
+    if (!widget.displayGoogleMap) {
       return Center(
         child: Text(
           AppLocalizations.of(context)!.mapNoDisplayedByRisu,
@@ -281,6 +280,10 @@ class MapPageState extends State<MapPage> {
     setState(() {
       mapController = controller;
     });
+  }
+
+  void testOnMapCreated(GoogleMapController controller) {
+    _onMapCreated(controller);
   }
 
   Future<void> _requestLocationPermission() async {
