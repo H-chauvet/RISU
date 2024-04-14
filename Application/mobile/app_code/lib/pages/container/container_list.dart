@@ -11,6 +11,8 @@ class ContainerList {
   final double? price;
   final String? address;
   final String? city;
+  final double? longitude;
+  final double? latitude;
   final String? designs;
   final dynamic items;
   final String? informations;
@@ -24,6 +26,8 @@ class ContainerList {
     required this.price,
     required this.address,
     required this.city,
+    required this.longitude,
+    required this.latitude,
     required this.designs,
     required this.items,
     required this.informations,
@@ -39,6 +43,8 @@ class ContainerList {
       price: json['price'],
       address: json['address'],
       city: json['city'],
+      longitude: json['longitude'],
+      latitude: json['latitude'],
       designs: json['designs'],
       items: json['items'],
       informations: json['informations'],
@@ -75,11 +81,12 @@ class ContainerCard extends StatelessWidget {
       key: const Key('container-list_card'),
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                // id must be the same from web to mobile
-                builder: (context) =>
-                    ContainerDetailsPage(containerId: container.id)));
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ContainerDetailsPage(containerId: container.id),
+          ),
+        );
       },
       child: Container(
         height: 120,
