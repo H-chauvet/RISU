@@ -278,7 +278,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 5,
+            length: 6,
             progress: 0,
             previous: 'Précédent',
             next: 'Suivant',

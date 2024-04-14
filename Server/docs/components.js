@@ -54,6 +54,12 @@ module.exports = {
           informations: {
             type: "string",
           },
+          latitude: {
+            type: "float",
+          },
+          longitude: {
+            type: "float",
+          },
           items: {
             type: "array",
             items: {
@@ -91,6 +97,33 @@ module.exports = {
             items: {
               $ref: "#/components/schemas/Container",
             },
+          },
+        },
+      },
+      Ticket: {
+        type: "object",
+        properties: {
+          content: {
+            type: "string",
+          },
+          title: {
+            type: "string",
+          },
+          creatorId: {
+            type: "string",
+          },
+          assignedId: {
+            type: "string",
+          },
+          createdAt: {
+            type: "integer",
+            format: "date-time",
+          },
+          chatUid: {
+            type: "string",
+          },
+          closed: {
+            type: "boolean",
           },
         },
       },
