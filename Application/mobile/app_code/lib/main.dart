@@ -7,11 +7,8 @@ import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/utils/providers/language.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'dart:convert';
 import 'globals.dart';
-import 'package:http/http.dart' as http;
-import 'package:risu/utils/user_data.dart';
+import 'package:risu/pages/login/login_refresh_token.dart';
 
 String theme = appTheme['clair'];
 
@@ -23,28 +20,6 @@ void main() async {
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
-
-  void loginRefreshToken(refreshToken) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/auth/login/refreshToken'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'refreshToken': refreshToken,
-        }),
-      );
-      final jsonData = jsonDecode(response.body);
-      if (response.statusCode == 201) {
-        userInformation =
-            UserData.fromJson(jsonData['user'], jsonData['token']);
-      }
-    } catch (err) {
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('refreshToken', '');
-    }
-  }
 
   final prefs = await SharedPreferences.getInstance();
   theme = prefs.getString('appTheme') ?? appTheme['clair'];
