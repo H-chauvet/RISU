@@ -48,9 +48,9 @@ class LandingPageState extends State<LandingPage> {
             child: CustomFooter(context: context),
           ),
           children: [
+            LandingAppBar(context: context),
             Column(
               children: [
-                LandingAppBar(context: context),
                 const Text(
                   'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !',
                   textAlign: TextAlign.center,
@@ -130,7 +130,7 @@ class LandingPageState extends State<LandingPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Concevez des le conteneur de vos rêves,\nselon vos envies !',
+                              'Concevez le conteneur de vos rêves,\nselon vos envies !',
                               style: TextStyle(
                                 fontSize: 35,
                                 color: Color(0xff033f63),

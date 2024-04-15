@@ -30,7 +30,7 @@ class GoogleLogo extends StatelessWidget {
           width: 200,
           height: 40,
           decoration: BoxDecoration(
-              color: Theme.of(context).buttonTheme.colorScheme!.primary,
+              color: const Color(0xFF162A49),
               borderRadius: const BorderRadius.all(Radius.circular(30.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
