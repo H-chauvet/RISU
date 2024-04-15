@@ -69,7 +69,7 @@ router.post("/update/:itemId", async function (req, res, next) {
   try {
     const { name, description, price, available } = req.body;
     const isPrice = parseInt(price);
-    const isAvailable = false;
+    let isAvailable = false;
     if (available == "true") {
       isAvailable = true;
     } else {
