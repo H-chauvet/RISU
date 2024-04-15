@@ -13,14 +13,15 @@ const feedbacksRoutes = require('./routes/Web/feedbacks');
 const itemsRoutes = require('./routes/Web/items');
 const paymentRoutes = require("./routes/Web/payment");
 const organizationRoutes = require("./routes/Web/organization");
+const itemCategoryRoutes = require('./routes/Web/itemCategory');
 
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
-const contactMobileRoutes = require("./routes/Mobile/contact");
 const containerMobileRoutes = require("./routes/Mobile/containers")
 const itemMobileRoutes = require("./routes/Mobile/items")
 const rentMobileRoutes = require("./routes/Mobile/rent")
 const opinionMobileRoutes = require("./routes/Mobile/opinion")
+const ticketsMobileRoutes = require("./routes/Mobile/tickets")
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
@@ -57,13 +58,14 @@ app.use('/api/feedbacks', feedbacksRoutes)
 app.use('/api/items', itemsRoutes)
 app.use("/api/payment", paymentRoutes);
 app.use("/api/organization", organizationRoutes);
+app.use('/api/itemCategory', itemCategoryRoutes)
 
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
-app.use("/api/mobile", contactMobileRoutes)
 app.use("/api/mobile/container", containerMobileRoutes)
 app.use("/api/mobile/article", itemMobileRoutes)
 app.use("/api/mobile/rent", rentMobileRoutes)
 app.use("/api/mobile/opinion", opinionMobileRoutes)
+app.use("/api/mobile/ticket", ticketsMobileRoutes)
 
 module.exports = app;

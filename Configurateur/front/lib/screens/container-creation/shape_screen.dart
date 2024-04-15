@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 import '../../components/progress_bar.dart';
 
@@ -76,7 +79,13 @@ class ShapeScreenState extends State<ShapeScreen> {
               isRemoveClicked = true;
             });
           },
-          child: const Text("Retirer un casier"),
+          child: Text(
+            "Retirer un casier",
+            style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.colorScheme.background),
+          ),
         ),
       );
     } else {
@@ -229,6 +238,10 @@ class ShapeScreenState extends State<ShapeScreen> {
       }
     }
 
+    List<List<String>> containerListTmp = List.generate(row, (index) => []);
+    for (int i = 0; i < containerList.length; i++) {
+      containerListTmp[i] = List.generate(column, (index) => '0');
+    }
     for (int i = 0; i < containerList.length; i++) {
       for (int j = 0; j < containerList[i].length; j++) {
         if (containerList[i][j] == '1') {
@@ -241,17 +254,13 @@ class ShapeScreenState extends State<ShapeScreen> {
             mid = true;
           }
           int index = mid == true ? i - rowToUp : i + rowToUp;
-          String tmp = containerList[index][j];
-          containerList[index][j] = '2';
-          if (index != i) {
-            containerList[i][j] = tmp;
-          }
+          containerListTmp[index][j] = '2';
         }
       }
     }
     context.go('/container-creation',
         extra: jsonEncode({
-          'containerMapping': jsonEncode(containerList),
+          'containerMapping': jsonEncode(containerListTmp),
           'height': row,
           'width': column
         }));
@@ -269,7 +278,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 5,
+            length: 6,
             progress: 0,
             previous: 'Précédent',
             next: 'Suivant',
@@ -319,7 +328,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.grey[200],
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.colorScheme.background.withOpacity(0.8)
+                            : lightTheme.colorScheme.background
+                                .withOpacity(0.8),
                       ),
                       child: Text(row.toString()),
                     ),
@@ -373,7 +385,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                       padding: const EdgeInsets.all(10.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
-                        color: Colors.grey[200],
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.colorScheme.background.withOpacity(0.8)
+                            : lightTheme.colorScheme.background
+                                .withOpacity(0.8),
                       ),
                       child: Text(column.toString()),
                     ),
@@ -424,7 +439,17 @@ class ShapeScreenState extends State<ShapeScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.grey[200],
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.colorScheme.background.withOpacity(0.8)
+                      : lightTheme.colorScheme.background.withOpacity(0.8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff4682B4).withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -73,7 +73,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'id': widget.id,
       'container': widget.container,
     };
-    context.go('/container-creation/recap', extra: jsonEncode(data));
+    context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
   void goNext() async {
@@ -92,6 +92,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     try {
+      dynamic container = jsonDecode(widget.container!);
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
@@ -103,8 +104,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'id': widget.id!,
           'price': widget.amount.toString(),
           'containerMapping': widget.containerMapping!,
-          'width': '12',
-          'height': '5',
+          'width': container['width'].toString(),
+          'height': container['height'].toString(),
           'city': city,
           'informations': informations,
           'address': address,
@@ -137,8 +138,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
-              progress: 4,
+              length: 6,
+              progress: 5,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,

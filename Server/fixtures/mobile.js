@@ -17,11 +17,23 @@ exports.createFixtures = async () => {
         newsOffersRisu: true,
       },
     });
+    const itemCategory1 = await db.Item_Category.create({
+      data: {
+        name: "Sport",
+      },
+    });
+    const itemCategory2 = await db.Item_Category.create({
+      data: {
+        name: "Plage",
+      },
+    });
     const container = await db.Containers.create({
       data: {
         id: 1,
         city: "Nantes",
         address: "Rue George",
+        latitude: 47.218371,
+        longitude: -1.553621,
         items: {
           create: [
             {
@@ -44,16 +56,41 @@ exports.createFixtures = async () => {
               price: 16,
               available: true,
               category: "sport",
+              name: "ballon de volley",
+              price: 3,
+              available: true,
+              categories: {
+                connect: [{ id: 1 }, { id: 2 }],
+              },
+            },
+            {
+              name: "raquette",
+              price: 6,
+              available: false,
+              categories: {
+                connect: [{ id: 1 }],
+              },
+            },
+            {
+              name: "ballon de football",
+              price: 16,
+              available: true,
+              categories: {
+                connect: [{ id: 2 }],
+              },
             },
           ],
         },
       },
     });
+
     const emptyContainer = await db.Containers.create({
       data: {
         id: 2,
         city: "Nantes",
         address: "Rue george",
+        latitude: 47.218371,
+        longitude: -1.553621,
         items: {
           create: [
             {
