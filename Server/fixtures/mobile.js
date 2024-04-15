@@ -54,8 +54,17 @@ exports.createFixtures = async () => {
         id: 2,
         city: "Nantes",
         address: "Rue george",
-        // items: {
-        // },
+        items: {
+          create: [
+            {
+              id: 4,
+              name: "ballon de volley",
+              price: 3,
+              available: true,
+              category: "plage",
+            },
+          ],
+        },
       },
     });
     if (

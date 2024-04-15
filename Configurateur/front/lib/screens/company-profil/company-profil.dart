@@ -62,13 +62,7 @@ class CompanyProfilPage extends StatefulWidget {
 }
 
 class CompanyProfilPageState extends State<CompanyProfilPage> {
-  late OrganizationList organization = OrganizationList(
-      id: 0,
-      name: "",
-      type: "",
-      affiliate: "",
-      containers: "",
-      contactInformation: "");
+  late OrganizationList organization;
   List<CtnList> containersList = [];
 
   String userMail = '';
@@ -429,8 +423,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   void initState() {
     super.initState();
     storageService.getUserMail().then((value) {
-      userMail = value;
-      fetchOrganizationDetails(userMail);
+      if (value != null) {
+        userMail = value;
+        fetchOrganizationDetails(userMail);
+      }
     });
   }
 

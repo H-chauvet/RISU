@@ -12,7 +12,6 @@ import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-creation/shape_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
-import 'package:front/screens/container-list/item-list/item_list.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
@@ -50,6 +49,35 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
         ),
+      ),
+      GoRoute(
+        path: '/company-profil',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyProfilPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-profil',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra != null) {
+            final CtnList ctnList = state.extra as CtnList;
+            return ContainerProfilPage(container: ctnList);
+          } else {
+            return ContainerProfilPage(
+                container: CtnList(
+                    id: null,
+                    createdAt: null,
+                    organization: null,
+                    organizationId: null,
+                    containerMapping: null,
+                    price: null,
+                    address: null,
+                    city: null,
+                    design: null,
+                    informations: null,
+                    saveName: null));
+          }
+        },
       ),
       GoRoute(
         path: '/register',
@@ -171,20 +199,7 @@ class AppRouter {
           child: ContainerPage(),
         ),
       ),
-      GoRoute(
-        path: '/container-profil',
-        builder: (BuildContext context, GoRouterState state) {
-          final CtnList ctnList = state.extra as CtnList;
-          return ContainerProfilPage(container: ctnList);
-        },
-      ),
-      GoRoute(
-        path: '/item-page',
-        builder: (BuildContext context, GoRouterState state) {
-          final int ctnId = state.extra as int;
-          return ItemPage(containerId: ctnId);
-        },
-      ),
+
       GoRoute(
         path: '/userList',
         pageBuilder: (context, state) => const NoTransitionPage(
@@ -292,12 +307,6 @@ class AppRouter {
         path: '/my-container',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: MyContainer(),
-        ),
-      ),
-      GoRoute(
-        path: '/company-profil',
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: CompanyProfilPage(),
         ),
       ),
     ],

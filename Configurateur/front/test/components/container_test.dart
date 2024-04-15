@@ -22,32 +22,34 @@ void main() {
     informations: "c'est une info",
     saveName: "Container V12",
   );
-  // testWidgets('CtnList should render without error',
-  //     (WidgetTester tester) async {
-  //   await tester.pumpWidget(MaterialApp(
-  //     home: ContainerCards(
-  //       container: mockItem,
-  //       onDelete: deleteContainer,
-  //     ),
-  //   ));
+  testWidgets('CtnList should render without error',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: ContainerCards(
+        container: mockItem,
+        onDelete: deleteContainer,
+        page: 'page'
+      ),
+    ));
 
-  //   expect(find.byType(ContainerCards), findsOneWidget);
-  //   await tester.pump();
-  //   expect(find.text("Ville : Nantes"), findsOneWidget);
-  //   expect(find.text("adresse : 4 rue George"), findsOneWidget);
-  // });
+    expect(find.byType(ContainerCards), findsOneWidget);
+    await tester.pump();
+    expect(find.text("Ville : Nantes"), findsOneWidget);
+    expect(find.text("adresse : 4 rue George"), findsOneWidget);
+  });
 
-  // testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
-  //   await tester.pumpWidget(MaterialApp(
-  //     home: ContainerCards(
-  //       container: mockItem,
-  //       onDelete: deleteContainer,
-  //     ),
-  //   ));
+  testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: ContainerCards(
+        container: mockItem,
+        onDelete: deleteContainer,
+        page: 'page',
+      ),
+    ));
 
-  //   await tester.tap(find.byIcon(Icons.delete).first);
-  //   await tester.pumpAndSettle();
-  // });
+    await tester.tap(find.byIcon(Icons.delete).first);
+    await tester.pumpAndSettle();
+  });
 
   testWidgets('CtnList should render without error',
       (WidgetTester tester) async {
@@ -67,37 +69,39 @@ void main() {
     expect(parsedContainer.saveName, mockItem.saveName);
   });
 
-  // testWidgets('CtnList should render without error',
-  //     (WidgetTester tester) async {
-  //   await tester.pumpWidget(MaterialApp(
-  //     home: ContainerCards(
-  //       container: mockItem,
-  //       onDelete: deleteContainer,
-  //     ),
-  //   ));
+  testWidgets('CtnList should render without error',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: ContainerCards(
+        container: mockItem,
+        onDelete: deleteContainer,
+        page: "page",
+      ),
+    ));
 
-  //   expect(find.byType(ContainerCards), findsOneWidget);
-  //   await tester.pump();
-  //   expect(find.text("Ville : Nantes"), findsOneWidget);
-  //   await tester.tap(find.byIcon(Icons.delete));
-  //   // await tester.tap(find.byIcon(Icons.arrow_forward));
+    expect(find.byType(ContainerCards), findsOneWidget);
+    await tester.pump();
+    expect(find.text("Ville : Nantes"), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.delete));
+    // await tester.tap(find.byIcon(Icons.arrow_forward));
 
-  //   await tester.pumpAndSettle();
-  // });
+    await tester.pumpAndSettle();
+  });
 
-  // testWidgets('CtnList test Icon arrow_forward',
-  //     (WidgetTester tester) async {
-  //   await tester.pumpWidget(MaterialApp(
-  //     home: ContainerCards(
-  //       container: mockItem,
-  //       onDelete: deleteContainer,
-  //     ),
-  //   ));
+  testWidgets('CtnList test Icon arrow_forward',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(
+      home: ContainerCards(
+        container: mockItem,
+        onDelete: deleteContainer,
+        page: "page",
+      ),
+    ));
 
-  //   expect(find.byType(ContainerCards), findsOneWidget);
-  //   await tester.pump();
-  //   await tester.tap(find.byIcon(Icons.arrow_forward));
+    expect(find.byType(ContainerCards), findsOneWidget);
+    await tester.pump();
+    await tester.tap(find.byIcon(Icons.arrow_forward));
 
-  //   await tester.pumpAndSettle();
-  // });
+    await tester.pumpAndSettle();
+  });
 }

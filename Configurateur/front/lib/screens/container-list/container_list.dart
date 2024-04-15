@@ -9,8 +9,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/container-list/item-list/item_component.dart';
-import 'package:front/screens/container-list/item-list/item_list.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
@@ -27,6 +25,8 @@ class _ContainerPageState extends State<ContainerPage> {
   List<CtnList> containers = [];
   List<ItemListInfo> items = [];
   bool jwtToken = false;
+  late String itemName = '';
+  late String itemDesc = '';
   bool available = false;
   String name = "";
   double price = 0.0;
@@ -147,6 +147,133 @@ class _ContainerPageState extends State<ContainerPage> {
         gravity: ToastGravity.CENTER,
       );
     }
+  }
+
+  Future<void> showEditPopupName(
+      BuildContext context,
+      String initialLastName,
+      String initialDesc,
+      int itemId,
+      ItemListInfo item,
+      Function(String, String) onEdit) async {
+    TextEditingController nameController = TextEditingController();
+    TextEditingController descController = TextEditingController();
+    bool isAvailable = item.available!;
+    double price = item.price != null ? item.price! : 0.0;
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text("Modifier un nouvel objet"),
+              content: Container(
+                height: 220.0,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10.0),
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                          labelText: "Nouveau nom", hintText: initialLastName),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Row(
+                      children: [
+                        const Text("Disponible"),
+                        Switch(
+                          value: isAvailable,
+                          onChanged: (bool newValue) {
+                            setState(() {
+                              isAvailable = newValue;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextField(
+                      onChanged: (value) {
+                        price = double.tryParse(value) ?? 0.0;
+                      },
+                      decoration:
+                          const InputDecoration(labelText: "Prix de l'objet"),
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextField(
+                      controller: descController,
+                      decoration: InputDecoration(
+                          labelText: "Nouvelle description",
+                          hintText: initialDesc),
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Annuler"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (price <= 0) {
+                      Fluttertoast.showToast(
+                        msg: "Veuillez saisir un prix valide pour l'objet",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        backgroundColor: Colors.red,
+                      );
+                      return;
+                    }
+                    final String apiUrl =
+                        "http://$serverIp:3000/api/items/update/${itemId}";
+                    var body = {
+                      'name': nameController.text != ''
+                          ? nameController.text
+                          : item.name,
+                      'description': descController.text != ''
+                          ? descController.text
+                          : item.description,
+                      'price': price.toString(),
+                      'available': isAvailable.toString(),
+                    };
+
+                    var response = await http.post(
+                      Uri.parse(apiUrl),
+                      body: body,
+                    );
+
+                    if (response.statusCode == 200) {
+                      Fluttertoast.showToast(
+                        msg: 'Modification effectuée avec succès',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 3,
+                      );
+                      fetchItems();
+                    } else {
+                      Fluttertoast.showToast(
+                          msg:
+                              "Erreur durant l'envoi la modification des informations",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red);
+                    }
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Créer"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 
   Future<void> showCreateItems(BuildContext context,
@@ -311,6 +438,48 @@ class _ContainerPageState extends State<ContainerPage> {
     );
   }
 
+  Widget buildItemWidget(BuildContext context, ItemListInfo item) {
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ListTile(
+                title: Text("nom : ${item.name}"),
+                subtitle: item.description != null
+                    ? Text("description : ${item.description!}")
+                    : Text("description : pas de description"),
+              ),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_forward),
+                  onPressed: () async {
+                    await showEditPopupName(
+                        context, itemName, itemDesc, item.id!, item,
+                        (String newcity, String newDescription) {
+                      setState(() {
+                        itemName = newcity;
+                        itemDesc = newDescription;
+                      });
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
@@ -373,7 +542,7 @@ class _ContainerPageState extends State<ContainerPage> {
                               return ContainerCards(
                                 container: product,
                                 onDelete: deleteContainer,
-                                page: "/item-page",
+                                page: "/container-profil",
                                 key: ValueKey<String>('delete_${product.id}'),
                               );
                             },
@@ -471,17 +640,26 @@ class _ContainerPageState extends State<ContainerPage> {
                                   ),
                                 ],
                               ),
-                              ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: items.length,
-                                itemBuilder: (context, index) {
-                                  final product = items[index];
-                                  return ItemCardInfo(
-                                    item: product,
-                                    onDelete: deleteItem,
-                                  );
-                                },
-                              ),
+                              items.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'Aucun objet trouvé.',
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          color:
+                                              Color.fromARGB(255, 211, 11, 11),
+                                        ),
+                                      ),
+                                    )
+                                  : Wrap(
+                                      spacing: 10.0,
+                                      runSpacing: 8.0,
+                                      children: List.generate(
+                                        items.length,
+                                        (index) => buildItemWidget(
+                                            context, items[index]),
+                                      ),
+                                    ),
                             ],
                           ),
                   ],

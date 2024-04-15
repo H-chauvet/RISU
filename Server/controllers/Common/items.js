@@ -118,6 +118,20 @@ exports.updateName = (item) => {
   });
 };
 
+exports.updateItemCtn = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      available: item.available,
+    },
+  });
+};
+
 exports.updatePrice = (item) => {
   return db.Item.update({
     where: {

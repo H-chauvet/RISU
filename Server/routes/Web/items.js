@@ -58,8 +58,44 @@ router.put("/update", async function (req, res, next) {
       description,
     });
 
-    console.log(item);
     res.status(200).json(item);
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/update/:itemId", async function (req, res, next) {
+  const id = parseInt(req.params.itemId);
+  try {
+    const { name, description, price, available } = req.body;
+    const isPrice = parseInt(price);
+    const isAvailable = false;
+    if (available == "true") {
+      isAvailable = true;
+    } else {
+      isAvailable = false;
+    }
+    if (!name) {
+      res.status(400).json({
+        error: "Email and at least one of name or name are required",
+      });
+      return;
+    }
+
+    const existingUser = await itemCtrl.getItemFromId(id);
+    if (!existingUser) {
+      res.status(404).json({ error: "User not found" });
+      return;
+    }
+
+    const updatedUser = await itemCtrl.updateItemCtn({
+      id,
+      name,
+      description,
+      isPrice,
+      isAvailable,
+    });
+    res.status(200).json(updatedUser);
   } catch (err) {
     next(err);
   }
@@ -98,9 +134,7 @@ router.get("/listAll", async function (req, res, next) {
 });
 
 router.post("/update-name/:id", async function (req, res, next) {
-  console.log("print");
   const id = parseInt(req.params.id);
-  console.log("int :" + id);
   try {
     const { name } = req.body;
 
@@ -132,7 +166,6 @@ router.post("/update-price/:id", async function (req, res, next) {
   try {
     const { price } = req.body;
     const priceTmp = parseFloat(price);
-    console.log("c'est le prix : " + price);
     if (!price) {
       res.status(400).json({
         error: "Email and at least one of price or price are required",
@@ -157,9 +190,7 @@ router.post("/update-price/:id", async function (req, res, next) {
 });
 
 router.post("/update-description/:id", async function (req, res, next) {
-  console.log("print");
   const id = parseInt(req.params.id);
-  console.log("int :" + id);
   try {
     const { description } = req.body;
 

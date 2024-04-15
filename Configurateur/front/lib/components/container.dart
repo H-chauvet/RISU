@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
-import 'package:front/screens/container-list/item-list/item_list.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
 class CtnList {
@@ -69,7 +69,9 @@ class ContainerCards extends StatelessWidget {
   final Function(CtnList) onDelete;
   final String page;
 
-  const ContainerCards(
+  late CtnList ctnInfo;
+
+  ContainerCards(
       {super.key,
       required this.container,
       required this.onDelete,
@@ -79,7 +81,11 @@ class ContainerCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        GoRouter.of(context).go(page, extra: container);
+        storageService.writeStorage(
+          'containerId',
+          container.id.toString(),
+        );
+        context.go(page, extra: container);
       },
       child: Card(
         child: Row(
@@ -104,8 +110,7 @@ class ContainerCards extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.arrow_forward),
-                  onPressed: () =>
-                      context.go(page, extra: jsonEncode(container)),
+                  onPressed: () => context.go(page, extra: container),
                 ),
               ],
             ),

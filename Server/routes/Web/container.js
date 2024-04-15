@@ -127,6 +127,19 @@ router.get("/list/:organizationId", async function (req, res, next) {
   }
 });
 
+router.get("/list-by-id/:id", async function (req, res, next) {
+  try {
+    const id = req.params.id;
+
+    console.log("c'est l'id : "+ id);
+
+    const container = await containerCtrl.getContainerById(id);
+    res.status(200).json({ container });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.post("/update-city/:id", async (req, res, next) => {
   const id = parseInt(req.params.id);
   try {

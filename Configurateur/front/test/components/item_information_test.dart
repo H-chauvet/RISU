@@ -18,20 +18,6 @@ void main() {
     description: "description",
     category: "sport",
   );
-  testWidgets('ItemListInfo should render without error',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ItemPagesModification(item: mockItem),
-    ));
-
-    expect(find.byType(ItemPagesModification), findsOneWidget);
-    await tester.pump();
-    expect(find.text("Gestion des objets"), findsOneWidget);
-    expect(find.text("Nom de l'objet : Test Item"), findsOneWidget);
-    expect(find.text("Description de l'objet : description"), findsOneWidget);
-    expect(find.text("prix de l'objet : 19.99"), findsOneWidget);
-    expect(find.text("category de l'objet : sport"), findsOneWidget);
-  });
 
   testWidgets('ItemListInfo should render without error',
       (WidgetTester tester) async {
@@ -48,32 +34,4 @@ void main() {
     expect(parsedContainer.image, mockItem.image);
     expect(parsedContainer.description, mockItem.description);
   });
-
-  testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ItemPagesModification(item: mockItem),
-    ));
-
-    await tester.tap(find.byIcon(Icons.edit).first);
-    await tester.pumpAndSettle();
-  });
-
-  testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ItemPagesModification(item: mockItem),
-    ));
-
-    await tester.tap(find.byIcon(Icons.edit).at(1));
-    await tester.pumpAndSettle();
-  });
-
-  testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ItemPagesModification(item: mockItem),
-    ));
-
-    await tester.tap(find.byIcon(Icons.edit).at(2));
-    await tester.pumpAndSettle();
-  });
-
 }

@@ -8,14 +8,7 @@ const { db } = require("../../middleware/database");
  */
 exports.getContainerById = (id) => {
   return db.Containers.findUnique({
-    where: { id: id },
-      select: {
-        city: true,
-        address: true,
-        items: {
-          where: { available: true }
-        },
-      }
+    where: { id: parseInt(id) },
     })
 };
 

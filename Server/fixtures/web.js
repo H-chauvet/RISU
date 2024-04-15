@@ -16,6 +16,7 @@ exports.createFixtures = async () => {
               email: "louis.maestre@hotmail.fr",
               confirmed: true,
               password: bcrypt.hashSync("louismaestre", 12),
+              company: "Risu",
             },
           ],
         },
@@ -28,14 +29,14 @@ exports.createFixtures = async () => {
               items: {
                 create: [
                   {
-                    id: 4,
+                    id: 5,
                     name: "Ballon de foot",
                     price: 10,
                     available: true,
                     category: "sport",
                   },
                   {
-                    id: 5,
+                    id: 6,
                     name: "Ballon de volley",
                     price: 20,
                     available: false,
@@ -51,14 +52,14 @@ exports.createFixtures = async () => {
               items: {
                 create: [
                   {
-                    id: 6,
+                    id: 7,
                     name: "Ballon de foot",
                     price: 10,
                     available: true,
                     category: "sport",
                   },
                   {
-                    id: 7,
+                    id: 8,
                     name: "Ballon de volley",
                     price: 20,
                     available: false,
