@@ -9,6 +9,8 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/text_input.dart';
 
 import 'article_list_data.dart';
 import 'list_page.dart';
@@ -16,7 +18,53 @@ import 'list_page.dart';
 class ArticleListState extends State<ArticleListPage> {
   late int _containerId;
   List<dynamic> _itemsDatas = [];
+  List<dynamic> _articleCategories = [];
   final LoaderManager _loaderManager = LoaderManager();
+
+  bool _showFilter = false;
+  bool isAscending = true;
+  bool isAvailable = true;
+  String articleName = '';
+
+  Future<dynamic> getArticleCategories() async {
+    late http.Response response;
+
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      response = await http.get(
+        Uri.parse('$baseUrl/api/itemCategory'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      print('Response status: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        dynamic responseData = jsonDecode(response.body);
+        return responseData;
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'getArticleCategories',
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
+        }
+        return [];
+      }
+    } catch (err, stacktrace) {
+      if (context.mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return [];
+      }
+    }
+  }
 
   Future<dynamic> getItemsData(BuildContext context, int containerId) async {
     late http.Response response;
@@ -67,6 +115,12 @@ class ArticleListState extends State<ArticleListPage> {
         _itemsDatas = value;
       });
     });
+    getArticleCategories().then((dynamic value) {
+      setState(() {
+        _articleCategories = value;
+      });
+      print('Article categories: $_articleCategories');
+    });
   }
 
   @override
@@ -103,6 +157,85 @@ class ArticleListState extends State<ArticleListPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
+                      SizedBox(
+                        child: MyOutlinedButton(
+                          text: AppLocalizations.of(context)!.filter,
+                          key: const Key('article-button_show-filters'),
+                          onPressed: () {
+                            setState(() {
+                              _showFilter = !_showFilter;
+                            });
+                          },
+                        ),
+                      ),
+                      if (_showFilter) const SizedBox(height: 16),
+                      if (_showFilter)
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width *
+                              0.8, // 80% de la largeur de l'écran
+                          child: MyTextInput(
+                            key: const Key('filter-textInput_name'),
+                            labelText:
+                                AppLocalizations.of(context)!.articleName,
+                            keyboardType: TextInputType.emailAddress,
+                            icon: Icons.article,
+                            onChanged: (value) => articleName = value,
+                          ),
+                        ),
+                      if (_showFilter) const SizedBox(height: 16),
+                      if (_showFilter)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  isAscending = !isAscending!;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 24),
+                              ),
+                              child: Text(
+                                '${AppLocalizations.of(context)!.price} : ${isAscending ? AppLocalizations.of(context)!.ascending : AppLocalizations.of(context)!.descending}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  isAvailable = !isAvailable!;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
+                                elevation: 3,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 12, horizontal: 24),
+                              ),
+                              child: Text(
+                                '${AppLocalizations.of(context)!.status} : ${isAvailable ? AppLocalizations.of(context)!.available : AppLocalizations.of(context)!.unavailable}',
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
                       if (_itemsDatas.isEmpty) ...[
                         Text(
                           AppLocalizations.of(context)!.articlesListEmpty,
