@@ -44,11 +44,9 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
       if (user == false)
         return res.status(401).json(info)
 
-      var longTerm;
-      if (!req.body.longTerm) {
-        longTerm = false;
-      } else {
-        longTerm = req.body.longTerm === 'true';
+      const longTerm = req.body.longTerm;
+      if (!longTerm) {
+        return res.status(401).send('No long term provided.')
       }
 
       const token = jwtMiddleware.generateToken(user.id, longTerm);

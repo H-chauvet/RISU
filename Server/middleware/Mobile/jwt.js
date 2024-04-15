@@ -12,6 +12,8 @@ function generateToken(id, longTerm = false) {
     throw new Error('REFRESH_JWT_EXPIRE not found in .env');
   } else if (!process.env.JWT_EXPIRE) {
     throw new Error('JWT_EXPIRE not found in .env');
+  } else if (!process.env.JWT_ACCESS_SECRET) {
+    throw new Error('JWT_ACCESS_SECRET not found in .env');
   }
   const expireInSeconds = longTerm ? parseInt(process.env.REFRESH_JWT_EXPIRE) : parseInt(process.env.JWT_EXPIRE);
   return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
@@ -26,7 +28,17 @@ function generateToken(id, longTerm = false) {
  * @returns generated refresh token
  */
 function generateRefreshToken(id) {
-  return crypto.randomBytes(64).toString('hex');
+  if (!process.env.REFRESH_JWT_EXPIRE) {
+    throw new Error('REFRESH_JWT_EXPIRE not found in .env');
+  } else if (!process.env.JWT_EXPIRE) {
+    throw new Error('JWT_EXPIRE not found in .env');
+  } else if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error('JWT_REFRESH_SECRET not found in .env');
+  }
+  const expireInSeconds = parseInt(process.env.REFRESH_JWT_EXPIRE);
+  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: expireInSeconds
+  });
 }
 
 /**
