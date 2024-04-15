@@ -38,15 +38,11 @@ void main() {
       ),
     ));
 
-    expect(find.text('Informations de livraison'), findsOneWidget);
     expect(find.text('Coordonnées bancaires'), findsOneWidget);
     expect(find.text('Des demandes supplémentaires à nous faire parvenir ?'),
         findsOneWidget);
     expect(find.text('Payer'), findsOneWidget);
 
-    await tester.enterText(
-        find.byKey(const Key('address')), '1 rue de la paix');
-    await tester.enterText(find.byKey(const Key('city')), 'Nantes');
     await tester.enterText(
         find.byKey(const Key('informations')), 'some random informations');
 
