@@ -69,8 +69,10 @@ class LanguageChangeModalContent extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.done) {
               return Column(
                 children: [
-                  displayLanguage(context, 'fr', "Français"),
-                  displayLanguage(context, 'en', "English"),
+                  displayLanguage(
+                      context, 'fr', AppLocalizations.of(context)!.french),
+                  displayLanguage(
+                      context, 'en', AppLocalizations.of(context)!.english),
                 ],
               );
             } else {
