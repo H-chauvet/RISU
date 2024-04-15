@@ -62,7 +62,13 @@ class CompanyProfilPage extends StatefulWidget {
 }
 
 class CompanyProfilPageState extends State<CompanyProfilPage> {
-  late OrganizationList organization;
+  OrganizationList organization = OrganizationList(
+      id: null,
+      name: null,
+      type: null,
+      affiliate: null,
+      containers: null,
+      contactInformation: null);
   List<CtnList> containersList = [];
 
   String userMail = '';

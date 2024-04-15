@@ -292,6 +292,7 @@ class _ContainerPageState extends State<ContainerPage> {
             return AlertDialog(
               title: const Text("Créer un nouvel objet"),
               content: Container(
+                height: 220.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -457,7 +458,7 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.mode_outlined),
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,

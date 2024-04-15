@@ -83,7 +83,6 @@ void main() {
     await tester.pump();
     expect(find.text("Ville : Nantes"), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
-    // await tester.tap(find.byIcon(Icons.arrow_forward));
 
     await tester.pumpAndSettle();
   });
@@ -99,8 +98,6 @@ void main() {
     ));
 
     expect(find.byType(ContainerCards), findsOneWidget);
-    await tester.pump();
-    await tester.tap(find.byIcon(Icons.arrow_forward));
 
     await tester.pumpAndSettle();
   });

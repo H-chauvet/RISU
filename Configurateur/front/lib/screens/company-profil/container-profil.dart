@@ -428,7 +428,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.mode_outlined),
                   onPressed: () async {
                     await showUpdateItem(
                         context, itemName, itemDesc, item.id!, item,
@@ -439,6 +439,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       });
                     });
                   },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => deleteItem(item),
                 ),
                 SizedBox(
                   width: 10,

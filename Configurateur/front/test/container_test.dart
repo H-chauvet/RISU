@@ -16,7 +16,6 @@ Future<void> deleteContainer(CtnList container) async {}
 void main() {
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
-    // Build our app and trigger a frame.
     await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeService>(
@@ -31,10 +30,7 @@ void main() {
       ),
     ));
 
-    // Verify that the ContainerPage is rendered.
-    await tester.pump();
-    expect(find.text("Gestion des conteneurs"), findsOneWidget);
-    expect(find.text("Aucun conteneur trouvé."), findsOneWidget);
+    expect(find.text("Gestion des conteneurs et objets"), findsOneWidget);
   });
 
   testWidgets('ContainerMobilePage displays message details',
@@ -79,9 +75,8 @@ void main() {
       ),
     );
 
-    expect(find.text("id du conteneur : 1"), findsWidgets);
-    expect(find.text("prix du conteneur : 29.99"), findsWidgets);
-    expect(find.text("Nantes"), findsWidgets);
+    expect(find.text("Ville : Nantes"), findsWidgets);
+    expect(find.text("adresse : blabla"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });

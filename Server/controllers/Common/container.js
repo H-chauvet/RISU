@@ -7,8 +7,9 @@ const { db } = require("../../middleware/database");
  * @returns a container object in case it's found, otherwise empty
  */
 exports.getContainerById = (id) => {
+  let idtest = parseInt(id);
   return db.Containers.findUnique({
-    where: { id: parsenInt(id) },
+    where: { id: idtest },
     select: {
       city: true,
       address: true,
