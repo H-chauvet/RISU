@@ -20,10 +20,6 @@ void main() {
     WidgetController.hitTestWarningShouldBeFatal = true;
   });
 
-  tearDown(() {
-    // This code runs after each test case.
-  });
-
   testWidgets('displayGoogleMap set to true', (WidgetTester tester) async {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const MapPage(displayGoogleMap: false)));

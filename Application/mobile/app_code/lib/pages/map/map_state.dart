@@ -156,7 +156,6 @@ class MapPageState extends State<MapPage> {
                           Expanded(
                             child: Text(container.address!),
                           ),
-                          // TODO "Directions" IconButton
                         ],
                       ),
                       Divider(
