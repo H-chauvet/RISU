@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,9 +49,10 @@ class GoogleLogo extends StatelessWidget {
               Text(
                 'Google',
                 style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? Colors.black
-                        : Colors.white),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                ),
               )
             ],
           ),

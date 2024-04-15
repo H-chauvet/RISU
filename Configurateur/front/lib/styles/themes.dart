@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 final lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: const Color(0xff4682B4),
-  secondaryHeaderColor: const Color(0xff4682B4),
+  primaryColor: const Color(0xFF162A49),
+  secondaryHeaderColor: const Color(0xfff033F63),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xff4682B4),
     titleTextStyle: TextStyle(
@@ -45,7 +45,7 @@ final lightTheme = ThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.all<TextStyle>(
         const TextStyle(
-          color: Colors.white,
+          color: Color(0xfff033F63),
         ),
       ),
       backgroundColor:
@@ -59,8 +59,8 @@ final lightTheme = ThemeData(
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xFF4682B4),
-  secondaryHeaderColor: const Color(0xFF4682B4),
+  primaryColor: const Color(0xffFEDC97),
+  secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 32, 75, 110),
     titleTextStyle: TextStyle(

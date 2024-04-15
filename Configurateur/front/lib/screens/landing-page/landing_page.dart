@@ -6,7 +6,10 @@ import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
@@ -51,15 +54,17 @@ class LandingPageState extends State<LandingPage> {
             LandingAppBar(context: context),
             Column(
               children: [
-                const Text(
+                Text(
                   'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.bold,
-                    color: Color(0xfff033F63),
-                    shadows: [
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    shadows: const [
                       Shadow(
                         color: Color(0xff28666e),
                         offset: Offset(0.75, 0.75),
@@ -75,7 +80,7 @@ class LandingPageState extends State<LandingPage> {
                       child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Column(
+                      Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -83,9 +88,11 @@ class LandingPageState extends State<LandingPage> {
                               'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
                               style: TextStyle(
                                 fontSize: 35,
-                                color: Color(0xff033f63),
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
-                                shadows: [
+                                shadows: const [
                                   Shadow(
                                     color: Color(0xff28666e),
                                     offset: Offset(0.75, 0.75),
@@ -95,14 +102,17 @@ class LandingPageState extends State<LandingPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   top:
                                       15), // Espacement inférieur pour le texte
                               child: Text(
                                 'Des conteneurs disponibles partout en france !',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Color(0xfff033f63),
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
                                 ),
                               ),
                             ),
@@ -125,7 +135,7 @@ class LandingPageState extends State<LandingPage> {
                         'assets/containerrisu.png',
                       ),
                       const SizedBox(width: 100),
-                      const Column(
+                      Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -133,9 +143,11 @@ class LandingPageState extends State<LandingPage> {
                               'Concevez le conteneur de vos rêves,\nselon vos envies !',
                               style: TextStyle(
                                 fontSize: 35,
-                                color: Color(0xff033f63),
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
-                                shadows: [
+                                shadows: const [
                                   Shadow(
                                     color: Color(0xff28666e),
                                     offset: Offset(0.75, 0.75),
@@ -145,14 +157,17 @@ class LandingPageState extends State<LandingPage> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   top:
                                       15), // Espacement inférieur pour le texte
                               child: Text(
                                 'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Color(0xfff033f63),
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
                                 ),
                               ),
                             ),

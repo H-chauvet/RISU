@@ -2,7 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class LandingAppBar extends StatefulWidget {
   const LandingAppBar({super.key, required BuildContext context});
@@ -58,7 +61,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                         context.go("/");
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xff033F63),
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
                       child: const Text(
@@ -83,7 +89,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                         context.go("/company");
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xff033F63),
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
                       child: const Text(
@@ -106,7 +115,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                     TextButton(
                       onPressed: () => goToCreation(),
                       style: TextButton.styleFrom(
-                        foregroundColor: const Color(0xff033F63),
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
                       child: const Text(
@@ -117,6 +129,31 @@ class LandingAppBarState extends State<LandingAppBar> {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 10),
+                    const SizedBox(
+                      height: 24,
+                      child: VerticalDivider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 172, 167, 167),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text("Mode sombre",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.secondaryHeaderColor
+                              : lightTheme.secondaryHeaderColor,
+                        )),
+                    Switch(
+                      value: Provider.of<ThemeService>(context).isDark,
+                      onChanged: (bool value) {
+                        Provider.of<ThemeService>(context, listen: false)
+                            .switchTheme();
+                        setState(() {});
+                      },
+                    )
                   ],
                 ),
               ),

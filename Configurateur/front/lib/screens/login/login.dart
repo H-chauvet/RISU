@@ -7,11 +7,14 @@ import 'package:front/components/google.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -55,17 +58,19 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             children: [
           LandingAppBar(context: context),
-          const Text(
+          Text(
             'Connectez-vous au site RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
-              color: Color(0xfff033F63),
-              shadows: [
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: const [
                 Shadow(
-                  color: Color(0xff28666e),
+                  color: Color(0xff033F63),
                   offset: Offset(0.75, 0.75),
                   blurRadius: 1.5,
                 ),
@@ -193,10 +198,13 @@ class LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "Se connecter",
                               style: TextStyle(
                                 fontSize: 18,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
                               ),
                             ),
                           ),
