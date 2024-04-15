@@ -60,7 +60,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
 
   void checkContainerId() async {
     String? ctnId = await storageService.readStorage('containerId');
-    if (ctnId != '' ) {
+    if (ctnId != '') {
       containerId = int.parse(ctnId!);
       fetchContainer(ctnId!);
       fetchItemsbyCtnId();

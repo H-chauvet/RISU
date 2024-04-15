@@ -223,7 +223,6 @@ class AppRouter {
           child: ContainerPage(),
         ),
       ),
-
       GoRoute(
         path: '/userList',
         pageBuilder: (context, state) => const NoTransitionPage(
