@@ -60,7 +60,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
 
   void checkContainerId() async {
     String? ctnId = await storageService.readStorage('containerId');
-    if (ctnId != '') {
+    if (ctnId != '' || ctnId != null) {
       containerId = int.parse(ctnId!);
       fetchContainer(ctnId!);
       fetchItemsbyCtnId();
@@ -301,7 +301,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
             return AlertDialog(
               title: const Text("Modifier un nouvel objet"),
               content: Container(
-                height: 220.0,
+                height: 250.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

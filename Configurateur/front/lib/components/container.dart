@@ -81,10 +81,12 @@ class ContainerCards extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        storageService.writeStorage(
-          'containerId',
-          container.id.toString(),
-        );
+        if (container.id != null) {
+          storageService.writeStorage(
+            'containerId',
+            container.id.toString(),
+          );
+        }
         context.go(page, extra: container);
       },
       child: Card(

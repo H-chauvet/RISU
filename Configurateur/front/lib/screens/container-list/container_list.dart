@@ -292,7 +292,7 @@ class _ContainerPageState extends State<ContainerPage> {
             return AlertDialog(
               title: const Text("Créer un nouvel objet"),
               content: Container(
-                height: 220.0,
+                height: 290.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
