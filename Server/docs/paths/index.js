@@ -1,5 +1,6 @@
 const mobileSignUp = require('./Mobile/auth/signup')
 const mobileLogIn = require('./Mobile/auth/login')
+const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken')
 const mobileMailVerification = require('./Mobile/auth/mailVerification')
 const mobileTickets = require('./Mobile/contact/tickets')
 const mobileAssignTicket = require('./Mobile/contact/assignedId')
@@ -60,6 +61,9 @@ module.exports = {
         },
         '/api/mobile/auth/login': {
             ...mobileLogIn
+        },
+        '/api/mobile/auth/loginRefreshToken': {
+            ...mobileLogInRefreshToken
         },
         '/api/mobile/auth/mailVerification': {
             ...mobileMailVerification
