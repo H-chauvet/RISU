@@ -48,10 +48,10 @@ class LoginPageState extends State<LoginPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'email': _email!,
           'password': _password!,
-          'longTerm': _stayLoggedIn ? 'true' : 'false',
+          'longTerm': _stayLoggedIn ? true : false,
         }),
       );
       setState(() {
@@ -247,7 +247,7 @@ class LoginPageState extends State<LoginPage> {
                               });
                             },
                             child: Text(
-                              "Rester connecté",
+                              "${AppLocalizations.of(context)!.stayConnected}",
                               key: const Key('login-text_stayconnected'),
                               style: TextStyle(
                                 fontSize: 12,
