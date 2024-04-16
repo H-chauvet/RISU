@@ -55,6 +55,7 @@ class ArticleListState extends State<ArticleListPage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return [];
       }
+      return [];
     }
   }
 

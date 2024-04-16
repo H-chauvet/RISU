@@ -78,6 +78,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -93,7 +94,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
       if (newEmail != '') {
         if (Validators().email(context, newEmail) != null) {
-          if (context.mounted) {
+          if (mounted) {
             await MyAlertDialog.showErrorAlertDialog(
               context: context,
               title: AppLocalizations.of(context)!.error,
@@ -120,24 +121,24 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       });
       if (response.statusCode == 200) {
         json.decode(response.body);
-        if (context.mounted) {
+        if (mounted) {
           await fetchUserData(context);
         }
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
             context: context,
             message: AppLocalizations.of(context)!.profileUpdated,
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'updateUser',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringUpdateUserInformation);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -146,6 +147,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 
@@ -156,7 +158,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       if (currentPassword == '' ||
           newPassword == '' ||
           newPasswordConfirmation == '') {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -166,7 +168,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         return;
       }
       if (newPassword != newPasswordConfirmation) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -199,7 +201,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         currentPasswordController.clear();
         newPasswordController.clear();
         newPasswordConfirmationController.clear();
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
             context: context,
             message: AppLocalizations.of(context)!.passwordUpdated,
@@ -207,13 +209,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message:
                     AppLocalizations.of(context)!.passwordCurrentIncorrect);
           }
         } else {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: AppLocalizations.of(context)!
                     .errorOccurredDuringPasswordUpdate);
@@ -221,7 +223,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -230,6 +232,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 

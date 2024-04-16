@@ -50,7 +50,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
@@ -58,14 +58,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -103,14 +103,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent = jsonDecode(response.body)['rental'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getRent',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -119,6 +119,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         return;
       }
+      return;
     }
   }
 
@@ -143,14 +144,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent['ended'] = true;
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'returnArticle',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringRentReturning);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -159,6 +160,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringRentReturning);
         return;
       }
+      return;
     }
   }
 

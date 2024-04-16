@@ -47,20 +47,21 @@ class RentalPageState extends State<RentalPage> {
           rentals = jsonDecode(response.body)['rentals'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getRentals',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingRents);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -95,6 +96,7 @@ class RentalPageState extends State<RentalPage> {
       printCatchError(context, err, stacktrace,
           message: AppLocalizations.of(context)!
               .errorOccurredDuringGettingRentsInProgress);
+      return;
     }
   }
 
