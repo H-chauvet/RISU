@@ -78,7 +78,7 @@
   "fieldsEmpty": "Some fields are empty.",
   "fillComment": "Please fill in the comment.",
   "firstName": "First name",
-  "french": "French",
+  "french": "Français",
   "homeGoBack": "Back to home",
   "hoursAndMinutes": "{hours, plural, one{{hours} hour} other{{hours} hours}} and {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
   "hoursNumberOfHours": "{hours, plural, one{Number of hours} other{Number of hours}}",
