@@ -18,7 +18,7 @@ module.exports = {
           name: 'longTerm',
           in: 'body',
           schema: {
-            type: 'string',
+            type: 'boolean',
             example: 'true'
           }
         }
