@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/google.dart';
+import 'package:front/components/google/google.dart';
 import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -12,6 +13,8 @@ import 'dart:convert';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import './login_style.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,168 +36,205 @@ class LoginScreenState extends State<LoginScreen> {
     String password = '';
     dynamic response;
     Map<String, dynamic> decodedToken;
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-        appBar: CustomAppBar(
-          'Connexion',
-          context: context,
-        ),
-        body: Center(
-            child: FractionallySizedBox(
-                widthFactor: 0.2,
-                heightFactor: 0.7,
-                child: Form(
-                    key: formKey,
-                    child: Column(children: <Widget>[
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        key: const Key('email'),
-                        decoration: InputDecoration(
-                          hintText: 'Entrez votre email',
-                          labelText: 'Adresse e-mail',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        onChanged: (String? value) {
-                          mail = value!;
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez remplir ce champ';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: const Key('password'),
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: 'Entrez votre mot de passe',
-                          labelText: 'Mot de passe',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        onChanged: (String? value) {
-                          password = value!;
-                        },
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Veuillez remplir ce champ';
-                          }
-                          return null;
-                        },
-                      ),
-                      InkWell(
-                        onTap: () {
-                          context.go("/password-recuperation");
-                        },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Text(
-                                  'Mot de passe oublié ?',
-                                  style: TextStyle(color: Colors.blue),
-                                  textAlign: TextAlign.right,
-                                ),
-                              ]),
+      appBar: CustomAppBar(
+        'Connexion',
+        context: context,
+      ),
+      body: Center(
+        child: FractionallySizedBox(
+          widthFactor: screenFormat == ScreenFormat.desktop
+              ? desktopWidthFactor
+              : tabletWidthFactor,
+          heightFactor: 0.7,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: <Widget>[
+                const SizedBox(height: 10),
+                TextFormField(
+                  key: const Key('email'),
+                  decoration: InputDecoration(
+                    hintText: 'Entrez votre email',
+                    labelText: 'Adresse e-mail',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  onChanged: (String? value) {
+                    mail = value!;
+                  },
+                  validator: (String? value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez remplir ce champ';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    TextFormField(
+                      key: const Key('password'),
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Entrez votre mot de passe',
+                        labelText: 'Mot de passe',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: ElevatedButton(
-                          key: const Key('login'),
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              http
-                                  .post(
-                                    Uri.parse(
-                                        'http://$serverIp:3000/api/auth/login'),
-                                    headers: <String, String>{
-                                      'Content-Type':
-                                          'application/json; charset=UTF-8',
-                                      'Access-Control-Allow-Origin': '*',
-                                    },
-                                    body: jsonEncode(<String, String>{
-                                      'email': mail,
-                                      'password': password,
-                                    }),
-                                  )
-                                  .then((value) => {
-                                        if (value.statusCode == 200)
-                                          {
-                                            Fluttertoast.showToast(
-                                              msg:
-                                                  "Vous êtes désormais connecté !",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              gravity: ToastGravity.CENTER,
-                                            ),
-                                            response = jsonDecode(value.body),
-                                            response['accessToken'],
-                                            decodedToken = JwtDecoder.decode(
-                                              response['accessToken'],
-                                            ),
-                                            storageService.writeStorage(
-                                              'token',
-                                              response['accessToken'],
-                                            ),
-                                            context.go("/")
-                                          }
-                                        else
-                                          {
-                                            Fluttertoast.showToast(
-                                              msg: "Echec de la connexion",
-                                              toastLength: Toast.LENGTH_LONG,
-                                              gravity: ToastGravity.CENTER,
-                                            ),
-                                          }
-                                      });
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: Text(
-                            "Se connecter",
+                      onChanged: (String? value) {
+                        password = value!;
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez remplir ce champ';
+                        }
+                        return null;
+                      },
+                    ),
+                    InkWell(
+                      onTap: () {
+                        context.go("/password-recuperation");
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Text(
+                                'Mot de passe oublié ?',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
+                                textAlign: TextAlign.right,
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  height: screenFormat == ScreenFormat.desktop
+                      ? desktopButtonHeight
+                      : tabletButtonHeight,
+                  width: screenFormat == ScreenFormat.desktop
+                      ? desktopButtonWidth
+                      : tabletButtonWidth,
+                  child: ElevatedButton(
+                    key: const Key('login'),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        http
+                            .post(
+                              Uri.parse('http://$serverIp:3000/api/auth/login'),
+                              headers: <String, String>{
+                                'Content-Type':
+                                    'application/json; charset=UTF-8',
+                                'Access-Control-Allow-Origin': '*',
+                              },
+                              body: jsonEncode(<String, String>{
+                                'email': mail,
+                                'password': password,
+                              }),
+                            )
+                            .then((value) => {
+                                  if (value.statusCode == 200)
+                                    {
+                                      Fluttertoast.showToast(
+                                        msg: "Vous êtes désormais connecté !",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                      ),
+                                      response = jsonDecode(value.body),
+                                      response['accessToken'],
+                                      decodedToken = JwtDecoder.decode(
+                                        response['accessToken'],
+                                      ),
+                                      storageService.writeStorage(
+                                        'token',
+                                        response['accessToken'],
+                                      ),
+                                      context.go("/")
+                                    }
+                                  else
+                                    {
+                                      Fluttertoast.showToast(
+                                        msg: "Echec de la connexion",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.CENTER,
+                                      ),
+                                    }
+                                });
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    child: Text(
+                      "Se connecter",
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+                InkWell(
+                  key: const Key('register'),
+                  onTap: () {
+                    context.go("/register");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text("Nouveau sur la plateforme ? ",
+                              style: TextStyle(
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize)),
+                          Text(
+                            'Créer un compte.',
                             style: TextStyle(
-                              fontSize: 18,
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
+                                color: Colors.blue,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize),
                           ),
-                        ),
-                      ),
-                      InkWell(
-                        key: const Key('register'),
-                        onTap: () {
-                          context.go("/register");
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Text("Nouveau sur la plateforme ? "),
-                                Text(
-                                  'Créer un compte.',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                              ]),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text("Se connecter avec :"),
-                      const SizedBox(height: 10),
-                      GoogleLogo(),
-                    ])))));
+                        ]),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text("Se connecter avec :",
+                    style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize)),
+                const SizedBox(height: 10),
+                GoogleLogo(
+                  screenFormat: screenFormat,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
