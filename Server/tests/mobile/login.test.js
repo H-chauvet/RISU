@@ -64,5 +64,20 @@ describe('POST /api/login', () => {
       ],
       done
     )
+  }),
+  it('should not connect, incorrect token', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .post('/api/mobile/auth/login/refreshToken')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({ refreshToken: 'incorrectToken' });
+          expect(res.statusCode).toBe(401);
+        }
+      ],
+      done
+    )
   })
 });
