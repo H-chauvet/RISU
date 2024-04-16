@@ -104,6 +104,14 @@ class ContainerCard extends StatelessWidget {
                 title: container.city != null ? Text(container.city!) : null,
                 subtitle:
                     container.address != null ? Text(container.address!) : null,
+                trailing: IconButton(
+                  icon: Icon(
+                    Icons.directions,
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.primaryColor),
+                  ),
+                  onPressed: () {},
+                ),
               ),
             ],
           ),
