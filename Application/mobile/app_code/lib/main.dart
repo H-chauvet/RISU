@@ -7,8 +7,8 @@ import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/utils/providers/language.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'globals.dart';
+import 'package:risu/pages/login/login_refresh_token.dart';
 
 String theme = appTheme['clair'];
 
@@ -24,6 +24,10 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   theme = prefs.getString('appTheme') ?? appTheme['clair'];
   language = prefs.getString('language') ?? defaultLanguage;
+  final refreshToken = prefs.getString('refreshToken');
+  if (refreshToken != null && refreshToken != '') {
+    loginRefreshToken(refreshToken);
+  }
 
   runApp(
     MultiProvider(

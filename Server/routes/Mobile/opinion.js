@@ -5,6 +5,7 @@ const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const opinionCtrl = require("../../controllers/Mobile/opinion")
 const itemsCtrl = require("../../controllers/Common/items")
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
 router.get('/', async (req, res) => {
   var opinions = []
@@ -32,7 +33,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.post('/',
+router.post('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -67,7 +68,7 @@ router.post('/',
   }
 )
 
-router.delete('/:opinionId',
+router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -98,7 +99,7 @@ router.delete('/:opinionId',
   }
 )
 
-router.put('/:opinionId',
+router.put('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

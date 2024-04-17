@@ -11,8 +11,9 @@ const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.post('/article',
+router.post('/article', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -104,7 +105,7 @@ router.post('/article',
   }
 )
 
-router.post('/:locationId/invoice',
+router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -137,7 +138,7 @@ router.post('/:locationId/invoice',
   }
 )
 
-router.get('/listAll',
+router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -156,7 +157,7 @@ router.get('/listAll',
   }
 )
 
-router.get('/:rentId',
+router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -184,7 +185,7 @@ router.get('/:rentId',
   }
 )
 
-router.post('/:rentId/return',
+router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
