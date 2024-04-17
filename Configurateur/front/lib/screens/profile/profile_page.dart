@@ -8,6 +8,7 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';

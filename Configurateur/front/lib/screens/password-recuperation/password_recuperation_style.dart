@@ -10,6 +10,3 @@ var desktopCaptchaHeight = 7.0.h;
 
 var tabletSendButtonWidth = 30.0.w;
 var desktopSendButtonWidth = 20.0.w;
-
-var tabletFontSize = 5.0.sp;
-var desktopFontSize = 3.0.sp;

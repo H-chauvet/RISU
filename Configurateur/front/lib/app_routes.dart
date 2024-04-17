@@ -14,7 +14,7 @@ import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
-import 'package:front/screens/password-recuperation/password-recuperation.dart';
+import 'package:front/screens/password-recuperation/password_recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';

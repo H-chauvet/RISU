@@ -4,12 +4,11 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 import 'dart:convert';
-
-import 'confirmed_user_style.dart';
 
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});

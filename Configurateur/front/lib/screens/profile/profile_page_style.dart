@@ -8,9 +8,6 @@ var desktopCardHeight = 60.0.h;
 var desktopCardWidth = 40.0.w;
 var tabletCardWidth = 60.0.w;
 
-var tabletFontSize = 5.0.sp;
-var desktopFontSize = 3.0.sp;
-
 var tabletDateFontSize = 4.0.sp;
 var desktopDateFontSize = 2.0.sp;
 
