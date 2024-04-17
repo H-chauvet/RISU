@@ -102,7 +102,6 @@ class FavoriteSate extends State<FavoritePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
