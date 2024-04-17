@@ -3,7 +3,9 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -63,6 +65,8 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         'Contact',
@@ -177,6 +181,9 @@ class _ContactPageState extends State<ContactPage> {
                 child: Text(
                   'Envoyer',
                   style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
                         : lightTheme.primaryColor,
