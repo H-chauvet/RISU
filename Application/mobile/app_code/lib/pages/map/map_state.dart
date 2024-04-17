@@ -26,12 +26,13 @@ class MapPageState extends State<MapPage> {
   List<dynamic> listItems = [];
   Map<String, dynamic> containersData = {};
   Color dividerColor = Colors.black12;
-
+  int? containerId;
   LatLng _center = const LatLng(47.210546, -1.566842); // Epitech Nantes
 
   @override
   void initState() {
     super.initState();
+    containerId = widget.containerId;
     _requestLocationPermission();
     _getContainersData();
   }
@@ -112,6 +113,128 @@ class MapPageState extends State<MapPage> {
     }
   }
 
+  void displayBottomSheet(ContainerList container) {
+    if (!context.mounted) return;
+    _getContainerItems(container.id).then(
+      (value) => myShowModalBottomSheet(
+        context,
+        container.city!,
+        subtitle: "${AppLocalizations.of(context)!.by} ${"Risu"}",
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              Divider(
+                color: dividerColor,
+              ),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    size: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(container.address!),
+                  ),
+                ],
+              ),
+              Divider(
+                color: dividerColor,
+              ),
+              Row(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.articles,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ArticleListPage(
+                            containerId: container.id,
+                          ),
+                        ),
+                      );
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.viewMore,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              if (listItems.isEmpty)
+                Text(
+                  AppLocalizations.of(context)!.articlesListEmpty,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )
+              else
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: listItems.length,
+                    itemBuilder: (context, index) {
+                      final item = listItems.elementAt(index);
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ArticleDetailsPage(
+                                articleId: item['id'],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.all(8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Stack(
+                              children: [
+                                Image.asset('assets/volley.png'),
+                                Positioned(
+                                  left: 0,
+                                  child: Container(
+                                    width: 10,
+                                    height: 10,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: item['available']
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget displayMap(BuildContext context) {
     setState(() {
       _loaderManager.setIsLoading(true);
@@ -126,133 +249,23 @@ class MapPageState extends State<MapPage> {
     }
 
     Set<Marker> markers = {};
-
     for (ContainerList container in containers) {
-      final position = LatLng(container.latitude ?? _center.latitude,
-          container.longitude ?? _center.longitude);
+      if (container.latitude == null || container.longitude == null) {
+        continue;
+      }
+      if (containerId != null && containerId == container.id) {
+        setState(() {
+          mapController?.animateCamera(CameraUpdate.newLatLng(
+              LatLng(container.latitude!, container.longitude!)));
+        });
+      }
+      final position = LatLng(container.latitude!, container.longitude!);
       markers.add(
         Marker(
           markerId: MarkerId(container.id.toString()),
           position: position,
           onTap: () {
-            _getContainerItems(container.id).then(
-              (value) => myShowModalBottomSheet(
-                context,
-                container.city!,
-                subtitle: "${AppLocalizations.of(context)!.by} ${"Risu"}",
-                SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Divider(
-                        color: dividerColor,
-                      ),
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.location_on,
-                            size: 24,
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(container.address!),
-                          ),
-                        ],
-                      ),
-                      Divider(
-                        color: dividerColor,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            AppLocalizations.of(context)!.articles,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ArticleListPage(
-                                    containerId: container.id,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.viewMore,
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Theme.of(context).primaryColor,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (listItems.isEmpty)
-                        Text(
-                          AppLocalizations.of(context)!.articlesListEmpty,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Theme.of(context).primaryColor,
-                          ),
-                        )
-                      else
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.15,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount: listItems.length,
-                            itemBuilder: (context, index) {
-                              final item = listItems.elementAt(index);
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ArticleDetailsPage(
-                                        articleId: item['id'],
-                                      ),
-                                    ),
-                                  );
-                                },
-                                child: Card(
-                                  margin: const EdgeInsets.all(8),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Stack(
-                                      children: [
-                                        Image.asset('assets/volley.png'),
-                                        Positioned(
-                                          left: 0,
-                                          child: Container(
-                                            width: 10,
-                                            height: 10,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: item['available']
-                                                  ? Colors.green
-                                                  : Colors.red,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-            );
+            displayBottomSheet(container);
           },
         ),
       );
@@ -323,6 +336,7 @@ class MapPageState extends State<MapPage> {
     if (permission != null && permission == PermissionStatus.granted) {
       floatingActionButton = FloatingActionButton(
         onPressed: () {
+          containerId = null;
           _getUserLocation();
         },
         backgroundColor: Theme.of(context).primaryColor,
