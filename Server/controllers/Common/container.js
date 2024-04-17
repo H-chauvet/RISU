@@ -126,3 +126,25 @@ exports.getItemsFromContainer = (containerId) => {
     },
   });
 };
+
+exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId) => {
+  try {
+    const articles = await db.Article.findMany({
+      where: {
+        containerId: containerId,
+        name: {
+          contains: articleName || undefined,
+        },
+        available: isAvailable || undefined,
+        categoryId: categoryId || undefined,
+      },
+      orderBy: {
+        name: isAscending ? 'asc' : 'desc',
+      },
+    });
+    return articles;
+  } catch (error) {
+    console.error("Error retrieving items with filters:", error);
+    throw new Error("Failed to retrieve items with filters");
+  }
+};

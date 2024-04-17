@@ -34,9 +34,25 @@ router.get('/:containerId', async (req, res, next) => {
 
 router.get('/:containerId/articleslist/', async (req, res) => {
   try {
+    const { articleName, isAscending, isAvailable, categoryId } = req.query;
+    console.log('articleName', articleName);
+    console.log('isAscending', isAscending);
+    console.log('isAvailable', isAvailable);
+    console.log('categoryId', categoryId);
+    if (categoryId == 'null') {
+
+    }
+
     if (!req.params.containerId || req.params.containerId === '') {
       return res.status(401).json({ message: 'Missing containerId' })
     }
+    const items = await containerCtrl.getItemsWithFilters(
+      parseInt(req.params.containerId),
+      articleName,
+      isAscending,
+      isAvailable,
+      categoryId
+    );
     const container = await containerCtrl.getItemsFromContainer(parseInt(req.params.containerId))
     if (!container) {
       return res.status(401).json("itemList not found")
