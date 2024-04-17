@@ -24,11 +24,14 @@ void main() {
       await tester.pumpAndSettle();
 
       Finder titleData = find.byKey(const Key('article-details_title'));
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
       Finder favoriteData =
           find.byKey(const Key('article-button_add-favorite'));
       Finder opinionData =
           find.byKey(const Key('article-button_article-opinion'));
 
+      expect(titleData, findsOneWidget);
+      expect(appBarTitleData, findsOneWidget);
       expect(titleData, findsOneWidget);
       expect(favoriteData, findsOneWidget);
       expect(opinionData, findsOneWidget);

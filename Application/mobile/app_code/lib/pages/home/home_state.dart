@@ -65,7 +65,9 @@ class HomePageState extends State<HomePage> {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!
                 .errorOccurredDuringSettingProfile);
+        return;
       }
+      return;
     }
   }
 
@@ -81,7 +83,6 @@ class HomePageState extends State<HomePage> {
           curveColor: context.select((ThemeProvider themeProvider) =>
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
-          showLogo: true,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],

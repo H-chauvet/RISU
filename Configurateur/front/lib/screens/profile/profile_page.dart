@@ -33,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userDetails = json.decode(response.body);
-        debugPrint('User details: $userDetails');
 
         setState(() {
           firstName = userDetails['firstName'];

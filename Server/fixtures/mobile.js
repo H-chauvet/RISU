@@ -32,6 +32,13 @@ exports.createFixtures = async () => {
         id: 1,
         city: "Nantes",
         address: "Rue George",
+        latitude: 47.218371,
+        longitude: -1.553621,
+        saveName: "container",
+        containerMapping: "",
+        price: 0,
+        width: 12,
+        height: 5,
         items: {
           create: [
             {
@@ -68,6 +75,13 @@ exports.createFixtures = async () => {
         id: 2,
         city: "Nantes",
         address: "Rue george",
+        latitude: 47.218371,
+        longitude: -1.553621,
+        saveName: "emptyContainer",
+        containerMapping: "",
+        price: 0,
+        width: 12,
+        height: 5,
         items: {
           create: [],
         },

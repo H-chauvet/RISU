@@ -88,6 +88,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'categories': [],
         };
       }
+      return {
+        'id': '',
+        'containerId': '',
+        'name': '',
+        'available': false,
+        'price': 0,
+      };
     }
   }
 
@@ -237,7 +244,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.articleDetails,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

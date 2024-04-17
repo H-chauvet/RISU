@@ -27,7 +27,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
-      if (context.mounted) {
+      if (mounted) {
         await MyAlertDialog.showErrorAlertDialog(
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
@@ -64,7 +64,7 @@ class LoginPageState extends State<LoginPage> {
         return true;
       } else {
         if (jsonData.containsKey('message')) {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'apiLogin',
                 message: jsonData['message']);
             return false;
@@ -72,7 +72,7 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.connectionRefused);
         setState(() {
@@ -80,6 +80,7 @@ class LoginPageState extends State<LoginPage> {
         });
         return false;
       }
+      return false;
     }
     return false;
   }
@@ -138,7 +139,10 @@ class LoginPageState extends State<LoginPage> {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
+
+        return;
       }
+      return;
     }
   }
 
@@ -159,7 +163,7 @@ class LoginPageState extends State<LoginPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
@@ -169,17 +173,6 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.connection,
-                    key: const Key('login-text_title'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.primaryColor),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 32),
                   Column(
                     children: [

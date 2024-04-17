@@ -17,6 +17,7 @@ void main() {
       // This code runs after each test case.
     });
 
+    Finder titleFinder = find.byKey(const Key('appbar-text_title'));
     Finder infoTextFinder =
         find.byKey(const Key('profile_info-text_informations'));
     Finder firstNameFinder =
@@ -44,6 +45,7 @@ void main() {
       final testPage = initPage(const ProfileInformationsPage());
       await waitForLoader(tester: tester, testPage: testPage);
 
+      expect(titleFinder, findsOneWidget);
       expect(infoTextFinder, findsOneWidget);
       expect(firstNameFinder, findsOneWidget);
       expect(lastNameFinder, findsOneWidget);

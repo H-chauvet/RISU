@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/pages/article/details_page.dart';
-import 'package:risu/utils/providers/theme.dart';
 
 class ArticleData {
   final int id;
@@ -47,8 +45,10 @@ class ArticleData {
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 
-  const ArticleDataCard({Key? key, required this.articleData})
-      : super(key: key);
+  const ArticleDataCard({
+    super.key,
+    required this.articleData,
+  });
 
   @override
   Widget build(BuildContext context) {
