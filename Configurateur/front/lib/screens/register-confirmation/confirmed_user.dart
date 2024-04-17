@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/login/login.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 import 'dart:convert';
+
+import 'confirmed_user_style.dart';
 
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});
@@ -54,6 +57,8 @@ class ConfirmedUserState extends State<ConfirmedUser> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         "Confirmation d'inscription",
@@ -68,7 +73,11 @@ class ConfirmedUserState extends State<ConfirmedUser> {
             children: [
               Text(
                 "Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application",
-                style: TextStyle(fontSize: 6.0.sp),
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopBigFontSize
+                      : tabletBigFontSize,
+                ),
                 textAlign: TextAlign.center,
               ),
               SizedBox(
@@ -86,8 +95,12 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                       children: <Widget>[
                         Text(
                           "Retour à l'accueil",
-                          style:
-                              TextStyle(color: Colors.blue, fontSize: 3.0.sp),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
                         ),
                       ]),
                 ),

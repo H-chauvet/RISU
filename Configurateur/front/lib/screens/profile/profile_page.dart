@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     storageService.getUserMail().then((value) {
       userMail = value;
-      //MyAlertTest.checkSignInStatus(context);
+      MyAlertTest.checkSignInStatus(context);
       fetchUserDetails(userMail);
     });
   }
