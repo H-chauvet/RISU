@@ -25,6 +25,7 @@ class ArticleListState extends State<ArticleListPage> {
   bool isAscending = true;
   bool isAvailable = true;
   String articleName = '';
+  String? selectedCategoryId = 'null';
 
   Future<dynamic> getArticleCategories() async {
     late http.Response response;
@@ -66,15 +67,19 @@ class ArticleListState extends State<ArticleListPage> {
     }
   }
 
-  Future<dynamic> getItemsData(BuildContext context, int containerId) async {
+  Future<dynamic> getItemsData(
+      BuildContext context, int containerId, String? categoryId) async {
     late http.Response response;
 
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
+      final url = Uri.parse(
+          '$baseUrl/api/mobile/container/$containerId/articleslist'
+          '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}');
       response = await http.get(
-        Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist'),
+        url,
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -110,7 +115,8 @@ class ArticleListState extends State<ArticleListPage> {
   void initState() {
     super.initState();
     _containerId = widget.containerId;
-    getItemsData(context, _containerId).then((dynamic value) {
+    getItemsData(context, _containerId, selectedCategoryId)
+        .then((dynamic value) {
       setState(() {
         _itemsDatas = value;
       });
@@ -171,15 +177,28 @@ class ArticleListState extends State<ArticleListPage> {
                       if (_showFilter) const SizedBox(height: 16),
                       if (_showFilter)
                         SizedBox(
-                          width: MediaQuery.of(context).size.width *
-                              0.8, // 80% de la largeur de l'écran
+                          width: MediaQuery.of(context).size.width * 0.8,
                           child: MyTextInput(
                             key: const Key('filter-textInput_name'),
                             labelText:
                                 AppLocalizations.of(context)!.articleName,
                             keyboardType: TextInputType.emailAddress,
                             icon: Icons.article,
-                            onChanged: (value) => articleName = value,
+                            onChanged: (value) => {
+                              setState(() {
+                                articleName = value;
+                              }),
+                              Future.delayed(const Duration(milliseconds: 500),
+                                  () {
+                                getItemsData(context, _containerId,
+                                        selectedCategoryId)
+                                    .then((dynamic value) {
+                                  setState(() {
+                                    _itemsDatas = value;
+                                  });
+                                });
+                              }),
+                            },
                           ),
                         ),
                       if (_showFilter) const SizedBox(height: 16),
@@ -207,10 +226,16 @@ class ArticleListState extends State<ArticleListPage> {
                               ),
                               child: Text(
                                 '${AppLocalizations.of(context)!.price} : ${isAscending ? AppLocalizations.of(context)!.ascending : AppLocalizations.of(context)!.descending}',
-                                style: const TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider.currentTheme
+                                              .secondaryHeaderColor),
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 16),
                             ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -231,10 +256,102 @@ class ArticleListState extends State<ArticleListPage> {
                               ),
                               child: Text(
                                 '${AppLocalizations.of(context)!.status} : ${isAvailable ? AppLocalizations.of(context)!.available : AppLocalizations.of(context)!.unavailable}',
-                                style: const TextStyle(fontSize: 16),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider.currentTheme
+                                              .secondaryHeaderColor),
+                                ),
                               ),
                             ),
                           ],
+                        ),
+                      if (_showFilter) const SizedBox(height: 16),
+                      if (_showFilter)
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.7,
+                          decoration: BoxDecoration(
+                            color: context.select(
+                              (ThemeProvider themeProvider) =>
+                                  themeProvider.currentTheme.primaryColor,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: SizedBox(
+                            child: Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  DropdownButton<String>(
+                                    value: selectedCategoryId,
+                                    onChanged: (String? newValue) {
+                                      setState(() {
+                                        selectedCategoryId = newValue;
+                                        print(
+                                            'Selected category: $selectedCategoryId');
+                                      });
+                                    },
+                                    style: TextStyle(
+                                      color: context.select(
+                                        (ThemeProvider themeProvider) =>
+                                            themeProvider
+                                                .currentTheme.primaryColor,
+                                      ),
+                                    ),
+                                    dropdownColor: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider
+                                              .currentTheme.primaryColor,
+                                    ),
+                                    underline: Container(
+                                      height: 2,
+                                      color: context.select(
+                                        (ThemeProvider themeProvider) =>
+                                            themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                      ),
+                                    ),
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: null,
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .chooseAnArticleCategory,
+                                          style: TextStyle(
+                                            color: context.select(
+                                              (ThemeProvider themeProvider) =>
+                                                  themeProvider.currentTheme
+                                                      .secondaryHeaderColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      ..._articleCategories
+                                          .map<DropdownMenuItem<String>>(
+                                        (dynamic category) {
+                                          return DropdownMenuItem<String>(
+                                            value: category['id'].toString(),
+                                            child: Text(
+                                              category['name'],
+                                              style: TextStyle(
+                                                color: context.select(
+                                                  (ThemeProvider
+                                                          themeProvider) =>
+                                                      themeProvider.currentTheme
+                                                          .secondaryHeaderColor,
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
                       if (_itemsDatas.isEmpty) ...[
                         Text(
