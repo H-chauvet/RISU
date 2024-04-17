@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
+
+import 'password_recuperation_style.dart';
 
 class PasswordRecuperation extends StatefulWidget {
   const PasswordRecuperation({super.key});
@@ -36,6 +39,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
     final configFormData = ConfigFormData();
 
     String mail = '';
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
         appBar: CustomAppBar(
@@ -44,14 +48,15 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.5,
+                widthFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopWidthFactor
+                    : tabletWidthFactor,
                 heightFactor: 0.7,
                 child: Form(
                     key: formKey,
                     child: Column(children: <Widget>[
                       const SizedBox(height: 10),
                       SizedBox(
-                        width: 350,
                         child: TextFormField(
                           key: const Key('email'),
                           decoration: InputDecoration(
@@ -81,8 +86,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                             LocalCaptcha(
                               key: ValueKey(configFormData.toString()),
                               controller: captchaController,
-                              height: 50,
-                              width: 350,
+                              height: screenFormat == ScreenFormat.desktop
+                                  ? desktopCaptchaHeight
+                                  : tabletCaptchaHeight,
+                              width: screenFormat == ScreenFormat.desktop
+                                  ? desktopCaptchaWidth
+                                  : tabletCaptchaWidth,
                               backgroundColor: Colors.grey[100]!,
                               chars: configFormData.chars,
                               length: configFormData.length,
@@ -103,7 +112,6 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       ),
                       const SizedBox(height: 20.0),
                       SizedBox(
-                        width: 350,
                         child: TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Enter code',
@@ -140,7 +148,9 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       const SizedBox(height: 20.0),
                       SizedBox(
                         height: 40,
-                        width: 300,
+                        width: screenFormat == ScreenFormat.desktop
+                            ? desktopSendButtonWidth
+                            : tabletSendButtonWidth,
                         child: ElevatedButton(
                           key: const Key('submit'),
                           onPressed: () async {
@@ -179,9 +189,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             "Envoyer l'email de récupération",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize),
                           ),
                         ),
                       ),
