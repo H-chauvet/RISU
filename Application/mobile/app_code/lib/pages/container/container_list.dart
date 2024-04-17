@@ -72,8 +72,13 @@ class ContainerList {
 
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
+  final Function(int?) onDirectionClicked;
 
-  const ContainerCard({super.key, required this.container});
+  const ContainerCard({
+    super.key,
+    required this.container,
+    required this.onDirectionClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +115,9 @@ class ContainerCard extends StatelessWidget {
                     color: context.select((ThemeProvider themeProvider) =>
                         themeProvider.currentTheme.primaryColor),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    onDirectionClicked(container.id);
+                  },
                 ),
               ),
             ],
