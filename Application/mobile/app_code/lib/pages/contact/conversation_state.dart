@@ -83,6 +83,7 @@ class ConversationPageState extends State<ConversationPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
+        textTitle: tickets[0]["title"],
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -91,14 +92,6 @@ class ConversationPageState extends State<ConversationPage> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         child: Column(
           children: [
-            Text(
-              tickets[0]["title"],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-                color: themeProvider.currentTheme.primaryColor,
-              ),
-            ),
             Expanded(
               child: ListView.builder(
                 shrinkWrap: true,

@@ -281,6 +281,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },
+        textTitle: AppLocalizations.of(context)!.profileInformation,
       ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
