@@ -5,20 +5,9 @@ run ()
   flutter run
 }
 
-android ()
-{
+apk () {
   flutter build apk
-  flutter install
-}
-
-ios ()
-{
-  flutter build ipa --obfuscate
-}
-
-unit_tests ()
-{
-    flutter test test/models
+  cp build/app/outputs/flutter-apk/app-release.apk .
 }
 
 remote ()
@@ -30,53 +19,21 @@ remote ()
   adb connect $(adb shell ip route | awk '{print $9}'):5555
 }
 
-widget_tests ()
-{
-    # shellcheck disable=SC2044
-    for file in $(find test/ -type f ! -path "test/models/*"); do
-        flutter test "$file"
-    done
-}
-
 integration_tests ()
 {
   flutter test test/*_test.dart --coverage
   genhtml coverage/lcov.info -o coverage/html
-}
-
-show_tests_html ()
-{
-  genhtml coverage/lcov.info -o coverage/html
   xdg-open coverage/html/index.html
-}
-
-run_doc ()
-{
-  dart doc .
-  xdg-open doc/api/index.html
 }
 
 if [ "$1" == "" ]; then
     run
-elif [ "$1" == "unit_tests" ] || [ "$1" == "ut" ]; then
-    unit_tests
-elif [ "$1" == "widget_tests" ] || [ "$1" == "wt" ]; then
-    widget_tests
-elif [ "$1" == "integration_tests" ] || [ "$1" == "it" ]; then
+elif [ "$1" == "tests" ]; then
     integration_tests
-elif [ "$1" == "it_cov" ]; then
-    integration_tests
-    show_tests_html
-elif [ "$1" == "html" ]; then
-    show_tests_html
-elif [ "$1" == "android" ]; then
-    android
 elif [ "$1" == "ios" ]; then
     ios
 elif [ "$1" == "remote" ]; then
     remote
-elif [ "$1" == "doc" ]; then
-    run_doc
 else
     echo "Unknown command."
 fi

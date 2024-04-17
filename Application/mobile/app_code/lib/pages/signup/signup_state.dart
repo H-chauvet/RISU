@@ -63,7 +63,7 @@ class SignupPageState extends State<SignupPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.email,
@@ -73,7 +73,7 @@ class SignupPageState extends State<SignupPage> {
           return true;
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'apiSignup',
               message: AppLocalizations.of(context)!.emailInvalid);
         }
@@ -81,7 +81,7 @@ class SignupPageState extends State<SignupPage> {
       }
       return false;
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });

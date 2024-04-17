@@ -15,6 +15,7 @@
   "alreadyHaveAnAccount": "You already have an account",
   "anonymous": "Anonymous",
   "article": "Article",
+  "articles": "Articles",
   "articleAlreadyReturned": "The article has already been returned.",
   "articleDetails": "Article details",
   "articlesDisplayList": "Display list of articles",
@@ -22,6 +23,7 @@
   "articlesListEmpty": "No articles available",
   "availabilityOfAFavoriteArticle": "Availability of a favorite article",
   "available": "Available",
+  "by": "by",
   "cancel": "Cancel",
   "category": "Category",
   "close": "Close",
@@ -182,5 +184,6 @@
   "toComplete": "To complete",
   "total": "Total",
   "unavailable": "Unavailable",
-  "update": "Update"
+  "update": "Update",
+  "viewMore": "View more"
 }
