@@ -163,7 +163,7 @@ class LoginPageState extends State<LoginPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
@@ -173,17 +173,6 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.connection,
-                    key: const Key('login-text_title'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.primaryColor),
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 32),
                   Column(
                     children: [

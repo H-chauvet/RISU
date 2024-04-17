@@ -80,7 +80,6 @@ class ConfirmRentState extends State<ConfirmRentPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
       ),
       endDrawer: const BurgerDrawer(),
       body: SingleChildScrollView(

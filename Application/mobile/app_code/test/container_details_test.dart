@@ -33,6 +33,9 @@ void main() {
       expect(testData.getCity(), '');
       expect(testData.getAvailableItems(), 0);
 
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+      expect(appBarTitleData, findsOneWidget);
+
       Finder containerData =
           find.byKey(const Key('container-details_article-list'));
       expect(containerData, findsOneWidget);

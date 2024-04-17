@@ -19,6 +19,9 @@ void main() {
       (WidgetTester tester) async {
     await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
 
+    final Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
+    expect(logoFinder, findsOneWidget);
+
     Finder returnButton =
         find.byKey(const Key('rent_return-button-return_article'));
     expect(returnButton, findsNothing);

@@ -419,7 +419,7 @@ class OpinionPageState extends State<OpinionPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.reviewsList,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -437,14 +437,6 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.reviewsList,
-                            key: const Key('opinion-title'),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           Center(
                             child: Column(
                               children: [

@@ -172,7 +172,6 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
