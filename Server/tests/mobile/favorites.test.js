@@ -161,7 +161,7 @@ describe('GET /api/mobile/favorite Item', () => {
       done
     )
   })
-  it('Should not get favorite -- no favorite', (done) => {
+  it('Should not get favorite -- success no favorite for item', (done) => {
     async.series(
       [
         async function () {
@@ -170,9 +170,7 @@ describe('GET /api/mobile/favorite Item', () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', `Bearer ${authToken}`);
-          console.log(res.text);
-          expect(res.text).toBe("Favorite not found")
-          expect(res.statusCode).toBe(401);
+          expect(res.statusCode).toBe(200);
         }
       ],
       done

@@ -9,11 +9,11 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'details_page.dart';
 
@@ -26,6 +26,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     price: 0,
     categories: [],
   );
+  bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
 
   Future<dynamic> getArticleData(BuildContext context, int articleId) async {
@@ -46,6 +47,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
+        checkFavorite(responseData['id']);
         return responseData;
       } else {
         if (context.mounted) {
@@ -85,6 +87,133 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'price': 0,
           'categories': [],
         };
+      }
+    }
+  }
+
+  void createFavorite(articleId) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final token = userInformation!.token;
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/mobile/favorite/$articleId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        setState(() {
+          isFavorite = true;
+        });
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'createFavorite',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringCreatingFavorite);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
+      }
+    }
+  }
+
+  Future<void> checkFavorite(articleId) async {
+    try {
+      if (userInformation == null) return;
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final token = userInformation!.token;
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/mobile/favorite/$articleId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
+        setState(() {
+          isFavorite = jsonDecode(response.body);
+        });
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'createFavorite',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingFavorite);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
+      }
+    }
+  }
+
+  void deleteFavorite(articleId) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final token = userInformation!.token;
+      final response = await http.delete(
+        Uri.parse('$baseUrl/api/mobile/favorite/$articleId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
+        setState(() {
+          isFavorite = false;
+        });
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'createFavorite',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringDeletingFavorite);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
       }
     }
   }
@@ -134,16 +263,47 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        width: 300,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/volley.png'),
-                            fit: BoxFit.cover,
+                      Stack(
+                        children: [
+                          Container(
+                            width: 300,
+                            height: 200,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: const DecorationImage(
+                                image: AssetImage('assets/volley.png'),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
-                        ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: IconButton(
+                              key: const Key('article-button_add-favorite'),
+                              onPressed: () async {
+                                bool signIn = await checkSignin(context);
+                                if (!signIn) {
+                                  return;
+                                }
+
+                                bool backupFavorite = isFavorite;
+                                await checkFavorite(articleData.id);
+                                if (backupFavorite != isFavorite) return;
+                                (isFavorite)
+                                    ? deleteFavorite(articleData.id)
+                                    : createFavorite(articleData.id);
+                              },
+                              icon: Icon(
+                                (isFavorite)
+                                    ? Icons.favorite_rounded
+                                    : Icons.favorite_border_rounded,
+                                color: themeProvider.currentTheme
+                                    .bottomNavigationBarTheme.selectedItemColor,
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       const SizedBox(height: 16),
                       Padding(
@@ -271,8 +431,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
                       if (articleData.available)
                         SizedBox(
                           width: double.infinity,

@@ -31,7 +31,15 @@ exports.getUserFavorites = (userId) => {
         select: {
           id: true,
           name: true,
+          price: true,
           available: true,
+          container: {
+            select: {
+              id: true,
+              address: true,
+              city:true,
+            }
+          }
         }
       }
     }

@@ -78,10 +78,7 @@ router.get('/:itemId',
 			if (!item) {
 				return res.status(401).send('Item not found')
 			}
-			const favorite = await favoriteCtrl.getItemFavorite(user.id, item.id)
-			if (!favorite) {
-				return res.status(401).send('Favorite not found')
-			}
+			const favorite = await favoriteCtrl.checkFavorite(user.id, item.id)
 
 			return res.status(200).json(favorite)
 		} catch (err) {
