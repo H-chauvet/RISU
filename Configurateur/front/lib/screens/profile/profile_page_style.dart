@@ -1,7 +1,7 @@
 import 'package:sizer/sizer.dart';
 
-var tabletDialogHeight = 30.0.h;
-var desktopDialogHeight = 20.0.h;
+var tabletDialogHeight = 20.0.h;
+var desktopDialogHeight = 10.0.h;
 
 var tabletCardHeight = 80.0.h;
 var desktopCardHeight = 60.0.h;
