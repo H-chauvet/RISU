@@ -271,6 +271,14 @@ class OpinionPageState extends State<OpinionPage> {
                       text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
+                        if (comment == '') {
+                          MyAlertDialog.showInfoAlertDialog(
+                            context: context,
+                            title: AppLocalizations.of(context)!.invalidForm,
+                            message: AppLocalizations.of(context)!.fillComment,
+                          );
+                          return;
+                        }
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
                       },
