@@ -268,10 +268,6 @@ class FavoriteSate extends State<FavoritePage> {
                                                 Icon(
                                                   Icons.arrow_forward_ios,
                                                   size: 28,
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .bottomNavigationBarTheme
-                                                      .selectedItemColor,
                                                 ),
                                                 const SizedBox(width: 8),
                                               ],
