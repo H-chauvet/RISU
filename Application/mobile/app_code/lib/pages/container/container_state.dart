@@ -106,6 +106,7 @@ class ContainerPageState extends State<ContainerPage> {
                                 final product = containers.elementAt(index);
                                 return ContainerCard(
                                   container: product,
+                                  onDirectionClicked: widget.onDirectionClicked,
                                 );
                               },
                             ),
