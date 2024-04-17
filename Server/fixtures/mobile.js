@@ -31,9 +31,9 @@ exports.createFixtures = async () => {
       data: {
         id: 1,
         city: "Nantes",
-        address: "Rue George",
-        latitude: 47.218371,
-        longitude: -1.553621,
+        address: "Rue d'Alger",
+        latitude: 47.210537, // Epitech Nantes
+        longitude: -1.566808,
         saveName: "container",
         containerMapping: "",
         price: 0,
@@ -73,10 +73,10 @@ exports.createFixtures = async () => {
     const emptyContainer = await db.Containers.create({
       data: {
         id: 2,
-        city: "Nantes",
-        address: "Rue george",
-        latitude: 47.218371,
-        longitude: -1.553621,
+        city: "Saint Brévin l'Océan",
+        address: "Boulevard de l'Océan",
+        latitude: 47.232375,
+        longitude: -2.179429,
         saveName: "emptyContainer",
         containerMapping: "",
         price: 0,
