@@ -94,7 +94,7 @@ class ContactPageState extends State<ContactPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });

@@ -9,14 +9,16 @@ const { db } = require("../../middleware/database");
 exports.getContainerById = (id) => {
   return db.Containers.findUnique({
     where: { id: id },
-      select: {
-        city: true,
-        address: true,
-        items: {
-          where: { available: true }
-        },
-      }
-    })
+    select: {
+      city: true,
+      address: true,
+      items: {
+        where: { available: true },
+      },
+      latitude: true,
+      longitude: true,
+    },
+  });
 };
 
 /**
@@ -67,6 +69,23 @@ exports.updateContainer = (id, container) => {
 };
 
 /**
+ *
+ * @param {number} id of the container
+ * @param {*} container the object with position data
+ * @returns the container object
+ */
+exports.updateContainerPosition = (id, container) => {
+  container.latitude = parseFloat(container.latitude);
+  container.longitude = parseFloat(container.longitude);
+  return db.Containers.update({
+    where: {
+      id: id,
+    },
+    data: container,
+  });
+};
+
+/**
  * Retrieve every container
  *
  * @throws {Error} with a specific message to find the problem
@@ -101,10 +120,9 @@ exports.getItemsFromContainer = (containerId) => {
           price: true,
           image: true,
           description: true,
-          categories: true
-        }
-      }
+          categories: true,
+        },
+      },
     },
-  })
-}
-
+  });
+};

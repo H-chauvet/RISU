@@ -91,11 +91,11 @@ class LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           context.go("/password-recuperation");
                         },
-                        child: const Padding(
-                          padding: EdgeInsets.all(10.0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
+                              children: const <Widget>[
                                 Text(
                                   'Mot de passe oublié ?',
                                   style: TextStyle(color: Colors.blue),

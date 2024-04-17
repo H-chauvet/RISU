@@ -408,7 +408,6 @@ class ContainerCreationState extends State<ContainerCreation> {
                 .materialIndex ==
             4) {
           counter = 1;
-          debugPrint('locker disabled found');
         }
         if (objs[0]
                     .fragments[j * widths + i + fragmentIncrement]
@@ -433,7 +432,6 @@ class ContainerCreationState extends State<ContainerCreation> {
           }
           j += size;
         } else {
-          debugPrint(counter.toString() + " " + j.toString());
           j += counter;
         }
         if (j == heights) {
@@ -586,6 +584,8 @@ class ContainerCreationState extends State<ContainerCreation> {
       'lockers': jsonEncode(lockers),
       'id': widget.id,
       'container': widget.container,
+      'width': width.toString(),
+      'height': height.toString(),
     };
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
@@ -689,7 +689,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
+              length: 6,
               progress: 1,
               previous: 'Précédent',
               next: 'Suivant',
@@ -721,8 +721,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => ContainerDialog(
                                   callback: updateCube,
                                   size: 1,
-                                  width: int.parse(widget.width!),
-                                  height: int.parse(widget.height!),
+                                  width: width,
+                                  height: height,
                                 ));
                       },
                       style: ElevatedButton.styleFrom(

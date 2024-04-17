@@ -55,13 +55,17 @@ class DesignScreen extends StatefulWidget {
       this.amount,
       this.containerMapping,
       this.id,
-      this.container});
+      this.container,
+      this.width,
+      this.height});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
   final String? id;
   final String? container;
+  final String? width;
+  final String? height;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -121,6 +125,9 @@ class DesignScreenState extends State<DesignScreen> {
     dynamic decode = jsonDecode(widget.lockers!);
 
     for (int i = 0; i < decode.length; i++) {
+      if (decode[i]['type'] == 'Design personnalisé') {
+        continue;
+      }
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
   }
@@ -285,13 +292,14 @@ class DesignScreenState extends State<DesignScreen> {
       'Access-Control-Allow-Origin': '*',
     };
 
+    dynamic container = jsonDecode(widget.container!);
     if (widget.id == null) {
       HttpService().request('http://$serverIp:3000/api/container/create',
           header, <String, String>{
         'containerMapping': widget.containerMapping!,
         'designs': json.encode(designss),
-        'height': '5',
-        'width': '12',
+        'height': widget.height.toString(),
+        'width': widget.width.toString(),
         'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
@@ -311,8 +319,8 @@ class DesignScreenState extends State<DesignScreen> {
         'containerMapping': widget.containerMapping!,
         'price': sumPrice().toString(),
         'designs': json.encode(designss),
-        'width': '12',
-        'height': '5',
+        'width': container['width'],
+        'height': container['height'],
         'city': '',
         'informations': '',
         'address': '',
@@ -342,8 +350,8 @@ class DesignScreenState extends State<DesignScreen> {
         },
         <String, dynamic>{
           'designs': json.encode(designss),
-          'height': '5',
-          'width': '12',
+          'height': widget.height,
+          'width': widget.width,
         },
       ).then((value) {
         if (value.statusCode != 200) {
@@ -360,6 +368,8 @@ class DesignScreenState extends State<DesignScreen> {
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     } else {
+      dynamic container = jsonDecode(widget.container!);
+
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
@@ -372,8 +382,8 @@ class DesignScreenState extends State<DesignScreen> {
           'containerMapping': widget.containerMapping!,
           'price': sumPrice().toString(),
           'designs': json.encode(designss),
-          'width': '12',
-          'height': '5',
+          'width': container['width'],
+          'height': container['height'],
           'city': '',
           'informations': '',
           'address': '',
@@ -404,16 +414,17 @@ class DesignScreenState extends State<DesignScreen> {
       var data = {
         'id': widget.id,
         'container': jsonEncode(decode),
+        'width': widget.width,
+        'height': widget.height,
       };
       context.go("/container-creation", extra: jsonEncode(data));
     } else {
       dynamic design = jsonEncode(designss);
-
       var container = {
         'containerMapping': widget.containerMapping!,
         'designs': design!,
-        'height': '5',
-        'width': '12',
+        'height': widget.height,
+        'width': widget.width,
       };
 
       var data = {
@@ -451,7 +462,7 @@ class DesignScreenState extends State<DesignScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 5,
+              length: 6,
               progress: 2,
               previous: 'Précédent',
               next: 'Suivant',
@@ -509,7 +520,9 @@ class DesignScreenState extends State<DesignScreen> {
                                       if (!mounted) {
                                         return;
                                       }
-                                      openAddDialog(context);
+                                      if (picked != null) {
+                                        openAddDialog(context);
+                                      }
                                       setState(() {});
                                     },
                                     child: const Text("Parcourir"))
