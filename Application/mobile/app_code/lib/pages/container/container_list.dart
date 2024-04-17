@@ -41,7 +41,7 @@ class ContainerList {
       id: json['id'],
       createdAt: json['createdAt'],
       containerMapping: json['containerMapping'],
-      price: json['price'],
+      price: price,
       address: json['address'],
       city: json['city'],
       longitude: json['longitude'],
