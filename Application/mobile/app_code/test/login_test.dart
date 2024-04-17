@@ -22,8 +22,7 @@ void main() {
     testWidgets('Login', (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const LoginPage()));
 
-      Finder appBarLogo = find.byKey(const Key('appbar-image_logo'));
-      Finder subTitleFinder = find.byKey(const Key('login-text_title'));
+      Finder appBarTitle = find.byKey(const Key('appbar-text_title'));
       Finder textInputEmailFinder =
           find.byKey(const Key('login-textinput_email'));
       Finder textInputPasswordFinder =
@@ -38,8 +37,7 @@ void main() {
       Finder alertdialogEmptyFieldsFinder =
           find.byKey(const Key('login-alertdialog_emptyfields'));
 
-      expect(appBarLogo, findsOneWidget);
-      expect(subTitleFinder, findsOneWidget);
+      expect(appBarTitle, findsOneWidget);
       expect(textInputEmailFinder, findsOneWidget);
       expect(textInputPasswordFinder, findsOneWidget);
       expect(textinputRightIconFinder, findsOneWidget);

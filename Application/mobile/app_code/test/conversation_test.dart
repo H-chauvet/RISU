@@ -52,8 +52,8 @@ void main() {
         initPage(ConversationPage(tickets: ticketList, isOpen: true));
     await waitForLoader(tester: tester, testPage: testPage);
 
-    Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
-    expect(logoFinder, findsOneWidget);
+    Finder titleFinder = find.byKey(const Key('appbar-text_title'));
+    expect(titleFinder, findsOneWidget);
 
     Finder buttonSendMessage =
         find.byKey(const Key('chat-button-send-message'));
