@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/profile/profile_page_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -56,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     storageService.getUserMail().then((value) {
       userMail = value;
-      MyAlertTest.checkSignInStatus(context);
+      //MyAlertTest.checkSignInStatus(context);
       fetchUserDetails(userMail);
     });
   }
@@ -70,9 +72,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 120.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -103,7 +116,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -146,7 +167,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -162,9 +191,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -190,7 +230,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -231,7 +279,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -247,9 +303,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -274,7 +341,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -315,7 +390,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -331,9 +414,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -359,7 +453,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text("Annuler",
+                  style: TextStyle(
+                      fontSize: SizeService().getScreenFormat(context) ==
+                              ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize)),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -401,7 +500,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -411,6 +518,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         'Mon profil',
@@ -418,8 +527,12 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Center(
         child: Container(
-          width: 700.0,
-          height: 600.0,
+          width: screenFormat == ScreenFormat.desktop
+              ? desktopCardWidth
+              : tabletCardWidth,
+          height: screenFormat == ScreenFormat.desktop
+              ? desktopCardHeight
+              : tabletCardHeight,
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 231, 223, 223),
             borderRadius: BorderRadius.circular(30.0),
@@ -441,9 +554,11 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     firstName,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xff4682B4),
-                      fontSize: 26.0,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopNameFontSize
+                          : tabletNameFontSize,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Verdana',
                     ),
@@ -453,9 +568,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: [
                       Text(
                         lastName,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Color(0xff4682B4),
-                          fontSize: 26.0,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopNameFontSize
+                              : tabletNameFontSize,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'Verdana',
                         ),
@@ -485,13 +602,15 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Text(
                       'E-mail',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18.0,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Verdana',
                       ),
@@ -504,9 +623,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         Text(
                           userMail,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black,
-                            fontSize: 18.0,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Verdana',
                           ),
@@ -543,13 +664,15 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Text(
                       'Entreprise',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18.0,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Verdana',
                       ),
@@ -562,9 +685,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       children: [
                         Text(
                           company,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black,
-                            fontSize: 18.0,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Verdana',
                           ),
@@ -601,13 +726,15 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: Text(
                       'Mot de passe',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 18.0,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Verdana',
                       ),
@@ -618,11 +745,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     padding: const EdgeInsets.only(right: 20.0),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           '*********',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 18.0,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'Verdana',
                           ),
@@ -658,7 +787,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     context.go("/my-container");
                   },
-                  child: const Text("Mes sauvegardes")),
+                  child: Text(
+                    "Mes sauvegardes",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                    ),
+                  )),
               const Spacer(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -678,17 +814,23 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Retour à l'accueil",
+                          style: TextStyle(
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopFontSize
+                                  : tabletFontSize),
                         ),
                       ),
                     ),
                   ),
                   Text(
                     'Créé le : $formattedDate',
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.black,
-                      fontSize: 10.0,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopDateFontSize
+                          : tabletDateFontSize,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Verdana',
                     ),
@@ -711,8 +853,12 @@ class _ProfilePageState extends State<ProfilePage> {
                             borderRadius: BorderRadius.circular(20.0),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Déconnexion",
+                          style: TextStyle(
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopFontSize
+                                  : tabletFontSize),
                         ),
                       ),
                     ),
