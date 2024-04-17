@@ -4,8 +4,10 @@ const mobileMailVerification = require("./Mobile/auth/mailVerification");
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
-const mobileItemListAll = require("./Mobile/items/listAll");
+const mobileFavorite = require("./Mobile/items/favorites/favorite");
+const mobileMyFavorites = require("./Mobile/items/favorites/myFavorites");
 const mobileItemId = require("./Mobile/items/itemId");
+const mobileItemListAll = require("./Mobile/items/listAll");
 const mobileOpinion = require("./Mobile/opinion/opinion");
 const mobileOpinionId = require("./Mobile/opinion/opinionId");
 const mobileRentArticle = require("./Mobile/rent/article");
@@ -76,6 +78,12 @@ module.exports = {
     },
     "/api/mobile/article/:articleId": {
       ...mobileItemId,
+    },
+    "/api/mobile/favorite": {
+      ...mobileMyFavorites,
+    },
+    "/api/mobile/favorite/:itemId": {
+      ...mobileFavorite,
     },
     "/api/mobile/opinion/": {
       ...mobileOpinion,

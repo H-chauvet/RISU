@@ -36,6 +36,7 @@ class ContainerList {
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
+    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ContainerList(
       id: json['id'],
       createdAt: json['createdAt'],

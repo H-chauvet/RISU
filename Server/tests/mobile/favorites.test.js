@@ -85,7 +85,7 @@ describe('POST /api/mobile/favorite', () => {
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
             .set('Authorization', `Bearer ${authToken}`);
-          expect(res.text).toBe("Favorite already existing");
+          expect(res.text).toBe("Favorite already exist");
           expect(res.statusCode).toBe(401);
         }
       ],

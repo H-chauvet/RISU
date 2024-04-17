@@ -102,6 +102,7 @@ class FavoriteSate extends State<FavoritePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
+
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -128,7 +129,7 @@ class FavoriteSate extends State<FavoritePage> {
                     const SizedBox(height: 30),
                     Expanded(
                       key: const Key('favorite-list'),
-                      child: (favorites.length == 0)
+                      child: (favorites.isEmpty)
                           ? Center(
                               child: Text(
                                 AppLocalizations.of(context)!
@@ -145,36 +146,36 @@ class FavoriteSate extends State<FavoritePage> {
                               itemBuilder: (BuildContext context, int index) {
                                 dynamic favorite = favorites[index];
                                 return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            ArticleDetailsPage(
-                                                articleId: favorite['item']
-                                                    ['id']),
-                                      ),
-                                    );
-                                  },
-                                  child: Card(
-                                      elevation: 5,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 5),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      color:
-                                          themeProvider.currentTheme.cardColor,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Column(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              ArticleDetailsPage(
+                                                  articleId: favorite['item']
+                                                      ['id']),
+                                        ),
+                                      );
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        Card(
+                                          elevation: 5,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 5),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          color: themeProvider
+                                              .currentTheme.cardColor,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20.0),
+                                            child: Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                Stack(
+                                                Column(
                                                   children: [
                                                     SizedBox(
                                                       height: 100,
@@ -185,97 +186,128 @@ class FavoriteSate extends State<FavoritePage> {
                                                             'assets/volley.png'),
                                                       ),
                                                     ),
-                                                    IconButton(
-                                                      key: const Key(
-                                                          'article-button_article-rent'),
-                                                      onPressed: () async {
-                                                        bool signIn =
-                                                            await checkSignin(
-                                                                context);
-                                                        if (!signIn) {
-                                                          return;
-                                                        }
-                                                        deleteFavorite(
-                                                            favorite['item']
-                                                                ['id']);
-                                                        setState(() {
-                                                          favorites
-                                                              .removeAt(index);
-                                                        });
-                                                      },
-                                                      icon: Icon(
-                                                        Icons.favorite_rounded,
-                                                        size: 28,
-                                                        color: themeProvider
-                                                            .currentTheme
-                                                            .bottomNavigationBarTheme
-                                                            .selectedItemColor,
-                                                      ),
-                                                    ),
                                                   ],
-                                                )
-                                              ],
-                                            ),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '${favorite['item']['name']}',
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20.0,
-                                                  ),
                                                 ),
-                                                const SizedBox(height: 10),
-                                                Text(
-                                                  AppLocalizations.of(context)!
-                                                      .priceXPerHour(
-                                                          favorite['item']
-                                                              ['price']),
-                                                  style: const TextStyle(
-                                                      fontSize: 15.0),
-                                                ),
-                                                const SizedBox(height: 10),
-                                                Row(
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "${AppLocalizations.of(context)!.status}: ",
+                                                      '${favorite['item']['name']}',
                                                       style: const TextStyle(
-                                                          fontSize: 15.0),
-                                                    ),
-                                                    Container(
-                                                      width: 10,
-                                                      height: 10,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: favorite['item']
-                                                                ['available']
-                                                            ? Colors.green
-                                                            : Colors.red,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 20.0,
                                                       ),
                                                     ),
-                                                    const SizedBox(width: 5),
+                                                    const SizedBox(height: 10),
                                                     Text(
-                                                      favorite['item']
-                                                              ['available']
-                                                          ? AppLocalizations.of(
-                                                                  context)!
-                                                              .available
-                                                          : AppLocalizations.of(
-                                                                  context)!
-                                                              .unavailable,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .priceXPerHour(
+                                                              favorite['item']
+                                                                  ['price']),
                                                       style: const TextStyle(
                                                           fontSize: 15.0),
+                                                    ),
+                                                    const SizedBox(height: 10),
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "${AppLocalizations.of(context)!.status}: ",
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      15.0),
+                                                        ),
+                                                        Container(
+                                                          width: 10,
+                                                          height: 10,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            color: favorite[
+                                                                        'item'][
+                                                                    'available']
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 5),
+                                                        Text(
+                                                          favorite['item']
+                                                                  ['available']
+                                                              ? AppLocalizations
+                                                                      .of(
+                                                                          context)!
+                                                                  .available
+                                                              : AppLocalizations
+                                                                      .of(context)!
+                                                                  .unavailable,
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize:
+                                                                      15.0),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
                                               ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      )),
-                                );
+                                        Positioned(
+                                          right: 0,
+                                          top: 0,
+                                          bottom: 0,
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.arrow_forward_ios,
+                                                  size: 28,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .bottomNavigationBarTheme
+                                                      .selectedItemColor,
+                                                ),
+                                                const SizedBox(width: 8),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topRight,
+                                          child: IconButton(
+                                            key: const Key(
+                                                'article-button_article-rent'),
+                                            onPressed: () async {
+                                              bool signIn =
+                                                  await checkSignin(context);
+                                              if (!signIn) {
+                                                return;
+                                              }
+                                              deleteFavorite(
+                                                  favorite['item']['id']);
+                                              setState(() {
+                                                favorites.removeAt(index);
+                                              });
+                                            },
+                                            icon: Icon(
+                                              Icons.favorite_rounded,
+                                              size: 28,
+                                              color: themeProvider
+                                                  .currentTheme
+                                                  .bottomNavigationBarTheme
+                                                  .selectedItemColor,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ));
                               },
                             ),
                     ),

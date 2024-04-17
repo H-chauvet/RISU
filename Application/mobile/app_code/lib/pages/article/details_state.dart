@@ -245,6 +245,30 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
         textTitle: AppLocalizations.of(context)!.articleDetails,
+        action: IconButton(
+          key: const Key('article-button_add-favorite'),
+          onPressed: () async {
+            bool signIn = await checkSignin(context);
+            if (!signIn) {
+              return;
+            }
+
+            bool backupFavorite = isFavorite;
+            await checkFavorite(articleData.id);
+            if (backupFavorite != isFavorite) return;
+            (isFavorite)
+                ? deleteFavorite(articleData.id)
+                : createFavorite(articleData.id);
+          },
+          icon: Icon(
+            (isFavorite)
+                ? Icons.favorite_rounded
+                : Icons.favorite_border_rounded,
+            size: 28,
+            color: themeProvider
+                .currentTheme.bottomNavigationBarTheme.selectedItemColor,
+          ),
+        ),
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -270,48 +294,17 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Stack(
-                        children: [
-                          Container(
-                            width: 300,
-                            height: 200,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: const DecorationImage(
-                                image: AssetImage('assets/volley.png'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                      Container(
+                        width: 300,
+                        height: 200,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          image: const DecorationImage(
+                            image: AssetImage('assets/volley.png'),
+                            fit: BoxFit.cover,
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: IconButton(
-                              key: const Key('article-button_add-favorite'),
-                              onPressed: () async {
-                                bool signIn = await checkSignin(context);
-                                if (!signIn) {
-                                  return;
-                                }
-
-                                bool backupFavorite = isFavorite;
-                                await checkFavorite(articleData.id);
-                                if (backupFavorite != isFavorite) return;
-                                (isFavorite)
-                                    ? deleteFavorite(articleData.id)
-                                    : createFavorite(articleData.id);
-                              },
-                              icon: Icon(
-                                (isFavorite)
-                                    ? Icons.favorite_rounded
-                                    : Icons.favorite_border_rounded,
-                                size: 28,
-                                color: themeProvider.currentTheme
-                                    .bottomNavigationBarTheme.selectedItemColor,
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Padding(

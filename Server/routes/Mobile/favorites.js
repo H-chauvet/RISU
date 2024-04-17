@@ -25,7 +25,7 @@ router.post('/:itemId',
 			}
 			const favorite = await favoriteCtrl.checkFavorite(user.id, item.id)
 			if (favorite) {
-				return res.status(401).send('Favorite already existing')
+				return res.status(401).send('Favorite already exist')
 			}
 			await favoriteCtrl.createFavoriteItem(user.id, item.id)
 
