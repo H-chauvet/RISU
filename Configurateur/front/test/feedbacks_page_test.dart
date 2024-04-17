@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/dialog/rating_dialog_content.dart';
+import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:flutter/material.dart';
