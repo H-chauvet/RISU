@@ -76,7 +76,7 @@ class NewTicketState extends State<NewTicketPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.newTicket,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -92,16 +92,6 @@ class NewTicketState extends State<NewTicketPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const SizedBox(height: 30),
-                      Text(
-                        AppLocalizations.of(context)!.newTicket,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.primaryColor),
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                       const SizedBox(height: 32),
                       MyTextInput(
                         key: const Key('new-ticket-text_input-input-title'),

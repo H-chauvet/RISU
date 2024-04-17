@@ -65,6 +65,11 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
           'count': {'available': 0}
         };
       }
+      return {
+        'address': '',
+        'city': '',
+        '_count': {'available': 0}
+      };
     }
   }
 
@@ -104,7 +109,7 @@ class ContainerDetailsState extends State<ContainerDetailsPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.containerDetails,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

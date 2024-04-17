@@ -94,7 +94,7 @@ class ContactPageState extends State<ContactPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -115,7 +115,7 @@ class ContactPageState extends State<ContactPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.myTickets,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -127,17 +127,6 @@ class ContactPageState extends State<ContactPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 30),
-                  Text(
-                    AppLocalizations.of(context)!.myTickets,
-                    key: const Key('my-tickets-title'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: themeProvider.currentTheme.primaryColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

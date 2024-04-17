@@ -34,6 +34,11 @@ exports.createFixtures = async () => {
         address: "Rue George",
         latitude: 47.218371,
         longitude: -1.553621,
+        saveName: "container",
+        containerMapping: "",
+        price: 0,
+        width: 12,
+        height: 5,
         items: {
           create: [
             {
@@ -72,6 +77,11 @@ exports.createFixtures = async () => {
         address: "Rue george",
         latitude: 47.218371,
         longitude: -1.553621,
+        saveName: "emptyContainer",
+        containerMapping: "",
+        price: 0,
+        width: 12,
+        height: 5,
         items: {
           create: [],
         },

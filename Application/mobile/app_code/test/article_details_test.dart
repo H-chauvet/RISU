@@ -24,8 +24,10 @@ void main() {
       await tester.pumpAndSettle();
 
       Finder titleData = find.byKey(const Key('article-details_title'));
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
 
       expect(titleData, findsOneWidget);
+      expect(appBarTitleData, findsOneWidget);
     },
   );
 }

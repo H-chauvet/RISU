@@ -47,20 +47,21 @@ class RentalPageState extends State<RentalPage> {
           rentals = jsonDecode(response.body)['rentals'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getRentals',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingRents);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -95,6 +96,7 @@ class RentalPageState extends State<RentalPage> {
       printCatchError(context, err, stacktrace,
           message: AppLocalizations.of(context)!
               .errorOccurredDuringGettingRentsInProgress);
+      return;
     }
   }
 
@@ -106,7 +108,7 @@ class RentalPageState extends State<RentalPage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.myRents,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -119,17 +121,6 @@ class RentalPageState extends State<RentalPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 30),
-                    Text(
-                      AppLocalizations.of(context)!.myRents,
-                      key: const Key('my-rentals-title'),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 32,
-                        color: themeProvider.currentTheme.primaryColor,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
                     const SizedBox(height: 30),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -7,7 +7,8 @@ import 'globals.dart';
 
 void main() {
   testWidgets('ContainerStat full info', (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const ContainerPage()));
+    await tester
+        .pumpWidget(initPage(ContainerPage(onDirectionClicked: (id) {})));
     await tester.pump();
     expect(find.byType(ListView), findsNothing);
   });
@@ -24,12 +25,15 @@ void main() {
             containerMapping: null,
             address: 'rue george',
             city: 'nantes',
+            longitude: 0,
+            latitude: 0,
             designs: null,
             items: null,
             informations: 'info',
             paid: true,
             saveName: null,
           ),
+          onDirectionClicked: (id) {},
         ),
       ),
     );

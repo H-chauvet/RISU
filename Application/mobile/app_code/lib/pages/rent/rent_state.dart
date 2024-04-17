@@ -11,7 +11,6 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/main.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
@@ -68,7 +67,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -83,14 +82,14 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'rentArticle',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringRenting);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -98,6 +97,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
+      return;
     }
   }
 
@@ -125,14 +125,14 @@ class RentArticlePageState extends State<RentArticlePage> {
         final responseData = json.decode(response.body);
         return responseData;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'createPaymentIntent',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringPaymentCreation);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -141,6 +141,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 .errorOccurredDuringPaymentCreation);
         return null;
       }
+      return null;
     }
     return null;
   }
@@ -158,11 +159,13 @@ class RentArticlePageState extends State<RentArticlePage> {
         ),
       );
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringSettingStripe);
+        return;
       }
+      return;
     }
   }
 
@@ -186,7 +189,7 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -196,11 +199,12 @@ class RentArticlePageState extends State<RentArticlePage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.paymentHasFailed);
         return;
       }
+      return;
     }
   }
 
@@ -228,7 +232,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.rentArticle,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -242,14 +246,6 @@ class RentArticlePageState extends State<RentArticlePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.rentArticle,
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.currentTheme.primaryColor,
-                        ),
-                      ),
                       const SizedBox(height: 8),
                       Container(
                         width: 256,

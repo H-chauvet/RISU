@@ -17,12 +17,9 @@ import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
-  final List<Widget> _pages = [
-    const ContainerPage(),
-    const MapPage(),
-    const ProfilePage(),
-  ];
+  late List<Widget> _pages;
   bool didAskForProfile = false;
+  int? containerId;
 
   @override
   void initState() {
@@ -32,6 +29,18 @@ class HomePageState extends State<HomePage> {
         configProfile(context);
       }
     });
+    _pages = [
+      ContainerPage(
+        onDirectionClicked: (id) {
+          setState(() {
+            _currentIndex = 1;
+            containerId = id;
+          });
+        },
+      ),
+      const MapPage(),
+      const ProfilePage(),
+    ];
   }
 
   void configProfile(BuildContext context) async {
@@ -65,12 +74,19 @@ class HomePageState extends State<HomePage> {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!
                 .errorOccurredDuringSettingProfile);
+        return;
       }
+      return;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (containerId != null) {
+      _pages[1] = MapPage(
+        containerId: containerId,
+      );
+    }
     return WillPopScope(
       onWillPop: () {
         return Future<bool>.value(false);
@@ -81,7 +97,6 @@ class HomePageState extends State<HomePage> {
           curveColor: context.select((ThemeProvider themeProvider) =>
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
-          showLogo: true,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],

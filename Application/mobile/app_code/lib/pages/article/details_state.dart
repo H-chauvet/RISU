@@ -9,11 +9,11 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'details_page.dart';
 
@@ -86,6 +86,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'categories': [],
         };
       }
+      return {
+        'id': '',
+        'containerId': '',
+        'name': '',
+        'available': false,
+        'price': 0,
+      };
     }
   }
 
@@ -108,7 +115,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.articleDetails,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>

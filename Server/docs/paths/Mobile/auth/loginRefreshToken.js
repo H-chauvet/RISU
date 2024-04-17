@@ -2,26 +2,19 @@ module.exports = {
     post: {
       tags: ["Mobile", "Authentification", "User"],
       summary: 'Login an user in the mobile app',
-      description: 'Login an user using passport',
-      operationId: "mobileLogInRefreshToken",
+      description: 'Login an user if the app has a refresh token correct',
+      operationId: "mobileLogIn",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
         {
-          name: 'body',
+          name: 'refreshToken',
           in: 'body',
           schema: {
-            $ref: '#/components/schemas/User_Mobile'
+            type: 'string',
+            example: 'refreshToken example'
           }
         },
-        {
-          name: 'longTerm',
-          in: 'body',
-          schema: {
-            type: 'boolean',
-            example: 'true'
-          }
-        }
       ],
       responses: {
         201: {
