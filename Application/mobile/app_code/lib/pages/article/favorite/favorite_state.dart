@@ -205,6 +205,7 @@ class FavoriteSate extends State<FavoritePage> {
                                                       },
                                                       icon: Icon(
                                                         Icons.favorite_rounded,
+                                                        size: 28,
                                                         color: themeProvider
                                                             .currentTheme
                                                             .bottomNavigationBarTheme

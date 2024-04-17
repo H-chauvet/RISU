@@ -298,6 +298,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                 (isFavorite)
                                     ? Icons.favorite_rounded
                                     : Icons.favorite_border_rounded,
+                                size: 28,
                                 color: themeProvider.currentTheme
                                     .bottomNavigationBarTheme.selectedItemColor,
                               ),
