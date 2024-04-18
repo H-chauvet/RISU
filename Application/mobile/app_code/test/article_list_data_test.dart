@@ -40,7 +40,7 @@ void main() {
           'containerId': 0,
           'name': 'name',
           'available': true,
-          'price': 3,
+          'price': 300,
           'categories': [],
         };
         final articleListData = ArticleData.fromJson(json);
