@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/pages/article/details_page.dart';
@@ -7,7 +9,7 @@ class ArticleData {
   final int containerId;
   final String name;
   final bool available;
-  final int price;
+  final double price;
   final List categories;
 
   ArticleData({
@@ -25,7 +27,7 @@ class ArticleData {
       containerId: json['containerId'],
       name: json['name'],
       available: json['available'],
-      price: json['price'],
+      price: json['price'] / 100,
       categories: json['categories'],
     );
   }

@@ -140,7 +140,7 @@ model User_Mobile {
     confirmProcess   String                @default("")
     refreshToken     String?               @unique
     createdAt        DateTime              @default(now())
-    Locations        Location_Mobile[]
+    locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
     itemOpinions     Opinions_Mobile[]
