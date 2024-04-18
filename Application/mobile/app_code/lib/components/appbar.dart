@@ -6,6 +6,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final Color curveColor;
   final String textTitle;
+  final Widget? action;
   late void Function()? onBackButtonPressed;
 
   MyAppBar({
@@ -13,6 +14,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.curveColor,
     this.showBackButton = true,
     this.textTitle = "",
+    this.action,
     this.onBackButtonPressed,
   });
 
@@ -46,6 +48,11 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                       themeProvider.currentTheme.primaryColor),
                 ),
               ),
+        actions: <Widget>[
+          if (action != null) ...[
+            action!,
+          ]
+        ],
         centerTitle: true,
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,

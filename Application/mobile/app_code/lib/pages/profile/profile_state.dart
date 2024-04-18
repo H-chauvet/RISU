@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/favorite/favorite_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
@@ -152,6 +153,27 @@ class ProfilePageState extends State<ProfilePage> {
                         MaterialPageRoute(
                           builder: (context) {
                             return const RentalPage();
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: MyOutlinedButton(
+                    key: const Key('profile-button-my_favorites_button'),
+                    text: AppLocalizations.of(context)!.myFavorites,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const FavoritePage();
                           },
                         ),
                       );
