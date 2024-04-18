@@ -5,8 +5,9 @@ const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
 const favoriteCtrl = require("../../controllers/Mobile/favorites")
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.post('/:itemId',
+router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
 		try {
 			if (!req.user) {
@@ -37,7 +38,7 @@ router.post('/:itemId',
 	}
 )
 
-router.get('/',
+router.get('/', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
 		try {
 			if (!req.user) {
@@ -61,7 +62,7 @@ router.get('/',
 	}
 )
 
-router.get('/:itemId',
+router.get('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
 		try {
 			if (!req.user) {
@@ -88,7 +89,7 @@ router.get('/:itemId',
 	}
 )
 
-router.delete('/:itemId',
+router.delete('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
 		try {
 			if (!req.user) {
