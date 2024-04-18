@@ -11,6 +11,7 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile_page.dart';
 
@@ -188,6 +189,9 @@ class ProfilePageState extends State<ProfilePage> {
                   key: const Key('profile-button-log_out_button'),
                   text: AppLocalizations.of(context)!.logOut,
                   onPressed: () {
+                    SharedPreferences.getInstance().then((value) {
+                      value.setString('refreshToken', '');
+                    });
                     userInformation = null;
                     Navigator.pushAndRemoveUntil(
                       context,
