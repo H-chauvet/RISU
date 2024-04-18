@@ -2,7 +2,7 @@ module.exports = {
   get: {
     tags: ["Mobile", "Rent"],
     summary: 'get all the favorite of an user',
-    description: 'Retreive all the favorites datas and an access to their item',
+    description: 'Retrieve all the favorites datas and an access to their item',
     operationId: "mobileGetFavorites",
     consumes: ["application/json"],
     produces: ["application/json"],

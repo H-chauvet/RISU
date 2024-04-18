@@ -83,7 +83,7 @@ module.exports = {
   },
   delete: {
     tags: ["Mobile", "Rent"],
-    summary: "Add a favorie item for a user",
+    summary: "Add a favorite item for a user",
     description: "Add an item as favorite from its id for the connected user",
     operationId: "mobileDeleteFavorite",
     consumes: ["application/json"],
