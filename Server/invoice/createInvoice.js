@@ -159,7 +159,6 @@ function generateInvoiceTable(doc, invoice) {
  * @param {*} doc invoice file
  */
 function generateFooter(doc) {
-  console.log("generateFooter");
   doc.fontSize(10).text("Risu vous remercie pour votre confiance.", 50, 780, {
     align: "center",
     width: 500,
@@ -178,7 +177,6 @@ function generateFooter(doc) {
  * @param {*} totalTTC the cost total of the item
  */
 function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
-  console.log("generateTableRow");
   doc
     .fontSize(10)
     .text(item, 50, y)
@@ -195,7 +193,6 @@ function generateTableRow(doc, y, item, unitCost, quantity, totalHT, totalTTC) {
  * @param {*} y the height where to generate the hr
  */
 function generateHr(doc, y) {
-  console.log("generateHr");
   doc.strokeColor("#aaaaaa").lineWidth(1).moveTo(50, y).lineTo(550, y).stroke();
 }
 
@@ -206,7 +203,6 @@ function generateHr(doc, y) {
  * @returns human readable cents
  */
 function formatCurrency(cents) {
-  console.log("formatCurrency");
   return "€" + cents.toFixed(2);
 }
 
@@ -217,7 +213,6 @@ function formatCurrency(cents) {
  * @returns human readable date in string
  */
 function formatDate(date) {
-  console.log("formatDate");
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();

@@ -1,11 +1,14 @@
 const mobileSignUp = require("./Mobile/auth/signup");
 const mobileLogIn = require("./Mobile/auth/login");
+const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken');
 const mobileMailVerification = require("./Mobile/auth/mailVerification");
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
-const mobileItemListAll = require("./Mobile/items/listAll");
+const mobileFavorite = require("./Mobile/items/favorites/favorite");
+const mobileMyFavorites = require("./Mobile/items/favorites/myFavorites");
 const mobileItemId = require("./Mobile/items/itemId");
+const mobileItemListAll = require("./Mobile/items/listAll");
 const mobileOpinion = require("./Mobile/opinion/opinion");
 const mobileOpinionId = require("./Mobile/opinion/opinionId");
 const mobileRentArticle = require("./Mobile/rent/article");
@@ -59,6 +62,9 @@ module.exports = {
     "/api/mobile/auth/login": {
       ...mobileLogIn,
     },
+    '/api/mobile/auth/loginRefreshToken': {
+      ...mobileLogInRefreshToken
+    },
     "/api/mobile/auth/mailVerification": {
       ...mobileMailVerification,
     },
@@ -76,6 +82,12 @@ module.exports = {
     },
     "/api/mobile/article/:articleId": {
       ...mobileItemId,
+    },
+    "/api/mobile/favorite": {
+      ...mobileMyFavorites,
+    },
+    "/api/mobile/favorite/:itemId": {
+      ...mobileFavorite,
     },
     "/api/mobile/opinion/": {
       ...mobileOpinion,
