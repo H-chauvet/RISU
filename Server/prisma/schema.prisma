@@ -54,6 +54,7 @@ model Item {
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     categories      Item_Category[]
+    favorite        Favorite_Article_Mobile[]
 }
 
 model Organization {
@@ -143,6 +144,7 @@ model User_Mobile {
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
     itemOpinions     Opinions_Mobile[]
+    favoriteArticles    Favorite_Article_Mobile[]
 }
 
 model Notifications_Mobile {
@@ -165,4 +167,12 @@ model Location_Mobile {
     duration  Int
     ended     Boolean     @default(false)
     invoice   Bytes?
+}
+
+model Favorite_Article_Mobile {
+    id        Int         @id @default(autoincrement())
+    item      Item        @relation(fields: [itemId], references: [id])
+    itemId    Int
+    user      User_Mobile @relation(fields: [userId], references: [id])
+    userId    String
 }
