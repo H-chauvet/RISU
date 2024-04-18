@@ -42,8 +42,7 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('AppBar should display title',
-        (WidgetTester tester) async {
+    testWidgets('AppBar should display title', (WidgetTester tester) async {
       await tester.pumpWidget(
         initPage(
           Scaffold(
