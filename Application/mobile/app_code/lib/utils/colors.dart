@@ -122,4 +122,5 @@ final darkTheme = ThemeData(
   bottomSheetTheme: const BottomSheetThemeData(
     backgroundColor: Color(0xFF1E1E1E),
   ),
+  cardColor: const Color(0x27222e),
 );

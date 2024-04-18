@@ -37,7 +37,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
         return res.status(404).send('User not found');
       }
 
-      const { content, title, assignedId, chatUid } = req.body
+      const { content, title, createdAt, assignedId, chatUid } = req.body
 
       if (!content || !title) {
         return res.status(400).send("Bad Request : Missing required parameters")
@@ -61,6 +61,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
         content,
         title,
         creatorId,
+        createdAt : new Date(createdAt),
         assignedId : assignedId ?? "",
         chatUid : chatUid
       })
