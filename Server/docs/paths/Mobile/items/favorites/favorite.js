@@ -2,7 +2,7 @@ module.exports = {
   get: {
     tags: ["Mobile", "Rent"],
     summary: 'check if an article is a favorite for the connected user',
-    description: 'Retreive a boolean thanks to an itemId and the id of the connected user',
+    description: 'Retrieve a boolean thanks to an itemId and the id of the connected user',
     operationId: "mobileCheckFavorite",
     consumes: ["application/json"],
     produces: ["application/json"],
@@ -41,7 +41,7 @@ module.exports = {
   },
   post: {
     tags: ["Mobile", "Rent"],
-    summary: "Add a favorie item for a user",
+    summary: "Add a favortie item for a user",
     description: "Add an item as favorite from its id for the connected user",
     operationId: "mobileCreateFavorite",
     consumes: ["application/json"],
