@@ -58,7 +58,8 @@ class _ItemPageState extends State<ItemPage> {
       fetchItems();
     } else {
       Fluttertoast.showToast(
-        msg: "Erreur lors de la suppression de l'article: ${response.statusCode}",
+        msg:
+            "Erreur lors de la suppression de l'article: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
