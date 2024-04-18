@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
-import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -17,6 +17,7 @@ import 'favorite_page.dart';
 class FavoriteSate extends State<FavoritePage> {
   final LoaderManager _loaderManager = LoaderManager();
   List<dynamic> favorites = [];
+  List<dynamic> deletedFavorites = [];
 
   @override
   void initState() {
@@ -62,7 +63,52 @@ class FavoriteSate extends State<FavoritePage> {
     }
   }
 
-  void deleteFavorite(articleId) async {
+  void createFavorite(articleId) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final token = userInformation!.token;
+      final response = await http.post(
+        Uri.parse('$baseUrl/api/mobile/favorite/$articleId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        setState(() {
+          deletedFavorites.remove(articleId);
+        });
+        return;
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'createFavorite',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringCreatingFavorite);
+        }
+        return;
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
+      }
+      return;
+    }
+  }
+
+  Future<bool> deleteFavorite(articleId) async {
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
@@ -80,11 +126,18 @@ class FavoriteSate extends State<FavoritePage> {
       });
       if (response.statusCode != 200) {
         if (context.mounted) {
-          printServerResponse(context, response, 'createFavorite',
+          printServerResponse(context, response, 'deleteFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringDeletingFavorite);
         }
+        return false;
       }
+      if (context.mounted) {
+        MyToastMessage.show(
+            message: AppLocalizations.of(context)!.deletedFromFavorites,
+            context: context);
+      }
+      return true;
     } catch (err, stacktrace) {
       if (mounted) {
         setState(() {
@@ -92,6 +145,7 @@ class FavoriteSate extends State<FavoritePage> {
         });
         printCatchError(context, err, stacktrace);
       }
+      return false;
     }
   }
 
@@ -154,7 +208,7 @@ class FavoriteSate extends State<FavoritePage> {
                                                   articleId: favorite['item']
                                                       ['id']),
                                         ),
-                                      );
+                                      ).then((value) => getFavorites());
                                     },
                                     child: Stack(
                                       children: [
@@ -193,7 +247,10 @@ class FavoriteSate extends State<FavoritePage> {
                                                   children: [
                                                     Text(
                                                       '${favorite['item']['name']}',
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
+                                                        color: themeProvider
+                                                            .currentTheme
+                                                            .primaryColor,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontSize: 20.0,
@@ -258,7 +315,7 @@ class FavoriteSate extends State<FavoritePage> {
                                             ),
                                           ),
                                         ),
-                                        Positioned(
+                                        const Positioned(
                                           right: 0,
                                           top: 0,
                                           bottom: 0,
@@ -266,10 +323,10 @@ class FavoriteSate extends State<FavoritePage> {
                                             child: Row(
                                               children: [
                                                 Icon(
-                                                  Icons.arrow_forward_ios,
+                                                  Icons.chevron_right,
                                                   size: 28,
                                                 ),
-                                                const SizedBox(width: 8),
+                                                SizedBox(width: 8),
                                               ],
                                             ),
                                           ),
@@ -278,21 +335,33 @@ class FavoriteSate extends State<FavoritePage> {
                                           alignment: Alignment.topRight,
                                           child: IconButton(
                                             key: const Key(
-                                                'article-button_article-rent'),
+                                                'favorite-button-heart'),
                                             onPressed: () async {
-                                              bool signIn =
-                                                  await checkSignin(context);
-                                              if (!signIn) {
-                                                return;
+                                              if (deletedFavorites.contains(
+                                                  favorite['item']['id'])) {
+                                                createFavorite(
+                                                    favorite['item']['id']);
+                                              } else {
+                                                deleteFavorite(
+                                                        favorite['item']['id'])
+                                                    .then((value) => {
+                                                          if (value)
+                                                            {
+                                                              setState(() {
+                                                                deletedFavorites
+                                                                    .add(favorite[
+                                                                            'item']
+                                                                        ['id']);
+                                                              }),
+                                                            }
+                                                        });
                                               }
-                                              deleteFavorite(
-                                                  favorite['item']['id']);
-                                              setState(() {
-                                                favorites.removeAt(index);
-                                              });
                                             },
                                             icon: Icon(
-                                              Icons.favorite_rounded,
+                                              deletedFavorites.contains(
+                                                      favorite['item']['id'])
+                                                  ? Icons.favorite_border
+                                                  : Icons.favorite_rounded,
                                               size: 28,
                                               color: themeProvider
                                                   .currentTheme
