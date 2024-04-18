@@ -106,8 +106,8 @@ exports.createFixtures = async () => {
                 itemId: 1,
                 date: new Date(),
                 note: "5",
-                comment: "Joli ballon."
-              }
+                comment: "Joli ballon.",
+              },
             ],
           },
         },
@@ -132,8 +132,8 @@ exports.createFixtures = async () => {
                 itemId: 1,
                 date: new Date(),
                 note: "4",
-                comment: "Ballon de qualité."
-              }
+                comment: "Ballon de qualité.",
+              },
             ],
           },
         },
@@ -142,7 +142,9 @@ exports.createFixtures = async () => {
         },
       });
     if (
-      !(await db.User_Mobile.findUnique({ where: { email: "armand.lartam@gmail.com" } }))
+      !(await db.User_Mobile.findUnique({
+        where: { email: "armand.lartam@gmail.com" },
+      }))
     )
       await db.User_Mobile.create({
         data: {
@@ -158,9 +160,9 @@ exports.createFixtures = async () => {
                 itemId: 1,
                 duration: 1,
                 price: 50,
-              }
-            ]
-          }
+              },
+            ],
+          },
         },
         include: {
           Notifications: true,
