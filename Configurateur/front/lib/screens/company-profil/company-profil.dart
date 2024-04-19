@@ -82,7 +82,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
 
   Future<void> fetchContainersById() async {
     final response = await http.get(Uri.parse(
-        'http://${serverIp}:3000/api/container/list/$organizationId'));
+        'http://${serverIp}:3000/api/container/listByOrganisation/$organizationId'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
@@ -96,6 +96,43 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
+    }
+  }
+
+  Future<void> apiUpdateContactInfoOrganization(
+      TextEditingController contactInformationController) async {
+    final String apiUrl =
+        "http://$serverIp:3000/api/organization/update-organization-information/$organizationId";
+    var body = {
+      'contactInformation': contactInformationController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      storageService.getUserMail().then((value) {
+        userMail = value;
+        if (userMail != "") {
+          fetchOrganizationDetails(userMail);
+        } else
+          return;
+      });
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
     }
   }
 
@@ -141,37 +178,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-organization-information/$organizationId";
-                var body = {
-                  'contactInformation': contactInformationController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
+                apiUpdateContactInfoOrganization(contactInformationController);
                 onEdit(contactInformationController.text);
                 Navigator.of(context).pop();
               },
@@ -188,6 +195,43 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         );
       },
     );
+  }
+
+  Future<void> apiUpdateType(
+      TextEditingController contactInformationController) async {
+    final String apiUrl =
+        "http://$serverIp:3000/api/organization/update-type/$organizationId";
+    var body = {
+      'type': contactInformationController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      storageService.getUserMail().then((value) {
+        userMail = value;
+        if (userMail != "") {
+          fetchOrganizationDetails(userMail);
+        } else
+          return;
+      });
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
   }
 
   Future<void> showEditPopupType(
@@ -230,127 +274,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-type/$organizationId";
-                var body = {
-                  'type': typeController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
+                apiUpdateType(typeController);
                 onEdit(typeController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Modifier"),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<void> showEditPopupName(BuildContext context, String initialLastName,
-      Function(String) onEdit) async {
-    TextEditingController nameController = TextEditingController();
-
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Modifier"),
-          content: Container(
-            height: 120.0,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 10.0),
-                TextField(
-                  controller: nameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialLastName),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: const Text("Annuler"),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/organization/update-name/$organizationId";
-                var body = {
-                  'name': nameController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  storageService.getUserMail().then((value) {
-                    userMail = value;
-                    fetchOrganizationDetails(userMail);
-                  });
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-                onEdit(nameController.text);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
@@ -392,9 +317,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   }
 
   Future<void> fetchOrganizationDetails(String email) async {
-    final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
-
     try {
+      final String apiUrl =
+          "http://$serverIp:3000/api/auth/user-details/$email";
+
       final response = await http.get(Uri.parse(apiUrl));
 
       if (response.statusCode == 200) {
@@ -402,7 +328,11 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         final dynamic organizationData = userDetails["organization"];
         final dynamic organizationIdData = userDetails["organizationId"];
         organizationId = organizationIdData;
-        fetchContainersById();
+        if (organizationId != null) {
+          fetchContainersById();
+        } else {
+          return;
+        }
         setState(() {
           organization = OrganizationList.fromJson(organizationData);
           if (organization.name != null) {
@@ -429,9 +359,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   void initState() {
     super.initState();
     storageService.getUserMail().then((value) {
-      if (value != null) {
-        userMail = value;
+      userMail = value;
+      if (userMail.isNotEmpty) {
         fetchOrganizationDetails(userMail);
+        print("ouaisss");
       }
     });
   }
@@ -447,107 +378,155 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         child: Center(
           child: Column(
             children: [
-              Container(
-                width: 500,
-                height: 200,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 2.0,
+              organization.id != null
+                  ? Container(
+                      width: 500,
+                      height: 200,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black,
+                                  width: 2.0,
+                                ),
+                              ),
+                              child: Image.asset(
+                                "assets/logo.png",
+                                width: 90.0,
+                                height: 90.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        child: Image.asset(
-                          "assets/logo.png",
-                          width: 90.0,
-                          height: 90.0,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              organization.name != null &&
+                                      organization.name != ''
+                                  ? Text(
+                                      "Nom de l'entreprise : ${organization.name!}",
+                                      style: const TextStyle(
+                                        color: Color(0xff4682B4),
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Verdana',
+                                      ),
+                                    )
+                                  : Text(
+                                      "L'entreprise n'as pas de nom",
+                                      style: const TextStyle(
+                                        color: Color(0xff4682B4),
+                                        fontSize: 15.0,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Verdana',
+                                      ),
+                                    ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: [
+                                  organization.contactInformation != null &&
+                                          organization.contactInformation != ''
+                                      ? Text(
+                                          "Information : ${organization.contactInformation!}",
+                                          style: const TextStyle(
+                                            color: Color(0xff4682B4),
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Verdana',
+                                          ),
+                                        )
+                                      : Text(
+                                          "Aucune information disponible",
+                                          style: const TextStyle(
+                                            color: Color(0xff4682B4),
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Verdana',
+                                          ),
+                                        ),
+                                  const SizedBox(width: 5.0),
+                                  InkWell(
+                                    onTap: () async {
+                                      await showEditPopupContactInformation(
+                                          context, contactInformation,
+                                          (String newContactInformation) {
+                                        setState(() {
+                                          contactInformation =
+                                              newContactInformation;
+                                        });
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                      size: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 5.0),
+                              Row(
+                                children: [
+                                  organization.type != null &&
+                                          organization.type != ''
+                                      ? Text(
+                                          "Type d'entreprise : ${organization.type!}",
+                                          style: const TextStyle(
+                                            color: Color(0xff4682B4),
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Verdana',
+                                          ),
+                                        )
+                                      : Text(
+                                          "Pas de type disponible",
+                                          style: const TextStyle(
+                                            color: Color(0xff4682B4),
+                                            fontSize: 15.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Verdana',
+                                          ),
+                                        ),
+                                  const SizedBox(width: 5.0),
+                                  InkWell(
+                                    onTap: () async {
+                                      await showEditPopupType(context, type,
+                                          (String newtype) {
+                                        setState(() {
+                                          type = newtype;
+                                        });
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                      size: 15.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : Center(
+                      child: Container(
+                        height: 250,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "Pas d'entreprise associé",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 211, 11, 11),
+                          ),
                         ),
                       ),
                     ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Nom de l'entreprise : ${organization.name!}",
-                          style: const TextStyle(
-                            color: Color(0xff4682B4),
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                        SizedBox(height: 5.0),
-                        Row(
-                          children: [
-                            Text(
-                              "Information : ${organization.contactInformation!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              onTap: () async {
-                                await showEditPopupContactInformation(
-                                    context, contactInformation,
-                                    (String newContactInformation) {
-                                  setState(() {
-                                    contactInformation = newContactInformation;
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5.0),
-                        Row(
-                          children: [
-                            Text(
-                              "Type d'entreprise : ${organization.type!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              onTap: () async {
-                                await showEditPopupType(context, type,
-                                    (String newtype) {
-                                  setState(() {
-                                    type = newtype;
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 15.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
               const Text("Nos Conteneurs :",
                   style: TextStyle(
                     color: Color.fromRGBO(70, 130, 180, 1),

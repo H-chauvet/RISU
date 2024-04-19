@@ -16,20 +16,6 @@ describe("Organization Route Tests", () => {
     jest.clearAllMocks();
   });
 
-  it("should handle valid organization retrieval", async () => {
-    organizationCtrl.getOrganizationById.mockResolvedValueOnce({
-      id: 1,
-      name: "Organization 1",
-    });
-
-    const response = await supertest(app)
-      .get("/get/1");
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ id: 1, name: "Organization 1" });
-    expect(organizationCtrl.getOrganizationById).toHaveBeenCalledWith(1);
-  });
-
   it("should handle valid organization creation", async () => {
     const requestBody = {
       name: "Test Org",

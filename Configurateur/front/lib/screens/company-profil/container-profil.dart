@@ -34,8 +34,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   late CtnList tmp;
 
   Future<void> fetchContainer(String id) async {
-    final response = await http
-        .get(Uri.parse('http://${serverIp}:3000/api/container/list-by-id/$id'));
+    final response = await http.get(
+        Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final dynamic containersData = responseData["container"];
@@ -47,7 +47,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         if (tmp.city != null) {
           city = tmp.city!;
         }
-        print(tmp);
       });
     } else {
       Fluttertoast.showToast(
@@ -71,6 +70,36 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   void initState() {
     super.initState();
     checkContainerId();
+  }
+
+  Future<void> apiUpdateCity(TextEditingController nameController) async {
+    final String apiUrl =
+        "http://$serverIp:3000/api/container/update-city/$containerId";
+    var body = {
+      'city': nameController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      fetchContainer(containerId.toString());
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
   }
 
   Future<void> showEditPopupCity(BuildContext context, String initialLastName,
@@ -113,34 +142,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/container/update-city/$containerId";
-                var body = {
-                  'city': nameController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  fetchContainer(containerId.toString());
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
+                apiUpdateCity(nameController);
                 onEdit(nameController.text);
                 Navigator.of(context).pop();
               },
@@ -157,6 +159,36 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         );
       },
     );
+  }
+
+  Future<void> apiUpdateAddress(TextEditingController addressController) async {
+    final String apiUrl =
+        "http://$serverIp:3000/api/container/update-address/$containerId";
+    var body = {
+      'address': addressController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      fetchContainer(containerId.toString());
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
   }
 
   Future<void> showEditPopupAddress(BuildContext context, String initialAddress,
@@ -198,34 +230,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/container/update-address/$containerId";
-                var body = {
-                  'address': addressController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                  fetchContainer(containerId.toString());
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
+                apiUpdateAddress(addressController);
                 onEdit(addressController.text);
                 Navigator.of(context).pop();
               },

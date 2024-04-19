@@ -4,22 +4,6 @@ const router = express.Router();
 const organizationCtrl = require("../../controllers/Web/organization");
 const jwtMiddleware = require("../../middleware/jwt");
 
-router.get("/get/:id", async function (req, res, next) {
-  try {
-    const id = req.params.id;
-    if (!id) {
-      res.status(400);
-      throw new Error("id is required");
-    }
-    const organization = await organizationCtrl.getOrganizationById(
-      parseInt(id)
-    );
-    res.status(200).json(organization);
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.post("/create", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);

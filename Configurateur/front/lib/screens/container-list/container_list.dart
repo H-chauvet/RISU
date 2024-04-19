@@ -152,6 +152,54 @@ class _ContainerPageState extends State<ContainerPage> {
     }
   }
 
+  Future<void> apiUpdateItem(
+      TextEditingController nameController,
+      TextEditingController descController,
+      bool isAvailable,
+      double price,
+      ItemListInfo item,
+      int itemId) async {
+    if (price <= 0) {
+      Fluttertoast.showToast(
+        msg: "Veuillez saisir un prix valide pour l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
+    var body = {
+      'name': nameController.text != '' ? nameController.text : item.name,
+      'description':
+          descController.text != '' ? descController.text : item.description,
+      'price': price.toString(),
+      'available': isAvailable.toString(),
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      fetchItems();
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
+  }
+
   Future<void> showEditPopupName(
       BuildContext context,
       String initialLastName,
@@ -223,50 +271,8 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (price <= 0) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez saisir un prix valide pour l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    final String apiUrl =
-                        "http://$serverIp:3000/api/items/update/${itemId}";
-                    var body = {
-                      'name': nameController.text != ''
-                          ? nameController.text
-                          : item.name,
-                      'description': descController.text != ''
-                          ? descController.text
-                          : item.description,
-                      'price': price.toString(),
-                      'available': isAvailable.toString(),
-                    };
-
-                    var response = await http.post(
-                      Uri.parse(apiUrl),
-                      body: body,
-                    );
-
-                    if (response.statusCode == 200) {
-                      Fluttertoast.showToast(
-                        msg: 'Modification effectuée avec succès',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 3,
-                      );
-                      fetchItems();
-                    } else {
-                      Fluttertoast.showToast(
-                          msg:
-                              "Erreur durant l'envoi la modification des informations",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red);
-                    }
+                    apiUpdateItem(nameController, descController, available,
+                        price, item, itemId);
                     Navigator.of(context).pop();
                   },
                   child: const Text("Créer"),
@@ -277,6 +283,79 @@ class _ContainerPageState extends State<ContainerPage> {
         );
       },
     );
+  }
+
+  Future<void> apiCreateItem(
+      TextEditingController nameController,
+      TextEditingController descController,
+      bool isAvailable,
+      double price,
+      int selectedContainerId) async {
+    if (nameController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Veuillez saisir un nom pour l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (price <= 0) {
+      Fluttertoast.showToast(
+        msg: "Veuillez saisir un prix valide pour l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (selectedContainerId == 0) {
+      Fluttertoast.showToast(
+        msg: "Veuillez sélectionner un conteneur",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    if (descController.text.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Veuillez saisir une description pour l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    final String apiUrl = "http://$serverIp:3000/api/items/create";
+    var body = {
+      'name': nameController.text,
+      'available': isAvailable,
+      'price': price.toString(),
+      'containerId': selectedContainerId.toString(),
+      'description': descController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: json.encode(body),
+      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    );
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Objet créé avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+      fetchItems();
+    } else {
+      Fluttertoast.showToast(
+        msg: "Erreur lors de la création de l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+    }
   }
 
   Future<void> showCreateItems(BuildContext context,
@@ -362,74 +441,9 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (nameController.text.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez saisir un nom pour l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    if (price <= 0) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez saisir un prix valide pour l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    if (selectedContainerId == 0) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez sélectionner un conteneur",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    if (description.text.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez saisir une description pour l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    final String apiUrl =
-                        "http://$serverIp:3000/api/items/create";
-                    var body = {
-                      'name': nameController.text,
-                      'available': isAvailable,
-                      'price': price.toString(),
-                      'containerId': selectedContainerId.toString(),
-                      'description': description.text,
-                    };
+                    apiCreateItem(nameController, description, available, price,
+                        selectedContainerId);
 
-                    var response = await http.post(
-                      Uri.parse(apiUrl),
-                      body: json.encode(body),
-                      headers: {
-                        'Content-Type': 'application/json; charset=UTF-8'
-                      },
-                    );
-                    if (response.statusCode == 200) {
-                      Fluttertoast.showToast(
-                        msg: 'Objet créé avec succès',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                      );
-                      fetchItems();
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: "Erreur lors de la création de l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                    }
                     Navigator.of(context).pop();
                   },
                   child: const Text("Créer"),
