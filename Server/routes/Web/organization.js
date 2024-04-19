@@ -26,15 +26,6 @@ router.post("/create", async function (req, res, next) {
   }
 });
 
-router.get("/listAll", async function (req, res, next) {
-  try {
-    const organization = await organizationCtrl.getAllOrganizations();
-    res.status(200).json({ organization });
-  } catch (err) {
-    next(err);
-  }
-});
-
 router.post("/update-name/:id", async (req, res, next) => {
   const id = parseInt(req.params.id);
   try {
@@ -63,7 +54,7 @@ router.post("/update-name/:id", async (req, res, next) => {
   }
 });
 
-router.post("/update-organization-information/:id", async (req, res, next) => {
+router.post("/update-information/:id", async (req, res, next) => {
   const id = parseInt(req.params.id);
   try {
     const { contactInformation } = req.body;

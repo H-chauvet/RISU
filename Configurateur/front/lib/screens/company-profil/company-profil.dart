@@ -102,7 +102,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   Future<void> apiUpdateContactInfoOrganization(
       TextEditingController contactInformationController) async {
     final String apiUrl =
-        "http://$serverIp:3000/api/organization/update-organization-information/$organizationId";
+        "http://$serverIp:3000/api/organization/update-information/$organizationId";
     var body = {
       'contactInformation': contactInformationController.text,
     };
