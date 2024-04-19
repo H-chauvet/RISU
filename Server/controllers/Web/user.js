@@ -257,6 +257,12 @@ exports.updateName = (user) => {
   });
 };
 
+/**
+ * Update organization
+ *
+ * @param {*} user
+ * @returns user object with updated organization
+ */
 exports.updateOrganization = user => {
   return db.User_Web.update({
     where: {

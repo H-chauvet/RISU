@@ -12,7 +12,10 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
@@ -458,7 +461,7 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.mode_outlined),
+                  icon: const Icon(Icons.chevron_right),
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,
@@ -492,9 +495,12 @@ class _ContainerPageState extends State<ContainerPage> {
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              const SliverAppBar(
-                backgroundColor: Colors.white,
+              SliverAppBar(
                 floating: true,
+                elevation: 4,
+                backgroundColor: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.colorScheme.background
+                    : lightTheme.colorScheme.background,
                 bottom: TabBar(
                   tabs: [
                     Tab(
@@ -510,6 +516,7 @@ class _ContainerPageState extends State<ContainerPage> {
                       ),
                     ),
                   ],
+                  labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
                   indicatorColor: Colors.blue,
                 ),
                 pinned: true,
