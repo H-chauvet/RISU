@@ -191,7 +191,7 @@ exports.forgotPassword = (email) => {
       to: email,
       subject: "Réinitialisation de mot de passe",
       html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://localhost:80/#/password-change/' +
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://risu.dns-dynamic.net:80/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
         "</p>",
