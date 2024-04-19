@@ -30,7 +30,7 @@ void main() {
         expect(articleListData.containerId, 0);
         expect(articleListData.name, 'name');
         expect(articleListData.available, true);
-        expect(articleListData.price, 3);
+        expect(articleListData.price, 3.0);
       });
 
       test('ArticleListData constructor should create an instance from json',
@@ -40,7 +40,7 @@ void main() {
           'containerId': 0,
           'name': 'name',
           'available': true,
-          'price': 300,
+          'price': 3,
           'categories': [],
         };
         final articleListData = ArticleData.fromJson(json);
@@ -48,7 +48,7 @@ void main() {
         expect(articleListData.containerId, 0);
         expect(articleListData.name, 'name');
         expect(articleListData.available, true);
-        expect(articleListData.price, 3);
+        expect(articleListData.price, 3.0);
       });
 
       test('ArticleListData toMap should return data as json', () {

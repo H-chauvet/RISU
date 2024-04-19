@@ -22,12 +22,13 @@ class ArticleData {
   });
 
   factory ArticleData.fromJson(Map<String, dynamic> json) {
+    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ArticleData(
       id: json['id'],
       containerId: json['containerId'],
       name: json['name'],
       available: json['available'],
-      price: json['price'] / 100,
+      price: price,
       categories: json['categories'],
     );
   }
