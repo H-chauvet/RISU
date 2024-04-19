@@ -65,7 +65,9 @@ class HomePageState extends State<HomePage> {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!
                 .errorOccurredDuringSettingProfile);
+        return;
       }
+      return;
     }
   }
 

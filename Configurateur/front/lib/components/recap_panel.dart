@@ -66,21 +66,21 @@ class RecapPanel extends StatelessWidget {
     if (littleCount > 0) {
       parsedLockers.add(LockerList(
         "Petit Casier",
-        100 * littleCount,
+        50 * littleCount,
         littleCount,
       ));
     }
     if (mediumCount > 0) {
       parsedLockers.add(LockerList(
         "Moyen Casier",
-        200 * mediumCount,
+        100 * mediumCount,
         mediumCount,
       ));
     }
     if (bigCount > 0) {
       parsedLockers.add(LockerList(
         "Grand Casier",
-        300 * bigCount,
+        150 * bigCount,
         bigCount,
       ));
     }

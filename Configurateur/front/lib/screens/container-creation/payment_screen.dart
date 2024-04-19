@@ -156,54 +156,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               widthFactor: 0.6,
               child: Column(
                 children: [
-                  const Text(
-                    "Informations de livraison",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('address'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez votre addresse',
-                            labelText: 'addresse',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                address = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('city'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez la ville',
-                            labelText: 'Ville',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                city = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 50),
                   const Text(
                     "Coordonnées bancaires",
