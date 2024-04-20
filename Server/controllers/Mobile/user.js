@@ -182,3 +182,19 @@ exports.findUserByRefreshToken = (refreshToken) => {
     }
   })
 }
+
+/**
+ * Remove the userRefreshToken of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.removeUserRefreshToken = userId => {
+  return db.User_Mobile.update({
+    where: { id: userId },
+    include: { Notifications: true },
+    data: {
+      refreshToken: null
+    }
+  })
+}
