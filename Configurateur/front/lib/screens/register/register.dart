@@ -10,10 +10,13 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -45,15 +48,17 @@ class RegisterScreenState extends State<RegisterScreen> {
             ),
             children: [
           LandingAppBar(context: context),
-          const Text(
+          Text(
             'Inscrivez-vous sur le site RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
-              color: Color(0xfff033F63),
-              shadows: [
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: const [
                 Shadow(
                   color: Color(0xff28666e),
                   offset: Offset(0.75, 0.75),
@@ -251,14 +256,18 @@ class RegisterScreenState extends State<RegisterScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF162A49),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            child: const Text(
+                            child: Text(
                               "S'inscrire",
-                              style: TextStyle(fontSize: 18),
+                              style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontSize: 18),
                             ),
                           ),
                         ),

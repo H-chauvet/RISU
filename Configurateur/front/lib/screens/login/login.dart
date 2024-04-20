@@ -193,7 +193,6 @@ class LoginScreenState extends State<LoginScreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF162A49),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -201,10 +200,10 @@ class LoginScreenState extends State<LoginScreen> {
                             child: Text(
                               "Se connecter",
                               style: TextStyle(
-                                fontSize: 18,
                                 color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.secondaryHeaderColor
-                                    : lightTheme.secondaryHeaderColor,
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: 18,
                               ),
                             ),
                           ),

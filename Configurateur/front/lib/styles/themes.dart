@@ -37,7 +37,7 @@ final lightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.light(
       brightness: Brightness.light,
-      primary: Color(0xFF4682B4),
+      primary: Color(0xffFEDC97),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
@@ -45,16 +45,14 @@ final lightTheme = ThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.all<TextStyle>(
         const TextStyle(
-          color: Color(0xfff033F63),
+          color: Color(0xffFEDC97),
         ),
       ),
       backgroundColor:
-          MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+          MaterialStateProperty.all<Color>(const Color(0xffFEDC97)),
     ),
   ),
-  colorScheme: const ColorScheme.light(
-    background: Color.fromARGB(255, 255, 255, 255),
-  ),
+  colorScheme: const ColorScheme.light(background: Color(0xFF162A49)),
 );
 
 final darkTheme = ThemeData(
@@ -91,20 +89,20 @@ final darkTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,
-      primary: Color.fromARGB(255, 190, 189, 189),
+      primary: Color(0xFF162A49),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      textStyle: MaterialStateProperty.all<TextStyle>(
-        const TextStyle(
-          color: Colors.black,
+        textStyle: MaterialStateProperty.all<TextStyle>(
+          const TextStyle(
+            color: Color(0xFF162A49),
+          ),
         ),
-      ),
-      backgroundColor: MaterialStateProperty.all<Color>(
-          const Color.fromARGB(255, 190, 189, 189)),
-    ),
+        backgroundColor: MaterialStateProperty.all<Color>(
+          const Color(0xFF162A49),
+        )),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color.fromARGB(255, 32, 75, 110),
@@ -115,12 +113,12 @@ final darkTheme = ThemeData(
 );
 
 final boxDecorationLightTheme = BoxDecoration(
-  color: Colors.grey[300],
+  color: const Color(0xffFEDC97),
   borderRadius: BorderRadius.circular(10),
 );
 
 final boxDecorationDarkTheme = BoxDecoration(
-  color: Colors.grey[600],
+  color: const Color(0xFF162A49),
   borderRadius: BorderRadius.circular(10),
 );
 
