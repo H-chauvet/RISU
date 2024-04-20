@@ -261,8 +261,11 @@ class RentalPageState extends State<RentalPage> {
                                     contentPadding: const EdgeInsets.all(16.0),
                                     title: Text(
                                       '${rental['item']['name']}  |  ${rental['item']['container']['address']}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                        color: themeProvider
+                                            .currentTheme.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     subtitle: Column(
                                       crossAxisAlignment:

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
@@ -41,6 +40,7 @@ class NewTicketState extends State<NewTicketPage> {
           body: jsonEncode(<String, String>{
             'content': _content,
             'title': _subject,
+            'createdAt': DateTime.now().toString(),
           }));
       setState(() {
         _loaderManager.setIsLoading(false);
@@ -114,8 +114,8 @@ class NewTicketState extends State<NewTicketPage> {
                         key: const Key('new-ticket-button-send_message'),
                         onPressed: () async {
                           bool success = await createTicket();
-                          if (success) {
-                            Navigator.push(
+                          if (success && context.mounted) {
+                            Navigator.pop(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => const ContactPage(),

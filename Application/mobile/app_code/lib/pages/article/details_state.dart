@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
@@ -118,6 +119,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = true;
         });
+        if (context.mounted) {
+          MyToastMessage.show(
+              message: AppLocalizations.of(context)!.addedToFavorites,
+              context: context);
+        }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
@@ -203,6 +209,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = false;
         });
+        if (context.mounted) {
+          MyToastMessage.show(
+              message: AppLocalizations.of(context)!.deletedFromFavorites,
+              context: context);
+        }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',

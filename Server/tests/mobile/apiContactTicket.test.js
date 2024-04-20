@@ -27,7 +27,7 @@ describe('post and retrieve one ticket', () => {
           const res = await request('http://localhost:3000')
             .post('/api/mobile/ticket/')
             .set('Authorization', `Bearer ${authToken}`)
-            .send({ content: 'Contenu', title: 'titre' })
+            .send({ content: 'Contenu', title: 'titre', createdAt : "2024-04-18 18:31:05.827034" })
           expect(res.statusCode).toBe(201)
         }
       ],
@@ -77,7 +77,7 @@ describe('post close and delete one ticket', () => {
           const res = await request('http://localhost:3000')
             .post('/api/mobile/ticket/')
             .set('Authorization', `Bearer ${authToken}`)
-            .send({ content: 'Contenu', title: 'titre' })
+            .send({ content: 'Contenu', title: 'titre', createdAt : "2024-04-18 18:31:05.827034" })
           expect(res.statusCode).toBe(201)
         }
       ],
@@ -187,7 +187,7 @@ describe('post and assign one ticket', () => {
           const res = await request('http://localhost:3000')
             .post('/api/mobile/ticket/')
             .set('Authorization', `Bearer ${authToken}`)
-            .send({ content: 'Contenu', title: 'titre' })
+            .send({ content: 'Contenu', title: 'titre', createdAt : "2024-04-18 18:31:05.827034" })
           expect(res.statusCode).toBe(201)
         }
       ],

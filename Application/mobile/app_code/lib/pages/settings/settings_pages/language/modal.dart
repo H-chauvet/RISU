@@ -47,13 +47,18 @@ class LanguageChangeModalContent extends StatelessWidget {
                     .currentLocale
                     .languageCode) {
           changeLanguage(context, value);
-          MyToastMessage.show(
-            context: context,
-            message:
-                AppLocalizations.of(context)!.languageChangedTo(languageName),
-          );
+          await Future.delayed(const Duration(milliseconds: 80));
+          if (context.mounted) {
+            MyToastMessage.show(
+              context: context,
+              message:
+                  AppLocalizations.of(context)!.languageChangedTo(languageName),
+            );
+          }
         }
-        Navigator.of(context).pop();
+        if (context.mounted) {
+          Navigator.of(context).pop();
+        }
       },
     );
   }

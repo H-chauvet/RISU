@@ -515,13 +515,25 @@ class DesignScreenState extends State<DesignScreen> {
                                 ElevatedButton(
                                     onPressed: () async {
                                       picked =
-                                          await FilePicker.platform.pickFiles();
+                                          await FilePicker.platform.pickFiles(
+                                        type: FileType.image,
+                                      );
 
                                       if (!mounted) {
                                         return;
                                       }
                                       if (picked != null) {
-                                        openAddDialog(context);
+                                        if (picked!.files.single.bytes!.length >
+                                            1000000) {
+                                          Fluttertoast.showToast(
+                                            msg:
+                                                "L'image ne doit pas dépasser 1 Mo",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                          );
+                                        } else {
+                                          openAddDialog(context);
+                                        }
                                       }
                                       setState(() {});
                                     },

@@ -13,7 +13,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     to: email,
     subject: 'Confirm your account',
     text:
-      'Please follow the link to confirm your account: http://51.11.241.159:3000/api/mobile/auth/mailVerification?token=' +
+      'Please follow the link to confirm your account: http://risu.dns-dynamic.net:3000//api/mobile/auth/mailVerification?token=' +
       token
   }
   try {

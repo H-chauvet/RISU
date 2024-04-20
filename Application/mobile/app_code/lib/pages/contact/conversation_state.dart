@@ -16,12 +16,19 @@ import 'conversation_page.dart';
 class ConversationPageState extends State<ConversationPage> {
   List<dynamic> tickets = [];
   bool isOpen = false;
+  TextEditingController contentController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     tickets = widget.tickets;
     isOpen = widget.isOpen;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    contentController.dispose();
   }
 
   final LoaderManager _loaderManager = LoaderManager();
@@ -42,6 +49,7 @@ class ConversationPageState extends State<ConversationPage> {
           body: jsonEncode(<String, String>{
             'content': content,
             'title': previousTicket["title"],
+            'createdAt': DateTime.now().toString(),
             'assignedId': previousTicket["assignedId"],
             'chatUid': previousTicket["chatUid"],
           }));
@@ -75,8 +83,6 @@ class ConversationPageState extends State<ConversationPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final scrollController = ScrollController();
-    final contentController = TextEditingController();
 
     return Scaffold(
       appBar: MyAppBar(
@@ -126,6 +132,7 @@ class ConversationPageState extends State<ConversationPage> {
                               currentTicket["content"],
                               textAlign: TextAlign.center,
                               style: TextStyle(
+                                fontSize: 16,
                                 color: (currentTicket["creatorId"] ==
                                         userInformation?.ID
                                     ? themeProvider
@@ -142,6 +149,7 @@ class ConversationPageState extends State<ConversationPage> {
                                   dateTimeString: currentTicket["createdAt"]),
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
+                                fontSize: 12,
                                 color: (currentTicket["creatorId"] ==
                                         userInformation?.ID
                                     ? themeProvider
@@ -168,6 +176,9 @@ class ConversationPageState extends State<ConversationPage> {
                         flex: 7,
                         child: TextField(
                           controller: contentController,
+                          onChanged: (String? value) {
+                            setState(() {});
+                          },
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Write here',
@@ -179,29 +190,31 @@ class ConversationPageState extends State<ConversationPage> {
                         flex: 1,
                         child: FloatingActionButton.extended(
                           key: const Key('chat-button-send-message'),
-                          onPressed: () async {
-                            final newContent = contentController.text;
-                            bool success =
-                                await postTicket(contentController.text);
-                            if (success) {
-                              final lastTicket = tickets.last;
-                              final newTicket = {
-                                "content": newContent,
-                                'title': lastTicket["title"],
-                                'assignedId': lastTicket["assignedId"],
-                                'chatUid': lastTicket["chatUid"],
-                                'creatorId': userInformation!.ID!,
-                                'createdAt': DateTime.now().toString(),
-                              };
-                              setState(() {
-                                tickets.add(newTicket);
-                                FocusScope.of(context)
-                                    .requestFocus(FocusNode());
-                              });
-                            }
-                          },
-                          backgroundColor:
-                              themeProvider.currentTheme.primaryColor,
+                          backgroundColor: (contentController.text.isNotEmpty)
+                              ? themeProvider.currentTheme.primaryColor
+                              : Colors.grey,
+                          onPressed: (contentController.text.isNotEmpty)
+                              ? () async {
+                                  final newContent = contentController.text;
+                                  bool success = await postTicket(newContent!);
+                                  if (success) {
+                                    final lastTicket = tickets.last;
+                                    final newTicket = {
+                                      "content": newContent,
+                                      'title': lastTicket["title"],
+                                      'assignedId': lastTicket["assignedId"],
+                                      'chatUid': lastTicket["chatUid"],
+                                      'creatorId': userInformation!.ID!,
+                                      'createdAt': DateTime.now().toString(),
+                                    };
+                                    setState(() {
+                                      tickets.add(newTicket);
+                                      FocusScope.of(context)
+                                          .requestFocus(FocusNode());
+                                    });
+                                  }
+                                }
+                              : null,
                           label: const Icon(Icons.send),
                         ),
                       ),
