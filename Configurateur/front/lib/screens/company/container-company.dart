@@ -105,7 +105,7 @@ class ContainerCard extends StatelessWidget {
                   ),
                 ),
                 subtitle:
-                    Text("prix du conteneur : " + container.price.toString()),
+                    Text("Prix du conteneur : " + container.price.toString()),
                 leading: Image.asset(
                   'assets/container.png',
                   width: 150,
