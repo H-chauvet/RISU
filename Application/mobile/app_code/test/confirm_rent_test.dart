@@ -25,7 +25,7 @@ void main() {
       price: 8,
       categories: [],
     );
-  
+
     await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));

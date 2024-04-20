@@ -104,7 +104,7 @@ function generateInvoiceTable(doc, invoice) {
     invoiceTableTop,
     "Article",
     "Prix unitaire",
-    "Quantité",
+    "Durée",
     "Prix total HT",
     "Prix total TTC",
   );
@@ -113,13 +113,14 @@ function generateInvoiceTable(doc, invoice) {
 
   for (i = 0; i < invoice.items.length; i++) {
     const item = invoice.items[i];
+    const hoursText = item.quantity != 1 ? "heures" : "heure";
     const position = invoiceTableTop + (i + 1) * 30;
     generateTableRow(
       doc,
       position,
       item.item,
       formatCurrency(item.amount / item.quantity),
-      item.quantity,
+      item.quantity + " " + hoursText,
       formatCurrency(item.amount),
       formatCurrency(item.amount),
     );

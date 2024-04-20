@@ -9,6 +9,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -337,6 +338,24 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                         key: const Key('return_rent-button-receive_invoice'),
                         onPressed: () async {
                           sendInvoice();
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MyOutlinedButton(
+                        text: AppLocalizations.of(context)!.goToDetails,
+                        key: const Key('return_rent-button-go-to-details'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ArticleDetailsPage(
+                                articleId: widget.rentId,
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),

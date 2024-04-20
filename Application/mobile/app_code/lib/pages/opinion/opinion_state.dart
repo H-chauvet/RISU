@@ -538,12 +538,13 @@ class OpinionPageState extends State<OpinionPage> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    (userInformation?.firstName !=
+                                                    (opinion['user'][
+                                                                    'firstName'] !=
                                                                 null &&
-                                                            userInformation
-                                                                    ?.lastName !=
+                                                            opinion['user'][
+                                                                    'lastName'] !=
                                                                 null)
-                                                        ? '${userInformation!.firstName} ${userInformation!.lastName}'
+                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
                                                         : AppLocalizations.of(
                                                                 context)!
                                                             .anonymous,

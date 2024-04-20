@@ -53,7 +53,7 @@ class _UserPageState extends State<UserPage> {
     } else {
       Fluttertoast.showToast(
         msg:
-            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -70,7 +70,7 @@ class _UserPageState extends State<UserPage> {
 
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'utilisateur supprimé avec succès',
+        msg: 'Utilisateur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -78,7 +78,7 @@ class _UserPageState extends State<UserPage> {
     } else {
       Fluttertoast.showToast(
         msg:
-            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -105,7 +105,7 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> fetchUserMobile() async {
     final response = await http
-        .get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
+        .get(Uri.parse('http://${serverIp}:3000/api/mobile/user/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> usersData = responseData["user"];

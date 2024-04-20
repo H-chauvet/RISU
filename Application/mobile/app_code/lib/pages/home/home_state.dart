@@ -13,6 +13,7 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+import '../profile/informations/informations_page.dart';
 import 'home_page.dart';
 
 class HomePageState extends State<HomePage> {
@@ -62,6 +63,22 @@ class HomePageState extends State<HomePage> {
                 setState(() {
                   _currentIndex = 2;
                 }),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ProfileInformationsPage();
+                    },
+                  ),
+                ).then(
+                  (value) {
+                    if (value != null && value == true) {
+                      setState(() {
+                        userInformation = userInformation;
+                      });
+                    }
+                  },
+                ),
               }
           },
         );
