@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:footer/footer.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class CustomFooter extends StatefulWidget {
   const CustomFooter({super.key, required BuildContext context});
@@ -64,7 +67,9 @@ class CustomFooterState extends State<CustomFooter> {
                               Icons.contact_page,
                               size: 20.0,
                             ),
-                            color: const Color(0xFF162A49),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             onPressed: () {
                               context.go("/contact");
                             },
@@ -87,7 +92,9 @@ class CustomFooterState extends State<CustomFooter> {
                               Icons.fingerprint,
                               size: 20.0,
                             ),
-                            color: const Color(0xFF162A49),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             onPressed: () {},
                           ),
                         ),
@@ -108,7 +115,9 @@ class CustomFooterState extends State<CustomFooter> {
                               Icons.stars,
                               size: 20.0,
                             ),
-                            color: const Color(0xff033f63),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             onPressed: () {
                               context.go("/feedbacks");
                             },

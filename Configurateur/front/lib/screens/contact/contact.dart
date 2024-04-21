@@ -202,8 +202,14 @@ class _ContactPageState extends State<ContactPage> {
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Envoyer',
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        fontSize: 18,
+                      ),
                     ),
                   ),
                 ],

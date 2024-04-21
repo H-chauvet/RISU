@@ -153,16 +153,20 @@ class LandingAppBarState extends State<LandingAppBar> {
                             .switchTheme();
                         setState(() {});
                       },
+                      activeColor: darkTheme.primaryColor,
+                      inactiveTrackColor: lightTheme.primaryColor,
                     )
                   ],
                 ),
               ),
               PopupMenuButton<String>(
                 tooltip: "Authentification",
-                icon: const Icon(
+                icon: Icon(
                   size: 35,
                   Icons.account_circle,
-                  color: Color(0xff033F63),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                 ),
                 itemBuilder: (BuildContext context) {
                   List<PopupMenuEntry<String>> items = [];
@@ -245,7 +249,9 @@ class LandingAppBarState extends State<LandingAppBar> {
         Container(
           margin: const EdgeInsets.only(left: 100, right: 100),
           height: 1,
-          color: const Color(0xff033F63),
+          color: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.primaryColor
+              : lightTheme.primaryColor,
         ),
         const SizedBox(height: 50),
       ],

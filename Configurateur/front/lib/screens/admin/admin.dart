@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
@@ -22,139 +29,186 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Administration',
-        context: context,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          key: const Key('btn-messages'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20.0), // Définit le rayon du bouton arrondi
-                            ),
-                          ),
-                          onPressed: () {
-                            context.go("/admin/messages");
-                          },
-                          child: const Text(
-                            'Gestion des messages',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        const Text(
-                          "Cet onglet permet d'accéder à la liste\ndes messages envoyés par les utilisateurs",
-                          softWrap: true,
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 200,
-                      child: const VerticalDivider(
-                        thickness: 2,
-                        width: 100,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          key: const Key('btn-user'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20.0), // Définit le rayon du bouton arrondi
-                            ),
-                          ),
-                          onPressed: () {
-                            context.go("/userList");
-                          },
-                          child: const Text(
-                            'Gestion des utilisateurs',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        const Text(
-                          "Cet onglet permet d'accéder à la liste\ndes utilisateurs.",
-                          softWrap: true,
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                    Container(
-                      height: 200,
-                      child: const VerticalDivider(
-                        thickness: 2,
-                        width: 100,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          key: const Key('btn-article'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                const Color.fromARGB(255, 190, 189, 189),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 15),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  20.0), // Définit le rayon du bouton arrondi
-                            ),
-                          ),
-                          onPressed: () {
-                            context.go("/containerList");
-                          },
-                          child: const Text(
-                            'Gestion des conteneurs',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        const Text(
-                          "Cet onglet permet d'accéder à la liste\ndes articles en service.",
-                          softWrap: true,
-                          maxLines: 3,
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+      body: FooterView(
+        footer: Footer(
+          child: CustomFooter(context: context),
         ),
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            'Administration de RISU',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: const [
+                Shadow(
+                  color: Color(0xff033F63),
+                  offset: Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 150),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              key: const Key('btn-messages'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Définit le rayon du bouton arrondi
+                                ),
+                              ),
+                              onPressed: () {
+                                context.go("/admin/messages");
+                              },
+                              child: Text(
+                                'Gestion des messages',
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "Cet onglet permet d'accéder à la liste\ndes messages envoyés par les utilisateurs",
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
+                              ),
+                              softWrap: true,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 200,
+                          child: const VerticalDivider(
+                            thickness: 2,
+                            width: 100,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              key: const Key('btn-user'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Définit le rayon du bouton arrondi
+                                ),
+                              ),
+                              onPressed: () {
+                                context.go("/userList");
+                              },
+                              child: Text(
+                                'Gestion des utilisateurs',
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "Cet onglet permet d'accéder à la liste\ndes utilisateurs.",
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
+                              ),
+                              softWrap: true,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        Container(
+                          height: 200,
+                          child: const VerticalDivider(
+                            thickness: 2,
+                            width: 100,
+                            color: Colors.black,
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              key: const Key('btn-article'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 25, vertical: 15),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      20.0), // Définit le rayon du bouton arrondi
+                                ),
+                              ),
+                              onPressed: () {
+                                context.go("/containerList");
+                              },
+                              child: Text(
+                                'Gestion des conteneurs',
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            Text(
+                              "Cet onglet permet d'accéder à la liste\ndes articles en service.",
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
+                              ),
+                              softWrap: true,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
     );
   }
 }
