@@ -42,6 +42,7 @@ exports.createFixtures = async () => {
         items: {
           create: [
             {
+              id: 1,
               name: "Ballon de volley",
               price: 0.5,
               available: true,
@@ -50,6 +51,7 @@ exports.createFixtures = async () => {
               },
             },
             {
+              id: 2,
               name: "Raquette",
               price: 1.0,
               available: true,
@@ -58,6 +60,7 @@ exports.createFixtures = async () => {
               },
             },
             {
+              id: 3,
               name: "Ballon de football",
               price: 0.75,
               available: false,
@@ -73,7 +76,7 @@ exports.createFixtures = async () => {
     const emptyContainer = await db.Containers.create({
       data: {
         id: 2,
-        city: "Saint Brévin l'Océan",
+        city: "Saint-Brévin",
         address: "Boulevard de l'Océan",
         latitude: 47.232375,
         longitude: -2.179429,
