@@ -475,7 +475,7 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.chevron_right),
+                  icon: const Icon(Icons.mode_outlined),
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,

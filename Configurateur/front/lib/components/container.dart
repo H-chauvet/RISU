@@ -111,7 +111,7 @@ class ContainerCards extends StatelessWidget {
                   onPressed: () => onDelete(container),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.arrow_forward),
+                  icon: const Icon(Icons.chevron_right),
                   onPressed: () => context.go(page, extra: container),
                 ),
               ],
