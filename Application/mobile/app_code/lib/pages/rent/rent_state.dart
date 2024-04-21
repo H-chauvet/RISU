@@ -75,6 +75,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 return ConfirmRentPage(
                   hours: _rentalHours,
                   data: _articleData,
+                  locationId: jsonDecode(response.body)['rentId'],
                 );
               },
             ),
