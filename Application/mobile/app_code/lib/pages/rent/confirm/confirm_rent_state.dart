@@ -17,6 +17,7 @@ import 'package:risu/utils/providers/theme.dart';
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
   late ArticleData data;
+  late int locationId;
   final LoaderManager _loaderManager = LoaderManager();
 
   void sendInvoice() async {
@@ -26,7 +27,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       });
       final response = await http.post(
         Uri.parse(
-            'http://$serverIp:3000/api/mobile/rent/${widget.data.id}/invoice'),
+            'http://$serverIp:3000/api/mobile/rent/${locationId}/invoice'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -68,6 +69,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
     super.initState();
     hours = widget.hours;
     data = widget.data;
+    locationId = widget.locationId;
   }
 
   @override

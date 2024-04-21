@@ -352,7 +352,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ArticleDetailsPage(
-                                articleId: widget.rentId,
+                                articleId: rent['item']['id'],
                               ),
                             ),
                           );

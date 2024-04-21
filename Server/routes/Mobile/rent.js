@@ -42,7 +42,7 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
       await itemCtrl.updateItem(item.id, {
         price: item.price,
         available: false
-       })
+      })
 
       const location = await rentCtrl.rentItem(
         locationPrice,
@@ -97,7 +97,7 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
 
       await rentCtrl.updateRentInvoice(location.id, invoiceData);
 
-      return res.status(201).json({ message: 'location saved' })
+      return res.status(201).json({ rentId: location.id, message: 'location saved'})
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred' + err.message)
