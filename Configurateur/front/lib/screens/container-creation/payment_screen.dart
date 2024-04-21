@@ -35,8 +35,6 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  String address = '';
-  String city = '';
   String informations = '';
 
   void checkToken() async {
@@ -77,7 +75,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goNext() async {
-    if (controller.complete && address != '' && city != '') {
+    if (controller.complete) {
       bool response = await makePayment();
       if (response == false) {
         Fluttertoast.showToast(
@@ -106,9 +104,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'containerMapping': widget.containerMapping!,
           'width': container['width'].toString(),
           'height': container['height'].toString(),
-          'city': city,
           'informations': informations,
-          'address': address,
         },
       ).then((value) {
         if (value.statusCode == 200) {
