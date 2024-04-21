@@ -82,8 +82,7 @@ class ContainerCard extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text("Conteneur N° : ${container.id}"),
-                  subtitle:
-                      Text("Prix de création : ${container.price}"),
+                  subtitle: Text("Prix de création : ${container.price}"),
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
