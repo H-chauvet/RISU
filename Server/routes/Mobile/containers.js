@@ -34,14 +34,10 @@ router.get('/:containerId', async (req, res, next) => {
 
 router.get('/:containerId/articleslist/', async (req, res) => {
   try {
-    const { articleName, isAscending, isAvailable, categoryId } = req.query;
-    console.log('articleName', articleName);
-    console.log('isAscending', isAscending);
-    console.log('isAvailable', isAvailable);
-    console.log('categoryId', categoryId);
-    if (categoryId == 'null') {
-
-    }
+    const articleName = req.query.articleName || '';
+    const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
+    const isAvailable = req.query.isAvailable === 'true';
+    const isAscending = req.query.isAscending === 'true';
 
     if (!req.params.containerId || req.params.containerId === '') {
       return res.status(401).json({ message: 'Missing containerId' })
@@ -53,15 +49,8 @@ router.get('/:containerId/articleslist/', async (req, res) => {
       isAvailable,
       categoryId
     );
-    const container = await containerCtrl.getItemsFromContainer(parseInt(req.params.containerId))
-    if (!container) {
-      return res.status(401).json("itemList not found")
-    } else if (!container.items || container.items.length === 0) {
-      return res.status(204).json({ message: 'Container doesn\'t have items' })
-    }
-    return res.status(200).json(container.items)
+    return res.status(200).json(items)
   } catch (err) {
-    console.error(err.message)
     return res.status(401).send('An error occurred')
   }
 })

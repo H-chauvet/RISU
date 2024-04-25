@@ -129,20 +129,30 @@ exports.getItemsFromContainer = (containerId) => {
 
 exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId) => {
   try {
-    const articles = await db.Article.findMany({
+    const orderBy = isAscending === true ? 'asc' : 'desc';
+    return await db.Item.findMany({
       where: {
-        containerId: containerId,
         name: {
-          contains: articleName || undefined,
+          contains: articleName,
         },
-        available: isAvailable || undefined,
-        categoryId: categoryId || undefined,
+        available: isAvailable,
+        categories: categoryId ? { some: { id: parseInt(categoryId) } } : undefined,
+      },
+      select: {
+        id: true,
+        name: true,
+        available: true,
+        createdAt: true,
+        containerId: true,
+        price: true,
+        image: true,
+        description: true,
+        categories: true,
       },
       orderBy: {
-        name: isAscending ? 'asc' : 'desc',
-      },
+        price: orderBy,
+      }
     });
-    return articles;
   } catch (error) {
     console.error("Error retrieving items with filters:", error);
     throw new Error("Failed to retrieve items with filters");

@@ -26,6 +26,16 @@ class ArticleListState extends State<ArticleListPage> {
   bool isAvailable = true;
   String articleName = '';
   String? selectedCategoryId = 'null';
+  TextEditingController _searchController = TextEditingController();
+
+  void updateItemsList() {
+    getItemsData(context, _containerId, selectedCategoryId)
+        .then((dynamic value) {
+      setState(() {
+        _itemsDatas = value;
+      });
+    });
+  }
 
   Future<dynamic> getArticleCategories() async {
     late http.Response response;
@@ -43,7 +53,6 @@ class ArticleListState extends State<ArticleListPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      print('Response status: ${response.statusCode}');
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
         return responseData;
@@ -72,9 +81,6 @@ class ArticleListState extends State<ArticleListPage> {
     late http.Response response;
 
     try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
       final url = Uri.parse(
           '$baseUrl/api/mobile/container/$containerId/articleslist'
           '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}');
@@ -84,9 +90,6 @@ class ArticleListState extends State<ArticleListPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
         return responseData;
@@ -101,9 +104,6 @@ class ArticleListState extends State<ArticleListPage> {
       return [];
     } catch (err, stacktrace) {
       if (context.mounted) {
-        setState(() {
-          _loaderManager.setIsLoading(false);
-        });
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.connectionRefused);
         return [];
@@ -125,7 +125,11 @@ class ArticleListState extends State<ArticleListPage> {
       setState(() {
         _articleCategories = value;
       });
-      print('Article categories: $_articleCategories');
+    });
+    _searchController.addListener(() {
+      setState(() {
+        articleName = _searchController.text;
+      });
     });
   }
 
@@ -188,14 +192,11 @@ class ArticleListState extends State<ArticleListPage> {
                               setState(() {
                                 articleName = value;
                               }),
-                              Future.delayed(const Duration(milliseconds: 500),
-                                  () {
-                                getItemsData(context, _containerId,
-                                        selectedCategoryId)
-                                    .then((dynamic value) {
-                                  setState(() {
-                                    _itemsDatas = value;
-                                  });
+                              getItemsData(
+                                      context, _containerId, selectedCategoryId)
+                                  .then((dynamic value) {
+                                setState(() {
+                                  _itemsDatas = value;
                                 });
                               }),
                             },
@@ -210,13 +211,20 @@ class ArticleListState extends State<ArticleListPage> {
                               onPressed: () {
                                 setState(() {
                                   isAscending = !isAscending!;
+                                  getItemsData(context, _containerId,
+                                          selectedCategoryId)
+                                      .then((dynamic value) {
+                                    setState(() {
+                                      _itemsDatas = value;
+                                    });
+                                  });
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider
-                                            .currentTheme.primaryColor),
+                                backgroundColor: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor,
+                                ),
                                 elevation: 3,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
@@ -240,14 +248,21 @@ class ArticleListState extends State<ArticleListPage> {
                               onPressed: () {
                                 setState(() {
                                   isAvailable = !isAvailable!;
+                                  getItemsData(context, _containerId,
+                                          selectedCategoryId)
+                                      .then((dynamic value) {
+                                    setState(() {
+                                      _itemsDatas = value;
+                                    });
+                                  });
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider
-                                            .currentTheme.primaryColor),
                                 elevation: 3,
+                                backgroundColor: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor,
+                                ),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(8),
                                 ),
@@ -288,8 +303,13 @@ class ArticleListState extends State<ArticleListPage> {
                                     onChanged: (String? newValue) {
                                       setState(() {
                                         selectedCategoryId = newValue;
-                                        print(
-                                            'Selected category: $selectedCategoryId');
+                                        getItemsData(context, _containerId,
+                                                selectedCategoryId)
+                                            .then((dynamic value) {
+                                          setState(() {
+                                            _itemsDatas = value;
+                                          });
+                                        });
                                       });
                                     },
                                     style: TextStyle(
@@ -314,10 +334,11 @@ class ArticleListState extends State<ArticleListPage> {
                                     ),
                                     items: [
                                       DropdownMenuItem<String>(
-                                        value: null,
+                                        value:
+                                            'null', // Assurez-vous que la valeur n'est pas null
                                         child: Text(
                                           AppLocalizations.of(context)!
-                                              .chooseAnArticleCategory,
+                                              .allCategories,
                                           style: TextStyle(
                                             color: context.select(
                                               (ThemeProvider themeProvider) =>
@@ -327,25 +348,20 @@ class ArticleListState extends State<ArticleListPage> {
                                           ),
                                         ),
                                       ),
-                                      ..._articleCategories
-                                          .map<DropdownMenuItem<String>>(
-                                        (dynamic category) {
-                                          return DropdownMenuItem<String>(
-                                            value: category['id'].toString(),
-                                            child: Text(
-                                              category['name'],
-                                              style: TextStyle(
-                                                color: context.select(
-                                                  (ThemeProvider
-                                                          themeProvider) =>
-                                                      themeProvider.currentTheme
-                                                          .secondaryHeaderColor,
-                                                ),
+                                      for (var category in _articleCategories)
+                                        DropdownMenuItem<String>(
+                                          value: category['id'].toString(),
+                                          child: Text(
+                                            category['name'],
+                                            style: TextStyle(
+                                              color: context.select(
+                                                (ThemeProvider themeProvider) =>
+                                                    themeProvider.currentTheme
+                                                        .secondaryHeaderColor,
                                               ),
                                             ),
-                                          );
-                                        },
-                                      ).toList(),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 ],
