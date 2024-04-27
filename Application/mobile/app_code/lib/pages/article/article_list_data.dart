@@ -1,15 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:provider/provider.dart';
 import 'package:risu/pages/article/details_page.dart';
-import 'package:risu/utils/providers/theme.dart';
 
 class ArticleData {
   final int id;
   final int containerId;
   final String name;
   final bool available;
-  final int price;
+  final double price;
   final List categories;
 
   ArticleData({
@@ -22,12 +22,13 @@ class ArticleData {
   });
 
   factory ArticleData.fromJson(Map<String, dynamic> json) {
+    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ArticleData(
       id: json['id'],
       containerId: json['containerId'],
       name: json['name'],
       available: json['available'],
-      price: json['price'],
+      price: price,
       categories: json['categories'],
     );
   }
@@ -47,8 +48,10 @@ class ArticleData {
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 
-  const ArticleDataCard({Key? key, required this.articleData})
-      : super(key: key);
+  const ArticleDataCard({
+    super.key,
+    required this.articleData,
+  });
 
   @override
   Widget build(BuildContext context) {

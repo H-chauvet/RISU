@@ -121,7 +121,7 @@ class _MyTextInputState extends State<MyTextInput> {
                     splashRadius: 0.1,
                   )
                 : null,
-            labelText: widget.labelText,
+            labelText: isFocused ? null : widget.labelText,
             labelStyle: TextStyle(
               color: isFocused || _controller.text.isNotEmpty
                   ? context.select((ThemeProvider themeProvider) =>

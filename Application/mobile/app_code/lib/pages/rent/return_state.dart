@@ -9,6 +9,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -50,7 +51,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
@@ -58,14 +59,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -103,14 +104,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent = jsonDecode(response.body)['rental'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getRent',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -119,6 +120,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
         return;
       }
+      return;
     }
   }
 
@@ -143,14 +145,14 @@ class ReturnArticleState extends State<ReturnArticlePage> {
           rent['ended'] = true;
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'returnArticle',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringRentReturning);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -159,6 +161,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                 AppLocalizations.of(context)!.errorOccurredDuringRentReturning);
         return;
       }
+      return;
     }
   }
 
@@ -170,7 +173,6 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -336,6 +338,24 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                         key: const Key('return_rent-button-receive_invoice'),
                         onPressed: () async {
                           sendInvoice();
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      width: double.infinity,
+                      child: MyOutlinedButton(
+                        text: AppLocalizations.of(context)!.goToDetails,
+                        key: const Key('return_rent-button-go-to-details'),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ArticleDetailsPage(
+                                articleId: rent['item']['id'],
+                              ),
+                            ),
+                          );
                         },
                       ),
                     ),

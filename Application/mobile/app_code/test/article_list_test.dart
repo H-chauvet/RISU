@@ -20,6 +20,9 @@ void main() {
     await tester.pumpWidget(initPage(const ArticleListPage(containerId: -1)));
 
     Finder articleCard = find.byKey(const Key('articles-list_card'));
+    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+
     expect(articleCard, findsNothing);
+    expect(appBarTitleData, findsOneWidget);
   });
 }

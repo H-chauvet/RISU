@@ -214,11 +214,11 @@ class ContainerDialogState extends State<ContainerDialog> {
                           return 'Position invalide';
                         }
                         if (direction == 'Haut' &&
-                            int.parse(value) + widget.size >= widget.height) {
+                            int.parse(value) + lockerSize - 1 > widget.height) {
                           return 'Position invalide';
                         }
                         if (direction == 'Bas' &&
-                            int.parse(value) - widget.size < 0) {
+                            int.parse(value) - lockerSize - 1 < 0) {
                           return 'Position invalide';
                         }
                       }

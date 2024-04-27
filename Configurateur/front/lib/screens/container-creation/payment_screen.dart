@@ -35,8 +35,6 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  String address = '';
-  String city = '';
   String informations = '';
 
   void checkToken() async {
@@ -77,7 +75,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void goNext() async {
-    if (controller.complete && address != '' && city != '') {
+    if (controller.complete) {
       bool response = await makePayment();
       if (response == false) {
         Fluttertoast.showToast(
@@ -106,9 +104,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'containerMapping': widget.containerMapping!,
           'width': container['width'].toString(),
           'height': container['height'].toString(),
-          'city': city,
           'informations': informations,
-          'address': address,
         },
       ).then((value) {
         if (value.statusCode == 200) {
@@ -156,54 +152,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               widthFactor: 0.6,
               child: Column(
                 children: [
-                  const Text(
-                    "Informations de livraison",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('address'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez votre addresse',
-                            labelText: 'addresse',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                address = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('city'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez la ville',
-                            labelText: 'Ville',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                city = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 50),
                   const Text(
                     "Coordonnées bancaires",

@@ -52,9 +52,11 @@ void main() {
         initPage(ConversationPage(tickets: ticketList, isOpen: true));
     await waitForLoader(tester: tester, testPage: testPage);
 
+    Finder titleFinder = find.byKey(const Key('appbar-text_title'));
+    expect(titleFinder, findsOneWidget);
+
     Finder buttonSendMessage =
         find.byKey(const Key('chat-button-send-message'));
-
     expect(buttonSendMessage, findsOneWidget);
 
     await tester.tap(buttonSendMessage);
@@ -69,7 +71,6 @@ void main() {
 
     Finder buttonSendMessage =
         find.byKey(const Key('chat-button-send-message'));
-
     expect(buttonSendMessage, findsNothing);
   });
 }

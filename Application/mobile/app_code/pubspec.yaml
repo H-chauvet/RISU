@@ -30,19 +30,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.1.0
-  go_router: ^13.0.1
-  url_launcher: ^6.1.9
+  http: ^1.2.0
+  url_launcher: ^6.2.4
   shared_preferences: ^2.0.18
   provider: ^6.0.1
   cupertino_icons: ^1.0.2
   flutter_signin_button: ^2.0.0
-  google_maps_flutter: ^2.2.0
+  google_maps_flutter: ^2.5.3
   flutter_dotenv: ^5.1.0
   intl: ^0.18.1
   profile_photo: ^1.0.3
   geolocator: ^10.1.0
-  permission_handler: ^11.0.1
+  permission_handler: ^11.2.1
   flutter_stripe: ^7.0.0
   flutter_local_notifications: ^16.3.2
   flutter_localizations:

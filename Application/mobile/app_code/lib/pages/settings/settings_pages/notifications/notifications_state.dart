@@ -60,14 +60,14 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'saveNotifications',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -76,6 +76,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return null;
       }
+      return null;
     }
     return null;
   }
@@ -137,7 +138,6 @@ class NotificationsPageState extends State<NotificationsPage> {
               themeProvider.currentTheme.secondaryHeaderColor,
         ),
         showBackButton: true,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(

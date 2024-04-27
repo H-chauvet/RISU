@@ -22,6 +22,9 @@ void main() {
     userInformation = initExampleUser();
     await tester.pumpWidget(initPage(const HomePage()));
 
+    Finder appBarLogo = find.byKey(const Key('appbar-image_logo'));
+    expect(appBarLogo, findsOneWidget);
+
     expect(find.byType(BottomNavBar), findsOneWidget);
     expect(find.byType(AppBar), findsOneWidget);
     await tester.tap(find.byType(BottomNavBar));
