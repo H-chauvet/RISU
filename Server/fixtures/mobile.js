@@ -47,6 +47,9 @@ exports.createFixtures = async () => {
               price: 3,
               available: true,
               category: "plage",
+              categories: {
+                connect: [{ id: 1 }],
+              },
             },
             {
               id: 2,
@@ -54,6 +57,9 @@ exports.createFixtures = async () => {
               price: 6,
               available: false,
               category: "tennis",
+              categories: {
+                connect: [{ id: 2 }],
+              },
             },
             {
               id: 3,
@@ -72,6 +78,7 @@ exports.createFixtures = async () => {
               name: "raquette",
               price: 6,
               available: false,
+              category: "sport",
               categories: {
                 connect: [{ id: 1 }],
               },
@@ -80,6 +87,7 @@ exports.createFixtures = async () => {
               name: "ballon de football",
               price: 16,
               available: true,
+              category: "sport",
               categories: {
                 connect: [{ id: 2 }],
               },
@@ -109,6 +117,9 @@ exports.createFixtures = async () => {
               price: 3,
               available: true,
               category: "plage",
+              categories: {
+                connect: [{ id: 2 }],
+              },
             },
           ],
         },

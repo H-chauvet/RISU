@@ -112,7 +112,7 @@ exports.registerConfirmation = (email) => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.11.241.159:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://risu.dns-dynamic.net:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         "</p>",

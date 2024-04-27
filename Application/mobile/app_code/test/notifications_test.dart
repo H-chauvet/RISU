@@ -23,6 +23,10 @@ void main() {
     await tester.pumpWidget(initPage(const NotificationsPage()));
     BuildContext context = tester.element(find.byType(NotificationsPage));
 
+    final Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
+
+    // Verify that the back button is present.
+    expect(logoFinder, findsOneWidget);
     expect(
         find.text(
             AppLocalizations.of(context)!.notificationsPreferencesManagement),

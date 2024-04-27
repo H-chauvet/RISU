@@ -34,6 +34,8 @@ elif [ "$1" == "ios" ]; then
     ios
 elif [ "$1" == "remote" ]; then
     remote
+elif [ "$1" == "apk" ]; then
+    apk
 else
     echo "Unknown command."
 fi

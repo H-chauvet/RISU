@@ -7,7 +7,8 @@ import 'globals.dart';
 
 void main() {
   testWidgets('ContainerStat full info', (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const ContainerPage()));
+    await tester
+        .pumpWidget(initPage(ContainerPage(onDirectionClicked: (id) {})));
     await tester.pump();
     expect(find.byType(ListView), findsNothing);
   });
@@ -32,6 +33,7 @@ void main() {
             paid: true,
             saveName: null,
           ),
+          onDirectionClicked: (id) {},
         ),
       ),
     );

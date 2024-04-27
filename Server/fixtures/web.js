@@ -34,6 +34,9 @@ exports.createFixtures = async () => {
                     price: 10,
                     available: true,
                     category: "sport",
+                    categories: {
+                      connect: [{ id: 2 }],
+                    },
                   },
                   {
                     id: 6,
@@ -41,6 +44,9 @@ exports.createFixtures = async () => {
                     price: 20,
                     available: false,
                     category: "plage",
+                    categories: {
+                      connect: [{ id: 1 }],
+                    },
                   },
                 ],
               },
@@ -57,6 +63,9 @@ exports.createFixtures = async () => {
                     price: 10,
                     available: true,
                     category: "sport",
+                    categories: {
+                      connect: [{ id: 2 }],
+                    },
                   },
                   {
                     id: 8,
@@ -64,6 +73,9 @@ exports.createFixtures = async () => {
                     price: 20,
                     available: false,
                     category: "plage",
+                    categories: {
+                      connect: [{ id: 2 }],
+                    },
                   },
                 ],
               },

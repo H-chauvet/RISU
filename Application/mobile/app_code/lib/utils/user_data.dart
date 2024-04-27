@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 /// It contains all information about an UserData
 class UserData {
   String? token;
+  String? refreshToken;
   String email;
   String? firstName;
   String? lastName;
@@ -18,6 +19,7 @@ class UserData {
   UserData({
     required this.email,
     this.token,
+    this.refreshToken,
     required this.firstName,
     required this.lastName,
     this.ID,
@@ -38,6 +40,7 @@ class UserData {
     return UserData(
       email: user['email'],
       token: token,
+      refreshToken: user['refreshToken'],
       firstName: user['firstName'],
       lastName: user['lastName'],
       ID: user['id'],

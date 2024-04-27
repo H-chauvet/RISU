@@ -10,8 +10,8 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/pages/contact/new_ticket_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/time.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/time.dart';
 
 import 'contact_page.dart';
 
@@ -115,11 +115,30 @@ class ContactPageState extends State<ContactPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.myTickets,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        key: const Key('contact-add_ticket-button'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return const NewTicketPage();
+              },
+            ),
+          ).then((value) => getUserTickets());
+        },
+        backgroundColor: themeProvider.currentTheme.secondaryHeaderColor,
+        label: Text(
+          AppLocalizations.of(context)!.createTicket,
+          style: TextStyle(color: themeProvider.currentTheme.primaryColor),
+        ),
+      ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : Container(
@@ -127,17 +146,6 @@ class ContactPageState extends State<ContactPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 30),
-                  Text(
-                    AppLocalizations.of(context)!.myTickets,
-                    key: const Key('my-tickets-title'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: themeProvider.currentTheme.primaryColor,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 30),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -258,29 +266,30 @@ class ContactPageState extends State<ContactPage> {
                               dynamic lastTicket = showOpenedTickets
                                   ? openedTickets[key].last
                                   : closedTickets[key].last;
-                              return Card(
-                                elevation: 5,
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                color: themeProvider.currentTheme.cardColor,
-                                child: GestureDetector(
-                                  key: const Key('contact-gesture-go-to-chat'),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ConversationPage(
-                                          tickets: showOpenedTickets
-                                              ? openedTickets[key]
-                                              : closedTickets[key],
-                                          isOpen: showOpenedTickets,
-                                        ),
+
+                              return GestureDetector(
+                                key: const Key('contact-gesture-go-to-chat'),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ConversationPage(
+                                        tickets: showOpenedTickets
+                                            ? openedTickets[key]
+                                            : closedTickets[key],
+                                        isOpen: showOpenedTickets,
                                       ),
-                                    );
-                                  },
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 5,
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  color: themeProvider.currentTheme.cardColor,
                                   child: Padding(
                                     padding: const EdgeInsets.all(16),
                                     child: Row(
@@ -338,30 +347,6 @@ class ContactPageState extends State<ContactPage> {
                             },
                           ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: FloatingActionButton.extended(
-                      key: const Key('contact-add_ticket-button'),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const NewTicketPage(),
-                          ),
-                        );
-                      },
-                      backgroundColor:
-                          themeProvider.currentTheme.secondaryHeaderColor,
-                      label: Text(
-                        AppLocalizations.of(context)!.createTicket,
-                        style: TextStyle(
-                            color: themeProvider.currentTheme.primaryColor),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),

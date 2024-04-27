@@ -9,7 +9,7 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/messages/messages_card.dart';
+ import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -98,7 +98,7 @@ class _ContainerPageState extends State<ContainerPage> {
       setState(() {
         items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
         categories =
-            items.map((item) => item.category ?? 'Autre').toSet().toList();
+            items.map((item) => item.category ?? 'Tous').toSet().toList();
         categories.sort();
       });
     } else {}

@@ -271,6 +271,14 @@ class OpinionPageState extends State<OpinionPage> {
                       text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
+                        if (comment == '') {
+                          MyAlertDialog.showInfoAlertDialog(
+                            context: context,
+                            title: AppLocalizations.of(context)!.invalidForm,
+                            message: AppLocalizations.of(context)!.fillComment,
+                          );
+                          return;
+                        }
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
                       },
@@ -419,7 +427,7 @@ class OpinionPageState extends State<OpinionPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.reviewsList,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -437,14 +445,6 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.reviewsList,
-                            key: const Key('opinion-title'),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           Center(
                             child: Column(
                               children: [
@@ -538,12 +538,13 @@ class OpinionPageState extends State<OpinionPage> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    (userInformation?.firstName !=
+                                                    (opinion['user'][
+                                                                    'firstName'] !=
                                                                 null &&
-                                                            userInformation
-                                                                    ?.lastName !=
+                                                            opinion['user'][
+                                                                    'lastName'] !=
                                                                 null)
-                                                        ? '${userInformation!.firstName} ${userInformation!.lastName}'
+                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
                                                         : AppLocalizations.of(
                                                                 context)!
                                                             .anonymous,

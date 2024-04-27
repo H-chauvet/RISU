@@ -75,6 +75,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 return ConfirmRentPage(
                   hours: _rentalHours,
                   data: _articleData,
+                  locationId: jsonDecode(response.body)['rentId'],
                 );
               },
             ),
@@ -175,7 +176,7 @@ class RentArticlePageState extends State<RentArticlePage> {
           100 *
           _rentalHours; // for stripe, price is in cents
       final Map<String, dynamic>? paymentIntentData =
-          await createPaymentIntent(amount.toString(), 'EUR');
+          await createPaymentIntent(amount.round().toString(), 'EUR');
       final clientSecret = paymentIntentData!['client_secret'];
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
@@ -232,7 +233,7 @@ class RentArticlePageState extends State<RentArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.rentArticle,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.background,
@@ -246,14 +247,6 @@ class RentArticlePageState extends State<RentArticlePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.rentArticle,
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: themeProvider.currentTheme.primaryColor,
-                        ),
-                      ),
                       const SizedBox(height: 8),
                       Container(
                         width: 256,

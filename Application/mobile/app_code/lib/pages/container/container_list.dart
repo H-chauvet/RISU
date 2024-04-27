@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/providers/theme.dart';
-
-import 'details_page.dart';
 
 class ContainerList {
   final int id;
@@ -36,11 +35,12 @@ class ContainerList {
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
+    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ContainerList(
       id: json['id'],
       createdAt: json['createdAt'],
       containerMapping: json['containerMapping'],
-      price: json['price'],
+      price: price,
       address: json['address'],
       city: json['city'],
       longitude: json['longitude'],
@@ -72,8 +72,13 @@ class ContainerList {
 
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
+  final Function(int?) onDirectionClicked;
 
-  const ContainerCard({super.key, required this.container});
+  const ContainerCard({
+    super.key,
+    required this.container,
+    required this.onDirectionClicked,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -83,8 +88,7 @@ class ContainerCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                ContainerDetailsPage(containerId: container.id),
+            builder: (context) => ArticleListPage(containerId: container.id),
           ),
         );
       },
@@ -98,12 +102,50 @@ class ContainerCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          child: Column(
+          child: Stack(
             children: [
-              ListTile(
-                title: container.city != null ? Text(container.city!) : null,
-                subtitle:
-                    container.address != null ? Text(container.address!) : null,
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      container.city!,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      container.address!,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.directions),
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.primaryColor),
+                        onPressed: () {
+                          onDirectionClicked(container.id);
+                        },
+                      ),
+                      const Icon(Icons.chevron_right),
+                      const SizedBox(width: 8),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),

@@ -3,7 +3,7 @@ module.exports = {
       tags: ["Mobile", "Authentification", "User"],
       summary: 'Login an user in the mobile app',
       description: 'Login an user using passport',
-      operationId: "mobileLogIn",
+      operationId: "mobileLogInRefreshToken",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
@@ -14,6 +14,14 @@ module.exports = {
             $ref: '#/components/schemas/User_Mobile'
           }
         },
+        {
+          name: 'longTerm',
+          in: 'body',
+          schema: {
+            type: 'boolean',
+            example: 'true'
+          }
+        }
       ],
       responses: {
         201: {
