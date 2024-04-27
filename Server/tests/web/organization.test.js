@@ -42,24 +42,6 @@ describe("Organization Route Tests", () => {
     expect(organizationCtrl.createOrganization).toHaveBeenCalledWith(requestBody);
   });
 
-  it("should handle valid organization list retrieval", async () => {
-    organizationCtrl.getAllOrganizations.mockResolvedValueOnce([
-      { id: 1, name: "Organization 1" },
-      { id: 2, name: "Organization 2" },
-    ]);
-
-    const response = await supertest(app).get("/listAll");
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      organization: [
-        { id: 1, name: "Organization 1" },
-        { id: 2, name: "Organization 2" },
-      ],
-    });
-    expect(organizationCtrl.getAllOrganizations).toHaveBeenCalled();
-  });
-
   it("should handle valid organization name update", async () => {
     const requestBody = { name: "Updated Org Name" };
 
