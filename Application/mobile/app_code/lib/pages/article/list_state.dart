@@ -21,7 +21,6 @@ class ArticleListState extends State<ArticleListPage> {
   List<dynamic> _articleCategories = [];
   final LoaderManager _loaderManager = LoaderManager();
 
-  bool _showFilter = false;
   bool isAscending = true;
   bool isAvailable = true;
   String articleName = '';
@@ -168,43 +167,30 @@ class ArticleListState extends State<ArticleListPage> {
                       ),
                       const SizedBox(height: 16),
                       SizedBox(
-                        child: MyOutlinedButton(
-                          text: AppLocalizations.of(context)!.filter,
-                          key: const Key('article-button_show-filters'),
-                          onPressed: () {
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        child: MyTextInput(
+                          key: const Key('filter-textInput_name'),
+                          labelText: AppLocalizations.of(context)!.articleName,
+                          keyboardType: TextInputType.text,
+                          icon: Icons.article,
+                          onChanged: (value) => {
                             setState(() {
-                              _showFilter = !_showFilter;
-                            });
+                              articleName = value;
+                            }),
+                            getItemsData(
+                                    context, _containerId, selectedCategoryId)
+                                .then((dynamic value) {
+                              setState(() {
+                                _itemsDatas = value;
+                              });
+                            }),
                           },
                         ),
                       ),
-                      if (_showFilter) const SizedBox(height: 16),
-                      if (_showFilter)
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          child: MyTextInput(
-                            key: const Key('filter-textInput_name'),
-                            labelText:
-                                AppLocalizations.of(context)!.articleName,
-                            keyboardType: TextInputType.emailAddress,
-                            icon: Icons.article,
-                            onChanged: (value) => {
-                              setState(() {
-                                articleName = value;
-                              }),
-                              getItemsData(
-                                      context, _containerId, selectedCategoryId)
-                                  .then((dynamic value) {
-                                setState(() {
-                                  _itemsDatas = value;
-                                });
-                              }),
-                            },
-                          ),
-                        ),
-                      if (_showFilter) const SizedBox(height: 16),
-                      if (_showFilter)
-                        Row(
+                      const SizedBox(height: 32),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
@@ -280,95 +266,88 @@ class ArticleListState extends State<ArticleListPage> {
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                      if (_showFilter) const SizedBox(height: 16),
-                      if (_showFilter)
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.7,
-                          decoration: BoxDecoration(
-                            color: context.select(
-                              (ThemeProvider themeProvider) =>
-                                  themeProvider.currentTheme.primaryColor,
-                            ),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: SizedBox(
-                            child: Center(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  DropdownButton<String>(
-                                    value: selectedCategoryId,
-                                    onChanged: (String? newValue) {
+                            const SizedBox(width: 16),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              // padding left
+                              padding: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor,
+                                ),
+                                borderRadius: BorderRadius.circular(
+                                    10), // Adjust the value as needed
+                              ),
+                              child: DropdownButton<String>(
+                                value: selectedCategoryId,
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    selectedCategoryId = newValue;
+                                    getItemsData(context, _containerId,
+                                            selectedCategoryId)
+                                        .then((dynamic value) {
                                       setState(() {
-                                        selectedCategoryId = newValue;
-                                        getItemsData(context, _containerId,
-                                                selectedCategoryId)
-                                            .then((dynamic value) {
-                                          setState(() {
-                                            _itemsDatas = value;
-                                          });
-                                        });
+                                        _itemsDatas = value;
                                       });
-                                    },
-                                    style: TextStyle(
-                                      color: context.select(
-                                        (ThemeProvider themeProvider) =>
-                                            themeProvider
-                                                .currentTheme.primaryColor,
-                                      ),
-                                    ),
-                                    dropdownColor: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider
-                                              .currentTheme.primaryColor,
-                                    ),
-                                    underline: Container(
-                                      height: 2,
-                                      color: context.select(
-                                        (ThemeProvider themeProvider) =>
-                                            themeProvider.currentTheme
-                                                .secondaryHeaderColor,
-                                      ),
-                                    ),
-                                    items: [
-                                      DropdownMenuItem<String>(
-                                        value:
-                                            'null', // Assurez-vous que la valeur n'est pas null
-                                        child: Text(
-                                          AppLocalizations.of(context)!
-                                              .allCategories,
-                                          style: TextStyle(
-                                            color: context.select(
-                                              (ThemeProvider themeProvider) =>
-                                                  themeProvider.currentTheme
-                                                      .secondaryHeaderColor,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      for (var category in _articleCategories)
-                                        DropdownMenuItem<String>(
-                                          value: category['id'].toString(),
-                                          child: Text(
-                                            category['name'],
-                                            style: TextStyle(
-                                              color: context.select(
-                                                (ThemeProvider themeProvider) =>
-                                                    themeProvider.currentTheme
-                                                        .secondaryHeaderColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                    ],
+                                    });
+                                  });
+                                },
+                                style: TextStyle(
+                                  color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider.currentTheme.primaryColor,
                                   ),
+                                ),
+                                dropdownColor: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor,
+                                ),
+                                underline: Container(
+                                  height: 0,
+                                  color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.secondaryHeaderColor,
+                                  ),
+                                ),
+                                items: [
+                                  DropdownMenuItem<String>(
+                                    value:
+                                        'null', // Assurez-vous que la valeur n'est pas null
+                                    child: Text(
+                                      AppLocalizations.of(context)!
+                                          .allCategories,
+                                      style: TextStyle(
+                                        color: context.select(
+                                          (ThemeProvider themeProvider) =>
+                                              themeProvider.currentTheme
+                                                  .secondaryHeaderColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  for (var category in _articleCategories)
+                                    DropdownMenuItem<String>(
+                                      value: category['id'].toString(),
+                                      child: Text(
+                                        category['name'],
+                                        style: TextStyle(
+                                          color: context.select(
+                                            (ThemeProvider themeProvider) =>
+                                                themeProvider.currentTheme
+                                                    .secondaryHeaderColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
                             ),
-                          ),
+                          ],
                         ),
+                      ),
+                      const SizedBox(height: 16),
                       if (_itemsDatas.isEmpty) ...[
                         Text(
                           AppLocalizations.of(context)!.articlesListEmpty,
