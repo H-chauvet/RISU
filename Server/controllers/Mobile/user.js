@@ -137,6 +137,25 @@ exports.updateUserInfo = (user, body) => {
   })
 }
 
+/**
+ * Update user's refresh token
+ *
+ * @param {string} userId ID of the user
+ * @param {string} refreshToken Refresh token to be saved
+ */
+exports.updateUserRefreshToken = async (userId, refreshToken) => {
+  try {
+    return await db.User_Mobile.update({
+      where: { id: userId },
+      data: { refreshToken: refreshToken },
+      include: { Notifications: true }
+    });
+  } catch (error) {
+    throw new Error('Failed to update user refresh token');
+  }
+};
+
+
 exports.getFullName = (userId) => {
   const user = db.User_Mobile.findUnique({
     where: { id: userId },
@@ -145,4 +164,37 @@ exports.getFullName = (userId) => {
   if (!user) return null
   if (!user.firstName && !user.lastName) return 'Non renseigné'
   return user.firstName + ' ' + user.lastName
+}
+
+/**
+  * Find a user by his refresh token
+  *
+  * @param {string} refreshToken of the user
+  * @returns the user
+  */
+exports.findUserByRefreshToken = (refreshToken) => {
+  return db.User_Mobile.findUnique({
+    where: {
+      refreshToken: refreshToken
+    },
+    include: {
+      Notifications: true,
+    }
+  })
+}
+
+/**
+ * Remove the userRefreshToken of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.removeUserRefreshToken = userId => {
+  return db.User_Mobile.update({
+    where: { id: userId },
+    include: { Notifications: true },
+    data: {
+      refreshToken: null
+    }
+  })
 }

@@ -11,6 +11,10 @@ void main() {
       final testPage = initPage(const RentalPage());
       await waitForLoader(tester: tester, testPage: testPage);
       BuildContext context = tester.element(find.byType(RentalPage));
+      final Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+
+      // Verify that the back button is present.
+      expect(appBarTitleData, findsOneWidget);
 
       expect(find.text(AppLocalizations.of(context)!.myRents), findsOneWidget);
 

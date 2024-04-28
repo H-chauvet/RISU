@@ -102,7 +102,7 @@ void main() {
       ),
     );
 
-    await tester.enterText(find.byType(TextFormField).at(1), '6');
+    await tester.enterText(find.byType(TextFormField).at(1), '7');
 
     await tester.tap(find.text('Ajouter'));
     await tester.pump();

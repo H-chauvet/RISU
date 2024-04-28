@@ -48,7 +48,7 @@ void main() {
           goRouter: AppRouter.router,
           child: const DesignScreen(
             lockers:
-                '[{"type":"Petit casier","price":100},{"type":"Moyen casier","price":200},{"type":"Grand casier","price":300}]',
+                '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
             amount: 60,
             containerMapping: '1',
           ),
@@ -63,11 +63,11 @@ void main() {
     expect(find.text("Précédent"), findsOneWidget);
     expect(find.text("Retirer une image"), findsOneWidget);
     expect(find.text("Petit Casier"), findsOneWidget);
-    expect(find.text("100€"), findsOneWidget);
+    expect(find.text("50€"), findsOneWidget);
     expect(find.text("Moyen Casier"), findsOneWidget);
-    expect(find.text("200€"), findsOneWidget);
+    expect(find.text("100€"), findsOneWidget);
     expect(find.text("Grand Casier"), findsOneWidget);
-    expect(find.text("300€"), findsOneWidget);
+    expect(find.text("150€"), findsOneWidget);
 
     await tester.tap(find.text("Suivant"));
     await tester.tap(find.text("Précédent"));

@@ -107,6 +107,7 @@ class ArticleListState extends State<ArticleListPage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return [];
       }
+      return [];
     }
   }
 
@@ -139,7 +140,7 @@ class ArticleListState extends State<ArticleListPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.articlesList,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -155,16 +156,6 @@ class ArticleListState extends State<ArticleListPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 16),
-                      Text(
-                        AppLocalizations.of(context)!.articlesList,
-                        key: const Key('articles-list_title'),
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.primaryColor),
-                        ),
-                      ),
                       const SizedBox(height: 16),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.8,

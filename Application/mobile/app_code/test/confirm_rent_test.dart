@@ -25,11 +25,18 @@ void main() {
       price: 8,
       categories: [],
     );
-    await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
+
+    await tester.pumpWidget(
+        initPage(ConfirmRentPage(hours: 5, data: data, locationId: 1)));
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
+    Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
+
     Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
+
+    // Verify that the back button is present.
+    expect(logoFinder, findsOneWidget);
 
     await tester.scrollUntilVisible(homeButton, 100);
     await tester.tap(homeButton);
@@ -45,7 +52,8 @@ void main() {
       price: 8,
       categories: [],
     );
-    await tester.pumpWidget(initPage(ConfirmRentPage(hours: 5, data: data)));
+    await tester.pumpWidget(
+        initPage(ConfirmRentPage(hours: 5, data: data, locationId: 1)));
     Finder invoiceButton =
         find.byKey(const Key('return_rent-button-receive_invoice'));
 

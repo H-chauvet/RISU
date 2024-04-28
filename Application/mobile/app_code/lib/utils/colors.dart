@@ -60,6 +60,9 @@ final lightTheme = ThemeData(
     unselectedItemColor: MyColors.primary,
   ),
   dividerColor: Colors.grey,
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: Color(0xFFE5E1D5),
+  ),
 );
 
 final darkTheme = ThemeData(
@@ -116,4 +119,8 @@ final darkTheme = ThemeData(
     unselectedItemColor: Colors.white54,
   ),
   dividerColor: Colors.white,
+  bottomSheetTheme: const BottomSheetThemeData(
+    backgroundColor: Color(0xFF1E1E1E),
+  ),
+  cardColor: const Color(0x27222e),
 );

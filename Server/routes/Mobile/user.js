@@ -5,6 +5,7 @@ const router = express.Router()
 const passport = require('passport')
 const userCtrl = require('../../controllers/Mobile/user')
 const bcrypt = require('bcrypt')
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
 router.get('/listAll', async (req, res) => {
   try {
@@ -16,7 +17,7 @@ router.get('/listAll', async (req, res) => {
   }
 })
 
-router.put('/password',
+router.put('/password', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -69,7 +70,7 @@ router.post('/resetPassword', async (req, res) => {
   }
 })
 
-router.get('/:userId',
+router.get('/:userId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -88,7 +89,7 @@ router.get('/:userId',
   }
 )
 
-router.put('/',
+router.put('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -107,7 +108,7 @@ router.put('/',
   }
 )
 
-router.delete('/:userId',
+router.delete('/:userId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate(
     'jwt',
     { session: false },

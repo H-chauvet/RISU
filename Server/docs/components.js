@@ -221,6 +221,9 @@ module.exports = {
           mailVerification: {
             type: "boolean",
           },
+          refreshToken: {
+            type: "string",
+          },
           locations: {
             $ref: "#/components/schemas/Location_Mobile",
           },
