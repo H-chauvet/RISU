@@ -268,9 +268,9 @@ class ArticleListState extends State<ArticleListPage> {
                             ),
                             const SizedBox(width: 16),
                             Container(
-                              width: MediaQuery.of(context).size.width * 0.5,
+                              width: MediaQuery.of(context).size.width * 0.45,
                               // padding left
-                              padding: const EdgeInsets.only(left: 10),
+                              padding: const EdgeInsets.only(left: 7),
                               decoration: BoxDecoration(
                                 color: context.select(
                                   (ThemeProvider themeProvider) =>
