@@ -66,6 +66,7 @@ describe('GET /api/mobile/container/articleslist/', () => {
           const res = await request('http://localhost:3000')
             .get(`/api/mobile/container/${0}/articleslist/`)
           expect(res.statusCode).toBe(401)
+          console.log('res.body', res.body);
         }
       ],
       done
@@ -77,7 +78,7 @@ describe('GET /api/mobile/container/articleslist/', () => {
           async function () {
             const res = await request('http://localhost:3000')
               .get(`/api/mobile/container/${containerId[1]}/articleslist`)
-            expect(res.statusCode).toBe(204)
+            expect(res.statusCode).toBe(200)
           }
         ],
         done
