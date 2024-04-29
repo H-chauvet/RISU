@@ -32,7 +32,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   @override
   void initState() {
     super.initState();
-    //MyAlertTest.checkSignInStatus(context);
+    MyAlertTest.checkSignInStatus(context);
     calculateDimension();
   }
 

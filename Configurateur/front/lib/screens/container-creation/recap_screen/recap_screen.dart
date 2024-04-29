@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
+import 'package:front/screens/container-creation/recap_screen/recap_screen_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../styles/themes.dart';
+import '../../../styles/themes.dart';
 
 class RecapScreen extends StatefulWidget {
   const RecapScreen(
@@ -78,6 +81,8 @@ class RecapScreenState extends State<RecapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         'Récapitulatif',
@@ -113,16 +118,22 @@ class RecapScreenState extends State<RecapScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text(
+                Text(
                   "Récapitulatif de la commande",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                      fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                const SizedBox(
-                  width: 200,
-                  child: Divider(
+                SizedBox(
+                  width: screenFormat == ScreenFormat.desktop
+                      ? desktopLineWidth
+                      : tabletLineWidth,
+                  child: const Divider(
                     color: Colors.grey,
                     height: 20,
                     thickness: 1,
@@ -163,9 +174,11 @@ class RecapScreenState extends State<RecapScreen> {
                     },
                   ),
                 ),
-                const SizedBox(
-                  width: 200,
-                  child: Divider(
+                SizedBox(
+                  width: screenFormat == ScreenFormat.desktop
+                      ? desktopLineWidth
+                      : tabletLineWidth,
+                  child: const Divider(
                     color: Colors.grey,
                     height: 20,
                     thickness: 1,
@@ -178,8 +191,11 @@ class RecapScreenState extends State<RecapScreen> {
                 ),
                 Text(
                   "Prix total: ${widget.amount}€",
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                      fontWeight: FontWeight.bold),
                 ),
               ],
             ),

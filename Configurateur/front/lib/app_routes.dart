@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
-import 'package:front/screens/container-creation/confirmation_screen.dart';
+import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/maps_screen.dart';
-import 'package:front/screens/container-creation/recap_screen.dart';
+import 'package:front/screens/container-creation/recap_screen/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-creation/shape_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
