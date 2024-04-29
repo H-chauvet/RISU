@@ -83,44 +83,47 @@ class MyContainerState extends State<MyContainer> {
                   fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: displayedContainers.length,
-              itemBuilder: (_, i) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                itemCount: displayedContainers.length,
+                itemBuilder: (_, i) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            context.go(
+                              '/container-creation',
+                              extra: jsonEncode(
+                                {
+                                  'id': displayedContainers[i]['id'],
+                                  'container':
+                                      jsonEncode(displayedContainers[i]),
+                                },
+                              ),
+                            );
+                          },
+                          child: Text(
+                            displayedContainers[i]['saveName'],
+                            style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize),
                           ),
                         ),
-                        onPressed: () {
-                          context.go(
-                            '/container-creation',
-                            extra: jsonEncode(
-                              {
-                                'id': displayedContainers[i]['id'],
-                                'container': jsonEncode(displayedContainers[i]),
-                              },
-                            ),
-                          );
-                        },
-                        child: Text(
-                          displayedContainers[i]['saveName'],
-                          style: TextStyle(
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletFontSize),
-                        ),
                       ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
           ],
         ),

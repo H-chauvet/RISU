@@ -6,6 +6,7 @@ import 'package:front/services/storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   late MockSharedPreferences sharedPreferences;
@@ -60,17 +61,21 @@ void main() {
 
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(
-      MaterialApp(
-        home: FeedbacksCard(
-          fb: Feedbacks(
-            id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john.doe@example.com',
-            message: 'Great app!',
-            mark: '5',
-          ),
-        ),
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: FeedbacksCard(
+              fb: Feedbacks(
+                id: 1,
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'john.doe@example.com',
+                message: 'Great app!',
+                mark: '5',
+              ),
+            ),
+          );
+        },
       ),
     );
     expect(find.text('Great app!'), findsOneWidget);

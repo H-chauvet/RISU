@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -12,14 +13,18 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockSharedPreferences sharedPreferences;
 
-  setUp(() {
+  setUp(() async {
     sharedPreferences = MockSharedPreferences();
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
   });
   testWidgets(
       'FeedbacksPage displays feedbacks and allows posting new feedback',
@@ -30,19 +35,26 @@ void main() {
 
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const FeedbacksPage(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const FeedbacksPage(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     await tester.tap(find.text('Poster un avis'));
