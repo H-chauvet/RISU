@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
+import 'package:front/screens/container-creation/maps_screen.dart';
 import 'package:front/screens/container-creation/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen.dart';
 import 'package:front/screens/container-creation/shape_screen.dart';
@@ -137,6 +138,29 @@ class AppRouter {
         },
       ),
       GoRoute(
+        path: '/container-creation/maps',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra == null) {
+            return const MapsScreen(
+              amount: null,
+              containerMapping: null,
+              lockers: null,
+              id: null,
+            );
+          }
+          final data = state.extra! as String;
+          final user = jsonDecode(data) as Map<String, dynamic>;
+
+          return MapsScreen(
+            amount: user['amount'],
+            containerMapping: user['containerMapping'],
+            lockers: user['lockers'],
+            id: user['id'],
+            container: user['container'],
+          );
+        },
+      ),
+      GoRoute(
         path: '/contact',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ContactPage(),
@@ -203,6 +227,8 @@ class AppRouter {
             lockers: user['lockers'],
             id: user['id'],
             container: user['container'],
+            width: user['width'],
+            height: user['height'],
           );
         },
       ),

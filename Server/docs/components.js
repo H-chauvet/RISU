@@ -54,6 +54,12 @@ module.exports = {
           informations: {
             type: "string",
           },
+          latitude: {
+            type: "float",
+          },
+          longitude: {
+            type: "float",
+          },
           items: {
             type: "array",
             items: {
@@ -214,6 +220,9 @@ module.exports = {
           },
           mailVerification: {
             type: "boolean",
+          },
+          refreshToken: {
+            type: "string",
           },
           locations: {
             $ref: "#/components/schemas/Location_Mobile",

@@ -51,15 +51,16 @@ void main() {
     final testPage = initPage(const NewTicketPage());
     await waitForLoader(tester: tester, testPage: testPage);
 
+    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+    expect(appBarTitleData, findsOneWidget);
+
     Finder textInputObject =
         find.byKey(const Key('new-ticket-text_input-input-title'));
-
     expect(textInputObject, findsOneWidget);
     await tester.enterText(textInputObject, "Je suis l'objet");
 
     Finder textInputContent =
         find.byKey(const Key('new-ticket-text_input-input_message'));
-
     expect(textInputContent, findsOneWidget);
     await tester.enterText(textInputContent, "Je suis le contenu");
     await tester.pumpAndSettle();

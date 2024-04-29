@@ -65,6 +65,8 @@ dependencies:
   flutter_dropzone: ^3.0.6
   dotted_border: ^2.1.0
   sizer: ^2.0.15
+  google_maps_flutter: ^2.3.0
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:

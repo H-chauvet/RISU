@@ -75,6 +75,8 @@ void main() {
     final testPage = initPage(const ContactPage());
     await waitForLoader(tester: tester, testPage: testPage);
 
+    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+    expect(appBarTitleData, findsOneWidget);
     Finder errorAlertDialog = find.byKey(const Key("alertdialog-button_ok"));
     expect(errorAlertDialog, findsOneWidget);
 

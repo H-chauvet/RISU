@@ -77,8 +77,8 @@ void main() {
       ),
     );
 
-    expect(find.text("id du conteneur : 1"), findsWidgets);
-    expect(find.text("prix du conteneur : 29.99"), findsWidgets);
+    expect(find.text("Conteneur N° : 1"), findsWidgets);
+    expect(find.text("Prix de création : 29.99"), findsWidgets);
     expect(find.text("Nantes"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();

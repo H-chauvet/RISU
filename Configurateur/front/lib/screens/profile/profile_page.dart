@@ -36,7 +36,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userDetails = json.decode(response.body);
-        debugPrint('User details: $userDetails');
 
         setState(() {
           firstName = userDetails['firstName'];
@@ -409,110 +408,178 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
-    TextEditingController passwordController = TextEditingController();
+    String password = '';
+    String validedPassword = '';
+    bool obscurePassword = true;
+    bool obscureConfirmPassword = true;
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Modifier",
-            style: TextStyle(
-              fontSize:
+        return StatefulBuilder(builder: (BuildContext context, setState) {
+          return AlertDialog(
+            title: Text(
+              "Modifier",
+              style: TextStyle(
+                fontSize: SizeService().getScreenFormat(context) ==
+                        ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
+            content: Container(
+              height:
                   SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
+                      ? desktopDialogHeight
+                      : tabletDialogHeight,
+              child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        key: const Key('password'),
+                        obscureText: obscurePassword,
+                        decoration: InputDecoration(
+                            hintText: 'Entrez votre mot de passe',
+                            labelText: 'Mot de passe',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    obscurePassword = !obscurePassword;
+                                  });
+                                })),
+                        onChanged: (String? value) {
+                          password = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('confirm-password'),
+                        obscureText: obscureConfirmPassword,
+                        decoration: InputDecoration(
+                            hintText: 'Validation du mot de passe',
+                            labelText: 'Valider le mot de passe',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            suffixIcon: IconButton(
+                                icon: Icon(
+                                  obscureConfirmPassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    obscureConfirmPassword =
+                                        !obscureConfirmPassword;
+                                  });
+                                })),
+                        onChanged: (String? value) {
+                          validedPassword = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez remplir ce champ';
+                          }
+                          if (value != password) {
+                            return 'Les mots de passe ne correspondent pas';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  )),
             ),
-          ),
-          content: Container(
-            height:
-                SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                    ? desktopDialogHeight
-                    : tabletDialogHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau mot de passe",
-                      hintText: initialPassword),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
                 ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
+                child: Text("Annuler",
+                    style: TextStyle(
+                        fontSize: SizeService().getScreenFormat(context) ==
+                                ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize)),
               ),
-              child: Text("Annuler",
+              ElevatedButton(
+                onPressed: () async {
+                  if (formKey.currentState!.validate() &&
+                      password == validedPassword) {
+                    final String apiUrl =
+                        "http://$serverIp:3000/api/auth/update-password/$userMail";
+                    var body = {
+                      'password': password,
+                    };
+
+                    var response = await http.post(
+                      Uri.parse(apiUrl),
+                      body: body,
+                    );
+
+                    if (response.statusCode == 200) {
+                      Fluttertoast.showToast(
+                        msg: 'Mot de passe modifié avec succès',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 3,
+                      );
+                    } else {
+                      Fluttertoast.showToast(
+                          msg:
+                              "Erreur durant l'envoi la modification du mot de passe",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 3,
+                          backgroundColor: Colors.red);
+                    }
+                    onEdit(password);
+                    Navigator.of(context).pop();
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: Text(
+                  "Modifier",
                   style: TextStyle(
-                      fontSize: SizeService().getScreenFormat(context) ==
-                              ScreenFormat.desktop
-                          ? desktopFontSize
-                          : tabletFontSize)),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/auth/update-password/$userMail";
-                var body = {
-                  'password': passwordController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Mot de passe modifié avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification du mot de passe",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-
-                onEdit(passwordController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                    fontSize: SizeService().getScreenFormat(context) ==
+                            ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
                 ),
               ),
-              child: Text(
-                "Modifier",
-                style: TextStyle(
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-            ),
-          ],
-        );
+            ],
+          );
+        });
       },
     );
   }
