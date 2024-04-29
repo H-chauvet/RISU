@@ -30,6 +30,9 @@ void main() {
   });
 
   testWidgets('Login screen', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
     await tester.pumpWidget(
       MultiProvider(
         providers: [
