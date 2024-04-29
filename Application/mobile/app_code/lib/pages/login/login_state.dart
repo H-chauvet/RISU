@@ -15,11 +15,12 @@ import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
   late bool keepPath;
+  bool _stayLoggedIn = false;
   String? _email;
   String? _password;
   bool _isPasswordVisible = false;
@@ -27,7 +28,7 @@ class LoginPageState extends State<LoginPage> {
 
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
-      if (context.mounted) {
+      if (mounted) {
         await MyAlertDialog.showErrorAlertDialog(
           key: const Key('login-alertdialog_emptyfields'),
           context: context,
@@ -43,13 +44,14 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       http.Response response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/auth/login'),
+        Uri.parse('$baseUrl/api/mobile/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'email': _email!,
           'password': _password!,
+          'longTerm': _stayLoggedIn ? true : false,
         }),
       );
       setState(() {
@@ -60,11 +62,17 @@ class LoginPageState extends State<LoginPage> {
         setState(() {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
+          final refreshToken = jsonData['user']['refreshToken'];
+          if (refreshToken != null && refreshToken != '') {
+            SharedPreferences.getInstance().then((prefs) {
+              prefs.setString('refreshToken', refreshToken);
+            });
+          }
         });
         return true;
       } else {
         if (jsonData.containsKey('message')) {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'apiLogin',
                 message: jsonData['message']);
             return false;
@@ -72,7 +80,7 @@ class LoginPageState extends State<LoginPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.connectionRefused);
         setState(() {
@@ -80,6 +88,7 @@ class LoginPageState extends State<LoginPage> {
         });
         return false;
       }
+      return false;
     }
     return false;
   }
@@ -106,7 +115,7 @@ class LoginPageState extends State<LoginPage> {
         _loaderManager.setIsLoading(true);
       });
       var response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/user/resetPassword'),
+        Uri.parse('$baseUrl/api/mobile/user/resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -138,7 +147,10 @@ class LoginPageState extends State<LoginPage> {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
+
+        return;
       }
+      return;
     }
   }
 
@@ -159,7 +171,7 @@ class LoginPageState extends State<LoginPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
@@ -169,25 +181,6 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    AppLocalizations.of(context)!.connection,
-                    key: const Key('login-text_title'),
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      shadows: [
-                        Shadow(
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
                   const SizedBox(height: 32),
                   Column(
                     children: [
@@ -215,31 +208,70 @@ class LoginPageState extends State<LoginPage> {
                         },
                         onChanged: (value) => _password = value,
                       ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Column(
-                          children: [
-                            TextButton(
-                              key: const Key('login-textbutton_resetpassword'),
-                              onPressed: () {
-                                setState(() {
-                                  apiResetPassword(context);
-                                });
-                              },
-                              child: Text(
-                                "${AppLocalizations.of(context)!.passwordForgotten} ?",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  decoration: TextDecoration.underline,
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme
-                                              .secondaryHeaderColor),
-                                ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            key: const Key('login-checkbox_stayconnected'),
+                            value: _stayLoggedIn,
+                            onChanged: (value) {
+                              setState(() {
+                                _stayLoggedIn = value!;
+                              });
+                            },
+                            side: BorderSide(
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
+                            ),
+                            checkColor: context.select(
+                                (ThemeProvider themeProvider) => themeProvider
+                                    .currentTheme.secondaryHeaderColor),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4.0),
+                            ),
+                            activeColor: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _stayLoggedIn = !_stayLoggedIn;
+                              });
+                            },
+                            child: Text(
+                              "${AppLocalizations.of(context)!.stayConnected}",
+                              key: const Key('login-text_stayconnected'),
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            key: const Key('login-textbutton_resetpassword'),
+                            onPressed: () {
+                              setState(() {
+                                apiResetPassword(context);
+                              });
+                            },
+                            child: Text(
+                              "${AppLocalizations.of(context)!.passwordForgotten} ?",
+                              style: TextStyle(
+                                fontSize: 12,
+                                decoration: TextDecoration.underline,
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -270,7 +302,7 @@ class LoginPageState extends State<LoginPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -282,7 +314,7 @@ class LoginPageState extends State<LoginPage> {
                       AppLocalizations.of(context)!.signIn,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         fontSize: 16.0,
                       ),
                     ),
@@ -305,7 +337,7 @@ class LoginPageState extends State<LoginPage> {
                         fontSize: 14,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                   ),

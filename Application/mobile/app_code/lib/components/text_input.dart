@@ -16,6 +16,7 @@ class MyTextInput extends StatefulWidget {
   final String? initialValue;
   final TextEditingController? controller;
   final double? height;
+  final int? maxLines;
 
   const MyTextInput({
     super.key,
@@ -31,6 +32,7 @@ class MyTextInput extends StatefulWidget {
     this.onTap,
     this.controller,
     this.height,
+    this.maxLines = 1,
   });
 
   @override
@@ -94,6 +96,7 @@ class _MyTextInputState extends State<MyTextInput> {
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
           validator: widget.validator,
+          maxLines: widget.maxLines,
           style: TextStyle(
             color: context.select((ThemeProvider themeProvider) => themeProvider
                 .currentTheme.inputDecorationTheme.labelStyle!.color),
@@ -105,7 +108,7 @@ class _MyTextInputState extends State<MyTextInput> {
                 ? Icon(
                     widget.icon,
                     color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.primaryColor),
                   )
                 : null,
             suffixIcon: widget.rightIcon != null
@@ -114,11 +117,11 @@ class _MyTextInputState extends State<MyTextInput> {
                     onPressed: widget.rightIconOnPressed,
                     icon: Icon(widget.rightIcon),
                     color: context.select((ThemeProvider themeProvider) =>
-                        themeProvider.currentTheme.secondaryHeaderColor),
+                        themeProvider.currentTheme.primaryColor),
                     splashRadius: 0.1,
                   )
                 : null,
-            labelText: widget.labelText,
+            labelText: isFocused ? null : widget.labelText,
             labelStyle: TextStyle(
               color: isFocused || _controller.text.isNotEmpty
                   ? context.select((ThemeProvider themeProvider) =>

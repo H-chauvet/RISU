@@ -13,7 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.13.0",
+    "@prisma/client": "^5.12.1",
     "@types/jest": "^29.5.2",
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
@@ -30,16 +30,19 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
+    "pdfkit": "^0.14.0",
     "prettier": "^3.2.5",
-    "prisma": "^4.13.0",
     "stripe": "^14.8.0",
     "supertest": "^6.3.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-tools": "^0.10.4",
     "swagger-ui-express": "^4.6.3",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "prisma": "^5.12.1"
   }
 }

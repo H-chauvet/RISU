@@ -1,12 +1,19 @@
 const express = require('express')
+const PDFDocument = require('pdfkit');
+const { createInvoice } = require("../../invoice/createInvoice")
 
 const router = express.Router()
 const passport = require('passport')
 const rentCtrl = require("../../controllers/Mobile/rent")
 const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
+const transporter = require('../../middleware/transporter')
+const containerCtrl = require('../../controllers/Common/container')
+const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
+const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.post('/article',
+router.post('/article', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -35,9 +42,62 @@ router.post('/article',
       await itemCtrl.updateItem(item.id, {
         price: item.price,
         available: false
-       })
-      await rentCtrl.rentItem(locationPrice, item.id, user.id, parseInt(req.body.duration))
-      return res.status(201).json({ message: 'location saved' })
+      })
+
+      const location = await rentCtrl.rentItem(
+        locationPrice,
+        item.id,
+        user.id,
+        parseInt(req.body.duration)
+      )
+
+      const container = await containerCtrl.getContainerById(item.containerId);
+
+      sendEmailConfirmationLocation(
+        user.email,
+        new Date(),
+        req.body.duration,
+        container.address,
+        container.city,
+        item.name,
+        locationPrice
+      );
+
+      var clientInfo = null;
+      if (user.firstName == null || user.lastName == null) {
+        clientInfo = 'Non renseigné';
+      } else {
+        clientInfo = user.firstName + ' ' + user.lastName;
+      }
+
+      const invoice = {
+        shipping: {
+          name: clientInfo,
+          address: "",
+          city: "",
+          state: "",
+          country: "",
+          postal_code: ""
+        },
+        items: [
+          {
+            item: item.name,
+            description: "description",
+            quantity: req.body.duration,
+            amount: locationPrice
+          }
+        ],
+        subtotal: locationPrice,
+        paid: 0,
+        invoice_nr: ""
+      };
+
+      const invoiceData = await createInvoice(invoice);
+
+
+      await rentCtrl.updateRentInvoice(location.id, invoiceData);
+
+      return res.status(201).json({ rentId: location.id, message: 'location saved'})
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred' + err.message)
@@ -45,7 +105,40 @@ router.post('/article',
   }
 )
 
-router.get('/listAll',
+router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+
+      const locationId = req.params.locationId;
+
+      const location = await rentCtrl.getRentFromId(parseInt(locationId))
+
+      if (!location) {
+        return res.status(404).send('Location not found');
+      }
+
+      if (!location.invoice) {
+        return res.status(404).send('Invoice not found');
+      }
+
+      await sendInvoice(location.invoice, user.email);
+
+      return res.status(201).json({ message: 'invoice sent' })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(401).send('An error occurred')
+    }
+  }
+)
+
+router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -64,7 +157,7 @@ router.get('/listAll',
   }
 )
 
-router.get('/:rentId',
+router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -92,7 +185,7 @@ router.get('/:rentId',
   }
 )
 
-router.post('/:rentId/return',
+router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

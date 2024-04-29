@@ -15,14 +15,15 @@ void main() {
     // This code runs after each test case.
   });
 
-  testWidgets(
-    'Container details should not be displayed from empty id',
-    (WidgetTester tester) async {
-      await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
+  testWidgets('Container details should not be displayed from empty id',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(initPage(const ReturnArticlePage(rentId: -1)));
 
-      Finder returnButton =
-          find.byKey(const Key('rent_return-button-return_article'));
-      expect(returnButton, findsNothing);
-    },
-  );
+    final Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
+    expect(logoFinder, findsOneWidget);
+
+    Finder returnButton =
+        find.byKey(const Key('rent_return-button-return_article'));
+    expect(returnButton, findsNothing);
+  });
 }

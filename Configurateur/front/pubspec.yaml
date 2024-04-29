@@ -63,6 +63,10 @@ dependencies:
   file_picker: ^5.3.1
   shared_preferences: ^2.2.2
   mockito: ^5.4.0
+  flutter_dropzone: ^3.0.6
+  dotted_border: ^2.1.0
+  google_maps_flutter: ^2.3.0
+  geolocator: ^11.0.0
 
 dev_dependencies:
   flutter_test:
@@ -104,6 +108,7 @@ flutter:
     - assets/Tanguy.png
     - assets/Cédric.png
     - assets/containerrisu.png
+    - assets/roboto/Roboto-Medium.ttf
 
   #   - images/a_dot_ham.jpeg
 

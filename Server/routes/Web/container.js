@@ -77,8 +77,6 @@ router.put("/update", async function (req, res, next) {
       containerMapping,
       height,
       width,
-      city,
-      address,
       informations,
       designs,
       saveName,
@@ -94,8 +92,6 @@ router.put("/update", async function (req, res, next) {
       containerMapping,
       height,
       width,
-      city,
-      address,
       informations,
       designs,
       saveName,
@@ -106,18 +102,28 @@ router.put("/update", async function (req, res, next) {
   }
 });
 
-router.post("/create-ctn", async (req, res) => {
+router.put("/update-position", async function (req, res, next) {
   try {
-    const { id, price, width, height } = req.body;
-    const container = await containerCtrl.createContainer2({
-      price,
-      width,
-      height,
+    jwtMiddleware.verifyToken(req.headers.authorization);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
+  try {
+    const { id, latitude, longitude } = req.body;
+
+    if (!id || !latitude || !longitude) {
+      res.status(400);
+      throw new Error("id and position are required");
+    }
+
+    const container = await containerCtrl.updateContainerPosition(id, {
+      latitude,
+      longitude,
     });
     res.status(200).json(container);
   } catch (err) {
-    console.log(err);
-    return res.status(400).json("An error occured.");
+    next(err);
   }
 });
 

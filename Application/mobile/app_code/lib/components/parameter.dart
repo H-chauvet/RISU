@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
+import 'package:risu/utils/providers/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'divider.dart';
 
@@ -13,7 +16,7 @@ enum DIVIDERPLACE {
 class MyRedirectDivider extends StatelessWidget {
   final String title;
   final Widget goToPage;
-  final Widget paramIcon;
+  final IconData paramIcon;
   final bool disconnect;
   final DIVIDERPLACE chosenPlace;
 
@@ -33,6 +36,10 @@ class MyRedirectDivider extends StatelessWidget {
     } else {
       if (disconnect) {
         userInformation = null;
+        final prefs = SharedPreferences.getInstance();
+        prefs.then((value) {
+          value.setString('refreshToken', '');
+        });
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -80,7 +87,11 @@ class MyRedirectDivider extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 8),
-                  child: paramIcon,
+                  child: Icon(
+                    paramIcon,
+                    color: context.select((ThemeProvider themeProvider) =>
+                        themeProvider.currentTheme.secondaryHeaderColor),
+                  ),
                 ),
                 Text(
                   title,
@@ -101,7 +112,7 @@ class MyRedirectDivider extends StatelessWidget {
 class MyParameter extends StatelessWidget {
   final String title;
   final Widget goToPage;
-  final Widget paramIcon;
+  final IconData paramIcon;
   final bool locked;
 
   const MyParameter({
@@ -143,7 +154,11 @@ class MyParameter extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: paramIcon,
+                child: Icon(
+                  paramIcon,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.primaryColor),
+                ),
               ),
               Text(
                 title,
@@ -165,7 +180,7 @@ class MyParameter extends StatelessWidget {
 class MyParameterModal extends StatelessWidget {
   final String title;
   final Widget modalContent;
-  final Widget paramIcon;
+  final IconData paramIcon;
   final bool locked;
 
   const MyParameterModal({
@@ -176,11 +191,17 @@ class MyParameterModal extends StatelessWidget {
     this.locked = false,
   });
 
-  Widget correspondingIcon() {
+  Widget correspondingIcon(BuildContext context) {
     if (locked) {
-      return const Icon(Icons.lock);
+      return Icon(
+        Icons.lock,
+        color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor),
+      );
     }
-    return const Icon(Icons.chevron_right);
+    return Icon(Icons.chevron_right,
+        color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.primaryColor));
   }
 
   void _showModal(BuildContext context) {
@@ -188,7 +209,13 @@ class MyParameterModal extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(title),
+          title: Text(
+            title,
+            style: TextStyle(
+              color: context.select((ThemeProvider themeProvider) =>
+                  themeProvider.currentTheme.primaryColor),
+            ),
+          ),
           content: modalContent,
           actions: [
             TextButton(
@@ -220,7 +247,11 @@ class MyParameterModal extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(right: 8),
-                child: paramIcon,
+                child: Icon(
+                  paramIcon,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.primaryColor),
+                ),
               ),
               Text(
                 title,
@@ -229,7 +260,7 @@ class MyParameterModal extends StatelessWidget {
                 ),
               ),
               const Expanded(child: SizedBox()),
-              correspondingIcon(),
+              correspondingIcon(context),
             ],
           ),
           const MyDivider(),

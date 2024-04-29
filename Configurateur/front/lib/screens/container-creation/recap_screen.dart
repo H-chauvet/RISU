@@ -56,7 +56,7 @@ class RecapScreenState extends State<RecapScreen> {
       'id': widget.id,
       'container': widget.container,
     };
-    context.go('/container-creation/payment', extra: jsonEncode(data));
+    context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
   void decodeLockers() {
@@ -87,8 +87,8 @@ class RecapScreenState extends State<RecapScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ProgressBar(
-            length: 4,
-            progress: 2,
+            length: 6,
+            progress: 3,
             previous: 'Précédent',
             next: 'Suivant',
             previousFunc: previousFunc,

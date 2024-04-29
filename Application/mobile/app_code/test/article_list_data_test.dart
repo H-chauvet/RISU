@@ -20,13 +20,17 @@ void main() {
 
       test('ArticleListData constructor should create an instance', () {
         final articleListData = ArticleData(
-            id: 0, containerId: 0, name: 'name', available: true, price: 3,
-            );
+            id: 0,
+            containerId: 0,
+            name: 'name',
+            available: true,
+            price: 3,
+            categories: []);
         expect(articleListData.id, 0);
         expect(articleListData.containerId, 0);
         expect(articleListData.name, 'name');
         expect(articleListData.available, true);
-        expect(articleListData.price, 3);
+        expect(articleListData.price, 3.0);
       });
 
       test('ArticleListData constructor should create an instance from json',
@@ -36,20 +40,26 @@ void main() {
           'containerId': 0,
           'name': 'name',
           'available': true,
-          'price': 3
+          'price': 3,
+          'categories': [],
         };
         final articleListData = ArticleData.fromJson(json);
         expect(articleListData.id, 0);
         expect(articleListData.containerId, 0);
         expect(articleListData.name, 'name');
         expect(articleListData.available, true);
-        expect(articleListData.price, 3);
+        expect(articleListData.price, 3.0);
       });
 
       test('ArticleListData toMap should return data as json', () {
         final articleListData = ArticleData(
-            id: 0, containerId: 1, name: 'name', available: true, price: 3,
-            );
+          id: 0,
+          containerId: 1,
+          name: 'name',
+          available: true,
+          price: 3,
+          categories: [],
+        );
         dynamic json = articleListData.toMap();
         expect(json['id'], 0);
         expect(json['containerId'], 1);
@@ -62,8 +72,13 @@ void main() {
         'ArticleDataCard should show from ArticleData',
         (WidgetTester tester) async {
           final articleListData = ArticleData(
-              id: 0, containerId: 1, name: 'name', available: true, price: 3,
-              );
+            id: 0,
+            containerId: 1,
+            name: 'name',
+            available: true,
+            price: 3,
+            categories: [],
+          );
           await tester.pumpWidget(
               initPage(ArticleDataCard(articleData: articleListData)));
 

@@ -10,7 +10,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -42,7 +45,7 @@ class _UserPageState extends State<UserPage> {
 
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'utilisateur supprimé avec succès',
+        msg: 'Utilisateur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -50,7 +53,7 @@ class _UserPageState extends State<UserPage> {
     } else {
       Fluttertoast.showToast(
         msg:
-            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -67,7 +70,7 @@ class _UserPageState extends State<UserPage> {
 
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'utilisateur supprimé avec succès',
+        msg: 'Utilisateur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -75,7 +78,7 @@ class _UserPageState extends State<UserPage> {
     } else {
       Fluttertoast.showToast(
         msg:
-            'Erreur lors de la suppression du utilisateur: ${response.statusCode}',
+            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -102,7 +105,7 @@ class _UserPageState extends State<UserPage> {
 
   Future<void> fetchUserMobile() async {
     final response = await http
-        .get(Uri.parse('http://${serverIp}:8080/api/dev/user/listall'));
+        .get(Uri.parse('http://${serverIp}:3000/api/mobile/user/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> usersData = responseData["user"];
@@ -131,25 +134,35 @@ class _UserPageState extends State<UserPage> {
         body: NestedScrollView(
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
-              const SliverAppBar(
-                backgroundColor: Colors.white,
+              SliverAppBar(
+                backgroundColor: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.colorScheme.background
+                    : lightTheme.colorScheme.background,
                 floating: true,
                 bottom: TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         'Utilisateurs Web',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                     Tab(
                       child: Text(
                         'Utilisateurs Mobile',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor),
                       ),
                     ),
                   ],
-                  indicatorColor: Colors.blue,
+                  indicatorColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
                 ),
                 pinned: true,
               ),

@@ -10,27 +10,32 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'opinion_page.dart';
 
 class OpinionPageState extends State<OpinionPage> {
+  int itemId;
+
+  OpinionPageState({required this.itemId});
+
   List<dynamic> opinionsList = [];
   int selectedStarFilter = 6;
   final LoaderManager _loaderManager = LoaderManager();
 
-  void getOpinions() async {
+  void getOpinions(itemId) async {
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
       });
       var url = '';
       if (selectedStarFilter == 6) {
-        url = 'http://$serverIp:3000/api/mobile/opinion';
+        url = '$baseUrl/api/mobile/opinion?itemId=$itemId';
       } else {
         url =
-            'http://$serverIp:3000/api/mobile/opinion?note=$selectedStarFilter';
+            '$baseUrl/api/mobile/opinion?note=$selectedStarFilter&itemId=$itemId';
       }
       final response = await http.get(
         Uri.parse(url),
@@ -44,23 +49,18 @@ class OpinionPageState extends State<OpinionPage> {
       });
       if (response.statusCode == 201) {
         final data = json.decode(response.body);
-        final opinions = data['result'];
-        if (opinions == null) {
-          opinionsList = [];
-          return;
-        }
         setState(() {
-          opinionsList = opinions;
+          opinionsList = data['opinions'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getOpinions',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingReviews);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -69,6 +69,7 @@ class OpinionPageState extends State<OpinionPage> {
                 .errorOccurredDuringGettingReviews);
         return;
       }
+      return;
     }
   }
 
@@ -79,7 +80,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/opinion'),
+        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -93,8 +94,8 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
-          getOpinions();
+        if (mounted) {
+          getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.reviewAdded,
@@ -102,14 +103,107 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'postOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSavingReview);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return;
+      }
+      return;
+    }
+  }
+
+  void updateOpinion(opinionId, note, comment) async {
+    late http.Response response;
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      response = await http.put(
+        Uri.parse('$baseUrl/api/mobile/opinion/$opinionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+        body: jsonEncode(<String, String>{
+          'note': note.toString(),
+          'comment': comment,
+        }),
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        if (mounted) {
+          getOpinions(itemId);
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: AppLocalizations.of(context)!.reviewUpdated,
+            message: AppLocalizations.of(context)!.reviewUpdatedSuccessfully,
+          );
+        }
+      } else {
+        if (mounted) {
+          printServerResponse(context, response, 'updateOpinion',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringReviewUpdate);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!.connectionRefused);
+        return;
+      }
+    }
+  }
+
+  void deleteOpinion(opinionId) async {
+    late http.Response response;
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      response = await http.delete(
+        Uri.parse('$baseUrl/api/mobile/opinion/$opinionId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        if (mounted) {
+          getOpinions(itemId);
+          await MyAlertDialog.showInfoAlertDialog(
+            context: context,
+            title: AppLocalizations.of(context)!.reviewDeleted,
+            message: AppLocalizations.of(context)!.reviewDeletedSuccessfully,
+          );
+        }
+      } else {
+        if (mounted) {
+          printServerResponse(context, response, 'deleteOpinion',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringReviewDeletion);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -126,7 +220,7 @@ class OpinionPageState extends State<OpinionPage> {
 
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext ontext) {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
@@ -134,7 +228,6 @@ class OpinionPageState extends State<OpinionPage> {
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Champ de note
                   Row(
                     children: List.generate(
                       5,
@@ -178,8 +271,137 @@ class OpinionPageState extends State<OpinionPage> {
                       text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
+                        if (comment == '') {
+                          MyAlertDialog.showInfoAlertDialog(
+                            context: context,
+                            title: AppLocalizations.of(context)!.invalidForm,
+                            message: AppLocalizations.of(context)!.fillComment,
+                          );
+                          return;
+                        }
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showUpdateOpinionDialog(opinionId, currentNote, currentComment) {
+    String comment = currentComment;
+    int selectedStar = int.parse(currentNote);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.reviewUpdate),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: List.generate(
+                      5,
+                      (index) => IconButton(
+                        key: Key('opinion-star_$index'),
+                        icon: Icon(
+                          index < selectedStar ? Icons.star : Icons.star_border,
+                          color: Colors.yellow,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedStar = index + 1;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  MyTextInput(
+                    key: const Key('opinion-textinput_comment'),
+                    labelText: AppLocalizations.of(context)!.comment,
+                    keyboardType: TextInputType.text,
+                    icon: Icons.comment,
+                    onChanged: (value) => comment = value,
+                    height: 100,
+                    initialValue: currentComment,
+                  ),
+                ],
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MyOutlinedButton(
+                      text: AppLocalizations.of(context)!.cancel,
+                      key: const Key('cancel-button'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    MyOutlinedButton(
+                      text: AppLocalizations.of(context)!.update,
+                      key: const Key('opinion-button_add'),
+                      onPressed: () {
+                        updateOpinion(opinionId, selectedStar, comment);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showParameterDialog(opinionId, note, comment) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(AppLocalizations.of(context)!.settings),
+                  IconButton(
+                    icon: const Icon(Icons.close, color: Colors.black),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    MyOutlinedButton(
+                      text: AppLocalizations.of(context)!.delete,
+                      key: const Key('delete-button'),
+                      onPressed: () {
+                        deleteOpinion(opinionId);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    MyOutlinedButton(
+                      text: AppLocalizations.of(context)!.update,
+                      key: const Key('update-button'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _showUpdateOpinionDialog(opinionId, note, comment);
                       },
                     ),
                   ],
@@ -195,7 +417,7 @@ class OpinionPageState extends State<OpinionPage> {
   @override
   void initState() {
     super.initState();
-    getOpinions();
+    getOpinions(itemId);
   }
 
   @override
@@ -205,7 +427,7 @@ class OpinionPageState extends State<OpinionPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.reviewsList,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -223,14 +445,6 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.reviewsList,
-                            key: const Key('opinion-title'),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           Center(
                             child: Column(
                               children: [
@@ -300,7 +514,7 @@ class OpinionPageState extends State<OpinionPage> {
                                     setState(() {
                                       selectedStarFilter = value ?? 0;
                                     });
-                                    getOpinions();
+                                    getOpinions(itemId);
                                   },
                                 ),
                                 if (opinionsList.isNotEmpty)
@@ -312,56 +526,100 @@ class OpinionPageState extends State<OpinionPage> {
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(15),
                                       ),
-                                      child: ListTile(
-                                        contentPadding:
-                                            const EdgeInsets.all(15),
-                                        key: Key(
-                                            'opinion-listTile_${opinion['id']}'),
-                                        title: Text(
-                                          '${(opinion['firstName'] ?? AppLocalizations.of(context)!.anonymous)} ${(opinion['lastName'] ?? '')}',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            const SizedBox(height: 8),
-                                            Row(
-                                              children: List.generate(
-                                                5,
-                                                (index) => Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(horizontal: 2),
-                                                  child: Icon(
-                                                    index <
-                                                            int.parse(
-                                                                opinion['note'])
-                                                        ? Icons.star
-                                                        : Icons.star_border,
-                                                    color: index <
-                                                            int.parse(
-                                                                opinion['note'])
-                                                        ? Colors.yellow
-                                                        : Colors.grey,
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 15, 15, 0),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    (opinion['user'][
+                                                                    'firstName'] !=
+                                                                null &&
+                                                            opinion['user'][
+                                                                    'lastName'] !=
+                                                                null)
+                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
+                                                        : AppLocalizations.of(
+                                                                context)!
+                                                            .anonymous,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                              ),
+                                                if (opinion['userId'] ==
+                                                    userInformation?.ID)
+                                                  IconButton(
+                                                    key: const Key(
+                                                        'opinion-settings_button'),
+                                                    icon: const Icon(
+                                                        Icons.more_vert),
+                                                    onPressed: () {
+                                                      _showParameterDialog(
+                                                          opinion['id'],
+                                                          opinion['note'],
+                                                          opinion['comment']);
+                                                    },
+                                                  ),
+                                              ],
                                             ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              opinion['comment'],
-                                              style:
-                                                  const TextStyle(fontSize: 16),
+                                          ),
+                                          ListTile(
+                                            contentPadding:
+                                                const EdgeInsets.all(20)
+                                                    .copyWith(top: 0),
+                                            title: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: List.generate(
+                                                    5,
+                                                    (index) => Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 2),
+                                                      child: Icon(
+                                                        index <
+                                                                int.parse(
+                                                                    opinion[
+                                                                        'note'])
+                                                            ? Icons.star
+                                                            : Icons.star_border,
+                                                        color: index <
+                                                                int.parse(
+                                                                    opinion[
+                                                                        'note'])
+                                                            ? Colors.yellow
+                                                            : Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  opinion['comment'],
+                                                  style: const TextStyle(
+                                                      fontSize: 16),
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                 if (opinionsList.isEmpty)
                                   Text(
                                     AppLocalizations.of(context)!.reviewsEmpty,
-                                    style: TextStyle(fontSize: 16),
+                                    style: const TextStyle(fontSize: 16),
                                   ),
                               ],
                             ),
@@ -375,7 +633,11 @@ class OpinionPageState extends State<OpinionPage> {
             ),
       floatingActionButton: FloatingActionButton(
         key: const Key('add_opinion-button'),
-        onPressed: () {
+        onPressed: () async {
+          bool signIn = await checkSignin(context);
+          if (!signIn) {
+            return;
+          }
           _showAddOpinionDialog();
         },
         backgroundColor: Colors.green,

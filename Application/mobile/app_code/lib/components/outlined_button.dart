@@ -36,7 +36,7 @@ class MyOutlinedButton extends StatelessWidget {
         text,
         style: TextStyle(
           color: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor),
+              themeProvider.currentTheme.primaryColor),
           fontWeight: FontWeight.bold,
           fontSize: 16.0 * sizeCoefficient,
         ),

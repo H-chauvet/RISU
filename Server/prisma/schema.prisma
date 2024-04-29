@@ -23,6 +23,8 @@ model Containers {
     containerMapping String?
     address          String?
     city             String?
+    latitude         Float?
+    longitude        Float?
     price            Float?
     width            Float?
     height           Float?
@@ -31,6 +33,12 @@ model Containers {
     items            Item[]
     paid             Boolean       @default(false)
     saveName         String?
+}
+
+model Item_Category {
+    id    Int    @id @default(autoincrement())
+    name  String
+    items Item[]
 }
 
 model Item {
@@ -44,15 +52,29 @@ model Item {
     image           String?
     description     String?
     Location_Mobile Location_Mobile[]
+    Opinions        Opinions_Mobile[]
+    categories      Item_Category[]
+    favorite        Favorite_Article_Mobile[]
 }
 
 model Organization {
     id                 Int          @id @default(autoincrement())
-    name               String
-    type               String
+    name               String       @unique
+    type               String?
     affiliate          User_Web[]
     containers         Containers[]
-    contactInformation String
+    contactInformation String?
+}
+
+model Tickets {
+    id         Int      @id @default(autoincrement())
+    content    String
+    title      String
+    creatorId  String
+    assignedId String
+    createdAt  DateTime @default(now())
+    chatUid    String   @default(cuid())
+    closed     Boolean  @default(false)
 }
 
 /////////////////////////////////////////////
@@ -97,20 +119,15 @@ model Contact_Web {
 //////////////////MOBILE/////////////////////
 /////////////////////////////////////////////
 
-model Contact_Mobile {
-    id        String   @id @unique @default(cuid())
-    name      String
-    email     String
-    message   String
-    createdAt DateTime @default(now())
-}
-
 model Opinions_Mobile {
-    id      String   @id @unique @default(cuid())
+    id      String      @id @unique @default(cuid())
     userId  String
     date    DateTime
     note    String
-    comment String   @default("")
+    comment String      @default("")
+    itemId  Int
+    item    Item        @relation(fields: [itemId], references: [id])
+    user    User_Mobile @relation(fields: [userId], references: [id])
 }
 
 model User_Mobile {
@@ -121,10 +138,13 @@ model User_Mobile {
     password         String
     mailVerification Boolean               @default(false)
     confirmProcess   String                @default("")
+    refreshToken     String?               @unique
     createdAt        DateTime              @default(now())
-    Locations        Location_Mobile[]
+    locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
+    itemOpinions     Opinions_Mobile[]
+    favoriteArticles    Favorite_Article_Mobile[]
 }
 
 model Notifications_Mobile {
@@ -146,4 +166,13 @@ model Location_Mobile {
     createdAt DateTime    @default(now())
     duration  Int
     ended     Boolean     @default(false)
+    invoice   Bytes?
+}
+
+model Favorite_Article_Mobile {
+    id        Int         @id @default(autoincrement())
+    item      Item        @relation(fields: [itemId], references: [id])
+    itemId    Int
+    user      User_Mobile @relation(fields: [userId], references: [id])
+    userId    String
 }

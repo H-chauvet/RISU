@@ -2,10 +2,14 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/app_routes.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/user-list/user-component.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 Future<void> deleteContainer(ContainerList container) async {}
 
@@ -13,12 +17,21 @@ void main() {
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MaterialApp(
-      home: ContainerPage(),
+    await tester.pumpWidget(MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (_) => ThemeService(),
+        ),
+      ],
+      child: MaterialApp(
+        home: InheritedGoRouter(
+          goRouter: AppRouter.router,
+          child: const ContainerPage(),
+        ),
+      ),
     ));
 
     // Verify that the ContainerPage is rendered.
-    expect(find.byType(ContainerPage), findsOneWidget);
     await tester.pump();
     expect(find.text("Gestion des conteneurs"), findsOneWidget);
     expect(find.text("Aucun conteneur trouvé."), findsOneWidget);
@@ -64,8 +77,8 @@ void main() {
       ),
     );
 
-    expect(find.text("id du conteneur : 1"), findsWidgets);
-    expect(find.text("prix du conteneur : 29.99"), findsWidgets);
+    expect(find.text("Conteneur N° : 1"), findsWidgets);
+    expect(find.text("Prix de création : 29.99"), findsWidgets);
     expect(find.text("Nantes"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();

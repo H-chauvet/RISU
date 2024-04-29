@@ -50,7 +50,7 @@ class SignupPageState extends State<SignupPage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/auth/signup'),
+        Uri.parse('$baseUrl/api/mobile/auth/signup'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -63,7 +63,7 @@ class SignupPageState extends State<SignupPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.email,
@@ -73,7 +73,7 @@ class SignupPageState extends State<SignupPage> {
           return true;
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'apiSignup',
               message: AppLocalizations.of(context)!.emailInvalid);
         }
@@ -81,7 +81,7 @@ class SignupPageState extends State<SignupPage> {
       }
       return false;
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -104,7 +104,6 @@ class SignupPageState extends State<SignupPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
@@ -121,15 +120,7 @@ class SignupPageState extends State<SignupPage> {
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
                       color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.secondaryHeaderColor),
-                      shadows: [
-                        Shadow(
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.secondaryHeaderColor),
-                          blurRadius: 24,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
+                          themeProvider.currentTheme.primaryColor),
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -208,7 +199,7 @@ class SignupPageState extends State<SignupPage> {
                       ),
                       side: BorderSide(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         width: 3.0,
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -220,7 +211,7 @@ class SignupPageState extends State<SignupPage> {
                       AppLocalizations.of(context)!.accountCreate,
                       style: TextStyle(
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                         fontSize: 16.0,
                       ),
                     ),
@@ -243,7 +234,7 @@ class SignupPageState extends State<SignupPage> {
                         fontSize: 14,
                         decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.secondaryHeaderColor),
+                            themeProvider.currentTheme.primaryColor),
                       ),
                     ),
                   ),

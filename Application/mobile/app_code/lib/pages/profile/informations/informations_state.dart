@@ -50,8 +50,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       });
       final token = userInformation!.token;
       final response = await http.get(
-          Uri.parse(
-              'http://$serverIp:3000/api/mobile/user/${userInformation!.ID}'),
+          Uri.parse('$baseUrl/api/mobile/user/${userInformation!.ID}'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'Authorization': 'Bearer $token',
@@ -79,6 +78,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         printCatchError(context, err, stacktrace);
         return;
       }
+      return;
     }
   }
 
@@ -94,7 +94,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       }
       if (newEmail != '') {
         if (Validators().email(context, newEmail) != null) {
-          if (context.mounted) {
+          if (mounted) {
             await MyAlertDialog.showErrorAlertDialog(
               context: context,
               title: AppLocalizations.of(context)!.error,
@@ -109,7 +109,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/user'),
+        Uri.parse('$baseUrl/api/mobile/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -121,24 +121,24 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       });
       if (response.statusCode == 200) {
         json.decode(response.body);
-        if (context.mounted) {
+        if (mounted) {
           await fetchUserData(context);
         }
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
             context: context,
             message: AppLocalizations.of(context)!.profileUpdated,
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'updateUser',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringUpdateUserInformation);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -147,6 +147,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 
@@ -157,7 +158,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       if (currentPassword == '' ||
           newPassword == '' ||
           newPasswordConfirmation == '') {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -167,7 +168,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         return;
       }
       if (newPassword != newPasswordConfirmation) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -182,7 +183,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/user/password'),
+        Uri.parse('$baseUrl/api/mobile/user/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -200,7 +201,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         currentPasswordController.clear();
         newPasswordController.clear();
         newPasswordConfirmationController.clear();
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
             context: context,
             message: AppLocalizations.of(context)!.passwordUpdated,
@@ -208,13 +209,13 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       } else {
         if (response.statusCode == 401) {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message:
                     AppLocalizations.of(context)!.passwordCurrentIncorrect);
           }
         } else {
-          if (context.mounted) {
+          if (mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: AppLocalizations.of(context)!
                     .errorOccurredDuringPasswordUpdate);
@@ -222,7 +223,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -231,6 +232,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return;
       }
+      return;
     }
   }
 
@@ -276,10 +278,10 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: true,
-        showLogo: true,
         onBackButtonPressed: () {
           Navigator.pop(context, true);
         },
+        textTitle: AppLocalizations.of(context)!.profileInformation,
       ),
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
@@ -297,10 +299,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.myInformation,
                           key: const Key('profile_info-text_informations'),
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor)),
                         ),
                       ),
                       buildField(
@@ -341,9 +345,12 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         child: Text(
                           AppLocalizations.of(context)!.password,
                           key: const Key('profile_info-text_password'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                           ),
                         ),
                       ),

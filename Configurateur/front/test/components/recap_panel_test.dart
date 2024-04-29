@@ -30,13 +30,13 @@ void main() {
       ),
     ));
 
-    expect(find.text('prix: 200€'), findsOneWidget);
+    expect(find.text('Total: 200€'), findsOneWidget);
   });
 
   testWidgets('test locker list display', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
-    List<Locker> list = List.filled(2, Locker('locker', 100));
+    List<Locker> list = List.filled(2, Locker('Petit casier', 50));
 
     await tester.pumpWidget(MultiProvider(
       providers: [
@@ -55,7 +55,8 @@ void main() {
       ),
     ));
 
-    expect(find.text('locker'), findsNWidgets(2));
-    expect(find.text('100€'), findsNWidgets(2));
+    expect(find.text('Petit Casier'), findsNWidgets(1));
+    expect(find.text('200€'), findsNWidgets(0));
+    expect(find.text('100€'), findsNWidgets(1));
   });
 }

@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
 
+const lightElevatedButtonBackground = Color(0xFF28666E);
+
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: const Color(0xFF162A49),
   secondaryHeaderColor: const Color(0xFF033F63),
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color(0xff4682B4),
+    backgroundColor: Color(0xffFEDC97),
     titleTextStyle: TextStyle(
-      color: Colors.white,
+      color: Color(0xff033F63),
       fontSize: 40,
     ),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
-    color: Color(0xff4682B4),
+    color: Color(0xffFEDC97),
+  ),
+  checkboxTheme: CheckboxThemeData(
+    checkColor: MaterialStateProperty.all<Color>(const Color(0xff4682B4)),
+    fillColor: MaterialStateProperty.all<Color>(Colors.white),
   ),
   textSelectionTheme: const TextSelectionThemeData(
     cursorColor: Colors.black,
@@ -108,7 +114,7 @@ final darkTheme = ThemeData(
     color: Color.fromARGB(255, 32, 75, 110),
   ),
   colorScheme: const ColorScheme.dark(
-    background: Color(0xFF1E1E1E),
+    background: Color(0xFF303030),
   ),
 );
 
@@ -122,8 +128,13 @@ final boxDecorationDarkTheme = BoxDecoration(
   borderRadius: BorderRadius.circular(10),
 );
 
-const progressBarCheckedLightTheme = Color(0xFF4682B4);
-const progressBarCheckedDarkTheme = Color.fromARGB(255, 33, 91, 138);
+const progressBarCheckedLightTheme = Color(0xFF28666E);
+const progressBarCheckedDarkTheme = Color(0xFF033F63);
 
 final progressBarUncheckedLightTheme = Colors.grey[300];
 final progressBarUncheckedDarkTheme = Colors.grey[600];
+
+const checkBoxMenuButtonColorLightTheme = Color(0xff7C9885);
+const checkBoxMenuButtonColorDarkTheme = Color(0xFFFEDC97);
+
+const containerDialogTextColorDarkTheme = Color(0xFF033F63);

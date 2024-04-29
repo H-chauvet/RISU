@@ -35,8 +35,6 @@ class PaymentScreen extends StatefulWidget {
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
-  String address = '';
-  String city = '';
   String informations = '';
 
   void checkToken() async {
@@ -73,11 +71,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'id': widget.id,
       'container': widget.container,
     };
-    context.go('/container-creation/recap', extra: jsonEncode(data));
+    context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
   void goNext() async {
-    if (controller.complete && address != '' && city != '') {
+    if (controller.complete) {
       bool response = await makePayment();
       if (response == false) {
         Fluttertoast.showToast(
@@ -92,6 +90,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
 
     try {
+      dynamic container = jsonDecode(widget.container!);
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
@@ -103,11 +102,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
           'id': widget.id!,
           'price': widget.amount.toString(),
           'containerMapping': widget.containerMapping!,
-          'width': '12',
-          'height': '5',
-          'city': city,
+          'width': container['width'].toString(),
+          'height': container['height'].toString(),
           'informations': informations,
-          'address': address,
         },
       ).then((value) {
         if (value.statusCode == 200) {
@@ -137,8 +134,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 3,
+              length: 6,
+              progress: 5,
               previous: 'Précédent',
               next: 'Payer',
               previousFunc: goPrevious,
@@ -155,54 +152,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
               widthFactor: 0.6,
               child: Column(
                 children: [
-                  const Text(
-                    "Informations de livraison",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('address'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez votre addresse',
-                            labelText: 'addresse',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                address = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      Expanded(
-                        child: TextFormField(
-                          key: const Key('city'),
-                          decoration: InputDecoration(
-                            hintText: 'Entrez la ville',
-                            labelText: 'Ville',
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            setState(
-                              () {
-                                city = value!;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 50),
                   const Text(
                     "Coordonnées bancaires",

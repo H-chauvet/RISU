@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/dialog/add_design_dialog.dart';
+import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -52,13 +55,17 @@ class DesignScreen extends StatefulWidget {
       this.amount,
       this.containerMapping,
       this.id,
-      this.container});
+      this.container,
+      this.width,
+      this.height});
 
   final String? lockers;
   final int? amount;
   final String? containerMapping;
   final String? id;
   final String? container;
+  final String? width;
+  final String? height;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -70,6 +77,7 @@ class DesignScreen extends StatefulWidget {
 /// page d'inscription pour le configurateur
 class DesignScreenState extends State<DesignScreen> {
   late List<Sp3dObj> objs = [];
+
   Sp3dWorld? world;
   bool isLoaded = false;
   List<Locker> lockerss = [];
@@ -86,9 +94,11 @@ class DesignScreenState extends State<DesignScreen> {
     if (token != "") {
       jwtToken = token!;
     } else {
-      context.go(
-        '/login',
-      );
+      if (mounted) {
+        context.go(
+          '/login',
+        );
+      }
     }
   }
 
@@ -115,6 +125,9 @@ class DesignScreenState extends State<DesignScreen> {
     dynamic decode = jsonDecode(widget.lockers!);
 
     for (int i = 0; i < decode.length; i++) {
+      if (decode[i]['type'] == 'Design personnalisé') {
+        continue;
+      }
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
   }
@@ -166,12 +179,15 @@ class DesignScreenState extends State<DesignScreen> {
       }
       if (faceLoad != null) {
         faceIndex = faceLoad;
+        lockerss.add(Locker('Design personnalisé', 50));
       } else {
-        lockerss.add(Locker('design personnalisé', 50));
+        lockerss.add(Locker('Design personnalisé', 50));
       }
+
       if (objs[0].fragments[0].faces[faceIndex].materialIndex != 0) {
         removeDesign(faceIndex);
       }
+
       objs[0].materials.add(FSp3dMaterial.black);
       objs[0].materials[materialIndex] = FSp3dMaterial.green.deepCopy()
         ..imageIndex = imageIndex
@@ -194,32 +210,9 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
-  Future<void> removeImage(bool unitTesting) async {
+  Future<void> removeImage(bool unitTesting, int faceIndex) async {
     picked = null;
-    int faceIndex = 0;
-    switch (face) {
-      case 'Devant':
-        faceIndex = 0;
-        break;
-      case 'Derrière':
-        faceIndex = 1;
-        break;
-      case 'Bas':
-        faceIndex = 4;
-        break;
-      case 'Gauche':
-        faceIndex = 3;
-        break;
-      case 'Haut':
-        faceIndex = 2;
-        break;
-      case 'Droite':
-        faceIndex = 5;
-        break;
-      default:
-        faceIndex = 0;
-        break;
-    }
+
     if (objs[0].fragments[0].faces[faceIndex].materialIndex == 0 &&
         unitTesting == false) {
       return;
@@ -245,9 +238,16 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
+  void openAddDialog(context) async {
+    await showDialog(
+        context: context,
+        builder: (context) =>
+            AddDesignDialog(file: picked, callback: loadImage));
+  }
+
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
-      if (lockerss[i].type == 'design personnalisé') {
+      if (lockerss[i].type == 'Design personnalisé') {
         lockerss.removeAt(i);
         break;
       }
@@ -297,8 +297,8 @@ class DesignScreenState extends State<DesignScreen> {
           header, <String, String>{
         'containerMapping': widget.containerMapping!,
         'designs': json.encode(designss),
-        'height': '5',
-        'width': '12',
+        'height': widget.height.toString(),
+        'width': widget.width.toString(),
         'saveName': name,
       }).then((value) {
         if (value.statusCode == 200) {
@@ -312,14 +312,15 @@ class DesignScreenState extends State<DesignScreen> {
         }
       });
     } else {
+      dynamic container = jsonDecode(widget.container!);
       HttpService().putRequest('http://$serverIp:3000/api/container/update',
           header, <String, String>{
         'id': widget.id!,
         'containerMapping': widget.containerMapping!,
         'price': sumPrice().toString(),
         'designs': json.encode(designss),
-        'width': '12',
-        'height': '5',
+        'width': container['width'],
+        'height': container['height'],
         'city': '',
         'informations': '',
         'address': '',
@@ -349,8 +350,8 @@ class DesignScreenState extends State<DesignScreen> {
         },
         <String, dynamic>{
           'designs': json.encode(designss),
-          'height': '5',
-          'width': '12',
+          'height': widget.height,
+          'width': widget.width,
         },
       ).then((value) {
         if (value.statusCode != 200) {
@@ -367,6 +368,8 @@ class DesignScreenState extends State<DesignScreen> {
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     } else {
+      dynamic container = jsonDecode(widget.container!);
+
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
@@ -379,8 +382,8 @@ class DesignScreenState extends State<DesignScreen> {
           'containerMapping': widget.containerMapping!,
           'price': sumPrice().toString(),
           'designs': json.encode(designss),
-          'width': '12',
-          'height': '5',
+          'width': container['width'],
+          'height': container['height'],
           'city': '',
           'informations': '',
           'address': '',
@@ -411,16 +414,17 @@ class DesignScreenState extends State<DesignScreen> {
       var data = {
         'id': widget.id,
         'container': jsonEncode(decode),
+        'width': widget.width,
+        'height': widget.height,
       };
       context.go("/container-creation", extra: jsonEncode(data));
     } else {
       dynamic design = jsonEncode(designss);
-
       var container = {
         'containerMapping': widget.containerMapping!,
         'designs': design!,
-        'height': '5',
-        'width': '12',
+        'height': widget.height,
+        'width': widget.width,
       };
 
       var data = {
@@ -428,13 +432,6 @@ class DesignScreenState extends State<DesignScreen> {
       };
       context.go("/container-creation", extra: jsonEncode(data));
     }
-  }
-
-  Widget fileName() {
-    if (picked?.files.first.name != null) {
-      return Text("Image: ${picked!.files.first.name}");
-    }
-    return const Text("Aucun fichier sélectionner");
   }
 
   Widget loadCube() {
@@ -465,8 +462,8 @@ class DesignScreenState extends State<DesignScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ProgressBar(
-              length: 4,
-              progress: 1,
+              length: 6,
+              progress: 2,
               previous: 'Précédent',
               next: 'Suivant',
               previousFunc: goPrevious,
@@ -486,71 +483,113 @@ class DesignScreenState extends State<DesignScreen> {
             Flexible(
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Stack(
                   children: [
-                    ElevatedButton(
-                      child: const Text('Importer une image'),
-                      onPressed: () async {
-                        picked = await FilePicker.platform.pickFiles();
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    ElevatedButton(
-                      child: const Text("Retirer l'image sélectionner"),
-                      onPressed: () async {
-                        removeImage(false);
-                        setState(() {});
-                      },
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    fileName(),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const SizedBox(
-                      width: 400,
-                      child: Divider(
-                        color: Colors.grey,
-                        height: 20,
-                        thickness: 1,
-                        indent: 20,
-                        endIndent: 20,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: DropdownMenu<String>(
-                        key: const Key('design-face'),
-                        initialSelection: faceList.first,
-                        onSelected: (String? value) {
-                          setState(() {
-                            face = value!;
-                          });
-                        },
-                        dropdownMenuEntries: faceList
-                            .map<DropdownMenuEntry<String>>((String value) {
-                          return DropdownMenuEntry<String>(
-                              value: value, label: value);
-                        }).toList(),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    ElevatedButton(
-                      child: const Text('Appliquer'),
-                      onPressed: () async {
-                        loadImage(false, fileData: picked!.files.first.bytes);
-                      },
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DottedBorder(
+                          color: Colors.grey[600]!,
+                          padding: EdgeInsets.zero,
+                          strokeWidth: 3,
+                          child: Container(
+                            height: 200,
+                            width: 500,
+                            color: Colors.grey[400],
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.cloud_upload,
+                                  size: 32.0,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Text("Cliquez pour ajouter une image"),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      picked =
+                                          await FilePicker.platform.pickFiles(
+                                        type: FileType.image,
+                                      );
+
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      if (picked != null) {
+                                        if (picked!.files.single.bytes!.length >
+                                            1000000) {
+                                          Fluttertoast.showToast(
+                                            msg:
+                                                "L'image ne doit pas dépasser 1 Mo",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                          );
+                                        } else {
+                                          openAddDialog(context);
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: const Text("Parcourir"))
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        const Divider(
+                          color: Colors.grey,
+                          height: 20,
+                          thickness: 1,
+                          indent: 30,
+                          endIndent: 30,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(250),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          onPressed: () async {
+                            await showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  RemoveDesignDialog(callback: removeImage),
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
+                          label: const Text(
+                            'Retirer une image',
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                              fixedSize: const Size.fromWidth(250),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          onPressed: () async {
+                            String name = await showDialog(
+                                context: context,
+                                builder: (context) => openDialog());
+                            saveContainer(name);
+                          },
+                          icon: const Icon(Icons.save),
+                          label: const Text("Sauvegarder"),
+                        ),
+                      ],
                     ),
                   ],
                 ),

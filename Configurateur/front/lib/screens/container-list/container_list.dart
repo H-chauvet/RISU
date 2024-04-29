@@ -56,14 +56,15 @@ class _ContainerPageState extends State<ContainerPage> {
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'Conteneur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
       fetchContainers();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg:
+            'Erreur lors de la suppression du conteneur: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -85,7 +86,7 @@ class _ContainerPageState extends State<ContainerPage> {
               height: 30,
             ),
             containers.isEmpty
-                ? Center(
+                ? const Center(
                     child: Text(
                       'Aucun conteneur trouvé.',
                       style: TextStyle(

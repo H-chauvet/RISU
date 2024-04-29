@@ -36,7 +36,7 @@ class NotificationsPageState extends State<NotificationsPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('http://$serverIp:3000/api/mobile/user'),
+        Uri.parse('$baseUrl/api/mobile/user'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation!.token}',
@@ -60,14 +60,14 @@ class NotificationsPageState extends State<NotificationsPage> {
         });
         return response;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'saveNotifications',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -76,6 +76,7 @@ class NotificationsPageState extends State<NotificationsPage> {
                 AppLocalizations.of(context)!.errorOccurredDuringSavingData);
         return null;
       }
+      return null;
     }
     return null;
   }
@@ -137,7 +138,6 @@ class NotificationsPageState extends State<NotificationsPage> {
               themeProvider.currentTheme.secondaryHeaderColor,
         ),
         showBackButton: true,
-        showLogo: true,
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(
@@ -155,10 +155,11 @@ class NotificationsPageState extends State<NotificationsPage> {
                   Text(
                     AppLocalizations.of(context)!
                         .notificationsPreferencesManagement,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 32, // Taille de la police
                       fontWeight: FontWeight.bold, // Gras
-                      color: Color(0xFF4682B4),
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.primaryColor),
                     ),
                   ),
                   const SizedBox(height: 20),

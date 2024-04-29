@@ -51,14 +51,15 @@ class _ItemPageState extends State<ItemPage> {
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'Article supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
       fetchItems();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg:
+            "Erreur lors de la suppression de l'article: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -68,7 +69,6 @@ class _ItemPageState extends State<ItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
       appBar: CustomAppBar(
         'Gestion des conteneurs',
         context: context,

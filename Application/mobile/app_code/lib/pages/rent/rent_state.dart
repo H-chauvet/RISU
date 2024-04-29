@@ -53,7 +53,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         _loaderManager.setIsLoading(true);
       });
       response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/rent/article'),
+        Uri.parse('$baseUrl/api/mobile/rent/article'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -67,7 +67,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -75,6 +75,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 return ConfirmRentPage(
                   hours: _rentalHours,
                   data: _articleData,
+                  locationId: jsonDecode(response.body)['rentId'],
                 );
               },
             ),
@@ -82,14 +83,14 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'rentArticle',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringRenting);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -97,6 +98,7 @@ class RentArticlePageState extends State<RentArticlePage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
+      return;
     }
   }
 
@@ -124,14 +126,14 @@ class RentArticlePageState extends State<RentArticlePage> {
         final responseData = json.decode(response.body);
         return responseData;
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'createPaymentIntent',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringPaymentCreation);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -140,6 +142,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 .errorOccurredDuringPaymentCreation);
         return null;
       }
+      return null;
     }
     return null;
   }
@@ -157,11 +160,13 @@ class RentArticlePageState extends State<RentArticlePage> {
         ),
       );
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringSettingStripe);
+        return;
       }
+      return;
     }
   }
 
@@ -171,7 +176,7 @@ class RentArticlePageState extends State<RentArticlePage> {
           100 *
           _rentalHours; // for stripe, price is in cents
       final Map<String, dynamic>? paymentIntentData =
-          await createPaymentIntent(amount.toString(), 'EUR');
+          await createPaymentIntent(amount.round().toString(), 'EUR');
       final clientSecret = paymentIntentData!['client_secret'];
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
@@ -185,7 +190,7 @@ class RentArticlePageState extends State<RentArticlePage> {
           );
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showErrorAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.error,
@@ -195,11 +200,12 @@ class RentArticlePageState extends State<RentArticlePage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         printCatchError(context, err, stacktrace,
             message: AppLocalizations.of(context)!.paymentHasFailed);
         return;
       }
+      return;
     }
   }
 
@@ -221,16 +227,16 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return Scaffold(
       appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
+        curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.rentArticle,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+      backgroundColor: themeProvider.currentTheme.colorScheme.background,
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : SingleChildScrollView(
@@ -241,15 +247,6 @@ class RentArticlePageState extends State<RentArticlePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        AppLocalizations.of(context)!.rentArticle,
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.primaryColor),
-                        ),
-                      ),
                       const SizedBox(height: 8),
                       Container(
                         width: 256,
@@ -263,161 +260,176 @@ class RentArticlePageState extends State<RentArticlePage> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Card(
-                        elevation: 2,
-                        margin: const EdgeInsets.all(8),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                padding: const EdgeInsets.all(8.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  _articleData.name,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                color: themeProvider
+                                    .currentTheme
+                                    .inputDecorationTheme
+                                    .floatingLabelStyle!
+                                    .color,
+                              ),
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              child: Text(
+                                _articleData.name,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.currentTheme.primaryColor,
                                 ),
                               ),
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Container(
-                                  color: Colors.white,
-                                  child: Table(
-                                    columnWidths: const {
-                                      0: FlexColumnWidth(1.0),
-                                      1: FlexColumnWidth(1.0),
-                                    },
-                                    children: [
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: const Color(0xFF4682B4),
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .pricePerHour,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: const Color(0xFF4682B4),
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .priceTotal,
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: const Color(0xFF4682B4)
-                                                  .withOpacity(0.6),
-                                              child: Text(
-                                                "${_articleData.price}€",
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: const Color(0xFF4682B4)
-                                                  .withOpacity(0.6),
-                                              child: Text(
-                                                "${_articleData.price * _rentalHours}€",
-                                                style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            ),
+                            ClipRRect(
+                              child: Container(
+                                color: themeProvider
+                                    .currentTheme
+                                    .inputDecorationTheme
+                                    .floatingLabelStyle!
+                                    .color,
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FlexColumnWidth(1.0),
+                                    1: FlexColumnWidth(1.0),
+                                  },
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    TableRow(
                                       children: [
-                                        IconButton(
-                                          key: const Key(
-                                              'decrement-hours-button'),
-                                          icon: const Icon(
-                                            Icons.remove,
-                                            color: Colors.black,
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .pricePerHour,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                              ),
+                                            ),
                                           ),
-                                          onPressed: _decrementHours,
                                         ),
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .rentHours(_rentalHours),
-                                          style: const TextStyle(
-                                            color: Colors.black,
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .priceTotal,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                        IconButton(
-                                          key: const Key(
-                                              'increment-hours-button'),
-                                          icon: const Icon(
-                                            Icons.add,
-                                            color: Colors.black,
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              "${_articleData.price}€",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
+                                              ),
+                                            ),
                                           ),
-                                          onPressed: _incrementHours,
+                                        ),
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              "${_articleData.price * _rentalHours}€",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: themeProvider
+                                    .currentTheme
+                                    .inputDecorationTheme
+                                    .floatingLabelStyle!
+                                    .color,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        key:
+                                            const Key('decrement-hours-button'),
+                                        icon: Icon(
+                                          Icons.remove,
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                        ),
+                                        onPressed: _decrementHours,
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .rentHours(_rentalHours),
+                                        style: TextStyle(
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        key:
+                                            const Key('increment-hours-button'),
+                                        icon: Icon(
+                                          Icons.add,
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                        ),
+                                        onPressed: _incrementHours,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(height: 8),

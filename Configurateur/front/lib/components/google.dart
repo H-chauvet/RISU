@@ -40,11 +40,11 @@ class GoogleLogo extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                  // decoration: BoxDecoration(color: Colors.blue),
+                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
                   child: Image.asset(
-                'assets/google-logo.png',
-                height: 20,
-              )),
+                    'assets/google-logo.png',
+                    height: 20,
+                  )),
               const SizedBox(
                 width: 5.0,
               ),

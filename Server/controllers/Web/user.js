@@ -1,17 +1,16 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { db } = require('../../middleware/database')
-const uuid = require('uuid')
-const transporter = require('../../middleware/transporter')
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { db } = require("../../middleware/database");
+const uuid = require("uuid");
+const transporter = require("../../middleware/transporter");
 
 /**
- *
  * Find user by email
  *
- * @param {*} email of the user
+ * @param {string} email of the user
  * @returns user finded by email
  */
-exports.findUserByEmail = email => {
+exports.findUserByEmail = (email) => {
   return db.User_Web.findUnique({
     where: {
       email,
@@ -20,13 +19,12 @@ exports.findUserByEmail = email => {
 };
 
 /**
- *
  * Find user by uuid
  *
- * @param {*} uuid of the user
+ * @param {string} uuid of the user
  * @returns user finded by uuid
  */
-exports.findUserByUuid = uuid => {
+exports.findUserByUuid = (uuid) => {
   return db.User_Web.findUnique({
     where: {
       uuid,
@@ -35,13 +33,12 @@ exports.findUserByUuid = uuid => {
 };
 
 /**
- *
  * Find user by id
  *
- * @param {*} id of the user
+ * @param {number} id of the user
  * @returns user finded by id
  */
-exports.findUserById = id => {
+exports.findUserById = (id) => {
   return db.User_Web.findUnique({
     where: {
       id,
@@ -50,13 +47,12 @@ exports.findUserById = id => {
 };
 
 /**
- *
  * Delete a user
  *
- * @param {*} email of user to delete
+ * @param {string} email of user to delete
  * @returns user deleted
  */
-exports.deleteUser = email => {
+exports.deleteUser = (email) => {
   return db.User_Web.delete({
     where: {
       email,
@@ -65,25 +61,46 @@ exports.deleteUser = email => {
 };
 
 /**
- *
  * Create new user
  *
  * @param {*} user information
  * @returns created user object
  */
-exports.registerByEmail = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
-  user.uuid = uuid.v4()
-  return db.User_Web.create({
-    data: user
-  })
-}
+exports.registerByEmail = async (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
+  user.uuid = uuid.v4();
+  let data;
+  await db.Organization.findUnique({
+    where: {
+      name: user.company,
+    },
+  }).then(async (org) => {
+    if (org === null) {
+      await db.Organization.create({
+        data: {
+          name: user.company,
+          containers: undefined,
+        },
+      }).then(async (org) => {
+        user.organizationId = org.id;
+        data = await db.User_Web.create({
+          data: user,
+        });
+      });
+    } else {
+      user.organizationId = org.id;
+      data = await db.User_Web.create({
+        data: user,
+      });
+    }
+  });
+  return data;
+};
 
 /**
- *
  * Define the mail object for register confirmation and call associate middleware
  *
- * @param {*} email of the receiver
+ * @param {string} email of the receiver
  */
 exports.registerConfirmation = (email) => {
   let generatedUuid = "";
@@ -95,7 +112,7 @@ exports.registerConfirmation = (email) => {
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.11.241.159:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://risu.dns-dynamic.net:80/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         "</p>",
@@ -105,13 +122,12 @@ exports.registerConfirmation = (email) => {
 };
 
 /**
- *
  * Set confirmed at true
  *
- * @param {*} uuid
+ * @param {string} uuid
  * @returns user object
  */
-exports.confirmedRegister = uuid => {
+exports.confirmedRegister = (uuid) => {
   return db.User_Web.update({
     where: {
       uuid: uuid,
@@ -123,13 +139,12 @@ exports.confirmedRegister = uuid => {
 };
 
 /**
- *
  * Authentification of an user
  *
  * @param {*} user
  * @returns user object logged in
  */
-exports.loginByEmail = user => {
+exports.loginByEmail = (user) => {
   return db.User_Web.findUnique({
     where: {
       email: user.email,
@@ -144,14 +159,13 @@ exports.loginByEmail = user => {
 };
 
 /**
- *
  * Update password
  *
  * @param {*} user
  * @returns user object with updated password
  */
-exports.updatePassword = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
+exports.updatePassword = (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
   return db.User_Web.update({
     where: {
       uuid: user.uuid,
@@ -163,10 +177,9 @@ exports.updatePassword = user => {
 };
 
 /**
- *
  * Define the mail object for password change and call associate middleware
  *
- * @param {*} email of the receiver
+ * @param {string} email of the receiver
  */
 exports.forgotPassword = (email) => {
   let generatedUuid = "";
@@ -178,7 +191,7 @@ exports.forgotPassword = (email) => {
       to: email,
       subject: "Réinitialisation de mot de passe",
       html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.11.241.159:80/#/password-change/' +
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://risu.dns-dynamic.net:80/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
         "</p>",
@@ -187,6 +200,11 @@ exports.forgotPassword = (email) => {
   });
 };
 
+/**
+ * Retrieve every web users of the database
+ *
+ * @returns every user found
+ */
 exports.getAllUsers = async () => {
   try {
     const users = await db.User_Web.findMany();
@@ -198,13 +216,12 @@ exports.getAllUsers = async () => {
 };
 
 /**
- *
  * Find user details by email (including first name and last name)
  *
- * @param {*} email of the user
+ * @param {string} email of the user
  * @returns user details (including first name and last name)
  */
-exports.findUserDetailsByEmail = email => {
+exports.findUserDetailsByEmail = (email) => {
   return db.User_Web.findUnique({
     where: {
       email,
@@ -221,13 +238,12 @@ exports.findUserDetailsByEmail = email => {
 };
 
 /**
- *
  * Update firstName and LastName
  *
  * @param {*} user
  * @returns user object with updated firstName and lastName
  */
-exports.updateName = user => {
+exports.updateName = (user) => {
   return db.User_Web.update({
     where: {
       email: user.email,
@@ -240,13 +256,12 @@ exports.updateName = user => {
 };
 
 /**
- *
  * Update mail
  *
  * @param {*} user
  * @returns user object with updated mail
  */
-exports.updateMail = user => {
+exports.updateMail = (user) => {
   return db.User_Web.update({
     where: {
       email: user.oldMail,
@@ -258,13 +273,12 @@ exports.updateMail = user => {
 };
 
 /**
- *
  * Update company
  *
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateCompany = user => {
+exports.updateCompany = (user) => {
   return db.User_Web.update({
     where: {
       email: user.email,
@@ -276,14 +290,13 @@ exports.updateCompany = user => {
 };
 
 /**
- *
  * Update company
  *
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateUserPassword = user => {
-  user.password = bcrypt.hashSync(user.password, 12)
+exports.updateUserPassword = (user) => {
+  user.password = bcrypt.hashSync(user.password, 12);
   return db.User_Web.update({
     where: {
       email: user.email,

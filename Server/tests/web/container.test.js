@@ -30,7 +30,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken",
+      "Bearer mockedAccessToken"
     );
     expect(containerCtrl.getContainerById).toHaveBeenCalledWith(1);
   });
@@ -45,7 +45,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(400);
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken",
+      "Bearer mockedAccessToken"
     );
     expect(containerCtrl.getContainerById).not.toHaveBeenCalled();
   });
@@ -85,7 +85,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken",
+      "Bearer mockedAccessToken"
     );
     expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
   });
@@ -119,27 +119,8 @@ describe("Container Route Tests", () => {
     console.log("body: " + response.body.name);
     expect(response.body).toEqual({ id: 1, name: "Container 2" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken",
+      "Bearer mockedAccessToken"
     );
-  });
-
-  it("should handle valid container creation (version 2)", async () => {
-    const requestBody = {
-      price: 50,
-      width: 15,
-      height: 25,
-    };
-
-    containerCtrl.createContainer2.mockResolvedValueOnce({
-      id: 1,
-      name: "Container V2",
-    });
-
-    const response = await supertest(app).post("/create-ctn").send(requestBody);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({ id: 1, name: "Container V2" });
-    expect(containerCtrl.createContainer2).toHaveBeenCalledWith(requestBody);
   });
 
   it("should handle valid container list retrieval", async () => {
@@ -158,5 +139,50 @@ describe("Container Route Tests", () => {
       ],
     });
     expect(containerCtrl.getAllContainers).toHaveBeenCalled();
+  });
+
+  it("should update the localisation", async () => {
+    var requestBody = {
+      id: 1,
+      latitude: 10.0,
+      longitude: 20.0,
+    };
+
+    containerCtrl.updateContainerPosition.mockResolvedValueOnce({
+      id: 1,
+      price: 50,
+      containerMapping: "mapping2",
+      height: 15,
+      width: 25,
+      latitude: 10.0,
+      longitude: 20.0,
+      city: "City",
+      adress: "123 Street",
+      informations: "Updated info",
+      designs: ["design3", "design4"],
+      saveName: "container2",
+    });
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
+
+    const response = await supertest(app)
+      .put("/update-position")
+      .send(requestBody);
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      id: 1,
+      price: 50,
+      containerMapping: "mapping2",
+      height: 15,
+      width: 25,
+      latitude: 10.0,
+      longitude: 20.0,
+      city: "City",
+      adress: "123 Street",
+      informations: "Updated info",
+      designs: ["design3", "design4"],
+      saveName: "container2",
+    });
+    expect(containerCtrl.updateContainerPosition).toHaveBeenCalled();
   });
 });
