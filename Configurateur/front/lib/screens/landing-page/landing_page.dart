@@ -79,10 +79,10 @@ class LandingPageState extends State<LandingPage> {
                 Container(
                   padding: const EdgeInsets.all(20.0),
                   child: Center(
-                      child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -121,13 +121,15 @@ class LandingPageState extends State<LandingPage> {
                                 ),
                               ),
                             ),
-                          ]),
-                      const SizedBox(width: 100),
-                      Image.asset(
-                        'assets/iphonenew.png',
-                      ),
-                    ],
-                  )),
+                          ],
+                        ),
+                        const SizedBox(width: 100),
+                        Image.asset(
+                          'assets/iphonenew.png',
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 50),
                 Container(
@@ -141,45 +143,44 @@ class LandingPageState extends State<LandingPage> {
                       ),
                       const SizedBox(width: 100),
                       Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Concevez le conteneur de vos rêves,\nselon vos envies !',
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.secondaryHeaderColor
-                                    : lightTheme.secondaryHeaderColor,
-                                fontWeight: FontWeight.bold,
-                                shadows: [
-                                  Shadow(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.secondaryHeaderColor
-                                        : lightTheme.secondaryHeaderColor,
-                                    offset: const Offset(0.75, 0.75),
-                                    blurRadius: 1.5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top:
-                                      15), // Espacement inférieur pour le texte
-                              child: Text(
-                                'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
-                                style: TextStyle(
-                                  fontSize: 20,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Concevez le conteneur de vos rêves,\nselon vos envies !',
+                            style: TextStyle(
+                              fontSize: 35,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.secondaryHeaderColor
+                                  : lightTheme.secondaryHeaderColor,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
                                           ? darkTheme.secondaryHeaderColor
                                           : lightTheme.secondaryHeaderColor,
+                                  offset: const Offset(0.75, 0.75),
+                                  blurRadius: 1.5,
                                 ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15), // Espacement inférieur pour le texte
+                            child: Text(
+                              'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.secondaryHeaderColor
+                                    : lightTheme.secondaryHeaderColor,
                               ),
                             ),
-                          ]),
+                          ),
+                        ],
+                      ),
                     ],
                   )),
                 ),
