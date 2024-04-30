@@ -64,10 +64,12 @@ class LandingPageState extends State<LandingPage> {
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.secondaryHeaderColor
                         : lightTheme.secondaryHeaderColor,
-                    shadows: const [
+                    shadows: [
                       Shadow(
-                        color: Color(0xff28666e),
-                        offset: Offset(0.75, 0.75),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : lightTheme.secondaryHeaderColor,
+                        offset: const Offset(0.75, 0.75),
                         blurRadius: 1.5,
                       ),
                     ],
@@ -92,10 +94,13 @@ class LandingPageState extends State<LandingPage> {
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
-                                shadows: const [
+                                shadows: [
                                   Shadow(
-                                    color: Color(0xff28666e),
-                                    offset: Offset(0.75, 0.75),
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.secondaryHeaderColor
+                                        : lightTheme.secondaryHeaderColor,
+                                    offset: const Offset(0.75, 0.75),
                                     blurRadius: 1.5,
                                   ),
                                 ],
@@ -147,10 +152,13 @@ class LandingPageState extends State<LandingPage> {
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,
                                 fontWeight: FontWeight.bold,
-                                shadows: const [
+                                shadows: [
                                   Shadow(
-                                    color: Color(0xff28666e),
-                                    offset: Offset(0.75, 0.75),
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.secondaryHeaderColor
+                                        : lightTheme.secondaryHeaderColor,
+                                    offset: const Offset(0.75, 0.75),
                                     blurRadius: 1.5,
                                   ),
                                 ],

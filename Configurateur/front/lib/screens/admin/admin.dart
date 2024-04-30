@@ -45,10 +45,12 @@ class _AdminPageState extends State<AdminPage> {
               color: Provider.of<ThemeService>(context).isDark
                   ? darkTheme.secondaryHeaderColor
                   : lightTheme.secondaryHeaderColor,
-              shadows: const [
+              shadows: [
                 Shadow(
-                  color: Color(0xff033F63),
-                  offset: Offset(0.75, 0.75),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
                   blurRadius: 1.5,
                 ),
               ],

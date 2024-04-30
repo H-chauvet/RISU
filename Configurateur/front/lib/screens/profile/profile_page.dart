@@ -340,13 +340,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(builder: (BuildContext context, setState) {
-          return AlertDialog(
-            title: const Text("Modifier"),
-            content: Container(
-              height: 150.0,
-              width: 300.0,
-              child: Form(
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return AlertDialog(
+              title: const Text("Modifier"),
+              content: SizedBox(
+                height: 150.0,
+                width: 300.0,
+                child: Form(
                   key: formKey,
                   child: Column(
                     children: <Widget>[
@@ -416,70 +417,72 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                       ),
                     ],
-                  )),
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: const Text("Annuler"),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate() &&
-                      password == validedPassword) {
-                    final String apiUrl =
-                        "http://$serverIp:3000/api/auth/update-password/$userMail";
-                    var body = {
-                      'password': password,
-                    };
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text("Annuler"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate() &&
+                        password == validedPassword) {
+                      final String apiUrl =
+                          "http://$serverIp:3000/api/auth/update-password/$userMail";
+                      var body = {
+                        'password': password,
+                      };
 
-                    var response = await http.post(
-                      Uri.parse(apiUrl),
-                      body: body,
-                    );
-
-                    if (response.statusCode == 200) {
-                      Fluttertoast.showToast(
-                        msg: 'Mot de passe modifié avec succès',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 3,
+                      var response = await http.post(
+                        Uri.parse(apiUrl),
+                        body: body,
                       );
-                    } else {
-                      Fluttertoast.showToast(
-                          msg:
-                              "Erreur durant l'envoi la modification du mot de passe",
+
+                      if (response.statusCode == 200) {
+                        Fluttertoast.showToast(
+                          msg: 'Mot de passe modifié avec succès',
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red);
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                            msg:
+                                "Erreur durant l'envoi la modification du mot de passe",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red);
+                      }
+                      onEdit(password);
+                      Navigator.of(context).pop();
                     }
-                    onEdit(password);
-                    Navigator.of(context).pop();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                   ),
+                  child: const Text("Modifier"),
                 ),
-                child: const Text("Modifier"),
-              ),
-            ],
-          );
-        });
+              ],
+            );
+          },
+        );
       },
     );
   }
@@ -503,10 +506,12 @@ class _ProfilePageState extends State<ProfilePage> {
               color: Provider.of<ThemeService>(context).isDark
                   ? darkTheme.secondaryHeaderColor
                   : lightTheme.secondaryHeaderColor,
-              shadows: const [
+              shadows: [
                 Shadow(
-                  color: Color(0xff033F63),
-                  offset: Offset(0.75, 0.75),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
                   blurRadius: 1.5,
                 ),
               ],
@@ -561,13 +566,16 @@ class _ProfilePageState extends State<ProfilePage> {
                           InkWell(
                             onTap: () async {
                               await showEditPopupName(
-                                  context, firstName, lastName,
-                                  (String newFirstName, String newLastName) {
-                                setState(() {
-                                  firstName = newFirstName;
-                                  lastName = newLastName;
-                                });
-                              });
+                                context,
+                                firstName,
+                                lastName,
+                                (String newFirstName, String newLastName) {
+                                  setState(() {
+                                    firstName = newFirstName;
+                                    lastName = newLastName;
+                                  });
+                                },
+                              );
                             },
                             child: const Icon(
                               Icons.edit,
@@ -746,22 +754,25 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const Spacer(),
                   ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
                       ),
-                      onPressed: () {
-                        context.go("/my-container");
-                      },
-                      child: Text("Mes sauvegardes",
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                          ))),
+                    ),
+                    onPressed: () {
+                      context.go("/my-container");
+                    },
+                    child: Text(
+                      "Mes sauvegardes",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
+                    ),
+                  ),
                   const Spacer(),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

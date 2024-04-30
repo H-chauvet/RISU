@@ -138,14 +138,16 @@ class LandingAppBarState extends State<LandingAppBar> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text("Mode sombre",
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.secondaryHeaderColor
-                              : lightTheme.secondaryHeaderColor,
-                        )),
+                    Text(
+                      "Mode sombre",
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 20,
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : lightTheme.secondaryHeaderColor,
+                      ),
+                    ),
                     Switch(
                       value: Provider.of<ThemeService>(context).isDark,
                       onChanged: (bool value) {
@@ -155,7 +157,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                       },
                       activeColor: darkTheme.primaryColor,
                       inactiveTrackColor: lightTheme.primaryColor,
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -171,34 +173,38 @@ class LandingAppBarState extends State<LandingAppBar> {
                 itemBuilder: (BuildContext context) {
                   List<PopupMenuEntry<String>> items = [];
                   if (token == '') {
-                    items.addAll([
-                      const PopupMenuItem<String>(
-                        value: 'connexion',
-                        child: Text(
-                          'Connexion',
-                          style: TextStyle(
-                            color: Color(0xff033F63),
+                    items.addAll(
+                      [
+                        const PopupMenuItem<String>(
+                          value: 'connexion',
+                          child: Text(
+                            'Connexion',
+                            style: TextStyle(
+                              color: Color(0xff033F63),
+                            ),
                           ),
                         ),
-                      ),
-                      const PopupMenuItem<String>(
-                        value: 'inscription',
-                        child: Text(
-                          'Inscription',
-                          style: TextStyle(
-                            color: Color(0xff033F63),
+                        const PopupMenuItem<String>(
+                          value: 'inscription',
+                          child: Text(
+                            'Inscription',
+                            style: TextStyle(
+                              color: Color(0xff033F63),
+                            ),
                           ),
                         ),
-                      ),
-                    ]);
+                      ],
+                    );
                   } else {
                     items.add(
                       const PopupMenuItem<String>(
                         value: 'profil',
-                        child: Text('Profil',
-                            style: TextStyle(
-                              color: Color(0xff033F63),
-                            )),
+                        child: Text(
+                          'Profil',
+                          style: TextStyle(
+                            color: Color(0xff033F63),
+                          ),
+                        ),
                       ),
                     );
                     if (userMail == "risu.admin@gmail.com") {
@@ -217,10 +223,12 @@ class LandingAppBarState extends State<LandingAppBar> {
                     items.add(
                       const PopupMenuItem<String>(
                         value: 'disconnect',
-                        child: Text('Déconnexion',
-                            style: TextStyle(
-                              color: Colors.red,
-                            )),
+                        child: Text(
+                          'Déconnexion',
+                          style: TextStyle(
+                            color: Colors.red,
+                          ),
+                        ),
                       ),
                     );
                   }

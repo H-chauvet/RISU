@@ -44,106 +44,110 @@ class CustomFooterState extends State<CustomFooter> {
     return Footer(
       backgroundColor: const Color(0xffFEDC97),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  SizedBox(
-                      height: 45.0,
-                      width: 45.0,
-                      child: Center(
-                        child: Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // half of height and width of Image
-                          ),
-                          child: IconButton(
-                            tooltip: "Page de contact",
-                            icon: const Icon(
-                              Icons.contact_page,
-                              size: 20.0,
-                            ),
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            onPressed: () {
-                              context.go("/contact");
-                            },
-                          ),
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
+          Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(
+                  height: 45.0,
+                  width: 45.0,
+                  child: Center(
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            25.0), // half of height and width of Image
+                      ),
+                      child: IconButton(
+                        tooltip: "Page de contact",
+                        icon: const Icon(
+                          Icons.contact_page,
+                          size: 20.0,
                         ),
-                      )),
-                  SizedBox(
-                      height: 45.0,
-                      width: 45.0,
-                      child: Center(
-                        child: Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // half of height and width of Image
-                          ),
-                          child: IconButton(
-                            tooltip: "Développé par RISU",
-                            icon: const Icon(
-                              Icons.fingerprint,
-                              size: 20.0,
-                            ),
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            onPressed: () {},
-                          ),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        onPressed: () {
+                          context.go("/contact");
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 45.0,
+                  width: 45.0,
+                  child: Center(
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            25.0), // half of height and width of Image
+                      ),
+                      child: IconButton(
+                        tooltip: "Développé par RISU",
+                        icon: const Icon(
+                          Icons.fingerprint,
+                          size: 20.0,
                         ),
-                      )),
-                  SizedBox(
-                      height: 45.0,
-                      width: 45.0,
-                      child: Center(
-                        child: Card(
-                          elevation: 5.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                                25.0), // half of height and width of Image
-                          ),
-                          child: IconButton(
-                            tooltip: "Page des avis",
-                            icon: const Icon(
-                              Icons.stars,
-                              size: 20.0,
-                            ),
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            onPressed: () {
-                              context.go("/feedbacks");
-                            },
-                          ),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 45.0,
+                  width: 45.0,
+                  child: Center(
+                    child: Card(
+                      elevation: 5.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            25.0), // half of height and width of Image
+                      ),
+                      child: IconButton(
+                        tooltip: "Page des avis",
+                        icon: const Icon(
+                          Icons.stars,
+                          size: 20.0,
                         ),
-                      )),
-                ],
-              ),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        onPressed: () {
+                          context.go("/feedbacks");
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            const Text(
-              'Copyright ©2024, Tous droits réservés.',
-              style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 12.0,
-                  color: Color(0xff033f63)),
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Développé par RISU',
-              style: TextStyle(
-                  fontWeight: FontWeight.w300,
-                  fontSize: 12.0,
-                  color: Color(0xff033f63)),
-            ),
-          ]),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Copyright ©2024, Tous droits réservés.',
+            style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 12.0,
+                color: Color(0xff033f63)),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Développé par RISU',
+            style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 12.0,
+                color: Color(0xff033f63)),
+          ),
+        ],
+      ),
     );
   }
 }
