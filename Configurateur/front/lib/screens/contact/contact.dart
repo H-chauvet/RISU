@@ -68,11 +68,11 @@ class _ContactPageState extends State<ContactPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(context: context),
-            ),
-            children: [
+      body: FooterView(
+        footer: Footer(
+          child: CustomFooter(context: context),
+        ),
+        children: [
           LandingAppBar(context: context),
           Text(
             'Contacter le support RISU !',
@@ -218,6 +218,8 @@ class _ContactPageState extends State<ContactPage> {
               ),
             ),
           ),
-        ]));
+        ],
+      ),
+    );
   }
 }
