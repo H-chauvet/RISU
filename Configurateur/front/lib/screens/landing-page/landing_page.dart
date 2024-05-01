@@ -182,11 +182,13 @@ class LandingPageState extends State<LandingPage> {
                         ],
                       ),
                     ],
-                  )),
+                  ),
                 ),
-              ],
-            ),
-          ]),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
