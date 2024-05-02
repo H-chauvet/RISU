@@ -59,6 +59,7 @@ final lightTheme = ThemeData(
     ),
   ),
   colorScheme: const ColorScheme.light(background: Color(0xFF162A49)),
+  dividerColor: const Color(0xff033F63),
 );
 
 final darkTheme = ThemeData(
@@ -116,6 +117,7 @@ final darkTheme = ThemeData(
   colorScheme: const ColorScheme.dark(
     background: Color(0xFF303030),
   ),
+  dividerColor: const Color(0xffFEDC97),
 );
 
 final boxDecorationLightTheme = BoxDecoration(

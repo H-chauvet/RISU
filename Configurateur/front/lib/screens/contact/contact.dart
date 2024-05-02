@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
-import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
@@ -60,10 +58,8 @@ void sendFormData(
 
 class _ContactPageState extends State<ContactPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _surname = "";
-  String _name = "";
-  String _email = "";
-  String _message = "";
+  String _content = "";
+  String _title = "";
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +71,7 @@ class _ContactPageState extends State<ContactPage> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Contacter le support RISU !',
+            'Mes tickets',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
@@ -97,32 +93,55 @@ class _ContactPageState extends State<ContactPage> {
           ),
           const SizedBox(height: 100),
           Padding(
-            padding: const EdgeInsets.only(right: 400, left: 400),
+            padding: const EdgeInsets.only(right: 256, left: 256),
             child: Form(
               key: _formKey,
-              child: Column(
+              child: Row(
                 children: <Widget>[
-                  Row(
+                  Column(
                     children: <Widget>[
-                      Expanded(
+                      Text("AAA"),
+                      Text("BBB"),
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 32),
+                    child: const SizedBox(
+                      height: 512,
+                      width: 1,
+                      child: VerticalDivider(
+                        thickness: 1,
+                      ),
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      Text("AZERTY"),
+                      /*Container(
                         child: TextFormField(
                           decoration: InputDecoration(
-                            labelText: 'Prénom',
+                            labelText: 'Titre',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Veuillez entrer votre prénom';
+                              return 'Veuillez entrer votre titre';
                             }
                             return null;
                           },
                           onSaved: (value) {
-                            _surname = value!;
+                            _title = value!;
                           },
                         ),
                       ),
+                      const SizedBox(height: 32),*/
+                    ],
+                  )
+                  /*Row(
+                    children: <Widget>[
+
                       const SizedBox(width: 16.0),
                       Expanded(
                         child: TextFormField(
@@ -213,7 +232,7 @@ class _ContactPageState extends State<ContactPage> {
                         fontSize: 18,
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
