@@ -93,20 +93,33 @@ class _ContactPageState extends State<ContactPage> {
           ),
           const SizedBox(height: 100),
           Padding(
-            padding: const EdgeInsets.only(right: 256, left: 256),
+            padding: const EdgeInsets.symmetric(horizontal: 150),
             child: Form(
               key: _formKey,
               child: Row(
                 children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Text("AAA"),
-                      Text("BBB"),
-                    ],
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          'Liste des tickets',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 35,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 32),
-                    child: const SizedBox(
+                    child: SizedBox(
                       height: 512,
                       width: 1,
                       child: VerticalDivider(
@@ -114,125 +127,54 @@ class _ContactPageState extends State<ContactPage> {
                       ),
                     ),
                   ),
-                  Column(
-                    children: <Widget>[
-                      Text("AZERTY"),
-                      /*Container(
-                        child: TextFormField(
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Titre',
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Veuillez entrer votre titre';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _title = value!;
-                          },
                         ),
-                      ),
-                      const SizedBox(height: 32),*/
-                    ],
-                  )
-                  /*Row(
-                    children: <Widget>[
-
-                      const SizedBox(width: 16.0),
-                      Expanded(
-                        child: TextFormField(
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          maxLines: 15,
+                          keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
-                            labelText: 'Nom',
+                            labelText: 'Message',
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Veuillez entrer votre nom';
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            _name = value!;
-                          },
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 16.0),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          child: Text(
+                            'Soumettre votre ticket',
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Email',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Veuillez entrer votre email';
-                      } else if (!RegExp(
-                              r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                          .hasMatch(value)) {
-                        return 'Veuillez entrer un email valide';
-                      } else {
-                        return null;
-                      }
-                    },
-                    onSaved: (value) {
-                      _email = value!;
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Message',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    maxLines: 5,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Veuillez entrer votre message';
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      _message = value!;
-                    },
-                  ),
-                  const SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        sendFormData(
-                            _formKey, _surname, _name, _email, _message);
-                      } else {}
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 190, 189, 189),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text(
-                      'Envoyer',
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),*/
                 ],
               ),
             ),
