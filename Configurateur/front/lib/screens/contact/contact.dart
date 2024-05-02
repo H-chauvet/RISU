@@ -5,8 +5,10 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -60,6 +62,23 @@ class _ContactPageState extends State<ContactPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _content = "";
   String _title = "";
+  String? token = '';
+  String? userMail = '';
+
+  void checkToken() async {
+    token = await storageService.readStorage('token');
+    storageService.getUserMail().then((value) => userMail = value);
+    if (token == "") {
+      context.go('/login');
+    }
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +90,7 @@ class _ContactPageState extends State<ContactPage> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Mes tickets',
+            'Contactez le support RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 35,
@@ -130,8 +149,21 @@ class _ContactPageState extends State<ContactPage> {
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        Text(
+                          'Nouveau ticket',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 35,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.bold,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                          ),
+                        ),
+                        const SizedBox(height: 50),
                         TextFormField(
                           decoration: InputDecoration(
                             labelText: 'Titre',
@@ -154,24 +186,30 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                         ),
                         const SizedBox(height: 16.0),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
-                          child: Text(
-                            'Soumettre votre ticket',
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {},
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Soumettre votre ticket',
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ]),
                       ],
                     ),
                   ),
