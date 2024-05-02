@@ -45,7 +45,7 @@ class _UserPageState extends State<UserPage> {
 
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'utilisateur supprimé avec succès',
+        msg: 'Utilisateur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
