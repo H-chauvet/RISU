@@ -103,7 +103,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/profile',
+        path: '/profil',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ProfilePage(),
         ),
