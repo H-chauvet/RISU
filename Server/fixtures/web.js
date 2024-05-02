@@ -16,4 +16,13 @@ exports.createFixtures = async () => {
   } catch (err) {
     console.error(err.message);
   }
+  const emptyTicket = await db.Tickets.create({
+    data: {
+      id: 1,
+      content: "Ceci est un ticket test",
+      title: "Ticket de Henri",
+      creatorId: "",
+      assignedId: "",
+    },
+  });
 };

@@ -94,3 +94,7 @@ exports.getConversation = (id) => {
     }
   });
 }
+
+exports.getAllTickets = async () => {
+  return db.Tickets.findMany();
+}
