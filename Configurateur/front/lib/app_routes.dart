@@ -6,7 +6,7 @@ import 'package:front/screens/container-creation/confirmation_screen/confirmatio
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/maps_screen.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen.dart';
-import 'package:front/screens/container-creation/payment_screen.dart';
+import 'package:front/screens/container-creation/payment_screen/payment_screen.dart';
 import 'package:front/screens/container-creation/shape_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';

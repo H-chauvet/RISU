@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/container-creation/payment_screen.dart';
+import 'package:front/screens/container-creation/payment_screen/payment_screen.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
