@@ -36,31 +36,34 @@ exports.createFixtures = async () => {
         longitude: -1.566808,
         saveName: "container",
         containerMapping: "",
-        price: 0,
+        price: 500.5,
         width: 12,
         height: 5,
         items: {
           create: [
             {
-              name: "ballon de volley",
-              price: 3,
+              id: 1,
+              name: "Ballon de volley",
+              price: 0.5,
               available: true,
               categories: {
                 connect: [{ id: 1 }, { id: 2 }],
               },
             },
             {
-              name: "raquette",
-              price: 6,
-              available: false,
+              id: 2,
+              name: "Raquette",
+              price: 1.0,
+              available: true,
               categories: {
                 connect: [{ id: 1 }],
               },
             },
             {
-              name: "ballon de football",
-              price: 16,
-              available: true,
+              id: 3,
+              name: "Ballon de football",
+              price: 0.75,
+              available: false,
               categories: {
                 connect: [{ id: 2 }],
               },
@@ -73,13 +76,13 @@ exports.createFixtures = async () => {
     const emptyContainer = await db.Containers.create({
       data: {
         id: 2,
-        city: "Saint Brévin l'Océan",
+        city: "Saint-Brévin",
         address: "Boulevard de l'Océan",
         latitude: 47.232375,
         longitude: -2.179429,
         saveName: "emptyContainer",
         containerMapping: "",
-        price: 0,
+        price: 300.1,
         width: 12,
         height: 5,
         items: {
@@ -100,6 +103,16 @@ exports.createFixtures = async () => {
           password: bcrypt.hashSync("admin", 12),
           mailVerification: true,
           notificationsId: notification1.id,
+          itemOpinions: {
+            create: [
+              {
+                itemId: 1,
+                date: new Date(),
+                note: "5",
+                comment: "Joli ballon.",
+              },
+            ],
+          },
         },
         include: {
           Notifications: true,
@@ -116,6 +129,43 @@ exports.createFixtures = async () => {
           password: bcrypt.hashSync("user", 12),
           mailVerification: true,
           notificationsId: notification2.id,
+          itemOpinions: {
+            create: [
+              {
+                itemId: 1,
+                date: new Date(),
+                note: "4",
+                comment: "Ballon de qualité.",
+              },
+            ],
+          },
+        },
+        include: {
+          Notifications: true,
+        },
+      });
+    if (
+      !(await db.User_Mobile.findUnique({
+        where: { email: "armand.lartam@gmail.com" },
+      }))
+    )
+      await db.User_Mobile.create({
+        data: {
+          email: "armand.lartam@gmail.com",
+          firstName: "Armand",
+          lastName: "Lartam",
+          password: bcrypt.hashSync("12345678", 12),
+          mailVerification: true,
+          notificationsId: notification2.id,
+          locations: {
+            create: [
+              {
+                itemId: 3,
+                duration: 1,
+                price: 100,
+              },
+            ],
+          },
         },
         include: {
           Notifications: true,

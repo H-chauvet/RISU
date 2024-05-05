@@ -52,6 +52,8 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
       if (longTerm) {
         refreshToken = jwtMiddleware.generateRefreshToken(user.id);
         user = await userCtrl.updateUserRefreshToken(user.id, refreshToken)
+      } else {
+        user = await userCtrl.removeUserRefreshToken(user.id)
       }
 
       return res.status(201).json({ user : user, token : token })

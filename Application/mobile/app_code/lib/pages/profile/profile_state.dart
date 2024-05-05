@@ -10,9 +10,10 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../components/alert_dialog.dart';
-import '../home/home_page.dart';
+import '../login/login_page.dart';
 import 'profile_page.dart';
 
 class ProfilePageState extends State<ProfilePage> {
@@ -198,12 +199,15 @@ class ProfilePageState extends State<ProfilePage> {
                     ).then(
                       (value) {
                         if (value) {
+                          SharedPreferences.getInstance().then((value) {
+                            value.setString('refreshToken', '');
+                          });
                           userInformation = null;
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const HomePage();
+                                return const LoginPage();
                               },
                             ),
                             (route) => false,

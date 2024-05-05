@@ -1,5 +1,8 @@
 // Variable globale pour stocker l'adresse IP du serveur
 
-//String? serverIp = 'localhost'; // A garder en local
+import 'package:flutter/foundation.dart';
 
-String? serverIp = '51.11.241.159'; // A mettre quand push github
+String? serverIp =
+    kDebugMode ? 'localhost' : '51.11.241.159'; // A garder en local
+
+// String? serverIp = '51.11.241.159'; // A mettre quand push github

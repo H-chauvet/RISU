@@ -75,6 +75,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                 return ConfirmRentPage(
                   hours: _rentalHours,
                   data: _articleData,
+                  locationId: jsonDecode(response.body)['rentId'],
                 );
               },
             ),
@@ -175,7 +176,7 @@ class RentArticlePageState extends State<RentArticlePage> {
           100 *
           _rentalHours; // for stripe, price is in cents
       final Map<String, dynamic>? paymentIntentData =
-          await createPaymentIntent(amount.toString(), 'EUR');
+          await createPaymentIntent(amount.round().toString(), 'EUR');
       final clientSecret = paymentIntentData!['client_secret'];
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);

@@ -74,7 +74,7 @@ class ItemCard extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(item),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 if (item.description != null) Text(item.description!),

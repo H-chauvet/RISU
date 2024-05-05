@@ -49,7 +49,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text('Inscription'), findsOneWidget);
+    expect(find.text('Inscrivez-vous sur le site RISU !'), findsOneWidget);
     expect(find.text('Adresse e-mail'), findsOneWidget);
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text('Valider le mot de passe'), findsOneWidget);
