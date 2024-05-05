@@ -127,6 +127,7 @@
   "passwordConfirmation": "Confirmation du mot de passe",
   "passwordCurrent": "Actuel",
   "passwordCurrentIncorrect": "Le mot de passe actuel est incorrect.",
+  "passwordEmpty": "Le champ du mot de passe est vide.",
   "passwordForgotten": "Mot de passe oublié",
   "passwordNew": "Nouveau",
   "passwordSave": "Sauvegarder le mot de passe",

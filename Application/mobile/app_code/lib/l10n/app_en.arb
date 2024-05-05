@@ -127,6 +127,7 @@
   "passwordConfirmation": "Password confirmation",
   "passwordCurrent": "Current",
   "passwordCurrentIncorrect": "Current password is incorrect",
+  "passwordEmpty": "The password is empty.",
   "passwordForgotten": "Forgotten password",
   "passwordNew": "New",
   "passwordSave": "Save password",
