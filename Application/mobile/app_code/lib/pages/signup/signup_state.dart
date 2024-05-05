@@ -19,7 +19,9 @@ import 'signup_page.dart';
 class SignupPageState extends State<SignupPage> {
   String? _email;
   String? _password;
+  String? _passwordConfirmation;
   bool _isPasswordVisible = false;
+  bool _isPasswordConfirmationVisible = false;
   final LoaderManager _loaderManager = LoaderManager();
 
   @override
@@ -28,11 +30,20 @@ class SignupPageState extends State<SignupPage> {
   }
 
   Future<bool> apiSignup() async {
-    if (_email == null || _password == null) {
+    if (_email == null) {
       await MyAlertDialog.showErrorAlertDialog(
         context: context,
         title: AppLocalizations.of(context)!.accountCreation,
         message: AppLocalizations.of(context)!.fieldsEmpty,
+      );
+      return false;
+    }
+    String? passwordError = _isPasswordValid();
+    if (passwordError != null) {
+      await MyAlertDialog.showErrorAlertDialog(
+        context: context,
+        title: AppLocalizations.of(context)!.accountCreation,
+        message: passwordError,
       );
       return false;
     }
@@ -93,6 +104,16 @@ class SignupPageState extends State<SignupPage> {
     }
   }
 
+  String? _isPasswordValid() {
+    if (_password == null || _password!.isEmpty) {
+      return AppLocalizations.of(context)!.passwordEmpty;
+    }
+    if (_password! != _passwordConfirmation) {
+      return AppLocalizations.of(context)!.passwordsDoNotMatch;
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,6 +171,26 @@ class SignupPageState extends State<SignupPage> {
                           });
                         },
                         onChanged: (value) => _password = value,
+                      ),
+                      const SizedBox(height: 16),
+                      MyTextInput(
+                        key:
+                            const Key('signup-textinput_password_confirmation'),
+                        labelText:
+                            AppLocalizations.of(context)!.passwordConfirmation,
+                        keyboardType: TextInputType.visiblePassword,
+                        obscureText: !_isPasswordConfirmationVisible,
+                        icon: Icons.lock_outline,
+                        rightIcon: _isPasswordConfirmationVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        rightIconOnPressed: () {
+                          setState(() {
+                            _isPasswordConfirmationVisible =
+                                !_isPasswordConfirmationVisible;
+                          });
+                        },
+                        onChanged: (value) => _passwordConfirmation = value,
                       ),
                       const Align(
                         alignment: Alignment.centerRight,
