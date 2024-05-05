@@ -264,6 +264,10 @@ class LoginPageState extends State<LoginPage> {
                               style: TextStyle(
                                 fontSize: 12,
                                 decoration: TextDecoration.underline,
+                                decorationColor: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
                                 color: context.select(
                                     (ThemeProvider themeProvider) =>
                                         themeProvider
@@ -336,6 +340,9 @@ class LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 14,
                         decoration: TextDecoration.underline,
+                        decorationColor: context.select(
+                            (ThemeProvider themeProvider) =>
+                                themeProvider.currentTheme.primaryColor),
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                       ),
