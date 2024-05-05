@@ -129,6 +129,12 @@ exports.getItemsFromContainer = (containerId) => {
 
 exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId) => {
   try {
+    const container = await db.Containers.findUnique({
+      where: { id: containerId },
+    });
+    if (!container) {
+      throw new Error("Container not found");
+    }
     const orderBy = isAscending === true ? 'asc' : 'desc';
     return await db.Item.findMany({
       where: {
