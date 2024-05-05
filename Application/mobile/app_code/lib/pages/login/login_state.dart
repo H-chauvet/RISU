@@ -16,6 +16,7 @@ import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -163,7 +164,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       appBar: MyAppBar(
@@ -240,7 +240,7 @@ class LoginPageState extends State<LoginPage> {
                               });
                             },
                             child: Text(
-                              "${AppLocalizations.of(context)!.stayConnected}",
+                              AppLocalizations.of(context)!.stayConnected,
                               key: const Key('login-text_stayconnected'),
                               style: TextStyle(
                                 fontSize: 12,
