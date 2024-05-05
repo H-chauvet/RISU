@@ -11,6 +11,7 @@ import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
+import 'package:risu/components/filled_button.dart';
 
 import 'article_list_data.dart';
 import 'list_page.dart';
@@ -155,188 +156,203 @@ class ArticleListState extends State<ArticleListPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 16),
-                      const SizedBox(height: 16),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: MyTextInput(
-                          key: const Key('filter-textInput_name'),
-                          labelText: AppLocalizations.of(context)!.articleName,
-                          keyboardType: TextInputType.text,
-                          icon: Icons.article,
-                          onChanged: (value) => {
-                            setState(() {
-                              articleName = value;
-                            }),
-                            getItemsData(
-                                    context, _containerId, selectedCategoryId)
-                                .then((dynamic value) {
-                              setState(() {
-                                _itemsDatas = value;
-                              });
-                            }),
-                          },
-                        ),
-                      ),
                       const SizedBox(height: 32),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  isAscending = !isAscending!;
-                                  getItemsData(context, _containerId,
-                                          selectedCategoryId)
-                                      .then((dynamic value) {
-                                    setState(() {
-                                      _itemsDatas = value;
-                                    });
-                                  });
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: context.select(
-                                  (ThemeProvider themeProvider) =>
-                                      themeProvider.currentTheme.primaryColor,
-                                ),
-                                elevation: 3,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 24),
-                              ),
-                              child: Text(
-                                '${AppLocalizations.of(context)!.price} : ${isAscending ? AppLocalizations.of(context)!.ascending : AppLocalizations.of(context)!.descending}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme
-                                              .secondaryHeaderColor),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  isAvailable = !isAvailable!;
-                                  getItemsData(context, _containerId,
-                                          selectedCategoryId)
-                                      .then((dynamic value) {
-                                    setState(() {
-                                      _itemsDatas = value;
-                                    });
-                                  });
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                elevation: 3,
-                                backgroundColor: context.select(
-                                  (ThemeProvider themeProvider) =>
-                                      themeProvider.currentTheme.primaryColor,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 12, horizontal: 24),
-                              ),
-                              child: Text(
-                                '${AppLocalizations.of(context)!.status} : ${isAvailable ? AppLocalizations.of(context)!.available : AppLocalizations.of(context)!.unavailable}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: context.select(
-                                      (ThemeProvider themeProvider) =>
-                                          themeProvider.currentTheme
-                                              .secondaryHeaderColor),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Container(
-                              width: MediaQuery.of(context).size.width * 0.45,
-                              // padding left
-                              padding: const EdgeInsets.only(left: 7),
-                              decoration: BoxDecoration(
-                                color: context.select(
-                                  (ThemeProvider themeProvider) =>
-                                      themeProvider.currentTheme.primaryColor,
-                                ),
-                                borderRadius: BorderRadius.circular(
-                                    10), // Adjust the value as needed
-                              ),
-                              child: DropdownButton<String>(
-                                value: selectedCategoryId,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedCategoryId = newValue;
-                                    getItemsData(context, _containerId,
-                                            selectedCategoryId)
-                                        .then((dynamic value) {
-                                      setState(() {
-                                        _itemsDatas = value;
-                                      });
-                                    });
-                                  });
-                                },
-                                style: TextStyle(
-                                  color: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider.currentTheme.primaryColor,
-                                  ),
-                                ),
-                                dropdownColor: context.select(
-                                  (ThemeProvider themeProvider) =>
-                                      themeProvider.currentTheme.primaryColor,
-                                ),
-                                underline: Container(
-                                  height: 0,
-                                  color: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider
-                                            .currentTheme.secondaryHeaderColor,
-                                  ),
-                                ),
-                                items: [
-                                  DropdownMenuItem<String>(
-                                    value:
-                                        'null', // Assurez-vous que la valeur n'est pas null
-                                    child: Text(
-                                      AppLocalizations.of(context)!
-                                          .allCategories,
-                                      style: TextStyle(
-                                        color: context.select(
-                                          (ThemeProvider themeProvider) =>
-                                              themeProvider.currentTheme
-                                                  .secondaryHeaderColor,
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: MyTextInput(
+                                key: const Key('filter-textInput_name'),
+                                labelText:
+                                    AppLocalizations.of(context)!.articleName,
+                                keyboardType: TextInputType.text,
+                                icon: Icons.article,
+                                rightIcon: Icons.filter_list,
+                                rightIconOnPressed: () async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text(
+                                          AppLocalizations.of(context)!.filter,
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                  for (var category in _articleCategories)
-                                    DropdownMenuItem<String>(
-                                      value: category['id'].toString(),
-                                      child: Text(
-                                        category['name'],
-                                        style: TextStyle(
-                                          color: context.select(
-                                            (ThemeProvider themeProvider) =>
-                                                themeProvider.currentTheme
-                                                    .secondaryHeaderColor,
+                                        content: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: MyOutlinedButton(
+                                                text:
+                                                    '${AppLocalizations.of(context)!.price} : ${isAscending ? AppLocalizations.of(context)!.ascending : AppLocalizations.of(context)!.descending}',
+                                                key: const Key(
+                                                    'article-button_filter-ascending'),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isAscending = !isAscending!;
+                                                    getItemsData(
+                                                      context,
+                                                      _containerId,
+                                                      selectedCategoryId,
+                                                    ).then((dynamic value) {
+                                                      setState(() {
+                                                        _itemsDatas = value;
+                                                      });
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: MyOutlinedButton(
+                                                text:
+                                                    '${AppLocalizations.of(context)!.status} : ${isAvailable ? AppLocalizations.of(context)!.available : AppLocalizations.of(context)!.unavailable}',
+                                                key: const Key(
+                                                    'article-button_filter-available'),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    isAvailable = !isAvailable!;
+                                                    getItemsData(
+                                                      context,
+                                                      _containerId,
+                                                      selectedCategoryId,
+                                                    ).then((dynamic value) {
+                                                      setState(() {
+                                                        _itemsDatas = value;
+                                                      });
+                                                    });
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                            const SizedBox(height: 8),
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    color: context.select(
+                                                        (ThemeProvider
+                                                                themeProvider) =>
+                                                            themeProvider
+                                                                .currentTheme
+                                                                .buttonTheme
+                                                                .colorScheme!
+                                                                .secondary),
+                                                    width: 2,
+                                                  ),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                                child: DropdownButton<String>(
+                                                  value: selectedCategoryId,
+                                                  onChanged:
+                                                      (String? newValue) {
+                                                    setState(() {
+                                                      selectedCategoryId =
+                                                          newValue;
+                                                      getItemsData(
+                                                        context,
+                                                        _containerId,
+                                                        selectedCategoryId,
+                                                      ).then((dynamic value) {
+                                                        setState(() {
+                                                          _itemsDatas = value;
+                                                        });
+                                                      });
+                                                    });
+                                                  },
+                                                  style: TextStyle(
+                                                    color: context.select(
+                                                        (ThemeProvider
+                                                                themeProvider) =>
+                                                            themeProvider
+                                                                .currentTheme
+                                                                .primaryColor),
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16.0,
+                                                  ),
+                                                  dropdownColor: context.select(
+                                                      (ThemeProvider
+                                                              themeProvider) =>
+                                                          themeProvider
+                                                              .currentTheme
+                                                              .secondaryHeaderColor),
+                                                  underline: Container(
+                                                    height: 0,
+                                                    color: context.select(
+                                                      (ThemeProvider
+                                                              themeProvider) =>
+                                                          themeProvider
+                                                              .currentTheme
+                                                              .secondaryHeaderColor,
+                                                    ),
+                                                  ),
+                                                  icon: Icon(
+                                                    Icons.arrow_drop_down,
+                                                    color: context.select(
+                                                      (ThemeProvider
+                                                              themeProvider) =>
+                                                          themeProvider
+                                                              .currentTheme
+                                                              .primaryColor,
+                                                    ),
+                                                  ),
+                                                  elevation: 3,
+                                                  items: [
+                                                    DropdownMenuItem<String>(
+                                                      value: 'null',
+                                                      child: Text(
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .allCategories,
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    for (var category
+                                                        in _articleCategories)
+                                                      DropdownMenuItem<String>(
+                                                        value: category['id']
+                                                            .toString(),
+                                                        child: Text(
+                                                          category['name'],
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        actions: [
+                                          Row(
+                                            children: [
+                                              MyButton(
+                                                key: const Key(
+                                                    'article-button_article-rent'),
+                                                text: AppLocalizations.of(
+                                                        context)!
+                                                    .close,
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                ],
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 16),
                       if (_itemsDatas.isEmpty) ...[
