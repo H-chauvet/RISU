@@ -15,6 +15,7 @@ import 'package:risu/components/filled_button.dart';
 
 import 'article_list_data.dart';
 import 'list_page.dart';
+import 'article_filters_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
   late int _containerId;
@@ -22,6 +23,7 @@ class ArticleListState extends State<ArticleListPage> {
   List<dynamic> _articleCategories = [];
   final LoaderManager _loaderManager = LoaderManager();
 
+  String? sortBy = 'price';
   bool isAscending = true;
   bool isAvailable = true;
   String articleName = '';
@@ -55,6 +57,7 @@ class ArticleListState extends State<ArticleListPage> {
       });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
+        print(responseData);
         return responseData;
       } else {
         if (context.mounted) {
@@ -170,7 +173,85 @@ class ArticleListState extends State<ArticleListPage> {
                                 icon: Icons.article,
                                 rightIcon: Icons.filter_list,
                                 rightIconOnPressed: () async {
-                                  showDialog(
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ArticleFiltersPage(
+                                        isAscending: isAscending,
+                                        isAvailable: isAvailable,
+                                        selectedCategoryId: selectedCategoryId,
+                                        sortBy: sortBy,
+                                        articleCategories: _articleCategories,
+                                      ),
+                                    ),
+                                  ).then((filters) {
+                                    // Handle returned filters here
+                                    if (filters != null) {
+                                      setState(() {
+                                        isAscending = filters['isAscending'];
+                                        isAvailable = filters['isAvailable'];
+                                        selectedCategoryId =
+                                            filters['selectedCategoryId'];
+                                        sortBy = filters['sortBy'];
+                                        updateItemsList();
+                                      });
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      if (_itemsDatas.isEmpty) ...[
+                        Text(
+                          AppLocalizations.of(context)!.articlesListEmpty,
+                          key: const Key('articles-list_no-article'),
+                          style: TextStyle(
+                            fontSize: 32,
+                            fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
+                            shadows: [
+                              Shadow(
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme
+                                            .bottomNavigationBarTheme
+                                            .selectedItemColor!),
+                                blurRadius: 24,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                        )
+                      ] else ...[
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: _itemsDatas.length,
+                          itemBuilder: (context, index) {
+                            final item = _itemsDatas.elementAt(index);
+                            return ArticleDataCard(
+                              articleData: ArticleData.fromJson(item),
+                            );
+                          },
+                        ),
+                      ]
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+}
+
+/*
+showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
@@ -348,55 +429,4 @@ class ArticleListState extends State<ArticleListPage> {
                                       );
                                     },
                                   );
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      if (_itemsDatas.isEmpty) ...[
-                        Text(
-                          AppLocalizations.of(context)!.articlesListEmpty,
-                          key: const Key('articles-list_no-article'),
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: context.select(
-                                (ThemeProvider themeProvider) =>
-                                    themeProvider.currentTheme.primaryColor),
-                            shadows: [
-                              Shadow(
-                                color: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider
-                                            .currentTheme
-                                            .bottomNavigationBarTheme
-                                            .selectedItemColor!),
-                                blurRadius: 24,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                        )
-                      ] else ...[
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: _itemsDatas.length,
-                          itemBuilder: (context, index) {
-                            final item = _itemsDatas.elementAt(index);
-                            return ArticleDataCard(
-                              articleData: ArticleData.fromJson(item),
-                            );
-                          },
-                        ),
-                      ]
-                    ],
-                  ),
-                ),
-              ),
-            ),
-    );
-  }
-}
+ */

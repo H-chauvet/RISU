@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/components/filled_button.dart';
+import 'package:risu/components/text_input.dart';
 import 'article_filters_page.dart';
 
 class ArticleFiltersState extends State<ArticleFiltersPage> {
@@ -27,6 +28,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: MyAppBar(
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
@@ -39,6 +41,15 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 30),
+            Text(
+              AppLocalizations.of(context)!.sortBy,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: Container(
@@ -102,75 +113,138 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Trier par :',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            // Radio buttons for selecting sort option
             ListTile(
-              title: const Text('Prix'),
+              title: Text(
+                AppLocalizations.of(context)!.ascendingPrice,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
               onTap: () => setState(() {
                 sortBy = 'price';
+                isAscending = true;
               }),
               leading: Radio<String>(
-                value: 'price',
-                groupValue: sortBy,
+                value: 'priceAscending',
+                groupValue:
+                    sortBy! + (isAscending ? 'Ascending' : 'Descending'),
                 onChanged: (value) {
                   setState(() {
-                    sortBy = value;
+                    sortBy = 'price';
+                    isAscending = true;
                   });
                 },
               ),
             ),
             ListTile(
-              title: const Text('Notes'),
+              title: Text(
+                AppLocalizations.of(context)!.descendingPrice,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
               onTap: () => setState(() {
-                sortBy = 'rating';
+                sortBy = 'price';
+                isAscending = false;
               }),
               leading: Radio<String>(
-                value: 'rating',
-                groupValue: sortBy,
+                value: 'priceDescending',
+                groupValue:
+                    sortBy! + (isAscending ? 'Ascending' : 'Descending'),
                 onChanged: (value) {
                   setState(() {
-                    sortBy = value;
+                    sortBy = 'price';
+                    isAscending = false;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context)!.ascendingRating,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              onTap: () => setState(() {
+                sortBy = 'rating';
+                isAscending = true;
+              }),
+              leading: Radio<String>(
+                value: 'ratingAscending',
+                groupValue:
+                    sortBy! + (isAscending ? 'Ascending' : 'Descending'),
+                onChanged: (value) {
+                  setState(() {
+                    sortBy = 'rating';
+                    isAscending = true;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(
+                AppLocalizations.of(context)!.descendingRating,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              onTap: () => setState(() {
+                sortBy = 'rating';
+                isAscending = false;
+              }),
+              leading: Radio<String>(
+                value: 'ratingDescending',
+                groupValue:
+                    sortBy! + (isAscending ? 'Ascending' : 'Descending'),
+                onChanged: (value) {
+                  setState(() {
+                    sortBy = 'rating';
+                    isAscending = false;
                   });
                 },
               ),
             ),
             const SizedBox(height: 20),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.ascending),
-              onTap: () => setState(() {
-                isAscending = true;
-              }),
-              leading: Radio(
-                value: true,
-                groupValue: isAscending,
-                onChanged: (value) {
-                  setState(() {
-                    isAscending = value!;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              title: Text(AppLocalizations.of(context)!.descending),
-              onTap: () => setState(() {
-                isAscending = false;
-              }),
-              leading: Radio(
-                value: false,
-                groupValue: isAscending,
-                onChanged: (value) {
-                  setState(() {
-                    isAscending = value!;
-                  });
-                },
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: MyTextInput(
+                    key: const Key('filter-priceInput_min'),
+                    labelText: (sortBy == 'price')
+                        ? AppLocalizations.of(context)!.minimumPrice
+                        : AppLocalizations.of(context)!.minimumRating,
+                    keyboardType: TextInputType.text,
+                    icon: (sortBy == 'price')
+                        ? Icons.price_change
+                        : Icons.star_border,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: MyTextInput(
+                    key: const Key('filter-priceInput_min'),
+                    labelText: (sortBy == 'price')
+                        ? AppLocalizations.of(context)!.maximumPrice
+                        : AppLocalizations.of(context)!.maximumRating,
+                    keyboardType: TextInputType.text,
+                    icon: (sortBy == 'price')
+                        ? Icons.price_change
+                        : Icons.star_border,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20),
             SwitchListTile(
-              title: Text(AppLocalizations.of(context)!.available),
+              title: Text(
+                AppLocalizations.of(context)!.available,
+                style: TextStyle(
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
               value: isAvailable,
               onChanged: (value) {
                 setState(() {
@@ -181,7 +255,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
             const SizedBox(height: 20),
             MyButton(
               key: const Key('article-button_article-rent'),
-              text: "Appliquer les filtres",
+              text: AppLocalizations.of(context)!.applyFilters,
               onPressed: () {
                 Navigator.pop(context, {
                   'sortBy': sortBy,
