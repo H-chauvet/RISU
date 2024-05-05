@@ -181,6 +181,8 @@ class SignupPageState extends State<SignupPage> {
                         keyboardType: TextInputType.visiblePassword,
                         obscureText: !_isPasswordConfirmationVisible,
                         icon: Icons.lock_outline,
+                        rightIconKey: const Key(
+                            'signup-textinput_password_confirmation_righticon'),
                         rightIcon: _isPasswordConfirmationVisible
                             ? Icons.visibility_off
                             : Icons.visibility,
