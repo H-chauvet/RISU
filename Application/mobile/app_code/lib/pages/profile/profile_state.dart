@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:profile_photo/profile_photo.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/favorite/favorite_page.dart';
+import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../components/alert_dialog.dart';
-import '../login/login_page.dart';
 import 'profile_page.dart';
 
 class ProfilePageState extends State<ProfilePage> {
