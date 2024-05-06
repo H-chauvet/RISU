@@ -7,7 +7,7 @@ import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/favorite/favorite_page.dart';
-import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
@@ -207,7 +207,7 @@ class ProfilePageState extends State<ProfilePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const LoginPage();
+                                return const HomePage();
                               },
                             ),
                             (route) => false,
