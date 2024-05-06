@@ -51,6 +51,7 @@ model Item {
     price           Float
     image           String?
     description     String?
+    rating          Float?
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     categories      Item_Category[]
