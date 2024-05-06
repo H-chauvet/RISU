@@ -19,6 +19,12 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
   String? _email;
 
+  @override
+  void initState() {
+    super.initState();
+    _email = widget.email;
+  }
+
   Future<bool> apiResetPassword(BuildContext context) async {
     try {
       if (_email == null) {
@@ -84,12 +90,6 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _email = widget.email;
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -108,7 +108,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
                 children: [
                   Text(
                     key: const Key('ask_reset_password-text_description'),
-                    AppLocalizations.of(context)!.resetPasswordDescription,
+                    AppLocalizations.of(context)!.askResetPasswordDescription,
                     style: TextStyle(
                       fontSize: 16,
                       color: context.select((ThemeProvider themeProvider) =>
