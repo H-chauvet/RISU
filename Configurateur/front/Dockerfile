@@ -33,7 +33,7 @@
     #Stage 1 - Install dependencies and build the app
     FROM dart:3.1.0 as build-env
 
-    ARG 2.4.1
+    ARG 3.3.4
 
     RUN apt-get update --quiet --yes
     RUN apt-get install --quiet --yes \
@@ -41,9 +41,9 @@
         apt-utils \
         python3
 
-    RUN dart pub global activate fvm 2.4.1
-    RUN fvm install 3.13.1
-    RUN fvm global 3.13.1
+    RUN dart pub global activate fvm 3.3.4
+    RUN fvm install 3.9.6
+    RUN fvm global 3.19.6
     ENV PATH="/root/fvm/default/bin:${PATH}"
     # Run flutter doctor
     RUN flutter doctor -v
