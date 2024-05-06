@@ -24,6 +24,8 @@ class ArticleListState extends State<ArticleListPage> {
   final LoaderManager _loaderManager = LoaderManager();
 
   String? sortBy = 'price';
+  double? min;
+  double? max;
   bool isAscending = true;
   bool isAvailable = true;
   String articleName = '';
@@ -86,7 +88,7 @@ class ArticleListState extends State<ArticleListPage> {
     try {
       final url = Uri.parse(
           '$baseUrl/api/mobile/container/$containerId/articleslist'
-          '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}');
+          '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}&sortBy=$sortBy${min != null ? '&min=$min' : ''}${max != null ? '&max=$max' : ''}');
       response = await http.get(
         url,
         headers: <String, String>{
@@ -167,11 +169,17 @@ class ArticleListState extends State<ArticleListPage> {
                               width: MediaQuery.of(context).size.width * 0.8,
                               child: MyTextInput(
                                 key: const Key('filter-textInput_name'),
+                                onChanged: (value) {
+                                  setState(() {
+                                    articleName = value;
+                                  });
+                                  updateItemsList();
+                                },
                                 labelText:
                                     AppLocalizations.of(context)!.articleName,
                                 keyboardType: TextInputType.text,
-                                icon: Icons.article,
-                                rightIcon: Icons.filter_list,
+                                icon: Icons.search,
+                                rightIcon: Icons.tune,
                                 rightIconOnPressed: () async {
                                   Navigator.push(
                                     context,
@@ -193,6 +201,8 @@ class ArticleListState extends State<ArticleListPage> {
                                         selectedCategoryId =
                                             filters['selectedCategoryId'];
                                         sortBy = filters['sortBy'];
+                                        min = filters['min'];
+                                        max = filters['max'];
                                         updateItemsList();
                                       });
                                     }
@@ -249,184 +259,3 @@ class ArticleListState extends State<ArticleListPage> {
     );
   }
 }
-
-/*
-showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Text(
-                                          AppLocalizations.of(context)!.filter,
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: MyOutlinedButton(
-                                                text:
-                                                    '${AppLocalizations.of(context)!.price} : ${isAscending ? AppLocalizations.of(context)!.ascending : AppLocalizations.of(context)!.descending}',
-                                                key: const Key(
-                                                    'article-button_filter-ascending'),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    isAscending = !isAscending!;
-                                                    getItemsData(
-                                                      context,
-                                                      _containerId,
-                                                      selectedCategoryId,
-                                                    ).then((dynamic value) {
-                                                      setState(() {
-                                                        _itemsDatas = value;
-                                                      });
-                                                    });
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: MyOutlinedButton(
-                                                text:
-                                                    '${AppLocalizations.of(context)!.status} : ${isAvailable ? AppLocalizations.of(context)!.available : AppLocalizations.of(context)!.unavailable}',
-                                                key: const Key(
-                                                    'article-button_filter-available'),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    isAvailable = !isAvailable!;
-                                                    getItemsData(
-                                                      context,
-                                                      _containerId,
-                                                      selectedCategoryId,
-                                                    ).then((dynamic value) {
-                                                      setState(() {
-                                                        _itemsDatas = value;
-                                                      });
-                                                    });
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                            const SizedBox(height: 8),
-                                            SizedBox(
-                                              width: double.infinity,
-                                              child: Container(
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    color: context.select(
-                                                        (ThemeProvider
-                                                                themeProvider) =>
-                                                            themeProvider
-                                                                .currentTheme
-                                                                .buttonTheme
-                                                                .colorScheme!
-                                                                .secondary),
-                                                    width: 2,
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                ),
-                                                child: DropdownButton<String>(
-                                                  value: selectedCategoryId,
-                                                  onChanged:
-                                                      (String? newValue) {
-                                                    setState(() {
-                                                      selectedCategoryId =
-                                                          newValue;
-                                                      getItemsData(
-                                                        context,
-                                                        _containerId,
-                                                        selectedCategoryId,
-                                                      ).then((dynamic value) {
-                                                        setState(() {
-                                                          _itemsDatas = value;
-                                                        });
-                                                      });
-                                                    });
-                                                  },
-                                                  style: TextStyle(
-                                                    color: context.select(
-                                                        (ThemeProvider
-                                                                themeProvider) =>
-                                                            themeProvider
-                                                                .currentTheme
-                                                                .primaryColor),
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 16.0,
-                                                  ),
-                                                  dropdownColor: context.select(
-                                                      (ThemeProvider
-                                                              themeProvider) =>
-                                                          themeProvider
-                                                              .currentTheme
-                                                              .secondaryHeaderColor),
-                                                  underline: Container(
-                                                    height: 0,
-                                                    color: context.select(
-                                                      (ThemeProvider
-                                                              themeProvider) =>
-                                                          themeProvider
-                                                              .currentTheme
-                                                              .secondaryHeaderColor,
-                                                    ),
-                                                  ),
-                                                  icon: Icon(
-                                                    Icons.arrow_drop_down,
-                                                    color: context.select(
-                                                      (ThemeProvider
-                                                              themeProvider) =>
-                                                          themeProvider
-                                                              .currentTheme
-                                                              .primaryColor,
-                                                    ),
-                                                  ),
-                                                  elevation: 3,
-                                                  items: [
-                                                    DropdownMenuItem<String>(
-                                                      value: 'null',
-                                                      child: Text(
-                                                        AppLocalizations.of(
-                                                                context)!
-                                                            .allCategories,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                    for (var category
-                                                        in _articleCategories)
-                                                      DropdownMenuItem<String>(
-                                                        value: category['id']
-                                                            .toString(),
-                                                        child: Text(
-                                                          category['name'],
-                                                        ),
-                                                      ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        actions: [
-                                          Row(
-                                            children: [
-                                              MyButton(
-                                                key: const Key(
-                                                    'article-button_article-rent'),
-                                                text: AppLocalizations.of(
-                                                        context)!
-                                                    .close,
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
- */

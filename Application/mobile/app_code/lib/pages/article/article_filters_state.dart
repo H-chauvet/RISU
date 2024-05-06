@@ -6,6 +6,7 @@ import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'article_filters_page.dart';
+import 'package:risu/components/alert_dialog.dart';
 
 class ArticleFiltersState extends State<ArticleFiltersPage> {
   late String? sortBy;
@@ -13,6 +14,8 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
   late bool isAvailable;
   late String? selectedCategoryId;
   late List<dynamic> _articleCategories;
+  double? min;
+  double? max;
 
   @override
   void initState() {
@@ -217,22 +220,34 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         ? AppLocalizations.of(context)!.minimumPrice
                         : AppLocalizations.of(context)!.minimumRating,
                     keyboardType: TextInputType.text,
-                    icon: (sortBy == 'price')
-                        ? Icons.price_change
-                        : Icons.star_border,
+                    icon: (sortBy == 'price') ? Icons.euro : Icons.star_border,
+                    onChanged: (value) {
+                      setState(() {
+                        min = double.tryParse(value) ?? 0.0;
+                        if (min! < 0) {
+                          min = 0.0;
+                        }
+                      });
+                    },
                   ),
                 ),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.45,
                   child: MyTextInput(
-                    key: const Key('filter-priceInput_min'),
+                    key: const Key('filter-priceInput_max'),
                     labelText: (sortBy == 'price')
                         ? AppLocalizations.of(context)!.maximumPrice
                         : AppLocalizations.of(context)!.maximumRating,
                     keyboardType: TextInputType.text,
-                    icon: (sortBy == 'price')
-                        ? Icons.price_change
-                        : Icons.star_border,
+                    icon: (sortBy == 'price') ? Icons.euro : Icons.star_border,
+                    onChanged: (value) {
+                      setState(() {
+                        max = double.tryParse(value) ?? 0.0;
+                        if (max! < 0) {
+                          max = 0.0;
+                        }
+                      });
+                    },
                   ),
                 ),
               ],
@@ -257,11 +272,21 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
               key: const Key('article-button_article-rent'),
               text: AppLocalizations.of(context)!.applyFilters,
               onPressed: () {
+                if (min != null && max != null && min! > max!) {
+                  MyAlertDialog.showInfoAlertDialog(
+                    context: context,
+                    title: AppLocalizations.of(context)!.incorrectInputs,
+                    message: AppLocalizations.of(context)!.incorrectMinMax,
+                  );
+                  return;
+                }
                 Navigator.pop(context, {
                   'sortBy': sortBy,
                   'isAscending': isAscending,
                   'isAvailable': isAvailable,
                   'selectedCategoryId': selectedCategoryId,
+                  'min': min,
+                  'max': max,
                 });
               },
             ),
