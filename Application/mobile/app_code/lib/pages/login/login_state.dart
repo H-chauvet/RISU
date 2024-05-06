@@ -11,7 +11,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
-import 'package:risu/pages/login/reset_password/reset_password_page.dart';
+import 'package:risu/pages/login/ask_reset_password/ask_reset_password_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -199,9 +199,7 @@ class LoginPageState extends State<LoginPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) {
-                                    return ResetPasswordPage(
-                                      email: _email,
-                                    );
+                                    return AskResetPasswordPage(email: _email);
                                   },
                                 ),
                               );

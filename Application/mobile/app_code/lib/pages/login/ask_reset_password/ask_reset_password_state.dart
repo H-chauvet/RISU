@@ -13,9 +13,9 @@ import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'reset_password_page.dart';
+import 'ask_reset_password_page.dart';
 
-class ResetPasswordPageState extends State<ResetPasswordPage> {
+class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
   String? _email;
 
