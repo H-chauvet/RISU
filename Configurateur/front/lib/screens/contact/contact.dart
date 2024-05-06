@@ -35,8 +35,8 @@ class _ContactPageState extends State<ContactPage> {
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
-    //storageService.getUserUuid().then((value) => uuid = value);
-    uuid = await storageService.readStorage("uuid");
+    storageService.getUserUuid().then((value) => uuid = value);
+    // uuid = await storageService.readStorage("uuid");
     if (token == "") {
       context.go('/login');
     }
@@ -173,7 +173,7 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.all(32),
+                          margin: const EdgeInsets.all(64),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -428,43 +428,104 @@ class _ContactPageState extends State<ContactPage> {
                             ],
                           ),
                         )
-                      : Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  conversation = [];
-                                });
-                              },
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                  Colors.red,
+                      : Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                'Votre ticket',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 35,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
                                 ),
                               ),
-                              child: Text("Fermer la conversation"),
-                            ),
-                            const SizedBox(height: 64),
-                            Text(conversation.length.toString()),
-                            /*Container(
-                              margin: const EdgeInsets.all(16),
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: conversation.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    dynamic curr = conversation[index];
+                              const SizedBox(height: 50),
+                              Container(
+                                width: double.infinity,
+                                height: 400,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          conversation = [];
+                                        });
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        'Fermer la conversation',
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                            ],
+                          ),
+                        )
+                  // Column(
+                  //     children: [
+                  //       ElevatedButton(
+                  //         onPressed: () {
+                  //           setState(() {
+                  //             conversation = [];
+                  //           });
+                  //         },
+                  //         style: ButtonStyle(
+                  //           backgroundColor:
+                  //               MaterialStateProperty.all<Color>(
+                  //             Colors.red,
+                  //           ),
+                  //         ),
+                  //         child: Text("Fermer la conversation"),
+                  //       ),
+                  //       const SizedBox(height: 64),
+                  //       Text(conversation.length.toString()),
+                  //       /*Container(
+                  //         margin: const EdgeInsets.all(16),
+                  //         child: ListView.builder(
+                  //             shrinkWrap: true,
+                  //             itemCount: conversation.length,
+                  //             itemBuilder:
+                  //                 (BuildContext context, int index) {
+                  //               dynamic curr = conversation[index];
 
-                                    return Text(
-                                        "Hello"); /*Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: 32),
-                                child: Text(curr["content"]),
-                              );*/
-                                  }),
-                            )*/
-                          ],
-                        ),
+                  //               return Text(
+                  //                   "Hello"); /*Padding(
+                  //           padding:
+                  //               EdgeInsets.symmetric(horizontal: 32),
+                  //           child: Text(curr["content"]),
+                  //         );*/
+                  //             }),
+                  //       )*/
+                  //     ],
+                  //   ),
                 ],
               ),
             ),

@@ -73,7 +73,7 @@ class StorageService {
     dynamic decodedToken = JwtDecoder.decode(token);
 
     if (decodedToken != null) {
-      return decodedToken['uuid'];
+      return decodedToken['userUuid'];
     } else {
       return '';
     }
