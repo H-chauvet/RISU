@@ -10,7 +10,6 @@ router.post(
   async function (req, res, next) {
     try {
       const { id } = req.body;
-      console.log("c'est l'id : "+ id);
       if (!id) {
         res.status(400);
         throw new Error("userId is required");

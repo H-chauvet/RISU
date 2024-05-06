@@ -25,7 +25,6 @@ router.post(
   async function (req, res, next) {
     try {
       const { id } = req.body;
-      console.log(id);
       if (!id) {
         res.status(400);
         throw new Error("container is required");
@@ -179,17 +178,17 @@ router.post(
         return;
       }
 
-      const existingUser = await containerCtrl.getContainerById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingContainer = await containerCtrl.getContainerById(id);
+      if (!existingContainer) {
+        res.status(404).json({ error: "Container not found" });
         return;
       }
 
-      const updatedUser = await containerCtrl.updateCity({
+      const updateContainer = await containerCtrl.updateCity({
         id,
         city,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updateContainer);
     } catch (err) {
       next(err);
     }
@@ -211,17 +210,17 @@ router.post(
         return;
       }
 
-      const existingUser = await containerCtrl.getContainerById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingContainer = await containerCtrl.getContainerById(id);
+      if (!existingContainer) {
+        res.status(404).json({ error: "Container not found" });
         return;
       }
 
-      const updatedUser = await containerCtrl.updateAddress({
+      const updateContainer = await containerCtrl.updateAddress({
         id,
         address,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updateContainer);
     } catch (err) {
       next(err);
     }
@@ -243,17 +242,17 @@ router.post(
         return;
       }
 
-      const existingUser = await containerCtrl.getContainerById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingContainer = await containerCtrl.getContainerById(id);
+      if (!existingContainer) {
+        res.status(404).json({ error: "Container not found" });
         return;
       }
 
-      const updatedUser = await containerCtrl.updateSaveName({
+      const updateContainer = await containerCtrl.updateSaveName({
         id,
         saveName,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updateContainer);
     } catch (err) {
       next(err);
     }
@@ -276,17 +275,17 @@ router.post(
         return;
       }
 
-      const existingUser = await containerCtrl.getContainerById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingContainer = await containerCtrl.getContainerById(id);
+      if (!existingContainer) {
+        res.status(404).json({ error: "Container not found" });
         return;
       }
 
-      const updatedUser = await containerCtrl.updateInformation({
+      const updateContainer = await containerCtrl.updateInformation({
         id,
         informations,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updateContainer);
     } catch (err) {
       next(err);
     }

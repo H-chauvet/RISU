@@ -3,7 +3,6 @@ const router = express.Router();
 
 const passport = require("passport");
 const organizationCtrl = require("../../controllers/Web/organization");
-const userCtrl = require("../../controllers/Web/user");
 const jwtMiddleware = require("../../middleware/jwt");
 
 router.post(
@@ -49,17 +48,17 @@ router.post(
         return;
       }
 
-      const existingUser = await organizationCtrl.getOrganizationById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingOrganization = await organizationCtrl.getOrganizationById(id);
+      if (!existingOrganization) {
+        res.status(404).json({ error: "Organization not found" });
         return;
       }
 
-      const updatedUser = await organizationCtrl.updateContactInformation({
+      const updatedOrganization = await organizationCtrl.updateContactInformation({
         id,
         contactInformation,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updatedOrganization);
     } catch (err) {
       next(err);
     }
@@ -81,17 +80,17 @@ router.post(
         return;
       }
 
-      const existingUser = await organizationCtrl.getOrganizationById(id);
-      if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+      const existingOrganization = await organizationCtrl.getOrganizationById(id);
+      if (!existingOrganization) {
+        res.status(404).json({ error: "Organization not found" });
         return;
       }
 
-      const updatedUser = await organizationCtrl.updateType({
+      const updatedOrganization = await organizationCtrl.updateType({
         id,
         type,
       });
-      res.status(200).json(updatedUser);
+      res.status(200).json(updatedOrganization);
     } catch (err) {
       next(err);
     }
