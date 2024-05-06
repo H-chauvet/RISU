@@ -7,6 +7,7 @@ exports.createFixtures = async () => {
       data: {
         firstName: "Admin",
         lastName: "Risu",
+        uuid: "1234",
         email: "risu.admin@gmail.com",
         confirmed: true,
         password: bcrypt.hashSync("admin", 12),
