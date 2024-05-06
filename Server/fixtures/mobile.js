@@ -43,16 +43,16 @@ exports.createFixtures = async () => {
           create: [
             {
               id: 1,
-              name: "rat quette",
-              price: 1.0,
+              name: "Ballon de volley",
+              price: 0.5,
               available: true,
               categories: {
-                connect: [{ id: 1 }],
+                connect: [{ id: 1 }, { id: 2 }],
               },
             },
             {
               id: 2,
-              name: "rat quette 2",
+              name: "Raquette",
               price: 1.0,
               available: true,
               categories: {
@@ -61,11 +61,11 @@ exports.createFixtures = async () => {
             },
             {
               id: 3,
-              name: "rat quette 3",
-              price: 1.0,
-              available: true,
+              name: "Ballon de football",
+              price: 0.75,
+              available: false,
               categories: {
-                connect: [{ id: 1 }],
+                connect: [{ id: 2 }],
               },
             },
           ],
@@ -85,7 +85,9 @@ exports.createFixtures = async () => {
         price: 300.1,
         width: 12,
         height: 5,
-        items: null,
+        items: {
+          create: [],
+        },
       },
     });
     if (
