@@ -61,11 +61,12 @@ class AppRouter {
         path: '/container-profil',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra != null) {
-            final CtnList ctnList = state.extra as CtnList;
-            return ContainerProfilPage(container: ctnList);
+            final ContainerListData container =
+                state.extra as ContainerListData;
+            return ContainerProfilPage(container: container);
           } else {
             return ContainerProfilPage(
-                container: CtnList(
+                container: ContainerListData(
                     id: null,
                     createdAt: null,
                     organization: null,

@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
 class ContainerProfilPage extends StatefulWidget {
-  final CtnList container;
+  final ContainerListData container;
   const ContainerProfilPage({Key? key, required this.container})
       : super(key: key);
 
@@ -21,7 +21,7 @@ class ContainerProfilPage extends StatefulWidget {
 }
 
 class _ContainerProfilPageState extends State<ContainerProfilPage> {
-  final CtnList container;
+  final ContainerListData container;
   _ContainerProfilPageState({required this.container});
   late List<ItemListInfo> items;
   late String itemName = '';
@@ -31,16 +31,21 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   late String saveName;
   late String information;
   late int containerId;
-  late CtnList tmp;
+  late ContainerListData tmp;
+  String jwtToken = '';
 
   Future<void> fetchContainer(String id) async {
     final response = await http.get(
-        Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'));
+      Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final dynamic containersData = responseData["container"];
       setState(() {
-        tmp = CtnList.fromJson(containersData);
+        tmp = ContainerListData.fromJson(containersData);
         if (tmp.address != null) {
           address = tmp.address!;
         }
@@ -66,9 +71,19 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+    if (token != null) {
+      jwtToken = token!;
+    } else {
+      jwtToken = "";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    checkToken();
     checkContainerId();
   }
 
@@ -82,6 +97,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -171,6 +189,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -253,6 +274,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     final response = await http.get(
       Uri.parse(
           'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=${containerId}'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -260,29 +284,94 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       setState(() {
         items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
       });
-    } else {}
+    } else {
+      Fluttertoast.showToast(
+        msg:
+            "Erreur lors de l'envoie des informations de l'objet: ${response.statusCode}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
-  Future<void> deleteItem(ItemListInfo message) async {
+  Future<void> deleteItem(ItemListInfo item) async {
+    late int id;
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
+    if (item.id != null) {
+      id = item.id!;
+    }
     final response = await http.post(
       url,
-      body: json.encode({'id': message.id}),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode({'id': id}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'objet supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
       fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg: 'Erreur lors de la suppression du item: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
+    }
+  }
+
+  Future<void> apiUpdateItem(
+      TextEditingController nameController,
+      TextEditingController descController,
+      double price,
+      ItemListInfo item,
+      int itemId) async {
+    bool isAvailable = item.available!;
+    if (price <= 0) {
+      Fluttertoast.showToast(
+        msg: "Veuillez saisir un prix valide pour l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+      return;
+    }
+    final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
+    var body = {
+      'name': nameController.text != '' ? nameController.text : item.name,
+      'description':
+          descController.text != '' ? descController.text : item.description,
+      'price': price.toString(),
+      'available': isAvailable.toString(),
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Modification effectuée avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+      );
+      fetchItemsbyCtnId();
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'envoi la modification des informations",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
     }
   }
 
@@ -358,50 +447,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 ),
                 ElevatedButton(
                   onPressed: () async {
-                    if (price <= 0) {
-                      Fluttertoast.showToast(
-                        msg: "Veuillez saisir un prix valide pour l'objet",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        backgroundColor: Colors.red,
-                      );
-                      return;
-                    }
-                    final String apiUrl =
-                        "http://$serverIp:3000/api/items/update/${itemId}";
-                    var body = {
-                      'name': nameController.text != ''
-                          ? nameController.text
-                          : item.name,
-                      'description': descController.text != ''
-                          ? descController.text
-                          : item.description,
-                      'price': price.toString(),
-                      'available': isAvailable.toString(),
-                    };
-
-                    var response = await http.post(
-                      Uri.parse(apiUrl),
-                      body: body,
-                    );
-
-                    if (response.statusCode == 200) {
-                      Fluttertoast.showToast(
-                        msg: 'Modification effectuée avec succès',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 3,
-                      );
-                      fetchItemsbyCtnId();
-                    } else {
-                      Fluttertoast.showToast(
-                          msg:
-                              "Erreur durant l'envoi la modification des informations",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red);
-                    }
+                    apiUpdateItem(
+                        nameController, descController, price, item, itemId);
                     Navigator.of(context).pop();
                   },
                   child: const Text("Créer"),
@@ -444,6 +491,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       });
                     });
                   },
+                ),
+                SizedBox(
+                  width: 10,
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete),

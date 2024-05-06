@@ -60,7 +60,7 @@ exports.getItems = () => {
 exports.deleteItem = (id) => {
   return db.Item.delete({
     where: {
-      id: id,
+      id: parseInt(id),
     },
   });
 };

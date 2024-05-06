@@ -11,7 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-Future<void> deleteContainer(CtnList container) async {}
+Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
   testWidgets('ContainerPage should render without error',
@@ -35,9 +35,9 @@ void main() {
 
   testWidgets('ContainerMobilePage displays message details',
       (WidgetTester tester) async {
-    final List<CtnList> containers = [];
+    final List<ContainerListData> containers = [];
     containers.add(
-      CtnList(
+      ContainerListData(
         id: 1,
         createdAt: '2022-01-01',
         organization: 'Test Organization',
@@ -82,7 +82,7 @@ void main() {
   });
 
   test('ContainerTest toJson and fromJson', () {
-    final container = CtnList(
+    final container = ContainerListData(
       id: 1,
       createdAt: '2022-01-01',
       organization: 'Test Organization',
@@ -97,7 +97,8 @@ void main() {
     );
 
     final Map<String, dynamic> containerJson = container.toMap();
-    final CtnList parsedContainer = CtnList.fromJson(containerJson);
+    final ContainerListData parsedContainer =
+        ContainerListData.fromJson(containerJson);
 
     expect(parsedContainer.id, container.id);
     expect(parsedContainer.createdAt, container.createdAt);

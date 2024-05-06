@@ -6,12 +6,14 @@ import 'package:front/components/footer.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class OrganizationList {
   final int? id;
@@ -69,7 +71,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       affiliate: null,
       containers: null,
       contactInformation: null);
-  List<CtnList> containersList = [];
+  List<ContainerListData> containersList = [];
 
   String userMail = '';
 
@@ -79,16 +81,23 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late String contactInformation = '';
   late String company;
   late int organizationId;
+  String jwtToken = '';
 
   Future<void> fetchContainersById() async {
-    final response = await http.get(Uri.parse(
-        'http://${serverIp}:3000/api/container/listByOrganisation/$organizationId'));
+    final response = await http.get(
+      Uri.parse(
+          'http://${serverIp}:3000/api/container/listByOrganisation/$organizationId'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
       setState(() {
-        containersList =
-            containersData.map((data) => CtnList.fromJson(data)).toList();
+        containersList = containersData
+            .map((data) => ContainerListData.fromJson(data))
+            .toList();
       });
     } else {
       Fluttertoast.showToast(
@@ -110,6 +119,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -119,13 +131,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      storageService.getUserMail().then((value) {
-        userMail = value;
-        if (userMail != "") {
-          fetchOrganizationDetails(userMail);
-        } else
-          return;
-      });
+      checkToken();
     } else {
       Fluttertoast.showToast(
           msg: "Erreur durant l'envoi la modification des informations",
@@ -208,6 +214,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -217,13 +226,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      storageService.getUserMail().then((value) {
-        userMail = value;
-        if (userMail != "") {
-          fetchOrganizationDetails(userMail);
-        } else
-          return;
-      });
+      checkToken();
     } else {
       Fluttertoast.showToast(
           msg: "Erreur durant l'envoi la modification des informations",
@@ -293,23 +296,32 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
   }
 
-  Future<void> deleteContainer(CtnList message) async {
+  Future<void> deleteContainer(ContainerListData container) async {
+    late int id;
+    if (container.id != null) {
+      id = container.id!;
+      print("c'est l'id : $id");
+    }
     final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
     final response = await http.post(
       url,
-      body: json.encode({'id': message.id}),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode({'id': id}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'Conteneur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
-      fetchContainersById();
+      checkToken();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg:
+            'Erreur lors de la suppression du container: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -321,7 +333,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       final String apiUrl =
           "http://$serverIp:3000/api/auth/user-details/$email";
 
-      final response = await http.get(Uri.parse(apiUrl));
+      final response = await http.get(
+        Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Authorization': 'Bearer $jwtToken',
+        },
+      );
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> userDetails = json.decode(response.body);
@@ -355,16 +372,25 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     }
   }
 
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+    if (token != null) {
+      jwtToken = token!;
+      storageService.getUserMail().then((value) {
+        userMail = value;
+        if (userMail.isNotEmpty) {
+          fetchOrganizationDetails(userMail);
+        }
+      });
+    } else {
+      return;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    storageService.getUserMail().then((value) {
-      userMail = value;
-      if (userMail.isNotEmpty) {
-        fetchOrganizationDetails(userMail);
-        print("ouaisss");
-      }
-    });
+    checkToken();
   }
 
   @override

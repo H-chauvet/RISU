@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:async';
 import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -25,9 +27,9 @@ class ContainerPage extends StatefulWidget {
 }
 
 class _ContainerPageState extends State<ContainerPage> {
-  List<CtnList> containers = [];
+  List<ContainerListData> containers = [];
   List<ItemListInfo> items = [];
-  bool jwtToken = false;
+  String jwtToken = '';
   late String itemName = '';
   late String itemDesc = '';
   bool available = false;
@@ -38,23 +40,38 @@ class _ContainerPageState extends State<ContainerPage> {
   late String selectedCategory = "Tous";
   List<String> categories = [];
 
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+    if (token != null) {
+      jwtToken = token!;
+      fetchContainers();
+      fetchItems();
+    } else {
+      jwtToken = "";
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    fetchContainers();
-    fetchItems();
+    checkToken();
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
   Future<void> fetchContainers() async {
-    final response = await http
-        .get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
+    final response = await http.get(
+      Uri.parse('http://${serverIp}:3000/api/container/listAll'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
       setState(() {
-        containers =
-            containersData.map((data) => CtnList.fromJson(data)).toList();
+        containers = containersData
+            .map((data) => ContainerListData.fromJson(data))
+            .toList();
       });
     } else {
       Fluttertoast.showToast(
@@ -65,12 +82,15 @@ class _ContainerPageState extends State<ContainerPage> {
     }
   }
 
-  Future<void> deleteContainer(CtnList message) async {
+  Future<void> deleteContainer(ContainerListData message) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
     final response = await http.post(
       url,
       body: json.encode({'id': message.id}),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
@@ -91,6 +111,9 @@ class _ContainerPageState extends State<ContainerPage> {
   Future<void> fetchItems() async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/items/listAll'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -101,7 +124,14 @@ class _ContainerPageState extends State<ContainerPage> {
             items.map((item) => item.category ?? 'Tous').toSet().toList();
         categories.sort();
       });
-    } else {}
+    } else {
+      Fluttertoast.showToast(
+        msg:
+            "Erreur lors de l'envoie des informations de l'objet: ${response.statusCode}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
   }
 
   Future<void> fetchItemsByCategory() async {
@@ -112,6 +142,9 @@ class _ContainerPageState extends State<ContainerPage> {
     final response = await http.get(
       Uri.parse(
           'http://${serverIp}:3000/api/items/listAllByCategory?category=$selectedCategory'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
@@ -130,11 +163,19 @@ class _ContainerPageState extends State<ContainerPage> {
   }
 
   Future<void> deleteItem(ItemListInfo message) async {
+    late int id;
+    if (message.id != null) {
+      id = message.id!;
+      print("${message}");
+    }
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     final response = await http.post(
       url,
-      body: json.encode({'id': message.id}),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      body: json.encode({'id': id}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
@@ -180,6 +221,9 @@ class _ContainerPageState extends State<ContainerPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: body,
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -189,7 +233,7 @@ class _ContainerPageState extends State<ContainerPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      fetchItems();
+      fetchItemsByCategory();
     } else {
       Fluttertoast.showToast(
           msg: "Erreur durant l'envoi la modification des informations",
@@ -339,7 +383,10 @@ class _ContainerPageState extends State<ContainerPage> {
     var response = await http.post(
       Uri.parse(apiUrl),
       body: json.encode(body),
-      headers: {'Content-Type': 'application/json; charset=UTF-8'},
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
@@ -347,7 +394,7 @@ class _ContainerPageState extends State<ContainerPage> {
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
       );
-      fetchItems();
+      fetchItemsByCategory();
     } else {
       Fluttertoast.showToast(
         msg: "Erreur lors de la création de l'objet",
@@ -414,7 +461,7 @@ class _ContainerPageState extends State<ContainerPage> {
                           selectedContainerId = int.tryParse(newValue!) ?? 0;
                         });
                       },
-                      items: containers.map((CtnList container) {
+                      items: containers.map((ContainerListData container) {
                         return DropdownMenuItem<String>(
                           value: container.id.toString(),
                           child: Text(container.city!),
@@ -489,6 +536,10 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 SizedBox(
                   width: 10,
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => deleteItem(item),
                 ),
               ],
             ),

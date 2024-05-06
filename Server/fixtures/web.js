@@ -3,94 +3,79 @@ const bcrypt = require("bcrypt");
 
 exports.createFixtures = async () => {
   try {
-    const organization = await db.Organization.create({
+    const userWeb = await db.User_Web.create({
       data: {
-        name: "Risu",
-        type: "Entreprise",
-        contactInformation: "Contact Information Example",
-        affiliate: {
+        id: 1,
+        email: "louis@gmail.com",
+        firstName: "louis",
+        lastName: "louis",
+        password: bcrypt.hashSync("louis", 12),
+        confirmed: true,
+      },
+    });
+
+    const adminWeb = await db.User_Web.create({
+      data: {
+        id: 2,
+        email: "risu.admin@gmail.com",
+        firstName: "admin",
+        lastName: "admin",
+        password: bcrypt.hashSync("admin", 12),
+        confirmed: true,
+      },
+    });
+
+    const container_web = await db.Containers.create({
+      data: {
+        id: 3,
+        price: 560.5,
+        city: "Nantes 2.0",
+        address: "Rue d'Alger",
+        latitude: 47.210537, // Epitech Nantes
+        longitude: -1.566808,
+        saveName: "container",
+        containerMapping: "",
+        price: 500.5,
+        width: 12,
+        height: 5,
+        items: {
           create: [
-            {
-              firstName: "Louis",
-              lastName: "Maestre",
-              email: "louis.maestre@hotmail.fr",
-              confirmed: true,
-              password: bcrypt.hashSync("louismaestre", 12),
-              company: "Risu",
-            },
-          ],
-        },
-        containers: {
-          create: [
-            {
-              id: 3,
-              city: "Paris",
-              address: "4 rue George",
-              items: {
-                create: [
-                  {
-                    id: 5,
-                    name: "Ballon de foot",
-                    price: 10,
-                    available: true,
-                    category: "sport",
-                    categories: {
-                      connect: [{ id: 2 }],
-                    },
-                  },
-                  {
-                    id: 6,
-                    name: "Ballon de volley",
-                    price: 20,
-                    available: false,
-                    category: "plage",
-                    categories: {
-                      connect: [{ id: 1 }],
-                    },
-                  },
-                ],
-              },
-            },
             {
               id: 4,
-              city: "Nantes",
-              address: "8 rue George",
-              items: {
-                create: [
-                  {
-                    id: 7,
-                    name: "Ballon de foot",
-                    price: 10,
-                    available: true,
-                    category: "sport",
-                    categories: {
-                      connect: [{ id: 2 }],
-                    },
-                  },
-                  {
-                    id: 8,
-                    name: "Ballon de volley",
-                    price: 20,
-                    available: false,
-                    category: "plage",
-                    categories: {
-                      connect: [{ id: 2 }],
-                    },
-                  },
-                ],
-              },
+              name: "Ballon de volley",
+              price: 0.5,
+              available: true,
+              category: "Plage",
+            },
+            {
+              id: 5,
+              name: "Raquette",
+              price: 1.0,
+              available: true,
+              category: "Tennis",
+            },
+            {
+              id: 6,
+              name: "Ballon de football",
+              price: 0.75,
+              available: false,
+              category: "Foot",
             },
           ],
         },
       },
     });
-    const user = await db.User_Web.create({
+
+    const organization = await db.Organization.create({
       data: {
-        firstName: "Admin",
-        lastName: "Risu",
-        email: "risu.admin@gmail.com",
-        confirmed: true,
-        password: bcrypt.hashSync("adminrisu", 12),
+        id: 1,
+        name: "Riri",
+        affiliate: {
+          connect: { id: userWeb.id },
+        },
+        containers: {
+          connect: { id: container_web.id },
+        },
       },
     });
   } catch (err) {

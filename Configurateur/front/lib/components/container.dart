@@ -5,7 +5,7 @@ import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
-class CtnList {
+class ContainerListData {
   final int? id;
   final dynamic? createdAt;
   final dynamic? organization;
@@ -18,7 +18,7 @@ class CtnList {
   final String? informations;
   final String? saveName;
 
-  CtnList({
+  ContainerListData({
     required this.id,
     required this.createdAt,
     required this.organization,
@@ -32,8 +32,8 @@ class CtnList {
     required this.saveName,
   });
 
-  factory CtnList.fromJson(Map<String, dynamic> json) {
-    return CtnList(
+  factory ContainerListData.fromJson(Map<String, dynamic> json) {
+    return ContainerListData(
       id: json['id'],
       createdAt: json['createdAt'],
       organization: json['organization'],
@@ -65,11 +65,11 @@ class CtnList {
 }
 
 class ContainerCards extends StatelessWidget {
-  final CtnList container;
-  final Function(CtnList) onDelete;
+  final ContainerListData container;
+  final Function(ContainerListData) onDelete;
   final String page;
 
-  late CtnList ctnInfo;
+  late ContainerListData ctnInfo;
 
   ContainerCards(
       {super.key,
@@ -100,7 +100,7 @@ class ContainerCards extends StatelessWidget {
                     : Text("Ville : pas de ville associé"),
                 subtitle: container.address != null
                     ? Text("adresse : ${container.address!}")
-                    : Text("adresse : pas de address"),
+                    : Text("adresse : aucune de address"),
               ),
             ),
             Row(

@@ -6,10 +6,10 @@ import 'package:front/screens/company/container-company.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
-Future<void> deleteContainer(CtnList container) async {}
+Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
-  final CtnList mockItem = CtnList(
+  final ContainerListData mockItem = ContainerListData(
     id: 1,
     createdAt: '2022-01-01',
     organization: "orga",
@@ -22,14 +22,11 @@ void main() {
     informations: "c'est une info",
     saveName: "Container V12",
   );
-  testWidgets('CtnList should render without error',
+  testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: ContainerCards(
-        container: mockItem,
-        onDelete: deleteContainer,
-        page: 'page'
-      ),
+          container: mockItem, onDelete: deleteContainer, page: 'page'),
     ));
 
     expect(find.byType(ContainerCards), findsOneWidget);
@@ -51,10 +48,11 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  testWidgets('CtnList should render without error',
+  testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
     final Map<String, dynamic> containerJson = mockItem.toMap();
-    final CtnList parsedContainer = CtnList.fromJson(containerJson);
+    final ContainerListData parsedContainer =
+        ContainerListData.fromJson(containerJson);
 
     expect(parsedContainer.id, mockItem.id);
     expect(parsedContainer.createdAt, mockItem.createdAt);
@@ -69,7 +67,7 @@ void main() {
     expect(parsedContainer.saveName, mockItem.saveName);
   });
 
-  testWidgets('CtnList should render without error',
+  testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: ContainerCards(
@@ -87,7 +85,7 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  testWidgets('CtnList test Icon arrow_forward',
+  testWidgets('ContainerListData test Icon arrow_forward',
       (WidgetTester tester) async {
     await tester.pumpWidget(MaterialApp(
       home: ContainerCards(
