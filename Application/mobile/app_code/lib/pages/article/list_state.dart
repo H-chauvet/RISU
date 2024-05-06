@@ -193,7 +193,6 @@ class ArticleListState extends State<ArticleListPage> {
                                       ),
                                     ),
                                   ).then((filters) {
-                                    // Handle returned filters here
                                     if (filters != null) {
                                       setState(() {
                                         isAscending = filters['isAscending'];
