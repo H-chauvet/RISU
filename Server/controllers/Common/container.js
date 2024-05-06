@@ -127,7 +127,7 @@ exports.getItemsFromContainer = (containerId) => {
   });
 };
 
-exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId) => {
+exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId, sortBy, min, max) => {
   try {
     const container = await db.Containers.findUnique({
       where: { id: containerId },
@@ -135,15 +135,25 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
     if (!container) {
       throw new Error("Container not found");
     }
+
+    let whereCondition = {
+      name: {
+        contains: articleName,
+      },
+      available: isAvailable,
+      categories: categoryId ? { some: { id: parseInt(categoryId) } } : undefined,
+    };
+
+    if (sortBy === 'price') {
+      whereCondition.price = {
+        gte: min,
+        lte: max,
+      };
+    }
+
     const orderBy = isAscending === true ? 'asc' : 'desc';
     return await db.Item.findMany({
-      where: {
-        name: {
-          contains: articleName,
-        },
-        available: isAvailable,
-        categories: categoryId ? { some: { id: parseInt(categoryId) } } : undefined,
-      },
+      where: whereCondition,
       select: {
         id: true,
         name: true,
@@ -156,8 +166,8 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
         categories: true,
       },
       orderBy: {
-        price: orderBy,
-      }
+        [sortBy]: orderBy,
+      },
     });
   } catch (error) {
     console.error("Error retrieving items with filters:", error);

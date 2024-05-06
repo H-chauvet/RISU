@@ -38,6 +38,9 @@ router.get('/:containerId/articleslist/', async (req, res) => {
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
     const isAvailable = req.query.isAvailable === 'true';
     const isAscending = req.query.isAscending === 'true';
+    const sortBy = req.query.sortBy || 'price';
+    const min = req.query.min || 0;
+    const max = req.query.max || 1000000;
 
     if (!req.params.containerId || req.params.containerId === '') {
       return res.status(401).json({ message: 'Missing containerId' })
@@ -47,7 +50,10 @@ router.get('/:containerId/articleslist/', async (req, res) => {
       articleName,
       isAscending,
       isAvailable,
-      categoryId
+      categoryId,
+      sortBy,
+      min,
+      max
     );
     return res.status(200).json(items)
   } catch (err) {
