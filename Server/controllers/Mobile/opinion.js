@@ -78,7 +78,6 @@ exports.createOpinion = (itemID, userId, note, comment) => {
  * @returns the opinion that correspond to the note
  */
 exports.getOpinions = (itemId, note = null) => {
-
   db.Item.findUnique({
     where: { id: itemId }
   })
