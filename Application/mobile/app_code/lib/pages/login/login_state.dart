@@ -11,6 +11,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/login/reset_password/reset_password_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -92,67 +93,6 @@ class LoginPageState extends State<LoginPage> {
       return false;
     }
     return false;
-  }
-
-  void apiResetPassword(BuildContext context) async {
-    try {
-      if (_email == null) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: AppLocalizations.of(context)!.error,
-          message: AppLocalizations.of(context)!.emailNotFilled,
-        );
-        return;
-      }
-      if (_email == 'admin@gmail.com') {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: AppLocalizations.of(context)!.error,
-          message: AppLocalizations.of(context)!.passwordCantResetAdmin,
-        );
-        return;
-      }
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
-      var response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/user/resetPassword'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': _email!,
-        }),
-      );
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
-      if (response.statusCode == 200) {
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.email,
-            message:
-                AppLocalizations.of(context)!.passwordTemporarySent(_email!),
-          );
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'apiResetPassword',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringPasswordReset);
-        }
-      }
-    } catch (err, stacktrace) {
-      if (context.mounted) {
-        printCatchError(context, err, stacktrace,
-            message:
-                AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
-
-        return;
-      }
-      return;
-    }
   }
 
   @override
@@ -255,9 +195,16 @@ class LoginPageState extends State<LoginPage> {
                           TextButton(
                             key: const Key('login-textbutton_resetpassword'),
                             onPressed: () {
-                              setState(() {
-                                apiResetPassword(context);
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return ResetPasswordPage(
+                                      email: _email,
+                                    );
+                                  },
+                                ),
+                              );
                             },
                             child: Text(
                               "${AppLocalizations.of(context)!.passwordForgotten} ?",
