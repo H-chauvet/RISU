@@ -19,7 +19,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
   String? _email;
 
-  Future<void> apiResetPassword(BuildContext context) async {
+  Future<bool> apiResetPassword(BuildContext context) async {
     try {
       if (_email == null) {
         await MyAlertDialog.showErrorAlertDialog(
@@ -27,7 +27,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
           title: AppLocalizations.of(context)!.error,
           message: AppLocalizations.of(context)!.emailNotFilled,
         );
-        return;
+        return false;
       }
       if (_email == 'admin@gmail.com') {
         await MyAlertDialog.showErrorAlertDialog(
@@ -35,7 +35,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
           title: AppLocalizations.of(context)!.error,
           message: AppLocalizations.of(context)!.passwordCantResetAdmin,
         );
-        return;
+        return false;
       }
       setState(() {
         _loaderManager.setIsLoading(true);
@@ -60,12 +60,14 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
             message:
                 AppLocalizations.of(context)!.passwordTemporarySent(_email!),
           );
+          return true;
         }
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'apiResetPassword',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringPasswordReset);
+          return false;
         }
       }
     } catch (err, stacktrace) {
@@ -74,10 +76,11 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
             message:
                 AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
 
-        return;
+        return false;
       }
-      return;
+      return false;
     }
+    return false;
   }
 
   @override
@@ -104,6 +107,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
               child: Column(
                 children: [
                   Text(
+                    key: const Key('ask_reset_password-text_description'),
                     AppLocalizations.of(context)!.resetPasswordDescription,
                     style: TextStyle(
                       fontSize: 16,
@@ -114,7 +118,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
                   ),
                   const SizedBox(height: 16),
                   MyTextInput(
-                    key: const Key('email-input'),
+                    key: const Key('ask_reset_password-textinput_email'),
                     labelText: AppLocalizations.of(context)!.email,
                     initialValue: widget.email,
                     icon: Icons.email,
@@ -122,7 +126,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
                     onChanged: (value) => _email = value,
                   ),
                   TextButton(
-                    key: const Key('reset_password-textbutton_gotologin'),
+                    key: const Key('ask_reset_password-textbutton_gotologin'),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -142,11 +146,11 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
                   const Expanded(child: SizedBox()),
                   Center(
                     child: MyButton(
-                      key: const Key('reset-password-button'),
+                      key: const Key('ask_reset_password-button_send'),
                       text: AppLocalizations.of(context)!.send,
                       onPressed: () {
-                        apiResetPassword(context)
-                            .then((value) => Navigator.pop(context));
+                        apiResetPassword(context).then(
+                            (value) => {if (value) Navigator.pop(context)});
                       },
                     ),
                   ),
