@@ -4,8 +4,9 @@ const router = express.Router()
 const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const ticketCtrl = require("../../controllers/Common/tickets")
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.get('/',
+router.get('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -25,7 +26,7 @@ router.get('/',
   }
 )
 
-router.post('/',
+router.post('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -36,7 +37,7 @@ router.post('/',
         return res.status(404).send('User not found');
       }
 
-      const { content, title, assignedId, chatUid } = req.body
+      const { content, title, createdAt, assignedId, chatUid } = req.body
 
       if (!content || !title) {
         return res.status(400).send("Bad Request : Missing required parameters")
@@ -60,6 +61,7 @@ router.post('/',
         content,
         title,
         creatorId,
+        createdAt : new Date(createdAt),
         assignedId : assignedId ?? "",
         chatUid : chatUid
       })
@@ -72,7 +74,7 @@ router.post('/',
   }
 )
 
-router.put('/assign/:assignedId',
+router.put('/assign/:assignedId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -104,7 +106,7 @@ router.put('/assign/:assignedId',
   }
 )
 
-router.put('/:chatId',
+router.put('/:chatId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -130,7 +132,7 @@ router.put('/:chatId',
   }
 )
 
-router.delete('/:chatId',
+router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

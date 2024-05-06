@@ -40,6 +40,12 @@ void main() {
           find.byKey(const Key('profile-button-my_rentals_button'));
       expect(buttonRent, findsOneWidget);
 
+      expect(
+          find.text(AppLocalizations.of(context)!.myFavorites), findsOneWidget);
+      Finder buttonFavorite =
+          find.byKey(const Key('profile-button-my_favorites_button'));
+      expect(buttonFavorite, findsOneWidget);
+
       await tester.tap(buttonSettings);
       await tester.pumpAndSettle();
     });
@@ -59,7 +65,22 @@ void main() {
       await tester.pump();
     });
 
-/*    testWidgets('Profile page with complete user info (Log out)',
+    testWidgets('Profile page, test the favorite button',
+        (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      await tester.pumpWidget(initPage(const ProfilePage()));
+      BuildContext context = tester.element(find.byType(ProfilePage));
+
+      expect(find.text(AppLocalizations.of(context)!.myRents), findsOneWidget);
+      Finder buttonFavorite =
+          find.byKey(const Key('profile-button-my_favorites_button'));
+      expect(buttonFavorite, findsOneWidget);
+
+      await tester.tap(buttonFavorite);
+      await tester.pump();
+    });
+
+    testWidgets('Profile page with complete user info (Log out)',
         (WidgetTester tester) async {
       userInformation = initExampleUser();
       await tester.pumpWidget(initPage(const ProfilePage()));
@@ -70,7 +91,7 @@ void main() {
 
       await tester.tap(buttonLogOut);
       await tester.pumpAndSettle();
-    });*/
+    });
 
     testWidgets('Profile page with no user info', (WidgetTester tester) async {
       userInformation = initNullUser();

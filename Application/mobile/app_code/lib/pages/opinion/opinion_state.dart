@@ -58,14 +58,14 @@ class OpinionPageState extends State<OpinionPage> {
           opinionsList = data['opinions'];
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'getOpinions',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingReviews);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -74,6 +74,7 @@ class OpinionPageState extends State<OpinionPage> {
                 .errorOccurredDuringGettingReviews);
         return;
       }
+      return;
     }
   }
 
@@ -98,7 +99,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -107,14 +108,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'postOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSavingReview);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -122,6 +123,7 @@ class OpinionPageState extends State<OpinionPage> {
             message: AppLocalizations.of(context)!.connectionRefused);
         return;
       }
+      return;
     }
   }
 
@@ -146,7 +148,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -155,14 +157,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'updateOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringReviewUpdate);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -190,7 +192,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           getOpinions(itemId);
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
@@ -199,14 +201,14 @@ class OpinionPageState extends State<OpinionPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'deleteOpinion',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringReviewDeletion);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -274,6 +276,14 @@ class OpinionPageState extends State<OpinionPage> {
                       text: AppLocalizations.of(context)!.add,
                       key: const Key('opinion-button_add'),
                       onPressed: () {
+                        if (comment == '') {
+                          MyAlertDialog.showInfoAlertDialog(
+                            context: context,
+                            title: AppLocalizations.of(context)!.invalidForm,
+                            message: AppLocalizations.of(context)!.fillComment,
+                          );
+                          return;
+                        }
                         postOpinion(selectedStar, comment);
                         Navigator.of(context).pop();
                       },
@@ -416,7 +426,7 @@ class OpinionPageState extends State<OpinionPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
+        textTitle: AppLocalizations.of(context)!.reviewsList,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -434,14 +444,6 @@ class OpinionPageState extends State<OpinionPage> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            AppLocalizations.of(context)!.reviewsList,
-                            key: const Key('opinion-title'),
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           Center(
                             child: Column(
                               children: [
@@ -535,12 +537,13 @@ class OpinionPageState extends State<OpinionPage> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    (userInformation?.firstName !=
+                                                    (opinion['user'][
+                                                                    'firstName'] !=
                                                                 null &&
-                                                            userInformation
-                                                                    ?.lastName !=
+                                                            opinion['user'][
+                                                                    'lastName'] !=
                                                                 null)
-                                                        ? '${userInformation!.firstName} ${userInformation!.lastName}'
+                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
                                                         : AppLocalizations.of(
                                                                 context)!
                                                             .anonymous,

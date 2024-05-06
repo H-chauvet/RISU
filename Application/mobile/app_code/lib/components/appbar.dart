@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
-  final bool showLogo;
   final Color curveColor;
+  final String textTitle;
+  final Widget? action;
   late void Function()? onBackButtonPressed;
 
   MyAppBar({
     super.key,
     required this.curveColor,
     this.showBackButton = true,
-    this.showLogo = true,
+    this.textTitle = "",
+    this.action,
     this.onBackButtonPressed,
   });
 
@@ -28,13 +32,27 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                 onPressed: onBackButtonPressed!,
               )
             : null,
-        title: showLogo
+        title: textTitle == ""
             ? Image.asset(
                 key: const Key('appbar-image_logo'),
                 'assets/logo.png',
                 height: 192,
               )
-            : null,
+            : Text(
+                textTitle,
+                key: const Key('appbar-text_title'),
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.primaryColor),
+                ),
+              ),
+        actions: <Widget>[
+          if (action != null) ...[
+            action!,
+          ]
+        ],
         centerTitle: true,
         toolbarHeight: preferredSize.height,
         backgroundColor: Colors.transparent,

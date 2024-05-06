@@ -17,6 +17,7 @@ import 'package:risu/utils/providers/theme.dart';
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
   late ArticleData data;
+  late int locationId;
   final LoaderManager _loaderManager = LoaderManager();
 
   void sendInvoice() async {
@@ -26,7 +27,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       });
       final response = await http.post(
         Uri.parse(
-            'http://$serverIp:3000/api/mobile/rent/${widget.data.id}/invoice'),
+            'http://$serverIp:3000/api/mobile/rent/${locationId}/invoice'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -36,7 +37,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
         _loaderManager.setIsLoading(false);
       });
       if (response.statusCode == 201) {
-        if (context.mounted) {
+        if (mounted) {
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
@@ -44,14 +45,14 @@ class ConfirmRentState extends State<ConfirmRentPage> {
           );
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -68,6 +69,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
     super.initState();
     hours = widget.hours;
     data = widget.data;
+    locationId = widget.locationId;
   }
 
   @override
@@ -80,7 +82,6 @@ class ConfirmRentState extends State<ConfirmRentPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        showLogo: true,
       ),
       endDrawer: const BurgerDrawer(),
       body: SingleChildScrollView(

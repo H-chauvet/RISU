@@ -13,14 +13,14 @@ const { db } = require('../../middleware/database')
 exports.createOpinion = (itemID, userId, note, comment) => {
 
   return db.Opinions_Mobile.create({
-      data: {
-        userId: userId,
-        date: new Date(),
-        note: note,
-        comment: comment,
-        itemId: itemID
-      }
-    })
+    data: {
+      userId: userId,
+      date: new Date(),
+      note: note,
+      comment: comment,
+      itemId: itemID
+    }
+  })
 }
 
 
@@ -37,11 +37,39 @@ exports.getOpinions = (itemId, note = null) => {
 
   if (note) {
     return db.Opinions_Mobile.findMany({
-      where: { note: note, itemId: itemId }
+      where: { note: note, itemId: itemId },
+      select: {
+        id: true,
+        userId: true,
+        date: true,
+        comment: true,
+        note: true,
+        itemId: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          }
+        }
+      }
     })
   } else {
     return db.Opinions_Mobile.findMany({
-      where: { itemId: itemId }
+      where: { itemId: itemId },
+      select: {
+        id: true,
+        userId: true,
+        date: true,
+        comment: true,
+        note: true,
+        itemId: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+          }
+        }
+      }
     })
   }
 }

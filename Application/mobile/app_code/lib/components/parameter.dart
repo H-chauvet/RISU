@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'divider.dart';
 
@@ -37,10 +38,13 @@ class MyRedirectDivider extends StatelessWidget {
     } else {
       if (disconnect) {
         userInformation = null;
-        Navigator.pushNamedAndRemoveUntil(
+        final prefs = SharedPreferences.getInstance();
+        prefs.then((value) {
+          value.setString('refreshToken', '');
+        });
+        Navigator.pushAndRemoveUntil(
           context,
-          pageName,
-          arguments: MaterialPageRoute(
+          MaterialPageRoute(
             builder: (context) {
               return goToPage;
             },

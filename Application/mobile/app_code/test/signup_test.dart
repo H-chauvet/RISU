@@ -18,6 +18,7 @@ void main() {
       // This code runs after each test case.
     });
 
+    Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
     Finder textinputRightIconFinder =
         find.byKey(const Key('textinput-button_righticon'));
     find.byKey(const Key('signup-textinput_email'));
@@ -28,6 +29,7 @@ void main() {
       await tester.pumpWidget(initPage(const SignupPage()));
 
       // Check if key widgets are present
+      expect(logoFinder, findsOneWidget);
       expect(find.byKey(const Key('signup-appbar')), findsOneWidget);
       expect(find.byKey(const Key('signup-text_title')), findsOneWidget);
       expect(find.byKey(const Key('signup-textinput_email')), findsOneWidget);

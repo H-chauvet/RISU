@@ -11,8 +11,9 @@ const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.post('/article',
+router.post('/article', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -41,7 +42,7 @@ router.post('/article',
       await itemCtrl.updateItem(item.id, {
         price: item.price,
         available: false
-       })
+      })
 
       const location = await rentCtrl.rentItem(
         locationPrice,
@@ -96,7 +97,7 @@ router.post('/article',
 
       await rentCtrl.updateRentInvoice(location.id, invoiceData);
 
-      return res.status(201).json({ message: 'location saved' })
+      return res.status(201).json({ rentId: location.id, message: 'location saved'})
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred' + err.message)
@@ -104,7 +105,7 @@ router.post('/article',
   }
 )
 
-router.post('/:locationId/invoice',
+router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -137,7 +138,7 @@ router.post('/:locationId/invoice',
   }
 )
 
-router.get('/listAll',
+router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -156,7 +157,7 @@ router.get('/listAll',
   }
 )
 
-router.get('/:rentId',
+router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
@@ -184,7 +185,7 @@ router.get('/:rentId',
   }
 )
 
-router.post('/:rentId/return',
+router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {

@@ -26,6 +26,8 @@ void main() {
       BuildContext context = tester.element(find.byType(RentArticlePage));
 
       // Replace these keys with the actual keys used in your RentArticlePage UI
+
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
       Finder confirmButtonFinder = find.byKey(const Key('confirm-rent-button'));
       Finder incrementButtonFinder =
           find.byKey(const Key('increment-hours-button'));
@@ -33,6 +35,7 @@ void main() {
           find.byKey(const Key('decrement-hours-button'));
 
       // Verify the initial state
+      expect(appBarTitleData, findsOneWidget);
       expect(confirmButtonFinder, findsOneWidget);
       expect(incrementButtonFinder, findsOneWidget);
       expect(decrementButtonFinder, findsOneWidget);

@@ -30,8 +30,7 @@ void main() {
     expect(find.byType(AdminPage), findsOneWidget);
 
     // Check the presence of certain widgets
-    expect(find.text('Administration'), findsOneWidget);
-    expect(find.byType(CustomAppBar), findsOneWidget);
+    expect(find.text('Administration de RISU'), findsOneWidget);
 
     // Assuming there are 3 buttons for managing messages, users, and articles
     expect(find.widgetWithText(ElevatedButton, 'Gestion des messages'),

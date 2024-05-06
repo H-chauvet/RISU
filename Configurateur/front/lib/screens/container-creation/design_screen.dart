@@ -292,7 +292,6 @@ class DesignScreenState extends State<DesignScreen> {
       'Access-Control-Allow-Origin': '*',
     };
 
-    dynamic container = jsonDecode(widget.container!);
     if (widget.id == null) {
       HttpService().request('http://$serverIp:3000/api/container/create',
           header, <String, String>{
@@ -313,6 +312,7 @@ class DesignScreenState extends State<DesignScreen> {
         }
       });
     } else {
+      dynamic container = jsonDecode(widget.container!);
       HttpService().putRequest('http://$serverIp:3000/api/container/update',
           header, <String, String>{
         'id': widget.id!,
@@ -515,13 +515,25 @@ class DesignScreenState extends State<DesignScreen> {
                                 ElevatedButton(
                                     onPressed: () async {
                                       picked =
-                                          await FilePicker.platform.pickFiles();
+                                          await FilePicker.platform.pickFiles(
+                                        type: FileType.image,
+                                      );
 
                                       if (!mounted) {
                                         return;
                                       }
                                       if (picked != null) {
-                                        openAddDialog(context);
+                                        if (picked!.files.single.bytes!.length >
+                                            1000000) {
+                                          Fluttertoast.showToast(
+                                            msg:
+                                                "L'image ne doit pas dépasser 1 Mo",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.CENTER,
+                                          );
+                                        } else {
+                                          openAddDialog(context);
+                                        }
                                       }
                                       setState(() {});
                                     },

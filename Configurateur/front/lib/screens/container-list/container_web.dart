@@ -81,9 +81,8 @@ class ContainerCard extends StatelessWidget {
             child: Column(
               children: [
                 ListTile(
-                  title: Text("id du conteneur : " + container.id.toString()),
-                  subtitle:
-                      Text("prix du conteneur : " + container.price.toString()),
+                  title: Text("Conteneur N° : ${container.id}"),
+                  subtitle: Text("Prix de création : ${container.price}"),
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -91,7 +90,7 @@ class ContainerCard extends StatelessWidget {
                         icon: const Icon(Icons.delete),
                         onPressed: () => onDelete(container),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       if (container.city != null) Text(container.city!),
