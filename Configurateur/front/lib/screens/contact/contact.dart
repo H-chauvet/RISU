@@ -446,7 +446,7 @@ class _ContactPageState extends State<ContactPage> {
                                           : lightTheme.secondaryHeaderColor,
                                 ),
                               ),
-                              const SizedBox(height: 50),
+                              const SizedBox(height: 38),
                               Container(
                                 width: double.infinity,
                                 height: 400,
