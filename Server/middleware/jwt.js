@@ -11,7 +11,7 @@ function generateAccessToken(user) {
   return jwt.sign(
     { userId: user.id, userMail: user.email, confirmed: user.confirmed },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: "1h" },
+    { expiresIn: "1h" }
   );
 }
 
@@ -51,21 +51,8 @@ function generateToken(id, longTerm = false) {
   });
 }
 
-const checkToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
-    return res.status(401).json({ message: "Unauthorized: Missing token" });
-  }
-  const token = authHeader.split(" ")[1];
-  if (!verifyToken(token)) {
-    return res.status(401).json({ message: "Unauthorized: Invalid token" });
-  }
-  next();
-};
-
 module.exports = {
   generateAccessToken,
   hashToken,
   verifyToken,
-  checkToken,
 };
