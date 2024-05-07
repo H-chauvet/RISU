@@ -82,7 +82,9 @@ class _ContactPageState extends State<ContactPage> {
             'Contacter le support RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
               color: Provider.of<ThemeService>(context).isDark
@@ -100,8 +102,8 @@ class _ContactPageState extends State<ContactPage> {
             ),
           ),
           const SizedBox(height: 100),
-          Padding(
-            padding: const EdgeInsets.only(right: 400, left: 400),
+          FractionallySizedBox(
+            widthFactor: 0.8,
             child: Form(
               key: _formKey,
               child: Column(
@@ -214,81 +216,15 @@ class _ContactPageState extends State<ContactPage> {
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor
                             : lightTheme.primaryColor,
-                        fontSize: 18,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Veuillez entrer votre email';
-                  } else if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$')
-                      .hasMatch(value)) {
-                    return 'Veuillez entrer un email valide';
-                  } else {
-                    return null;
-                  }
-                },
-                onSaved: (value) {
-                  _email = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Message',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                ),
-                maxLines: 5,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Veuillez entrer votre message';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _message = value!;
-                },
-              ),
-              const SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    sendFormData(_formKey, _surname, _name, _email, _message);
-                  } else {}
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-                child: Text(
-                  'Envoyer',
-                  style: TextStyle(
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

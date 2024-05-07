@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/google/google.dart';
@@ -67,7 +69,9 @@ class LoginScreenState extends State<LoginScreen> {
             'Connectez-vous au site RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
               color: Provider.of<ThemeService>(context).isDark
@@ -86,7 +90,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.5,
               height: MediaQuery.of(context).size.height * 0.7,
               child: Form(
                 key: formKey,
@@ -157,8 +161,12 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      height: 40,
-                      width: 200,
+                      height: screenFormat == ScreenFormat.desktop
+                          ? desktopButtonHeight
+                          : tabletButtonHeight,
+                      width: screenFormat == ScreenFormat.desktop
+                          ? desktopButtonWidth
+                          : tabletButtonWidth,
                       child: ElevatedButton(
                         key: const Key('login'),
                         onPressed: () {
@@ -216,7 +224,9 @@ class LoginScreenState extends State<LoginScreen> {
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
-                            fontSize: 18,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
                       ),
@@ -230,17 +240,35 @@ class LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Text("Nouveau sur la plateforme ? "),
+                            children: <Widget>[
+                              Text(
+                                "Nouveau sur la plateforme ? ",
+                                style: TextStyle(
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
+                              ),
                               Text(
                                 'Créer un compte.',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
                               ),
                             ]),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text("Se connecter avec :"),
+                    Text(
+                      "Se connecter avec :",
+                      style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize),
+                    ),
                     const SizedBox(height: 10),
                     GoogleLogo(
                       screenFormat: screenFormat,
