@@ -35,22 +35,6 @@ function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
 
-function generateToken(id, longTerm = false) {
-  if (!process.env.REFRESH_JWT_EXPIRE) {
-    throw new Error("REFRESH_JWT_EXPIRE not found in .env");
-  } else if (!process.env.JWT_EXPIRE) {
-    throw new Error("JWT_EXPIRE not found in .env");
-  } else if (!process.env.JWT_ACCESS_SECRET) {
-    throw new Error("JWT_ACCESS_SECRET not found in .env");
-  }
-  const expireInSeconds = longTerm
-    ? parseInt(process.env.REFRESH_JWT_EXPIRE)
-    : parseInt(process.env.JWT_EXPIRE);
-  return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: expireInSeconds,
-  });
-}
-
 module.exports = {
   generateAccessToken,
   hashToken,

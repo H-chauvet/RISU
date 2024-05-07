@@ -112,11 +112,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi de modification des informations",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+        msg: "Erreur durant l'envoi de modification des informations",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -204,11 +205,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi de modification des informations",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+        msg: "Erreur durant l'envoi de modification des informations",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -367,11 +369,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi de modification des informations",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+        msg: "Erreur durant l'envoi de modification des informations",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+      );
     }
   }
 
@@ -612,15 +615,17 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ],
                 ),
               ),
-              const Text("Nos Objets :",
-                  style: TextStyle(
-                    color: Color.fromRGBO(70, 130, 180, 1),
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 2.0,
-                    decorationStyle: TextDecorationStyle.solid,
-                  )),
+              const Text(
+                "Nos Objets :",
+                style: TextStyle(
+                  color: Color.fromRGBO(70, 130, 180, 1),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationThickness: 2.0,
+                  decorationStyle: TextDecorationStyle.solid,
+                ),
+              ),
               SizedBox(
                 height: 65,
               ),

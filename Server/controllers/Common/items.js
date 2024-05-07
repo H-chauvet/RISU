@@ -14,6 +14,12 @@ exports.getItemByContainerId = (containerId) => {
   });
 };
 
+/**
+ * Retrieve every item with category from a container
+ *
+ * @param {number} category category of the items
+ * @returns every item with specific category in a specific container
+ */
 exports.getItemByCategory = (category) => {
   return db.Item.findMany({
     where: {
@@ -22,7 +28,12 @@ exports.getItemByCategory = (category) => {
   });
 };
 
-exports.getAllItem = (containerId) => {
+/**
+ * Retrieve every item
+ *
+ * @returns every item in the database
+ */
+exports.getAllItem = () => {
   return db.Item.findMany({});
 };
 
@@ -109,6 +120,12 @@ exports.getAvailableItemsCount = (containerId) => {
   });
 };
 
+/**
+ * Update the name of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the name changed
+ */
 exports.updateName = (item) => {
   return db.Item.update({
     where: {
@@ -120,6 +137,12 @@ exports.updateName = (item) => {
   });
 };
 
+/**
+ * Update the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the name changed
+ */
 exports.updateItemCtn = (item) => {
   return db.Item.update({
     where: {
@@ -134,6 +157,12 @@ exports.updateItemCtn = (item) => {
   });
 };
 
+/**
+ * Update the price of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the price changed
+ */
 exports.updatePrice = (item) => {
   return db.Item.update({
     where: {
@@ -145,6 +174,12 @@ exports.updatePrice = (item) => {
   });
 };
 
+/**
+ * Update the description of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the description changed
+ */
 exports.updateDescription = (item) => {
   return db.Item.update({
     where: {

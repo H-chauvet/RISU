@@ -235,11 +235,12 @@ class _ContainerPageState extends State<ContainerPage> {
       fetchItemsByCategory();
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi de modification des informations",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+        msg: "Erreur durant l'envoi de modification des informations",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.red,
+      );
     }
   }
 

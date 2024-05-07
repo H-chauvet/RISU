@@ -66,18 +66,19 @@ class AppRouter {
             return ContainerProfilPage(container: container);
           } else {
             return ContainerProfilPage(
-                container: ContainerListData(
-                    id: null,
-                    createdAt: null,
-                    organization: null,
-                    organizationId: null,
-                    containerMapping: null,
-                    price: null,
-                    address: null,
-                    city: null,
-                    design: null,
-                    informations: null,
-                    saveName: null));
+              container: ContainerListData(
+                  id: null,
+                  createdAt: null,
+                  organization: null,
+                  organizationId: null,
+                  containerMapping: null,
+                  price: null,
+                  address: null,
+                  city: null,
+                  design: null,
+                  informations: null,
+                  saveName: null),
+            );
           }
         },
       ),
