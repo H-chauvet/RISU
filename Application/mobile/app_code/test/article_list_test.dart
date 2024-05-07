@@ -25,4 +25,36 @@ void main() {
     expect(articleCard, findsNothing);
     expect(appBarTitleData, findsOneWidget);
   });
+
+  testWidgets('Container details empty page after loading',
+      (WidgetTester tester) async {
+    final testPage = initPage(const ArticleListPage(containerId: -1));
+    waitForLoader(tester: tester, testPage: testPage);
+  });
+
+  testWidgets('Container details with test data', (WidgetTester tester) async {
+    final item1 = {
+      "id": -1,
+      "name": "Ballon de volley",
+      "containerId": -1,
+      "price": 0.5,
+      "available": true,
+      "categories": []
+    };
+
+    final item2 = {
+      "id": -1,
+      "name": "Raquette",
+      "containerId": -1,
+      "price": 10.5,
+      "available": false,
+      "categories": []
+    };
+
+    List<dynamic> testData = [item1, item2, item1, item2];
+
+    final testPage =
+        initPage(ArticleListPage(containerId: -1, testItemData: testData));
+    await tester.pumpWidget(testPage);
+  });
 }

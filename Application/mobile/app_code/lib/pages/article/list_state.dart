@@ -63,11 +63,16 @@ class ArticleListState extends State<ArticleListPage> {
   void initState() {
     super.initState();
     _containerId = widget.containerId;
-    getItemsData(context, _containerId).then((dynamic value) {
-      setState(() {
-        _itemsDatas = value;
-      });
+    setState(() {
+      _itemsDatas = widget.testItemData;
     });
+    if (_itemsDatas.isEmpty) {
+      getItemsData(context, _containerId).then((dynamic value) {
+        setState(() {
+          _itemsDatas = value;
+        });
+      });
+    }
   }
 
   @override
