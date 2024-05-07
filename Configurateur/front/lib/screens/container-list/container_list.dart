@@ -11,7 +11,6 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -82,11 +81,11 @@ class _ContainerPageState extends State<ContainerPage> {
     }
   }
 
-  Future<void> deleteContainer(ContainerListData message) async {
+  Future<void> deleteContainer(ContainerListData conteneur) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
     final response = await http.post(
       url,
-      body: json.encode({'id': message.id}),
+      body: json.encode({'id': conteneur.id}),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $jwtToken',
@@ -94,14 +93,14 @@ class _ContainerPageState extends State<ContainerPage> {
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'Conteneur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
       fetchContainers();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg: 'Erreur lors de la suppression du conteneur: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -162,11 +161,10 @@ class _ContainerPageState extends State<ContainerPage> {
     }
   }
 
-  Future<void> deleteItem(ItemListInfo message) async {
+  Future<void> deleteItem(ItemListInfo item) async {
     late int id;
-    if (message.id != null) {
-      id = message.id!;
-      print("${message}");
+    if (item.id != null) {
+      id = item.id!;
     }
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     final response = await http.post(
@@ -179,14 +177,14 @@ class _ContainerPageState extends State<ContainerPage> {
     );
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'Message supprimé avec succès',
+        msg: 'Objet supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
       fetchItems();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du message: ${response.statusCode}',
+        msg: 'Erreur lors de la suppression du objet: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -705,10 +703,11 @@ class _ContainerPageState extends State<ContainerPage> {
                                         child: Text('Tous'),
                                       ),
                                       for (var category in categories)
-                                        DropdownMenuItem(
-                                          value: category,
-                                          child: Text(category),
-                                        ),
+                                        if (category != 'Tous')
+                                          DropdownMenuItem(
+                                            value: category,
+                                            child: Text(category),
+                                          ),
                                     ],
                                   ),
                                 ],

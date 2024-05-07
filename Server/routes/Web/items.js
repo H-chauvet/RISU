@@ -6,8 +6,13 @@ const jwtMiddleware = require("../../middleware/jwt");
 
 router.post(
   "/delete",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const { id } = req.body;
       if (!id) {
@@ -22,7 +27,13 @@ router.post(
   }
 );
 
-router.post("/create", jwtMiddleware.checkToken, async (req, res) => {
+router.post("/create", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
   try {
     const { id, name, available, price, containerId, description, image } =
       req.body;
@@ -44,8 +55,13 @@ router.post("/create", jwtMiddleware.checkToken, async (req, res) => {
 
 router.put(
   "/update",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const { id, name, available, containerId, price, image, description } =
         req.body;
@@ -73,8 +89,13 @@ router.put(
 
 router.post(
   "/update/:itemId",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     const id = parseInt(req.params.itemId);
     try {
       const { name, description, price, available } = req.body;
@@ -114,8 +135,13 @@ router.post(
 
 router.get(
   "/listAllByContainerId",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const containerId = req.query.containerId;
       const item = await itemCtrl.getItemByContainerId(parseInt(containerId));
@@ -129,8 +155,13 @@ router.get(
 
 router.get(
   "/listAllByCategory",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const category = req.query.category;
       const item = await itemCtrl.getItemByCategory(category);
@@ -144,8 +175,13 @@ router.get(
 
 router.get(
   "/listAll",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     try {
       const item = await itemCtrl.getAllItem();
 
@@ -158,8 +194,13 @@ router.get(
 
 router.post(
   "/update-name/:id",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     const id = parseInt(req.params.id);
     try {
       const { name } = req.body;
@@ -190,8 +231,13 @@ router.post(
 
 router.post(
   "/update-price/:id",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     const id = parseInt(req.params.id);
     try {
       const { price } = req.body;
@@ -222,8 +268,13 @@ router.post(
 
 router.post(
   "/update-description/:id",
-  jwtMiddleware.checkToken,
   async function (req, res, next) {
+    try {
+      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    } catch (err) {
+      res.status(401);
+      throw new Error("Unauthorized");
+    }
     const id = parseInt(req.params.id);
     try {
       const { description } = req.body;

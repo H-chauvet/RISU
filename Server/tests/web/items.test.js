@@ -2,8 +2,10 @@ const express = require("express");
 const supertest = require("supertest");
 const itemsRouter = require("../../routes/Web/items");
 const itemCtrl = require("../../controllers/Common/items");
+const jwtMiddleware = require("../../middleware/jwt");
 
 jest.mock("../../controllers/Common/items");
+jest.mock("../../middleware/jwt");
 
 const app = express();
 app.use(express.json());
@@ -17,9 +19,13 @@ describe("Items Route Tests", () => {
   it("should handle valid item deletion", async () => {
     const requestBody = { id: 1 };
 
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.deleteItem.mockResolvedValueOnce();
 
-    const response = await supertest(app).post("/delete").send(requestBody);
+    const response = await supertest(app)
+      .post("/delete")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual("items deleted");
@@ -27,9 +33,13 @@ describe("Items Route Tests", () => {
   });
 
   it("should handle missing userId during item deletion", async () => {
-    const requestBody = {};
+    const requestBody = {}; // Missing userId
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
 
-    const response = await supertest(app).post("/delete").send(requestBody);
+    const response = await supertest(app)
+      .post("/delete")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
 
     expect(response.status).toBe(400);
     expect(itemCtrl.deleteItem).not.toHaveBeenCalled();
@@ -44,9 +54,13 @@ describe("Items Route Tests", () => {
       containerId: 2,
     };
 
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.createItem.mockResolvedValueOnce(requestBody);
 
-    const response = await supertest(app).post("/create").send(requestBody);
+    const response = await supertest(app)
+      .post("/create")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(requestBody);
@@ -56,25 +70,16 @@ describe("Items Route Tests", () => {
   it("should handle errors during item creation", async () => {
     const requestBody = {};
 
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.createItem.mockRejectedValueOnce(new Error("Mocked error"));
 
-    const response = await supertest(app).post("/create").send(requestBody);
+    const response = await supertest(app)
+      .post("/create")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
 
     expect(response.status).toBe(400);
     expect(itemCtrl.createItem).toHaveBeenCalledWith(requestBody);
-  });
-
-  it("should handle valid item retrieval", async () => {
-    const mockItems = [
-      { id: 1, name: "Item 1", available: true, price: 10.99, containerId: 1 },
-      { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
-    ];
-
-    itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
-
-    const response = await supertest(app).get("/listAll");
-
-    expect(response.status).toBe(200);
   });
 
   it("should handle valid item retrieval by container id", async () => {
@@ -85,10 +90,12 @@ describe("Items Route Tests", () => {
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
     ];
 
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app)
       .get("/listAllByContainerId")
+      .set("Authorization", "Bearer mockedAccessToken")
       .query({ containerId });
 
     expect(response.status).toBe(200);

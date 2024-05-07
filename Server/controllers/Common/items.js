@@ -33,9 +33,8 @@ exports.getAllItem = (containerId) => {
  * @returns one item if an id correspond
  */
 exports.getItemFromId = (id) => {
-  const intId = parseInt(id);
   return db.Item.findUnique({
-    where: { id: intId },
+    where: { id: parseInt(id) },
     include: {
       categories: true // inclure les catégories liées à l'élément
     }

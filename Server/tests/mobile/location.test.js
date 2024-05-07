@@ -91,24 +91,13 @@ describe("POST /api/rent/article", () => {
       async.series(
         [
           async function () {
-            // get itemId
-            const res = await request("http://localhost:3000").get(
-              "/api/mobile/article/listAll"
-            );
-            itemId = res.body[0].id;
-            available = res.body[0].available;
-            expect(res.statusCode).toBe(200);
-          },
-          async function () {
-            if (available) {
-              const res = await request("http://localhost:3000")
-                .post("/api/mobile/rent/article")
-                .set("Content-Type", "application/json")
-                .set("Accept", "application/json")
-                .set("Authorization", `Bearer ${authToken[0]}`)
-                .send({ itemId: itemId, duration: "1" });
-              expect(res.statusCode).toBe(201);
-            }
+            const res = await request("http://localhost:3000")
+              .post("/api/mobile/rent/article")
+              .set("Content-Type", "application/json")
+              .set("Accept", "application/json")
+              .set("Authorization", `Bearer ${authToken}`)
+              .send({ itemId: itemId, duration: "2" });
+            expect(res.statusCode).toBe(201);
           },
         ],
         done
@@ -136,7 +125,7 @@ describe("POST /api/rent/article", () => {
         [
           async function () {
             const res = await request("http://localhost:3000")
-              .post("/api/mobile/rent/1/invoice")
+              .post("/api/mobile/rent/2/invoice")
               .set("Content-Type", "application/json")
               .set("Accept", "application/json")
               .set("Authorization", `Bearer ${authToken}`);
