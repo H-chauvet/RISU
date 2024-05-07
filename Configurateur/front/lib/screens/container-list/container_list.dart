@@ -100,7 +100,8 @@ class _ContainerPageState extends State<ContainerPage> {
       fetchContainers();
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du conteneur: ${response.statusCode}',
+        msg:
+            'Erreur lors de la suppression du conteneur: ${response.statusCode}',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );

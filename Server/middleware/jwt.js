@@ -11,7 +11,7 @@ function generateAccessToken(user) {
   return jwt.sign(
     { userId: user.id, userMail: user.email, confirmed: user.confirmed },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "1h" },
   );
 }
 
