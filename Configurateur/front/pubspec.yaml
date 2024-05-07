@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  footer:
   flutter_dotenv: ^5.1.0
   flutter_bloc: ^7.0.0
   flutter_rating_bar: ^4.0.0
@@ -46,7 +47,7 @@ dependencies:
   go_router: ^10.1.2
   binding: ^1.0.0
   intl: ^0.18.1
-  flutter_secure_storage: ^8.1.0
+  flutter_secure_storage: ^9.0.0
   google_sign_in: ^6.1.4
   vector_math: ^2.1.4
   simple_3d_renderer: ^18.0.0
@@ -93,8 +94,10 @@ flutter:
   assets:
     - assets/google.png
     - assets/logo.png
+    - assets/logonew.png
     - assets/google-logo.png
     - assets/iphone.png
+    - assets/iphonenew.png
     - assets/container.png
     - assets/3d_logo.png
     - assets/cube.png
@@ -104,6 +107,7 @@ flutter:
     - assets/Quentin.png
     - assets/Tanguy.png
     - assets/Cédric.png
+    - assets/containerrisu.png
     - assets/roboto/Roboto-Medium.ttf
 
   #   - images/a_dot_ham.jpeg
@@ -119,10 +123,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
+  fonts:
+    - family: Rozha
+      fonts:
+        - asset: fonts/Rozha.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro
