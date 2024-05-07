@@ -76,7 +76,7 @@ void main() {
     );
 
     expect(find.text("Ville : Nantes"), findsWidgets);
-    expect(find.text("adresse : blabla"), findsWidgets);
+    expect(find.text("Adresse : blabla"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });

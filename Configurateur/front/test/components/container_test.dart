@@ -32,7 +32,7 @@ void main() {
     expect(find.byType(ContainerCards), findsOneWidget);
     await tester.pump();
     expect(find.text("Ville : Nantes"), findsOneWidget);
-    expect(find.text("adresse : 4 rue George"), findsOneWidget);
+    expect(find.text("Adresse : 4 rue George"), findsOneWidget);
   });
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {

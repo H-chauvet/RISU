@@ -128,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 } else {
                   Fluttertoast.showToast(
                       msg:
-                          "Erreur durant l'envoi la modification des informations",
+                          "Erreur durant l'envoi de modification des informations",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
@@ -214,7 +214,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 } else {
                   Fluttertoast.showToast(
                       msg:
-                          "Erreur durant l'envoi la modification de l'entreprise",
+                          "Erreur durant l'envoi de la modification de l'entreprise",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
@@ -298,7 +298,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 } else {
                   Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification de l'email",
+                      msg:
+                          "Erreur durant l'envoi de la modification de l'email",
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
@@ -451,7 +452,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     } else {
                       Fluttertoast.showToast(
                           msg:
-                              "Erreur durant l'envoi la modification du mot de passe",
+                              "Erreur durant l'envoi de la modification du mot de passe",
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 3,

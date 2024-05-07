@@ -134,7 +134,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       checkToken();
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi la modification des informations",
+          msg: "Erreur durant l'envoi de modification des informations",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
@@ -229,7 +229,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       checkToken();
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi la modification des informations",
+          msg: "Erreur durant l'envoi de modification des informations",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
@@ -443,7 +443,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                       ),
                                     )
                                   : Text(
-                                      "L'entreprise n'as pas de nom",
+                                      "L'entreprise n'a pas de nom",
                                       style: const TextStyle(
                                         color: Color(0xff4682B4),
                                         fontSize: 15.0,
@@ -545,7 +545,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         height: 250,
                         alignment: Alignment.center,
                         child: Text(
-                          "Pas d'entreprise associé",
+                          "Pas d'entreprise associée",
                           style: TextStyle(
                             fontSize: 18,
                             color: Color.fromARGB(255, 211, 11, 11),

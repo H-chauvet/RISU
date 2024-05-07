@@ -97,10 +97,10 @@ class ContainerCards extends StatelessWidget {
               child: ListTile(
                 title: container.city != null
                     ? Text("Ville : ${container.city!}")
-                    : Text("Ville : pas de ville associé"),
+                    : Text("Ville : pas de ville associée"),
                 subtitle: container.address != null
-                    ? Text("adresse : ${container.address!}")
-                    : Text("adresse : aucune de address"),
+                    ? Text("Adresse : ${container.address!}")
+                    : Text("Adresse : aucune address"),
               ),
             ),
             Row(

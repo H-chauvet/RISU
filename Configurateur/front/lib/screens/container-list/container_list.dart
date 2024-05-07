@@ -127,7 +127,7 @@ class _ContainerPageState extends State<ContainerPage> {
     } else {
       Fluttertoast.showToast(
         msg:
-            "Erreur lors de l'envoie des informations de l'objet: ${response.statusCode}",
+            "Erreur lors de l'envoi des informations de l'objet: ${response.statusCode}",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -235,7 +235,7 @@ class _ContainerPageState extends State<ContainerPage> {
       fetchItemsByCategory();
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi la modification des informations",
+          msg: "Erreur durant l'envoi de modification des informations",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
