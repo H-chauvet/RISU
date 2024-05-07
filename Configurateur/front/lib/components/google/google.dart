@@ -41,7 +41,9 @@ class GoogleLogo extends StatelessWidget {
               ? desktopButtonWidth
               : tabletButtonWidth,
           decoration: BoxDecoration(
-              color: Theme.of(context).buttonTheme.colorScheme!.primary,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? boxDecorationDarkTheme.color
+                  : boxDecorationLightTheme.color,
               borderRadius: const BorderRadius.all(Radius.circular(30.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

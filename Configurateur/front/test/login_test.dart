@@ -56,7 +56,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text('Connexion'), findsOneWidget);
+    expect(find.text('Connectez-vous au site RISU !'), findsOneWidget);
     expect(find.text('Adresse e-mail'), findsOneWidget);
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text("Se connecter"), findsOneWidget);
