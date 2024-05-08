@@ -141,8 +141,11 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
         contains: articleName,
       },
       available: isAvailable,
-      categories: categoryId ? { some: { id: parseInt(categoryId) } } : undefined,
     };
+    
+    if (categoryId) {
+      whereCondition.categories = { some: { id: parseInt(categoryId) } };
+    }
 
     if (sortBy === 'price') {
       whereCondition.price = {
