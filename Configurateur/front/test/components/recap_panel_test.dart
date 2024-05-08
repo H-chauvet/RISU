@@ -2,9 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/recap_panel.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   void blankSaved() {}
@@ -13,22 +15,29 @@ void main() {
 
     List<Locker> list = List.filled(2, Locker('locker', 100));
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: RecapPanel(
-            articles: list,
-            onSaved: blankSaved,
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: RecapPanel(
+                  articles: list,
+                  onSaved: blankSaved,
+                  screenFormat: ScreenFormat.desktop,
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text('Total: 200€'), findsOneWidget);
   });
@@ -38,22 +47,29 @@ void main() {
 
     List<Locker> list = List.filled(2, Locker('Petit casier', 50));
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: RecapPanel(
-            articles: list,
-            onSaved: blankSaved,
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: RecapPanel(
+                  articles: list,
+                  onSaved: blankSaved,
+                  screenFormat: ScreenFormat.desktop,
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text('Petit Casier'), findsNWidgets(1));
     expect(find.text('200€'), findsNWidgets(0));

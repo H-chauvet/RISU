@@ -20,6 +20,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_3d/simple_3d.dart';
+import 'package:sizer/sizer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
 void main() {
@@ -37,24 +38,30 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const DesignScreen(
-            lockers:
-                '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
-            amount: 60,
-            containerMapping: '1',
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const DesignScreen(
+                  lockers:
+                      '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
+                  amount: 60,
+                  containerMapping: '1',
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
@@ -371,26 +378,32 @@ void main() {
       'designs': jsonEncode([]),
     };
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: DesignScreen(
-            lockers:
-                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
-            amount: 60,
-            containerMapping: '0000000111111111112222333',
-            id: '1',
-            container: jsonEncode(container),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: DesignScreen(
+                  lockers:
+                      '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+                  amount: 60,
+                  containerMapping: '0000000111111111112222333',
+                  id: '1',
+                  container: jsonEncode(container),
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pump();
 
@@ -414,26 +427,32 @@ void main() {
       'designs': jsonEncode([]),
     };
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: DesignScreen(
-            lockers:
-                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
-            amount: 60,
-            containerMapping: '0000000111111111112222333',
-            id: '1',
-            container: jsonEncode(container),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: DesignScreen(
+                  lockers:
+                      '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+                  amount: 60,
+                  containerMapping: '0000000111111111112222333',
+                  id: '1',
+                  container: jsonEncode(container),
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.tap(find.text("Sauvegarder"));
 
@@ -455,26 +474,32 @@ void main() {
       'designs': jsonEncode([]),
     };
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: DesignScreen(
-            lockers:
-                '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
-            amount: 60,
-            containerMapping: '0000000111111111112222333',
-            id: '1',
-            container: jsonEncode(container),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: DesignScreen(
+                  lockers:
+                      '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
+                  amount: 60,
+                  containerMapping: '0000000111111111112222333',
+                  id: '1',
+                  container: jsonEncode(container),
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.tap(find.text("Retirer une image"));
 
