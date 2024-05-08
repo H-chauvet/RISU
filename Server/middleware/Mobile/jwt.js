@@ -72,8 +72,28 @@ const refreshTokenMiddleware = async (req, res, next) => {
   }
 };
 
+
+/**
+ * Generate reset token
+ *
+ * @param {*} id user id
+ * @returns generated reset token
+ */
+function generateResetToken(id) {
+  if (!process.env.RESET_JWT_EXPIRE) {
+    throw new Error('RESET_JWT_EXPIRE not found in .env');
+  } else if (!process.env.JWT_RESET_SECRET) {
+    throw new Error('JWT_RESET_SECRET not found in .env');
+  }
+  const expireInSeconds = parseInt(process.env.RESET_JWT_EXPIRE);
+  return jwt.sign({ id }, process.env.JWT_RESET_SECRET, {
+    expiresIn: expireInSeconds
+  });
+}
+
 module.exports = {
   generateToken,
   generateRefreshToken,
-  refreshTokenMiddleware
+  refreshTokenMiddleware,
+  generateResetToken
 };
