@@ -142,9 +142,14 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
       },
       available: isAvailable,
     };
-    
-    if (categoryId) {
-      whereCondition.categories = { some: { id: parseInt(categoryId) } };
+    if (categoryId != undefined) {
+      if (categoryId != null) {
+        categoryId = parseInt(categoryId);
+        if (isNaN(categoryId)) {
+          throw new Error("Invalid category id");
+        }
+        whereCondition.categories = { some: { id: parseInt(categoryId) } };
+      }
     }
 
     if (sortBy === 'price') {
