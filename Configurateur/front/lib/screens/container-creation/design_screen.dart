@@ -9,6 +9,7 @@ import 'package:front/components/dialog/add_design_dialog.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -610,6 +611,7 @@ class DesignScreenState extends State<DesignScreen> {
                             builder: (context) => openDialog());
                         saveContainer(name);
                       },
+                      screenFormat: ScreenFormat.desktop,
                     )),
               ),
             ),

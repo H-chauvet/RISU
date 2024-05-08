@@ -1,27 +1,30 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/delete_container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
-import 'package:front/components/interactive_panel.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
+import 'package:front/screens/container-creation/container_creation/container_creation_style.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_3d/simple_3d.dart';
+import 'package:sizer/sizer.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
-
-import '../../components/dialog/autofill_dialog.dart';
 
 // ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
@@ -81,7 +84,14 @@ class ContainerCreationState extends State<ContainerCreation> {
       width = int.parse(widget.width!);
       height = int.parse(widget.height!);
     }
-    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, width, height, 2);
+
+    var screenWidth =
+        PlatformDispatcher.instance.views.first.physicalSize.width;
+
+    var cubeWidth = screenWidth > 1024 ? 10.0.w : 10.0.w;
+    var cubeHeight = screenWidth > 1024 ? 10.0.h : 10.0.h;
+    Sp3dObj obj =
+        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
     obj.materials.add(FSp3dMaterial.blue.deepCopy());
@@ -680,30 +690,33 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
-        appBar: CustomAppBar(
-          'Configurateur',
-          context: context,
-        ),
-        bottomSheet: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProgressBar(
-              length: 6,
-              progress: 1,
-              previous: 'Précédent',
-              next: 'Suivant',
-              previousFunc: goPrevious,
-              nextFunc: goNext,
-            ),
-            const SizedBox(
-              height: 50,
-            )
-          ],
-        ),
-        body: Stack(children: [
+      appBar: CustomAppBar(
+        'Configurateur',
+        context: context,
+      ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ProgressBar(
+            length: 6,
+            progress: 1,
+            previous: 'Précédent',
+            next: 'Suivant',
+            previousFunc: goPrevious,
+            nextFunc: goNext,
+          ),
+          const SizedBox(
+            height: 50,
+          )
+        ],
+      ),
+      body: Stack(
+        children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
@@ -726,11 +739,19 @@ class ContainerCreationState extends State<ContainerCreation> {
                                 ));
                       },
                       style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromWidth(250),
+                          fixedSize: Size.fromWidth(
+                              screenFormat == ScreenFormat.desktop
+                                  ? desktopButtonWidth
+                                  : tabletButtonWidth),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      label: const Text(
+                      label: Text(
                         'Ajouter un casier',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
                       ),
                       icon: const Icon(
                         Icons.add,
@@ -747,11 +768,19 @@ class ContainerCreationState extends State<ContainerCreation> {
                         saveContainer(name);
                       },
                       style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromWidth(250),
+                          fixedSize: Size.fromWidth(
+                              screenFormat == ScreenFormat.desktop
+                                  ? desktopButtonWidth
+                                  : tabletButtonWidth),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      label: const Text(
+                      label: Text(
                         'Sauvegarder',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
                       ),
                       icon: const Icon(
                         Icons.save,
@@ -769,11 +798,19 @@ class ContainerCreationState extends State<ContainerCreation> {
                         autoFillContainer(face, false);
                       },
                       style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromWidth(250),
+                          fixedSize: Size.fromWidth(
+                              screenFormat == ScreenFormat.desktop
+                                  ? desktopButtonWidth
+                                  : tabletButtonWidth),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      label: const Text(
+                      label: Text(
                         'Remplissage',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
                       ),
                       icon: const Icon(
                         Icons.auto_fix_high,
@@ -803,11 +840,19 @@ class ContainerCreationState extends State<ContainerCreation> {
                                 DeleteContainerDialog(callback: deleteLocker));
                       },
                       style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromWidth(250),
+                          fixedSize: Size.fromWidth(
+                              screenFormat == ScreenFormat.desktop
+                                  ? desktopButtonWidth
+                                  : tabletButtonWidth),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      label: const Text(
+                      label: Text(
                         'Supprimer un casier',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
                       ),
                       icon: const Icon(
                         Icons.delete,
@@ -819,11 +864,19 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ElevatedButton.icon(
                       onPressed: resetContainer,
                       style: ElevatedButton.styleFrom(
-                          fixedSize: const Size.fromWidth(250),
+                          fixedSize: Size.fromWidth(
+                              screenFormat == ScreenFormat.desktop
+                                  ? desktopButtonWidth
+                                  : tabletButtonWidth),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      label: const Text(
+                      label: Text(
                         'Réinitialiser le conteneur',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
                       ),
                       icon: const Icon(
                         Icons.refresh,
@@ -832,13 +885,29 @@ class ContainerCreationState extends State<ContainerCreation> {
                   ],
                 ),
               ),
+              const SizedBox(
+                width: 50,
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Flexible(
                     child: Sp3dRenderer(
-                      const Size(1000, 1000),
-                      const Sp3dV2D(400, 400),
+                      Size(
+                          screenFormat == ScreenFormat.desktop
+                              ? desktopCubeSize
+                              : tabletCubeSize,
+                          screenFormat == ScreenFormat.desktop
+                              ? desktopCubeHeight
+                              : tabletCubeHeight),
+                      Sp3dV2D(
+                          screenFormat == ScreenFormat.desktop
+                              ? desktopCubeSize / 2
+                              : tabletCubeSize / 2,
+                          screenFormat == ScreenFormat.desktop
+                              ? desktopCubeHeight / 2
+                              : tabletCubeHeight / 2),
                       world,
                       // If you want to reduce distortion, shoot from a distance at high magnification.
                       Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
@@ -849,9 +918,14 @@ class ContainerCreationState extends State<ContainerCreation> {
                   ),
                 ],
               ),
+              const SizedBox(
+                width: 50,
+              ),
               Flexible(
                 child: FractionallySizedBox(
-                    widthFactor: 0.8,
+                    widthFactor: screenFormat == ScreenFormat.desktop
+                        ? desktopRecapPanelWidth
+                        : tabletRecapPanelWidth,
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
@@ -861,6 +935,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                             builder: (context) => openDialog());
                         saveContainer(name);
                       },
+                      screenFormat: screenFormat,
                     )),
               ),
               const SizedBox(
@@ -868,6 +943,8 @@ class ContainerCreationState extends State<ContainerCreation> {
               )
             ],
           )
-        ]));
+        ],
+      ),
+    );
   }
 }
