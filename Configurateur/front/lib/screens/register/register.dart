@@ -11,6 +11,7 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
