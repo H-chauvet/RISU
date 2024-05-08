@@ -149,7 +149,7 @@ router.get("/listAll", async function (req, res, next) {
 });
 
 router.get(
-  "/listByOrganisation/:organizationId",
+  "/listByOrganization/:organizationId",
   async function (req, res, next) {
     try {
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);

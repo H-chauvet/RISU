@@ -86,7 +86,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   Future<void> fetchContainersById() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/container/listByOrganisation/$organizationId'),
+          'http://${serverIp}:3000/api/container/listByOrganization/$organizationId'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
