@@ -67,17 +67,18 @@ class AppRouter {
           } else {
             return ContainerProfilPage(
               container: ContainerListData(
-                  id: null,
-                  createdAt: null,
-                  organization: null,
-                  organizationId: null,
-                  containerMapping: null,
-                  price: null,
-                  address: null,
-                  city: null,
-                  design: null,
-                  informations: null,
-                  saveName: null),
+                id: null,
+                createdAt: null,
+                organization: null,
+                organizationId: null,
+                containerMapping: null,
+                price: null,
+                address: null,
+                city: null,
+                design: null,
+                informations: null,
+                saveName: null,
+              ),
             );
           }
         },
