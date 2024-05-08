@@ -151,6 +151,13 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
       };
     }
 
+    if (sortBy === 'rating') {
+      whereCondition.rating = {
+        gte: min,
+        lte: max,
+      };
+    }
+
     const orderBy = isAscending === true ? 'asc' : 'desc';
     return await db.Item.findMany({
       where: whereCondition,
