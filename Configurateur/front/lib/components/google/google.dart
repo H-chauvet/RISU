@@ -11,7 +11,6 @@ import 'package:go_router/go_router.dart';
 import 'dart:convert';
 
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
 import 'google_style.dart';
 

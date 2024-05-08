@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
-import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/size_service.dart';

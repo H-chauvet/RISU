@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -21,7 +19,6 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:simple_3d/simple_3d.dart';
-import 'package:sizer/sizer.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
@@ -85,11 +82,6 @@ class ContainerCreationState extends State<ContainerCreation> {
       height = int.parse(widget.height!);
     }
 
-    var screenWidth =
-        PlatformDispatcher.instance.views.first.physicalSize.width;
-
-    var cubeWidth = screenWidth > 1024 ? 10.0.w : 10.0.w;
-    var cubeHeight = screenWidth > 1024 ? 10.0.h : 10.0.h;
     Sp3dObj obj =
         UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, width, height, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -719,9 +711,6 @@ class ContainerCreationState extends State<ContainerCreation> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                width: 50,
-              ),
               Flexible(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -819,9 +808,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const SizedBox(
-                      width: 225,
-                      child: Divider(
+                    SizedBox(
+                      width: sizedBoxWidth,
+                      child: const Divider(
                         color: Colors.grey,
                         height: 20,
                         thickness: 1,
@@ -894,20 +883,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                 children: [
                   Flexible(
                     child: Sp3dRenderer(
-                      Size(
-                          screenFormat == ScreenFormat.desktop
-                              ? desktopCubeSize
-                              : tabletCubeSize,
-                          screenFormat == ScreenFormat.desktop
-                              ? desktopCubeHeight
-                              : tabletCubeHeight),
-                      Sp3dV2D(
-                          screenFormat == ScreenFormat.desktop
-                              ? desktopCubeSize / 2
-                              : tabletCubeSize / 2,
-                          screenFormat == ScreenFormat.desktop
-                              ? desktopCubeHeight / 2
-                              : tabletCubeHeight / 2),
+                      Size(cubeCameraWidth, cubeCameraHeight),
+                      Sp3dV2D(cubeCameraWidth / 2, cubeCameraHeight / 2),
                       world,
                       // If you want to reduce distortion, shoot from a distance at high magnification.
                       Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
@@ -938,9 +915,6 @@ class ContainerCreationState extends State<ContainerCreation> {
                       screenFormat: screenFormat,
                     )),
               ),
-              const SizedBox(
-                width: 50,
-              )
             ],
           )
         ],

@@ -5,9 +5,7 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/container-list/container_web.dart';
-import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
 class ContainerPage extends StatefulWidget {

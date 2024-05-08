@@ -5,10 +5,10 @@ import 'package:front/screens/container-list/item-list/item_list.dart';
 
 class ContainerList {
   final int? id;
-  final dynamic? createdAt;
-  final dynamic? organization;
+  final dynamic createdAt;
+  final dynamic organization;
   final int? organizationId;
-  final dynamic? containerMapping;
+  final dynamic containerMapping;
   final double? price;
   final String? address;
   final String? city;

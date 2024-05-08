@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
-import 'package:front/screens/container-creation/design_screen.dart';
+import 'package:front/screens/container-creation/design_screen/design_screen.dart';
 import 'package:front/screens/container-creation/maps_screen/maps_screen.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen.dart';
 import 'package:front/screens/container-creation/payment_screen/payment_screen.dart';

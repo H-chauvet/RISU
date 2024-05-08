@@ -7,7 +7,6 @@ import 'package:front/network/informations.dart';
 import 'package:front/screens/container-list/item-list/item_component.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
 
 class ItemPage extends StatefulWidget {
   final int? containerId;

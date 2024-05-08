@@ -4,9 +4,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/google/google.dart';
-import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -15,10 +13,8 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import './login_style.dart';
 
 class LoginScreen extends StatefulWidget {
