@@ -239,11 +239,17 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   @override
   void initState() {
     super.initState();
-    getArticleData(context, widget.articleId).then((dynamic value) {
-      setState(() {
-        articleData = ArticleData.fromJson(value);
+    if (widget.testArticleData.isEmpty) {
+      getArticleData(context, widget.articleId).then((dynamic value) {
+        setState(() {
+          articleData = ArticleData.fromJson(value);
+        });
       });
-    });
+    } else {
+      setState(() {
+        articleData = ArticleData.fromJson(widget.testArticleData);
+      });
+    }
   }
 
   @override
