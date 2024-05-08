@@ -62,6 +62,8 @@ router.post('/resetPassword', async (req, res) => {
     resetToken = jwtMiddleware.generateResetToken(user)
     resetToken = resetToken.substring(0, 64)
     user = await userCtrl.updateUserResetToken(user.id, resetToken)
+    await userCtrl.sendResetPasswordEmail(user.email, resetToken)
+    user = await userCtrl.removeUserResetToken(user.id)
 
     return res.status(200).json({ message: 'Reset password email sent' })
   } catch (error) {
