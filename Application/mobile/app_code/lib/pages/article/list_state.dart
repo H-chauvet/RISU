@@ -59,7 +59,6 @@ class ArticleListState extends State<ArticleListPage> {
       });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
-        print(responseData);
         return responseData;
       } else {
         if (context.mounted) {
