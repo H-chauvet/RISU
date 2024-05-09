@@ -120,14 +120,14 @@ model Contact_Web {
 /////////////////////////////////////////////
 
 model Opinions_Mobile {
-    id      String      @id @unique @default(cuid())
-    userId  String
+    id      String       @id @unique @default(cuid())
+    userId  String?
     date    DateTime
     note    String
-    comment String      @default("")
+    comment String       @default("")
     itemId  Int
-    item    Item        @relation(fields: [itemId], references: [id])
-    user    User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
+    item    Item         @relation(fields: [itemId], references: [id])
+    user    User_Mobile? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model User_Mobile {
