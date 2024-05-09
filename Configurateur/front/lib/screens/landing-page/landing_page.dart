@@ -23,7 +23,7 @@ class LandingPageState extends State<LandingPage> {
   String profileButton = '';
   Function() profileFunction = () {};
   String? token = '';
-  String? userMail = '';
+  String? userRole = '';
 
   void checkToken() async {
     token = await storageService.readStorage('token');
@@ -47,7 +47,7 @@ class LandingPageState extends State<LandingPage> {
       connectedFunction = () => context.go("/login");
     }
 
-    storageService.getUserMail().then((value) => userMail = value);
+    storageService.getUserRole().then((value) => userRole = value);
 
     setState(() {});
   }
@@ -88,7 +88,7 @@ class LandingPageState extends State<LandingPage> {
 
       list.add(const SizedBox(width: 20));
 
-      if (userMail == "risu.admin@gmail.com") {
+      if (userRole == "admin") {
         list.add(
           ElevatedButton(
             onPressed: adminFunction,
@@ -109,7 +109,7 @@ class LandingPageState extends State<LandingPage> {
           ),
         );
       }
-    } else if (token != '' && userMail != "risu.admin@gmail.com") {
+    } else if (token != '' && userRole == "user") {
       list.add(
         ElevatedButton(
           onPressed: () => context.go("/my-container"),

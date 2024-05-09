@@ -62,6 +62,23 @@ class StorageService {
     }
   }
 
+  Future<String> getUserRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      return '';
+    }
+    dynamic decodedToken = JwtDecoder.decode(token);
+
+    if (decodedToken != null) {
+      return decodedToken['role'];
+    } else {
+      return '';
+    }
+  }
+
   Future<bool> isUserVerified() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

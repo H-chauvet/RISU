@@ -89,6 +89,7 @@ model User_Web {
     company        String?       @default("")
     email          String        @unique
     token          String?       @unique
+    role           String        @default("user")
     password       String
     organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
