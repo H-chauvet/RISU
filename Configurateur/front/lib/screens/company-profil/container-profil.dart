@@ -75,8 +75,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token!;
+      checkContainerId();
     } else {
-      jwtToken = "";
     }
   }
 
@@ -84,7 +84,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   void initState() {
     super.initState();
     checkToken();
-    checkContainerId();
   }
 
   Future<void> apiUpdateCity(TextEditingController nameController) async {
@@ -109,7 +108,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      fetchContainer(containerId.toString());
+      checkToken();
+      // fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de modification des informations",
@@ -202,7 +202,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      fetchContainer(containerId.toString());
+      checkToken();
+      // fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de modification des informations",
@@ -316,7 +317,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
-      fetchItemsbyCtnId();
+      checkToken();
+      // fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
         msg: "Erreur lors de la suppression de l'objet: ${response.statusCode}",
@@ -366,7 +368,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
       );
-      fetchItemsbyCtnId();
+      checkToken();
+      // fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de modification des informations",
@@ -396,7 +399,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Modifier un nouvel objet"),
+              title: const Text("Modifier un objet"),
               content: Container(
                 height: 250.0,
                 child: Column(
@@ -454,7 +457,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         nameController, descController, price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Créer"),
+                  child: const Text("Modifier"),
                 ),
               ],
             );

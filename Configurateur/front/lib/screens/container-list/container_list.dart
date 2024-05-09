@@ -262,7 +262,7 @@ class _ContainerPageState extends State<ContainerPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Modifier un nouvel objet"),
+              title: const Text("Modifier un objet"),
               content: Container(
                 height: 220.0,
                 child: Column(
@@ -319,7 +319,7 @@ class _ContainerPageState extends State<ContainerPage> {
                         price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Créer"),
+                  child: const Text("Modifier"),
                 ),
               ],
             );
