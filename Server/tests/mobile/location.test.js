@@ -29,6 +29,7 @@ describe('POST /api/rent/article', () => {
             const res = await request('http://localhost:3000')
               .get('/api/mobile/article/listAll');
             expect(res.statusCode).toBe(200);
+            console.log(res.body)
             itemId = res.body[1].id;
           }
         ],
@@ -124,10 +125,11 @@ describe('POST /api/rent/article', () => {
         [
           async function () {
             const res = await request('http://localhost:3000')
-              .post(`/api/mobile/rent/1/invoice`)
+              .post(`/api/mobile/rent/${itemId}/invoice`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
+              console.log(itemId)
             expect(res.statusCode).toBe(201);
           }
         ],
