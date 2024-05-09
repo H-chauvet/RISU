@@ -66,13 +66,12 @@ exports.sendResetPasswordEmail = async(email, resetToken) => {
     to: email,
     subject: 'Reset Your Password',
     text: "",
-    html: '<p>Please follow the link to reset your password: <a href="http://risu.dns-dynamic.net:3000/api/mobile/resetToken' +
+    html: '<p>Please follow the link to reset your password: <a href="http://risu.dns-dynamic.net/resetToken?token=' +
       resetToken + '">here</a></p>',
   }
 
   try {
-    const info = transporter.sendMail(mailOptions)
-    console.log('Reset email sent to ' + email + ' (' + info.response + ')')
+    transporter.sendMail(mailOptions)
   } catch (error) {
     console.error('Error sending reset password email:', error)
   }
