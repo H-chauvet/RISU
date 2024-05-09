@@ -153,7 +153,7 @@ describe('Delete user data ', () => {
             .post('/api/mobile/auth/login')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .send({ email: 'admin@gmail.com', password: 'admin' })
+            .send({ email: 'armand.lartam@gmail.com', password: '12345678' })
           authToken = res.body.token
           userID = res.body.user.id
           expect(res.statusCode).toBe(201)
@@ -185,7 +185,7 @@ describe('Delete user data ', () => {
             .post('/api/mobile/auth/login')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .send({ email: 'admin@gmail.com', password: 'admin' });
+            .send({ email: 'armand.lartam@gmail.com', password: '12345678' });
           expect(user.statusCode).toBe(201);
           const item = await request('http://localhost:3000')
             .get('/api/mobile/article/listAll')
@@ -292,7 +292,7 @@ describe('Delete user data ', () => {
             .post('/api/mobile/auth/login')
             .set('Content-Type', 'application/json')
             .set('Accept', 'application/json')
-            .send({ email: 'user@gmail.com', password: 'user' })
+            .send({ email: 'admin@gmail.com', password: 'admin' })
           newAuthToken = res.body.token
           newUserID = res.body.user.id
           expect(res.statusCode).toBe(201)
