@@ -127,7 +127,8 @@ exports.updateRentInvoice = (rentId, invoiceData) => {
 }
 
 /**
- * Delete every rent of the user to available before deleting his account
+ * Delete every rent related to the user.
+ * The related items are set to available again.
  *
  * @param {*} userId of the user
  * @returns none

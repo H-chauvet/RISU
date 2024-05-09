@@ -4,7 +4,7 @@ const ticketCtrl = require("../Common/tickets")
 const rentCtrl = require("./rent")
 
 /**
- * Clean user data before deleting it
+ * Clean user data before deleting his account
  *
  * @param {*} userId of the user
  * @param {*} notificationsId of the notifications linked to the user

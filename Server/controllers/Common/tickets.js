@@ -96,7 +96,7 @@ exports.getConversation = (id) => {
 }
 
 /**
- * Clean the ticket of a mobile user before deleting the user
+ * Clean every ticket related to a mobile user before deleting his account
  *
  * @param {*} userId of the user
  * @returns none

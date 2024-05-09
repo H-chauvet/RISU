@@ -200,7 +200,7 @@ exports.removeUserRefreshToken = userId => {
 }
 
 /**
- * Delete user notifications before deleting the user
+ * Delete the user notifications before deleting his account
  *
  * @param {*} notificationsId of the notifications
  * @returns none

@@ -76,7 +76,7 @@ exports.getItemFavorite = (userId, itemId) => {
 
 /**
  * Check if a user already put an item as favorite
- * 
+ *
  * @param {*} userId of the user
  * @param {*} itemId of the item
  * @returns a boolean depending if the item is already as favorite for the user
@@ -105,8 +105,8 @@ exports.deleteFavorite = (favoriteId) => {
 }
 
 /**
- * Delete the user favorite before deleting the user
- *
+ * Delete the user favorite items before deleting his account
+ * 
  * @param {*} userId of the user
  * @returns none
  */
