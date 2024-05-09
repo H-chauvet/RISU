@@ -185,7 +185,6 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
       },
     });
   } catch (error) {
-    console.error("Error retrieving items with filters:", error);
     throw new Error("Failed to retrieve items with filters");
   }
 };
