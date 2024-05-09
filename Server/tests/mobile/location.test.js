@@ -124,7 +124,7 @@ describe('POST /api/rent/article', () => {
         [
           async function () {
             const res = await request('http://localhost:3000')
-              .post('/api/mobile/rent/2/invoice')
+              .post(`/api/mobile/rent/${itemId}/invoice`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
