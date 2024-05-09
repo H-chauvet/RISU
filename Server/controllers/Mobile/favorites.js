@@ -2,7 +2,7 @@ const { db } = require('../../middleware/database')
 
 /**
  * Create a favorite item for the specified user
- * 
+ *
  * @param {*} userId that added the item
  * @param {*} itemId to be added
  * @returns the newly created favorite
@@ -18,7 +18,7 @@ exports.createFavoriteItem = (userId, itemId) => {
 
 /**
  * Get all the favorites items related to a userId
- * 
+ *
  * @param {*} userId of the related user
  * @returns all the favorites of the user
  */
@@ -48,7 +48,7 @@ exports.getUserFavorites = (userId) => {
 
 /**
  * Get a favorite item from the related item and user
- * 
+ *
  * @param {*} userId of the user
  * @param {*} itemId of the item
  * @returns the related favorite
@@ -94,12 +94,24 @@ exports.checkFavorite = (userId, itemId) => {
 
 /**
  * delete a specific favorite item from its id
- * 
+ *
  * @param {*} favoriteId of the related favorite item
  * @returns none
  */
 exports.deleteFavorite = (favoriteId) => {
   return db.Favorite_Article_Mobile.delete({
     where: { id: favoriteId },
+  })
+}
+
+/**
+ * Delete the user favorite before deleting the user
+ *
+ * @param {*} userId of the user
+ * @returns none
+ */
+exports.cleanUserFavorite = (userId) => {
+  return db.Favorite_Article_Mobile.deleteMany({
+    where: { userId: userId },
   })
 }

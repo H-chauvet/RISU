@@ -94,3 +94,20 @@ exports.getConversation = (id) => {
     }
   });
 }
+
+/**
+ * Clean the ticket of a mobile user before deleting the user
+ *
+ * @param {*} userId of the user
+ * @returns none
+ */
+exports.cleanMobileUserTickets = (userId) => {
+  return db.Tickets.deleteMany({
+    where: {
+      OR: [
+        { creatorId: userId },
+        { assignedId: userId },
+      ]
+    }
+  });
+}

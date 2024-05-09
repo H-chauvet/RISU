@@ -125,3 +125,20 @@ exports.updateRentInvoice = (rentId, invoiceData) => {
     data: { invoice: invoiceData }
   });
 }
+
+/**
+ * Delete every rent of the user to available before deleting his account
+ *
+ * @param {*} userId of the user
+ * @returns none
+ */
+exports.returnAllUserRents = async (userId) => {
+  rents = await this.getUserRents(userId)
+
+  rents.forEach(async element => {
+    await this.returnRent(element["id"])
+  });
+  return db.Location_Mobile.deleteMany({
+    where: { userId: userId },
+  })
+}
