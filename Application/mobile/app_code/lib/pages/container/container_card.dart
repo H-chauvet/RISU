@@ -5,67 +5,38 @@ import 'package:risu/utils/providers/theme.dart';
 
 class ContainerList {
   final int id;
-  final dynamic createdAt;
-  final dynamic containerMapping;
-  final double? price;
   final String? address;
   final String? city;
   final double? longitude;
   final double? latitude;
-  final String? designs;
-  final dynamic items;
-  final String? informations;
-  final bool? paid;
-  final String? saveName;
+  final int itemCount;
 
   ContainerList({
     required this.id,
-    required this.createdAt,
-    required this.containerMapping,
-    required this.price,
     required this.address,
     required this.city,
     required this.longitude,
     required this.latitude,
-    required this.designs,
-    required this.items,
-    required this.informations,
-    required this.paid,
-    required this.saveName,
+    required this.itemCount,
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
-    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ContainerList(
       id: json['id'],
-      createdAt: json['createdAt'],
-      containerMapping: json['containerMapping'],
-      price: price,
       address: json['address'],
       city: json['city'],
       longitude: json['longitude'],
       latitude: json['latitude'],
-      designs: json['designs'],
-      items: json['items'],
-      informations: json['informations'],
-      paid: json['paid'],
-      saveName: json['saveName'],
+      itemCount: json['_count']['items']
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'createdAt': createdAt,
-      'containerMapping': containerMapping,
-      'price': price,
       'address': address,
       'city': city,
-      'designs': designs,
-      'items': items,
-      'informations': informations,
-      'paid': paid,
-      'saveName': saveName,
+      'itemCount': itemCount,
     };
   }
 }

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_map_math/flutter_geo_math.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
@@ -9,17 +10,23 @@ import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'container_list.dart';
+import 'container_card.dart';
 import 'container_page.dart';
 
 class ContainerPageState extends State<ContainerPage> {
-  List<ContainerList> containers = [];
   final LoaderManager _loaderManager = LoaderManager();
+  List<ContainerList> containers = [];
+  List<ContainerList> filteredContainers = [];
 
   @override
   void initState() {
     super.initState();
+    if (widget.testContainers.isEmpty) {
     getContainer();
+    } else {
+      containers = widget.testContainers;
+      filteredContainers = widget.testContainers;
+    }
   }
 
   void getContainer() async {

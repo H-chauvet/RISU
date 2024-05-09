@@ -2,12 +2,13 @@ const express = require('express')
 const router = express.Router()
 
 const containerCtrl = require("../../controllers/Common/container");
+const mobileContainerCtrl = require("../../controllers/Mobile/container");
 const itemCtrl = require("../../controllers/Common/items");
 const passport = require('passport')
 
 router.get("/listAll", async function (req, res, next) {
   try {
-    const container = await containerCtrl.getAllContainers();
+    const container = await mobileContainerCtrl.listContainers();
 
     return res.status(200).json(container);
   } catch (err) {
