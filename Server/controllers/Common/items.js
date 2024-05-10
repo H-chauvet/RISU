@@ -130,7 +130,6 @@ exports.getSimilarItems = async (itemId, containerId) => {
 
     return similarItems;
   } catch (error) {
-    console.error("Error fetching similar items:", error);
     throw error;
   }
 }
