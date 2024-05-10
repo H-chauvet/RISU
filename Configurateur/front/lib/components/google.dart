@@ -31,7 +31,9 @@ class GoogleLogo extends StatelessWidget {
           width: 200,
           height: 40,
           decoration: BoxDecoration(
-              color: Theme.of(context).buttonTheme.colorScheme!.primary,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? boxDecorationDarkTheme.color
+                  : boxDecorationLightTheme.color,
               borderRadius: const BorderRadius.all(Radius.circular(30.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,9 +51,11 @@ class GoogleLogo extends StatelessWidget {
               Text(
                 'Google',
                 style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                  fontSize: 18,
+                ),
               )
             ],
           ),

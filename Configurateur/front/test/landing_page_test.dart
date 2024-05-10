@@ -37,13 +37,21 @@ void main() {
     ));
     expect(
         find.text(
+            'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !'),
+        findsOneWidget);
+    expect(
+        find.text(
             'Trouvez des locations selon vos \rbesoins, où vous les souhaitez'),
         findsOneWidget);
     expect(find.text('Des conteneurs disponibles partout en france !'),
         findsOneWidget);
-    expect(find.text('En savoir plus'), findsOneWidget);
+    expect(find.text('Concevez le conteneur de vos rêves,\nselon vos envies !'),
+        findsOneWidget);
+    expect(
+        find.text(
+            'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes'),
+        findsOneWidget);
 
-    await tester.tap(find.text('En savoir plus'));
     await tester.pump();
   });
 }
