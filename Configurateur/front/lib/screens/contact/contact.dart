@@ -434,7 +434,7 @@ class _ContactPageState extends State<ContactPage> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                'Votre ticket',
+                                conversation[0]["title"],
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 35,
@@ -453,6 +453,79 @@ class _ContactPageState extends State<ContactPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30.0),
                                   border: Border.all(color: Colors.grey),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(32),
+                                  child: ListView.builder(
+                                      itemCount: conversation.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final chat = conversation[index];
+
+                                        return Align(
+                                          alignment: chat["creatorId"] != uuid
+                                              ? Alignment.centerRight
+                                              : Alignment.centerLeft,
+                                          child: Card(
+                                            elevation: 5,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            color: (chat["creatorId"] != uuid
+                                                ? Provider.of<ThemeService>(
+                                                            context)
+                                                        .isDark
+                                                    ? darkTheme.buttonTheme
+                                                        .colorScheme!.primary
+                                                    : lightTheme
+                                                        .secondaryHeaderColor
+                                                : Provider.of<ThemeService>(
+                                                            context)
+                                                        .isDark
+                                                    ? darkTheme.cardColor
+                                                    : lightTheme.cardColor),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    chat["content"],
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    formatDateTime(
+                                                        chat["createdAt"]),
+                                                    style: TextStyle(
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontSize: 12,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                ),
+                              ),
+                              const SizedBox(height: 8.0),
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'Nouveau message',
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.always,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide:
+                                        const BorderSide(color: Colors.grey),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 16.0),

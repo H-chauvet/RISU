@@ -22,8 +22,39 @@ exports.createFixtures = async () => {
       id: 1,
       content: "Ceci est un ticket test",
       title: "Ticket de Henri",
-      creatorId: "",
+      creatorId: "1234",
       assignedId: "",
+      chatUid: "1"
+    },
+  });
+  const emptyTicke1 = await db.Tickets.create({
+    data: {
+      id: 2,
+      content: "Ceci est un ticket test",
+      title: "Ticket de Henri",
+      creatorId: "1234",
+      assignedId: "",
+      chatUid: "1"
+    },
+  });
+  const emptyTicket2 = await db.Tickets.create({
+    data: {
+      id: 3,
+      content: "Ceci est un ticket test",
+      title: "Ticket de Henri",
+      creatorId: "",
+      assignedId: "1234",
+      chatUid: "1"
+    },
+  });
+  const emptyTicket3 = await db.Tickets.create({
+    data: {
+      id: 4,
+      content: "Ceci est un ticket test",
+      title: "Ticket de Henri",
+      creatorId: "1234",
+      assignedId: "",
+      chatUid: "1"
     },
   });
 };
