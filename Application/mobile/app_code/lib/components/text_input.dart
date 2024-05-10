@@ -13,6 +13,7 @@ class MyTextInput extends StatefulWidget {
   final IconData? icon;
   final IconData? rightIcon;
   final Function()? rightIconOnPressed;
+  final Key? rightIconKey;
   final String? initialValue;
   final TextEditingController? controller;
   final double? height;
@@ -33,6 +34,7 @@ class MyTextInput extends StatefulWidget {
     this.controller,
     this.height,
     this.maxLines = 1,
+    this.rightIconKey,
   });
 
   @override
@@ -113,7 +115,7 @@ class _MyTextInputState extends State<MyTextInput> {
                 : null,
             suffixIcon: widget.rightIcon != null
                 ? IconButton(
-                    key: const Key('textinput-button_righticon'),
+                    key: widget.rightIconKey,
                     onPressed: widget.rightIconOnPressed,
                     icon: Icon(widget.rightIcon),
                     color: context.select((ThemeProvider themeProvider) =>
