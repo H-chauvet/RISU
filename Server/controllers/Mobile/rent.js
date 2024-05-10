@@ -125,3 +125,21 @@ exports.updateRentInvoice = (rentId, invoiceData) => {
     data: { invoice: invoiceData }
   });
 }
+
+/**
+ * Delete every rent related to the user.
+ * The related items are set to available again.
+ *
+ * @param {*} userId of the user
+ * @returns none
+ */
+exports.returnAllUserRents = async (userId) => {
+  rents = await this.getUserRents(userId)
+
+  rents.forEach(async element => {
+    await this.returnRent(element["id"])
+  });
+  return db.Location_Mobile.deleteMany({
+    where: { userId: userId },
+  })
+}
