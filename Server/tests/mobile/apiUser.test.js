@@ -349,3 +349,51 @@ describe('Delete user data ', () => {
   })
   /// CANNOT CHECK YET FOR TICKET, WILL BE POSSIBLE TROUGHT WEB ROUTE
 });
+
+describe('Fail to delete user', () => {
+  let authToken;
+  let userID;
+
+  it('should connect and get a token', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .post('/api/mobile/auth/login')
+            .set('Content-Type', 'application/json')
+            .set('Accept', 'application/json')
+            .send({ email: 'admin@gmail.com', password: 'admin' })
+          authToken = res.body.token
+          userID = res.body.user.id
+          expect(res.statusCode).toBe(201)
+        }
+      ],
+      done
+    )
+  }),
+  it('should not delete the user (token)', (done) => {
+    async.series(
+      [
+        function (callback) {
+          request('http://localhost:3000')
+            .delete(`/api/mobile/user/${userID}`)
+            .expect(401, callback)
+        }
+      ],
+      done
+    )
+  }),
+  it('should not delete the user (user id)', (done) => {
+    async.series(
+      [
+        function (callback) {
+          request('http://localhost:3000')
+            .delete(`/api/mobile/user/-1`)
+            .set('Authorization', `Bearer ${authToken}`)
+            .expect(401, callback)
+        }
+      ],
+      done
+    )
+  })
+});
