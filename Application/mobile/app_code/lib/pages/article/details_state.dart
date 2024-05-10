@@ -484,7 +484,18 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                             );
                           },
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        AppLocalizations.of(context)!.similarArticles,
+                        key: const Key('article-similar_title'),
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                        ),
+                      ),
                     ],
                   ),
                 ),
