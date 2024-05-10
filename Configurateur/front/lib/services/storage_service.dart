@@ -72,11 +72,7 @@ class StorageService {
     }
     dynamic decodedToken = JwtDecoder.decode(token);
 
-    if (decodedToken != null) {
-      return decodedToken['role'];
-    } else {
-      return '';
-    }
+    return decodedToken?['role'];
   }
 
   Future<bool> isUserVerified() async {
