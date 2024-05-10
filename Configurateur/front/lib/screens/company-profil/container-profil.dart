@@ -76,8 +76,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     if (token != null) {
       jwtToken = token!;
       checkContainerId();
-    } else {
-    }
+    } else {}
   }
 
   @override
