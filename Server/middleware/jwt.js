@@ -16,7 +16,7 @@ function generateAccessToken(user) {
       role: user.role,
     },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: "1h" }
+    { expiresIn: "1h" },
   );
 }
 
