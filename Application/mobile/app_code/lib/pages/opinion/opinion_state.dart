@@ -538,7 +538,8 @@ class OpinionPageState extends State<OpinionPage> {
                                               children: [
                                                 Expanded(
                                                   child: Text(
-                                                    (opinion['user'][
+                                                    (opinion['user'] != null &&
+                                                            opinion['user'][
                                                                     'firstName'] !=
                                                                 null &&
                                                             opinion['user'][

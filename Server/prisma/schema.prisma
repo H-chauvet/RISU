@@ -121,14 +121,14 @@ model Contact_Web {
 /////////////////////////////////////////////
 
 model Opinions_Mobile {
-    id      String      @id @unique @default(cuid())
-    userId  String
+    id      String       @id @unique @default(cuid())
+    userId  String?
     date    DateTime
     note    String
-    comment String      @default("")
+    comment String       @default("")
     itemId  Int
-    item    Item        @relation(fields: [itemId], references: [id])
-    user    User_Mobile @relation(fields: [userId], references: [id])
+    item    Item         @relation(fields: [itemId], references: [id])
+    user    User_Mobile? @relation(fields: [userId], references: [id], onDelete: SetNull)
 }
 
 model User_Mobile {
@@ -145,7 +145,7 @@ model User_Mobile {
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
     itemOpinions     Opinions_Mobile[]
-    favoriteArticles    Favorite_Article_Mobile[]
+    favoriteArticles Favorite_Article_Mobile[]
 }
 
 model Notifications_Mobile {
@@ -162,7 +162,7 @@ model Location_Mobile {
     price     Int
     item      Item        @relation(fields: [itemId], references: [id])
     itemId    Int
-    user      User_Mobile @relation(fields: [userId], references: [id])
+    user      User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
     createdAt DateTime    @default(now())
     duration  Int
@@ -174,6 +174,6 @@ model Favorite_Article_Mobile {
     id        Int         @id @default(autoincrement())
     item      Item        @relation(fields: [itemId], references: [id])
     itemId    Int
-    user      User_Mobile @relation(fields: [userId], references: [id])
+    user      User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
 }
