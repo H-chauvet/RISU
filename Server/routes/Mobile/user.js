@@ -4,6 +4,7 @@ const router = express.Router()
 
 const passport = require('passport')
 const userCtrl = require('../../controllers/Mobile/user')
+const cleanCtrl = require('../../controllers/Mobile/cleandata')
 const bcrypt = require('bcrypt')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
@@ -125,7 +126,8 @@ router.delete('/:userId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(404).send('User not found')
       }
-      await userCtrl.deleteUser(req.params.userId)
+      await cleanCtrl.cleanUserData(user.id, user.notificationsId)
+      await userCtrl.deleteUser(user.id)
       return res.status(200).send('User deleted')
     } catch (error) {
       console.error('Failed to delete account: ', error)

@@ -29,7 +29,8 @@ describe('POST /api/rent/article', () => {
             const res = await request('http://localhost:3000')
               .get('/api/mobile/article/listAll');
             expect(res.statusCode).toBe(200);
-            itemId = res.body[1].id;
+            console.log(res.body)
+            itemId = 2
           }
         ],
         done
@@ -124,10 +125,11 @@ describe('POST /api/rent/article', () => {
         [
           async function () {
             const res = await request('http://localhost:3000')
-              .post('/api/mobile/rent/2/invoice')
+              .post(`/api/mobile/rent/2/invoice`)
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .set('Authorization', `Bearer ${authToken}`)
+              console.log(itemId)
             expect(res.statusCode).toBe(201);
           }
         ],

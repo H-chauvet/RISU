@@ -98,3 +98,20 @@ exports.getConversation = (id) => {
 exports.getAllTickets = async () => {
   return db.Tickets.findMany();
 }
+
+/**
+ * Clean every ticket related to a mobile user before deleting his account
+ *
+ * @param {*} userId of the user
+ * @returns none
+ */
+exports.cleanMobileUserTickets = (userId) => {
+  return db.Tickets.deleteMany({
+    where: {
+      OR: [
+        { creatorId: userId },
+        { assignedId: userId },
+      ]
+    }
+  });
+}
