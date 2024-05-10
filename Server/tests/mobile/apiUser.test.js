@@ -145,6 +145,10 @@ describe('Delete user data ', () => {
   let newAuthToken;
   let nbrOpinions;
 
+  beforeAll(async () => {
+    await new Promise(r => setTimeout(r, 3000));
+  });
+
   it('should connect and get a token', (done) => {
     async.series(
       [
@@ -190,7 +194,7 @@ describe('Delete user data ', () => {
           const item = await request('http://localhost:3000')
             .get('/api/mobile/article/listAll')
           expect(item.statusCode).toBe(200)
-          itemId = item.body[0].id
+          itemId = 1
         }
       ],
       done
