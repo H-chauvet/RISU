@@ -41,21 +41,21 @@ exports.createFixtures = async () => {
         items: {
           create: [
             {
-              id: 4,
+              id: 5,
               name: "Ballon de volley",
               price: 0.5,
               available: true,
               category: "Plage",
             },
             {
-              id: 5,
+              id: 6,
               name: "Raquette",
               price: 1.0,
               available: true,
               category: "Tennis",
             },
             {
-              id: 6,
+              id: 7,
               name: "Ballon de football",
               price: 0.75,
               available: false,
