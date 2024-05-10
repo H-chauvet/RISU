@@ -26,4 +26,21 @@ router.get('/:articleId', async (req, res) => {
   }
 })
 
+router.get('/:articleId/similar', async (req, res) => {
+  try {
+    const containerId = req.query.containerId
+    if (!containerId) {
+      return res.status(401).json("containerId is required")
+    }
+    const articles = await itemCtrl.getSimilarItems(parseInt(req.params.articleId), parseInt(containerId))
+    if (!articles) {
+      return res.status(401).json("article not found")
+    }
+    return res.status(200).json(articles)
+  } catch (err) {
+    console.log(err)
+    return res.status(400).json('An error occured.')
+  }
+});
+
 module.exports = router
