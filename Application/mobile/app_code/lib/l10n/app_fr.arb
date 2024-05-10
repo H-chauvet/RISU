@@ -164,6 +164,7 @@
   "rentTimeOfRenting": "{hours, plural, one{Durée de la location: {hours} heure} other{Durée de la location: {hours} heures}}",
   "rentsListEmpty": "Aucune location",
   "rentsThanking": "{hours, plural, one{Merci pour votre location. N'oubliez pas de rendre l'article dans {hours} heure.} other{Merci pour votre location. N'oubliez pas de rendre l'article dans {hours} heures.}}",
+  "resetPasswordDescription": "Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe.",
   "reviewAdd": "Ajouter un avis",
   "reviewAdded": "Avis ajouté",
   "reviewAddedSuccessfully": "Avis ajouté avec succès.",

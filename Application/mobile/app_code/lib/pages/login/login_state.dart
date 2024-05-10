@@ -16,6 +16,7 @@ import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -284,10 +285,9 @@ class LoginPageState extends State<LoginPage> {
                                 if (keepPath)
                                   Navigator.pop(context)
                                 else
-                                  Navigator.pushNamedAndRemoveUntil(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
-                                    HomePage.routeName,
-                                    arguments: MaterialPageRoute(
+                                    MaterialPageRoute(
                                       builder: (context) {
                                         return const HomePage();
                                       },

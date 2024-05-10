@@ -115,7 +115,6 @@ class MyRedirectDivider extends StatelessWidget {
 class MyParameter extends StatelessWidget {
   final String title;
   final Widget goToPage;
-  final String pageName;
   final IconData paramIcon;
   final bool locked;
 
@@ -123,7 +122,6 @@ class MyParameter extends StatelessWidget {
     super.key,
     required this.title,
     required this.goToPage,
-    required this.pageName,
     required this.paramIcon,
     this.locked = false,
   });
@@ -143,10 +141,9 @@ class MyParameter extends StatelessWidget {
         if (locked) {
           return;
         }
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          pageName,
-          arguments: MaterialPageRoute(
+          MaterialPageRoute(
             builder: (context) {
               return goToPage;
             },

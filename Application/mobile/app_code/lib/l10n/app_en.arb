@@ -164,6 +164,7 @@
   "rentTimeOfRenting": "{hours, plural, one{Renting duration: {hours} hour} other{Renting duration: {hours} hours}}",
   "rentsListEmpty": "No rentals",
   "rentsThanking": "{hours, plural, one{Thank you for your rental. Don't forget to return the article in {hours} time.} other{Thank you for your rental. Don't forget to return the article in {hours} hours.}}",
+  "resetPasswordDescription": "Enter your email address to receive a reset password link.",
   "reviewAdd": "Add a review",
   "reviewAdded": "Review added",
   "reviewAddedSuccessfully": "Review added successfully.",

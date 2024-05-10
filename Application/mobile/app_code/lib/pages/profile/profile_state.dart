@@ -151,10 +151,9 @@ class ProfilePageState extends State<ProfilePage> {
                     key: const Key('profile-button-my_rentals_button'),
                     text: AppLocalizations.of(context)!.myRents,
                     onPressed: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        RentalPage.routeName,
-                        arguments: MaterialPageRoute(
+                        MaterialPageRoute(
                           builder: (context) {
                             return const RentalPage();
                           },
