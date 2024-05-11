@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Web/user")
+const jwtMiddleware = require("../../middleware/jwt");
 
 
 router.get("/all-tickets", async function (req, res, next) {
@@ -44,7 +45,7 @@ router.post('/create', async (req, res, next) => {
     throw new Error("Unauthorized");
   }
   try {
-    const { uuid, content, title, createdAt, assignedId, creatorId, chatUid} = req.body
+    const { uuid, content, title, createdAt, assignedId, chatUid} = req.body
 
     const user = await userCtrl.findUserByUuid(uuid)
     if (!user) {
@@ -68,7 +69,7 @@ router.post('/create', async (req, res, next) => {
       }
     }
 
-    creatorId = uuid;
+    const creatorId = uuid;
 
     const ticket = await ticketCtrl.createTicket({
       content,

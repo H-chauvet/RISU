@@ -6,6 +6,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -31,6 +32,9 @@ class _ContactPageState extends State<ContactPage> {
 
   Map<String, dynamic> openedTickets = {};
   Map<String, dynamic> closedTickets = {};
+
+  String _title = "";
+  String _message = "";
 
   void checkToken() async {
     token = await storageService.readStorage('token');
@@ -63,7 +67,7 @@ class _ContactPageState extends State<ContactPage> {
     };
 
     var response = await http.get(
-      Uri.parse('http://localhost:3000/api/tickets/all-tickets'),
+      Uri.parse('http://$serverIp:3000/api/tickets/all-tickets'),
       headers: header,
     );
     if (response.statusCode == 200) {
@@ -117,6 +121,30 @@ class _ContactPageState extends State<ContactPage> {
     super.initState();
     checkToken();
     getTickets();
+  }
+
+  void createTicket() async {
+    var header = <String, String>{
+      'Authorization': token!,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    var response = await http.post(
+      Uri.parse('http://$serverIp:3000/api/tickets/create'),
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'content': _message,
+          'title': _title,
+          'createdAt': DateTime.now().toString(),
+          'uuid': uuid!,
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      getTickets();
+    }
   }
 
   @override
@@ -272,7 +300,7 @@ class _ContactPageState extends State<ContactPage> {
                                           ? openedTickets
                                           : closedTickets)
                                       .isEmpty
-                                  ? Text("Aucun Ticket")
+                                  ? const Text("Aucun Ticket")
                                   : ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: showOpenedTickets
@@ -355,250 +383,210 @@ class _ContactPageState extends State<ContactPage> {
                       ),
                     ),
                   ),
-                  conversation.isEmpty
-                      ? Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                'Nouveau ticket',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.secondaryHeaderColor
-                                          : lightTheme.secondaryHeaderColor,
-                                ),
+                  if (conversation.isEmpty)
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            'Nouveau ticket',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 35,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.bold,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.secondaryHeaderColor
+                                  : lightTheme.secondaryHeaderColor,
+                            ),
+                          ),
+                          const SizedBox(height: 50),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Titre',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
-                              const SizedBox(height: 50),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Titre',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            onChanged: (value) => _title = value,
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            maxLines: 15,
+                            keyboardType: TextInputType.multiline,
+                            decoration: InputDecoration(
+                              labelText: 'Message',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                              ),
+                            ),
+                            onChanged: (value) => _message = value,
+                          ),
+                          const SizedBox(height: 16.0),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    createTicket();
+                                    getTickets();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Soumettre votre ticket',
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                maxLines: 15,
-                                keyboardType: TextInputType.multiline,
-                                decoration: InputDecoration(
-                                  labelText: 'Message',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
+                              ]),
+                        ],
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            conversation[0]["title"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 35,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.bold,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.secondaryHeaderColor
+                                  : lightTheme.secondaryHeaderColor,
+                            ),
+                          ),
+                          const SizedBox(height: 38),
+                          Container(
+                            width: double.infinity,
+                            height: 400,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(32),
+                              child: ListView.builder(
+                                  itemCount: conversation.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final chat = conversation[index];
+
+                                    return Align(
+                                      alignment: chat["creatorId"] != uuid
+                                          ? Alignment.centerRight
+                                          : Alignment.centerLeft,
+                                      child: Card(
+                                        elevation: 5,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(20.0),
+                                              BorderRadius.circular(10.0),
                                         ),
-                                      ),
-                                      child: Text(
-                                        'Soumettre votre ticket',
-                                        style: TextStyle(
-                                          color:
-                                              Provider.of<ThemeService>(context)
-                                                      .isDark
-                                                  ? darkTheme.primaryColor
-                                                  : lightTheme.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                        )
-                      : Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                conversation[0]["title"],
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 35,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.secondaryHeaderColor
-                                          : lightTheme.secondaryHeaderColor,
-                                ),
-                              ),
-                              const SizedBox(height: 38),
-                              Container(
-                                width: double.infinity,
-                                height: 400,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                  border: Border.all(color: Colors.grey),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(32),
-                                  child: ListView.builder(
-                                      itemCount: conversation.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        final chat = conversation[index];
-
-                                        return Align(
-                                          alignment: chat["creatorId"] != uuid
-                                              ? Alignment.centerRight
-                                              : Alignment.centerLeft,
-                                          child: Card(
-                                            elevation: 5,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            color: (chat["creatorId"] != uuid
-                                                ? Provider.of<ThemeService>(
-                                                            context)
-                                                        .isDark
-                                                    ? darkTheme.buttonTheme
-                                                        .colorScheme!.primary
-                                                    : lightTheme
-                                                        .secondaryHeaderColor
-                                                : Provider.of<ThemeService>(
-                                                            context)
-                                                        .isDark
-                                                    ? darkTheme.cardColor
-                                                    : lightTheme.cardColor),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    chat["content"],
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    formatDateTime(
-                                                        chat["createdAt"]),
-                                                    style: TextStyle(
-                                                      fontStyle:
-                                                          FontStyle.italic,
-                                                      fontSize: 12,
-                                                    ),
-                                                  )
-                                                ],
+                                        color: (chat["creatorId"] != uuid
+                                            ? Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.buttonTheme
+                                                    .colorScheme!.primary
+                                                : lightTheme
+                                                    .secondaryHeaderColor
+                                            : Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.cardColor
+                                                : lightTheme.cardColor),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                chat["content"],
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                ),
                                               ),
-                                            ),
+                                              Text(
+                                                formatDateTime(
+                                                    chat["createdAt"]),
+                                                style: const TextStyle(
+                                                  fontStyle: FontStyle.italic,
+                                                  fontSize: 12,
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                        );
-                                      }),
-                                ),
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ),
+                          const SizedBox(height: 8.0),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Nouveau message',
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.always,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30.0),
+                                borderSide:
+                                    const BorderSide(color: Colors.grey),
                               ),
-                              const SizedBox(height: 8.0),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  labelText: 'Nouveau message',
-                                  floatingLabelBehavior:
-                                      FloatingLabelBehavior.always,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                    borderSide:
-                                        const BorderSide(color: Colors.grey),
+                            ),
+                          ),
+                          const SizedBox(height: 16.0),
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      conversation = [];
+                                    });
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Fermer la conversation',
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 16.0),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          conversation = [];
-                                        });
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        'Fermer la conversation',
-                                        style: TextStyle(
-                                          color:
-                                              Provider.of<ThemeService>(context)
-                                                      .isDark
-                                                  ? darkTheme.primaryColor
-                                                  : lightTheme.primaryColor,
-                                        ),
-                                      ),
-                                    ),
-                                  ]),
-                            ],
-                          ),
-                        )
-                  // Column(
-                  //     children: [
-                  //       ElevatedButton(
-                  //         onPressed: () {
-                  //           setState(() {
-                  //             conversation = [];
-                  //           });
-                  //         },
-                  //         style: ButtonStyle(
-                  //           backgroundColor:
-                  //               MaterialStateProperty.all<Color>(
-                  //             Colors.red,
-                  //           ),
-                  //         ),
-                  //         child: Text("Fermer la conversation"),
-                  //       ),
-                  //       const SizedBox(height: 64),
-                  //       Text(conversation.length.toString()),
-                  //       /*Container(
-                  //         margin: const EdgeInsets.all(16),
-                  //         child: ListView.builder(
-                  //             shrinkWrap: true,
-                  //             itemCount: conversation.length,
-                  //             itemBuilder:
-                  //                 (BuildContext context, int index) {
-                  //               dynamic curr = conversation[index];
-
-                  //               return Text(
-                  //                   "Hello"); /*Padding(
-                  //           padding:
-                  //               EdgeInsets.symmetric(horizontal: 32),
-                  //           child: Text(curr["content"]),
-                  //         );*/
-                  //             }),
-                  //       )*/
-                  //     ],
-                  //   ),
+                              ]),
+                        ],
+                      ),
+                    )
                 ],
               ),
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 const lightElevatedButtonBackground = Color(0xFF28666E);
 
 final lightTheme = ThemeData(
+  useMaterial3: false,
   brightness: Brightness.light,
   primaryColor: const Color(0xFF162A49),
   secondaryHeaderColor: const Color(0xFF033F63),
@@ -63,6 +64,7 @@ final lightTheme = ThemeData(
 );
 
 final darkTheme = ThemeData(
+  useMaterial3: false,
   brightness: Brightness.dark,
   primaryColor: const Color(0xffFEDC97),
   secondaryHeaderColor: const Color(0xffFEDC97),

@@ -30,7 +30,7 @@ exports.createFixtures = async () => {
   const emptyTicke1 = await db.Tickets.create({
     data: {
       id: 2,
-      content: "Ceci est un ticket test",
+      content: "Ceci est un ticket test2",
       title: "Ticket de Henri",
       creatorId: "1234",
       assignedId: "",
@@ -40,7 +40,7 @@ exports.createFixtures = async () => {
   const emptyTicket2 = await db.Tickets.create({
     data: {
       id: 3,
-      content: "Ceci est un ticket test",
+      content: "Ceci est un ticket test3",
       title: "Ticket de Henri",
       creatorId: "",
       assignedId: "1234",
@@ -50,7 +50,7 @@ exports.createFixtures = async () => {
   const emptyTicket3 = await db.Tickets.create({
     data: {
       id: 4,
-      content: "Ceci est un ticket test",
+      content: "Ceci est un ticket test4",
       title: "Ticket de Henri",
       creatorId: "1234",
       assignedId: "",
