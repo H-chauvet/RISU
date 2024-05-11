@@ -72,6 +72,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: DropdownButton<String>(
+                        key: const Key('filter-category_dropdown'),
                         value: selectedCategoryId,
                         onChanged: (String? newValue) {
                           setState(() {
@@ -104,6 +105,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         elevation: 3,
                         items: [
                           DropdownMenuItem<String>(
+                            key: const Key('filter-null_category'),
                             value: 'null',
                             child: Text(
                               AppLocalizations.of(context)!.allCategories,
@@ -112,6 +114,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                           ),
                           for (var category in _articleCategories)
                             DropdownMenuItem<String>(
+                              key: Key('filter-category_${category['id']}'),
                               value: category['id'].toString(),
                               child: Text(
                                 category['name'],
