@@ -127,6 +127,19 @@ exports.getItemsFromContainer = (containerId) => {
   });
 };
 
+/**
+  * Retrieve items of the containers with filters
+  *
+  * @param {number} containerId id of the container
+  * @param {string} articleName name of the article
+  * @param {boolean} isAscending order of the items
+  * @param {boolean} isAvailable availability of the items
+  * @param {number} categoryId id of the category
+  * @param {string} sortBy sort by price or rating
+  * @param {number} min minimum value
+  * @param {number} max maximum value
+  * @returns the container object with its items
+  */
 exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId, sortBy, min, max) => {
   try {
     const container = await db.Containers.findUnique({
