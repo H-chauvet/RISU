@@ -37,4 +37,17 @@ void main() {
       expect(opinionData, findsOneWidget);
     },
   );
+
+  testWidgets(
+    'Similar articles',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(initPage(const ArticleDetailsPage(articleId: 1)));
+      await tester.pumpAndSettle();
+
+      Finder similarArticleTitle =
+          find.byKey(const Key('article-similar_title'));
+
+      expect(similarArticleTitle, findsOneWidget);
+    },
+  );
 }
