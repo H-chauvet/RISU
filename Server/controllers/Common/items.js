@@ -125,6 +125,7 @@ exports.getSimilarItems = async (itemId, containerId) => {
         categories: {
           some: { id: { in: categoryIds } },
         },
+        available: true,
       },
     });
 
