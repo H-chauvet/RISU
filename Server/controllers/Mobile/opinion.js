@@ -3,6 +3,7 @@ const { db } = require('../../middleware/database')
 
 /**
  * Create an opinion for an article
+ * Update the rating of the article
  *
  * @param {number} itemId of the item
  * @param {number} userId of the one of submitted the opinion
@@ -123,6 +124,7 @@ exports.getOpinions = (itemId, note = null) => {
 
 /**
  * Delete an opinion
+ * Update the rating of the article
  *
  * @param {number} opinionId of the opinion to be deleted
  * @returns a promise indicating the success or failure of the deletion operation
@@ -185,6 +187,7 @@ exports.deleteOpinion = (opinionId) => {
 
 /**
  * Get an opinion from its id
+ * Update the rating of the article
  *
  * @param {number} opinionId
  * @returns the opinion corresponding to the id
