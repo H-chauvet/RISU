@@ -27,6 +27,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     price: 0,
     categories: [],
   );
+  List<dynamic> similarArticles = [];
+
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -236,6 +238,48 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     }
   }
 
+  void getSimilarArticles(BuildContext context) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final response = await http.get(
+        Uri.parse(
+            '$baseUrl/api/mobile/article/${articleData.id}/similar?containerId=${articleData.containerId}'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
+        dynamic responseData = jsonDecode(response.body);
+        setState(() {
+          similarArticles = responseData;
+        });
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'getSimilarArticles',
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(
+          context,
+          err,
+          stacktrace,
+          message: AppLocalizations.of(context)!.connectionRefused,
+        );
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -243,6 +287,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         articleData = ArticleData.fromJson(value);
       });
+      getSimilarArticles(context);
     });
   }
 
@@ -494,6 +539,98 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           fontWeight: FontWeight.bold,
                           color: context.select((ThemeProvider themeProvider) =>
                               themeProvider.currentTheme.primaryColor),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: similarArticles
+                              .asMap()
+                              .entries
+                              .map((MapEntry<int, dynamic> entry) {
+                            final article = entry.value;
+                            final index = entry.key;
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ArticleDetailsPage(
+                                        articleId: article['id'],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Card(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'article-similar_image_$index',
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: context.select(
+                                              (ThemeProvider themeProvider) =>
+                                                  themeProvider.currentTheme
+                                                      .primaryColor),
+                                        ),
+                                      ),
+                                      Padding(
+                                        key:
+                                            Key('article-similar_image_$index'),
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Container(
+                                          width: 130,
+                                          height: 80,
+                                          decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  article['image'] ??
+                                                      'assets/volley.png'),
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        key: Key('article-similar_name_$index'),
+                                        padding: const EdgeInsets.all(3.0),
+                                        child: Text(
+                                          article['name'].length > 15
+                                              ? article['name']
+                                                      .substring(0, 15) +
+                                                  '...'
+                                              : article['name'],
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        key:
+                                            Key('article-similar_price_$index'),
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, right: 8.0, bottom: 8.0),
+                                        child: Text(
+                                          'Price: ${article['price']}€',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                     ],
