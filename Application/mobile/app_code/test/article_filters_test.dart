@@ -59,9 +59,40 @@ void main() {
     await tester.tap(descendingNote);
     await tester.enterText(minInput, '1');
     await tester.enterText(maxInput, '5');
-
     await tester.ensureVisible(switchAvailable);
     await tester.tap(switchAvailable);
     await tester.tap(filterApply);
+  });
+
+  testWidgets('Article filters Dropdown should be displayed',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(initPage(
+      const ArticleFiltersPage(
+        isAscending: true,
+        isAvailable: true,
+        selectedCategoryId: null,
+        sortBy: 'price',
+        articleCategories: [
+          {'id': 1, 'name': 'Sport'},
+          {'id': 2, 'name': 'Plage'}
+        ],
+      ),
+    ));
+
+    Finder categoryDropdown = find.byKey(const Key('filter-category_dropdown'));
+    Finder categoryDropdown1 = find.byKey(const Key('filter-category_1'));
+    Finder categoryDropdownNull = find.byKey(const Key('filter-null_category'));
+
+    expect(categoryDropdown, findsOneWidget);
+
+    await tester.ensureVisible(categoryDropdown);
+    await tester.tap(categoryDropdown);
+    await tester.pumpAndSettle();
+
+    expect(categoryDropdown1, findsOneWidget);
+    expect(categoryDropdownNull, findsOneWidget);
+    await tester.ensureVisible(categoryDropdown1);
+    await tester.ensureVisible(categoryDropdownNull);
+    await tester.tap(categoryDropdownNull);
   });
 }
