@@ -66,7 +66,6 @@ describe('GET /api/mobile/container/articleslist/', () => {
           const res = await request('http://localhost:3000')
             .get(`/api/mobile/container/${0}/articleslist/`)
           expect(res.statusCode).toBe(401)
-          console.log('res.body', res.body);
         }
       ],
       done
