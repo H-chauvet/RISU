@@ -142,6 +142,7 @@ model User_Mobile {
     mailVerification Boolean               @default(false)
     confirmProcess   String                @default("")
     refreshToken     String?               @unique
+    resetToken       String?               @unique
     createdAt        DateTime              @default(now())
     locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])

@@ -3,8 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/parameter.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/login/login_page.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
@@ -63,7 +62,7 @@ class BurgerDrawer extends StatelessWidget {
               if (userInformation != null)
                 MyRedirectDivider(
                   key: const Key('burgerdrawer-logout'),
-                  goToPage: const LoginPage(),
+                  goToPage: const HomePage(),
                   title: AppLocalizations.of(context)!.logOut,
                   paramIcon: Icons.logout,
                   disconnect: true,
