@@ -7,7 +7,9 @@ import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user-component.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -121,6 +123,8 @@ class _UserPageState extends State<UserPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -142,6 +146,9 @@ class _UserPageState extends State<UserPage> {
                       child: Text(
                         'Utilisateurs Web',
                         style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.secondaryHeaderColor
                                 : lightTheme.secondaryHeaderColor),
@@ -151,6 +158,9 @@ class _UserPageState extends State<UserPage> {
                       child: Text(
                         'Utilisateurs Mobile',
                         style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.secondaryHeaderColor
                                 : lightTheme.secondaryHeaderColor),
