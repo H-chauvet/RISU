@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +18,7 @@ import 'list_page.dart';
 import 'article_filters_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
+  late Timer _debounceTimer;
   late int _containerId;
   List<dynamic> _itemsDatas = [];
   List<dynamic> _articleCategories = [];
@@ -117,8 +118,25 @@ class ArticleListState extends State<ArticleListPage> {
   }
 
   @override
+  void dispose() {
+    _debounceTimer.cancel();
+    super.dispose();
+  }
+
+  void _onTextChanged(String value) {
+    _debounceTimer.cancel();
+    _debounceTimer = Timer(Duration(milliseconds: 500), () {
+      setState(() {
+        articleName = value;
+      });
+      updateItemsList();
+    });
+  }
+
+  @override
   void initState() {
     super.initState();
+    _debounceTimer = Timer(Duration.zero, () {});
     _containerId = widget.containerId;
     getItemsData(context, _containerId, selectedCategoryId)
         .then((dynamic value) {
@@ -169,10 +187,7 @@ class ArticleListState extends State<ArticleListPage> {
                               child: MyTextInput(
                                 key: const Key('filter-textInput_name'),
                                 onChanged: (value) {
-                                  setState(() {
-                                    articleName = value;
-                                  });
-                                  updateItemsList();
+                                  _onTextChanged(value);
                                 },
                                 labelText:
                                     AppLocalizations.of(context)!.articleName,
