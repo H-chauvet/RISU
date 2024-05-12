@@ -1,15 +1,15 @@
 module.exports = {
     put: {
       tags: ["Web", "Item"],
-      summary: 'Update an item in the database',
-      description: 'Update a new item with the body data',
+      summary: 'Update name of an item in the database',
+      description: 'Update name of a new item with the body data',
       operationId: "WebItemUpdate",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
         {
             name: 'data',
-            description: 'the new data for the item',
+            description: 'the new name for the item',
             in: 'body',
             schema : {
                 $ref: "#/components/schemas/Item"

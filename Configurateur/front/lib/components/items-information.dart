@@ -1,8 +1,11 @@
-// import 'dart:ffi';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/network/informations.dart';
+import 'package:http/http.dart' as http;
 
-class ItemList {
+class ItemListInfo {
   final int? id;
   final dynamic name;
   final bool? available;
@@ -12,8 +15,9 @@ class ItemList {
   final double? price;
   final String? image;
   final String? description;
+  final String? category;
 
-  ItemList({
+  ItemListInfo({
     required this.id,
     required this.name,
     required this.available,
@@ -23,10 +27,11 @@ class ItemList {
     required this.price,
     required this.image,
     required this.description,
+    required this.category,
   });
 
-  factory ItemList.fromJson(Map<String, dynamic> json) {
-    return ItemList(
+  factory ItemListInfo.fromJson(Map<String, dynamic> json) {
+    return ItemListInfo(
       id: json['id'],
       name: json['name'],
       available: json['available'],
@@ -36,8 +41,10 @@ class ItemList {
       price: json['price'],
       image: json['image'],
       description: json['description'],
+      category: json['category'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -49,40 +56,7 @@ class ItemList {
       'price': price,
       'image': image,
       'description': description,
+      'category': category,
     };
-  }
-}
-
-class ItemCard extends StatelessWidget {
-  final ItemList item;
-  final Function(ItemList) onDelete;
-
-  const ItemCard({super.key, required this.item, required this.onDelete});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          ListTile(
-            title: Text(item.id.toString()),
-            subtitle: Text(item.name),
-            leading: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () => onDelete(item),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                if (item.description != null) Text(item.description!),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }
