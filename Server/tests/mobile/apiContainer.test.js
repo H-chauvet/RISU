@@ -20,7 +20,7 @@ describe('get containerId', () => {
 })
 
 describe('GET /api/mobile/container/', () => {
-    it('should not get container from wrong id', (done) => {
+    it('should not get container detais from wrong id', (done) => {
       async.series(
         [
           async function () {
@@ -32,7 +32,7 @@ describe('GET /api/mobile/container/', () => {
         done
       )
     }),
-    it('should get container from id', (done) => {
+    it('should get container detais from id', (done) => {
       async.series(
         [
           async function () {
@@ -47,19 +47,19 @@ describe('GET /api/mobile/container/', () => {
 })
 
 describe('GET /api/mobile/container/articleslist/', () => {
-  it('should get article list from containerId', (done) => {
+  it('should get article list detais from containerId', (done) => {
     async.series(
       [
         async function () {
           const res = await request('http://localhost:3000')
-            .get('/api/mobile/container/1/articleslist?articleName=test&isAscending=true&isAvailable=false&categoryId=1&sortBy=rating')
+            .get(`/api/mobile/container/${containerId[0]}/articleslist`)
           expect(res.statusCode).toBe(200)
         }
       ],
       done
     )
   }),
-  it('should get article list from empty container, with incorrect filters', (done) => {
+  it('should get empty article list detais from wrong containerId', (done) => {
     async.series(
       [
         async function () {
@@ -71,30 +71,64 @@ describe('GET /api/mobile/container/articleslist/', () => {
       done
     )
   }),
-  it("should get empty article list from wrong containerId", (done) => {
+  it('should get article list detais from empty container, without filters', (done) => {
     async.series(
       [
         async function () {
-          const res = await request("http://localhost:3000").get(
-            `/api/mobile/container/${0}/articleslist/`
-          );
-          expect(res.statusCode).toBe(401);
-        },
+          const res = await request('http://localhost:3000')
+            .get(`/api/mobile/container/${containerId[1]}/articleslist`)
+          expect(res.statusCode).toBe(200)
+        }
       ],
       done
-    );
+    )
   }),
-  it("should get article list from empty container", (done) => {
+  it('should get article list detais from empty container, with defaults filters', (done) => {
     async.series(
       [
         async function () {
-          const res = await request("http://localhost:3000").get(
-            `/api/mobile/container/${containerId[1]}/articleslist`
-          );
-          expect(res.statusCode).toBe(204);
-        },
+          const res = await request('http://localhost:3000')
+            .get('/api/mobile/container/1/articleslist?articleName=&isAscending=true&isAvailable=true&categoryId=null&sortBy=price')
+          expect(res.statusCode).toBe(200)
+        }
       ],
       done
-    );
-  });
-});
+    )
+  }),
+  it('should get article list detais from empty container, with filters', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get('/api/mobile/container/1/articleslist?articleName=&isAscending=false&isAvailable=true&categoryId=1&sortBy=price')
+          expect(res.statusCode).toBe(200)
+        }
+      ],
+      done
+    )
+  }),
+  it('should get article list detais from empty container, with filters', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get('/api/mobile/container/1/articleslist?articleName=test&isAscending=true&isAvailable=false&categoryId=1&sortBy=rating')
+          expect(res.statusCode).toBe(200)
+        }
+      ],
+      done
+    )
+  }),
+  it('should get article list detais from empty container, with incorrect filters', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get('/api/mobile/container/1/articleslist?articleName=&isAscending=true&isAvailable=false&categoryId=test&sortBy=rating')
+          expect(res.statusCode).toBe(401)
+        }
+      ],
+      done
+    )
+  })
+})
