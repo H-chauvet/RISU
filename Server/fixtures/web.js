@@ -17,44 +17,60 @@ exports.createFixtures = async () => {
   } catch (err) {
     console.error(err.message);
   }
-  const emptyTicket = await db.Tickets.create({
-    data: {
-      id: 1,
-      content: "Ceci est un ticket test",
-      title: "Ticket de Henri",
-      creatorId: "1234",
-      assignedId: "",
-      chatUid: "1"
-    },
-  });
-  const emptyTicke1 = await db.Tickets.create({
-    data: {
-      id: 2,
-      content: "Ceci est un ticket test2",
-      title: "Ticket de Henri",
-      creatorId: "1234",
-      assignedId: "",
-      chatUid: "1"
-    },
-  });
-  const emptyTicket2 = await db.Tickets.create({
-    data: {
-      id: 3,
-      content: "Ceci est un ticket test3",
-      title: "Ticket de Henri",
-      creatorId: "",
-      assignedId: "1234",
-      chatUid: "1"
-    },
-  });
-  const emptyTicket3 = await db.Tickets.create({
-    data: {
-      id: 4,
-      content: "Ceci est un ticket test4",
-      title: "Ticket de Henri",
-      creatorId: "1234",
-      assignedId: "",
-      chatUid: "1"
-    },
-  });
+
+  try {
+    const user2 = await db.User_Web.create({
+      data: {
+        firstName: "Henri",
+        lastName: "Chauvet",
+        uuid: "12345",
+        email: "henri@risu.com",
+        confirmed: true,
+        password: bcrypt.hashSync("henri", 12),
+        company: "Risu",
+      },
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+  // const emptyTicket = await db.Tickets.create({
+  //   data: {
+  //     id: 1,
+  //     content: "Ceci est un ticket test",
+  //     title: "Ticket de Henri",
+  //     creatorId: "1234",
+  //     assignedId: "",
+  //     chatUid: "1"
+  //   },
+  // });
+  // const emptyTicke1 = await db.Tickets.create({
+  //   data: {
+  //     id: 2,
+  //     content: "Ceci est un ticket test2",
+  //     title: "Ticket de Henri",
+  //     creatorId: "1234",
+  //     assignedId: "",
+  //     chatUid: "1"
+  //   },
+  // });
+  // const emptyTicket2 = await db.Tickets.create({
+  //   data: {
+  //     id: 3,
+  //     content: "Ceci est un ticket test3",
+  //     title: "Ticket de Henri",
+  //     creatorId: "",
+  //     assignedId: "1234",
+  //     chatUid: "1"
+  //   },
+  // });
+  // const emptyTicket3 = await db.Tickets.create({
+  //   data: {
+  //     id: 4,
+  //     content: "Ceci est un ticket test4",
+  //     title: "Ticket de Henri",
+  //     creatorId: "1234",
+  //     assignedId: "",
+  //     chatUid: "1"
+  //   },
+  // });
 };

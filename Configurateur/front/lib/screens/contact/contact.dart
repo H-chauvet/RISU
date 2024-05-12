@@ -36,11 +36,40 @@ class _ContactPageState extends State<ContactPage> {
   String _title = "";
   String _message = "";
 
+  Future<bool> handleSubmitMessage(String value) async {
+    dynamic ticket = conversation.last;
+
+    var header = <String, String>{
+      'Authorization': token!,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    var response = await http.post(
+      Uri.parse('http://$serverIp:3000/api/tickets/create'),
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'content': value,
+          'title': ticket["title"],
+          'createdAt': DateTime.now().toString(),
+          'chatUid': ticket["chatUid"],
+          'assignedId': ticket['assignedId'],
+          'uuid': uuid!,
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
     storageService.getUserUuid().then((value) => uuid = value);
-    // uuid = await storageService.readStorage("uuid");
     if (token == "") {
       context.go('/login');
     }
@@ -94,6 +123,7 @@ class _ContactPageState extends State<ContactPage> {
       setState(() {
         openedTickets = tmpOpenedTickets;
         closedTickets = tmpClosedTickets;
+        conversation = [];
       });
     } else {
       print('Erreur lors de l\'envoi des données : ${response.statusCode}');
@@ -544,7 +574,32 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 8.0),
                           TextFormField(
+                            onChanged: (value) => _message = value,
                             decoration: InputDecoration(
+                              suffixIcon: GestureDetector(
+                                onTap: () async {
+                                  bool success =
+                                      await handleSubmitMessage(_message);
+                                  if (success) {
+                                    final lastTicket = conversation.last;
+                                    final newTicket = {
+                                      "content": _message,
+                                      'title': lastTicket["title"],
+                                      'assignedId': lastTicket["assignedId"],
+                                      'chatUid': lastTicket["chatUid"],
+                                      'creatorId': uuid!,
+                                      'createdAt': DateTime.now().toString(),
+                                    };
+                                    setState(
+                                      () {
+                                        conversation.add(newTicket);
+                                        // getTickets();
+                                      },
+                                    );
+                                  }
+                                },
+                                child: const Icon(Icons.arrow_upward),
+                              ),
                               labelText: 'Nouveau message',
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
@@ -554,6 +609,7 @@ class _ContactPageState extends State<ContactPage> {
                                     const BorderSide(color: Colors.grey),
                               ),
                             ),
+                            onFieldSubmitted: handleSubmitMessage,
                           ),
                           const SizedBox(height: 16.0),
                           Row(
