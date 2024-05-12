@@ -70,6 +70,15 @@ exports.createFixtures = async () => {
                 connect: [{ id: 2 }],
               },
             },
+            {
+              id: 4,
+              name: "Freesbee",
+              price: 1.5,
+              available: true,
+              categories: {
+                connect: [{ id: 1 }],
+              },
+            },
           ],
         },
       },

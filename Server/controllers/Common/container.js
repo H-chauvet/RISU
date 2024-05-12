@@ -7,8 +7,9 @@ const { db } = require("../../middleware/database");
  * @returns a container object in case it's found, otherwise empty
  */
 exports.getContainerById = (id) => {
+  let idtest = parseInt(id);
   return db.Containers.findUnique({
-    where: { id: id },
+    where: { id: idtest },
     select: {
       city: true,
       address: true,
@@ -19,6 +20,29 @@ exports.getContainerById = (id) => {
       longitude: true,
     },
   });
+};
+
+exports.getContainerByOrganizationId = (organizationId) => {
+  return db.Containers.findMany({
+    where: {
+      organizationId: parseInt(organizationId),
+    },
+    select: {
+      id: true,
+      city: true,
+      address: true,
+      informations: true,
+      items: {
+        where: {
+          available: true,
+        },
+      },
+    },
+  });
+};
+
+exports.getAllContainer = (id) => {
+  return db.Containers.findMany();
 };
 
 /**
@@ -123,6 +147,50 @@ exports.getItemsFromContainer = (containerId) => {
           categories: true,
         },
       },
+    },
+  })
+}
+
+exports.updateCity = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      city: container.city,
+    },
+  });
+};
+
+exports.updateAddress = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      address: container.address,
+    },
+  });
+};
+
+exports.updateSaveName = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      saveName: container.saveName,
+    },
+  });
+};
+
+exports.updateInformation = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      informations: container.informations,
     },
   });
 };
