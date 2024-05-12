@@ -198,3 +198,17 @@ exports.removeUserRefreshToken = userId => {
     }
   })
 }
+
+/**
+ * Delete the user notifications before deleting his account
+ *
+ * @param {*} notificationsId of the notifications
+ * @returns none
+ */
+exports.cleanUserNotifications = notificationsId => {
+  return db.notifications_Mobile.delete({
+    where: {
+      id: notificationsId
+    }
+  })
+}

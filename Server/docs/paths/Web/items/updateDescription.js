@@ -1,15 +1,15 @@
 module.exports = {
     put: {
       tags: ["Web", "Item"],
-      summary: 'Update an item in the database',
-      description: 'Update a new item with the body data',
+      summary: 'Update description of an item in the database',
+      description: 'Update description of a new item with the body data',
       operationId: "WebItemUpdate",
       consumes: ["application/json"],
       produces: ["application/json"],
       parameters: [
         {
             name: 'data',
-            description: 'the new data for the item',
+            description: 'the new description for the item',
             in: 'body',
             schema : {
                 $ref: "#/components/schemas/Item"
@@ -29,7 +29,7 @@ module.exports = {
             description: 'An Error occured',
             content : {
                 "application/json": {
-                    example: "Id and name are required"
+                    example: "Id and description are required"
                 }
               }
           }
