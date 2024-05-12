@@ -1,4 +1,4 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
 /**
  * Retrieve every item from a container
@@ -6,12 +6,35 @@ const { db } = require('../../middleware/database')
  * @param {number} containerId id of the container
  * @returns every item in a specific container
  */
-exports.getAllItem = (containerId) => {
+exports.getItemByContainerId = (containerId) => {
   return db.Item.findMany({
     where: {
       containerId: containerId,
     },
   });
+};
+
+/**
+ * Retrieve every item with category from a container
+ *
+ * @param {number} category category of the items
+ * @returns every item with specific category in a specific container
+ */
+exports.getItemByCategory = (category) => {
+  return db.Item.findMany({
+    where: {
+      category: category,
+    },
+  });
+};
+
+/**
+ * Retrieve every item
+ *
+ * @returns every item in the database
+ */
+exports.getAllItem = () => {
+  return db.Item.findMany({});
 };
 
 /**
@@ -21,9 +44,8 @@ exports.getAllItem = (containerId) => {
  * @returns one item if an id correspond
  */
 exports.getItemFromId = (id) => {
-  const intId = parseInt(id);
   return db.Item.findUnique({
-    where: { id: intId },
+    where: { id: parseInt(id) },
     include: {
       categories: true // inclure les catégories liées à l'élément
     }
@@ -36,8 +58,8 @@ exports.getItemFromId = (id) => {
  * @returns every item in the database
  */
 exports.getItems = () => {
-  return db.Item.findMany()
-}
+  return db.Item.findMany();
+};
 
 /**
  * Delete a specific item
@@ -48,7 +70,7 @@ exports.getItems = () => {
 exports.deleteItem = (id) => {
   return db.Item.delete({
     where: {
-      id: id,
+      id: parseInt(id),
     },
   });
 };
@@ -61,6 +83,7 @@ exports.deleteItem = (id) => {
  */
 exports.createItem = (item) => {
   item.price = parseFloat(item.price);
+  item.containerId = parseInt(item.containerId);
   return db.Item.create({
     data: item,
   });
@@ -74,7 +97,7 @@ exports.createItem = (item) => {
  * @returns the freshly updated object
  */
 exports.updateItem = (id, item) => {
-  intId = parseInt(id)
+  intId = parseInt(id);
   item.price = parseFloat(item.price);
   return db.Item.update({
     where: {
@@ -134,3 +157,74 @@ exports.getSimilarItems = async (itemId, containerId) => {
     throw error;
   }
 }
+
+/**
+ * Update the name of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the name changed
+ */
+exports.updateName = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      name: item.name,
+    },
+  });
+};
+
+/**
+ * Update the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the name changed
+ */
+exports.updateItemCtn = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      available: item.available,
+    },
+  });
+};
+
+/**
+ * Update the price of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the price changed
+ */
+exports.updatePrice = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      price: item.priceTmp,
+    },
+  });
+};
+
+/**
+ * Update the description of the selected item
+ *
+ * @param {number} item information about the item
+ * @returns the item with the description changed
+ */
+exports.updateDescription = (item) => {
+  return db.Item.update({
+    where: {
+      id: item.id,
+    },
+    data: {
+      description: item.description,
+    },
+  });
+};

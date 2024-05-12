@@ -4,7 +4,6 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
@@ -45,7 +44,7 @@ class _UserPageState extends State<UserPage> {
 
     if (response.statusCode == 200) {
       Fluttertoast.showToast(
-        msg: 'utilisateur supprimé avec succès',
+        msg: 'Utilisateur supprimé avec succès',
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );

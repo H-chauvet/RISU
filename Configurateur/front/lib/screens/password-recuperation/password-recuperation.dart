@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
+
+import 'package:provider/provider.dart';
 
 class PasswordRecuperation extends StatefulWidget {
   const PasswordRecuperation({super.key});
@@ -179,9 +183,13 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             "Envoyer l'email de récupération",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: 18),
                           ),
                         ),
                       ),
