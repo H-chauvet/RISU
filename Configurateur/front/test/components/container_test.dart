@@ -5,6 +5,7 @@ import 'package:front/app_routes.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
+import 'package:sizer/sizer.dart';
 
 Future<void> deleteContainer(ContainerListData container) async {}
 
@@ -24,10 +25,16 @@ void main() {
   );
   testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ContainerCards(
-          container: mockItem, onDelete: deleteContainer, page: 'page'),
-    ));
+    await tester.pumpWidget(
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: ContainerCards(
+                container: mockItem, onDelete: deleteContainer, page: 'page'),
+          );
+        },
+      ),
+    );
 
     expect(find.byType(ContainerCards), findsOneWidget);
     await tester.pump();
@@ -36,13 +43,19 @@ void main() {
   });
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ContainerCards(
-        container: mockItem,
-        onDelete: deleteContainer,
-        page: 'page',
+    await tester.pumpWidget(
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: ContainerCards(
+              container: mockItem,
+              onDelete: deleteContainer,
+              page: 'page',
+            ),
+          );
+        },
       ),
-    ));
+    );
 
     await tester.tap(find.byIcon(Icons.delete).first);
     await tester.pumpAndSettle();
@@ -69,13 +82,19 @@ void main() {
 
   testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ContainerCards(
-        container: mockItem,
-        onDelete: deleteContainer,
-        page: "page",
+    await tester.pumpWidget(
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: ContainerCards(
+              container: mockItem,
+              onDelete: deleteContainer,
+              page: "page",
+            ),
+          );
+        },
       ),
-    ));
+    );
 
     expect(find.byType(ContainerCards), findsOneWidget);
     await tester.pump();
@@ -87,13 +106,19 @@ void main() {
 
   testWidgets('ContainerListData test Icon arrow_forward',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(
-      home: ContainerCards(
-        container: mockItem,
-        onDelete: deleteContainer,
-        page: "page",
+    await tester.pumpWidget(
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: ContainerCards(
+              container: mockItem,
+              onDelete: deleteContainer,
+              page: "page",
+            ),
+          );
+        },
       ),
-    ));
+    );
 
     expect(find.byType(ContainerCards), findsOneWidget);
 
