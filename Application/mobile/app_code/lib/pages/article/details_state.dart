@@ -570,17 +570,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        'article-similar_image_$index',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: context.select(
-                                              (ThemeProvider themeProvider) =>
-                                                  themeProvider.currentTheme
-                                                      .primaryColor),
-                                        ),
-                                      ),
                                       Padding(
                                         key:
                                             Key('article-similar_image_$index'),
