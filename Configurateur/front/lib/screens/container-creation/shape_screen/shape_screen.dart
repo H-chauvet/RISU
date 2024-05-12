@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -9,7 +11,6 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../components/progress_bar.dart';
 import 'shape_screen_style.dart';
 
 class ShapeScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   @override
   void initState() {
     super.initState();
-    //MyAlertTest.checkSignInStatus(context);
+    MyAlertTest.checkSignInStatus(context);
     calculateDimension();
   }
 

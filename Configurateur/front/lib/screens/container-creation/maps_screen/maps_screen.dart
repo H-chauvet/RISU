@@ -85,7 +85,7 @@ class MapsState extends State<MapsScreen> {
 
   @override
   void initState() {
-    //checkToken();
+    checkToken();
     getPosition();
 
     super.initState();

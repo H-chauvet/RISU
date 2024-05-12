@@ -8,10 +8,9 @@ import 'package:front/screens/container-creation/recap_screen/recap_screen_style
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import '../../../styles/themes.dart';
 
 class RecapScreen extends StatefulWidget {
   const RecapScreen(
