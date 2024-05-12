@@ -12,6 +12,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -28,19 +29,25 @@ void main() {
 
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MessagePage(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MessagePage(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
     expect(find.text("Gestion des messages"), findsOneWidget);
