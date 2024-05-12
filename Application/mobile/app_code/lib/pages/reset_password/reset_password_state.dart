@@ -22,7 +22,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
   String _password = '';
   String _passwordConfirmation = '';
 
-  Future<void> updatePassword() async {
+  Future<void> resetPassword() async {
     try {
       if (_password == '' || _passwordConfirmation == '') {
         if (mounted) {
@@ -50,8 +50,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        // TODO Change URL to the correct one
-        Uri.parse('$baseUrl/api/mobile/user/password'),
+        Uri.parse('$baseUrl/api/mobile/user/password/reset'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -74,13 +73,13 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
       } else {
         if (response.statusCode == 401) {
           if (mounted) {
-            printServerResponse(context, response, 'updatePassword',
+            printServerResponse(context, response, 'resetPassword',
                 message:
                     AppLocalizations.of(context)!.passwordCurrentIncorrect);
           }
         } else {
           if (mounted) {
-            printServerResponse(context, response, 'updatePassword',
+            printServerResponse(context, response, 'resetPassword',
                 message: AppLocalizations.of(context)!
                     .errorOccurredDuringPasswordUpdate);
           }
@@ -172,7 +171,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
       floatingActionButton: MyButton(
         key: const Key('reset_password-confirm'),
         text: AppLocalizations.of(context)!.confirm,
-        onPressed: updatePassword,
+        onPressed: resetPassword,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
