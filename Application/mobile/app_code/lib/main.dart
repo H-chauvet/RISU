@@ -14,7 +14,11 @@ import 'globals.dart';
 String theme = appTheme['clair'];
 
 void main() async {
-  await dotenv.load(fileName: 'lib/.env');
+  try {
+    await dotenv.load(fileName: 'lib/.env');
+  } catch (e) {
+    print('Error .env: $e');
+  }
 
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;

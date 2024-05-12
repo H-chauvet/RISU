@@ -45,14 +45,20 @@ class UserMobileCard extends StatelessWidget {
           ListTile(
             title: Text("Prénom : " + user.firstName),
             subtitle: Text("Nom : " + user.lastName),
-            leading: Row(
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text("Email : " + user.email),
+                  ],
+                ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(user),
                 ),
-                Text("Email : " + user.email),
               ],
             ),
           ),

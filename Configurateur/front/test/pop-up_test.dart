@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +24,6 @@ void main() {
     SharedPreferences.setMockInitialValues({'token': 'test-token'});
   });
   final mockContext = MockBuildContext();
-  final mockNavigatorObserver = MockNavigatorObserver();
 
   test('checkSignin - token vide', () async {
     SharedPreferences.setMockInitialValues({});
@@ -43,8 +40,6 @@ void main() {
       'tokenExpiration':
           DateTime.now().add(const Duration(minutes: 30)).toIso8601String()
     });
-
-    String userMail = 'risu.admin@gmail.com';
 
     when(sharedPreferences.getString('token')).thenReturn(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJNYWlsIjoiY2VkcmljLmNvcmdlQGdtYWlsLmNvbSIsImNvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNzA1ODY5ODIwfQ.kBl1SxA59i7biwIIPoYPLgY0hECVvNP7wciioe4B2I8');
@@ -67,13 +62,13 @@ void main() {
   test('checkSignInAdmin - token non vide et utilisateur admin', () async {
     SharedPreferences.setMockInitialValues({
       'token':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJNYWlsIjoicmlzdS5hZG1pbkBnbWFpbC5jb20iLCJjb25maXJtZWQiOmZhbHNlLCJpYXQiOjE3MDU4NzAxMTN9.6tB_XpF67uv_4oTEmiCO3OgDuzIUQ7U_lgvXpHs34Ds',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJNYWlsIjoiZGF2aWQucG9xdWVsaW5AZ21haWwuY29tIiwiY29uZmlybWVkIjpmYWxzZSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE1MjU4MzczLCJleHAiOjE3MTUyNjE5NzN9.KCF741HcFG7Gyh7z-OankV9sk1NauvYBRJGb88BR43M',
       'tokenExpiration':
           DateTime.now().add(const Duration(minutes: 30)).toIso8601String()
     });
 
     when(sharedPreferences.getString('token')).thenReturn(
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJNYWlsIjoicmlzdS5hZG1pbkBnbWFpbC5jb20iLCJjb25maXJtZWQiOmZhbHNlLCJpYXQiOjE3MDU4NzAxMTN9.6tB_XpF67uv_4oTEmiCO3OgDuzIUQ7U_lgvXpHs34Ds');
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJNYWlsIjoiZGF2aWQucG9xdWVsaW5AZ21haWwuY29tIiwiY29uZmlybWVkIjpmYWxzZSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzE1MjU4MzczLCJleHAiOjE3MTUyNjE5NzN9.KCF741HcFG7Gyh7z-OankV9sk1NauvYBRJGb88BR43M');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
