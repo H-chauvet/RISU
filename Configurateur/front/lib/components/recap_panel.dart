@@ -3,6 +3,7 @@ import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
+/// Classe représentant un casier appartenant à un conteneur
 class Locker {
   String type;
   int price;
@@ -22,6 +23,10 @@ class LockerList {
   int price;
   int quantity;
 
+  /// Crée une nouvelle instance de [LockerList].
+  ///
+  /// [price] : Prix de tout les casiers
+  /// [quantity] : Nombre de casiers dans le conteneur
   LockerList(this.type, this.price, this.quantity);
 }
 
@@ -32,6 +37,7 @@ class LockerList {
 class RecapPanel extends StatelessWidget {
   RecapPanel({super.key, this.articles, required this.onSaved});
 
+  /// Permet de calculer le prix des casiers
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < articles!.length; i++) {
@@ -45,6 +51,7 @@ class RecapPanel extends StatelessWidget {
   late int? price = sumPrice();
   final Function() onSaved;
 
+  /// Permet de parcourir les articles
   List<LockerList> parseArticles() {
     List<LockerList> parsedLockers = [];
     int littleCount = 0;
@@ -94,6 +101,7 @@ class RecapPanel extends StatelessWidget {
     return parsedLockers;
   }
 
+/// Permet de voir le detail des articles (type et nombre de conteneurs)
   Widget articlesContent() {
     if (parsedArticles.isEmpty) {
       return const Center(
