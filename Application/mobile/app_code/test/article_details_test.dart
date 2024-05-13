@@ -55,7 +55,11 @@ void main() {
     (WidgetTester tester) async {
       const similarArticlesData = [
         {'id': 1, 'name': 'Article 1', 'price': 10.0},
-        {'id': 2, 'name': 'Article 2', 'price': 20.0},
+        {
+          'id': 2,
+          'name': 'Article 2 but with more than 15 letters',
+          'price': 20.0
+        },
       ];
 
       await tester.pumpWidget(
