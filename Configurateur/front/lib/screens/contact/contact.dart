@@ -179,6 +179,9 @@ class _ContactPageState extends State<ContactPage> {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController _titleController = TextEditingController();
+    final TextEditingController _contentController = TextEditingController();
+
     return Scaffold(
       body: FooterView(
         footer: Footer(
@@ -433,6 +436,7 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 50),
                           TextFormField(
+                            controller: _titleController,
                             decoration: InputDecoration(
                               labelText: 'Titre',
                               floatingLabelBehavior:
@@ -445,6 +449,7 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
+                            controller: _contentController,
                             maxLines: 15,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
@@ -466,6 +471,10 @@ class _ContactPageState extends State<ContactPage> {
                                   onPressed: () {
                                     createTicket();
                                     getTickets();
+                                    _titleController.clear();
+                                    _contentController.clear();
+                                    _message = "";
+                                    _title = "";
                                   },
                                   style: ElevatedButton.styleFrom(
                                     padding: const EdgeInsets.symmetric(
@@ -523,7 +532,7 @@ class _ContactPageState extends State<ContactPage> {
                                     final chat = conversation[index];
 
                                     return Align(
-                                      alignment: chat["creatorId"] != uuid
+                                      alignment: chat["creatorId"] == uuid
                                           ? Alignment.centerRight
                                           : Alignment.centerLeft,
                                       child: Card(
@@ -532,7 +541,7 @@ class _ContactPageState extends State<ContactPage> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                         ),
-                                        color: (chat["creatorId"] != uuid
+                                        color: (chat["creatorId"] == uuid
                                             ? Provider.of<ThemeService>(context)
                                                     .isDark
                                                 ? darkTheme.buttonTheme
@@ -574,6 +583,7 @@ class _ContactPageState extends State<ContactPage> {
                           ),
                           const SizedBox(height: 8.0),
                           TextFormField(
+                            controller: _contentController,
                             onChanged: (value) => _message = value,
                             decoration: InputDecoration(
                               suffixIcon: GestureDetector(
@@ -593,6 +603,8 @@ class _ContactPageState extends State<ContactPage> {
                                     setState(
                                       () {
                                         conversation.add(newTicket);
+                                        _contentController.clear();
+                                        _message = "";
                                         // getTickets();
                                       },
                                     );
