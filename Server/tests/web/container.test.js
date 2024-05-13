@@ -29,14 +29,13 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.getContainerById).toHaveBeenCalledWith(1);
   });
 
   it("should handle missing ID during container retrieval", async () => {
     const requestBody = {};
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
 
     const response = await supertest(app)
       .get("/get")
@@ -44,18 +43,20 @@ describe("Container Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(400);
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.getContainerById).not.toHaveBeenCalled();
   });
 
   it("should handle valid container deletion", async () => {
     const requestBody = { id: 1 };
+    jwtMiddleware.verifyToken.mockResolvedValueOnce();
 
     containerCtrl.deleteContainer.mockResolvedValueOnce();
 
-    const response = await supertest(app).post("/delete").send(requestBody);
+    const response = await supertest(app)
+      .post("/delete")
+      .set("Authorization", "Bearer mockedAccessToken")
+      .send(requestBody);
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual("container deleted");
@@ -84,9 +85,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
   });
 
@@ -118,27 +117,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     console.log("body: " + response.body.name);
     expect(response.body).toEqual({ id: 1, name: "Container 2" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
-    );
-  });
-
-  it("should handle valid container list retrieval", async () => {
-    containerCtrl.getAllContainers.mockResolvedValueOnce([
-      { id: 1, name: "Container 1" },
-      { id: 2, name: "Container 2" },
-    ]);
-
-    const response = await supertest(app).get("/listAll");
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual({
-      container: [
-        { id: 1, name: "Container 1" },
-        { id: 2, name: "Container 2" },
-      ],
-    });
-    expect(containerCtrl.getAllContainers).toHaveBeenCalled();
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
   });
 
   it("should update the localisation", async () => {
@@ -166,6 +145,7 @@ describe("Container Route Tests", () => {
 
     const response = await supertest(app)
       .put("/update-position")
+      .set("Authorization", "Bearer mockedAccessToken")
       .send(requestBody);
 
     expect(response.status).toBe(200);

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:profile_photo/profile_photo.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/favorite/favorite_page.dart';
-import 'package:risu/pages/login/login_page.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/rent/rental_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
@@ -189,18 +190,30 @@ class ProfilePageState extends State<ProfilePage> {
                   key: const Key('profile-button-log_out_button'),
                   text: AppLocalizations.of(context)!.logOut,
                   onPressed: () {
-                    SharedPreferences.getInstance().then((value) {
-                      value.setString('refreshToken', '');
-                    });
-                    userInformation = null;
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const LoginPage();
-                        },
-                      ),
-                      (route) => false,
+                    MyAlertDialog.showChoiceAlertDialog(
+                      context: context,
+                      title: AppLocalizations.of(context)!.confirmation,
+                      message:
+                          AppLocalizations.of(context)!.accountAskDisconnection,
+                      onOkName: AppLocalizations.of(context)!.disconnect,
+                    ).then(
+                      (value) {
+                        if (value) {
+                          SharedPreferences.getInstance().then((value) {
+                            value.setString('refreshToken', '');
+                          });
+                          userInformation = null;
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return const HomePage();
+                              },
+                            ),
+                            (route) => false,
+                          );
+                        }
+                      },
                     );
                   },
                 ),

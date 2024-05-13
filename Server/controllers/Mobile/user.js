@@ -60,17 +60,18 @@ exports.generateRandomPassword = (length) => {
   return password
 }
 
-exports.sendResetPasswordEmail = async(email, newPassword) => {
+exports.sendResetPasswordEmail = async(email, resetToken) => {
   const mailOptions = {
     from: process.env.MAIL_ADDRESS,
     to: email,
     subject: 'Reset Your Password',
-    text: `Your new password is: ${newPassword}`
+    text: "",
+    html: '<p>Please follow the link to reset your password: <a href="http://risu.dns-dynamic.net/resetToken?token=' +
+      resetToken + '">here</a></p>',
   }
 
   try {
-    const info = transporter.sendMail(mailOptions)
-    console.log('Reset email sent to ' + email + ' (' + info.response + ')')
+    transporter.sendMail(mailOptions)
   } catch (error) {
     console.error('Error sending reset password email:', error)
   }
@@ -195,6 +196,39 @@ exports.removeUserRefreshToken = userId => {
     include: { Notifications: true },
     data: {
       refreshToken: null
+    }
+  })
+}
+
+/**
+ * Update user's reset token
+ *
+ * @param {string} userId ID of the user
+ * @param {string} resetToken Reset token to be saved
+ */
+exports.updateUserResetToken = async (userId, resetToken) => {
+  try {
+    return await db.User_Mobile.update({
+      where: { id: userId },
+      data: { resetToken: resetToken },
+    });
+  } catch (error) {
+    throw new Error('Failed to update user reset token: ' + error);
+  }
+}
+
+/**
+ * Remove the resetToken of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.removeUserResetToken = userId => {
+  return db.User_Mobile.update({
+    where: { id: userId },
+    include: { Notifications: true },
+    data: {
+      resetToken: null
     }
   })
 }

@@ -233,6 +233,8 @@ exports.findUserDetailsByEmail = (email) => {
       createdAt: true,
       company: true,
       email: true,
+      organizationId: true,
+      organization: true,
     },
   });
 };
@@ -251,6 +253,23 @@ exports.updateName = (user) => {
     data: {
       firstName: user.firstName,
       lastName: user.lastName,
+    },
+  });
+};
+
+/**
+ * Update organization
+ *
+ * @param {*} user
+ * @returns user object with updated organization
+ */
+exports.updateOrganization = user => {
+  return db.User_Web.update({
+    where: {
+      email: user.email,
+    },
+    data: {
+      organizationId: user.id
     },
   });
 };

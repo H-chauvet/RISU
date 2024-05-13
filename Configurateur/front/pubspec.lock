@@ -1261,22 +1261,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "13.0.0"
-  watcher:
+  vm_service:
     dependency: transitive
     description:
       name: watcher
       sha256: "3d2ad6751b3c16cf07c7fca317a1413b3f26530319181b37e3b9039b84fc01d8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.0.2"
   web:
     dependency: transitive
     description:
-      name: web
-      sha256: "97da13628db363c635202ad97068d47c5b8aa555808e7a9411963c533b449b27"
+      name: watcher
+      sha256: "6a7f46926b01ce81bfc339da6a7f20afbe7733eff9846f6d6a5466aa4c6667c0"
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "1.0.2"
   web_socket_channel:
     dependency: transitive
     description:
@@ -1310,5 +1310,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
-  flutter: ">=3.19.0"
+  dart: ">=3.2.0-0 <4.0.0"
+  flutter: ">=3.13.0"

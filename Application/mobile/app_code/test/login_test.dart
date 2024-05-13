@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/login/ask_reset_password/ask_reset_password_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 
@@ -23,15 +24,15 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const LoginPage()));
 
-      Finder CheckBoxFinder =
+      Finder checkBoxFinder =
           find.byKey(const Key('login-checkbox_stayconnected'));
 
-      expect(tester.widget<Checkbox>(CheckBoxFinder).value, false);
+      expect(tester.widget<Checkbox>(checkBoxFinder).value, false);
 
-      await tester.tap(CheckBoxFinder);
+      await tester.tap(checkBoxFinder);
       await tester.pump();
 
-      expect(tester.widget<Checkbox>(CheckBoxFinder).value, true);
+      expect(tester.widget<Checkbox>(checkBoxFinder).value, true);
     });
 
     testWidgets('Click on text to toggle stay connected',
@@ -139,9 +140,10 @@ void main() {
         find.byKey(const Key('login-textinput_email')), 'user@gmail.com');
 
     await tester.tap(find.byKey(const Key('login-textbutton_resetpassword')));
-    await tester.pump(const Duration(milliseconds: 4000));
 
-    expect(find.byType(AlertDialog), findsOneWidget);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AskResetPasswordPage), findsOneWidget);
   });
 
   testWidgets(
