@@ -283,6 +283,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   @override
   void initState() {
     super.initState();
+    if (widget.similarArticlesData.isNotEmpty) {
+      setState(() {
+        similarArticles = widget.similarArticlesData;
+      });
+    }
     getArticleData(context, widget.articleId).then((dynamic value) {
       setState(() {
         articleData = ArticleData.fromJson(value);
@@ -530,98 +535,107 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           },
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        AppLocalizations.of(context)!.similarArticles,
-                        key: const Key('article-similar_title'),
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: context.select((ThemeProvider themeProvider) =>
-                              themeProvider.currentTheme.primaryColor),
+                      if (similarArticles.isNotEmpty) ...[
+                        const SizedBox(height: 16),
+                        Text(
+                          AppLocalizations.of(context)!.similarArticles,
+                          key: const Key('article-similar_title'),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: similarArticles
-                              .asMap()
-                              .entries
-                              .map((MapEntry<int, dynamic> entry) {
-                            final article = entry.value;
-                            final index = entry.key;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ArticleDetailsPage(
-                                        articleId: article['id'],
+                        const SizedBox(height: 16),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: similarArticles
+                                .asMap()
+                                .entries
+                                .map((MapEntry<int, dynamic> entry) {
+                              final article = entry.value;
+                              final index = entry.key;
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ArticleDetailsPage(
+                                          articleId: article['id'],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
-                                child: Card(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        key:
-                                            Key('article-similar_image_$index'),
-                                        padding: const EdgeInsets.all(6.0),
-                                        child: Container(
-                                          width: 130,
-                                          height: 80,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
+                                    );
+                                  },
+                                  child: Card(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Padding(
+                                          key: Key(
+                                              'article-similar_image_$index'),
+                                          padding: const EdgeInsets.all(6.0),
+                                          child: Container(
+                                            width: 130,
+                                            height: 80,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                image: AssetImage(
                                                   article['image'] ??
-                                                      'assets/volley.png'),
-                                              fit: BoxFit.cover,
+                                                      'assets/volley.png',
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        key: Key('article-similar_name_$index'),
-                                        padding: const EdgeInsets.all(3.0),
-                                        child: Text(
-                                          article['name'].length > 15
-                                              ? article['name']
-                                                      .substring(0, 15) +
-                                                  '...'
-                                              : article['name'],
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
+                                        Padding(
+                                          key: Key(
+                                              'article-similar_name_$index'),
+                                          padding: const EdgeInsets.all(3.0),
+                                          child: Text(
+                                            article['name'].length > 15
+                                                ? article['name']
+                                                        .substring(0, 15) +
+                                                    '...'
+                                                : article['name'],
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                      Padding(
-                                        key:
-                                            Key('article-similar_price_$index'),
-                                        padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8.0, bottom: 8.0),
-                                        child: Text(
-                                          'Price: ${article['price']}€',
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                        Padding(
+                                          key: Key(
+                                              'article-similar_price_$index'),
+                                          padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            bottom: 8.0,
+                                          ),
+                                          child: Text(
+                                            'Price: ${article['price']}€',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),
