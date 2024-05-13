@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:front/network/informations.dart';
 import 'package:provider/provider.dart';
 
+/// Représente un conteneur.
 class MyContainerList {
   final int? id;
   final dynamic? createdAt;
@@ -23,6 +24,18 @@ class MyContainerList {
   final String? design;
   final String? informations;
 
+  /// Crée une nouvelle instance de [MyContainerList].
+  ///
+  /// [id] : Contient l'id d'un avis
+  /// [createdAt] : Contient la date de création du conteneur
+  /// [organization] : Contient l'entreprise qui a créer le conteneur
+  /// [organizationId] : Contient l'id de l'entreprise qui a créer le conteneur
+  /// [containerMapping] : Contenu le map du conteneur
+  /// [price] : Contient le prix du conteneur
+  /// [address] : Contient l'adresse du conteneur
+  /// [city] : Contient la ville du conteneur
+  /// [design] : Contient le design du conteneur
+  /// [informations] : Contient les informations du conteneur
   MyContainerList({
     required this.id,
     required this.createdAt,
@@ -36,6 +49,7 @@ class MyContainerList {
     required this.informations,
   });
 
+  /// Crée une instance de [MyContainerList] à partir d'un objet JSON.
   factory MyContainerList.fromJson(Map<String, dynamic> json) {
     return MyContainerList(
       id: json['id'],
@@ -50,6 +64,8 @@ class MyContainerList {
       informations: json['informations'],
     );
   }
+
+  /// Convertit le conteneur en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -65,9 +81,14 @@ class MyContainerList {
   }
 }
 
+/// Widget représentant une carte de conteneur.
 class ContainerCard extends StatelessWidget {
   final MyContainerList container;
 
+  /// Crée une nouvelle instance de [ContainerCard].
+  ///
+  /// [container] : informations du conteneur stockées.
+  /// [onDelete] : permet de supprimer un conteneur.
   const ContainerCard({super.key, required this.container});
 
   @override

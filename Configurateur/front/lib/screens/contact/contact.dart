@@ -8,6 +8,7 @@ import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// Page de contacte
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
 
@@ -15,6 +16,7 @@ class ContactPage extends StatefulWidget {
   _ContactPageState createState() => _ContactPageState();
 }
 
+/// Envoie les informations du formulaire au back end.
 void sendFormData(
   GlobalKey<FormState> formKey,
   String surname,
@@ -54,6 +56,10 @@ void sendFormData(
   }
 }
 
+///
+/// État de la page de contact de conteneur.
+///
+/// page de contact dans le configurateur.
 class _ContactPageState extends State<ContactPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _surname = "";

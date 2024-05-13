@@ -11,6 +11,7 @@ import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Page d'inscription de l'utilisateur
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -19,9 +20,9 @@ class RegisterScreen extends StatefulWidget {
 }
 
 ///
-/// Register screen
+/// Etat de la page d'inscription
 ///
-/// page d'inscription pour le configurateur
+/// page d'inscription pour l'utilisateur
 class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {

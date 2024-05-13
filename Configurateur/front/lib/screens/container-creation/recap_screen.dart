@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../styles/themes.dart';
 
+/// Page récapitulant la création de conteneur.
 class RecapScreen extends StatefulWidget {
   const RecapScreen(
       {super.key,
@@ -29,14 +30,11 @@ class RecapScreen extends StatefulWidget {
   State<RecapScreen> createState() => RecapScreenState();
 }
 
-///
-/// Login screen
-///
-/// page de connexion pour le configurateur
-///
+/// État de la page récapitulant la création de conteneur.
 class RecapScreenState extends State<RecapScreen> {
   List<Locker> lockerss = [];
 
+  /// Fonction appelée pour revenir à l'écran précédent.
   void previousFunc() {
     var data = {
       'amount': widget.amount,
@@ -48,6 +46,7 @@ class RecapScreenState extends State<RecapScreen> {
     context.go('/container-creation/design', extra: jsonEncode(data));
   }
 
+  /// Fonction appelée pour aller à l'écran suivant.
   void nextFunc() {
     var data = {
       'amount': widget.amount,
@@ -59,6 +58,7 @@ class RecapScreenState extends State<RecapScreen> {
     context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
+  /// Décodage de la liste des casiers sélectionnés.
   void decodeLockers() {
     final decode = jsonDecode(widget.lockers!);
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
+/// Widget représentant le page de confirmation de la sauvegarde dans le configurateur.
 class ConfirmationSave extends StatefulWidget {
   const ConfirmationSave({super.key});
 
@@ -9,10 +10,7 @@ class ConfirmationSave extends StatefulWidget {
   State<ConfirmationSave> createState() => ConfirmationSaveState();
 }
 
-///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
+/// État de la page de confirmation de sauvegarde du conteneur.
 class ConfirmationSaveState extends State<ConfirmationSave> {
   @override
   Widget build(BuildContext context) {

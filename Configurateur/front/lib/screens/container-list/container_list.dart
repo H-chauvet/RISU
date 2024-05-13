@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
+/// Page affichant les conteneurs de l'application.
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
 
@@ -17,6 +18,7 @@ class ContainerPage extends StatefulWidget {
   _ContainerPageState createState() => _ContainerPageState();
 }
 
+/// État de la page affichant les conteneurs.
 class _ContainerPageState extends State<ContainerPage> {
   List<ContainerList> containers = [];
   bool jwtToken = false;
@@ -25,9 +27,12 @@ class _ContainerPageState extends State<ContainerPage> {
   void initState() {
     super.initState();
     fetchContainers();
+
+    /// Vérifie si l'utilisateur est connecté.
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// Récupère les conteneurs depuis le back end.
   Future<void> fetchContainers() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
@@ -47,6 +52,7 @@ class _ContainerPageState extends State<ContainerPage> {
     }
   }
 
+  /// Supprime le conteneur.
   Future<void> deleteContainer(ContainerList message) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
     final response = await http.post(

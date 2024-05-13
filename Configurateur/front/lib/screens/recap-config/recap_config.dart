@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/footer.dart';
 
+/// Écran de récapitulatif de commande du configurateur.
 class RecapConfigPage extends StatefulWidget {
   const RecapConfigPage({Key? key}) : super(key: key);
 
@@ -9,10 +10,12 @@ class RecapConfigPage extends StatefulWidget {
   _RecapConfigPageState createState() => _RecapConfigPageState();
 }
 
+/// État de l'écran de récapitulatif de commande du configurateur.
 class _RecapConfigPageState extends State<RecapConfigPage> {
   @override
   void initState() {
     super.initState();
+    /// Regarde si l'utilisateur est connecté
     MyAlertTest.checkSignInStatus(context);
   }
 

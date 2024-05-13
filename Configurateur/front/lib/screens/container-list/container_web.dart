@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/screens/container-list/item-list/item_list.dart';
 
+/// Représente un conteneur.
 class ContainerList {
   final int? id;
   final dynamic? createdAt;
@@ -15,6 +16,14 @@ class ContainerList {
   final String? design;
   final String? informations;
 
+  /// Crée une nouvelle instance de [ContainerList].
+  ///
+  /// [id] : Contient l'id d'un avis
+  /// [firstName] : Contient le prénom de l'utilisateur
+  /// [lastName] : Contient le nom de l'utilsateur
+  /// [email] : Contient l'email de l'utilisateur
+  /// [message] : Contenu du message de l'utilisateur
+  /// [mark] : Contient le nombre de marque de l'utilisateur
   ContainerList({
     required this.id,
     required this.createdAt,
@@ -28,6 +37,7 @@ class ContainerList {
     required this.informations,
   });
 
+  /// Crée une instance de [ContainerList] à partir d'un objet JSON.
   factory ContainerList.fromJson(Map<String, dynamic> json) {
     return ContainerList(
       id: json['id'],
@@ -42,6 +52,7 @@ class ContainerList {
       informations: json['informations'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -57,10 +68,15 @@ class ContainerList {
   }
 }
 
+/// Widget représentant une carte d'avis.
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
   final Function(ContainerList) onDelete;
 
+  /// Crée une nouvelle instance de [ContainerCard].
+  ///
+  /// [container] : informations du conteneur stockées.
+  /// [onDelete] : permet de supprimer un conteneur.
   const ContainerCard(
       {super.key, required this.container, required this.onDelete});
 

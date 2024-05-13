@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Représente un utilisateur web.
 class Message {
   final int id;
   final String firstName;
@@ -7,6 +8,13 @@ class Message {
   final String email;
   final String message;
 
+  /// Crée une nouvelle instance de [Message].
+  ///
+  /// [id] : Contient l'id du message
+  /// [firstName] : Contient le prénom de l'utilisateur
+  /// [lastName] : Contient le nom de l'utilisateur
+  /// [email] : Contient l'email de l'utilisateur
+  /// [message] : Contenu du message
   Message({
     required this.id,
     required this.firstName,
@@ -15,6 +23,7 @@ class Message {
     required this.message,
   });
 
+  /// Crée une instance de [Message] à partir d'un objet JSON.
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'],
@@ -24,6 +33,8 @@ class Message {
       message: json['message'],
     );
   }
+
+  /// Convertit l'utilisateur en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -35,10 +46,15 @@ class Message {
   }
 }
 
+/// Widget représentant une carte de message.
 class MessageCard extends StatelessWidget {
   final Message message;
   final Function(Message) onDelete;
 
+  /// Crée une nouvelle instance de [MessageCard].
+  ///
+  /// [message] : informations du message stockées.
+  /// [onDelete] : permet de supprimer un message.
   const MessageCard({super.key, required this.message, required this.onDelete});
 
   @override

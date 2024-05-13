@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+/// Widget de confirmation d'utilisateur.
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});
 
@@ -16,10 +17,7 @@ class ConfirmedUser extends StatefulWidget {
   State<ConfirmedUser> createState() => ConfirmedUserState();
 }
 
-///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
+/// État de la page de confirmation d'utilisateur
 class ConfirmedUserState extends State<ConfirmedUser> {
   String jwtToken = '';
   dynamic response;

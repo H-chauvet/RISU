@@ -7,6 +7,7 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
+/// Widget représentant le conteneur de l'utilisateur dans le configurateur.
 class MyContainer extends StatefulWidget {
   const MyContainer({super.key});
 
@@ -14,15 +15,13 @@ class MyContainer extends StatefulWidget {
   State<MyContainer> createState() => MyContainerState();
 }
 
-///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
+/// État du conteneurs de l'utilisateur dans le configurateur.
 class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
   List<dynamic> displayedContainers = [];
   dynamic body;
 
+  /// Récupère les conteneurs de l'utilisateur depuis le serveur.
   void getContainers() async {
     String? token = await storageService.readStorage('token');
     HttpService().getRequest(

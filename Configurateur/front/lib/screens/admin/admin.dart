@@ -8,6 +8,7 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Page pour les administrateurs.
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
 
@@ -15,10 +16,12 @@ class AdminPage extends StatefulWidget {
   _AdminPageState createState() => _AdminPageState();
 }
 
+/// État de la page pour les administrateurs.
 class _AdminPageState extends State<AdminPage> {
   @override
   void initState() {
     super.initState();
+    /// Regarde si l'utilisateur est administrateur
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 

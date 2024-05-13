@@ -11,6 +11,7 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
+/// Page de confirmation d'inscription
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
 
@@ -21,12 +22,14 @@ class RegisterConfirmation extends StatefulWidget {
 }
 
 ///
-/// Register confirmation screen
+/// État de la page de confirmation d'inscription
 ///
 /// page de confirmation d'inscription pour le configurateur
 class RegisterConfirmationState extends State<RegisterConfirmation> {
   String jwtToken = '';
 
+  /// Vérifie si un token JWT est présent dans le stockage local.
+  /// Si non, redirige vers l'écran de connexion.
   void checkToken() async {
     String? tokenStorage = await storageService.readStorage('token');
     if (tokenStorage != "") {

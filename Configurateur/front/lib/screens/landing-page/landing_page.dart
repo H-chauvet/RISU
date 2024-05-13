@@ -6,6 +6,7 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// Page d'accueil de l'application.
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
@@ -13,6 +14,7 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => LandingPageState();
 }
 
+/// État de la page d'accueil.
 class LandingPageState extends State<LandingPage> {
   String connectedButton = '';
   Function() connectedFunction = () {};
@@ -25,6 +27,7 @@ class LandingPageState extends State<LandingPage> {
   String? token = '';
   String? userMail = '';
 
+  /// Vérifie le token lors de l'initialisation de la page.
   void checkToken() async {
     token = await storageService.readStorage('token');
 
@@ -62,6 +65,7 @@ class LandingPageState extends State<LandingPage> {
     checkToken();
   }
 
+  /// Construit la liste de boutons en fonction de si l'utilisateur est connecté ou pas.
   List<Widget> buttons() {
     List<Widget> list = [];
 
@@ -181,6 +185,7 @@ class LandingPageState extends State<LandingPage> {
     return list;
   }
 
+  /// Navigue vers la création d'un conteneur ou d'inscription.
   void goToCreation() async {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
@@ -198,7 +203,7 @@ class LandingPageState extends State<LandingPage> {
           children: [
             Image.asset(
               'assets/logo.png',
-              width: 128, // Largeur de l'image
+              width: 128,
               height: 128,
             ),
             const SizedBox(width: 250),

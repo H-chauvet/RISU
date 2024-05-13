@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 
+/// Représente un item.
 class ItemList {
   final int? id;
   final dynamic? name;
@@ -13,6 +14,17 @@ class ItemList {
   final String? image;
   final String? description;
 
+  /// Crée une nouvelle instance de [ItemList].
+  ///
+  /// [id] : Contient l'id d'un objet
+  /// [name] : Contient le nom d'un objet
+  /// [available] : Explique si l'objet est disponible ou non
+  /// [container] : Contient le conteneur dans lequel l'objet est.
+  /// [createdAt] : Contient la date de création de l'objet
+  /// [containerId] : Contient l'id du conteneur dans lequel l'objet est.
+  /// [price] : Contient le prix de l'objet
+  /// [image] : Contient l'image de l'objet
+  /// [description] : Contient la description de l'objet
   ItemList({
     required this.id,
     required this.name,
@@ -25,6 +37,7 @@ class ItemList {
     required this.description,
   });
 
+  /// Crée une instance de [ItemList] à partir d'un objet JSON.
   factory ItemList.fromJson(Map<String, dynamic> json) {
     return ItemList(
       id: json['id'],
@@ -38,6 +51,8 @@ class ItemList {
       description: json['description'],
     );
   }
+
+  /// Convertit l'objet en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -53,10 +68,15 @@ class ItemList {
   }
 }
 
+/// Widget représentant une carte d'objet.
 class ItemCard extends StatelessWidget {
   final ItemList item;
   final Function(ItemList) onDelete;
 
+  /// Crée une nouvelle instance de [ItemCard].
+  ///
+  /// [item] : informations de l'objet stockées.
+  /// [onDelete] : permet de supprimer un objet.
   const ItemCard({super.key, required this.item, required this.onDelete});
 
   @override

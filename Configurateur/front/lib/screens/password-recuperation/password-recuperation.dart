@@ -7,6 +7,9 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
+
+///
+/// Page de récupération de mot de passe
 class PasswordRecuperation extends StatefulWidget {
   const PasswordRecuperation({super.key});
 
@@ -15,10 +18,9 @@ class PasswordRecuperation extends StatefulWidget {
 }
 
 ///
-/// Password recuperation screen
+/// Etat de la page de récupération de mot de passe.
 ///
-/// page d'information pour la recuperation de mot de passe
-///
+/// page d'information pour la recuperation de mot de passe.
 class PasswordRecuperationState extends State<PasswordRecuperation> {
   final captchaController = LocalCaptchaController();
   var inputCode = '';

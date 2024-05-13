@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
+/// Page de modification de mot de passe.
 class PasswordChange extends StatefulWidget {
   const PasswordChange({super.key, required this.params});
 
@@ -16,9 +17,9 @@ class PasswordChange extends StatefulWidget {
 }
 
 ///
-/// Password change screen
+/// Etat de la page de modification de mot de passe.
 ///
-/// page de changement de mot de passe pour le configurateur
+/// page d'information pour la modification de mot de passe.
 class PasswordChangeState extends State<PasswordChange> {
   @override
   Widget build(BuildContext context) {

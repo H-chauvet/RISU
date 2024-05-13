@@ -13,6 +13,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
+/// Page de connexion
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -21,10 +22,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 ///
-/// Login screen
+/// État de la page de connexion
 ///
-/// page de connexion pour le configurateur
-///
+/// page de connexion
 class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {

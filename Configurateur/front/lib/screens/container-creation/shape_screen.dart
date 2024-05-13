@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../components/progress_bar.dart';
 
+/// Page affichant forme du conteneur.
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
 
@@ -17,6 +18,7 @@ class ShapeScreen extends StatefulWidget {
   State<ShapeScreen> createState() => ShapeScreenState();
 }
 
+/// État de la page affichant la forme du conteneur.
 class ShapeScreenState extends State<ShapeScreen> {
   int row = 5;
   int column = 12;
@@ -36,6 +38,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     calculateDimension();
   }
 
+  /// Calcule les dimensions des casiers en fonction du nombre de lignes et de colonnes.
   void calculateDimension() {
     width = column / 2;
     height = row / 2;
@@ -52,6 +55,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// Supprime les casiers qui ont été sélectionnés.
   void removeLockers() {
     for (int i = 0; i < isClicked.length; i++) {
       if (isClicked[i] == true) {
@@ -62,6 +66,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// Génère les boutons pour supprimer des casiers.
   List<Widget> removeButtons() {
     List<Widget> buttons = [];
 
@@ -132,6 +137,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     return buttons;
   }
 
+  /// Initialise le nombre de place dans un conteneur.
   List<Widget> initContainer() {
     List<Widget> rows = [];
     List<Widget> line = [];
@@ -218,10 +224,12 @@ class ShapeScreenState extends State<ShapeScreen> {
     return rows;
   }
 
+  /// Redirige vers la page précédente.
   void goPrevious() {
     context.go('/');
   }
 
+  /// Redirige vers la page suivante et envoie les données du conteneur sélectionné.
   void goNext() {
     List<List<String>> containerList;
 

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
+/// Page de gestion des messages.
 class MessagePage extends StatefulWidget {
   const MessagePage({Key? key}) : super(key: key);
 
@@ -16,6 +17,7 @@ class MessagePage extends StatefulWidget {
   _MessagePageState createState() => _MessagePageState();
 }
 
+/// État de la page de gestion des messages.
 class _MessagePageState extends State<MessagePage> {
   List<Message> messages = [];
   bool jwtToken = false;
@@ -27,6 +29,7 @@ class _MessagePageState extends State<MessagePage> {
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// Permet de supprimer un message.
   Future<void> deleteMessage(Message message) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/messages/delete");
     final response = await http.post(
@@ -51,6 +54,7 @@ class _MessagePageState extends State<MessagePage> {
     }
   }
 
+  /// Permer de récupérer la liste des messages depuis la back end.
   Future<void> fetchMessages() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/messages/list'));

@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
+/// Page affichant les objets de l'application.
 class ItemPage extends StatefulWidget {
   final int? containerId;
   const ItemPage({Key? key, required int? this.containerId}) : super(key: key);
@@ -17,6 +18,7 @@ class ItemPage extends StatefulWidget {
   _ItemPageState createState() => _ItemPageState(containerId: containerId);
 }
 
+/// État de la page affichant les objets.
 class _ItemPageState extends State<ItemPage> {
   final int? containerId;
   _ItemPageState({required this.containerId});
@@ -28,6 +30,7 @@ class _ItemPageState extends State<ItemPage> {
     fetchItems();
   }
 
+  /// Récupère les objets depuis le back end.
   Future<void> fetchItems() async {
     final response = await http.get(
       Uri.parse(
@@ -42,6 +45,7 @@ class _ItemPageState extends State<ItemPage> {
     } else {}
   }
 
+  /// Supprime un objet.
   Future<void> deleteItem(ItemList message) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     final response = await http.post(
@@ -89,7 +93,6 @@ class _ItemPageState extends State<ItemPage> {
                   item: product,
                   onDelete: deleteItem,
                 );
-                // return Text("$itemId");
               },
             ),
           ],

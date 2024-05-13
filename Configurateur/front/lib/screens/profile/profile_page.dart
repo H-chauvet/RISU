@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+/// Page de profil utilisateur.
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -17,6 +18,7 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+/// État de la page de profil utilisateur.
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName;
   late String lastName;
@@ -25,6 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late String company;
   String userMail = '';
 
+  /// Récupère les détails de l'utilisateur à partir de l'email.
   Future<void> fetchUserDetails(String email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -53,6 +56,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
+    /// Récupère l'email de l'utilisateur dans le stockage local
     storageService.getUserMail().then((value) {
       userMail = value;
       MyAlertTest.checkSignInStatus(context);
@@ -60,6 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  /// Affiche une boîte de dialogue pour modifier le nom de l'utilisateur.
   Future<void> showEditPopupName(BuildContext context, String initialFirstName,
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
@@ -153,6 +159,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// Affiche une boîte de dialogue pour modifier l'entreprise de l'utilisateur.
   Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
       Function(String) onEdit) async {
     TextEditingController companyController = TextEditingController();
@@ -238,6 +245,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// Affiche une boîte de dialogue pour modifier l'email de l'utilisateur.
   Future<void> showEditPopupMail(BuildContext context, String? initialMail,
       Function(String) onEdit) async {
     TextEditingController mailController = TextEditingController();
@@ -322,6 +330,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// Affiche une boîte de dialogue pour modifier le mot de passe de l'utilisateur.
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
     String password = '';

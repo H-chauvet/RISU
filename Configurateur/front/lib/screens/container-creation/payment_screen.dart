@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 import '../../network/informations.dart';
 import '../../services/http_service.dart';
 
+/// Page payment pendant la création du conteneur.
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
       {super.key,
@@ -32,11 +33,13 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
+/// État de la page récapitulant la création de conteneur.
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
   String informations = '';
 
+  /// Vérifie le token lors de l'initialisation de la page.
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token == '') {
@@ -63,6 +66,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  /// Fonction appelée pour revenir à l'écran précédent.
   void goPrevious() {
     var data = {
       'amount': widget.amount,
@@ -74,6 +78,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
+  /// Fonction appelée pour aller à l'écran suivant.
   void goNext() async {
     if (controller.complete) {
       bool response = await makePayment();

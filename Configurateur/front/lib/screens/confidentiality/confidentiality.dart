@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 
+/// Page de confidentialité
 class ConfidentialityPage extends StatelessWidget {
   const ConfidentialityPage({super.key});
 

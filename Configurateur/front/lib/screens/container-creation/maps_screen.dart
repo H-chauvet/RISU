@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
+/// Page de la carte.
 class MapsScreen extends StatefulWidget {
   const MapsScreen(
       {super.key,
@@ -30,6 +31,7 @@ class MapsScreen extends StatefulWidget {
   State<MapsScreen> createState() => MapsState();
 }
 
+/// État de la page de la carte.
 class MapsState extends State<MapsScreen> {
   String jwtToken = '';
   final Completer<GoogleMapController> _controller =
@@ -43,6 +45,7 @@ class MapsState extends State<MapsScreen> {
 
   LatLng location = _kGooglePlex.target;
 
+  /// Vérifie le token lors de l'initialisation de la page.
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -56,6 +59,7 @@ class MapsState extends State<MapsScreen> {
     }
   }
 
+  /// Obtient la position actuelle de l'utilisateur.
   void getPosition() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -88,6 +92,7 @@ class MapsState extends State<MapsScreen> {
     super.initState();
   }
 
+  /// Navigue vers l'écran suivant en envoyant la position du conteneur.
   void goNext() {
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
@@ -112,6 +117,7 @@ class MapsState extends State<MapsScreen> {
     context.go('/container-creation/payment', extra: jsonEncode(data));
   }
 
+  /// Navigue vers l'écran précédent en envoyant la position du conteneur.
   void goPrevious() {
     var data = {
       'amount': widget.amount,
