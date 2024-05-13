@@ -66,14 +66,14 @@ class _ContactPageState extends State<ContactPage> {
     }
   }
 
-  void checkToken() async {
+  Future<bool> checkToken() async {
     token = await storageService.readStorage('token');
-    storageService.getUserMail().then((value) => userMail = value);
-    storageService.getUserUuid().then((value) => uuid = value);
+    await storageService.getUserMail().then((value) => userMail = value);
+    await storageService.getUserUuid().then((value) => uuid = value);
     if (token == "") {
       context.go('/login');
     }
-    setState(() {});
+    return uuid != "";
   }
 
   void sortTickets(Map<String, dynamic> tickets) {
@@ -96,7 +96,7 @@ class _ContactPageState extends State<ContactPage> {
     };
 
     var response = await http.get(
-      Uri.parse('http://$serverIp:3000/api/tickets/all-tickets'),
+      Uri.parse('http://$serverIp:3000/api/tickets/user-ticket/$uuid'),
       headers: header,
     );
     if (response.statusCode == 200) {
@@ -128,7 +128,7 @@ class _ContactPageState extends State<ContactPage> {
     } else {
       print('Erreur lors de l\'envoi des données : ${response.statusCode}');
       Fluttertoast.showToast(
-          msg: "Erreur durant l'envoi du message",
+          msg: "Erreur durant la récupération des tickets",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
@@ -147,9 +147,9 @@ class _ContactPageState extends State<ContactPage> {
   }
 
   @override
-  void initState() {
+  Future<void> initState() async {
     super.initState();
-    checkToken();
+    while (await checkToken() == false) {}
     getTickets();
   }
 
