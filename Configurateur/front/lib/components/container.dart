@@ -108,7 +108,7 @@ class ContainerCards extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "Ville : pas de ville associée",
+                        "Ville : Pas de ville associée",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -125,7 +125,7 @@ class ContainerCards extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "Adresse : aucune address",
+                        "Adresse : Aucune adresse",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize

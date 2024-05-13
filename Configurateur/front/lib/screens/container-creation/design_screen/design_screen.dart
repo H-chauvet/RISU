@@ -293,7 +293,7 @@ class DesignScreenState extends State<DesignScreen> {
 
   void saveContainer(String name) async {
     var header = <String, String>{
-      'Authorization': jwtToken,
+      'Authorization': 'Bearer $jwtToken',
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };
@@ -350,7 +350,7 @@ class DesignScreenState extends State<DesignScreen> {
       HttpService().request(
         'http://$serverIp:3000/api/container/create',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
@@ -379,7 +379,7 @@ class DesignScreenState extends State<DesignScreen> {
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
@@ -497,6 +497,7 @@ class DesignScreenState extends State<DesignScreen> {
                         padding: EdgeInsets.zero,
                         strokeWidth: 3,
                         child: Container(
+                          alignment: Alignment.center,
                           height: screenFormat == ScreenFormat.desktop
                               ? desktopImportContainerHeight
                               : tabletImportContainerHeight,
@@ -517,6 +518,7 @@ class DesignScreenState extends State<DesignScreen> {
                               ),
                               Text(
                                 "Cliquez pour ajouter une image",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: screenFormat == ScreenFormat.desktop
                                       ? desktopFontSize

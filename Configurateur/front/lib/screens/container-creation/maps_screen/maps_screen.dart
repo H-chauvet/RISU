@@ -95,7 +95,7 @@ class MapsState extends State<MapsScreen> {
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
       <String, String>{
-        'Authorization': jwtToken,
+        'Authorization': 'Bearer $jwtToken',
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },

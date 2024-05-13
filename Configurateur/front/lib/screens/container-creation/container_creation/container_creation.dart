@@ -594,7 +594,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   void saveContainer(String name) async {
     var header = <String, String>{
-      'Authorization': jwtToken,
+      'Authorization': 'Bearer $jwtToken',
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };

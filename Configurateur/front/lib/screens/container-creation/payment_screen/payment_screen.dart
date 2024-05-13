@@ -97,7 +97,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
