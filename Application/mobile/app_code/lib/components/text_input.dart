@@ -12,6 +12,7 @@ class MyTextInput extends StatefulWidget {
   final Function()? onTap;
   final IconData? icon;
   final IconData? rightIcon;
+  final Key? rightIconKey;
   final Function()? rightIconOnPressed;
   final String? initialValue;
   final TextEditingController? controller;
@@ -25,6 +26,7 @@ class MyTextInput extends StatefulWidget {
     this.obscureText = false,
     this.icon,
     this.rightIcon,
+    this.rightIconKey,
     this.rightIconOnPressed,
     this.validator,
     this.initialValue,
@@ -113,7 +115,8 @@ class _MyTextInputState extends State<MyTextInput> {
                 : null,
             suffixIcon: widget.rightIcon != null
                 ? IconButton(
-                    key: const Key('textinput-button_righticon'),
+                    key: widget.rightIconKey ??
+                        const Key('textinput-button_righticon'),
                     onPressed: widget.rightIconOnPressed,
                     icon: Icon(widget.rightIcon),
                     color: context.select((ThemeProvider themeProvider) =>

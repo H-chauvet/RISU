@@ -362,7 +362,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         controller: currentPasswordController,
                       ),
                       buildField(
-                        AppLocalizations.of(context)!.passwordNew,
+                        AppLocalizations.of(context)!.new_,
                         key: const Key('profile_info-text_field_new_password'),
                         isPassword: true,
                         controller: newPasswordController,

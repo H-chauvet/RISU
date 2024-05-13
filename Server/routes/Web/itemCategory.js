@@ -6,12 +6,6 @@ const jwtMiddleware = require('../../middleware/jwt');
 
 router.get("/", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization);
-  } catch (err) {
-    res.status(401);
-    throw new Error("Unauthorized");
-  }
-  try {
     const itemCategories = await itemCategoryCtrl.getItemCategories();
     res.status(200).json(itemCategories);
   } catch (err) {
