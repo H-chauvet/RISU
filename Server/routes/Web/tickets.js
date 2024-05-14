@@ -140,28 +140,4 @@ router.put('/:chatId', async (req, res, next) => {
   }
 })
 
-router.delete('/:chatId', async (req, res, next) => {
-  try {
-    jwtMiddleware.verifyToken(req.headers.authorization);
-  } catch (err) {
-    res.status(401);
-    throw new Error("Unauthorized");
-  }
-  try {
-    const user = await userCtrl.findUserByUuid(req.body.uuid)
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
-    const chatId = req.params.chatId
-    if (!chatId) {
-      return res.status(400).json("Bad Request : Missing conversation id")
-    }
-    await ticketCtrl.deleteConversation(chatId)
-
-    return res.status(200).send("Success : Conversation deleted")
-  } catch (err) {
-    next(err);
-  }
-})
-
 module.exports = router;
