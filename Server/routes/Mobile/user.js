@@ -56,13 +56,15 @@ router.post('/resetPassword', async (req, res) => {
   }
 
   try {
-    const user = await userCtrl.findUserByEmail(email)
+    user = await userCtrl.findUserByEmail(email)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
-    const clearPassword = userCtrl.generateRandomPassword(8)
-    await userCtrl.setNewUserPassword(user, clearPassword)
-    await userCtrl.sendResetPasswordEmail(email, clearPassword)
+    resetToken = jwtMiddleware.generateResetToken(user)
+    resetToken = resetToken.substring(0, 64)
+    user = await userCtrl.updateUserResetToken(user.id, resetToken)
+    await userCtrl.sendResetPasswordEmail(user.email, resetToken)
+    user = await userCtrl.removeUserResetToken(user.id)
 
     return res.status(200).json({ message: 'Reset password email sent' })
   } catch (error) {

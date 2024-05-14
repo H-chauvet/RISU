@@ -51,6 +51,7 @@ model Item {
     price           Float
     image           String?
     description     String?
+    rating          Float?
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     category        String?
@@ -90,6 +91,7 @@ model User_Web {
     company        String?       @default("")
     email          String        @unique
     token          String?       @unique
+    role           String        @default("user")
     password       String
     organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
@@ -140,6 +142,7 @@ model User_Mobile {
     mailVerification Boolean               @default(false)
     confirmProcess   String                @default("")
     refreshToken     String?               @unique
+    resetToken       String?               @unique
     createdAt        DateTime              @default(now())
     locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])

@@ -11,17 +11,19 @@ exports.createFixtures = async () => {
         lastName: "louis",
         password: bcrypt.hashSync("louis", 12),
         confirmed: true,
+        role: "user",
       },
     });
 
     const adminWeb = await db.User_Web.create({
       data: {
         id: 2,
-        email: "risu.admin@gmail.com",
-        firstName: "admin",
-        lastName: "admin",
+        email: "michel.lefevre@gmail.com",
+        firstName: "Michel",
+        lastName: "Lefevre",
         password: bcrypt.hashSync("admin", 12),
         confirmed: true,
+        role: "admin",
       },
     });
 

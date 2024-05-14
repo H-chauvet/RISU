@@ -16,11 +16,11 @@ class LandingAppBar extends StatefulWidget {
 
 class LandingAppBarState extends State<LandingAppBar> {
   String? token = '';
-  String? userMail = '';
+  String? userRole = '';
 
   void checkToken() async {
     token = await storageService.readStorage('token');
-    storageService.getUserMail().then((value) => userMail = value);
+    storageService.getUserRole().then((value) => userRole = value);
     setState(() {});
   }
 
@@ -207,7 +207,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                         ),
                       ),
                     );
-                    if (userMail == "risu.admin@gmail.com") {
+                    if (userRole == "admin") {
                       items.add(
                         const PopupMenuItem<String>(
                           value: 'admin',

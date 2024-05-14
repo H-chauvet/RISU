@@ -8,6 +8,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/parameter.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/language/modal.dart';
@@ -194,7 +195,7 @@ class SettingsPageState extends State<SettingsPage> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) {
-                                                return const LoginPage();
+                                                return const HomePage();
                                               },
                                             ),
                                             (route) => false,
