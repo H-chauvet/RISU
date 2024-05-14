@@ -7,7 +7,7 @@ const jwtMiddleware = require("../../middleware/jwt");
 
 router.get("/all-tickets", async function (req, res, next) {
   try {
-    const tickets = await ticketCtrl.getAllTickets();  
+    const tickets = await ticketCtrl.getAllTickets();
     res.status(200).json({ tickets });
   } catch (err) {
     next(err);
@@ -29,7 +29,7 @@ router.get('/user-ticket/:uuid', async (req, res, next) => {
       return res.status(404).send('User not found');
     }
     const tickets = await ticketCtrl.getAllUserTickets(user.uuid);
-    
+
     return res.status(200).json({ tickets });
   } catch (err) {
     next(err);
@@ -98,15 +98,18 @@ router.put('/assign/:assignedId', async (req, res, next) => {
       return res.status(404).send('User not found');
     }
     const assignedId = req.params.assignedId
-    const ticketId = req.body.ticketId
-    if (!assignedId || !ticketId) {
+    const { ticketIds } = req.body
+    if (!assignedId || !ticketIds) {
       return res.status(400).json("Bad Request : Missing required parameters")
     }
     const assigned = await userCtrl.findUserByUuid(assignedId)
-      if (!assigned) {
-        return res.status(404).send('Bad Request : Assigned User not found');
-      }
-    await ticketCtrl.assignTicket(ticketId, assignedId)
+    if (!assigned) {
+      return res.status(404).send('Bad Request : Assigned User not found');
+    }
+    ids = ticketIds.split("_")
+    for (let i = 0; i < ids.length; i++) {
+      await ticketCtrl.assignTicket(ids[i], assignedId)
+    }
     return res.status(201).send("Success : Ticket assigned")
   } catch (err) {
     next(err);
@@ -154,7 +157,7 @@ router.delete('/:chatId', async (req, res, next) => {
       return res.status(400).json("Bad Request : Missing conversation id")
     }
     await ticketCtrl.deleteConversation(chatId)
-    
+
     return res.status(200).send("Success : Conversation deleted")
   } catch (err) {
     next(err);

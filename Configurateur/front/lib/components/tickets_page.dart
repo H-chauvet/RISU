@@ -45,7 +45,9 @@ class TicketsState extends State<TicketsPage> {
   bool isAdmin = false;
 
   ThemeData getCurrentTheme() {
-    return Provider.of<ThemeService>(context).isDark ? darkTheme : lightTheme;
+    return Provider
+        .of<ThemeService>(context)
+        .isDark ? darkTheme : lightTheme;
   }
 
   String formatDateTime(String dateTimeString) {
@@ -54,10 +56,9 @@ class TicketsState extends State<TicketsPage> {
     return formatter.format(dateTime);
   }
 
-  Future<bool> createTicket(
-      {required String title,
-      String chatUid = "",
-      String assignedId = ""}) async {
+  Future<bool> createTicket({required String title,
+    String chatUid = "",
+    String assignedId = ""}) async {
     var header = <String, String>{
       'Authorization': token!,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -87,6 +88,66 @@ class TicketsState extends State<TicketsPage> {
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
           backgroundColor: Colors.red);
+    }
+    return false;
+  }
+
+  Future<bool> assignTicket({required List<dynamic> tickets}) async {
+    String ids = "";
+    for (dynamic element in tickets) {
+      ids += element["id"].toString();
+      if (tickets.last != element) {
+        ids += "_";
+      }
+    }
+
+    var header = <String, String>{
+      'Authorization': token!,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    var response = await http.put(
+      Uri.parse('http://$serverIp:3000/api/tickets/assign/$uuid'),
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'ticketIds': ids,
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+      setState(() {
+        for (dynamic ticket in tickets) {
+          ticket["assignedId"] = uuid!;
+        }
+      });
+      return true;
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant l'assignement des tickets",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
+    return false;
+  }
+
+  bool notAssigned(List<dynamic> tickets) {
+    for (dynamic ticket in tickets) {
+      if (ticket["assignedId"] != null && ticket["assignedId"] != "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool assigned(List<dynamic> tickets) {
+    for (dynamic ticket in tickets) {
+      if (ticket["assignedId"] == uuid!) {
+        return true;
+      }
     }
     return false;
   }
@@ -183,6 +244,7 @@ class TicketsState extends State<TicketsPage> {
   @override
   Future<void> initState() async {
     super.initState();
+    isAdmin = widget.isAdmin;
     while (await checkToken() == false) {}
     getTickets();
   }
@@ -207,12 +269,16 @@ class TicketsState extends State<TicketsPage> {
               fontSize: 35,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
-              color: Provider.of<ThemeService>(context).isDark
+              color: Provider
+                  .of<ThemeService>(context)
+                  .isDark
                   ? darkTheme.secondaryHeaderColor
                   : lightTheme.secondaryHeaderColor,
               shadows: [
                 Shadow(
-                  color: Provider.of<ThemeService>(context).isDark
+                  color: Provider
+                      .of<ThemeService>(context)
+                      .isDark
                       ? darkTheme.secondaryHeaderColor
                       : lightTheme.secondaryHeaderColor,
                   offset: const Offset(0.75, 0.75),
@@ -239,7 +305,9 @@ class TicketsState extends State<TicketsPage> {
                             fontSize: 35,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.bold,
-                            color: Provider.of<ThemeService>(context).isDark
+                            color: Provider
+                                .of<ThemeService>(context)
+                                .isDark
                                 ? darkTheme.secondaryHeaderColor
                                 : lightTheme.secondaryHeaderColor,
                           ),
@@ -271,9 +339,9 @@ class TicketsState extends State<TicketsPage> {
                                         decoration: BoxDecoration(
                                           color: showOpenedTickets
                                               ? getCurrentTheme()
-                                                  .buttonTheme
-                                                  .colorScheme
-                                                  ?.primary
+                                              .buttonTheme
+                                              .colorScheme
+                                              ?.primary
                                               : getCurrentTheme().primaryColor,
                                         ),
                                         child: Center(
@@ -282,11 +350,11 @@ class TicketsState extends State<TicketsPage> {
                                             style: TextStyle(
                                               color: showOpenedTickets
                                                   ? getCurrentTheme()
-                                                      .primaryColor
+                                                  .primaryColor
                                                   : getCurrentTheme()
-                                                      .buttonTheme
-                                                      .colorScheme
-                                                      ?.primary,
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -307,7 +375,7 @@ class TicketsState extends State<TicketsPage> {
                                       ),
                                       child: Container(
                                         constraints:
-                                            const BoxConstraints.expand(
+                                        const BoxConstraints.expand(
                                           width: 256,
                                           height: 32,
                                         ),
@@ -315,9 +383,9 @@ class TicketsState extends State<TicketsPage> {
                                           color: showOpenedTickets
                                               ? getCurrentTheme().primaryColor
                                               : getCurrentTheme()
-                                                  .buttonTheme
-                                                  .colorScheme
-                                                  ?.primary,
+                                              .buttonTheme
+                                              .colorScheme
+                                              ?.primary,
                                         ),
                                         child: Center(
                                           child: Text(
@@ -325,11 +393,11 @@ class TicketsState extends State<TicketsPage> {
                                             style: TextStyle(
                                               color: !showOpenedTickets
                                                   ? getCurrentTheme()
-                                                      .primaryColor
+                                                  .primaryColor
                                                   : getCurrentTheme()
-                                                      .buttonTheme
-                                                      .colorScheme
-                                                      ?.primary,
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -341,76 +409,107 @@ class TicketsState extends State<TicketsPage> {
                               ),
                               const SizedBox(height: 32),
                               (showOpenedTickets
-                                          ? openedTickets
-                                          : closedTickets)
-                                      .isEmpty
+                                  ? openedTickets
+                                  : closedTickets)
+                                  .isEmpty
                                   ? const Text("Aucun Ticket")
                                   : ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: showOpenedTickets
-                                          ? openedTickets.length
-                                          : closedTickets.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        String key = (showOpenedTickets
-                                                ? openedTickets
-                                                : closedTickets)
-                                            .keys
-                                            .elementAt(index);
-                                        dynamic firstTicket = showOpenedTickets
-                                            ? openedTickets[key][0]
-                                            : closedTickets[key][0];
-                                        dynamic lastTicket = showOpenedTickets
-                                            ? openedTickets[key].last
-                                            : closedTickets[key].last;
+                                shrinkWrap: true,
+                                itemCount: showOpenedTickets
+                                    ? openedTickets.length
+                                    : closedTickets.length,
+                                itemBuilder:
+                                    (BuildContext context, int index) {
+                                  String key = (showOpenedTickets
+                                      ? openedTickets
+                                      : closedTickets)
+                                      .keys
+                                      .elementAt(index);
+                                  dynamic firstTicket = showOpenedTickets
+                                      ? openedTickets[key][0]
+                                      : closedTickets[key][0];
+                                  dynamic lastTicket = showOpenedTickets
+                                      ? openedTickets[key].last
+                                      : closedTickets[key].last;
+                                  dynamic tickets = showOpenedTickets
+                                      ? openedTickets[key]
+                                      : closedTickets[key];
 
-                                        return GestureDetector(
-                                          onTap: () {
-                                            setState(() {
-                                              conversation = showOpenedTickets
-                                                  ? openedTickets[key]
-                                                  : closedTickets[key];
-                                            });
-                                          },
-                                          child: Card(
-                                            elevation: 5,
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 10),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(16),
+                                  return Card(
+                                    elevation: 5,
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  conversation = tickets;
+                                                });
+                                              },
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment
+                                                    .start,
                                                 children: [
                                                   Text(
                                                     firstTicket["title"],
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                                    overflow: TextOverflow
+                                                        .ellipsis,
                                                     style: TextStyle(
                                                       fontSize: 18,
-                                                      color: getCurrentTheme()
+                                                      color:
+                                                      getCurrentTheme()
                                                           .primaryColor,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                     ),
                                                   ),
                                                   Text(
-                                                    "Créé le : ${formatDateTime(firstTicket["createdAt"])}",
+                                                    "Créé le : ${formatDateTime(
+                                                        firstTicket["createdAt"])}",
                                                   ),
                                                   Text(
-                                                    "Dernière activité le : ${formatDateTime(lastTicket["createdAt"])}",
-                                                  )
+                                                    "Dernière activité le : ${formatDateTime(
+                                                        lastTicket["createdAt"])}",
+                                                  ),
                                                 ],
                                               ),
                                             ),
                                           ),
-                                        );
-                                      },
-                                    )
+                                          isAdmin && notAssigned(tickets)
+                                              ? Align(
+                                            alignment: Alignment
+                                                .centerRight,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                await assignTicket(
+                                                    tickets:
+                                                    tickets);
+                                              },
+                                              child: const Text(
+                                                "S'assigner",
+                                                style: TextStyle(
+                                                  color:
+                                                  Colors.blue,
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                              : Container()
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
                             ],
                           ),
                         ),
@@ -440,7 +539,9 @@ class TicketsState extends State<TicketsPage> {
                               fontSize: 35,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider
+                                  .of<ThemeService>(context)
+                                  .isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
                             ),
@@ -451,7 +552,7 @@ class TicketsState extends State<TicketsPage> {
                             decoration: InputDecoration(
                               labelText: 'Titre',
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
+                              FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -466,7 +567,7 @@ class TicketsState extends State<TicketsPage> {
                             decoration: InputDecoration(
                               labelText: 'Message',
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
+                              FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -497,8 +598,9 @@ class TicketsState extends State<TicketsPage> {
                                   child: Text(
                                     'Soumettre votre ticket',
                                     style: TextStyle(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
+                                      color: Provider
+                                          .of<ThemeService>(context)
+                                          .isDark
                                           ? darkTheme.primaryColor
                                           : lightTheme.primaryColor,
                                     ),
@@ -521,7 +623,9 @@ class TicketsState extends State<TicketsPage> {
                               fontSize: 35,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider
+                                  .of<ThemeService>(context)
+                                  .isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
                             ),
@@ -550,23 +654,25 @@ class TicketsState extends State<TicketsPage> {
                                         elevation: 5,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(10.0),
+                                          BorderRadius.circular(10.0),
                                         ),
                                         color: (chat["creatorId"] == uuid
-                                            ? Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.buttonTheme
-                                                    .colorScheme!.primary
-                                                : lightTheme.primaryColor
-                                            : Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.cardColor
-                                                : lightTheme.cardColor),
+                                            ? Provider
+                                            .of<ThemeService>(context)
+                                            .isDark
+                                            ? darkTheme.buttonTheme
+                                            .colorScheme!.primary
+                                            : lightTheme.primaryColor
+                                            : Provider
+                                            .of<ThemeService>(context)
+                                            .isDark
+                                            ? darkTheme.cardColor
+                                            : lightTheme.cardColor),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8),
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
                                               Text(
                                                 chat["content"],
@@ -592,6 +698,7 @@ class TicketsState extends State<TicketsPage> {
                             ),
                           ),
                           const SizedBox(height: 8.0),
+                          (isAdmin && assigned(conversation) || !isAdmin) ?
                           TextFormField(
                             controller: _convController,
                             onChanged: (value) => _message = value,
@@ -616,7 +723,7 @@ class TicketsState extends State<TicketsPage> {
                                     _convController.clear();
                                     _message = "";
                                     setState(
-                                      () {
+                                          () {
                                         conversation.add(newTicket);
                                       },
                                     );
@@ -626,14 +733,14 @@ class TicketsState extends State<TicketsPage> {
                               ),
                               labelText: 'Nouveau message',
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.always,
+                              FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                                 borderSide:
-                                    const BorderSide(color: Colors.grey),
+                                const BorderSide(color: Colors.grey),
                               ),
                             ),
-                          ),
+                          ) : Container(),
                           const SizedBox(height: 16.0),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -655,8 +762,9 @@ class TicketsState extends State<TicketsPage> {
                                   child: Text(
                                     'Fermer la conversation',
                                     style: TextStyle(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
+                                      color: Provider
+                                          .of<ThemeService>(context)
+                                          .isDark
                                           ? darkTheme.primaryColor
                                           : lightTheme.primaryColor,
                                     ),
