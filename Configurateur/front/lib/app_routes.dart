@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
-import 'package:front/components/items-information.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
+import 'package:front/screens/container-creation/container_creation/container_creation.dart';
+import 'package:front/screens/container-creation/design_screen/design_screen.dart';
+import 'package:front/screens/container-creation/maps_screen/maps_screen.dart';
+import 'package:front/screens/container-creation/recap_screen/recap_screen.dart';
+import 'package:front/screens/container-creation/payment_screen/payment_screen.dart';
+import 'package:front/screens/container-creation/shape_screen/shape_screen.dart';
 import 'package:front/screens/company-profil/company-profil.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
-import 'package:front/screens/container-creation/confirmation_screen.dart';
-import 'package:front/screens/container-creation/design_screen.dart';
-import 'package:front/screens/container-creation/maps_screen.dart';
-import 'package:front/screens/container-creation/recap_screen.dart';
-import 'package:front/screens/container-creation/payment_screen.dart';
-import 'package:front/screens/container-creation/shape_screen.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
@@ -19,12 +19,11 @@ import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
-import 'package:front/screens/password-recuperation/password-recuperation.dart';
+import 'package:front/screens/password-recuperation/password_recuperation.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/screens/register-confirmation/register_confirmation.dart';
 import 'package:front/screens/register/register.dart';
-import 'package:front/screens/container-creation/container_creation.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/confidentiality/confidentiality.dart';
 import 'package:front/screens/company/company.dart';
@@ -154,7 +153,7 @@ class AppRouter {
         path: '/container-creation',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return ContainerCreation();
+            return const ContainerCreation();
           }
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;

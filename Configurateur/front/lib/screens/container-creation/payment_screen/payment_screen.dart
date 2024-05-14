@@ -6,12 +6,15 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 
-import '../../network/informations.dart';
-import '../../services/http_service.dart';
+import 'payment_screen_style.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
@@ -94,7 +97,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
@@ -128,6 +131,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
         appBar: CustomAppBar('Paiement', context: context),
         bottomSheet: Row(
@@ -149,22 +154,32 @@ class _PaymentScreenState extends State<PaymentScreen> {
         body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Center(
             child: FractionallySizedBox(
-              widthFactor: 0.6,
+              widthFactor: screenFormat == ScreenFormat.desktop
+                  ? desktopWidthFactor
+                  : tabletWidthFactor,
               child: Column(
                 children: [
                   const SizedBox(height: 50),
-                  const Text(
+                  Text(
                     "Coordonnées bancaires",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   CardField(
                     controller: controller,
                   ),
                   const SizedBox(height: 100),
-                  const Text(
+                  Text(
                     "Des demandes supplémentaires à nous faire parvenir ?",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 20),
                   TextFormField(

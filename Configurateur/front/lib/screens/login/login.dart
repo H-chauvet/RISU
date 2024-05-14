@@ -3,18 +3,19 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
-import 'package:front/components/google.dart';
+import 'package:front/components/google/google.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/components/custom_app_bar.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import './login_style.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -51,6 +52,8 @@ class LoginScreenState extends State<LoginScreen> {
     String password = '';
     dynamic response;
 
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       body: FooterView(
         footer: Footer(
@@ -62,7 +65,9 @@ class LoginScreenState extends State<LoginScreen> {
             'Connectez-vous au site RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
               color: Provider.of<ThemeService>(context).isDark
@@ -81,7 +86,7 @@ class LoginScreenState extends State<LoginScreen> {
           ),
           Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.2,
+              width: MediaQuery.of(context).size.width * 0.5,
               height: MediaQuery.of(context).size.height * 0.7,
               child: Form(
                 key: formKey,
@@ -132,14 +137,19 @@ class LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         context.go("/password-recuperation");
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               Text(
                                 'Mot de passe oublié ?',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
                                 textAlign: TextAlign.right,
                               ),
                             ]),
@@ -147,8 +157,12 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      height: 40,
-                      width: 200,
+                      height: screenFormat == ScreenFormat.desktop
+                          ? desktopButtonHeight
+                          : tabletButtonHeight,
+                      width: screenFormat == ScreenFormat.desktop
+                          ? desktopButtonWidth
+                          : tabletButtonWidth,
                       child: ElevatedButton(
                         key: const Key('login'),
                         onPressed: () {
@@ -206,7 +220,9 @@ class LoginScreenState extends State<LoginScreen> {
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
-                            fontSize: 18,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
                       ),
@@ -216,23 +232,43 @@ class LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         context.go("/register");
                       },
-                      child: const Padding(
-                        padding: EdgeInsets.all(10.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text("Nouveau sur la plateforme ? "),
+                              Text(
+                                "Nouveau sur la plateforme ? ",
+                                style: TextStyle(
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
+                              ),
                               Text(
                                 'Créer un compte.',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
                               ),
                             ]),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    const Text("Se connecter avec :"),
+                    Text(
+                      "Se connecter avec :",
+                      style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize),
+                    ),
                     const SizedBox(height: 10),
-                    GoogleLogo(),
+                    GoogleLogo(
+                      screenFormat: screenFormat,
+                    ),
                   ],
                 ),
               ),

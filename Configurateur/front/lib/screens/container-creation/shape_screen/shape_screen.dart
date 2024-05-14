@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/progress_bar.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../components/progress_bar.dart';
+import 'shape_screen_style.dart';
 
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
@@ -32,7 +35,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   @override
   void initState() {
     super.initState();
-    //MyAlertTest.checkSignInStatus(context);
+    MyAlertTest.checkSignInStatus(context);
     calculateDimension();
   }
 
@@ -62,7 +65,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
-  List<Widget> removeButtons() {
+  List<Widget> removeButtons(ScreenFormat screenFormat) {
     List<Widget> buttons = [];
 
     if (isRemoveClicked == false) {
@@ -82,6 +85,9 @@ class ShapeScreenState extends State<ShapeScreen> {
           child: Text(
             "Retirer un casier",
             style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
                     : lightTheme.colorScheme.background),
@@ -105,7 +111,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                 isRemoveClicked = false;
               });
             },
-            child: const Text("Supprimer"),
+            child: Text(
+              "Supprimer",
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
           ),
           const SizedBox(
             width: 10.0,
@@ -123,7 +136,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                 isRemoveClicked = false;
               });
             },
-            child: const Text('Annuler'),
+            child: Text(
+              'Annuler',
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
           ),
         ],
       ));
@@ -142,7 +162,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             ? line.add(
                 Container(
                   width: 2.0,
-                  height: 52.0,
+                  height: desktopContainerSize, // +2
                   color: Colors.black,
                 ),
               )
@@ -153,7 +173,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             children: [
               i == 0
                   ? Container(
-                      width: 50.0,
+                      width: desktopContainerSize,
                       height: 2.0,
                       color: Colors.black,
                     )
@@ -169,8 +189,8 @@ class ShapeScreenState extends State<ShapeScreen> {
                     }
                 },
                 child: Container(
-                  width: 50,
-                  height: 50,
+                  width: desktopContainerSize,
+                  height: desktopContainerSize,
                   color: colors[i * column + j],
                   alignment: Alignment.topRight,
                   child: isRemoveClicked
@@ -188,15 +208,18 @@ class ShapeScreenState extends State<ShapeScreen> {
                                     ? Colors.red
                                     : Colors.grey[200],
                               ),
-                              width: 15,
-                              height: 15,
+                              width: ovalClipSize,
+                              height: ovalClipSize,
                             ),
                           ),
                         )
                       : Container(),
                 ),
               ),
-              Container(width: 50.0, height: 2.0, color: Colors.black),
+              Container(
+                  width: desktopContainerSize,
+                  height: 2.0,
+                  color: Colors.black),
             ],
           ),
         );
@@ -204,7 +227,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         line.add(
           Container(
             width: 2.0,
-            height: 50.0,
+            height: desktopContainerSize,
             color: Colors.black,
           ),
         );
@@ -268,6 +291,7 @@ class ShapeScreenState extends State<ShapeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: CustomAppBar(
@@ -300,7 +324,14 @@ class ShapeScreenState extends State<ShapeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('Nombres de lignes'),
+                Text(
+                  'Nombres de lignes',
+                  style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -333,7 +364,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                             : lightTheme.colorScheme.background
                                 .withOpacity(0.8),
                       ),
-                      child: Text(row.toString()),
+                      child: Text(
+                        row.toString(),
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 10.0),
                     InkWell(
@@ -357,7 +395,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                 const SizedBox(
                   height: 20.0,
                 ),
-                const Text('Nombres de colonnes'),
+                Text(
+                  'Nombres de colonnes',
+                  style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
+                ),
                 const SizedBox(
                   height: 10.0,
                 ),
@@ -390,7 +435,14 @@ class ShapeScreenState extends State<ShapeScreen> {
                             : lightTheme.colorScheme.background
                                 .withOpacity(0.8),
                       ),
-                      child: Text(column.toString()),
+                      child: Text(
+                        column.toString(),
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
                     ),
                     const SizedBox(width: 10.0),
                     InkWell(
@@ -421,7 +473,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: removeButtons(),
+                    children: removeButtons(screenFormat),
                   ),
                   const SizedBox(
                     height: 10.0,
@@ -434,8 +486,10 @@ class ShapeScreenState extends State<ShapeScreen> {
               ),
             ),
             SizedBox(
-              width: 250,
-              height: 300,
+              width: screenFormat == ScreenFormat.desktop
+                  ? desktopPanelWidth
+                  : tabletPanelWidth,
+              height: desktopPanelHeight,
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30.0),
@@ -457,31 +511,67 @@ class ShapeScreenState extends State<ShapeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Text(
+                        Text(
                           'Largeur:',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
                         ),
-                        Text(width <= 1 ? '$width mètre' : '$width mètres'),
+                        Text(
+                          width <= 1 ? '$width mètre' : '$width mètres',
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Text(
+                        Text(
                           'Hauteur:',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
                         ),
-                        Text(height <= 1 ? '$height mètre' : '$height mètres'),
+                        Text(
+                          height <= 1 ? '$height mètre' : '$height mètres',
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        const Text(
+                        Text(
                           "Nombre d'emplacements:",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
                         ),
-                        Text('$nbLockers'),
+                        Text(
+                          '$nbLockers',
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
                       ],
                     ),
                   ],
