@@ -1276,7 +1276,6 @@ packages:
       sha256: "3d2ad6751b3c16cf07c7fca317a1413b3f26530319181b37e3b9039b84fc01d8"
       url: "https://pub.dev"
     source: hosted
-<<<<<<< HEAD
     version: "1.1.0"
   web:
     dependency: transitive
@@ -1286,9 +1285,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.1"
-=======
-    version: "1.0.2"
->>>>>>> dev
   web_socket_channel:
     dependency: transitive
     description:
