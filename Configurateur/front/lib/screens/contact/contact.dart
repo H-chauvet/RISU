@@ -7,6 +7,7 @@ import 'package:front/components/custom_header.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/screens/contact/contact_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -103,7 +104,7 @@ class _ContactPageState extends State<ContactPage> {
           ),
           const SizedBox(height: 100),
           FractionallySizedBox(
-            widthFactor: 0.8,
+            widthFactor: widthFactor,
             child: Form(
               key: _formKey,
               child: Column(

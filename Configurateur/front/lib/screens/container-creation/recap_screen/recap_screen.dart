@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
-import 'package:front/components/recap_panel.dart';
+import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';

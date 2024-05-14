@@ -31,7 +31,7 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
                 widthFactor: screenFormat == ScreenFormat.desktop
                     ? desktopWidthFactor
                     : tabletWidthFactor,
-                heightFactor: 0.7,
+                heightFactor: heightFactor,
                 child: Column(
                   children: [
                     Text(

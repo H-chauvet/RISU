@@ -9,7 +9,7 @@ import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/delete_container_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/progress_bar.dart';
-import 'package:front/components/recap_panel.dart';
+import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation_style.dart';
 import 'package:front/services/http_service.dart';

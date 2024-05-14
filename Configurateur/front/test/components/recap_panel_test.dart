@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/components/recap_panel.dart';
+import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';

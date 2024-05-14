@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/recap_panel/recap_panel_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -125,7 +126,8 @@ class RecapPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                constraints: BoxConstraints(minWidth: 7.0.w, maxWidth: 7.0.w),
+                constraints: BoxConstraints(
+                    minWidth: boxConstraints, maxWidth: boxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
@@ -151,7 +153,7 @@ class RecapPanel extends StatelessWidget {
                 ),
               ),
               Container(
-                constraints: BoxConstraints(minWidth: 5.0.w),
+                constraints: BoxConstraints(minWidth: littleBoxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, bottom: 10),
                   child: Text(
@@ -204,8 +206,8 @@ class RecapPanel extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      constraints:
-                          BoxConstraints(minWidth: 7.0.w, maxWidth: 7.0.w),
+                      constraints: BoxConstraints(
+                          minWidth: boxConstraints, maxWidth: boxConstraints),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(

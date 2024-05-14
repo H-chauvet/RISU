@@ -20,7 +20,7 @@ import 'package:util_simple_3d/util_simple_3d.dart';
 import '../../../components/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 import '../../../components/progress_bar.dart';
-import '../../../components/recap_panel.dart';
+import '../../../components/recap_panel/recap_panel.dart';
 import '../../../network/informations.dart';
 import 'design_screen_style.dart';
 
