@@ -5,12 +5,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+
+import 'rating_dialog_content_style.dart';
 
 Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
@@ -72,6 +77,8 @@ void sendData(String rating, String message) async {
 class RatingDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return BlocBuilder<DialogCubit, DialogState>(
       builder: (context, state) {
         return Column(
@@ -84,7 +91,9 @@ class RatingDialogContent extends StatelessWidget {
               direction: Axis.horizontal,
               allowHalfRating: false,
               itemCount: 5,
-              itemSize: 30.0,
+              itemSize: screenFormat == ScreenFormat.desktop
+                  ? desktopIconSize
+                  : tabletIconSize,
               itemBuilder: (context, index) => Icon(
                 Icons.star,
                 color: index < state.rating ? Colors.amber : Colors.grey,
@@ -95,8 +104,8 @@ class RatingDialogContent extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Container(
-              constraints: const BoxConstraints(
-                maxWidth: 300.0,
+              constraints: BoxConstraints(
+                maxWidth: 30.0.w,
               ),
               child: TextFormField(
                 onChanged: (value) {
@@ -130,6 +139,9 @@ class RatingDialogContent extends StatelessWidget {
               ),
               child: Text('Soumettre',
                   style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
                         : lightTheme.primaryColor,
