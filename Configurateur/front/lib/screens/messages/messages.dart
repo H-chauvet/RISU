@@ -18,7 +18,6 @@ class _MessagePageState extends State<MessagePage> {
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return const TicketsPage(isAdmin: true);

@@ -6,7 +6,7 @@ exports.createFixtures = async () => {
     const userWeb = await db.User_Web.create({
       data: {
         id: 1,
-        uuid : "123456",
+        uuid: "123456",
         email: "louis@gmail.com",
         firstName: "louis",
         lastName: "louis",
@@ -19,7 +19,7 @@ exports.createFixtures = async () => {
     const adminWeb = await db.User_Web.create({
       data: {
         id: 2,
-        uuid : "1234567",
+        uuid: "1234567",
         email: "michel.lefevre@gmail.com",
         firstName: "Michel",
         lastName: "Lefevre",
