@@ -45,9 +45,7 @@ class TicketsState extends State<TicketsPage> {
   bool isAdmin = false;
 
   ThemeData getCurrentTheme() {
-    return Provider
-        .of<ThemeService>(context)
-        .isDark ? darkTheme : lightTheme;
+    return Provider.of<ThemeService>(context).isDark ? darkTheme : lightTheme;
   }
 
   String formatDateTime(String dateTimeString) {
@@ -56,9 +54,10 @@ class TicketsState extends State<TicketsPage> {
     return formatter.format(dateTime);
   }
 
-  Future<bool> createTicket({required String title,
-    String chatUid = "",
-    String assignedId = ""}) async {
+  Future<bool> createTicket(
+      {required String title,
+      String chatUid = "",
+      String assignedId = ""}) async {
     var header = <String, String>{
       'Authorization': token!,
       'Content-Type': 'application/json; charset=UTF-8',
@@ -117,11 +116,13 @@ class TicketsState extends State<TicketsPage> {
       ),
     );
     if (response.statusCode == 201) {
-      setState(() {
-        for (dynamic ticket in tickets) {
-          ticket["assignedId"] = uuid!;
-        }
-      });
+      setState(
+        () {
+          for (dynamic ticket in tickets) {
+            ticket["assignedId"] = uuid!;
+          }
+        },
+      );
       return true;
     } else {
       Fluttertoast.showToast(
@@ -167,15 +168,19 @@ class TicketsState extends State<TicketsPage> {
   }
 
   void sortTickets(Map<String, dynamic> tickets) {
-    tickets.forEach((key, value) {
-      if (tickets[key].length > 1) {
-        tickets[key].sort((a, b) {
-          String strA = a["createdAt"];
-          String strB = b["createdAt"];
-          return strA.compareTo(strB);
-        });
-      }
-    });
+    tickets.forEach(
+      (key, value) {
+        if (tickets[key].length > 1) {
+          tickets[key].sort(
+            (a, b) {
+              String strA = a["createdAt"];
+              String strB = b["createdAt"];
+              return strA.compareTo(strB);
+            },
+          );
+        }
+      },
+    );
   }
 
   void getTickets() async {
@@ -217,11 +222,13 @@ class TicketsState extends State<TicketsPage> {
       sortTickets(tmpClosedTickets);
       sortTickets(tmpOpenedTickets);
 
-      setState(() {
-        openedTickets = tmpOpenedTickets;
-        closedTickets = tmpClosedTickets;
-        conversation = [];
-      });
+      setState(
+        () {
+          openedTickets = tmpOpenedTickets;
+          closedTickets = tmpClosedTickets;
+          conversation = [];
+        },
+      );
     } else {
       Fluttertoast.showToast(
           msg: "Erreur durant la récupération des tickets",
@@ -269,16 +276,12 @@ class TicketsState extends State<TicketsPage> {
               fontSize: 35,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
-              color: Provider
-                  .of<ThemeService>(context)
-                  .isDark
+              color: Provider.of<ThemeService>(context).isDark
                   ? darkTheme.secondaryHeaderColor
                   : lightTheme.secondaryHeaderColor,
               shadows: [
                 Shadow(
-                  color: Provider
-                      .of<ThemeService>(context)
-                      .isDark
+                  color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.secondaryHeaderColor
                       : lightTheme.secondaryHeaderColor,
                   offset: const Offset(0.75, 0.75),
@@ -305,9 +308,7 @@ class TicketsState extends State<TicketsPage> {
                             fontSize: 35,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.bold,
-                            color: Provider
-                                .of<ThemeService>(context)
-                                .isDark
+                            color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.secondaryHeaderColor
                                 : lightTheme.secondaryHeaderColor,
                           ),
@@ -322,9 +323,11 @@ class TicketsState extends State<TicketsPage> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        showOpenedTickets = true;
-                                      });
+                                      setState(
+                                        () {
+                                          showOpenedTickets = true;
+                                        },
+                                      );
                                     },
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.only(
@@ -339,9 +342,9 @@ class TicketsState extends State<TicketsPage> {
                                         decoration: BoxDecoration(
                                           color: showOpenedTickets
                                               ? getCurrentTheme()
-                                              .buttonTheme
-                                              .colorScheme
-                                              ?.primary
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary
                                               : getCurrentTheme().primaryColor,
                                         ),
                                         child: Center(
@@ -350,11 +353,11 @@ class TicketsState extends State<TicketsPage> {
                                             style: TextStyle(
                                               color: showOpenedTickets
                                                   ? getCurrentTheme()
-                                                  .primaryColor
+                                                      .primaryColor
                                                   : getCurrentTheme()
-                                                  .buttonTheme
-                                                  .colorScheme
-                                                  ?.primary,
+                                                      .buttonTheme
+                                                      .colorScheme
+                                                      ?.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -364,9 +367,11 @@ class TicketsState extends State<TicketsPage> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      setState(() {
-                                        showOpenedTickets = false;
-                                      });
+                                      setState(
+                                        () {
+                                          showOpenedTickets = false;
+                                        },
+                                      );
                                     },
                                     child: ClipRRect(
                                       borderRadius: const BorderRadius.only(
@@ -375,7 +380,7 @@ class TicketsState extends State<TicketsPage> {
                                       ),
                                       child: Container(
                                         constraints:
-                                        const BoxConstraints.expand(
+                                            const BoxConstraints.expand(
                                           width: 256,
                                           height: 32,
                                         ),
@@ -383,9 +388,9 @@ class TicketsState extends State<TicketsPage> {
                                           color: showOpenedTickets
                                               ? getCurrentTheme().primaryColor
                                               : getCurrentTheme()
-                                              .buttonTheme
-                                              .colorScheme
-                                              ?.primary,
+                                                  .buttonTheme
+                                                  .colorScheme
+                                                  ?.primary,
                                         ),
                                         child: Center(
                                           child: Text(
@@ -393,11 +398,11 @@ class TicketsState extends State<TicketsPage> {
                                             style: TextStyle(
                                               color: !showOpenedTickets
                                                   ? getCurrentTheme()
-                                                  .primaryColor
+                                                      .primaryColor
                                                   : getCurrentTheme()
-                                                  .buttonTheme
-                                                  .colorScheme
-                                                  ?.primary,
+                                                      .buttonTheme
+                                                      .colorScheme
+                                                      ?.primary,
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -409,107 +414,138 @@ class TicketsState extends State<TicketsPage> {
                               ),
                               const SizedBox(height: 32),
                               (showOpenedTickets
-                                  ? openedTickets
-                                  : closedTickets)
-                                  .isEmpty
-                                  ? const Text("Aucun Ticket")
+                                          ? openedTickets
+                                          : closedTickets)
+                                      .isEmpty
+                                  ? Text(
+                                      "Aucun Ticket",
+                                      style: TextStyle(
+                                        color: Provider.of<ThemeService>(
+                                                    context)
+                                                .isDark
+                                            ? lightTheme.secondaryHeaderColor
+                                            : darkTheme.secondaryHeaderColor,
+                                      ),
+                                    )
                                   : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: showOpenedTickets
-                                    ? openedTickets.length
-                                    : closedTickets.length,
-                                itemBuilder:
-                                    (BuildContext context, int index) {
-                                  String key = (showOpenedTickets
-                                      ? openedTickets
-                                      : closedTickets)
-                                      .keys
-                                      .elementAt(index);
-                                  dynamic firstTicket = showOpenedTickets
-                                      ? openedTickets[key][0]
-                                      : closedTickets[key][0];
-                                  dynamic lastTicket = showOpenedTickets
-                                      ? openedTickets[key].last
-                                      : closedTickets[key].last;
-                                  dynamic tickets = showOpenedTickets
-                                      ? openedTickets[key]
-                                      : closedTickets[key];
+                                      shrinkWrap: true,
+                                      itemCount: showOpenedTickets
+                                          ? openedTickets.length
+                                          : closedTickets.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        String key = (showOpenedTickets
+                                                ? openedTickets
+                                                : closedTickets)
+                                            .keys
+                                            .elementAt(index);
+                                        dynamic firstTicket = showOpenedTickets
+                                            ? openedTickets[key][0]
+                                            : closedTickets[key][0];
+                                        dynamic lastTicket = showOpenedTickets
+                                            ? openedTickets[key].last
+                                            : closedTickets[key].last;
+                                        dynamic tickets = showOpenedTickets
+                                            ? openedTickets[key]
+                                            : closedTickets[key];
 
-                                  return Card(
-                                    elevation: 5,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(10.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                setState(() {
-                                                  conversation = tickets;
-                                                });
-                                              },
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  Text(
-                                                    firstTicket["title"],
-                                                    overflow: TextOverflow
-                                                        .ellipsis,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      color:
-                                                      getCurrentTheme()
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                      FontWeight.bold,
+                                        return Card(
+                                          color: Provider.of<ThemeService>(
+                                                      context)
+                                                  .isDark
+                                              ? lightTheme.secondaryHeaderColor
+                                              : darkTheme.secondaryHeaderColor,
+                                          elevation: 5,
+                                          margin: const EdgeInsets.symmetric(
+                                              vertical: 10),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(16),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      setState(
+                                                        () {
+                                                          conversation =
+                                                              tickets;
+                                                        },
+                                                      );
+                                                    },
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          firstTicket["title"],
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            color:
+                                                                getCurrentTheme()
+                                                                    .primaryColor,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "Créé le : ${formatDateTime(
+                                                            firstTicket[
+                                                                "createdAt"],
+                                                          )}",
+                                                          style: TextStyle(
+                                                            color:
+                                                                getCurrentTheme()
+                                                                    .primaryColor,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          "Dernière activité le : ${formatDateTime(
+                                                            lastTicket[
+                                                                "createdAt"],
+                                                          )}",
+                                                          style: TextStyle(
+                                                            color:
+                                                                getCurrentTheme()
+                                                                    .primaryColor,
+                                                          ),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ),
-                                                  Text(
-                                                    "Créé le : ${formatDateTime(
-                                                        firstTicket["createdAt"])}",
-                                                  ),
-                                                  Text(
-                                                    "Dernière activité le : ${formatDateTime(
-                                                        lastTicket["createdAt"])}",
-                                                  ),
-                                                ],
-                                              ),
+                                                ),
+                                                isAdmin && notAssigned(tickets)
+                                                    ? Align(
+                                                        alignment: Alignment
+                                                            .centerRight,
+                                                        child: GestureDetector(
+                                                          onTap: () async {
+                                                            await assignTicket(
+                                                                tickets:
+                                                                    tickets);
+                                                          },
+                                                          child: const Text(
+                                                            "S'assigner",
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.blue,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container()
+                                              ],
                                             ),
                                           ),
-                                          isAdmin && notAssigned(tickets)
-                                              ? Align(
-                                            alignment: Alignment
-                                                .centerRight,
-                                            child: GestureDetector(
-                                              onTap: () async {
-                                                await assignTicket(
-                                                    tickets:
-                                                    tickets);
-                                              },
-                                              child: const Text(
-                                                "S'assigner",
-                                                style: TextStyle(
-                                                  color:
-                                                  Colors.blue,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                              : Container()
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              )
+                                        );
+                                      },
+                                    )
                             ],
                           ),
                         ),
@@ -539,9 +575,7 @@ class TicketsState extends State<TicketsPage> {
                               fontSize: 35,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              color: Provider
-                                  .of<ThemeService>(context)
-                                  .isDark
+                              color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
                             ),
@@ -552,7 +586,7 @@ class TicketsState extends State<TicketsPage> {
                             decoration: InputDecoration(
                               labelText: 'Titre',
                               floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
+                                  FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -567,7 +601,7 @@ class TicketsState extends State<TicketsPage> {
                             decoration: InputDecoration(
                               labelText: 'Message',
                               floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
+                                  FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -576,37 +610,37 @@ class TicketsState extends State<TicketsPage> {
                           ),
                           const SizedBox(height: 16.0),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () async {
-                                    await createTicket(title: _title);
-                                    getTickets();
-                                    _titleController.clear();
-                                    _contentController.clear();
-                                    _message = "";
-                                    _title = "";
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Soumettre votre ticket',
-                                    style: TextStyle(
-                                      color: Provider
-                                          .of<ThemeService>(context)
-                                          .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                    ),
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  await createTicket(title: _title);
+                                  getTickets();
+                                  _titleController.clear();
+                                  _contentController.clear();
+                                  _message = "";
+                                  _title = "";
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
                                 ),
-                              ]),
+                                child: Text(
+                                  'Soumettre votre ticket',
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     )
@@ -623,9 +657,7 @@ class TicketsState extends State<TicketsPage> {
                               fontSize: 35,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
-                              color: Provider
-                                  .of<ThemeService>(context)
-                                  .isDark
+                              color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
                             ),
@@ -641,136 +673,166 @@ class TicketsState extends State<TicketsPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(32),
                               child: ListView.builder(
-                                  itemCount: conversation.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final chat = conversation[index];
+                                itemCount: conversation.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final chat = conversation[index];
 
-                                    return Align(
-                                      alignment: chat["creatorId"] == uuid
-                                          ? Alignment.centerRight
-                                          : Alignment.centerLeft,
-                                      child: Card(
-                                        elevation: 5,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius.circular(10.0),
-                                        ),
-                                        color: (chat["creatorId"] == uuid
-                                            ? Provider
-                                            .of<ThemeService>(context)
-                                            .isDark
-                                            ? darkTheme.buttonTheme
-                                            .colorScheme!.primary
-                                            : lightTheme.primaryColor
-                                            : Provider
-                                            .of<ThemeService>(context)
-                                            .isDark
-                                            ? darkTheme.cardColor
-                                            : lightTheme.cardColor),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                chat["content"],
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
-                                                ),
+                                  return Align(
+                                    alignment: chat["creatorId"] == uuid
+                                        ? Alignment.centerRight
+                                        : Alignment.centerLeft,
+                                    child: Card(
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      color: (chat["creatorId"] == uuid
+                                          ? Provider.of<ThemeService>(context)
+                                                  .isDark
+                                              ? darkTheme.secondaryHeaderColor
+                                              : lightTheme.secondaryHeaderColor
+                                          : Provider.of<ThemeService>(context)
+                                                  .isDark
+                                              ? lightTheme.secondaryHeaderColor
+                                              : darkTheme.secondaryHeaderColor),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              chat["content"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: (chat["creatorId"] ==
+                                                        uuid
+                                                    ? Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? lightTheme
+                                                            .secondaryHeaderColor
+                                                        : darkTheme.primaryColor
+                                                    : Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? darkTheme
+                                                            .secondaryHeaderColor
+                                                        : lightTheme
+                                                            .secondaryHeaderColor),
+                                                fontSize: 16,
                                               ),
-                                              Text(
-                                                formatDateTime(
-                                                    chat["createdAt"]),
-                                                style: const TextStyle(
-                                                  fontStyle: FontStyle.italic,
-                                                  fontSize: 12,
-                                                ),
-                                              )
-                                            ],
-                                          ),
+                                            ),
+                                            Text(
+                                              formatDateTime(chat["createdAt"]),
+                                              style: TextStyle(
+                                                fontStyle: FontStyle.italic,
+                                                color: (chat["creatorId"] ==
+                                                        uuid
+                                                    ? Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? lightTheme
+                                                            .secondaryHeaderColor
+                                                        : darkTheme.primaryColor
+                                                    : Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? darkTheme
+                                                            .secondaryHeaderColor
+                                                        : lightTheme
+                                                            .secondaryHeaderColor),
+                                                fontSize: 12,
+                                              ),
+                                            )
+                                          ],
                                         ),
                                       ),
-                                    );
-                                  }),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
                           ),
                           const SizedBox(height: 8.0),
-                          (isAdmin && assigned(conversation) || !isAdmin) ?
-                          TextFormField(
-                            controller: _convController,
-                            onChanged: (value) => _message = value,
-                            decoration: InputDecoration(
-                              suffixIcon: GestureDetector(
-                                onTap: () async {
-                                  final lastTicket = conversation.last;
-                                  final assignedId = findAssigned();
-                                  bool success = await createTicket(
-                                      title: lastTicket["title"],
-                                      chatUid: lastTicket["chatUid"],
-                                      assignedId: assignedId);
-                                  if (success) {
-                                    final newTicket = {
-                                      "content": _message,
-                                      'title': lastTicket["title"],
-                                      'assignedId': assignedId,
-                                      'chatUid': lastTicket["chatUid"],
-                                      'creatorId': uuid!,
-                                      'createdAt': DateTime.now().toString(),
-                                    };
-                                    _convController.clear();
-                                    _message = "";
-                                    setState(
-                                          () {
-                                        conversation.add(newTicket);
+                          (isAdmin && assigned(conversation) || !isAdmin)
+                              ? TextFormField(
+                                  controller: _convController,
+                                  onChanged: (value) => _message = value,
+                                  decoration: InputDecoration(
+                                    suffixIcon: GestureDetector(
+                                      onTap: () async {
+                                        final lastTicket = conversation.last;
+                                        final assignedId = findAssigned();
+                                        bool success = await createTicket(
+                                            title: lastTicket["title"],
+                                            chatUid: lastTicket["chatUid"],
+                                            assignedId: assignedId);
+                                        if (success) {
+                                          final newTicket = {
+                                            "content": _message,
+                                            'title': lastTicket["title"],
+                                            'assignedId': assignedId,
+                                            'chatUid': lastTicket["chatUid"],
+                                            'creatorId': uuid!,
+                                            'createdAt':
+                                                DateTime.now().toString(),
+                                          };
+                                          _convController.clear();
+                                          _message = "";
+                                          setState(
+                                            () {
+                                              conversation.add(newTicket);
+                                            },
+                                          );
+                                        }
                                       },
-                                    );
-                                  }
-                                },
-                                child: const Icon(Icons.arrow_upward),
-                              ),
-                              labelText: 'Nouveau message',
-                              floatingLabelBehavior:
-                              FloatingLabelBehavior.always,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                                borderSide:
-                                const BorderSide(color: Colors.grey),
-                              ),
-                            ),
-                          ) : Container(),
+                                      child: const Icon(Icons.arrow_upward),
+                                    ),
+                                    labelText: 'Nouveau message',
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.always,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                      borderSide:
+                                          const BorderSide(color: Colors.grey),
+                                    ),
+                                  ),
+                                )
+                              : Container(),
                           const SizedBox(height: 16.0),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    setState(() {
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  setState(
+                                    () {
                                       conversation = [];
-                                    });
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                  ),
-                                  child: Text(
-                                    'Fermer la conversation',
-                                    style: TextStyle(
-                                      color: Provider
-                                          .of<ThemeService>(context)
-                                          .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                    ),
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 10),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
                                 ),
-                              ]),
+                                child: Text(
+                                  'Fermer la conversation',
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     )
