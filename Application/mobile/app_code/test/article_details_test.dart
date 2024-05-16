@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/pages/article/details_state.dart';
 
@@ -40,6 +41,61 @@ void main() {
   );
 
   testWidgets(
+    'Article details touching rent button',
+        (WidgetTester tester) async {
+      final item1 = {
+        "id": -1,
+        "name": "Ballon de volley",
+        "containerId": -1,
+        "price": 0.5,
+        "available": true,
+        "categories": []
+      };
+      final testPage =
+      initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
+      await waitForLoader(tester: tester, testPage: testPage);
+      await tester.pumpAndSettle();
+
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+      Finder rentData = find.byKey(const Key('article-button_article-rent'));
+
+      expect(rentData, findsOneWidget);
+      expect(appBarTitleData, findsOneWidget);
+
+      await tester.tap(rentData);
+      await tester.pumpAndSettle();
+    },
+  );
+
+  testWidgets(
+    'Article details touching rent button',
+        (WidgetTester tester) async {
+      final item1 = {
+        "id": -1,
+        "name": "Ballon de volley",
+        "containerId": -1,
+        "price": 0.5,
+        "available": true,
+        "categories": []
+      };
+      final testPage =
+      initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
+      await waitForLoader(tester: tester, testPage: testPage);
+      await tester.pumpAndSettle();
+
+      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
+      Finder favoriteButton =
+      find.byKey(const Key('article-button_add-favorite'));
+
+      expect(appBarTitleData, findsOneWidget);
+      expect(favoriteButton, findsOneWidget);
+
+      await tester.tap(favoriteButton);
+      await tester.pumpAndSettle();
+    },
+  );
+
+  testWidgets(
     'Article details with test data',
         (WidgetTester tester) async {
       final item1 = {
@@ -53,34 +109,35 @@ void main() {
       final testPage =
       initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
       await waitForLoader(tester: tester, testPage: testPage);
-      await tester.pumpWidget(testPage);
       await tester.pumpAndSettle();
 
       Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-      Finder titleData = find.byKey(const Key('article-details_title'));
 
-      Finder opinionData = find.byKey(const Key('article-button_article-rent'));
       Finder consultArticle =
       find.byKey(const Key('article-button_article-opinion'));
 
       expect(consultArticle, findsOneWidget);
-      expect(opinionData, findsOneWidget);
       expect(appBarTitleData, findsOneWidget);
 
       await tester.dragUntilVisible(
-          opinionData, // what you want to find
-          titleData, // widget you want to scroll
+          consultArticle, // what you want to find
+          appBarTitleData, // widget you want to scroll
           const Offset(0, -300) // delta to move
       );
 
-      await tester.tap(opinionData);
       await tester.tap(consultArticle);
+      await tester.pumpAndSettle();
     },
   );
 
-  test('Testing sort tickets', () {
-    final test = ArticleDetailsState();
-
-    test.getArticleData(null, -1);
-  });
+  testWidgets(
+    'Article details touching rent button',
+        (WidgetTester tester) async {
+      final testPage = ArticleDetailsState();
+      userInformation = initExampleUser();
+      testPage.checkFavorite(-1);
+      testPage.deleteFavorite(-1);
+      testPage.createFavorite(-1);
+    },
+  );
 }
