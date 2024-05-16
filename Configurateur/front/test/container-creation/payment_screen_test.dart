@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/container-creation/payment_screen.dart';
+import 'package:front/screens/container-creation/payment_screen/payment_screen.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   late MockSharedPreferences sharedPreferences;
@@ -22,21 +23,27 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const PaymentScreen(
-            amount: 100,
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const PaymentScreen(
+                  amount: 100,
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text('Coordonnées bancaires'), findsOneWidget);
     expect(find.text('Des demandes supplémentaires à nous faire parvenir ?'),

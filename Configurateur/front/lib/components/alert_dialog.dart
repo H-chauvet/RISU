@@ -86,11 +86,11 @@ Future<Map<String, dynamic>> checkSignin(BuildContext context) async {
 
 Future<Map<String, dynamic>> checkSignInAdmin(BuildContext context) async {
   String? token = await storageService.readStorage('token');
-  String? userMail;
+  String? role;
   if (token != '') {
-    userMail = await storageService.getUserMail();
+    role = await storageService.getUserRole();
   }
-  if (token != '' && userMail == "risu.admin@gmail.com") {
+  if (token != '' && role == "admin") {
     return {'isSignedIn': true, 'title': '', 'message': ''};
   }
   return {
