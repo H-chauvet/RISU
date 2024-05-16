@@ -239,20 +239,19 @@ class TicketsState extends State<TicketsPage> {
     }
   }
 
-  Future<bool> checkToken() async {
+  void checkToken() async {
     token = await storageService.readStorage('token');
-    await storageService.getUserUuid().then((value) => uuid = value);
+    storageService.getUserUuid().then((value) => uuid = value);
     if (token == "") {
       context.go('/login');
     }
-    return uuid != "";
   }
 
   @override
-  Future<void> initState() async {
+  void initState() {
     super.initState();
     isAdmin = widget.isAdmin;
-    while (await checkToken() == false) {}
+    checkToken();
     getTickets();
   }
 
@@ -322,6 +321,7 @@ class TicketsState extends State<TicketsPage> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   InkWell(
+                                    key: const Key("ticket-state-open"),
                                     onTap: () {
                                       setState(
                                         () {
@@ -366,6 +366,7 @@ class TicketsState extends State<TicketsPage> {
                                     ),
                                   ),
                                   InkWell(
+                                    key: const Key("ticket-state-closed"),
                                     onTap: () {
                                       setState(
                                         () {
