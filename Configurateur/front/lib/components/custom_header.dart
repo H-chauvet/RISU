@@ -207,6 +207,17 @@ class LandingAppBarState extends State<LandingAppBar> {
                         ),
                       ),
                     );
+                    items.add(
+                      const PopupMenuItem<String>(
+                        value: 'company-profil',
+                        child: Text(
+                          'Mon Entreprise',
+                          style: TextStyle(
+                            color: Color(0xff033F63),
+                          ),
+                        ),
+                      ),
+                    );
                     if (userRole == "admin") {
                       items.add(
                         const PopupMenuItem<String>(
@@ -243,6 +254,8 @@ class LandingAppBarState extends State<LandingAppBar> {
                     context.go("/admin");
                   } else if (value == 'profil') {
                     context.go("/profil");
+                  } else if (value == 'company-profil') {
+                    context.go("/company-profil");
                   } else if (value == "disconnect") {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');
