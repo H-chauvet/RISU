@@ -88,4 +88,19 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
   }
 })
 
+router.get('/newEmailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
+  console.log('newEmailVerification');
+  const token = req.query.token
+  try {
+    const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
+    var user = await userCtrl.findUserById(decoded.id)
+    user = await userCtrl.updateEmail(decoded.id, user.newEmail);
+    return res.status(200).send(
+      'New email now successfully verified !\nYou can go back to login page.'
+      )
+  } catch (err) {
+    return res.status(401).send('No matching user found.')
+  }
+})
+
 module.exports = router

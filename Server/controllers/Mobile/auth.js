@@ -39,3 +39,25 @@ exports.verifyEmail = id => {
     }
   })
 }
+
+/**
+ * Send an email to verify New email of a mobile user
+ *
+ * @param {string} email of the new user
+ * @param {string} token of the new user
+ */
+exports.sendConfirmationNewEmail = (email, token) => {
+  let mailOptions = {
+    from: process.env.MAIL_ADDRESS,
+    to: email,
+    subject: 'Confirm your New Email',
+    text: "",
+    html: '<p>Please follow the link to confirm your New email: <a href="http://risu.dns-dynamic.net:3000/api/mobile/auth/newEmailVerification?token=' +
+      token + '">here</a></p>',
+  }
+  try {
+    transporter.sendMail(mailOptions)
+  } catch (error) {
+    console.error('Error sending reset password email:', error)
+  }
+}

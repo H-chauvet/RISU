@@ -124,7 +124,6 @@ exports.updateUserInfo = (user, body) => {
     data: {
       firstName: body.firstName ?? user.firstName,
       lastName: body.lastName ?? user.lastName,
-      email: body.email ?? user.email,
       Notifications: {
         update: {
           favoriteItemsAvailable: body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
@@ -197,4 +196,46 @@ exports.removeUserRefreshToken = userId => {
       refreshToken: null
     }
   })
+}
+
+/**
+ * Update the email of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.updateEmail = (id, newEmail) => {
+   return db.User_Mobile.update({
+    where: {
+      id: id
+    },
+    data: {
+      email: newEmail,
+      newEmail: null,
+      mailVerification: true
+    },
+    include: { Notifications: true }
+  })
+}
+
+/**
+ * Update the data of the user
+ *
+ * @param {*} user object to be updated
+ * @param {*} body where the updated data can be found
+ * @returns the updated user object
+ */
+exports.updateNewEmail = (user, newEmail) => {
+  try {
+    return db.User_Mobile.update({
+      where: { id: user.id },
+      data: {
+        newEmail: newEmail,
+        mailVerification: false
+      },
+      include: { Notifications: true }
+    })
+  } catch (error) {
+    throw new Error('Failed to update newEmail.')
+  }
 }
