@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/styles/globalStyle.dart';
 
 class Feedbacks {
   final int id;
@@ -46,12 +48,27 @@ class FeedbacksCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Card(
       child: Column(
         children: [
           ListTile(
-            leading: CircleAvatar(child: Text("${fb.mark} / 5")),
-            title: Text("Avis posté par ${fb.firstName} ${fb.lastName}"),
+            leading: CircleAvatar(
+              child: Text(
+                "${fb.mark} / 5",
+                style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize),
+              ),
+            ),
+            title: Text(
+              "Avis posté par ${fb.firstName} ${fb.lastName}",
+              style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize),
+            ),
             subtitle: Text(fb.message),
           ),
           const Divider(height: 0),

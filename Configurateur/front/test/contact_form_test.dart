@@ -1,28 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
+  setUp(() async {
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
+  });
+
   testWidgets('no data', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: ContactPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: ContactPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     await tester.tap(find.text('Envoyer'));
     await tester.pump();
@@ -36,19 +53,28 @@ void main() {
 
   testWidgets('correct data', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: ContactPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: ContactPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
     await tester.enterText(find.byType(TextFormField).at(1), 'TestNom');
@@ -66,19 +92,28 @@ void main() {
 
   testWidgets('correct data bis', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: ContactPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: ContactPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     await tester.enterText(find.byType(TextFormField).at(0), 'TestPrénom');
     await tester.enterText(find.byType(TextFormField).at(1), 'TestNom');

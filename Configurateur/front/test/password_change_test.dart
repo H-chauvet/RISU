@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/password-recuperation/password_change.dart';
@@ -15,6 +16,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   Widget createWidgetForTesting({required Widget child}) {
@@ -25,32 +27,41 @@ void main() {
 
   late MockSharedPreferences sharedPreferences;
 
-  setUp(() {
+  setUp(() async {
     sharedPreferences = MockSharedPreferences();
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
   });
 
   testWidgets('Password change screen', (WidgetTester tester) async {
     TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Build our app and trigger a frame.
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.physicalSizeTestValue = const Size(1920, 1080);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const PasswordChange(params: 'uuid'),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const PasswordChange(params: 'uuid'),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 

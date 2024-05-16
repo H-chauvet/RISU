@@ -14,16 +14,17 @@ void main() {
       WidgetController.hitTestWarningShouldBeFatal = true;
     });
 
-    tearDown(() {
-      // This code runs after each test case.
-    });
-
     Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
-    Finder textinputRightIconFinder =
+    Finder textInputRightIconFinder =
         find.byKey(const Key('textinput-button_righticon'));
-    find.byKey(const Key('signup-textinput_email'));
+    Finder textInputRightIconConfirmationFinder = find
+        .byKey(const Key('signup-textinput_password_confirmation_righticon'));
+    Finder textInputEmailFinder =
+        find.byKey(const Key('signup-textinput_email'));
     Finder textInputPasswordFinder =
         find.byKey(const Key('signup-textinput_password'));
+    Finder textInputPasswordConfirmationFinder =
+        find.byKey(const Key('signup-textinput_password_confirmation'));
 
     testWidgets('Widget Rendering Test', (WidgetTester tester) async {
       await tester.pumpWidget(initPage(const SignupPage()));
@@ -32,9 +33,11 @@ void main() {
       expect(logoFinder, findsOneWidget);
       expect(find.byKey(const Key('signup-appbar')), findsOneWidget);
       expect(find.byKey(const Key('signup-text_title')), findsOneWidget);
-      expect(find.byKey(const Key('signup-textinput_email')), findsOneWidget);
-      expect(
-          find.byKey(const Key('signup-textinput_password')), findsOneWidget);
+      expect(textInputEmailFinder, findsOneWidget);
+      expect(textInputPasswordFinder, findsOneWidget);
+      expect(textInputPasswordConfirmationFinder, findsOneWidget);
+      expect(textInputRightIconFinder, findsOneWidget);
+      expect(textInputRightIconConfirmationFinder, findsOneWidget);
       expect(find.byKey(const Key('signup-button_signup')), findsOneWidget);
       expect(
           find.byKey(const Key('signup-textbutton_gotologin')), findsOneWidget);
@@ -67,16 +70,27 @@ void main() {
       await tester.pumpAndSettle();
 
       // Enter email and password
-      await tester.enterText(
-          find.byKey(const Key('signup-textinput_email')), 'test@example.com');
-      await tester.enterText(
-          find.byKey(const Key('signup-textinput_password')), 'password123');
+      await tester.enterText(textInputEmailFinder, 'test@example.com');
+      await tester.enterText(textInputPasswordFinder, 'password123');
+
       await tester.pumpAndSettle();
       expect(tester.widget<MyTextInput>(textInputPasswordFinder).obscureText,
           true);
-      await tester.tap(textinputRightIconFinder);
+      expect(
+          tester
+              .widget<MyTextInput>(textInputPasswordConfirmationFinder)
+              .obscureText,
+          true);
+      await tester.tap(textInputRightIconFinder);
+      await tester.tap(textInputRightIconConfirmationFinder);
       await tester.pumpAndSettle();
       expect(tester.widget<MyTextInput>(textInputPasswordFinder).obscureText,
+          false);
+      await tester.pumpAndSettle();
+      expect(
+          tester
+              .widget<MyTextInput>(textInputPasswordConfirmationFinder)
+              .obscureText,
           false);
 
       expect(gotoSignInButton, findsOneWidget);

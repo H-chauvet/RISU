@@ -8,6 +8,7 @@ import 'package:front/services/theme_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 Future<void> deleteUserMobile(UserMobile container) async {}
 Future<void> deleteUserWeb(User container) async {}
@@ -25,24 +26,30 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: UserMobileCard(
-          user: UserMobile(
-            id: "1",
-            email: 'john.doe@example.com',
-            firstName: 'John',
-            lastName: 'Doe',
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
-          onDelete: deleteUserMobile,
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: UserMobileCard(
+                user: UserMobile(
+                  id: "1",
+                  email: 'john.doe@example.com',
+                  firstName: 'John',
+                  lastName: 'Doe',
+                ),
+                onDelete: deleteUserMobile,
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text('Prénom : John'), findsOneWidget);
     expect(find.text('Nom : Doe'), findsOneWidget);
@@ -54,30 +61,32 @@ void main() {
   testWidgets('UserCard displays message details', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: UserCard(
-          user: User(
-            id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
-            company: 'company',
-            email: 'john.doe@example.com',
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
-          onDelete: deleteUserWeb,
+        ],
+        child: MaterialApp(
+          home: UserCard(
+            user: User(
+              id: 1,
+              firstName: 'John',
+              lastName: 'Doe',
+              company: 'company',
+              email: 'john.doe@example.com',
+            ),
+            onDelete: deleteUserWeb,
+          ),
         ),
       ),
-    ));
+    );
 
     expect(find.text('Prénom : John'), findsOneWidget);
     expect(find.text('Nom : Doe'), findsOneWidget);
-    expect(find.text(' Entreprise : company'), findsOneWidget);
     expect(find.text('Email : john.doe@example.com'), findsOneWidget);
+    expect(find.text('Entreprise : company'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
@@ -85,14 +94,20 @@ void main() {
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(home: UserPage());
+          },
         ),
-      ],
-      child: MaterialApp(home: UserPage()),
-    ));
+      ),
+    );
 
     // Verify that the ContainerPage is rendered.
     expect(find.byType(UserPage), findsOneWidget);

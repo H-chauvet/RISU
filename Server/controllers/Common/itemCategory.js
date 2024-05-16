@@ -6,7 +6,7 @@ const { db } = require('../../middleware/database')
  * @returns every item category
  */
 exports.getItemCategories = () => {
-  return db.ItemCategory.findMany()
+  return db.Item_Category.findMany()
 }
 
 /**
@@ -17,7 +17,7 @@ exports.getItemCategories = () => {
  */
 exports.getItemCategoryFromId = (id) => {
   intId = parseInt(id)
-  return db.ItemCategory.findUnique({
+  return db.Item_Category.findUnique({
     where: { id: intId }
   })
 }
@@ -29,7 +29,7 @@ exports.getItemCategoryFromId = (id) => {
  * @returns the new object stored in the database
  */
 exports.createItemCategory = (name) => {
-  return db.ItemCategory.create({
+  return db.Item_Category.create({
     data: {
       name: name
     }
@@ -43,7 +43,7 @@ exports.createItemCategory = (name) => {
  * @returns the freshly updated object
  */
 exports.updateItemCategory = (id, name) => {
-  return db.ItemCategory.update({
+  return db.Item_Category.update({
     where: { id: id },
     data: {
       name: name
@@ -58,7 +58,7 @@ exports.updateItemCategory = (id, name) => {
  * @returns none
  */
 exports.deleteItemCategory = (id) => {
-  return db.ItemCategory.delete({
+  return db.Item_Category.delete({
     where: { id: id }
   })
 }
