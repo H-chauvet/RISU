@@ -64,9 +64,7 @@ jobs:
         working-directory: ./Application/mobile/app_code
         run: flutter test
   SERVER-TEST:
-    runs-on: ubuntu-latest
-    container:
-      image: node:16
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Create .env file
