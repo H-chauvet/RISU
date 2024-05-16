@@ -7,6 +7,7 @@ import 'package:front/components/tickets_page.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ void main() {
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+
     await tester.pumpWidget(MultiProvider(
       providers: [
         ChangeNotifierProvider<ThemeService>(
@@ -198,27 +200,82 @@ void main() {
         "title": "Ticket 1",
         "content": "Contenu 1",
         "creatorId": "",
-        "assignedId": ""
+        "assignedId": "",
+        "createdAt": "2024-05-16T14:00:00Z",
       },
       {
         "title": "Ticket 2",
         "content": "Contenu 2",
         "creatorId": "",
-        "assignedId": ""
+        "assignedId": "",
+        "createdAt": "2024-05-16T14:00:00Z",
       },
       {
         "title": "Ticket 3",
         "content": "Contenu 3",
         "creatorId": "",
-        "assignedId": ""
+        "assignedId": "",
+        "createdAt": "2024-05-16T14:00:00Z",
       },
       {
         "title": "Ticket 4",
         "content": "Contenu 4",
         "creatorId": "",
-        "assignedId": null
+        "assignedId": "",
+        "createdAt": "2024-05-16T14:00:00Z",
       },
     ];
+
+    state_assign.openedTickets = {
+      "123": [
+        {
+          "id": 1,
+          "title": "Ticket 1",
+          "content": "Contenu 1",
+          "creatorId": "user2",
+          "assignedId": "",
+          "createdAt": "2024-05-16T14:00:00Z",
+          "chatUid": "123"
+        },
+        {
+          "id": 2,
+          "title": "Ticket 1",
+          "content": "Contenu 2",
+          "creatorId": "",
+          "assignedId": "user2",
+          "createdAt": "2024-05-16T14:00:00Z",
+          "chatUid": "123"
+        },
+      ]
+    };
+
+    state_assign.closedTickets = {
+      "124": [
+        {
+          "id": 3,
+          "title": "Ticket 1",
+          "content": "Contenu 1",
+          "creatorId": "user2",
+          "assignedId": "",
+          "createdAt": "2024-05-16T14:00:00Z",
+          "chatUid": "124"
+        },
+        {
+          "id": 4,
+          "title": "Ticket 1",
+          "content": "Contenu 2",
+          "creatorId": "",
+          "assignedId": "user2",
+          "createdAt": "2024-05-16T14:00:00Z",
+          "chatUid": "124"
+        },
+      ]
+    };
+    await tester.tap(find.byKey(const Key("ticket-state-open")));
+    await tester.pump();
+
+    await tester.tap(find.byKey(const Key("ticket-state-closed")));
+    await tester.pump();
   });
 }
 

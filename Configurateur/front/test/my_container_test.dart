@@ -49,6 +49,9 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
+    final state_assign =
+        tester.state(find.byType(MyContainer)) as MyContainerState;
+
     expect(find.text('Mes conteneurs sauvegardés'), findsOneWidget);
 
     await tester.pumpAndSettle();

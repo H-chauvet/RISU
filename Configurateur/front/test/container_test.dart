@@ -1,19 +1,29 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/container.dart';
+import 'package:front/screens/company/container-company.dart';
 import 'package:front/screens/container-list/container_list.dart';
-import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mockito/mockito.dart';
 
 Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  late MockSharedPreferences sharedPreferences;
+
+  setUp(() async {
+    sharedPreferences = MockSharedPreferences();
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
+  });
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(MultiProvider(
@@ -112,3 +122,5 @@ void main() {
     expect(parsedContainer.informations, container.informations);
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}
