@@ -65,6 +65,8 @@ jobs:
         run: flutter test
   SERVER-TEST:
     runs-on: ubuntu-latest
+    container:
+      image: node:16
     steps:
       - uses: actions/checkout@v2
       - name: Create .env file
