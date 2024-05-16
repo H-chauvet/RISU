@@ -42,7 +42,7 @@ dependencies:
   profile_photo: ^1.0.3
   geolocator: ^10.1.0
   permission_handler: ^11.2.1
-  flutter_stripe: ^7.0.0
+  flutter_stripe: ^9.5.0+1
   flutter_local_notifications: ^16.3.2
   flutter_localizations:
     sdk: flutter
