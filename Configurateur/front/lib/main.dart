@@ -6,7 +6,7 @@ import './app_routes.dart';
 import 'styles/themes.dart';
 import 'services/theme_service.dart';
 
-/// [Function] : Lunch the web application.
+/// [Function] : Launch the web application.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
