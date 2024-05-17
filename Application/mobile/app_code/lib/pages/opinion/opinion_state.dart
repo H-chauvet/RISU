@@ -19,7 +19,7 @@ import 'opinion_page.dart';
 class OpinionPageState extends State<OpinionPage> {
   int itemId;
 
-  OpinionPageState({required this.itemId});
+  OpinionPageState({required this.itemId, this.opinionsList = const []});
 
   List<dynamic> opinionsList = [];
   int selectedStarFilter = 6;
@@ -417,7 +417,13 @@ class OpinionPageState extends State<OpinionPage> {
   @override
   void initState() {
     super.initState();
-    getOpinions(itemId);
+    if (widget.opinions.isNotEmpty) {
+      setState(() {
+        opinionsList = widget.opinions;
+      });
+    } else {
+      getOpinions(itemId);
+    }
   }
 
   @override
@@ -518,8 +524,9 @@ class OpinionPageState extends State<OpinionPage> {
                                   },
                                 ),
                                 if (opinionsList.isNotEmpty)
-                                  for (var opinion in opinionsList)
+                                  for (var i = 0; i < opinionsList.length; i++)
                                     Card(
+                                      key: Key('opinion-card_$i'),
                                       elevation: 5,
                                       margin: const EdgeInsets.symmetric(
                                           vertical: 10, horizontal: 20),
@@ -537,15 +544,21 @@ class OpinionPageState extends State<OpinionPage> {
                                                       .spaceBetween,
                                               children: [
                                                 Expanded(
+                                                  key: Key('opinion-user_$i'),
                                                   child: Text(
-                                                    (opinion['user'] != null &&
-                                                            opinion['user'][
+                                                    (opinionsList[i]['user'] !=
+                                                                null &&
+                                                            opinionsList[i]
+                                                                        ['user']
+                                                                    [
                                                                     'firstName'] !=
                                                                 null &&
-                                                            opinion['user'][
+                                                            opinionsList[i]
+                                                                        ['user']
+                                                                    [
                                                                     'lastName'] !=
                                                                 null)
-                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
+                                                        ? '${opinionsList[i]['user']['firstName']} ${opinionsList[i]['user']['lastName']}'
                                                         : AppLocalizations.of(
                                                                 context)!
                                                             .anonymous,
@@ -556,18 +569,20 @@ class OpinionPageState extends State<OpinionPage> {
                                                         TextOverflow.ellipsis,
                                                   ),
                                                 ),
-                                                if (opinion['userId'] ==
+                                                if (opinionsList[i]['userId'] ==
                                                     userInformation?.ID)
                                                   IconButton(
-                                                    key: const Key(
-                                                        'opinion-settings_button'),
+                                                    key: Key(
+                                                        'opinion-settings_button_$i'),
                                                     icon: const Icon(
                                                         Icons.more_vert),
                                                     onPressed: () {
                                                       _showParameterDialog(
-                                                          opinion['id'],
-                                                          opinion['note'],
-                                                          opinion['comment']);
+                                                          opinionsList[i]['id'],
+                                                          opinionsList[i]
+                                                              ['note'],
+                                                          opinionsList[i]
+                                                              ['comment']);
                                                     },
                                                   ),
                                               ],
@@ -589,15 +604,19 @@ class OpinionPageState extends State<OpinionPage> {
                                                           .symmetric(
                                                           horizontal: 2),
                                                       child: Icon(
+                                                        key: Key(
+                                                            'opinion-star_$i-$index'),
                                                         index <
                                                                 int.parse(
-                                                                    opinion[
+                                                                    opinionsList[
+                                                                            i][
                                                                         'note'])
                                                             ? Icons.star
                                                             : Icons.star_border,
                                                         color: index <
                                                                 int.parse(
-                                                                    opinion[
+                                                                    opinionsList[
+                                                                            i][
                                                                         'note'])
                                                             ? Colors.yellow
                                                             : Colors.grey,
@@ -607,7 +626,9 @@ class OpinionPageState extends State<OpinionPage> {
                                                 ),
                                                 const SizedBox(height: 8),
                                                 Text(
-                                                  opinion['comment'],
+                                                  key:
+                                                      Key('opinion-comment_$i'),
+                                                  opinionsList[i]['comment'],
                                                   style: const TextStyle(
                                                       fontSize: 16),
                                                 ),
@@ -619,6 +640,7 @@ class OpinionPageState extends State<OpinionPage> {
                                     ),
                                 if (opinionsList.isEmpty)
                                   Text(
+                                    key: const Key('opinion-empty_text'),
                                     AppLocalizations.of(context)!.reviewsEmpty,
                                     style: const TextStyle(fontSize: 16),
                                   ),
