@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -11,15 +12,19 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
+import 'google_style.dart';
+
 ///
 /// Google button
 ///
 class GoogleLogo extends StatelessWidget {
-  GoogleLogo({super.key});
+  GoogleLogo({super.key, required this.screenFormat});
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       clientId:
           "750790002860-f4p6kt271o3fsp30ii3eqjj8hm7ehqve.apps.googleusercontent.com");
+
+  final ScreenFormat screenFormat;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +33,12 @@ class GoogleLogo extends StatelessWidget {
           startSignIn(context);
         },
         child: Container(
-          width: 200,
-          height: 40,
+          height: screenFormat == ScreenFormat.desktop
+              ? desktopButtonHeight
+              : tabletButtonHeight,
+          width: screenFormat == ScreenFormat.desktop
+              ? desktopButtonWidth
+              : tabletButtonWidth,
           decoration: BoxDecoration(
               color: Provider.of<ThemeService>(context).isDark
                   ? boxDecorationDarkTheme.color
@@ -51,11 +60,12 @@ class GoogleLogo extends StatelessWidget {
               Text(
                 'Google',
                 style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: 18,
-                ),
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor),
               )
             ],
           ),

@@ -7,11 +7,11 @@ import 'package:http/http.dart' as http;
 
 class ItemListInfo {
   final int? id;
-  final dynamic? name;
+  final dynamic name;
   final bool? available;
   final int? container;
-  final dynamic? createdAt;
-  final dynamic? containerId;
+  final dynamic createdAt;
+  final dynamic containerId;
   final double? price;
   final String? image;
   final String? description;
