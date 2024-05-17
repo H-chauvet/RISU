@@ -407,7 +407,7 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           AppLocalizations.of(context)!.email,
-                          key: const Key('profile_info-text_informations'),
+                          key: const Key('profile_info-text_email'),
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
