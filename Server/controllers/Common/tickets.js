@@ -95,6 +95,11 @@ exports.getConversation = (id) => {
   });
 }
 
+/**
+ * Retrieve every tickets of the database (Admin purpose only)
+ *
+ * @returns every tickets in a list
+ */
 exports.getAllTickets = async () => {
   return db.Tickets.findMany();
 }
