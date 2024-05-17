@@ -757,7 +757,7 @@ class TicketsState extends State<TicketsPage> {
                             ),
                           ),
                           const SizedBox(height: 8.0),
-                          (isAdmin && assigned(conversation) || !isAdmin)
+                          (isAdmin && assigned(conversation) || !isAdmin) /// Rajoter un isOpen qui check si la conversation est ouverte en vérifiant les ["closed"] des tickets de conversations
                               ? TextFormField(
                                   controller: _convController,
                                   onChanged: (value) => _message = value,
@@ -807,6 +807,12 @@ class TicketsState extends State<TicketsPage> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
+                              // Clore le ticket seulement si admin
+                              // main and cross axis alignment à .start
+                              // Et l'elevated Button dans un Align
+                              // avec Alignment.centerRight
+                              // Et après call la fonction back
+                              // /!\ VERIFIER QU'ON PEUT PLUS ECRIRE si le ticket est close
                               ElevatedButton(
                                 onPressed: () {
                                   setState(

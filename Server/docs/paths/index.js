@@ -51,8 +51,6 @@ const WebItemListAllByContainerId = require("./Web/items/listAllByContainerId");
 const WebItemUpdateName = require("./Web/items/updateName");
 const WebItemUpdateDescription = require("./Web/items/updateDescription");
 const WebItemUpdatePrice = require("./Web/items/updatePrice");
-const WebMessageList = require("./Web/messages/list");
-const WebMessageDelete = require("./Web/messages/delete");
 const WebPayment = require("./Web/payment/card-pay");
 const WebUserConfirmedRegister = require("./Web/user/confirmed-register");
 const WebUserDelete = require("./Web/user/delete");
@@ -222,12 +220,6 @@ module.exports = {
     },
     "/api/items/update-price": {
       ...WebItemUpdatePrice,
-    },
-    "/api/messages/list": {
-      ...WebMessageList,
-    },
-    "/api/messages/delete": {
-      ...WebMessageDelete,
     },
     "/api/payment/card-pay": {
       ...WebPayment,

@@ -93,10 +93,6 @@ router.put('/assign/:assignedId', async (req, res, next) => {
     throw new Error("Unauthorized");
   }
   try {
-    const user = await userCtrl.findUserByUuid(req.params.assignedId);
-    if (!user) {
-      return res.status(404).send('User not found');
-    }
     const assignedId = req.params.assignedId
     const { ticketIds } = req.body
     if (!assignedId || !ticketIds) {
