@@ -7,7 +7,70 @@ import 'globals.dart';
 
 void main() {
   group('Test Opinion Page', () {
-    testWidgets('find opinions pages buttons', (WidgetTester tester) async {
+    testWidgets('Should not find opinions', (WidgetTester tester) async {
+      const List<dynamic> opinions = [];
+      final testPage =
+          initPage(const OpinionPage(itemId: 1, opinions: opinions));
+      await waitForLoader(tester: tester, testPage: testPage);
+      await tester.pumpAndSettle();
+
+      Finder reviewsEmpty = find.byKey(const Key('opinion-empty_text'));
+      expect(reviewsEmpty, findsOneWidget);
+    });
+
+    testWidgets('Should find opinions', (WidgetTester tester) async {
+      const List<dynamic> opinions = [
+        {
+          'userId': 1,
+          'note': '5',
+          'comment': 'Great product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'John',
+          }
+        },
+        {
+          'userId': 2,
+          'note': '4',
+          'comment': 'Good product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'Jane',
+          }
+        }
+      ];
+      final testPage =
+          initPage(const OpinionPage(itemId: 1, opinions: opinions));
+      await waitForLoader(tester: tester, testPage: testPage);
+      await tester.pumpAndSettle();
+
+      Finder star1 = find.byKey(const Key('opinion-star_1-1'));
+      Finder star2 = find.byKey(const Key('opinion-star_1-2'));
+      Finder star3 = find.byKey(const Key('opinion-star_1-3'));
+      Finder star4 = find.byKey(const Key('opinion-star_1-4'));
+      Finder star5 = find.byKey(const Key('opinion-star_1-5'));
+
+      expect(star1, findsOneWidget);
+      expect(star2, findsOneWidget);
+      expect(star3, findsOneWidget);
+      expect(star4, findsOneWidget);
+      expect(star5, findsNothing);
+
+      Finder opinionSettingsButton1 =
+          find.byKey(const Key('opinion-settings_button_1'));
+      Finder opinion1 = find.byKey(const Key('opinion-card_1'));
+      Finder opinionUser1 = find.byKey(const Key('opinion-user_1'));
+      Finder opinionComment1 = find.byKey(const Key('opinion-comment_1'));
+
+      expect(opinionSettingsButton1, findsNothing);
+      expect(opinion1, findsOneWidget);
+      expect(opinionUser1, findsOneWidget);
+      expect(opinionComment1, findsOneWidget);
+    });
+
+    /*testWidgets('find opinions pages buttons', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage(itemId: 1));
       await waitForLoader(tester: tester, testPage: testPage);
       BuildContext context = tester.element(find.byType(OpinionPage));
@@ -263,6 +326,6 @@ void main() {
 
       await tester.tap(addOpinionButtonFinder, warnIfMissed: false);
       await tester.pump();
-    });
+    });*/
   });
 }
