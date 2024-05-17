@@ -9,6 +9,7 @@ const mobileFavorite = require("./Mobile/items/favorites/favorite");
 const mobileMyFavorites = require("./Mobile/items/favorites/myFavorites");
 const mobileItemId = require("./Mobile/items/itemId");
 const mobileItemListAll = require("./Mobile/items/listAll");
+const mobileItemSimilar = require("./Mobile/items/similarItems");
 const mobileOpinion = require("./Mobile/opinion/opinion");
 const mobileOpinionId = require("./Mobile/opinion/opinionId");
 const mobileRentArticle = require("./Mobile/rent/article");
@@ -95,6 +96,9 @@ module.exports = {
       ...mobileItemListAll,
     },
     "/api/mobile/article/:articleId": {
+      ...mobileItemId,
+    },
+    "/api/mobile/article/:articleId/similar": {
       ...mobileItemId,
     },
     "/api/mobile/favorite": {
