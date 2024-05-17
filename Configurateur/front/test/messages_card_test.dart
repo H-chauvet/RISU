@@ -5,6 +5,7 @@ import 'package:front/screens/messages/messages_card.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   late MockSharedPreferences sharedPreferences;
@@ -52,17 +53,21 @@ void main() {
 
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
     await tester.pumpWidget(
-      MaterialApp(
-        home: MessageCard(
-          message: Message(
-            id: 1,
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john.doe@example.com',
-            message: 'Hello, how are you?',
-          ),
-          onDelete: (message) {},
-        ),
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: MessageCard(
+              message: Message(
+                id: 1,
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'john.doe@example.com',
+                message: 'Hello, how are you?',
+              ),
+              onDelete: (message) {},
+            ),
+          );
+        },
       ),
     );
 

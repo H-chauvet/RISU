@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:front/components/footer.dart';
-import 'package:front/services/storage_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
-import 'package:go_router/go_router.dart';
-import 'package:front/components/custom_app_bar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-import 'package:front/network/informations.dart';
 import 'package:provider/provider.dart';
+
+import 'container-company_style.dart';
 
 class MyContainerList {
   final int? id;
-  final dynamic? createdAt;
-  final dynamic? organization;
+  final dynamic createdAt;
+  final dynamic organization;
   final int? organizationId;
-  final dynamic? containerMapping;
+  final dynamic containerMapping;
   final double? price;
   final String? address;
   final String? city;
@@ -72,6 +68,7 @@ class ContainerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Column(
       children: [
         Container(
@@ -91,7 +88,9 @@ class ContainerCard extends StatelessWidget {
               ),
             ],
           ),
-          width: 350,
+          width: screenFormat == ScreenFormat.desktop
+              ? desktopContainerWidth
+              : tabletContainerWidth,
           child: Column(
             children: [
               ListTile(
@@ -100,15 +99,24 @@ class ContainerCard extends StatelessWidget {
                     children: [
                       Text(
                         "Ville : ${container.city != null ? container.city! : "inconnue"}",
+                        style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize),
                       ),
                     ],
                   ),
                 ),
-                subtitle:
-                    Text("Prix du conteneur : " + container.price.toString()),
+                subtitle: Text(
+                  "prix du conteneur : " + container.price.toString(),
+                  style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize),
+                ),
                 leading: Image.asset(
                   'assets/container.png',
-                  width: 150,
+                  width: imageWidth,
                 ),
               ),
             ],

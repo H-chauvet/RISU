@@ -6,6 +6,7 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'alert_dialog.dart';
 import 'divider.dart';
 
 enum DIVIDERPLACE {
@@ -35,19 +36,30 @@ class MyRedirectDivider extends StatelessWidget {
       return;
     } else {
       if (disconnect) {
-        userInformation = null;
-        final prefs = SharedPreferences.getInstance();
-        prefs.then((value) {
-          value.setString('refreshToken', '');
-        });
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return goToPage;
-            },
-          ),
-          (route) => false,
+        MyAlertDialog.showChoiceAlertDialog(
+          context: context,
+          title: AppLocalizations.of(context)!.confirmation,
+          message: AppLocalizations.of(context)!.accountAskDisconnection,
+          onOkName: AppLocalizations.of(context)!.disconnect,
+        ).then(
+          (value) {
+            if (value) {
+              userInformation = null;
+              final prefs = SharedPreferences.getInstance();
+              prefs.then((value) {
+                value.setString('refreshToken', '');
+              });
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return goToPage;
+                  },
+                ),
+                (route) => false,
+              );
+            }
+          },
         );
       } else {
         Navigator.push(

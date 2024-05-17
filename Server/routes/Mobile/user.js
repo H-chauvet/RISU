@@ -5,6 +5,7 @@ const router = express.Router()
 const passport = require('passport')
 const userCtrl = require('../../controllers/Mobile/user')
 const authCtrl = require('../../controllers/Mobile/auth')
+const cleanCtrl = require('../../controllers/Mobile/cleandata')
 const bcrypt = require('bcrypt')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
@@ -56,13 +57,15 @@ router.post('/resetPassword', async (req, res) => {
   }
 
   try {
-    const user = await userCtrl.findUserByEmail(email)
+    user = await userCtrl.findUserByEmail(email)
     if (!user) {
       return res.status(404).json({ message: 'User not found' })
     }
-    const clearPassword = userCtrl.generateRandomPassword(8)
-    await userCtrl.setNewUserPassword(user, clearPassword)
-    await userCtrl.sendResetPasswordEmail(email, clearPassword)
+    resetToken = jwtMiddleware.generateResetToken(user)
+    resetToken = resetToken.substring(0, 64)
+    user = await userCtrl.updateUserResetToken(user.id, resetToken)
+    await userCtrl.sendResetPasswordEmail(user.email, resetToken)
+    user = await userCtrl.removeUserResetToken(user.id)
 
     return res.status(200).json({ message: 'Reset password email sent' })
   } catch (error) {
@@ -149,7 +152,8 @@ router.delete('/:userId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(404).send('User not found')
       }
-      await userCtrl.deleteUser(req.params.userId)
+      await cleanCtrl.cleanUserData(user.id, user.notificationsId)
+      await userCtrl.deleteUser(user.id)
       return res.status(200).send('User deleted')
     } catch (error) {
       console.error('Failed to delete account: ', error)

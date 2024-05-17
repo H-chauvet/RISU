@@ -9,7 +9,12 @@ const crypto = require("crypto");
  */
 function generateAccessToken(user) {
   return jwt.sign(
-    { userId: user.id, userMail: user.email, confirmed: user.confirmed },
+    {
+      userId: user.id,
+      userMail: user.email,
+      confirmed: user.confirmed,
+      role: user.role,
+    },
     process.env.JWT_ACCESS_SECRET,
     { expiresIn: "1h" },
   );
