@@ -32,7 +32,6 @@ class ProgressBar extends StatelessWidget {
       return Provider.of<ThemeService>(context).isDark
           ? progressBarUncheckedDarkTheme!
           : progressBarUncheckedLightTheme!;
-      ;
     }
   }
 
