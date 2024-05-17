@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// Représente un utilisateur web.
+/// Web user class
+///
+/// Store all the user's information from the database
+/// [id] : User's id
+/// [firstName] : User's firstname
+/// [lastName] : User's lastname
+/// [company] : User's company
+/// [email] : User's mail
 class User {
   final int id;
   final String firstName;
@@ -8,13 +15,6 @@ class User {
   final String company;
   final String email;
 
-  /// Crée une nouvelle instance de [User].
-  ///
-  /// [id] : Contient l'id de l'utilisateur
-  /// [firstName] : Contient le prénom de l'utilisateur
-  /// [lastName] : Contient le nom de l'utilsateur
-  /// [company] : entreprise à laquelle appartient l'utilisateur
-  /// [email] : Contient l'email de l'utilisateur
   User({
     required this.id,
     required this.firstName,
@@ -23,7 +23,6 @@ class User {
     required this.email,
   });
 
-  /// Crée une instance de [User] à partir d'un objet JSON.
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'],
@@ -34,7 +33,6 @@ class User {
     );
   }
 
-  /// Convertit l'utilisateur en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -46,17 +44,17 @@ class User {
   }
 }
 
-/// Widget réprésentant la carte d'un utilisateur web
+/// UserCard
+///
+/// Card for a web user informations
+/// [user] : User's informations
+/// [onDelete] : To delete a user
 class UserCard extends StatelessWidget {
   final User user;
   final Function(User) onDelete;
-
-  /// Crée une nouvelle instance de [UserCard].
-  /// 
-  /// [user] : informations de l'utilsateur stockées.
-  /// [onDelete] : permet de supprimer un utilisateur
   const UserCard({super.key, required this.user, required this.onDelete});
 
+  /// [Widget] : Build the card for a web user
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -65,15 +63,22 @@ class UserCard extends StatelessWidget {
           ListTile(
             title: Text("Prénom : " + user.firstName),
             subtitle: Text("Nom : " + user.lastName),
-            leading: Row(
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text("Email : " + user.email),
+                    if (user.company != null)
+                      Text("Entreprise : " + user.company),
+                  ],
+                ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(user),
                 ),
-                Text("Email : " + user.email),
-                if (user.company != null) Text(" Entreprise : " + user.company),
               ],
             ),
           ),

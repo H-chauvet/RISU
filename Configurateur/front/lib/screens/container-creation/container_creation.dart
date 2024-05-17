@@ -24,7 +24,13 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import '../../components/dialog/autofill_dialog.dart';
 
 // ignore: must_be_immutable
-/// Page de création de conteneur.
+/// ContainerCreation
+///
+/// Creation of the container
+/// [container] : Informations about the container
+/// [containerMapping] : ???
+/// [width] : Container's width
+/// [height] : Container's height
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation(
       {super.key,
@@ -44,10 +50,8 @@ class ContainerCreation extends StatefulWidget {
   State<ContainerCreation> createState() => ContainerCreationState();
 }
 
+/// ContainerCreationState
 ///
-/// État de la page de creation de conteneur.
-///
-/// page de creation pour le conteneur dans le configurateur.
 class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
   late Sp3dWorld world;
@@ -60,7 +64,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   late int width = 0;
   late int height = 0;
 
-  /// Vérifie le token lors de l'initialisation de la page.
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -157,7 +161,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Charge le conteneur afin de l'afficher.
+  /// [Function] : Load the container's informations
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
     width = int.parse(container['width']);
@@ -184,7 +188,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
-  /// Charge les casiers afin de l'afficher.
+  /// [Function] : Load the lockers' informations in the container
   void loadLockers() {
     int littleLocker = 0;
     int mediumLocker = 0;
@@ -220,7 +224,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Met à jour le conteneur afin de l'afficher.
+  /// [Function] : Update the size of the container
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * width;
     int increment = 0;
@@ -307,7 +311,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "";
   }
 
-  /// Ouvre une pop up de dialog
+  /// [Widget] : Open dialog for the name of the container
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -316,7 +320,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Permet de déplacer un conteneur
+  /// [Function] : Allow the locker to be moved
   void moveLocker(
       int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
@@ -371,7 +375,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Empêche aux casiers d'êtres déplacer
+  /// [Function] : Handle the locker
   Tuple2<int, int> handleMoveLocker(
       List<String> freeSpace, int i, int j, int fragmentIncrement, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
@@ -389,7 +393,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return const Tuple2(-1, -1);
   }
 
-  /// Permet de placer de façon optimale les casiers
+  /// [Function] : Optimize the space in the containers by automatically filling the lockers
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
     int widths = width;
@@ -450,7 +454,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Permet d'ajuster la taille du conteneur.
+  /// [Function] : Optimize the space in the containers by automatically decrease the container's size
   void autoFillContainer(String face, bool unitTesting) {
     int fragmentIncrement = 0;
 
@@ -473,7 +477,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Permet d'afficher les designs du conteneur
+  /// [Function] : Load an image for the container's design
   void loadImage() async {
     world = Sp3dWorld(objs);
     world.initImages().then((List<Sp3dObj> errorObjs) {
@@ -483,7 +487,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
-  /// Permet de calculer le prix des casiers
+  /// [Function] : Sum of the price of the lockers
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockers.length; i++) {
@@ -492,7 +496,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return price;
   }
 
-  /// Permet de remettre à 0 le conteneur
+  /// [Function] : Reset the container
   void resetContainer() {
     for (int i = 0; i < objs[0].fragments.length; i++) {
       objs[0].fragments[i].faces[0].materialIndex = 0;
@@ -512,8 +516,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-
-/// Permet de supprimer le conteneur
+  /// [Function] : Delete a locker
+  /// [coord] : the locker's position in the container
+  /// [unitTesting] : ???
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {
     int fragment = coord.x - 1 + (coord.y - 1) * width;
     int increment = width;
@@ -584,8 +589,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "deleted";
   }
 
-
-/// Permet de récupérer les designs de conteneur
+  /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -594,7 +598,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return mapping;
   }
 
-  /// Navigue vers l'écran suivant.
+  /// [Function] : Go to the next page
   void goNext() async {
     var data = {
       'amount': sumPrice(),
@@ -608,7 +612,8 @@ class ContainerCreationState extends State<ContainerCreation> {
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
-  /// Sauvegarde le conteneur et l'envoie en back end.
+  /// [Function] : Save the container
+  /// [name] : name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': jwtToken,
@@ -693,11 +698,12 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  /// Navigue vers l'écran précédent.
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/container-creation/shape');
   }
 
+  /// [Widget]: build the configurator page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

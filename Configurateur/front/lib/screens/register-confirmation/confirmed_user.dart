@@ -7,7 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-/// Widget de confirmation d'utilisateur.
+/// ConfirmedUser
+///
+/// Page to inform the user of the account creation confirmation email
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});
 
@@ -17,7 +19,8 @@ class ConfirmedUser extends StatefulWidget {
   State<ConfirmedUser> createState() => ConfirmedUserState();
 }
 
-/// État de la page de confirmation d'utilisateur
+/// ConfirmedState
+///
 class ConfirmedUserState extends State<ConfirmedUser> {
   String jwtToken = '';
   dynamic response;
@@ -49,6 +52,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
     super.initState();
   }
 
+  /// [Widget] : Build the confirmation page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

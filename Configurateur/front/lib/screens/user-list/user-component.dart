@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-/// Représente un utilisateur mobile.
+/// Mobile user class
+///
+/// Store all the user's information from the database
+/// [id] : User's id
+/// [firstName] : User's firstname
+/// [lastName] : User's lastname
+/// [email] : User's mail
 class UserMobile {
   final String id;
   final String email;
   final String firstName;
   final String lastName;
 
-  /// Crée une nouvelle instance de [UserMobile].
-  ///
-  /// [id] : Contient l'id de l'utilisateur
-  /// [email] : Contient l'email de l'utilisateur
-  /// [firstName] : Contient le prénom de l'utilisateur
-  /// [lastName] : Contient le nom de l'utilsateur
   UserMobile({
     required this.id,
     required this.email,
@@ -20,7 +20,6 @@ class UserMobile {
     required this.lastName,
   });
 
-  /// Crée une instance de [UserMobile] à partir d'un objet JSON.
   factory UserMobile.fromJson(Map<String, dynamic> json) {
     return UserMobile(
       id: json['id'],
@@ -30,7 +29,6 @@ class UserMobile {
     );
   }
 
-  /// Convertit l'utilisateur en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -41,15 +39,15 @@ class UserMobile {
   }
 }
 
-/// Widget réprésentant la carte d'un utilisateur mobile
+/// UserMobileCard
+///
+/// Card for a mobile user informations
+/// [user] : User's informations
+/// [onDelete] : To delete a user
 class UserMobileCard extends StatelessWidget {
   final UserMobile user;
   final Function(UserMobile) onDelete;
 
-  /// Crée une nouvelle instance de [UserMobileCard].
-  /// 
-  /// [user] : informations de l'utilsateur stockées.
-  /// [onDelete] : permet de supprimer un utilisateur
   const UserMobileCard({super.key, required this.user, required this.onDelete});
 
   @override
@@ -60,14 +58,20 @@ class UserMobileCard extends StatelessWidget {
           ListTile(
             title: Text("Prénom : " + user.firstName),
             subtitle: Text("Nom : " + user.lastName),
-            leading: Row(
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text("Email : " + user.email),
+                  ],
+                ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(user),
                 ),
-                Text("Email : " + user.email),
               ],
             ),
           ),

@@ -10,7 +10,9 @@ import 'package:provider/provider.dart';
 
 import '../../components/progress_bar.dart';
 
-/// Page affichant forme du conteneur.
+/// ShapeScreen
+///
+/// Shape of the container
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
 
@@ -18,7 +20,8 @@ class ShapeScreen extends StatefulWidget {
   State<ShapeScreen> createState() => ShapeScreenState();
 }
 
-/// État de la page affichant la forme du conteneur.
+/// ShapeScreenState
+///
 class ShapeScreenState extends State<ShapeScreen> {
   int row = 5;
   int column = 12;
@@ -38,7 +41,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     calculateDimension();
   }
 
-  /// Calcule les dimensions des casiers en fonction du nombre de lignes et de colonnes.
+  /// [Function] : Calculate the container's dimension
   void calculateDimension() {
     width = column / 2;
     height = row / 2;
@@ -55,7 +58,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
-  /// Supprime les casiers qui ont été sélectionnés.
+  /// [Function] : Remove a locker in the container
   void removeLockers() {
     for (int i = 0; i < isClicked.length; i++) {
       if (isClicked[i] == true) {
@@ -66,7 +69,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
-  /// Génère les boutons pour supprimer des casiers.
+  /// [Widget] : Create the remove button for lockers
   List<Widget> removeButtons() {
     List<Widget> buttons = [];
 
@@ -137,7 +140,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     return buttons;
   }
 
-  /// Initialise le nombre de place dans un conteneur.
+  /// [Widget] : Initialization of the container
   List<Widget> initContainer() {
     List<Widget> rows = [];
     List<Widget> line = [];
@@ -224,12 +227,12 @@ class ShapeScreenState extends State<ShapeScreen> {
     return rows;
   }
 
-  /// Redirige vers la page précédente.
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/');
   }
 
-  /// Redirige vers la page suivante et envoie les données du conteneur sélectionné.
+  /// [Function] : Go to the next page
   void goNext() {
     List<List<String>> containerList;
 
@@ -274,6 +277,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         }));
   }
 
+  /// [Widget] : Build the container's shape page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

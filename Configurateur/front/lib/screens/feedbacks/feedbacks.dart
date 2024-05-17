@@ -18,7 +18,9 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-/// Page affichant les avis de l'application.
+/// FeedbacksPage
+///
+/// Page to show the feedbacks about Risu
 class FeedbacksPage extends StatefulWidget {
   const FeedbacksPage({Key? key}) : super(key: key);
 
@@ -26,12 +28,13 @@ class FeedbacksPage extends StatefulWidget {
   _FeedbacksPageState createState() => _FeedbacksPageState();
 }
 
-/// État de la page affichant les avis.
+/// FeedbacksPageState
+///
 class _FeedbacksPageState extends State<FeedbacksPage> {
   String jwtToken = '';
   List<Feedbacks> feedbacks = [];
 
-  /// Vérifie le token lors de l'initialisation de la page.
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -50,7 +53,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     fetchFeedbacks();
   }
 
-  /// Récupère les avis depuis le back end.
+  /// [Function] : Get all the feedbacks in the database
   Future<void> fetchFeedbacks() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/feedbacks/listAll'));
@@ -70,6 +73,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     }
   }
 
+  /// [Widget] : Build the feedback page
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

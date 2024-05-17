@@ -8,6 +8,7 @@ import './app_routes.dart';
 import 'styles/themes.dart';
 import 'services/theme_service.dart';
 
+/// [Function] : Lunch the web application.
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -28,7 +29,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  /// [Widget] : Build the web application
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(

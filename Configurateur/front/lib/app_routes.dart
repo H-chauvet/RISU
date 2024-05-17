@@ -1,7 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/components/container.dart';
+import 'package:front/components/items-information.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/company-profil/company-profil.dart';
+import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/container-creation/confirmation_screen.dart';
 import 'package:front/screens/container-creation/design_screen.dart';
 import 'package:front/screens/container-creation/maps_screen.dart';
@@ -29,10 +33,10 @@ import 'package:front/screens/save_container/my_container.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
+/// AppRouter
 ///
-/// App router
-///
-/// Gestion des routes de l'application
+/// Routes manager for the Web application
+/// [_router] : Define all the routes in the application
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -46,6 +50,38 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: LandingPage(),
         ),
+      ),
+      GoRoute(
+        path: '/company-profil',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: CompanyProfilPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/container-profil',
+        builder: (BuildContext context, GoRouterState state) {
+          if (state.extra != null) {
+            final ContainerListData container =
+                state.extra as ContainerListData;
+            return ContainerProfilPage(container: container);
+          } else {
+            return ContainerProfilPage(
+              container: ContainerListData(
+                id: null,
+                createdAt: null,
+                organization: null,
+                organizationId: null,
+                containerMapping: null,
+                price: null,
+                address: null,
+                city: null,
+                design: null,
+                informations: null,
+                saveName: null,
+              ),
+            );
+          }
+        },
       ),
       GoRoute(
         path: '/register',
@@ -103,7 +139,7 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/profile',
+        path: '/profil',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: ProfilePage(),
         ),

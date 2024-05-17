@@ -20,7 +20,7 @@ import '../../components/progress_bar.dart';
 import '../../components/recap_panel.dart';
 import '../../network/informations.dart';
 
-/// List pour faire les différentes face du conteneur
+/// List of the Face class to define all the faces
 const List<String> faceList = <String>[
   'Devant',
   'Derrière',
@@ -30,24 +30,19 @@ const List<String> faceList = <String>[
   'Bas'
 ];
 
-/// Représente un design.
+/// Design for a container
+/// [face] : Contient les face du conteneur
+/// [design] : Contient le design du conteneur
 class Design {
-  /// Crée une nouvelle instance de [Design].
-  ///
-  /// [face] : Contient les face du conteneur
-  /// [design] : Contient le design du conteneur
   Design(this.face, this.design);
 
   String face;
   List<int> design;
 
-  /// Convertit un design en une carte JSON.
   Map<String, dynamic> toJson() => {
         'face': face,
         'design': design,
       };
-
-  /// Crée une instance de [Design] à partir d'un objet JSON.
 
   factory Design.fromJson(Map<String, dynamic> json) {
     return Design(
@@ -57,7 +52,8 @@ class Design {
   }
 }
 
-/// Page de design durant la création du conteneur
+/// DesignScreen
+/// Creation of container's design
 class DesignScreen extends StatefulWidget {
   const DesignScreen(
       {super.key,
@@ -81,10 +77,8 @@ class DesignScreen extends StatefulWidget {
   State<DesignScreen> createState() => DesignScreenState();
 }
 
+/// DesignScreenState
 ///
-/// État de la page de design de conteneur.
-///
-/// page de design pour le conteneur dans le configurateur.
 class DesignScreenState extends State<DesignScreen> {
   late List<Sp3dObj> objs = [];
 
@@ -99,7 +93,7 @@ class DesignScreenState extends State<DesignScreen> {
   String face = faceList.first;
   List<Design> designss = [];
 
-  /// Vérifie le token lors de l'initialisation de la page.
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -132,7 +126,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Décrypte les casiers à partir de la représentation JSON fournie.
+  /// [Function] : Decode lockers for the container in json
   void decodeLockers() {
     dynamic decode = jsonDecode(widget.lockers!);
 
@@ -144,7 +138,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Décrypte les designs à partir de la représentation JSON fournie.
+  /// [Function] : Decode designs for the container in json
   void decodeDesigns() {
     dynamic container = jsonDecode(widget.container!);
 
@@ -163,7 +157,7 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
-  /// Charge une image pour une face du conteneur.
+  /// [Function] : Load an image for the container's design
   Future<void> loadImage(bool unitTesting,
       {Uint8List? fileData, int? faceLoad}) async {
     if (fileData != null) {
@@ -224,7 +218,9 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
-  /// Supprime une image pour une face du conteneur.
+  /// [Function] : Delete image of container's face
+  ///
+  /// [faceIndex] : Selected face of the container
   Future<void> removeImage(bool unitTesting, int faceIndex) async {
     picked = null;
 
@@ -253,7 +249,7 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
-  /// Ouvre une boîte de dialogue pour ajouter un design.
+  /// [Function] : Open dialog to pick an image for the design
   void openAddDialog(context) async {
     await showDialog(
         context: context,
@@ -261,7 +257,9 @@ class DesignScreenState extends State<DesignScreen> {
             AddDesignDialog(file: picked, callback: loadImage));
   }
 
-  /// Ouvre une boîte de dialogue pour supprimer un design.
+  /// [Function] : Remove design of a container
+  ///
+  /// [faceIndex] : Selected face of the container
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
       if (lockerss[i].type == 'Design personnalisé') {
@@ -278,7 +276,8 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Calcule le prix total des casiers sélectionnés.
+  /// [Function] : Calculating the price of lockers
+  /// return the total price
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockerss.length; i++) {
@@ -287,7 +286,7 @@ class DesignScreenState extends State<DesignScreen> {
     return price;
   }
 
-  /// Retourne la représentation JSON de la disposition des designs sur le conteneur
+  /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -296,6 +295,7 @@ class DesignScreenState extends State<DesignScreen> {
     return mapping;
   }
 
+  /// [Widget] : Open dialog
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -304,7 +304,9 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Sauvegarde un conteur dans la base de donnée.
+  /// [Function] : Save data of the container
+  ///
+  /// [name] : Name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': jwtToken,
@@ -359,7 +361,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Navigue vers l'écran suivant.
+  /// [Function] : Go to the next page
   void goNext() async {
     if (widget.id == null) {
       HttpService().request(
@@ -426,7 +428,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-// Navigue vers l'écran précédent.
+  /// [Function] : Go to the previous page
   void goPrevious() {
     if (widget.container != null) {
       dynamic decode = jsonDecode(widget.container!);
@@ -456,7 +458,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  /// Charge le cube avec les designs actuels.
+  /// [Function] : Load the container form
   Widget loadCube() {
     if (world != null) {
       return Sp3dRenderer(
@@ -474,6 +476,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Widget] : Build the design page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -12,9 +12,9 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:front/screens/company-company.dart';
-
-/// Page sur l'entreprise Risu
+/// [StatefulWidget] : CompanyPage
+///
+/// Page of the Risu Company and the containers created with the configurator
 class CompanyPage extends StatefulWidget {
   const CompanyPage({Key? key}) : super(key: key);
 
@@ -22,10 +22,8 @@ class CompanyPage extends StatefulWidget {
   State<CompanyPage> createState() => CompanyPageState();
 }
 
+/// CompanyPageState
 ///
-/// État de la page entreprise.
-///
-/// page de l'entreprise Risu.
 class CompanyPageState extends State<CompanyPage> {
   late List<String> members = [
     'assets/Henri.png',
@@ -44,7 +42,8 @@ class CompanyPageState extends State<CompanyPage> {
     fetchContainers();
   }
 
-  /// Récupère les conteneurs depuis le back end.
+  /// [Function] to get the containers in the database
+  /// return list of containers
   Future<void> fetchContainers() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));

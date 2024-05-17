@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// Représente un avis.
+/// [Feedbacks]
+/// [id] : Id of the feedback
+/// [firstName] : User's name
+/// [lastName] : User's last name
+/// [email] : User's mail
+/// [message] : User's message
+/// [mark] : Number of stars for the rating (1 to 5)
 class Feedbacks {
   final int id;
   final String firstName;
@@ -9,14 +15,6 @@ class Feedbacks {
   final String message;
   final String mark;
 
-  /// Crée une nouvelle instance de [Feedbacks].
-  ///
-  /// [id] : Contient l'id d'un avis
-  /// [firstName] : Contient le prénom de l'utilisateur
-  /// [lastName] : Contient le nom de l'utilsateur
-  /// [email] : Contient l'email de l'utilisateur
-  /// [message] : Contenu du message de l'utilisateur
-  /// [mark] : Contient le nombre de marque de l'utilisateur
   Feedbacks({
     required this.id,
     required this.firstName,
@@ -26,7 +24,6 @@ class Feedbacks {
     required this.mark,
   });
 
-  /// Crée une instance de [Feedbacks] à partir d'un objet JSON.
   factory Feedbacks.fromJson(Map<String, dynamic> json) {
     return Feedbacks(
       id: json['id'],
@@ -38,7 +35,6 @@ class Feedbacks {
     );
   }
 
-  /// Convertit l'avis en une carte JSON.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -51,15 +47,16 @@ class Feedbacks {
   }
 }
 
-/// Widget représentant une carte d'avis.
+/// FeedBacksCard
+///
+/// Creation of card for feednack
+/// [fb] : Feedback's informations
 class FeedbacksCard extends StatelessWidget {
   final Feedbacks fb;
 
-  /// Crée une nouvelle instance de [Feedbacks].
-  ///
-  /// [fb] : informations de l'avis stockées.
   const FeedbacksCard({super.key, required this.fb});
 
+  /// [Widget] : Build card for a feedback
   @override
   Widget build(BuildContext context) {
     return Card(

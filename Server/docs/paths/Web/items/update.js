@@ -9,7 +9,7 @@ module.exports = {
       parameters: [
         {
             name: 'data',
-            description: 'the new data for the user',
+            description: 'the new data for the item',
             in: 'body',
             schema : {
                 $ref: "#/components/schemas/Item"

@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+/// Themes file
+///
+/// File to define all the colors for the light and dark themes.
+
 const lightElevatedButtonBackground = Color(0xFF28666E);
 
 final lightTheme = ThemeData(
   brightness: Brightness.light,
-  primaryColor: const Color(0xffFEDC97),
-  secondaryHeaderColor: const Color(0xff033F63),
+  primaryColor: const Color(0xFF162A49),
+  secondaryHeaderColor: const Color(0xFF033F63),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xffFEDC97),
     titleTextStyle: TextStyle(
@@ -43,7 +47,7 @@ final lightTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.light(
       brightness: Brightness.light,
-      primary: Color(0xff7C9885),
+      primary: Color(0xffFEDC97),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
@@ -51,19 +55,19 @@ final lightTheme = ThemeData(
     style: ButtonStyle(
       textStyle: MaterialStateProperty.all<TextStyle>(
         const TextStyle(
-          color: Colors.white,
+          color: Color(0xffFEDC97),
         ),
       ),
       backgroundColor:
-          MaterialStateProperty.all<Color>(const Color(0xff7C9885)),
+          MaterialStateProperty.all<Color>(const Color(0xffFEDC97)),
     ),
   ),
-  colorScheme: const ColorScheme.light(background: Color(0xFFFAFAFA)),
+  colorScheme: const ColorScheme.light(background: Color(0xFF162A49)),
 );
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
-  primaryColor: const Color(0xff033F63),
+  primaryColor: const Color(0xffFEDC97),
   secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color.fromARGB(255, 32, 75, 110),
@@ -95,20 +99,20 @@ final darkTheme = ThemeData(
   buttonTheme: const ButtonThemeData(
     colorScheme: ColorScheme.dark(
       brightness: Brightness.dark,
-      primary: Color(0xFFFEDC97),
+      primary: Color(0xFF162A49),
     ),
     textTheme: ButtonTextTheme.normal,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ButtonStyle(
-      textStyle: MaterialStateProperty.all<TextStyle>(
-        const TextStyle(
-          color: Colors.black,
+        textStyle: MaterialStateProperty.all<TextStyle>(
+          const TextStyle(
+            color: Color(0xFF162A49),
+          ),
         ),
-      ),
-      backgroundColor:
-          MaterialStateProperty.all<Color>(const Color(0xFFFEDC97)),
-    ),
+        backgroundColor: MaterialStateProperty.all<Color>(
+          const Color(0xFF162A49),
+        )),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
     color: Color.fromARGB(255, 32, 75, 110),
@@ -119,12 +123,12 @@ final darkTheme = ThemeData(
 );
 
 final boxDecorationLightTheme = BoxDecoration(
-  color: Colors.grey[300],
+  color: const Color(0xffFEDC97),
   borderRadius: BorderRadius.circular(10),
 );
 
 final boxDecorationDarkTheme = BoxDecoration(
-  color: Colors.grey[600],
+  color: const Color(0xFF162A49),
   borderRadius: BorderRadius.circular(10),
 );
 

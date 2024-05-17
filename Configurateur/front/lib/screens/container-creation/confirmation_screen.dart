@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
 
-/// Page de confirmation durant la création du conteneur
+/// ConfirmationScreen
+///
+/// Redirect page for the confirmation of the order
 class ConfirmationScreen extends StatefulWidget {
   const ConfirmationScreen({super.key});
 
@@ -10,11 +12,10 @@ class ConfirmationScreen extends StatefulWidget {
   State<ConfirmationScreen> createState() => ConfirmationScreenState();
 }
 
+/// ConfirmationScreenState
 ///
-/// État de la page de confirmation de conteneur.
-///
-/// page de confirmation pour le conteneur dans le configurateur.
 class ConfirmationScreenState extends State<ConfirmationScreen> {
+  /// [Widget] : Build the confirmation page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

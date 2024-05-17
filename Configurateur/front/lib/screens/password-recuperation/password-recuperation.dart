@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
@@ -7,9 +9,11 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
+import 'package:provider/provider.dart';
 
+/// PasswordRecuperation
 ///
-/// Page de récupération de mot de passe
+/// Page to recover your password
 class PasswordRecuperation extends StatefulWidget {
   const PasswordRecuperation({super.key});
 
@@ -17,10 +21,8 @@ class PasswordRecuperation extends StatefulWidget {
   State<PasswordRecuperation> createState() => PasswordRecuperationState();
 }
 
+/// PasswordRecuperationState
 ///
-/// Etat de la page de récupération de mot de passe.
-///
-/// page d'information pour la recuperation de mot de passe.
 class PasswordRecuperationState extends State<PasswordRecuperation> {
   final captchaController = LocalCaptchaController();
   var inputCode = '';
@@ -32,6 +34,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
     super.dispose();
   }
 
+  /// [Widget] : Build the recover password page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -181,9 +184,13 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
-                          child: const Text(
+                          child: Text(
                             "Envoyer l'email de récupération",
-                            style: TextStyle(fontSize: 18),
+                            style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: 18),
                           ),
                         ),
                       ),

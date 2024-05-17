@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/google.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
@@ -6,12 +10,14 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
-
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-/// Page d'inscription de l'utilisateur
+/// RegisterScreen
+///
+/// Page for the account creation
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -19,11 +25,10 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => RegisterScreenState();
 }
 
+/// RegisterScreenState
 ///
-/// Etat de la page d'inscription
-///
-/// page d'inscription pour l'utilisateur
 class RegisterScreenState extends State<RegisterScreen> {
+  /// [Widget] : Build of the register page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -36,17 +41,45 @@ class RegisterScreenState extends State<RegisterScreen> {
     dynamic response;
 
     return Scaffold(
-        appBar: CustomAppBar(
-          'Inscription',
-          context: context,
+      body: FooterView(
+        footer: Footer(
+          child: CustomFooter(context: context),
         ),
-        body: Center(
-            child: FractionallySizedBox(
-                widthFactor: 0.2,
-                heightFactor: 0.85,
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            'Inscrivez-vous sur le site RISU !',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
+          Center(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 150),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: MediaQuery.of(context).size.height * 0.7,
                 child: Form(
-                    key: formKey,
-                    child: Column(children: <Widget>[
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
                       TextFormField(
                         key: const Key('firstname'),
                         decoration: InputDecoration(
@@ -210,10 +243,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                                           }
                                       });
                               if (response != null) {
-                                header.addEntries([
-                                  MapEntry('Authorization',
-                                      '${response['accessToken']}'),
-                                ]);
+                                header.addEntries(
+                                  [
+                                    MapEntry('Authorization',
+                                        '${response['accessToken']}'),
+                                  ],
+                                );
                               }
                               await HttpService().request(
                                   'http://$serverIp:3000/api/auth/register-confirmation',
@@ -234,6 +269,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
+                              fontSize: 18,
                             ),
                           ),
                         ),
@@ -243,23 +279,32 @@ class RegisterScreenState extends State<RegisterScreen> {
                         onTap: () {
                           context.go("/login");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Text("Déja un compte ? "),
-                                Text(
-                                  'Connectez-vous.',
-                                  style: TextStyle(color: Colors.blue),
-                                ),
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("Déja un compte ? "),
+                              Text(
+                                'Connectez-vous.',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const SizedBox(height: 20),
                       const Text("S'inscrire avec :"),
                       const SizedBox(height: 10),
                       GoogleLogo(),
-                    ])))));
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ))
+        ],
+      ),
+    );
   }
 }

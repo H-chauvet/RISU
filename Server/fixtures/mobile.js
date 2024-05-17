@@ -46,6 +46,7 @@ exports.createFixtures = async () => {
               name: "Ballon de volley",
               price: 0.5,
               available: true,
+              rating: 4.5,
               categories: {
                 connect: [{ id: 1 }, { id: 2 }],
               },
@@ -55,6 +56,7 @@ exports.createFixtures = async () => {
               name: "Raquette",
               price: 1.0,
               available: true,
+              rating: 4.0,
               categories: {
                 connect: [{ id: 1 }],
               },
@@ -66,6 +68,15 @@ exports.createFixtures = async () => {
               available: false,
               categories: {
                 connect: [{ id: 2 }],
+              },
+            },
+            {
+              id: 4,
+              name: "Freesbee",
+              price: 1.5,
+              available: true,
+              categories: {
+                connect: [{ id: 1 }],
               },
             },
           ],

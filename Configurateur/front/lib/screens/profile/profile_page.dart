@@ -2,15 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
-/// Page de profil utilisateur.
+/// ProfilePage
+///
+/// Page of the user's profil
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -18,7 +27,8 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-/// État de la page de profil utilisateur.
+/// ProfileState
+///
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName;
   late String lastName;
@@ -27,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late String company;
   String userMail = '';
 
-  /// Récupère les détails de l'utilisateur à partir de l'email.
+  /// [Function] : Get the user's details in the database
   Future<void> fetchUserDetails(String email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -65,7 +75,9 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  /// Affiche une boîte de dialogue pour modifier le nom de l'utilisateur.
+  /// [Function] : Show pop up to modify the user's name
+  /// [initialFirstName] : User's first name
+  /// [initialLastName] : User's last name
   Future<void> showEditPopupName(BuildContext context, String initialFirstName,
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
@@ -159,7 +171,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Affiche une boîte de dialogue pour modifier l'entreprise de l'utilisateur.
+  /// [Function] : Check the token in the storage service
+  /// [initialCompany] : Initial user's company
   Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
       Function(String) onEdit) async {
     TextEditingController companyController = TextEditingController();
@@ -245,7 +258,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Affiche une boîte de dialogue pour modifier l'email de l'utilisateur.
+  /// [Function] : Show pop up to modify the user's mail
   Future<void> showEditPopupMail(BuildContext context, String? initialMail,
       Function(String) onEdit) async {
     TextEditingController mailController = TextEditingController();
@@ -330,7 +343,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  /// Affiche une boîte de dialogue pour modifier le mot de passe de l'utilisateur.
+  /// [Function] : Show pop up to modify the user's password
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
     String password = '';
@@ -342,13 +355,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(builder: (BuildContext context, setState) {
-          return AlertDialog(
-            title: const Text("Modifier"),
-            content: Container(
-              height: 150.0,
-              width: 300.0,
-              child: Form(
+        return StatefulBuilder(
+          builder: (BuildContext context, setState) {
+            return AlertDialog(
+              title: const Text("Modifier"),
+              content: SizedBox(
+                height: 150.0,
+                width: 300.0,
+                child: Form(
                   key: formKey,
                   child: Column(
                     children: <Widget>[
@@ -418,313 +432,59 @@ class _ProfilePageState extends State<ProfilePage> {
                         },
                       ),
                     ],
-                  )),
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: const Text("Annuler"),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  if (formKey.currentState!.validate() &&
-                      password == validedPassword) {
-                    final String apiUrl =
-                        "http://$serverIp:3000/api/auth/update-password/$userMail";
-                    var body = {
-                      'password': password,
-                    };
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text("Annuler"),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    if (formKey.currentState!.validate() &&
+                        password == validedPassword) {
+                      final String apiUrl =
+                          "http://$serverIp:3000/api/auth/update-password/$userMail";
+                      var body = {
+                        'password': password,
+                      };
 
-                    var response = await http.post(
-                      Uri.parse(apiUrl),
-                      body: body,
-                    );
-
-                    if (response.statusCode == 200) {
-                      Fluttertoast.showToast(
-                        msg: 'Mot de passe modifié avec succès',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.CENTER,
-                        timeInSecForIosWeb: 3,
+                      var response = await http.post(
+                        Uri.parse(apiUrl),
+                        body: body,
                       );
-                    } else {
-                      Fluttertoast.showToast(
-                          msg:
-                              "Erreur durant l'envoi la modification du mot de passe",
+
+                      if (response.statusCode == 200) {
+                        Fluttertoast.showToast(
+                          msg: 'Mot de passe modifié avec succès',
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.CENTER,
                           timeInSecForIosWeb: 3,
-                          backgroundColor: Colors.red);
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                            msg:
+                                "Erreur durant l'envoi la modification du mot de passe",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 3,
+                            backgroundColor: Colors.red);
+                      }
+                      onEdit(password);
+                      Navigator.of(context).pop();
                     }
-                    onEdit(password);
-                    Navigator.of(context).pop();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-                child: const Text("Modifier"),
-              ),
-            ],
-          );
-        });
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        'Mon profil',
-        context: context,
-      ),
-      body: Center(
-        child: Container(
-          width: 700.0,
-          height: 600.0,
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 231, 223, 223),
-            borderRadius: BorderRadius.circular(30.0),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xff4682B4).withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: const Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    firstName,
-                    style: const TextStyle(
-                      color: Color(0xff4682B4),
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Verdana',
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Row(
-                    children: [
-                      Text(
-                        lastName,
-                        style: const TextStyle(
-                          color: Color(0xff4682B4),
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Verdana',
-                        ),
-                      ),
-                      const SizedBox(width: 5.0),
-                      InkWell(
-                        onTap: () async {
-                          await showEditPopupName(context, firstName, lastName,
-                              (String newFirstName, String newLastName) {
-                            setState(() {
-                              firstName = newFirstName;
-                              lastName = newLastName;
-                            });
-                          });
-                        },
-                        child: const Icon(
-                          Icons.edit,
-                          color: Colors.grey,
-                          size: 26.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(height: 90),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'E-mail',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Verdana',
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          userMail,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                        const SizedBox(width: 5.0),
-                        InkWell(
-                          onTap: () async {
-                            await showEditPopupMail(context, userMail,
-                                (String newMail) {
-                              setState(() {
-                                userMail = newMail;
-                              });
-                            });
-                          },
-                          child: const Icon(
-                            Icons.edit,
-                            color: Colors.grey,
-                            size: 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                color: Colors.black,
-                thickness: 2,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Entreprise',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Verdana',
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        Text(
-                          company,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                        const SizedBox(width: 5.0),
-                        InkWell(
-                          onTap: () async {
-                            await showEditPopupCompany(context, company,
-                                (String newCompany) {
-                              setState(() {
-                                company = newCompany;
-                              });
-                            });
-                          },
-                          child: const Icon(
-                            Icons.edit,
-                            color: Colors.grey,
-                            size: 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-              const Divider(
-                color: Colors.black,
-                thickness: 2,
-                indent: 20,
-                endIndent: 20,
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: Text(
-                      'Mot de passe',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Verdana',
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 20.0),
-                    child: Row(
-                      children: [
-                        const Text(
-                          '*********',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                        const SizedBox(width: 5.0),
-                        InkWell(
-                          onTap: () async {
-                            await showEditPopupPassword(context, "",
-                                (String newPassword) {
-                              setState(() {});
-                            });
-                          },
-                          child: const Icon(
-                            Icons.edit,
-                            color: Colors.grey,
-                            size: 18.0,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              ElevatedButton(
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
@@ -732,73 +492,373 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  onPressed: () {
-                    context.go("/my-container");
-                  },
-                  child: const Text("Mes sauvegardes")),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          context.go("/");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        child: const Text(
-                          "Retour à l'accueil",
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    'Créé le : $formattedDate',
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 10.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Verdana',
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          storageService.removeStorage('token');
-                          storageService.removeStorage('tokenExpiration');
-                          context.go("/");
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                        child: const Text(
-                          "Déconnexion",
-                        ),
-                      ),
-                    ),
+                  child: const Text("Modifier"),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /// [Widget] : Build the user's profil page
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FooterView(
+        footer: Footer(
+          child: CustomFooter(context: context),
+        ),
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            'Modifier votre profil à votre convenance !',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 35,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 100),
+          Center(
+            child: Container(
+              width: 700.0,
+              height: 600.0,
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 231, 223, 223),
+                borderRadius: BorderRadius.circular(30.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xff4682B4).withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
-            ],
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        firstName,
+                        style: TextStyle(
+                          color: lightTheme.primaryColor,
+                          fontSize: 26.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Verdana',
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Row(
+                        children: [
+                          Text(
+                            lastName,
+                            style: TextStyle(
+                              color: lightTheme.primaryColor,
+                              fontSize: 26.0,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Verdana',
+                            ),
+                          ),
+                          const SizedBox(width: 5.0),
+                          InkWell(
+                            onTap: () async {
+                              await showEditPopupName(
+                                context,
+                                firstName,
+                                lastName,
+                                (String newFirstName, String newLastName) {
+                                  setState(() {
+                                    firstName = newFirstName;
+                                    lastName = newLastName;
+                                  });
+                                },
+                              );
+                            },
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.grey,
+                              size: 26.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 90),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'E-mail',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              userMail,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Verdana',
+                              ),
+                            ),
+                            const SizedBox(width: 5.0),
+                            InkWell(
+                              onTap: () async {
+                                await showEditPopupMail(context, userMail,
+                                    (String newMail) {
+                                  setState(() {
+                                    userMail = newMail;
+                                  });
+                                });
+                              },
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                                size: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(
+                    color: Colors.black,
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Entreprise',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              company,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Verdana',
+                              ),
+                            ),
+                            const SizedBox(width: 5.0),
+                            InkWell(
+                              onTap: () async {
+                                await showEditPopupCompany(context, company,
+                                    (String newCompany) {
+                                  setState(() {
+                                    company = newCompany;
+                                  });
+                                });
+                              },
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                                size: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(
+                    color: Colors.black,
+                    thickness: 2,
+                    indent: 20,
+                    endIndent: 20,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: Text(
+                          'Mot de passe',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Verdana',
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              '*********',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Verdana',
+                              ),
+                            ),
+                            const SizedBox(width: 5.0),
+                            InkWell(
+                              onTap: () async {
+                                await showEditPopupPassword(context, "",
+                                    (String newPassword) {
+                                  setState(() {});
+                                });
+                              },
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                                size: 18.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    onPressed: () {
+                      context.go("/my-container");
+                    },
+                    child: Text(
+                      "Mes sauvegardes",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              context.go("/");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            child: Text(
+                              "Retour à l'accueil",
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'Créé le : $formattedDate',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 10.0,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Verdana',
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              storageService.removeStorage('token');
+                              storageService.removeStorage('tokenExpiration');
+                              context.go("/");
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            child: const Text(
+                              "Déconnexion",
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

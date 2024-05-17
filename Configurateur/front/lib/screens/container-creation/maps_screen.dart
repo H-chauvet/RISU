@@ -11,7 +11,14 @@ import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
-/// Page de la carte.
+/// MapScreen
+///
+/// Creation of the container
+/// [lockers] : All the lockers of the container
+/// [amount] : Price of the container
+/// [containerMapping] : ???
+/// [container] : Informations about the container
+/// [id] : User's Id
 class MapsScreen extends StatefulWidget {
   const MapsScreen(
       {super.key,
@@ -31,7 +38,8 @@ class MapsScreen extends StatefulWidget {
   State<MapsScreen> createState() => MapsState();
 }
 
-/// État de la page de la carte.
+/// MapState
+///
 class MapsState extends State<MapsScreen> {
   String jwtToken = '';
   final Completer<GoogleMapController> _controller =
@@ -45,7 +53,7 @@ class MapsState extends State<MapsScreen> {
 
   LatLng location = _kGooglePlex.target;
 
-  /// Vérifie le token lors de l'initialisation de la page.
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -59,7 +67,7 @@ class MapsState extends State<MapsScreen> {
     }
   }
 
-  /// Obtient la position actuelle de l'utilisateur.
+  /// [Function] : Get the user position
   void getPosition() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -92,7 +100,7 @@ class MapsState extends State<MapsScreen> {
     super.initState();
   }
 
-  /// Navigue vers l'écran suivant en envoyant la position du conteneur.
+  /// [Function] : Go to the next page
   void goNext() {
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
@@ -117,7 +125,7 @@ class MapsState extends State<MapsScreen> {
     context.go('/container-creation/payment', extra: jsonEncode(data));
   }
 
-  /// Navigue vers l'écran précédent en envoyant la position du conteneur.
+  /// [Function] : Go to the previous page
   void goPrevious() {
     var data = {
       'amount': widget.amount,
@@ -129,6 +137,7 @@ class MapsState extends State<MapsScreen> {
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
+  /// [Widget] : Build of the localisation page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
