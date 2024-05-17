@@ -94,7 +94,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late DateTime createdDate;
   late String contactInformation = '';
   late String company;
-  late int organizationId;
+  int organizationId = 0;
   String jwtToken = '';
 
   /// [Function] : get all the containers created by the organization
@@ -179,7 +179,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
-                  key: const Key("information"),
+                  key: const Key('information'),
                   controller: contactInformationController,
                   decoration: InputDecoration(
                       labelText: "Nouvelles informations",
@@ -203,10 +203,11 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ),
               child: const Text(
                 "Annuler",
-                key: const Key('cancel-information'),
+                key: const Key('cancel-edit-information'),
               ),
             ),
             ElevatedButton(
+              key: const Key('button-information'),
               onPressed: () async {
                 apiUpdateContactInfoOrganization(contactInformationController);
                 onEdit(contactInformationController.text);
@@ -221,7 +222,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ),
               child: const Text(
                 "Modifier",
-                key: const Key('button-information'),
               ),
             ),
           ],
@@ -284,7 +284,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
-                  key: const Key("type"),
+                  key: const Key('type'),
                   controller: typeController,
                   decoration: InputDecoration(
                       labelText: "Nouveau type", hintText: initialType),
@@ -307,10 +307,11 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ),
               child: const Text(
                 "Annuler",
-                key: const Key('cancel-type'),
+                key: const Key('cancel-edit-type'),
               ),
             ),
             ElevatedButton(
+              key: const Key('button-type'),
               onPressed: () async {
                 apiUpdateType(typeController);
                 onEdit(typeController.text);
@@ -325,7 +326,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ),
               child: const Text(
                 "Modifier",
-                key: const Key('button-type'),
               ),
             ),
           ],
@@ -387,7 +387,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         final dynamic organizationData = userDetails["organization"];
         final dynamic organizationIdData = userDetails["organizationId"];
         organizationId = organizationIdData;
-        if (organizationId != null) {
+        if (organizationId > 0) {
           fetchContainersById();
         } else {
           return;
@@ -439,7 +439,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   /// [Widget] : Build the company profil page
   @override
   Widget build(BuildContext context) {
-    debugPrint(organization.id.toString());
     return Scaffold(
       appBar: CustomAppBar(
         'Entreprise',
@@ -451,7 +450,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             children: [
               organization.id != null
                   ? Container(
-                      width: 500,
+                      // width: 500,
                       height: 200,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -521,7 +520,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         ),
                                   const SizedBox(width: 5.0),
                                   InkWell(
-                                    key: Key('edit-password'),
+                                    key: Key('edit-information'),
                                     onTap: () async {
                                       await showEditPopupContactInformation(
                                           context, contactInformation,

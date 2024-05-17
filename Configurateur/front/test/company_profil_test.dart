@@ -54,12 +54,53 @@ void main() {
 
     await tester.pump();
 
-    await tester.tap(find.byKey(Key('edit-password')));
+    // Edit information
+    await tester.tap(find.byKey(Key('edit-information')));
     await tester.pump();
 
-    //expect(find.text("Pas d'entreprise associée"), findsOneWidget);
-    //expect(find.text("Nos Conteneurs :"), findsOneWidget);
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Modifier'), findsNWidgets(2));
+    expect(find.text('Annuler'), findsOneWidget);
 
+    await tester.enterText(find.byKey(const Key('information')), 'infor orga');
+
+    await tester.tap(find.byKey(const Key('cancel-edit-information')));
+    await tester.pump();
+
+    // Edit type
+    await tester.tap(find.byKey(Key('edit-type')));
+    await tester.pump();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Modifier'), findsNWidgets(2));
+    expect(find.text('Annuler'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('type')), 'type orga');
+    await tester.tap(find.byKey(const Key('cancel-edit-type')));
+    await tester.pump();
+
+    // EDIT type validate
+    await tester.tap(find.byKey(Key('edit-type')));
+    await tester.pump();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Modifier'), findsNWidgets(2));
+    expect(find.text('Annuler'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('type')), 'type orga');
+    await tester.tap(find.byKey(const Key('button-type')));
+    await tester.pump();
+
+    // EDIT information validate
+    await tester.tap(find.byKey(Key('edit-information')));
+    await tester.pump();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Modifier'), findsNWidgets(2));
+    expect(find.text('Annuler'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('information')), 'info orga');
+    await tester.tap(find.byKey(const Key('button-information')));
     await tester.pump();
   });
 }
