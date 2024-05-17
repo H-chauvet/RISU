@@ -64,7 +64,6 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
         userInformation = UserData.fromJson(userData, userToken!);
         newFirstName = '';
         newLastName = '';
-        newEmail = '';
       } else {
         if (context.mounted) {
           printServerResponse(context, response, 'fetchUserData');
