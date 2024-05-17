@@ -12,8 +12,6 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../styles/themes.dart';
-
 /// RecapScreen
 ///
 /// Screen of the summary in the container (lockers, price, container's informations)

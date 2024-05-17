@@ -201,7 +201,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler", key: const Key('cancel-information'),),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-information'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -216,7 +219,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier", key: const Key('button-information'),),
+              child: const Text(
+                "Modifier",
+                key: const Key('button-information'),
+              ),
             ),
           ],
         );
@@ -299,7 +305,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler", key: const Key('cancel-type'),),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-type'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -314,7 +323,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier", key: const Key('button-type'),),
+              child: const Text(
+                "Modifier",
+                key: const Key('button-type'),
+              ),
             ),
           ],
         );
@@ -427,6 +439,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   /// [Widget] : Build the company profil page
   @override
   Widget build(BuildContext context) {
+    debugPrint(organization.id.toString());
     return Scaffold(
       appBar: CustomAppBar(
         'Entreprise',
