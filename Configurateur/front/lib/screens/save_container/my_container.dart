@@ -65,6 +65,8 @@ class MyContainerState extends State<MyContainer> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
+    //debugPrint(displayedContainers[0]['name'].toString());
+
     return Scaffold(
       appBar: CustomAppBar(
         "Mes conteneurs",
@@ -94,6 +96,7 @@ class MyContainerState extends State<MyContainer> {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
+                          key: Key('container_button_$i'),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
