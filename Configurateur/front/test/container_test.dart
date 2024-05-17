@@ -1,44 +1,41 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/container.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/screens/container-list/container_list.dart';
+import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:mockito/mockito.dart';
+import 'package:sizer/sizer.dart';
 
 Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
-
-  late MockSharedPreferences sharedPreferences;
-
-  setUp(() async {
-    sharedPreferences = MockSharedPreferences();
-    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
-    final fontLoader = FontLoader('Roboto')..addFont(roboto);
-    await fontLoader.load();
-  });
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerPage(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const ContainerPage(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text("Gestion des conteneurs et objets"), findsOneWidget);
   });
@@ -63,25 +60,29 @@ void main() {
     );
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: containers.length,
-                itemBuilder: (context, index) {
-                  final product = containers[index];
-                  return ContainerCards(
-                    container: product,
-                    onDelete: deleteContainer,
-                    page: "page",
-                  );
-                },
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: containers.length,
+                    itemBuilder: (context, index) {
+                      final product = containers[index];
+                      return ContainerCards(
+                        container: product,
+                        onDelete: deleteContainer,
+                        page: "page",
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
 
@@ -122,5 +123,3 @@ void main() {
     expect(parsedContainer.informations, container.informations);
   });
 }
-
-class MockSharedPreferences extends Mock implements SharedPreferences {}

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
-import 'package:front/screens/feedbacks/feedbacks_card.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/screens/messages/messages_card.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
@@ -14,47 +13,40 @@ void main() {
   setUp(() {
     sharedPreferences = MockSharedPreferences();
   });
-
   test('Feedbacks.toMap should convert Feedbacks object to JSON', () {
-    Feedbacks feedback = Feedbacks(
+    Message msg = Message(
       id: 1,
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
       message: 'Great app!',
-      mark: '5',
     );
 
-    Map<String, dynamic> json = feedback.toMap();
+    Map<String, dynamic> json = msg.toMap();
 
     expect(json['id'], 1);
     expect(json['firstName'], 'John');
     expect(json['lastName'], 'Doe');
     expect(json['email'], 'john.doe@example.com');
     expect(json['message'], 'Great app!');
-    expect(json['mark'], '5');
   });
-  test('Feedbacks.fromJson should create a Feedbacks object from JSON', () {
+  test('Message.fromJson should create a Feedbacks object from JSON', () {
     Map<String, dynamic> json = {
       'id': 1,
       'firstName': 'John',
       'lastName': 'Doe',
       'email': 'john.doe@example.com',
       'message': 'Great app!',
-      'mark': '5',
     };
-    Feedbacks feedback = Feedbacks.fromJson(json);
+    Message feedback = Message.fromJson(json);
 
     expect(feedback.id, 1);
     expect(feedback.firstName, 'John');
     expect(feedback.lastName, 'Doe');
     expect(feedback.email, 'john.doe@example.com');
     expect(feedback.message, 'Great app!');
-    expect(feedback.mark, '5');
   });
-
-  testWidgets('FeedbacksCard displays feedback details',
-      (WidgetTester tester) async {
+  testWidgets('MessageCard', (WidgetTester tester) async {
     TestWidgetsFlutterBinding.ensureInitialized();
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
@@ -64,25 +56,25 @@ void main() {
       Sizer(
         builder: (context, orientation, deviceType) {
           return MaterialApp(
-            home: FeedbacksCard(
-              fb: Feedbacks(
+            home: MessageCard(
+              message: Message(
                 id: 1,
                 firstName: 'John',
                 lastName: 'Doe',
                 email: 'john.doe@example.com',
-                message: 'Great app!',
-                mark: '5',
+                message: 'Hello, how are you?',
               ),
+              onDelete: (message) {},
             ),
           );
         },
       ),
     );
-    expect(find.text('Great app!'), findsOneWidget);
-    expect(find.text('Avis posté par John Doe'), findsOneWidget);
-    expect(find.text('5 / 5'), findsOneWidget);
-    expect(find.byType(CircleAvatar), findsOneWidget);
-    expect(find.byType(Divider), findsOneWidget);
+
+    expect(find.text('John Doe'), findsOneWidget);
+    expect(find.text('john.doe@example.com'), findsOneWidget);
+    expect(find.text('Hello, how are you?'), findsOneWidget);
+    expect(find.byIcon(Icons.delete), findsOneWidget);
   });
 }
 
