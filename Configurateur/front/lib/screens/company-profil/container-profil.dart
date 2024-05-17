@@ -148,6 +148,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("city"),
                   controller: nameController,
                   decoration: InputDecoration(
                       labelText: "Nouvelle ville", hintText: initialLastName),
@@ -168,7 +169,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-city'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -243,6 +247,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("address"),
                   controller: addressController,
                   decoration: InputDecoration(
                       labelText: "Adresse postale", hintText: initialAddress),
@@ -263,7 +268,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-address'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -478,7 +486,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Annuler"),
+                  child: const Text(
+                    "Annuler",
+                    key: const Key('cancel-edit-item'),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -598,6 +609,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: Key('edit-city'),
                               onTap: () async {
                                 await showEditPopupCity(context, city,
                                     (String newcity) {
@@ -628,6 +640,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: Key("edit-city"),
                               onTap: () async {
                                 await showEditPopupAddress(context, address,
                                     (String newAddress) {
