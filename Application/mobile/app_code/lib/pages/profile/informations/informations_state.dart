@@ -125,12 +125,11 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       if (response.statusCode == 200) {
         json.decode(response.body);
         if (mounted) {
-          await fetchUserData(context);
-        }
-        if (mounted) {
-          MyToastMessage.show(
+          await MyAlertDialog.showInfoAlertDialog(
             context: context,
-            message: AppLocalizations.of(context)!.profileUpdated,
+            title: AppLocalizations.of(context)!.newEmailVerify,
+            message: AppLocalizations.of(context)!
+                .accountEmailConfirmationSent(newEmail),
           );
         }
       } else {
