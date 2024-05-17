@@ -12,7 +12,7 @@ import 'package:risu/components/showModalBottomSheet.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/pages/article/list_page.dart';
-import 'package:risu/pages/container/container_card.dart';
+import 'package:risu/pages/container/container_list_data.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 

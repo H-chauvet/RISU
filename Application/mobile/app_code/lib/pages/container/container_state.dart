@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_map_math/flutter_geo_math.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
@@ -10,27 +13,49 @@ import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'container_card.dart';
+import 'container_list_data.dart';
 import 'container_page.dart';
 
 class ContainerPageState extends State<ContainerPage> {
+  final FlutterMapMath mapMath = FlutterMapMath();
   final LoaderManager _loaderManager = LoaderManager();
+  LatLng _userPosition = const LatLng(47.210546, -1.566842); // Epitech Nantes
   List<ContainerList> containers = [];
-  List<ContainerList> filteredContainers = [];
 
   @override
   void initState() {
     super.initState();
+    _getUserLocation();
     if (widget.testContainers.isEmpty) {
-    getContainer();
+      _getContainer();
     } else {
       containers = widget.testContainers;
-      filteredContainers = widget.testContainers;
+      _getDistances();
     }
   }
 
-  void getContainer() async {
+  Future<void> _getUserLocation() async {
     try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      );
+      setState(() {
+        _userPosition = LatLng(position.latitude, position.longitude);
+      });
+    } catch (err, stacktrace) {
+      if (mounted) {
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingUserLocation);
+        return;
+      }
+      return;
+    }
+  }
+
+  Future<void> _getContainer() async {
+    try {
+      if (!mounted) return;
       setState(() {
         _loaderManager.setIsLoading(true);
       });
@@ -56,6 +81,7 @@ class ContainerPageState extends State<ContainerPage> {
           printServerResponse(context, response, 'getContainer');
         }
       }
+      _getDistances();
     } catch (err, stacktrace) {
       if (mounted) {
         setState(() {
@@ -66,6 +92,21 @@ class ContainerPageState extends State<ContainerPage> {
       }
       return;
     }
+  }
+
+  void _getDistances() {
+    if (!mounted) return;
+    containers.forEach((container) {
+      setState(() {
+        container.distance = mapMath.distanceBetween(
+          _userPosition.latitude,
+          _userPosition.longitude,
+          container.latitude,
+          container.longitude,
+          "meters",
+        );
+      });
+    });
   }
 
   @override

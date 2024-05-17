@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 class ContainerList {
   final int id;
-  final String? address;
-  final String? city;
-  final double? longitude;
-  final double? latitude;
+  final String address;
+  final String city;
+  final double longitude;
+  final double latitude;
   final int itemCount;
+  double distance;
 
   ContainerList({
     required this.id,
@@ -18,17 +20,17 @@ class ContainerList {
     required this.longitude,
     required this.latitude,
     required this.itemCount,
+    this.distance = 0,
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
     return ContainerList(
-      id: json['id'],
-      address: json['address'],
-      city: json['city'],
-      longitude: json['longitude'],
-      latitude: json['latitude'],
-      itemCount: json['_count']['items']
-    );
+        id: json['id'],
+        address: json['address'],
+        city: json['city'],
+        longitude: json['longitude'],
+        latitude: json['latitude'],
+        itemCount: json['_count']['items']);
   }
 
   Map<String, dynamic> toMap() {
@@ -51,6 +53,16 @@ class ContainerCard extends StatelessWidget {
     required this.onDirectionClicked,
   });
 
+  String showDistance(BuildContext context, double distance) {
+    if (distance < 10) {
+      return AppLocalizations.of(context)!.containerDistanceLess10;
+    } else if (distance > 1000) {
+      return AppLocalizations.of(context)!
+          .containerDistanceKm((distance / 1000).round());
+    }
+    return AppLocalizations.of(context)!.containerDistanceM(distance.round());
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -64,8 +76,7 @@ class ContainerCard extends StatelessWidget {
         );
       },
       child: Container(
-        height: 120,
-        margin: const EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
+        margin: const EdgeInsets.only(right: 10.0, left: 10.0, top: 10.0),
         child: Card(
           elevation: 5,
           shadowColor: context.select((ThemeProvider themeProvider) =>
@@ -77,21 +88,46 @@ class ContainerCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      container.city!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Transform.scale(
+                        scale: 0.6,
+                        child: Image.asset('assets/container-logo.png'),
                       ),
                     ),
-                    Text(
-                      container.address!,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          container.city!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          container.address!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .howManyAvailableArticles(container.itemCount),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          showDistance(context, container.distance),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
