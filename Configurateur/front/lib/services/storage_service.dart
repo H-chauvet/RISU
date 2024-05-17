@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,6 +57,19 @@ class StorageService {
     } else {
       return '';
     }
+  }
+
+  Future<String> getUserRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      return '';
+    }
+    dynamic decodedToken = JwtDecoder.decode(token);
+
+    return decodedToken?['role'];
   }
 
   Future<bool> isUserVerified() async {
