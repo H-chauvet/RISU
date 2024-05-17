@@ -99,7 +99,7 @@ module.exports = {
       ...mobileItemId,
     },
     "/api/mobile/article/:articleId/similar": {
-      ...mobileItemId,
+      ...mobileItemSimilar,
     },
     "/api/mobile/favorite": {
       ...mobileMyFavorites,
