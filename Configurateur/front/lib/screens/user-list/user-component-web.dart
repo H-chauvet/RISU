@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/styles/globalStyle.dart';
 
 /// Web user class
 ///
@@ -57,12 +59,28 @@ class UserCard extends StatelessWidget {
   /// [Widget] : Build the card for a web user
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Card(
       child: Column(
         children: [
           ListTile(
-            title: Text("Prénom : " + user.firstName),
-            subtitle: Text("Nom : " + user.lastName),
+            title: Text(
+              "Prénom : " + user.firstName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
+            subtitle: Text(
+              "Nom : " + user.lastName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
             trailing: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
@@ -70,9 +88,23 @@ class UserCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("Email : " + user.email),
+                    Text(
+                      "Email : " + user.email,
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                      ),
+                    ),
                     if (user.company != null)
-                      Text("Entreprise : " + user.company),
+                      Text(
+                        "Entreprise : " + user.company,
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
                   ],
                 ),
                 IconButton(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';

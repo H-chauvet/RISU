@@ -5,8 +5,10 @@ import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -53,6 +55,8 @@ class LandingPageState extends State<LandingPage> {
   /// [Function] : Build the landing page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       body: FooterView(
         footer: Footer(
@@ -66,7 +70,9 @@ class LandingPageState extends State<LandingPage> {
                 'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 35,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopBigFontSize
+                      : tabletBigFontSize,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.bold,
                   color: Provider.of<ThemeService>(context).isDark
@@ -97,7 +103,9 @@ class LandingPageState extends State<LandingPage> {
                           Text(
                             'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
                             style: TextStyle(
-                              fontSize: 35,
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopBigFontSize
+                                  : tabletBigFontSize,
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
@@ -120,7 +128,9 @@ class LandingPageState extends State<LandingPage> {
                             child: Text(
                               'Des conteneurs disponibles partout en france !',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,
@@ -155,7 +165,9 @@ class LandingPageState extends State<LandingPage> {
                           Text(
                             'Concevez le conteneur de vos rêves,\nselon vos envies !',
                             style: TextStyle(
-                              fontSize: 35,
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopBigFontSize
+                                  : tabletBigFontSize,
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
                                   : lightTheme.secondaryHeaderColor,
@@ -178,7 +190,9 @@ class LandingPageState extends State<LandingPage> {
                             child: Text(
                               'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,

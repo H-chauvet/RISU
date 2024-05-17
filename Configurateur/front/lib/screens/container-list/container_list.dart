@@ -12,8 +12,10 @@ import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -287,14 +289,22 @@ class _ContainerPageState extends State<ContainerPage> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
+        ScreenFormat screenFormat = SizeService().getScreenFormat(context);
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Modifier un objet"),
+              title: Text(
+                "Modifier un objet",
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
               content: Container(
-                height: 220.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 10.0),
                     TextField(
@@ -305,7 +315,14 @@ class _ContainerPageState extends State<ContainerPage> {
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        const Text("Disponible"),
+                        Text(
+                          "Disponible",
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
                         Switch(
                           value: isAvailable,
                           onChanged: (bool newValue) {
@@ -331,6 +348,7 @@ class _ContainerPageState extends State<ContainerPage> {
                           labelText: "Nouvelle description",
                           hintText: initialDesc),
                     ),
+                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
@@ -339,7 +357,14 @@ class _ContainerPageState extends State<ContainerPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Annuler"),
+                  child: Text(
+                    "Annuler",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                    ),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -347,7 +372,14 @@ class _ContainerPageState extends State<ContainerPage> {
                         price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Modifier"),
+                  child: Text(
+                    "Modifier",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -448,6 +480,7 @@ class _ContainerPageState extends State<ContainerPage> {
     double price = 0.0;
     int selectedContainerId = 0;
     TextEditingController description = TextEditingController();
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return showDialog(
       context: context,
@@ -455,11 +488,18 @@ class _ContainerPageState extends State<ContainerPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Créer un nouvel objet"),
+              title: Text(
+                "Créer un nouvel objet",
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletBigFontSize,
+                ),
+              ),
               content: Container(
-                height: 290.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 10.0),
                     TextField(
@@ -470,7 +510,14 @@ class _ContainerPageState extends State<ContainerPage> {
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        const Text("Disponible"),
+                        Text(
+                          "Disponible",
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletBigFontSize,
+                          ),
+                        ),
                         Switch(
                           value: isAvailable,
                           onChanged: (bool newValue) {
@@ -512,6 +559,7 @@ class _ContainerPageState extends State<ContainerPage> {
                       decoration: const InputDecoration(
                           labelText: "Description de l'objet"),
                     ),
+                    const SizedBox(height: 10.0),
                   ],
                 ),
               ),
@@ -520,7 +568,14 @@ class _ContainerPageState extends State<ContainerPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Annuler"),
+                  child: Text(
+                    "Annuler",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletBigFontSize,
+                    ),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -529,7 +584,14 @@ class _ContainerPageState extends State<ContainerPage> {
 
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Créer"),
+                  child: Text(
+                    "Créer",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletBigFontSize,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -539,9 +601,8 @@ class _ContainerPageState extends State<ContainerPage> {
     );
   }
 
-  /// [Widget] : Build a card for an item
-  /// [item] : Selected item
   Widget buildItemWidget(BuildContext context, ItemList item) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -550,10 +611,31 @@ class _ContainerPageState extends State<ContainerPage> {
           children: [
             Expanded(
               child: ListTile(
-                title: Text("nom : ${item.name}"),
+                title: Text(
+                  "nom : ${item.name}",
+                  style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletBigFontSize,
+                  ),
+                ),
                 subtitle: item.description != null
-                    ? Text("description : ${item.description!}")
-                    : Text("description : pas de description"),
+                    ? Text(
+                        "description : ${item.description!}",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletBigFontSize,
+                        ),
+                      )
+                    : Text(
+                        "description : pas de description",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletBigFontSize,
+                        ),
+                      ),
               ),
             ),
             Row(
@@ -589,6 +671,7 @@ class _ContainerPageState extends State<ContainerPage> {
 
   /// [Widget] : Build the container and items manager page
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -610,13 +693,22 @@ class _ContainerPageState extends State<ContainerPage> {
                     Tab(
                       child: Text(
                         'Liste des conteneurs',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletBigFontSize,
+                        ),
                       ),
                     ),
                     Tab(
                       child: Text(
                         'Liste des objets',
-                        style: TextStyle(color: Colors.blue),
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletBigFontSize),
                       ),
                     ),
                   ],
@@ -641,7 +733,9 @@ class _ContainerPageState extends State<ContainerPage> {
                             child: Text(
                               'Aucun conteneur trouvé.',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletBigFontSize,
                                 color: Color.fromARGB(255, 211, 11, 11),
                               ),
                             ),
@@ -674,7 +768,9 @@ class _ContainerPageState extends State<ContainerPage> {
                             child: Text(
                               'Aucun objet trouvé.',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletBigFontSize,
                                 color: Color.fromARGB(255, 211, 11, 11),
                               ),
                             ),
@@ -716,12 +812,20 @@ class _ContainerPageState extends State<ContainerPage> {
                                             BorderRadius.circular(20.0),
                                       ),
                                     ),
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Icon(Icons.add),
-                                        SizedBox(width: 8),
-                                        Text('Ajouter un items'),
+                                        const Icon(Icons.add),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Ajouter un items',
+                                          style: TextStyle(
+                                            fontSize: screenFormat ==
+                                                    ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletBigFontSize,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -758,7 +862,10 @@ class _ContainerPageState extends State<ContainerPage> {
                                       child: Text(
                                         'Aucun objet trouvé.',
                                         style: TextStyle(
-                                          fontSize: 18,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletBigFontSize,
                                           color:
                                               Color.fromARGB(255, 211, 11, 11),
                                         ),

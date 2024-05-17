@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/main.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +12,11 @@ import 'dart:convert';
 
 import 'package:provider/provider.dart';
 
-/// Page de confirmation d'inscription
+import 'register_confirmation_style.dart';
+
+/// RegisterConfirmation
+///
+/// Page to confirm the account creation
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
 
@@ -21,15 +26,12 @@ class RegisterConfirmation extends StatefulWidget {
   State<RegisterConfirmation> createState() => RegisterConfirmationState();
 }
 
+/// RegisterConfirmationState
 ///
-/// État de la page de confirmation d'inscription
-///
-/// page de confirmation d'inscription pour le configurateur
 class RegisterConfirmationState extends State<RegisterConfirmation> {
   String jwtToken = '';
 
-  /// Vérifie si un token JWT est présent dans le stockage local.
-  /// Si non, redirige vers l'écran de connexion.
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? tokenStorage = await storageService.readStorage('token');
     if (tokenStorage != "") {
@@ -45,8 +47,10 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     super.initState();
   }
 
+  /// [Widget] : Build the confirmation of the account creation
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     DateTime lastClicked = DateTime.parse("1969-07-20 20:18:04Z");
     DateTime now = DateTime.now();
     return Scaffold(
@@ -56,28 +60,39 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
         ),
         body: Center(
             child: FractionallySizedBox(
-                widthFactor: 0.3,
+                widthFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopWidthFactor
+                    : tabletWidthFactor,
                 heightFactor: 0.7,
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       "Afin de finaliser l'inscription de votre compte, merci de confirmer cette dernière grâce au lien que vous avez reçu par mail.",
-                      style: TextStyle(fontSize: 26),
+                      style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopBigFontSize
+                              : tabletBigFontSize),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(
                       height: 80.0,
                     ),
-                    const Text(
+                    Text(
                       "Vous n'avez pas reçu le mail de confirmation ?",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                      ),
                     ),
                     const SizedBox(
                       height: 35.0,
                     ),
                     SizedBox(
                       height: 40,
-                      width: 400,
+                      width: screenFormat == ScreenFormat.desktop
+                          ? desktopSendButtonWidth
+                          : tabletSendButtonWidth,
                       child: ElevatedButton(
                         key: const Key('send-mail'),
                         onPressed: () async {
@@ -109,7 +124,9 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                         child: Text(
                           "Renvoyer le mail de confirmation",
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
@@ -129,11 +146,15 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                         padding: const EdgeInsets.all(10.0),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Text(
                                 "Retour à l'accueil",
-                                style:
-                                    TextStyle(color: Colors.blue, fontSize: 16),
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize),
                               ),
                             ]),
                       ),

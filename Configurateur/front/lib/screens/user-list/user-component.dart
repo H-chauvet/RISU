@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/styles/globalStyle.dart';
 
 /// Mobile user class
 ///
@@ -52,12 +54,28 @@ class UserMobileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Card(
       child: Column(
         children: [
           ListTile(
-            title: Text("Prénom : " + user.firstName),
-            subtitle: Text("Nom : " + user.lastName),
+            title: Text(
+              "Prénom : " + user.firstName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
+            subtitle: Text(
+              "Nom : " + user.lastName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
             trailing: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
@@ -65,7 +83,14 @@ class UserMobileCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text("Email : " + user.email),
+                    Text(
+                      "Email : " + user.email,
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                      ),
+                    ),
                   ],
                 ),
                 IconButton(

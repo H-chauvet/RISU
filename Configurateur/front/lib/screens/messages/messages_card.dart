@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/styles/globalStyle.dart';
 
 /// Message
 ///
@@ -57,11 +59,19 @@ class MessageCard extends StatelessWidget {
   /// [Widget] : Build the message's card
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Card(
       child: Column(
         children: [
           ListTile(
-            title: Text("${message.firstName} ${message.lastName}"),
+            title: Text(
+              "${message.firstName} ${message.lastName}",
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
             subtitle: Text(message.email),
             leading: Row(
               mainAxisSize: MainAxisSize.min,

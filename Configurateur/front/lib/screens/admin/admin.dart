@@ -4,7 +4,9 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +35,7 @@ class _AdminPageState extends State<AdminPage> {
   /// [Widget] : Build the admin page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       body: FooterView(
         footer: Footer(
@@ -44,7 +47,9 @@ class _AdminPageState extends State<AdminPage> {
             'Administration de RISU',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
               color: Provider.of<ThemeService>(context).isDark
@@ -89,6 +94,9 @@ class _AdminPageState extends State<AdminPage> {
                             child: Text(
                               'Gestion des messages',
                               style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,
@@ -136,6 +144,9 @@ class _AdminPageState extends State<AdminPage> {
                             child: Text(
                               'Gestion des utilisateurs',
                               style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,
@@ -183,6 +194,9 @@ class _AdminPageState extends State<AdminPage> {
                             child: Text(
                               'Gestion des conteneurs',
                               style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.secondaryHeaderColor
                                     : lightTheme.secondaryHeaderColor,

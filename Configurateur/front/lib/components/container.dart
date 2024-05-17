@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
 /// ContainerListData
@@ -98,6 +100,7 @@ class ContainerCards extends StatelessWidget {
   /// [Widget] : build the Card component
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return GestureDetector(
       onTap: () {
         if (container.id != null) {
@@ -115,11 +118,39 @@ class ContainerCards extends StatelessWidget {
             Expanded(
               child: ListTile(
                 title: container.city != null
-                    ? Text("Ville : ${container.city!}")
-                    : Text("Ville : pas de ville associée"),
+                    ? Text(
+                        "Ville : ${container.city!}",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      )
+                    : Text(
+                        "Ville : Pas de ville associée",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
                 subtitle: container.address != null
-                    ? Text("Adresse : ${container.address!}")
-                    : Text("Adresse : aucune address"),
+                    ? Text(
+                        "Adresse : ${container.address!}",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      )
+                    : Text(
+                        "Adresse : Aucune adresse",
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
               ),
             ),
             Row(

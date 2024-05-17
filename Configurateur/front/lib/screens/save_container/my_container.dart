@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
 /// MyContainer
@@ -64,6 +66,8 @@ class MyContainerState extends State<MyContainer> {
   /// [Widget] : Build my containers page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         "Mes conteneurs",
@@ -73,14 +77,18 @@ class MyContainerState extends State<MyContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Mes conteneurs sauvegardés",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            ListView.builder(
+            Expanded(
+              child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                shrinkWrap: true,
                 itemCount: displayedContainers.length,
                 itemBuilder: (_, i) {
                   return Column(
@@ -95,19 +103,31 @@ class MyContainerState extends State<MyContainer> {
                             ),
                           ),
                           onPressed: () {
-                            context.go('/container-creation',
-                                extra: jsonEncode({
+                            context.go(
+                              '/container-creation',
+                              extra: jsonEncode(
+                                {
                                   'id': displayedContainers[i]['id'],
                                   'container':
                                       jsonEncode(displayedContainers[i]),
-                                }));
+                                },
+                              ),
+                            );
                           },
-                          child: Text(displayedContainers[i]['saveName']),
+                          child: Text(
+                            displayedContainers[i]['saveName'],
+                            style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize),
+                          ),
                         ),
                       ),
                     ],
                   );
-                }),
+                },
+              ),
+            ),
           ],
         ),
       ),

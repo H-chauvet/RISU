@@ -6,10 +6,13 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+
+import 'maps_screen_style.dart';
 
 /// MapScreen
 ///
@@ -105,7 +108,7 @@ class MapsState extends State<MapsScreen> {
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
       <String, String>{
-        'Authorization': jwtToken,
+        'Authorization': 'Bearer $jwtToken',
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },
@@ -140,6 +143,7 @@ class MapsState extends State<MapsScreen> {
   /// [Widget] : Build of the localisation page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
         'Localisation',
@@ -163,8 +167,12 @@ class MapsState extends State<MapsScreen> {
       ),
       body: Center(
           child: FractionallySizedBox(
-        widthFactor: 0.7,
-        heightFactor: 0.7,
+        widthFactor: screenFormat == ScreenFormat.desktop
+            ? desktopWidthFactor
+            : tabletWidthFactor,
+        heightFactor: screenFormat == ScreenFormat.desktop
+            ? desktopHeightFactor
+            : tabletHeightFactor,
         alignment: Alignment.center,
         child: Stack(alignment: Alignment.center, children: [
           GoogleMap(
@@ -177,9 +185,11 @@ class MapsState extends State<MapsScreen> {
               onCameraMove: (CameraPosition position) {
                 location = position.target;
               }),
-          const Positioned(
+          Positioned(
             child: Icon(
-              size: 40,
+              size: screenFormat == ScreenFormat.desktop
+                  ? desktopIconSize
+                  : tabletIconSize,
               Icons.room,
               color: Colors.red,
             ),

@@ -6,7 +6,6 @@ import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 
 /// MessagePage

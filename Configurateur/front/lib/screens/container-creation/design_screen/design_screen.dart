@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,16 +10,19 @@ import 'package:front/components/dialog/add_design_dialog.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
-import '../../components/custom_app_bar.dart';
+import '../../../components/custom_app_bar.dart';
 import 'package:go_router/go_router.dart';
-import '../../components/progress_bar.dart';
-import '../../components/recap_panel.dart';
-import '../../network/informations.dart';
+import '../../../components/progress_bar.dart';
+import '../../../components/recap_panel/recap_panel.dart';
+import '../../../network/informations.dart';
+import 'design_screen_style.dart';
 
 /// List of the Face class to define all the faces
 const List<String> faceList = <String>[
@@ -111,7 +115,9 @@ class DesignScreenState extends State<DesignScreen> {
   void initState() {
     checkToken();
     super.initState();
-    Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
+
+    Sp3dObj obj =
+        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
 
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
@@ -309,7 +315,7 @@ class DesignScreenState extends State<DesignScreen> {
   /// [name] : Name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
-      'Authorization': jwtToken,
+      'Authorization': 'Bearer $jwtToken',
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };
@@ -367,7 +373,7 @@ class DesignScreenState extends State<DesignScreen> {
       HttpService().request(
         'http://$serverIp:3000/api/container/create',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
@@ -396,7 +402,7 @@ class DesignScreenState extends State<DesignScreen> {
       HttpService().putRequest(
         'http://$serverIp:3000/api/container/update',
         <String, String>{
-          'Authorization': jwtToken,
+          'Authorization': 'Bearer $jwtToken',
           'Content-Type': 'application/json; charset=UTF-8',
           'Access-Control-Allow-Origin': '*',
         },
@@ -462,8 +468,8 @@ class DesignScreenState extends State<DesignScreen> {
   Widget loadCube() {
     if (world != null) {
       return Sp3dRenderer(
-        const Size(800, 800),
-        const Sp3dV2D(400, 400),
+        Size(cubeCameraWidth, cubeCameraHeight),
+        Sp3dV2D(cubeCameraWidth / 2, cubeCameraHeight / 2),
         world!,
         // If you want to reduce distortion, shoot from a distance at high magnification.
         Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
@@ -479,6 +485,8 @@ class DesignScreenState extends State<DesignScreen> {
   /// [Widget] : Build the design page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
         appBar: CustomAppBar(
           'Design',
@@ -501,147 +509,179 @@ class DesignScreenState extends State<DesignScreen> {
           ],
         ),
         body: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(
-              width: 100,
-            ),
             Flexible(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Stack(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DottedBorder(
-                          color: Colors.grey[600]!,
-                          padding: EdgeInsets.zero,
-                          strokeWidth: 3,
-                          child: Container(
-                            height: 200,
-                            width: 500,
-                            color: Colors.grey[400],
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.cloud_upload,
-                                  size: 32.0,
+              child: Stack(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      DottedBorder(
+                        color: Colors.grey[600]!,
+                        padding: EdgeInsets.zero,
+                        strokeWidth: 3,
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: screenFormat == ScreenFormat.desktop
+                              ? desktopImportContainerHeight
+                              : tabletImportContainerHeight,
+                          width: screenFormat == ScreenFormat.desktop
+                              ? desktopImportContainerWidth
+                              : tabletImportContainerWidth,
+                          color: Colors.grey[400],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.cloud_upload,
+                                size: 32.0,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "Cliquez pour ajouter une image",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                const Text("Cliquez pour ajouter une image"),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                ElevatedButton(
-                                    onPressed: () async {
-                                      picked =
-                                          await FilePicker.platform.pickFiles(
-                                        type: FileType.image,
-                                      );
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ElevatedButton(
+                                  onPressed: () async {
+                                    picked =
+                                        await FilePicker.platform.pickFiles(
+                                      type: FileType.image,
+                                    );
 
-                                      if (!mounted) {
-                                        return;
+                                    if (!mounted) {
+                                      return;
+                                    }
+                                    if (picked != null) {
+                                      if (picked!.files.single.bytes!.length >
+                                          1000000) {
+                                        Fluttertoast.showToast(
+                                          msg:
+                                              "L'image ne doit pas dépasser 1 Mo",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.CENTER,
+                                        );
+                                      } else {
+                                        openAddDialog(context);
                                       }
-                                      if (picked != null) {
-                                        if (picked!.files.single.bytes!.length >
-                                            1000000) {
-                                          Fluttertoast.showToast(
-                                            msg:
-                                                "L'image ne doit pas dépasser 1 Mo",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.CENTER,
-                                          );
-                                        } else {
-                                          openAddDialog(context);
-                                        }
-                                      }
-                                      setState(() {});
-                                    },
-                                    child: const Text("Parcourir"))
-                              ],
-                            ),
+                                    }
+                                    setState(() {});
+                                  },
+                                  child: Text(
+                                    "Parcourir",
+                                    style: TextStyle(
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                    ),
+                                  ))
+                            ],
                           ),
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const Divider(
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: sizedBoxWidth,
+                        child: const Divider(
                           color: Colors.grey,
                           height: 20,
                           thickness: 1,
                           indent: 30,
                           endIndent: 30,
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: const Size.fromWidth(250),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          onPressed: () async {
-                            await showDialog(
-                              context: context,
-                              builder: (context) =>
-                                  RemoveDesignDialog(callback: removeImage),
-                            );
-                          },
-                          icon: const Icon(Icons.delete),
-                          label: const Text(
-                            'Retirer une image',
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) =>
+                                RemoveDesignDialog(callback: removeImage),
+                          );
+                        },
+                        icon: const Icon(Icons.delete),
+                        label: Text(
+                          'Retirer une image',
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        onPressed: () async {
+                          String name = await showDialog(
+                              context: context,
+                              builder: (context) => openDialog());
+                          saveContainer(name);
+                        },
+                        icon: const Icon(Icons.save),
+                        label: Text(
+                          "Sauvegarder",
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
                         ),
-                        ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                              fixedSize: const Size.fromWidth(250),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          onPressed: () async {
-                            String name = await showDialog(
-                                context: context,
-                                builder: (context) => openDialog());
-                            saveContainer(name);
-                          },
-                          icon: const Icon(Icons.save),
-                          label: const Text("Sauvegarder"),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
             loadCube(),
             Flexible(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: FractionallySizedBox(
-                    widthFactor: 0.7,
-                    heightFactor: 0.7,
-                    child: RecapPanel(
-                      articles: lockerss,
-                      onSaved: () async {
-                        String name = await showDialog(
-                            context: context,
-                            builder: (context) => openDialog());
-                        saveContainer(name);
-                      },
-                    )),
-              ),
+              child: FractionallySizedBox(
+                  widthFactor: screenFormat == ScreenFormat.desktop
+                      ? desktopRecapPanelWidth
+                      : tabletRecapPanelWidth,
+                  heightFactor: 0.7,
+                  child: RecapPanel(
+                    articles: lockerss,
+                    onSaved: () async {
+                      String name = await showDialog(
+                          context: context, builder: (context) => openDialog());
+                      saveContainer(name);
+                    },
+                    screenFormat: screenFormat,
+                  )),
             ),
-            const SizedBox(
-              width: 50,
-            )
           ],
         ));
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/recap_panel/recap_panel_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 ///
 /// Locker
@@ -45,7 +49,11 @@ class LockerList {
 /// Summary of the lockers selected in a container
 // ignore: must_be_immutable
 class RecapPanel extends StatelessWidget {
-  RecapPanel({super.key, this.articles, required this.onSaved});
+  RecapPanel(
+      {super.key,
+      this.articles,
+      required this.onSaved,
+      required this.screenFormat});
 
   /// [Function] : Calculating the price of lockers
   /// return the total price
@@ -61,6 +69,7 @@ class RecapPanel extends StatelessWidget {
   late List<LockerList> parsedArticles = parseArticles();
   late int? price = sumPrice();
   final Function() onSaved;
+  final ScreenFormat screenFormat;
 
   /// [Function] : Parsing all the articles of container
   List<LockerList> parseArticles() {
@@ -115,11 +124,14 @@ class RecapPanel extends StatelessWidget {
   /// [Widget] : Show the articles' content
   Widget articlesContent() {
     if (parsedArticles.isEmpty) {
-      return const Center(
+      return Center(
         child: Text(
           "Aucun article dans le panier",
           style: TextStyle(
             color: Colors.black,
+            fontSize: screenFormat == ScreenFormat.desktop
+                ? desktopFontSize
+                : tabletFontSize,
           ),
         ),
       );
@@ -133,11 +145,17 @@ class RecapPanel extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                constraints: const BoxConstraints(minWidth: 140, maxWidth: 140),
+                constraints: BoxConstraints(
+                    minWidth: boxConstraints, maxWidth: boxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
                     parsedArticles[i].type,
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                    ),
                   ),
                 ),
               ),
@@ -145,16 +163,26 @@ class RecapPanel extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 10, bottom: 10),
                 child: Text(
                   parsedArticles[i].quantity.toString(),
-                  style: const TextStyle(color: Colors.black),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
                 ),
               ),
               Container(
-                constraints: const BoxConstraints(minWidth: 100),
+                constraints: BoxConstraints(minWidth: littleBoxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, bottom: 10),
                   child: Text(
                     "${parsedArticles[i].price.toString()}€",
-                    style: const TextStyle(color: Colors.black),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                    ),
                     textAlign: TextAlign.right,
                   ),
                 ),
@@ -177,13 +205,15 @@ class RecapPanel extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Center(
+            Center(
               child: Text(
                 'Panier',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
                 ),
               ),
             ),
@@ -196,36 +226,45 @@ class RecapPanel extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      constraints:
-                          const BoxConstraints(minWidth: 140, maxWidth: 140),
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 10),
+                      constraints: BoxConstraints(
+                          minWidth: boxConstraints, maxWidth: boxConstraints),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
                         child: Text(
                           'Type',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(right: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10),
                       child: Text(
                         'Quantité',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
                         ),
                       ),
                     ),
                     Container(
-                      constraints: const BoxConstraints(minWidth: 100),
-                      child: const Padding(
-                        padding: EdgeInsets.only(right: 10),
+                      constraints: BoxConstraints(minWidth: 5.0.w),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
                         child: Text(
                           'Prix',
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
                       ),
@@ -262,7 +301,12 @@ class RecapPanel extends StatelessWidget {
               height: 5,
             ),
             Center(
-              child: Text('Total: ${price!}€'),
+              child: Text('Total: ${price!}€',
+                  style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  )),
             ),
             const SizedBox(
               height: 10,

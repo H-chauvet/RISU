@@ -3,8 +3,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/company/company_style.dart';
 import 'package:front/screens/company/container-company.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -66,6 +69,7 @@ class CompanyPageState extends State<CompanyPage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
         'Entreprise',
@@ -82,7 +86,9 @@ class CompanyPageState extends State<CompanyPage> {
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.secondaryHeaderColor
                       : lightTheme.secondaryHeaderColor,
-                  fontSize: 30,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopBigFontSize
+                      : tabletBigFontSize,
                   fontWeight: FontWeight.bold,
                   decorationThickness: 2.0,
                   decorationStyle: TextDecorationStyle.solid,
@@ -101,8 +107,12 @@ class CompanyPageState extends State<CompanyPage> {
                       Image.asset(
                         members[index],
                         key: Key('member_image_$index'),
-                        width: 95,
-                        height: 95,
+                        width: screenFormat == ScreenFormat.desktop
+                            ? desktopMemberImageSize
+                            : tabletMemberImageSize,
+                        height: screenFormat == ScreenFormat.desktop
+                            ? desktopMemberImageSize
+                            : tabletMemberImageSize,
                       ),
                       const SizedBox(
                         height: 5,
@@ -112,9 +122,11 @@ class CompanyPageState extends State<CompanyPage> {
                             .substring(members[index].indexOf('/') + 1,
                                 members[index].indexOf('.'))
                             .toUpperCase(),
-                        style: const TextStyle(
-                          color: Color.fromRGBO(70, 130, 180, 1),
-                          fontSize: 15,
+                        style: TextStyle(
+                          color: const Color.fromRGBO(70, 130, 180, 1),
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -131,7 +143,9 @@ class CompanyPageState extends State<CompanyPage> {
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.secondaryHeaderColor
                       : lightTheme.secondaryHeaderColor,
-                  fontSize: 30,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopBigFontSize
+                      : tabletBigFontSize,
                   fontWeight: FontWeight.bold,
                   decorationThickness: 2.0,
                   decorationStyle: TextDecorationStyle.solid,

@@ -5,11 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/profile/profile_page_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
@@ -87,9 +89,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 120.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -120,7 +133,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -163,7 +184,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -181,9 +210,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -209,7 +249,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -250,7 +298,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -267,9 +323,20 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -294,7 +361,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -335,7 +410,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -358,10 +441,20 @@ class _ProfilePageState extends State<ProfilePage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return AlertDialog(
-              title: const Text("Modifier"),
-              content: SizedBox(
-                height: 150.0,
-                width: 300.0,
+              title: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
+              content: Container(
+                height: SizeService().getScreenFormat(context) ==
+                        ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
                 child: Form(
                   key: formKey,
                   child: Column(
