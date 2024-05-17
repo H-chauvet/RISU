@@ -55,28 +55,28 @@ class TicketsState extends State<TicketsPage> {
   }
 
   Future<bool> createTicket(
-      {required String title,
-      String chatUid = "",
-      String assignedId = ""}) async {
+      {required String title, String? chatUid, String assignedId = ""}) async {
     var header = <String, String>{
       'Authorization': token!,
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };
 
+    var body = <String, String>{
+      'content': _message,
+      'title': title,
+      'createdAt': DateTime.now().toString(),
+      'uuid': uuid!,
+      'assignedId': assignedId,
+    };
+
+    if (chatUid != null && chatUid.isNotEmpty) {
+      body['chatUid'] = chatUid;
+    }
     var response = await http.post(
       Uri.parse('http://$serverIp:3000/api/tickets/create'),
       headers: header,
-      body: jsonEncode(
-        <String, String>{
-          'content': _message,
-          'title': title,
-          'createdAt': DateTime.now().toString(),
-          'uuid': uuid!,
-          'chatUid': chatUid,
-          'assignedId': assignedId,
-        },
-      ),
+      body: jsonEncode(body),
     );
     if (response.statusCode == 201) {
       return true;
@@ -89,6 +89,33 @@ class TicketsState extends State<TicketsPage> {
           backgroundColor: Colors.red);
     }
     return false;
+  }
+
+  Future<void> closeTicket({required String chatUid}) async {
+    var header = <String, String>{
+      'Authorization': token!,
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    var response = await http.put(
+      Uri.parse('http://$serverIp:3000/api/tickets/$chatUid'),
+      headers: header,
+      body: jsonEncode(
+        <String, String>{
+          'uuid': uuid!,
+        },
+      ),
+    );
+    if (response.statusCode == 201) {
+    } else {
+      Fluttertoast.showToast(
+          msg: "Erreur durant la cloture du ticket",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.red);
+    }
   }
 
   Future<bool> assignTicket({required List<dynamic> tickets}) async {
@@ -239,11 +266,13 @@ class TicketsState extends State<TicketsPage> {
     }
   }
 
-  void checkToken() async {
+  Future<void> checkToken() async {
     token = await storageService.readStorage('token');
-    storageService.getUserUuid().then((value) => uuid = value);
+    uuid = await storageService.getUserUuid();
     if (token == "") {
       context.go('/login');
+    } else {
+      getTickets();
     }
   }
 
@@ -251,8 +280,9 @@ class TicketsState extends State<TicketsPage> {
   void initState() {
     super.initState();
     isAdmin = widget.isAdmin;
-    checkToken();
-    getTickets();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkToken();
+    });
   }
 
   @override
@@ -421,11 +451,12 @@ class TicketsState extends State<TicketsPage> {
                                   ? Text(
                                       "Aucun Ticket",
                                       style: TextStyle(
-                                        color: Provider.of<ThemeService>(
-                                                    context)
-                                                .isDark
-                                            ? lightTheme.secondaryHeaderColor
-                                            : darkTheme.secondaryHeaderColor,
+                                        color:
+                                            Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.secondaryHeaderColor
+                                                : lightTheme
+                                                    .secondaryHeaderColor,
                                       ),
                                     )
                                   : ListView.builder(
@@ -757,7 +788,13 @@ class TicketsState extends State<TicketsPage> {
                             ),
                           ),
                           const SizedBox(height: 8.0),
-                          (isAdmin && assigned(conversation) || !isAdmin) /// Rajoter un isOpen qui check si la conversation est ouverte en vérifiant les ["closed"] des tickets de conversations
+                          (isAdmin &&
+                                      assigned(conversation) &&
+                                      conversation.last["closed"] == 0 ||
+                                  (!isAdmin &&
+                                      conversation.last["closed"] == 0))
+
+                              /// Rajoter un isOpen qui check si la conversation est ouverte en vérifiant les ["closed"] des tickets de conversations
                               ? TextFormField(
                                   controller: _convController,
                                   onChanged: (value) => _message = value,
@@ -804,8 +841,8 @@ class TicketsState extends State<TicketsPage> {
                               : Container(),
                           const SizedBox(height: 16.0),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Clore le ticket seulement si admin
                               // main and cross axis alignment à .start
@@ -813,28 +850,66 @@ class TicketsState extends State<TicketsPage> {
                               // avec Alignment.centerRight
                               // Et après call la fonction back
                               // /!\ VERIFIER QU'ON PEUT PLUS ECRIRE si le ticket est close
-                              ElevatedButton(
-                                onPressed: () {
-                                  setState(
-                                    () {
-                                      conversation = [];
+
+                              if (isAdmin &&
+                                  assigned(conversation) &&
+                                  conversation.last["closed"] == 0)
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      await closeTicket(
+                                          chatUid:
+                                              conversation.last["chatUid"]);
+                                      getTickets();
                                     },
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'Cloturer la conversation',
+                                      style: TextStyle(
+                                        color:
+                                            Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                                child: Text(
-                                  'Fermer la conversation',
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
+                              const Spacer(),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    setState(
+                                      () {
+                                        conversation = [];
+                                      },
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Fermer la conversation',
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                    ),
                                   ),
                                 ),
                               ),
