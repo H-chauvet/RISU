@@ -5,11 +5,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/screens/profile/profile_page_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
@@ -25,11 +27,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late String firstName = '';
-  late String lastName = '';
-  late DateTime createdDate = DateTime.now();
-  late String formattedDate = '';
-  late String company = '';
+  late String firstName;
+  late String lastName;
+  late DateTime createdDate;
+  late String formattedDate;
+  late String company;
   String userMail = '';
 
   Future<void> fetchUserDetails(String email) async {
@@ -76,21 +78,30 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 120.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  key: const Key("first-name"),
                   controller: firstNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau prénom", hintText: initialFirstName),
                 ),
                 const SizedBox(height: 10.0),
                 TextField(
-                  key: const Key("last-name"),
                   controller: lastNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom", hintText: initialLastName),
@@ -111,10 +122,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler", key: Key("cancel-edit-name")),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
-              key: const Key("button-name"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-details/$userMail";
@@ -155,7 +173,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -171,14 +197,24 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  key: const Key("company"),
                   controller: companyController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom d'entreprise",
@@ -200,10 +236,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler", key: Key("cancel-edit-company")),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
-              key: const Key("button-company"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-company/$userMail";
@@ -242,7 +285,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -258,14 +309,24 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              fontSize:
+                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+            ),
+          ),
           content: Container(
-            height: 60.0,
+            height:
+                SizeService().getScreenFormat(context) == ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
-                  key: const Key("user-mail"),
                   controller: mailController,
                   decoration: InputDecoration(
                       labelText: "Nouveau mail", hintText: initialMail),
@@ -286,10 +347,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler", key: Key("cancel-edit-mail")),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             ElevatedButton(
-              key: const Key("button-user-mail"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-mail";
@@ -328,7 +396,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
           ],
         );
@@ -350,10 +426,20 @@ class _ProfilePageState extends State<ProfilePage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return AlertDialog(
-              title: const Text("Modifier"),
-              content: SizedBox(
-                height: 150.0,
-                width: 300.0,
+              title: Text(
+                "Modifier",
+                style: TextStyle(
+                  fontSize: SizeService().getScreenFormat(context) ==
+                          ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
+              content: Container(
+                height: SizeService().getScreenFormat(context) ==
+                        ScreenFormat.desktop
+                    ? desktopDialogHeight
+                    : tabletDialogHeight,
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -440,11 +526,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child:
-                      const Text("Annuler", key: Key("cancel-edit-password")),
+                  child: const Text("Annuler"),
                 ),
                 ElevatedButton(
-                  key: const Key("button-password"),
                   onPressed: () async {
                     if (formKey.currentState!.validate() &&
                         password == validedPassword) {
@@ -573,7 +657,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(width: 5.0),
                           InkWell(
-                            key: const Key('edit-name'),
                             onTap: () async {
                               await showEditPopupName(
                                 context,
@@ -629,7 +712,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
-                              key: const Key('edit-mail'),
                               onTap: () async {
                                 await showEditPopupMail(context, userMail,
                                     (String newMail) {
@@ -688,7 +770,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
-                              key: const Key('edit-company'),
                               onTap: () async {
                                 await showEditPopupCompany(context, company,
                                     (String newCompany) {
@@ -747,7 +828,6 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
-                              key: const Key('edit-password'),
                               onTap: () async {
                                 await showEditPopupPassword(context, "",
                                     (String newPassword) {
