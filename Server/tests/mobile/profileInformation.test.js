@@ -103,16 +103,30 @@ describe('PUT /api/mobile/user', () => {
         ],
         done
       )
-    })
-    // email
+    }),
     it('should update the email of the user', (done) => {
       async.series(
         [
           function (callback) {
             request('http://localhost:3000')
-              .put('/api/mobile/user')
+              .put('/api/mobile/user/newEmail')
               .set('Authorization', `Bearer ${authToken}`)
-              .send({ email: 'admin@gmail.com' })
+              .send({ newEmail: 'admin@gmail.com' })
+              .expect(200, callback)
+          }
+        ],
+        done
+      )
+    }),
+    it('should verify the new email', (done) => {
+      async.series(
+        [
+          function (callback) {
+            console.log(`/api/mobile/auth/newEmailVerification?token=${authToken}`);
+            request('http://localhost:3000')
+              .get(`/api/mobile/auth/newEmailVerification?token=${authToken}`)
+              .set('Content-Type', 'application/json')
+              .set('Accept', 'application/json')
               .expect(200, callback)
           }
         ],
@@ -124,7 +138,7 @@ describe('PUT /api/mobile/user', () => {
         [
           function (callback) {
             request('http://localhost:3000')
-              .put('/api/mobile/user')
+              .put('/api/mobile/user/newEmail')
               .send({ email: 'admin@gmail.com' })
               .expect(401, callback)
           }
@@ -137,7 +151,7 @@ describe('PUT /api/mobile/user', () => {
         [
           function (callback) {
             request('http://localhost:3000')
-              .put('/api/mobile/user')
+              .put('/api/mobile/user/newEmail')
               .set('Authorization', `Bearer ${'invalidToken'}`)
               .send({ email: 'admin@gmail.com' })
               .expect(401, callback)
