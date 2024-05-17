@@ -61,7 +61,7 @@ Future<void> waitForLoader(
   while (true) {
     try {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pumpWidget(testPage, const Duration(milliseconds: 100));
+      await tester.pumpWidget(testPage);
     } catch (e) {
       break;
     }
