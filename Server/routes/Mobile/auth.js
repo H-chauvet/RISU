@@ -89,7 +89,6 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
 })
 
 router.get('/newEmailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
-  console.log('newEmailVerification');
   const token = req.query.token
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
