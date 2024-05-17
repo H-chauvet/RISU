@@ -24,9 +24,12 @@ void main() {
         find.byKey(const Key('profile_info-text_field_firstname'));
     Finder lastNameFinder =
         find.byKey(const Key('profile_info-text_field_lastname'));
-    Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
     Finder updateInformationButtonFinder =
         find.byKey(const Key('profile_info-button_update'));
+    Finder EmailTextFinder = find.byKey(const Key('profile_info-text_email'));
+    Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
+    Finder updateEmailButtonFinder =
+        find.byKey(const Key('profile_email-button_update'));
     Finder passwordTextFinder =
         find.byKey(const Key('profile_info-text_password'));
     Finder passwordFinder =
@@ -50,6 +53,8 @@ void main() {
       expect(firstNameFinder, findsOneWidget);
       expect(lastNameFinder, findsOneWidget);
       expect(emailFinder, findsOneWidget);
+      expect(updateEmailButtonFinder, findsOneWidget);
+      expect(EmailTextFinder, findsOneWidget);
       expect(updateInformationButtonFinder, findsOneWidget);
       expect(passwordTextFinder, findsOneWidget);
       expect(passwordFinder, findsOneWidget);
@@ -68,7 +73,6 @@ void main() {
 
       await tester.enterText(firstNameFinder, 'firstNameTest');
       await tester.enterText(lastNameFinder, 'lastNameTest');
-      await tester.enterText(emailFinder, 'emailTest@gmail.com');
       await tester.tap(updateInformationButtonFinder);
       await tester.pumpAndSettle();
 
@@ -83,6 +87,26 @@ void main() {
       await tester.pumpAndSettle();
     });
 
+    testWidgets('Email update', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      final testPage = initPage(const ProfileInformationsPage());
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      await tester.enterText(emailFinder, 'admin@gmail.com');
+      await tester.tap(updateEmailButtonFinder);
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('Email error', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      final testPage = initPage(const ProfileInformationsPage());
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      await tester.enterText(emailFinder, '');
+      await tester.tap(updateEmailButtonFinder);
+      await tester.pumpAndSettle();
+    });
+
     testWidgets('UI unexpected behavior', (WidgetTester tester) async {
       userInformation = initExampleUser();
       final testPage = initPage(const ProfileInformationsPage());
@@ -90,7 +114,6 @@ void main() {
 
       await tester.enterText(firstNameFinder, '');
       await tester.enterText(lastNameFinder, '');
-      await tester.enterText(emailFinder, '');
       await tester.tap(updateInformationButtonFinder);
       await tester.pumpAndSettle();
 
@@ -98,7 +121,6 @@ void main() {
       await tester.tap(okButtonFinder);
       await tester.pumpAndSettle();
 
-      await tester.enterText(emailFinder, 'invalid_email');
       await tester.tap(updateInformationButtonFinder);
       await tester.pumpAndSettle();
       expect(okButtonFinder, findsOneWidget);
