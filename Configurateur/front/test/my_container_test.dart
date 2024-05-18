@@ -55,11 +55,33 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    final state_assign =
+        tester.state(find.byType(MyContainer)) as MyContainerState;
 
-    expect(find.text('Mes conteneurs sauvegardés'), findsOneWidget);
+    await tester.pump();
+
+    state_assign.setState(() {
+      state_assign.displayedContainers = [
+        {
+          'id': '1',
+          'saveName': 'container1',
+          'paid': false,
+        },
+        {
+          'id': '2',
+          'saveName': 'container2',
+          'paid': false,
+        },
+      ];
+    });
 
     await tester.pumpAndSettle();
+
+    expect(find.text('container1'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('container_button_0')));
+
+    await tester.pump();
   });
 }
 
