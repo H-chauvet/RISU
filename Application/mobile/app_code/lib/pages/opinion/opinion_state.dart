@@ -417,9 +417,9 @@ class OpinionPageState extends State<OpinionPage> {
   @override
   void initState() {
     super.initState();
-    if (widget.opinions.isNotEmpty) {
+    if (widget.testOpinions.isNotEmpty) {
       setState(() {
-        opinionsList = widget.opinions;
+        opinionsList = widget.testOpinions;
       });
     } else {
       getOpinions(itemId);

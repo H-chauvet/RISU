@@ -4,15 +4,14 @@ import 'opinion_state.dart';
 
 class OpinionPage extends StatefulWidget {
   final int itemId;
-  final List<dynamic> opinions;
+  final List<dynamic> testOpinions;
 
   const OpinionPage({
     super.key,
     required this.itemId,
-    this.opinions = const [],
+    this.testOpinions = const [],
   });
 
   @override
-  State<OpinionPage> createState() =>
-      OpinionPageState(itemId: itemId, opinionsList: opinions);
+  State<OpinionPage> createState() => OpinionPageState(itemId: itemId);
 }

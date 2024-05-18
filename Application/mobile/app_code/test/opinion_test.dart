@@ -10,7 +10,7 @@ void main() {
     testWidgets('Should not find opinions', (WidgetTester tester) async {
       const List<dynamic> opinions = [];
       final testPage =
-          initPage(const OpinionPage(itemId: 1, opinions: opinions));
+          initPage(const OpinionPage(itemId: 1, testOpinions: opinions));
       await waitForLoader(tester: tester, testPage: testPage);
       await tester.pumpAndSettle();
 
@@ -42,7 +42,7 @@ void main() {
         }
       ];
       final testPage =
-          initPage(const OpinionPage(itemId: 1, opinions: opinions));
+          initPage(const OpinionPage(itemId: 1, testOpinions: opinions));
       await waitForLoader(tester: tester, testPage: testPage);
       await tester.pumpAndSettle();
 
@@ -70,7 +70,7 @@ void main() {
       expect(opinionComment1, findsOneWidget);
     });
 
-    /*testWidgets('find opinions pages buttons', (WidgetTester tester) async {
+    testWidgets('find opinions pages buttons', (WidgetTester tester) async {
       final testPage = initPage(const OpinionPage(itemId: 1));
       await waitForLoader(tester: tester, testPage: testPage);
       BuildContext context = tester.element(find.byType(OpinionPage));
@@ -326,6 +326,6 @@ void main() {
 
       await tester.tap(addOpinionButtonFinder, warnIfMissed: false);
       await tester.pump();
-    });*/
+    });
   });
 }

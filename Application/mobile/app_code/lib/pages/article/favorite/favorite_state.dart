@@ -22,8 +22,8 @@ class FavoriteSate extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    if (widget.favorites.isNotEmpty) {
-      favorites = widget.favorites;
+    if (widget.testFavorites.isNotEmpty) {
+      favorites = widget.testFavorites;
     } else {
       getFavorites();
     }
@@ -49,7 +49,6 @@ class FavoriteSate extends State<FavoritePage> {
       if (response.statusCode == 200) {
         setState(() {
           favorites = jsonDecode(response.body)['favorites'];
-          print(favorites);
         });
       } else {
         if (context.mounted) {

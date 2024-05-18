@@ -8,7 +8,7 @@ import 'globals.dart';
 void main() {
   group('Test FavoritePage', () {
     testWidgets('Favorite Page UI, no favorites', (WidgetTester tester) async {
-      final testPage = initPage(const FavoritePage(favorites: []));
+      final testPage = initPage(const FavoritePage(testFavorites: []));
       await waitForLoader(tester: tester, testPage: testPage);
 
       Finder favoriteTitle = find.byKey(const Key('my-favorites-titles'));
@@ -49,7 +49,7 @@ void main() {
           }
         }
       ];
-      final testPage = initPage(const FavoritePage(favorites: favorites));
+      final testPage = initPage(const FavoritePage(testFavorites: favorites));
       await waitForLoader(tester: tester, testPage: testPage);
 
       Finder favoriteCard1 = find.byKey(const Key('favorite-card_0'));
@@ -104,7 +104,7 @@ void main() {
           }
         }
       ];
-      final testPage = initPage(const FavoritePage(favorites: favorites));
+      final testPage = initPage(const FavoritePage(testFavorites: favorites));
       await waitForLoader(tester: tester, testPage: testPage);
 
       Finder favoriteCard1 = find.byKey(const Key('favorite-card_0'));
