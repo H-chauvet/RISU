@@ -41,7 +41,7 @@ void main() {
             create: (_) => ThemeService(),
           ),
         ],
-        child: Size(
+        child: Sizer(
           builder: (context, orientation, deviceType) {
             return MaterialApp(
               theme: ThemeData(fontFamily: 'Roboto'),
@@ -73,7 +73,7 @@ void main() {
             create: (_) => ThemeService(),
           ),
         ],
-        child: Size(
+        child: Sizer(
           builder: (context, orientation, deviceType) {
             return MaterialApp(
               theme: ThemeData(fontFamily: 'Roboto'),
