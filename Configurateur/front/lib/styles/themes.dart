@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Themes file
+///
+/// File to define all the colors for the light and dark themes.
+
 const lightElevatedButtonBackground = Color(0xFF28666E);
 
 final lightTheme = ThemeData(

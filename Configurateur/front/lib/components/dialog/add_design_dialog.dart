@@ -6,6 +6,11 @@ import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
+///
+/// Face class who represent the faces of the container
+/// [name] : name of the actual face
+/// [clicked] : true if it's the selected face, else if it's not
+///
 class Face {
   Face({required this.name, required this.clicked});
 
@@ -13,6 +18,7 @@ class Face {
   bool clicked;
 }
 
+/// List of the Face class to define all the faces
 List<Face> clicked = [
   Face(name: 'Devant', clicked: false),
   Face(name: 'Derrière', clicked: false),
@@ -22,6 +28,9 @@ List<Face> clicked = [
   Face(name: 'Droite', clicked: false),
 ];
 
+/// [StatefulWidget] : AddDesignDialog
+///
+/// Add a new dialog to create design for a container's face
 class AddDesignDialog extends StatefulWidget {
   const AddDesignDialog({
     super.key,
@@ -37,10 +46,13 @@ class AddDesignDialog extends StatefulWidget {
   State<AddDesignDialog> createState() => AddDesignDialogState();
 }
 
-///
-/// AddDesignDialog
+/// AddDesignDialogState
 ///
 class AddDesignDialogState extends State<AddDesignDialog> {
+  /// [Function] : getClicked
+  /// Get the click for the design dialog
+  ///
+  /// [face] : Selected face of the container
   bool getClicked(String face) {
     for (int i = 0; i < clicked.length; i++) {
       if (clicked[i].name == face) {
@@ -50,6 +62,10 @@ class AddDesignDialogState extends State<AddDesignDialog> {
     return false;
   }
 
+  /// [Function] : Set the click for the design dialog
+  ///
+  /// [face] : Selected face of the container
+  /// [value] : Define the face who is clicked
   void setClicked(String face, bool value) {
     for (int i = 0; i < clicked.length; i++) {
       if (clicked[i].name == face) {
@@ -58,6 +74,8 @@ class AddDesignDialogState extends State<AddDesignDialog> {
     }
   }
 
+  /// [Function] : Get the theme of the app
+  ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return checkBoxMenuButtonColorDarkTheme;
@@ -66,6 +84,8 @@ class AddDesignDialogState extends State<AddDesignDialog> {
     }
   }
 
+  /// [Function] : Get the theme of the app for the text color
+  ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return containerDialogTextColorDarkTheme;
@@ -74,6 +94,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
     }
   }
 
+  /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
