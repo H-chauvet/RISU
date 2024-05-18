@@ -96,7 +96,7 @@ class ContainerCard extends StatelessWidget {
                     SizedBox(
                       width: 100,
                       height: 100,
-                      child: Image.asset('assets/logo.png')
+                      child: Image.asset('assets/logo.png'),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
