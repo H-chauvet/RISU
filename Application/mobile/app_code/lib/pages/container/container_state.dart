@@ -110,7 +110,6 @@ class ContainerPageState extends State<ContainerPage> {
           "meters",
         );
       });
-      print('${container.id} : ${container.distance}');
     });
   }
 
