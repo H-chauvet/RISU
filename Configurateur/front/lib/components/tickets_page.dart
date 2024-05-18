@@ -790,11 +790,9 @@ class TicketsState extends State<TicketsPage> {
                           const SizedBox(height: 8.0),
                           (isAdmin &&
                                       assigned(conversation) &&
-                                      conversation.last["closed"] == 0 ||
+                                      conversation.last["closed"] == false) ||
                                   (!isAdmin &&
-                                      conversation.last["closed"] == 0))
-
-                              /// Rajoter un isOpen qui check si la conversation est ouverte en vérifiant les ["closed"] des tickets de conversations
+                                      conversation.last["closed"] == false)
                               ? TextFormField(
                                   controller: _convController,
                                   onChanged: (value) => _message = value,
@@ -816,6 +814,7 @@ class TicketsState extends State<TicketsPage> {
                                             'creatorId': uuid!,
                                             'createdAt':
                                                 DateTime.now().toString(),
+                                            'closed': false,
                                           };
                                           _convController.clear();
                                           _message = "";
@@ -844,16 +843,9 @@ class TicketsState extends State<TicketsPage> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Clore le ticket seulement si admin
-                              // main and cross axis alignment à .start
-                              // Et l'elevated Button dans un Align
-                              // avec Alignment.centerRight
-                              // Et après call la fonction back
-                              // /!\ VERIFIER QU'ON PEUT PLUS ECRIRE si le ticket est close
-
                               if (isAdmin &&
                                   assigned(conversation) &&
-                                  conversation.last["closed"] == 0)
+                                  conversation.last["closed"] == false)
                                 Align(
                                   alignment: Alignment.centerRight,
                                   child: ElevatedButton(
