@@ -10,6 +10,10 @@ import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 
+/// ContainerProfilPage
+///
+/// Container profil page of the organization
+/// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
   final ContainerListData container;
   const ContainerProfilPage({Key? key, required this.container})
@@ -20,10 +24,12 @@ class ContainerProfilPage extends StatefulWidget {
       _ContainerProfilPageState(container: container);
 }
 
+/// CompanyProfilPageState
+///
 class _ContainerProfilPageState extends State<ContainerProfilPage> {
   final ContainerListData container;
   _ContainerProfilPageState({required this.container});
-  late List<ItemListInfo> items;
+  late List<ItemList> items;
   late String itemName = '';
   late String itemDesc = '';
   late String city;
@@ -34,6 +40,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   late ContainerListData tmp;
   String jwtToken = '';
 
+  /// [Function] : get information about the containers
+  /// [id] : Container's id
   Future<void> fetchContainer(String id) async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'),
@@ -62,6 +70,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Check the container id in the storage service
   void checkContainerId() async {
     String? ctnId = await storageService.readStorage('containerId');
     if (ctnId != '' || ctnId != null) {
@@ -71,6 +80,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
@@ -85,6 +95,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     checkToken();
   }
 
+  /// [Function] : Update the city of the container
+  /// [nameController] : Controller for the container's name
   Future<void> apiUpdateCity(TextEditingController nameController) async {
     final String apiUrl =
         "http://$serverIp:3000/api/container/update-city/$containerId";
@@ -108,7 +120,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         timeInSecForIosWeb: 3,
       );
       checkToken();
-      // fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de modification des informations",
@@ -120,6 +131,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Display pop up to modify the container's city
   Future<void> showEditPopupCity(BuildContext context, String initialLastName,
       Function(String) onEdit) async {
     TextEditingController nameController = TextEditingController();
@@ -136,6 +148,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("city"),
                   controller: nameController,
                   decoration: InputDecoration(
                       labelText: "Nouvelle ville", hintText: initialLastName),
@@ -156,7 +169,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-city'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -179,6 +195,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Function] : Update the address of the container
+  /// [addressController] : Controller of the container's address
   Future<void> apiUpdateAddress(TextEditingController addressController) async {
     final String apiUrl =
         "http://$serverIp:3000/api/container/update-address/$containerId";
@@ -202,7 +220,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         timeInSecForIosWeb: 3,
       );
       checkToken();
-      // fetchContainer(containerId.toString());
     } else {
       Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de modification des informations",
@@ -214,6 +231,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Display pop up to modify the container's address
   Future<void> showEditPopupAddress(BuildContext context, String initialAddress,
       Function(String) onEdit) async {
     TextEditingController addressController = TextEditingController();
@@ -229,6 +247,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("address"),
                   controller: addressController,
                   decoration: InputDecoration(
                       labelText: "Adresse postale", hintText: initialAddress),
@@ -249,7 +268,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-address'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -272,6 +294,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Function] : Get all the items with the container id
   Future<void> fetchItemsbyCtnId() async {
     final response = await http.get(
       Uri.parse(
@@ -284,7 +307,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> itemsData = responseData["item"];
       setState(() {
-        items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
       Fluttertoast.showToast(
@@ -296,7 +319,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
-  Future<void> deleteItem(ItemListInfo item) async {
+  /// [Function] : Delete the selected item
+  /// [item] : The item who will be deleted
+  Future<void> deleteItem(ItemList item) async {
     late int id;
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     if (item.id != null) {
@@ -327,11 +352,18 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Update the selected item
+  /// [nameController] : Controller of the item's name
+  /// [descController] : Controller of the item's description
+  /// [price] : Item's price
+  /// [item] : Item's informations
+  /// [itemId] : Item's id
+  ///
   Future<void> apiUpdateItem(
       TextEditingController nameController,
       TextEditingController descController,
       double price,
-      ItemListInfo item,
+      ItemList item,
       int itemId) async {
     bool isAvailable = item.available!;
     if (price <= 0) {
@@ -380,12 +412,18 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     }
   }
 
+  /// [Function] : Display pop up to modify the item
+  ///
+  /// [initialLastName] : Item's name
+  /// [initialDesc] : Item's description
+  /// [itemId] : Item's id
+  /// [item] : Item's informations
   Future<void> showUpdateItem(
       BuildContext context,
       String initialLastName,
       String initialDesc,
       int itemId,
-      ItemListInfo item,
+      ItemList item,
       Function(String, String) onEdit) async {
     TextEditingController nameController = TextEditingController();
     TextEditingController descController = TextEditingController();
@@ -448,7 +486,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Annuler"),
+                  child: const Text(
+                    "Annuler",
+                    key: const Key('cancel-edit-item'),
+                  ),
                 ),
                 ElevatedButton(
                   onPressed: () async {
@@ -466,7 +507,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
-  Widget buildItemWidget(BuildContext context, ItemListInfo item) {
+  /// [Widget] : Build card component for the items
+  Widget buildItemWidget(BuildContext context, ItemList item) {
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -515,6 +557,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -566,6 +609,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: Key('edit-city'),
                               onTap: () async {
                                 await showEditPopupCity(context, city,
                                     (String newcity) {
@@ -596,6 +640,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: Key("edit-city"),
                               onTap: () async {
                                 await showEditPopupAddress(context, address,
                                     (String newAddress) {

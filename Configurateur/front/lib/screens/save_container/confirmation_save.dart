@@ -4,6 +4,9 @@ import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
+/// ConfirmationSave
+///
+/// Page to confirm the container's save
 class ConfirmationSave extends StatefulWidget {
   const ConfirmationSave({super.key});
 
@@ -11,11 +14,10 @@ class ConfirmationSave extends StatefulWidget {
   State<ConfirmationSave> createState() => ConfirmationSaveState();
 }
 
+/// ConfirmationSaveState
 ///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
 class ConfirmationSaveState extends State<ConfirmationSave> {
+  /// [Widget] : Build the sauvegarde confirmation page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

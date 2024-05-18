@@ -4,9 +4,25 @@ import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
+/// [faceList] : show the selected face of the container
+/// The face have this values :
+/// - "Devant": Show the front of the container.
+/// - "Derrière": Show the back of the container.
 const List<String> faceList = <String>['Devant', 'Derrière'];
+
+/// [directionList] : show the lenght or height of the container
+/// The direction have this values :
+/// - "Largeur": Show the lenght of the container.
+/// - "Hauteur": Show the height of the container.
 const List<String> directionList = <String>['Haut', 'Bas'];
 
+///
+/// [StatefulWidget] : ContainerDialog
+///
+/// [callback] :
+/// [size] : size of the container
+/// [width] : width of the container
+/// [height] : height of the container
 class ContainerDialog extends StatefulWidget {
   const ContainerDialog(
       {super.key,
@@ -25,7 +41,7 @@ class ContainerDialog extends StatefulWidget {
 }
 
 ///
-/// ContainerDialog
+/// ContainerDialogState
 ///
 class ContainerDialogState extends State<ContainerDialog> {
   final _formKey = GlobalKey<FormState>();
@@ -37,6 +53,8 @@ class ContainerDialogState extends State<ContainerDialog> {
   String size = '';
   int lockerSize = 0;
 
+  /// [Function] : Get the theme of the app
+  ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return checkBoxMenuButtonColorDarkTheme;
@@ -45,6 +63,8 @@ class ContainerDialogState extends State<ContainerDialog> {
     }
   }
 
+  /// [Function] : Get the theme of the app for the text color
+  ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return containerDialogTextColorDarkTheme;
@@ -53,6 +73,7 @@ class ContainerDialogState extends State<ContainerDialog> {
     }
   }
 
+  /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

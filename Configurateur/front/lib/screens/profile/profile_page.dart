@@ -19,6 +19,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+/// ProfilePage
+///
+/// Page of the user's profil
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -26,6 +29,8 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+/// ProfileState
+///
 class _ProfilePageState extends State<ProfilePage> {
   late String firstName;
   late String lastName;
@@ -34,6 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   late String company;
   String userMail = '';
 
+  /// [Function] : Get the user's details in the database
   Future<void> fetchUserDetails(String email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -62,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
+    /// Récupère l'email de l'utilisateur dans le stockage local
     storageService.getUserMail().then((value) {
       userMail = value;
       MyAlertTest.checkSignInStatus(context);
@@ -69,6 +77,9 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  /// [Function] : Show pop up to modify the user's name
+  /// [initialFirstName] : User's first name
+  /// [initialLastName] : User's last name
   Future<void> showEditPopupName(BuildContext context, String initialFirstName,
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
@@ -189,6 +200,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Check the token in the storage service
+  /// [initialCompany] : Initial user's company
   Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
       Function(String) onEdit) async {
     TextEditingController companyController = TextEditingController();
@@ -301,6 +314,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Show pop up to modify the user's mail
   Future<void> showEditPopupMail(BuildContext context, String? initialMail,
       Function(String) onEdit) async {
     TextEditingController mailController = TextEditingController();
@@ -412,6 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Show pop up to modify the user's password
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
     String password = '';
@@ -580,6 +595,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Widget] : Build the user's profil page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

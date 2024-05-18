@@ -8,6 +8,9 @@ import 'package:front/screens/messages/messages_card.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
+/// MessagePage
+///
+/// Page who list all the messages of the users in the database
 class MessagePage extends StatefulWidget {
   const MessagePage({Key? key}) : super(key: key);
 
@@ -15,6 +18,8 @@ class MessagePage extends StatefulWidget {
   _MessagePageState createState() => _MessagePageState();
 }
 
+/// MessagePageState
+///
 class _MessagePageState extends State<MessagePage> {
   List<Message> messages = [];
   bool jwtToken = false;
@@ -26,6 +31,8 @@ class _MessagePageState extends State<MessagePage> {
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// [Function] : Delete message
+  /// [message] : Selected message
   Future<void> deleteMessage(Message message) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/messages/delete");
     final response = await http.post(
@@ -50,6 +57,7 @@ class _MessagePageState extends State<MessagePage> {
     }
   }
 
+  /// [Function] : Get all the messages in the database
   Future<void> fetchMessages() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/messages/list'));
@@ -68,6 +76,7 @@ class _MessagePageState extends State<MessagePage> {
     }
   }
 
+  /// [Widget] : Build the message manager page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

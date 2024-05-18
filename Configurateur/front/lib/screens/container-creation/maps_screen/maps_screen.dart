@@ -14,6 +14,14 @@ import 'package:geolocator/geolocator.dart';
 
 import 'maps_screen_style.dart';
 
+/// MapScreen
+///
+/// Creation of the container
+/// [lockers] : All the lockers of the container
+/// [amount] : Price of the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [container] : Informations about the container
+/// [id] : User's Id
 class MapsScreen extends StatefulWidget {
   const MapsScreen(
       {super.key,
@@ -33,6 +41,8 @@ class MapsScreen extends StatefulWidget {
   State<MapsScreen> createState() => MapsState();
 }
 
+/// MapState
+///
 class MapsState extends State<MapsScreen> {
   String jwtToken = '';
   final Completer<GoogleMapController> _controller =
@@ -46,6 +56,7 @@ class MapsState extends State<MapsScreen> {
 
   LatLng location = _kGooglePlex.target;
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -59,6 +70,7 @@ class MapsState extends State<MapsScreen> {
     }
   }
 
+  /// [Function] : Get the user position
   void getPosition() async {
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -91,6 +103,7 @@ class MapsState extends State<MapsScreen> {
     super.initState();
   }
 
+  /// [Function] : Go to the next page
   void goNext() {
     HttpService().putRequest(
       'http://$serverIp:3000/api/container/update-position',
@@ -115,6 +128,7 @@ class MapsState extends State<MapsScreen> {
     context.go('/container-creation/payment', extra: jsonEncode(data));
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     var data = {
       'amount': widget.amount,
@@ -126,6 +140,7 @@ class MapsState extends State<MapsScreen> {
     context.go('/container-creation/recap', extra: jsonEncode(data));
   }
 
+  /// [Widget] : Build of the localisation page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

@@ -14,6 +14,9 @@ import 'package:provider/provider.dart';
 
 import 'register_confirmation_style.dart';
 
+/// RegisterConfirmation
+///
+/// Page to confirm the account creation
 class RegisterConfirmation extends StatefulWidget {
   const RegisterConfirmation({super.key, required this.params});
 
@@ -23,13 +26,12 @@ class RegisterConfirmation extends StatefulWidget {
   State<RegisterConfirmation> createState() => RegisterConfirmationState();
 }
 
+/// RegisterConfirmationState
 ///
-/// Register confirmation screen
-///
-/// page de confirmation d'inscription pour le configurateur
 class RegisterConfirmationState extends State<RegisterConfirmation> {
   String jwtToken = '';
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? tokenStorage = await storageService.readStorage('token');
     if (tokenStorage != "") {
@@ -45,6 +47,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     super.initState();
   }
 
+  /// [Widget] : Build the confirmation of the account creation
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/footer.dart';
 
+/// RecapConfigPage
+///
+/// The Page show all the informations of the container created by the user
 class RecapConfigPage extends StatefulWidget {
   const RecapConfigPage({Key? key}) : super(key: key);
 
@@ -9,13 +12,18 @@ class RecapConfigPage extends StatefulWidget {
   _RecapConfigPageState createState() => _RecapConfigPageState();
 }
 
+/// _RecapConfigPageState
+///
 class _RecapConfigPageState extends State<RecapConfigPage> {
   @override
   void initState() {
     super.initState();
+
+    /// Check if the user is connected
     MyAlertTest.checkSignInStatus(context);
   }
 
+  /// [Widget] : Build the recap of the container page
   @override
   Widget build(BuildContext context) {
     return Scaffold(

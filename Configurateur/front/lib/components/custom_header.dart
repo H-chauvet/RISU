@@ -7,6 +7,9 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// [StatefulWidget] : LandingAppBar
+///
+/// Header for the web pages
 class LandingAppBar extends StatefulWidget {
   const LandingAppBar({super.key, required BuildContext context});
 
@@ -14,16 +17,21 @@ class LandingAppBar extends StatefulWidget {
   State<LandingAppBar> createState() => LandingAppBarState();
 }
 
+/// LandingAppBarState
+///
 class LandingAppBarState extends State<LandingAppBar> {
   String? token = '';
   String? userRole = '';
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserRole().then((value) => userRole = value);
     setState(() {});
   }
 
+  /// [Function] : Check in storage service is the token is available
+  /// Change the path of page if you are connected or not
   void goToCreation() async {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
@@ -38,6 +46,7 @@ class LandingAppBarState extends State<LandingAppBar> {
     checkToken();
   }
 
+  /// [Widget] : Build Header Component
   @override
   Widget build(BuildContext context) {
     return Column(

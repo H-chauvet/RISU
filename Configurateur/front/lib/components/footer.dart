@@ -5,9 +5,13 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// CustomBottomNavigationBar
+///
+/// Customization of the navigation bar
 class CustomBottomNavigationBar extends StatelessWidget {
   const CustomBottomNavigationBar({super.key});
 
+  /// [Widget] : build the Footer Component
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(

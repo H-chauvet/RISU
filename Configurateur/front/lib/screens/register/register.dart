@@ -15,9 +15,11 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'dart:convert';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import 'register_style.dart';
 
+/// RegisterScreen
+///
+/// Page for the account creation
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -25,11 +27,10 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => RegisterScreenState();
 }
 
+/// RegisterScreenState
 ///
-/// Register screen
-///
-/// page d'inscription pour le configurateur
 class RegisterScreenState extends State<RegisterScreen> {
+  /// [Widget] : Build of the register page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

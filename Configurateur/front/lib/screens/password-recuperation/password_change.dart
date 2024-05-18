@@ -10,6 +10,10 @@ import 'dart:convert';
 
 import 'password_change_style.dart';
 
+/// PasswordChange
+///
+/// Page where the user can change is password
+/// [params] : uuid of the user
 class PasswordChange extends StatefulWidget {
   const PasswordChange({super.key, required this.params});
 
@@ -19,11 +23,10 @@ class PasswordChange extends StatefulWidget {
   State<PasswordChange> createState() => PasswordChangeState();
 }
 
+/// PasswordChangeState
 ///
-/// Password change screen
-///
-/// page de changement de mot de passe pour le configurateur
 class PasswordChangeState extends State<PasswordChange> {
+  /// [Widget] : Build the password change page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
