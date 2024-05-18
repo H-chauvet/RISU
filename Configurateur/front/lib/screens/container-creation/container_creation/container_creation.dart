@@ -28,7 +28,7 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 ///
 /// Creation of the container
 /// [container] : Informations about the container
-/// [containerMapping] : ???
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [width] : Container's width
 /// [height] : Container's height
 class ContainerCreation extends StatefulWidget {
@@ -520,7 +520,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   /// [Function] : Delete a locker
   /// [coord] : the locker's position in the container
-  /// [unitTesting] : ???
+  /// [unitTesting] : Boolean that says if we came here from unit test or not
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {
     int fragment = coord.x - 1 + (coord.y - 1) * width;
     int increment = width;

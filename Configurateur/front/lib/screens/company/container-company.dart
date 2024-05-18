@@ -14,7 +14,7 @@ import 'container-company_style.dart';
 /// [createdAt] : Creation of the container
 /// [organization] : Organization having created the container
 /// [organizationId] : Id of the organization
-/// [containerMapping] : ???
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [price] : Price of the container
 /// [design] : List of design for the container's faces
 /// [informations] : Informations about the container
