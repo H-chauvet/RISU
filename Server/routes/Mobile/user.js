@@ -125,7 +125,7 @@ router.put('/newEmail', jwtMiddleware.refreshTokenMiddleware,
       if (!req.body.newEmail || req.body.newEmail === '') {
         return res.status(401).json({ message: 'Missing new email' });
       }
-      const updatedUser = await userCtrl.updateNewEmail(user, req.body.newEmail);
+      const updatedUser = await userCtrl.updateNewEmail(user);
       const token = req.headers.authorization.split(' ')[1];
       await authCtrl.sendConfirmationNewEmail(req.body.newEmail, token);
       return res.status(200).json({ updatedUser });

@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const userCtrl = require('../../controllers/Mobile/user')
 const authCtrl = require('../../controllers/Mobile/auth')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const crypto = require('../../crypto/crypto')
 
 
 router.post('/signup', (req, res, next) => {
@@ -88,12 +89,14 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
   }
 })
 
-router.get('/newEmailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
+router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
   const token = req.query.token
+  const email = req.params.email
+  decryptedEmail = crypto.decrypt(email)
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     var user = await userCtrl.findUserById(decoded.id)
-    user = await userCtrl.updateEmail(decoded.id, user.newEmail);
+    user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
     return res.status(200).send(
       'New email now successfully verified !\nYou can go back to login page.'
       )

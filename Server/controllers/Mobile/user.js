@@ -229,7 +229,6 @@ exports.updateEmail = (id, newEmail) => {
     },
     data: {
       email: newEmail,
-      newEmail: null,
       mailVerification: true
     },
     include: { Notifications: true }
@@ -243,12 +242,11 @@ exports.updateEmail = (id, newEmail) => {
  * @param {*} body where the updated data can be found
  * @returns the updated user object
  */
-exports.updateNewEmail = (user, newEmail) => {
+exports.updateNewEmail = (user) => {
   try {
     return db.User_Mobile.update({
       where: { id: user.id },
       data: {
-        newEmail: newEmail,
         mailVerification: false
       },
       include: { Notifications: true }
