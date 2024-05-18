@@ -25,9 +25,9 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.testPosition == null) {
-    _getUserLocation();
+      _getUserLocation();
     } else {
       _userPosition = widget.testPosition!;
     }
@@ -160,7 +160,8 @@ class ContainerPageState extends State<ContainerPage> {
                               itemBuilder: (context, index) {
                                 final product = containers.elementAt(index);
                                 return ContainerCard(
-                                  key: Key('container-list_container-${product.id}'),
+                                  key: Key(
+                                      'container-list_container-${product.id}'),
                                   container: product,
                                   onDirectionClicked: widget.onDirectionClicked,
                                 );

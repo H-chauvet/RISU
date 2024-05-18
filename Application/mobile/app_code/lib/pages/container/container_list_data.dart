@@ -145,7 +145,8 @@ class ContainerCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.directions),
-                        key: Key('container-list_icon-localization-${container.id}'),
+                        key: Key(
+                            'container-list_icon-localization-${container.id}'),
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                         onPressed: () {
