@@ -96,16 +96,13 @@ class ContainerCard extends StatelessWidget {
                     SizedBox(
                       width: 100,
                       height: 100,
-                      child: Transform.scale(
-                        scale: 0.6,
-                        child: Image.asset('assets/container-logo.png'),
-                      ),
+                      child: Image.asset('assets/logo.png')
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          container.city!,
+                          container.city,
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
