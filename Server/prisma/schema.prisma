@@ -136,7 +136,6 @@ model Opinions_Mobile {
 model User_Mobile {
     id               String                @id @unique @default(cuid())
     email            String                @unique
-    newEmail         String?
     firstName        String?
     lastName         String?
     password         String
