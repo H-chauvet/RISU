@@ -5,8 +5,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -291,6 +293,8 @@ class TicketsState extends State<TicketsPage> {
     final TextEditingController _contentController = TextEditingController();
     final TextEditingController _convController = TextEditingController();
 
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       body: FooterView(
         footer: Footer(
@@ -302,7 +306,9 @@ class TicketsState extends State<TicketsPage> {
             'Contactez le support RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 35,
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
               fontFamily: 'Inter',
               fontWeight: FontWeight.bold,
               color: Provider.of<ThemeService>(context).isDark
@@ -334,7 +340,9 @@ class TicketsState extends State<TicketsPage> {
                           'Liste des tickets',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 35,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopBigFontSize
+                                : tabletBigFontSize,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.bold,
                             color: Provider.of<ThemeService>(context).isDark
@@ -365,9 +373,15 @@ class TicketsState extends State<TicketsPage> {
                                         bottomLeft: Radius.circular(8.0),
                                       ),
                                       child: Container(
-                                        constraints: const BoxConstraints(
-                                          maxWidth: 256,
-                                          maxHeight: 32,
+                                        constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.10,
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
                                         ),
                                         decoration: BoxDecoration(
                                           color: showOpenedTickets
@@ -389,6 +403,10 @@ class TicketsState extends State<TicketsPage> {
                                                       .colorScheme
                                                       ?.primary,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: screenFormat ==
+                                                      ScreenFormat.desktop
+                                                  ? desktopFontSize
+                                                  : tabletFontSize,
                                             ),
                                           ),
                                         ),
@@ -410,10 +428,15 @@ class TicketsState extends State<TicketsPage> {
                                         bottomRight: Radius.circular(8.0),
                                       ),
                                       child: Container(
-                                        constraints:
-                                            const BoxConstraints.expand(
-                                          width: 256,
-                                          height: 32,
+                                        constraints: BoxConstraints(
+                                          maxWidth: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.10,
+                                          maxHeight: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.04,
                                         ),
                                         decoration: BoxDecoration(
                                           color: showOpenedTickets
@@ -435,6 +458,10 @@ class TicketsState extends State<TicketsPage> {
                                                       .colorScheme
                                                       ?.primary,
                                               fontWeight: FontWeight.bold,
+                                              fontSize: screenFormat ==
+                                                      ScreenFormat.desktop
+                                                  ? desktopFontSize
+                                                  : tabletFontSize,
                                             ),
                                           ),
                                         ),
@@ -604,7 +631,9 @@ class TicketsState extends State<TicketsPage> {
                             'Nouveau ticket',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 35,
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopBigFontSize
+                                  : tabletBigFontSize,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
                               color: Provider.of<ThemeService>(context).isDark
@@ -686,7 +715,9 @@ class TicketsState extends State<TicketsPage> {
                             conversation[0]["title"],
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 35,
+                              fontSize: screenFormat == ScreenFormat.desktop
+                                  ? desktopBigFontSize
+                                  : tabletBigFontSize,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.bold,
                               color: Provider.of<ThemeService>(context).isDark
@@ -753,7 +784,10 @@ class TicketsState extends State<TicketsPage> {
                                                             .secondaryHeaderColor
                                                         : lightTheme
                                                             .secondaryHeaderColor),
-                                                fontSize: 16,
+                                                fontSize: screenFormat ==
+                                                        ScreenFormat.desktop
+                                                    ? desktopFontSize
+                                                    : tabletFontSize,
                                               ),
                                             ),
                                             Text(
@@ -775,7 +809,10 @@ class TicketsState extends State<TicketsPage> {
                                                             .secondaryHeaderColor
                                                         : lightTheme
                                                             .secondaryHeaderColor),
-                                                fontSize: 12,
+                                                fontSize: screenFormat ==
+                                                        ScreenFormat.desktop
+                                                    ? desktopFontSize
+                                                    : tabletFontSize,
                                               ),
                                             )
                                           ],
