@@ -215,8 +215,7 @@ void main() {
       while (true) {
         try {
           expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(testPage,
-              duration: const Duration(milliseconds: 100));
+          await tester.pumpWidget(testPage);
         } catch (e) {
           break;
         }
