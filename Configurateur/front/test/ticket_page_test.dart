@@ -43,7 +43,7 @@ void main() {
         ],
         child: Size(
           builder: (context, orientation, deviceType) {
-            retun MaterialApp(
+            return MaterialApp(
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
@@ -75,7 +75,7 @@ void main() {
         ],
         child: Size(
           builder: (context, orientation, deviceType) {
-            retun MaterialApp(
+            return MaterialApp(
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
