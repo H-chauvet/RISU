@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 /// Screen of the summary in the container (lockers, price, container's informations)
 /// [lockers] : All the lockers of the container
 /// [amount] : Price of the container
-/// [containerMapping] : ???
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [container] : Informations about the container
 /// [id] : User's Id
 class RecapScreen extends StatefulWidget {

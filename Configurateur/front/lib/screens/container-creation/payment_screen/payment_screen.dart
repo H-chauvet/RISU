@@ -21,7 +21,7 @@ import 'payment_screen_style.dart';
 /// Creation of the container
 /// [lockers] : All the lockers of the container
 /// [amount] : Price of the container
-/// [containerMapping] : ???
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [container] : Informations about the container
 /// [id] : User's Id
 class PaymentScreen extends StatefulWidget {
