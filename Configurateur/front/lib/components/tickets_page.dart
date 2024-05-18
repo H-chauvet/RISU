@@ -484,6 +484,10 @@ class TicketsState extends State<TicketsPage> {
                                                 ? darkTheme.secondaryHeaderColor
                                                 : lightTheme
                                                     .secondaryHeaderColor,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
                                       ),
                                     )
                                   : ListView.builder(
@@ -909,6 +913,10 @@ class TicketsState extends State<TicketsPage> {
                                                     .isDark
                                                 ? darkTheme.primaryColor
                                                 : lightTheme.primaryColor,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
                                       ),
                                     ),
                                   ),
@@ -938,6 +946,10 @@ class TicketsState extends State<TicketsPage> {
                                               .isDark
                                           ? darkTheme.primaryColor
                                           : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
                                     ),
                                   ),
                                 ),
