@@ -12,7 +12,6 @@ class ContactPage extends StatefulWidget {
 }
 
 class _ContactPageState extends State<ContactPage> {
-
   /// [Widget] : build the contact page
   @override
   Widget build(BuildContext context) {
