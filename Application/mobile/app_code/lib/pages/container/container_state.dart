@@ -25,7 +25,12 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   void initState() {
     super.initState();
+    
+    if (widget.testPosition == null) {
     _getUserLocation();
+    } else {
+      _userPosition = widget.testPosition!;
+    }
     if (widget.testContainers.isEmpty) {
       _getContainer();
     } else {
@@ -55,7 +60,6 @@ class ContainerPageState extends State<ContainerPage> {
 
   Future<void> _getContainer() async {
     try {
-      if (!mounted) return;
       setState(() {
         _loaderManager.setIsLoading(true);
       });
@@ -106,6 +110,7 @@ class ContainerPageState extends State<ContainerPage> {
           "meters",
         );
       });
+      print('${container.id} : ${container.distance}');
     });
   }
 
@@ -125,6 +130,7 @@ class ContainerPageState extends State<ContainerPage> {
                       const SizedBox(height: 30),
                       Text(
                         AppLocalizations.of(context)!.containersList,
+                        key: const Key('container-list_title'),
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -138,6 +144,7 @@ class ContainerPageState extends State<ContainerPage> {
                           if (containers.isEmpty)
                             Text(
                               AppLocalizations.of(context)!.containersListEmpty,
+                              key: const Key('container-list_no-container'),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: context.select(
@@ -153,6 +160,7 @@ class ContainerPageState extends State<ContainerPage> {
                               itemBuilder: (context, index) {
                                 final product = containers.elementAt(index);
                                 return ContainerCard(
+                                  key: Key('container-list_container-${product.id}'),
                                   container: product,
                                   onDirectionClicked: widget.onDirectionClicked,
                                 );

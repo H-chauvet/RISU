@@ -38,7 +38,10 @@ class ContainerList {
       'id': id,
       'address': address,
       'city': city,
+      'longitude': longitude,
+      'latitude': latitude,
       'itemCount': itemCount,
+      'distance': distance,
     };
   }
 }
@@ -142,6 +145,7 @@ class ContainerCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.directions),
+                        key: Key('container-list_icon-localization-${container.id}'),
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                         onPressed: () {
