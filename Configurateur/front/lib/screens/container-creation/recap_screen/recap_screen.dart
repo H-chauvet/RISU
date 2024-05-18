@@ -12,6 +12,14 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// RecapScreen
+///
+/// Screen of the summary in the container (lockers, price, container's informations)
+/// [lockers] : All the lockers of the container
+/// [amount] : Price of the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [container] : Informations about the container
+/// [id] : User's Id
 class RecapScreen extends StatefulWidget {
   const RecapScreen(
       {super.key,
@@ -31,14 +39,12 @@ class RecapScreen extends StatefulWidget {
   State<RecapScreen> createState() => RecapScreenState();
 }
 
-///
-/// Login screen
-///
-/// page de connexion pour le configurateur
+/// RecapScreenState
 ///
 class RecapScreenState extends State<RecapScreen> {
   List<Locker> lockerss = [];
 
+  /// [Function] : Go to the previous page
   void previousFunc() {
     var data = {
       'amount': widget.amount,
@@ -50,6 +56,7 @@ class RecapScreenState extends State<RecapScreen> {
     context.go('/container-creation/design', extra: jsonEncode(data));
   }
 
+  /// [Function] : Go to the next page
   void nextFunc() {
     var data = {
       'amount': widget.amount,
@@ -61,6 +68,7 @@ class RecapScreenState extends State<RecapScreen> {
     context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
+  /// [Function] : Decode the lockers' informations in json
   void decodeLockers() {
     final decode = jsonDecode(widget.lockers!);
 
@@ -78,6 +86,7 @@ class RecapScreenState extends State<RecapScreen> {
     }
   }
 
+  /// [Widget] : Build of the container's summary page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

@@ -7,6 +7,13 @@ import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+///
+/// Locker
+///
+/// Define the type and the price of a locker
+///
+/// [type] : Change if the locker is big, medium or small
+/// [price] : Price of a locker
 class Locker {
   String type;
   int price;
@@ -21,6 +28,13 @@ class Locker {
   }
 }
 
+/// LockerList
+///
+/// List of [Locker]
+/// [type] : Change if the locker is big, medium or small
+/// [price] : Price of a locker
+/// [quantity] : quantity of lockers in container
+///
 class LockerList {
   String type;
   int price;
@@ -32,6 +46,7 @@ class LockerList {
 ///
 /// RecapPanel
 ///
+/// Summary of the lockers selected in a container
 // ignore: must_be_immutable
 class RecapPanel extends StatelessWidget {
   RecapPanel(
@@ -40,6 +55,8 @@ class RecapPanel extends StatelessWidget {
       required this.onSaved,
       required this.screenFormat});
 
+  /// [Function] : Calculating the price of lockers
+  /// return the total price
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < articles!.length; i++) {
@@ -54,6 +71,7 @@ class RecapPanel extends StatelessWidget {
   final Function() onSaved;
   final ScreenFormat screenFormat;
 
+  /// [Function] : Parsing all the articles of container
   List<LockerList> parseArticles() {
     List<LockerList> parsedLockers = [];
     int littleCount = 0;
@@ -103,6 +121,7 @@ class RecapPanel extends StatelessWidget {
     return parsedLockers;
   }
 
+  /// [Widget] : Show the articles' content
   Widget articlesContent() {
     if (parsedArticles.isEmpty) {
       return Center(
@@ -175,6 +194,7 @@ class RecapPanel extends StatelessWidget {
     }
   }
 
+  /// [Widget] : build the recap panel
   @override
   Widget build(BuildContext context) {
     parseArticles();

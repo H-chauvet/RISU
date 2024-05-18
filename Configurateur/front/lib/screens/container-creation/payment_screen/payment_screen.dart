@@ -16,6 +16,14 @@ import 'package:http/http.dart' as http;
 
 import 'payment_screen_style.dart';
 
+/// PaymentScreen
+///
+/// Creation of the container
+/// [lockers] : All the lockers of the container
+/// [amount] : Price of the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [container] : Informations about the container
+/// [id] : User's Id
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
       {super.key,
@@ -35,11 +43,14 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
+/// _PaymentScreenState
+///
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
   String informations = '';
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token == '') {
@@ -66,6 +77,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     var data = {
       'amount': widget.amount,
@@ -77,6 +89,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
+  /// [Function] : Go to the next page
   void goNext() async {
     if (controller.complete) {
       bool response = await makePayment();
@@ -129,6 +142,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
+  /// [Widget] : Build the payment page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

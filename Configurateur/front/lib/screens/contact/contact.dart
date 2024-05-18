@@ -15,6 +15,9 @@ import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// ContactPage
+///
+/// Page where you can contact the Risu team
 class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
 
@@ -22,6 +25,7 @@ class ContactPage extends StatefulWidget {
   _ContactPageState createState() => _ContactPageState();
 }
 
+/// [Function] : Send the informations in the form to contact Risu team.
 void sendFormData(
   GlobalKey<FormState> formKey,
   String surname,
@@ -61,6 +65,8 @@ void sendFormData(
   }
 }
 
+/// ContactPageState
+///
 class _ContactPageState extends State<ContactPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String _surname = "";
@@ -68,6 +74,7 @@ class _ContactPageState extends State<ContactPage> {
   String _email = "";
   String _message = "";
 
+  /// [Widget] : build the contact page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

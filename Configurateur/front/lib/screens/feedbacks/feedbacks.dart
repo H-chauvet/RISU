@@ -20,6 +20,9 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// FeedbacksPage
+///
+/// Page to show the feedbacks about Risu
 class FeedbacksPage extends StatefulWidget {
   const FeedbacksPage({Key? key}) : super(key: key);
 
@@ -27,10 +30,13 @@ class FeedbacksPage extends StatefulWidget {
   _FeedbacksPageState createState() => _FeedbacksPageState();
 }
 
+/// FeedbacksPageState
+///
 class _FeedbacksPageState extends State<FeedbacksPage> {
   String jwtToken = '';
   List<Feedbacks> feedbacks = [];
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -49,6 +55,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     fetchFeedbacks();
   }
 
+  /// [Function] : Get all the feedbacks in the database
   Future<void> fetchFeedbacks() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/feedbacks/listAll'));
@@ -68,6 +75,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     }
   }
 
+  /// [Widget] : Build the feedback page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
