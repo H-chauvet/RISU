@@ -122,9 +122,8 @@ describe('PUT /api/mobile/user', () => {
       async.series(
         [
           function (callback) {
-            console.log(`/api/mobile/auth/newEmailVerification?token=${authToken}`);
             request('http://localhost:3000')
-              .get(`/api/mobile/auth/newEmailVerification?token=${authToken}`)
+              .get(`/api/mobile/auth/7XWfazDhG7hSxZw7NdwR%2FQ%3D%3D/newEmailVerification?token=${authToken}`) // 7XWfazDhG7hSxZw7NdwR%2FQ%3D%3D -> admin@gmail.com
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .expect(200, callback)
@@ -132,7 +131,7 @@ describe('PUT /api/mobile/user', () => {
         ],
         done
       )
-    }),
+    })
     it('should not update the email, no token', (done) => {
       async.series(
         [
