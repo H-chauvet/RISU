@@ -11,11 +11,13 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/login/ask_reset_password/ask_reset_password_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'login_page.dart';
 
 class LoginPageState extends State<LoginPage> {
@@ -93,67 +95,6 @@ class LoginPageState extends State<LoginPage> {
     return false;
   }
 
-  void apiResetPassword(BuildContext context) async {
-    try {
-      if (_email == null) {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: AppLocalizations.of(context)!.error,
-          message: AppLocalizations.of(context)!.emailNotFilled,
-        );
-        return;
-      }
-      if (_email == 'admin@gmail.com') {
-        await MyAlertDialog.showErrorAlertDialog(
-          context: context,
-          title: AppLocalizations.of(context)!.error,
-          message: AppLocalizations.of(context)!.passwordCantResetAdmin,
-        );
-        return;
-      }
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
-      var response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/user/resetPassword'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': _email!,
-        }),
-      );
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
-      if (response.statusCode == 200) {
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.email,
-            message:
-                AppLocalizations.of(context)!.passwordTemporarySent(_email!),
-          );
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'apiResetPassword',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringPasswordReset);
-        }
-      }
-    } catch (err, stacktrace) {
-      if (context.mounted) {
-        printCatchError(context, err, stacktrace,
-            message:
-                AppLocalizations.of(context)!.errorOccurredDuringPasswordReset);
-
-        return;
-      }
-      return;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -163,7 +104,6 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.background),
       appBar: MyAppBar(
@@ -240,7 +180,7 @@ class LoginPageState extends State<LoginPage> {
                               });
                             },
                             child: Text(
-                              "${AppLocalizations.of(context)!.stayConnected}",
+                              AppLocalizations.of(context)!.stayConnected,
                               key: const Key('login-text_stayconnected'),
                               style: TextStyle(
                                 fontSize: 12,
@@ -255,15 +195,24 @@ class LoginPageState extends State<LoginPage> {
                           TextButton(
                             key: const Key('login-textbutton_resetpassword'),
                             onPressed: () {
-                              setState(() {
-                                apiResetPassword(context);
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) {
+                                    return AskResetPasswordPage(email: _email);
+                                  },
+                                ),
+                              );
                             },
                             child: Text(
                               "${AppLocalizations.of(context)!.passwordForgotten} ?",
                               style: TextStyle(
                                 fontSize: 12,
                                 decoration: TextDecoration.underline,
+                                decorationColor: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider
+                                            .currentTheme.primaryColor),
                                 color: context.select(
                                     (ThemeProvider themeProvider) =>
                                         themeProvider
@@ -336,6 +285,9 @@ class LoginPageState extends State<LoginPage> {
                       style: TextStyle(
                         fontSize: 14,
                         decoration: TextDecoration.underline,
+                        decorationColor: context.select(
+                            (ThemeProvider themeProvider) =>
+                                themeProvider.currentTheme.primaryColor),
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                       ),

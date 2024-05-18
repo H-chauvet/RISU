@@ -3,45 +3,48 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/container.dart';
 import 'package:front/screens/container-list/container_list.dart';
-import 'package:front/screens/container-list/container_web.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
-Future<void> deleteContainer(ContainerList container) async {}
+Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const ContainerPage(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const ContainerPage(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
-    // Verify that the ContainerPage is rendered.
-    await tester.pump();
-    expect(find.text("Gestion des conteneurs"), findsOneWidget);
-    expect(find.text("Aucun conteneur trouvé."), findsOneWidget);
+    expect(find.text("Gestion des conteneurs et objets"), findsOneWidget);
   });
 
   testWidgets('ContainerMobilePage displays message details',
       (WidgetTester tester) async {
-    final List<ContainerList> containers = [];
+    final List<ContainerListData> containers = [];
     containers.add(
-      ContainerList(
+      ContainerListData(
         id: 1,
         createdAt: '2022-01-01',
         organization: 'Test Organization',
@@ -52,40 +55,45 @@ void main() {
         city: "Nantes",
         design: null,
         informations: "c'est un conteneur",
+        saveName: "name",
       ),
     );
 
     await tester.pumpWidget(
-      MaterialApp(
-        home: Scaffold(
-          body: Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: containers.length,
-                itemBuilder: (context, index) {
-                  final product = containers[index];
-                  return ContainerCard(
-                    container: product,
-                    onDelete: deleteContainer,
-                  );
-                },
+      Sizer(
+        builder: (context, orientation, deviceType) {
+          return MaterialApp(
+            home: Scaffold(
+              body: Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: containers.length,
+                    itemBuilder: (context, index) {
+                      final product = containers[index];
+                      return ContainerCards(
+                        container: product,
+                        onDelete: deleteContainer,
+                        page: "page",
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
 
-    expect(find.text("Conteneur N° : 1"), findsWidgets);
-    expect(find.text("Prix de création : 29.99"), findsWidgets);
-    expect(find.text("Nantes"), findsWidgets);
+    expect(find.text("Ville : Nantes"), findsWidgets);
+    expect(find.text("Adresse : blabla"), findsWidgets);
     await tester.tap(find.byIcon(Icons.delete));
     await tester.pump();
   });
 
   test('ContainerTest toJson and fromJson', () {
-    final container = ContainerList(
+    final container = ContainerListData(
       id: 1,
       createdAt: '2022-01-01',
       organization: 'Test Organization',
@@ -96,10 +104,12 @@ void main() {
       city: null,
       design: null,
       informations: "c'est un conteneur",
+      saveName: "name",
     );
 
     final Map<String, dynamic> containerJson = container.toMap();
-    final ContainerList parsedContainer = ContainerList.fromJson(containerJson);
+    final ContainerListData parsedContainer =
+        ContainerListData.fromJson(containerJson);
 
     expect(parsedContainer.id, container.id);
     expect(parsedContainer.createdAt, container.createdAt);

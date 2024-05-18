@@ -4,16 +4,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/home/home_page.dart';
+import 'package:risu/pages/login/login_refresh_token.dart';
 import 'package:risu/utils/providers/language.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'globals.dart';
-import 'package:risu/pages/login/login_refresh_token.dart';
 
 String theme = appTheme['clair'];
 
 void main() async {
-  await dotenv.load(fileName: 'lib/.env');
+  try {
+    await dotenv.load(fileName: 'lib/.env');
+  } catch (e) {
+    print('Error .env: $e');
+  }
 
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;

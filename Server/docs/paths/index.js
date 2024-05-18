@@ -27,13 +27,27 @@ const WebContainerGet = require("./Web/container/get");
 const WebContainerDelete = require("./Web/container/delete");
 const WebContainerUpdate = require("./Web/container/update");
 const WebContainerListAll = require("./Web/container/listAll");
+const WebContainerListAllByContainer = require("./Web/container/listByContainer");
+const WebContainerListAllByOrganization = require("./Web/container/listByOrganization");
+const WebContainerUpdateAddress = require("./Web/container/updateAddress");
+const WebContainerUpdateCity = require("./Web/container/updateCity");
+const WebContainerUpdateInformation = require("./Web/container/updateInformation");
+const WebContainerUpdateName = require("./Web/container/updateName");
 const WebContainerCreate = require("./Web/container/create");
+const WebOrganizationCreate = require("./Web/organization/create");
+const WebOrganizationUpdateInformation = require("./Web/organization/updateInformation");
+const WebOrganizationUpdateType = require("./Web/organization/updateType");
 const WebFeedbacksPost = require("./Web/feedback/create");
 const WebFeedbacksListAll = require("./Web/feedback/listAll");
 const WebItemDelete = require("./Web/items/delete");
 const WebItemUpdate = require("./Web/items/update");
 const WebItemListAll = require("./Web/items/listAll");
 const WebItemCreate = require("./Web/items/create");
+const WebItemListAllByCategory = require("./Web/items/listAllByCategory");
+const WebItemListAllByContainerId = require("./Web/items/listAllByContainerId");
+const WebItemUpdateName = require("./Web/items/updateName");
+const WebItemUpdateDescription = require("./Web/items/updateDescription");
+const WebItemUpdatePrice = require("./Web/items/updatePrice");
 const WebMessageList = require("./Web/messages/list");
 const WebMessageDelete = require("./Web/messages/delete");
 const WebPayment = require("./Web/payment/card-pay");
@@ -146,6 +160,24 @@ module.exports = {
     "/api/container/listAll": {
       ...WebContainerListAll,
     },
+    "/api/container/listAllByContainer": {
+      ...WebContainerListAllByContainer,
+    },
+    "/api/container/listAllByOrganization": {
+      ...WebContainerListAllByOrganization,
+    },
+    "/api/container/update-address": {
+      ...WebContainerUpdateAddress,
+    },
+    "/api/container/update-city": {
+      ...WebContainerUpdateCity,
+    },
+    "/api/container/update-information": {
+      ...WebContainerUpdateInformation,
+    },
+    "/api/container/update-name": {
+      ...WebContainerUpdateName,
+    },
     "/api/feedbacks/create": {
       ...WebFeedbacksPost,
     },
@@ -163,6 +195,21 @@ module.exports = {
     },
     "/api/items/update": {
       ...WebItemUpdate,
+    },
+    "/api/items/listAllByCategory": {
+      ...WebItemListAllByCategory,
+    },
+    "/api/items/listAllByContainerId": {
+      ...WebItemListAllByContainerId,
+    },
+    "/api/items/update-name": {
+      ...WebItemUpdateName,
+    },
+    "/api/items/update-description": {
+      ...WebItemUpdateDescription,
+    },
+    "/api/items/update-price": {
+      ...WebItemUpdatePrice,
     },
     "/api/messages/list": {
       ...WebMessageList,
@@ -211,6 +258,15 @@ module.exports = {
     },
     "/api/auth/update-password/:email": {
       ...WebUserUpdatePasswordEmail,
+    },
+    "/api/organization/create": {
+      ...WebOrganizationCreate,
+    },
+    "/api/organization/update-information/:id": {
+      ...WebOrganizationUpdateInformation,
+    },
+    "/api/organization/update-type/:id": {
+      ...WebOrganizationUpdateType,
     },
   },
 };

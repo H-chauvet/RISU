@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/container-creation/container_creation.dart';
+import 'package:front/screens/container-creation/container_creation/container_creation.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_3d/simple_3d.dart';
+import 'package:sizer/sizer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 
 void main() {
@@ -25,56 +26,71 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: ContainerCreation(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     expect(find.text('Précédent'), findsOneWidget);
     expect(find.text('Suivant'), findsOneWidget);
   });
 
-  testWidgets('Disabled lockers', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+  testWidgets(
+    'Disabled lockers',
+    (WidgetTester tester) async {
+      tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+      tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
+      when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    List<List<String>> containerList = [
-      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-      ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
-      ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
-      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-      ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-    ];
+      List<List<String>> containerList = [
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
+      ];
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(
-            containerMapping: jsonEncode(containerList),
-            height: '5',
-            width: '12',
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeService>(
+              create: (_) => ThemeService(),
+            ),
+          ],
+          child: Sizer(
+            builder: (context, orientation, deviceType) {
+              return MaterialApp(
+                home: InheritedGoRouter(
+                  goRouter: AppRouter.router,
+                  child: ContainerCreation(
+                    containerMapping: jsonEncode(containerList),
+                    height: '5',
+                    width: '12',
+                  ),
+                ),
+              );
+            },
           ),
         ),
-      ),
-    ));
-  });
+      );
+    },
+  );
 
   testWidgets('Container Creation invalid JWT token',
       (WidgetTester tester) async {
@@ -83,19 +99,25 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: ContainerCreation(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pump();
   });
@@ -106,19 +128,25 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: ContainerCreation(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pump();
 
@@ -131,19 +159,25 @@ void main() {
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: ContainerCreation(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pump();
 
@@ -230,22 +264,28 @@ void main() {
       'designs': jsonEncode([]),
     };
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: ContainerCreation(
-            id: '1',
-            container: jsonEncode(container),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
           ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: ContainerCreation(
+                  id: '1',
+                  container: jsonEncode(container),
+                ),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pump();
 

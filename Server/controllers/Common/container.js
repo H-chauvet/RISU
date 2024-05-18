@@ -7,8 +7,9 @@ const { db } = require("../../middleware/database");
  * @returns a container object in case it's found, otherwise empty
  */
 exports.getContainerById = (id) => {
+  let idtest = parseInt(id);
   return db.Containers.findUnique({
-    where: { id: id },
+    where: { id: idtest },
     select: {
       city: true,
       address: true,
@@ -19,6 +20,29 @@ exports.getContainerById = (id) => {
       longitude: true,
     },
   });
+};
+
+exports.getContainerByOrganizationId = (organizationId) => {
+  return db.Containers.findMany({
+    where: {
+      organizationId: parseInt(organizationId),
+    },
+    select: {
+      id: true,
+      city: true,
+      address: true,
+      informations: true,
+      items: {
+        where: {
+          available: true,
+        },
+      },
+    },
+  });
+};
+
+exports.getAllContainer = (id) => {
+  return db.Containers.findMany();
 };
 
 /**
@@ -124,5 +148,124 @@ exports.getItemsFromContainer = (containerId) => {
         },
       },
     },
+  })
+}
+
+exports.updateCity = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      city: container.city,
+    },
   });
+};
+
+exports.updateAddress = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      address: container.address,
+    },
+  });
+};
+
+exports.updateSaveName = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      saveName: container.saveName,
+    },
+  });
+};
+
+exports.updateInformation = container => {
+  return db.Containers.update({
+    where: {
+      id: container.id,
+    },
+    data: {
+      informations: container.informations,
+    },
+  });
+};
+
+/**
+  * Retrieve items of the containers with filters
+  *
+  * @param {number} containerId id of the container
+  * @param {string} articleName name of the article
+  * @param {boolean} isAscending order of the items
+  * @param {boolean} isAvailable availability of the items
+  * @param {number} categoryId id of the category
+  * @param {string} sortBy sort by price or rating
+  * @param {number} min minimum value
+  * @param {number} max maximum value
+  * @returns the container object with its items
+  */
+exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId, sortBy, min, max) => {
+  try {
+    const container = await db.Containers.findUnique({
+      where: { id: containerId },
+    });
+    if (!container) {
+      throw new Error("Container not found");
+    }
+
+    let whereCondition = {
+      name: {
+        contains: articleName,
+      },
+      available: isAvailable,
+    };
+    if (categoryId != undefined) {
+      if (categoryId != null) {
+        categoryId = parseInt(categoryId);
+        if (isNaN(categoryId)) {
+          throw new Error("Invalid category id");
+        }
+        whereCondition.categories = { some: { id: parseInt(categoryId) } };
+      }
+    }
+
+    if (sortBy === 'price') {
+      whereCondition.price = {
+        gte: min,
+        lte: max,
+      };
+    }
+
+    if (sortBy === 'rating') {
+      whereCondition.rating = {
+        gte: min,
+        lte: max,
+      };
+    }
+
+    const orderBy = isAscending === true ? 'asc' : 'desc';
+    return await db.Item.findMany({
+      where: whereCondition,
+      select: {
+        id: true,
+        name: true,
+        available: true,
+        createdAt: true,
+        containerId: true,
+        price: true,
+        image: true,
+        description: true,
+        categories: true,
+      },
+      orderBy: {
+        [sortBy]: orderBy,
+      },
+    });
+  } catch (error) {
+    throw new Error("Failed to retrieve items with filters");
+  }
 };
