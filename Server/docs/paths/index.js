@@ -2,6 +2,7 @@ const mobileSignUp = require("./Mobile/auth/signup");
 const mobileLogIn = require("./Mobile/auth/login");
 const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken');
 const mobileMailVerification = require("./Mobile/auth/mailVerification");
+const mobileNewMailVerification = require("./Mobile/auth/newEmailVerification");
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
@@ -82,6 +83,9 @@ module.exports = {
     },
     "/api/mobile/auth/mailVerification": {
       ...mobileMailVerification,
+    },
+    "/api/mobile/auth/newEmailVerification": {
+      ...mobileNewMailVerification,
     },
     "/api/mobile/container/listAll": {
       ...mobileContainerListAll,

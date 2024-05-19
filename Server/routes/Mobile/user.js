@@ -4,6 +4,7 @@ const router = express.Router()
 
 const passport = require('passport')
 const userCtrl = require('../../controllers/Mobile/user')
+const authCtrl = require('../../controllers/Mobile/auth')
 const cleanCtrl = require('../../controllers/Mobile/cleandata')
 const bcrypt = require('bcrypt')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
@@ -107,6 +108,29 @@ router.put('/', jwtMiddleware.refreshTokenMiddleware,
     } catch (error) {
       console.error('Failed to update notifications: ', error)
       return res.status(500).send('Failed to update notifications.')
+    }
+  }
+)
+
+router.put('/newEmail', jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await userCtrl.findUserById(req.user.id);
+      if (!user) {
+        return res.status(401).send('User not found');
+      }
+      if (!req.body.newEmail || req.body.newEmail === '') {
+        return res.status(401).json({ message: 'Missing new email' });
+      }
+      const updatedUser = await userCtrl.updateNewEmail(user);
+      const token = req.headers.authorization.split(' ')[1];
+      await authCtrl.sendConfirmationNewEmail(req.body.newEmail, token);
+      return res.status(200).json({ updatedUser });
+    } catch (error) {
+      return res.status(500).send('Fail updating new email');
     }
   }
 )
