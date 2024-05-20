@@ -1,12 +1,15 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 StorageService storageService = StorageService();
 
+/// StorageService
+///
+/// Service to store values
 class StorageService {
+  /// [Function] : Put a value in the storage
+  /// [key] : Name of the value
+  /// [value] : Value who will be stored
   void writeStorage(key, value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final DateTime expirationTime =
@@ -19,6 +22,8 @@ class StorageService {
     }
   }
 
+  /// [Function] : Get a value from the storage
+  /// [key] : Name of the value
   Future<String?> readStorage(key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -39,12 +44,15 @@ class StorageService {
     return prefs.getString(key);
   }
 
+  /// [Function] : Delete a value in the storage
+  /// [key] : Name of the value
   Future<bool> removeStorage(key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     return await prefs.remove(key);
   }
 
+  /// [Function] : Get the user email in the storage
   Future<String> getUserMail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -62,6 +70,39 @@ class StorageService {
     }
   }
 
+  /// [Function] : Get the user uuid in the storage
+  Future<String> getUserUuid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      return '';
+    }
+    dynamic decodedToken = JwtDecoder.decode(token);
+
+    if (decodedToken != null) {
+      return decodedToken['userUuid'];
+    } else {
+      return '';
+    }
+  }
+
+  /// [Function] : Get the user role in the storage
+  Future<String> getUserRole() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      return '';
+    }
+    dynamic decodedToken = JwtDecoder.decode(token);
+
+    return decodedToken?['role'];
+  }
+
+  /// [Function] : Check if the user is verified
   Future<bool> isUserVerified() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

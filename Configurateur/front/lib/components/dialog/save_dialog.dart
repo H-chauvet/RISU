@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
+
+/// [StatefulWidget] : SaveDialogState
+///
+/// Create a new dialog to save container with specific [name]
 class SaveDialog extends StatefulWidget {
   SaveDialog({super.key, this.name});
 
@@ -11,10 +15,10 @@ class SaveDialog extends StatefulWidget {
   State<SaveDialog> createState() => SaveDialogState();
 }
 
-///
-/// SaveDialog
+/// SaveDialogState
 ///
 class SaveDialogState extends State<SaveDialog> {
+  /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

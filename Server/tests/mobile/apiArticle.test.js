@@ -43,5 +43,44 @@ describe('GET /api/article/', () => {
       ],
       done
     )
+  }),
+  it('should get similar articles', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get(`/api/mobile/article/${1}/similar?containerId=1`)
+          console.log(res.body)
+          expect(res.statusCode).toBe(200)
+        }
+      ],
+      done
+    )
+  }),
+  it('should not get similar articles', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get(`/api/mobile/article/${1}/similar?containerId=`)
+          console.log(res.body)
+          expect(res.statusCode).toBe(401)
+        }
+      ],
+      done
+    )
+  }),
+  it('should not get similar articles', (done) => {
+    async.series(
+      [
+        async function () {
+          const res = await request('http://localhost:3000')
+            .get(`/api/mobile/article/${-1}/similar?containerId=1`)
+          console.log(res.body)
+          expect(res.statusCode).toBe(400)
+        }
+      ],
+      done
+    )
   })
 })

@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 
@@ -16,14 +17,18 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockSharedPreferences sharedPreferences;
 
-  setUp(() {
+  setUp(() async {
     sharedPreferences = MockSharedPreferences();
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
   });
 
   testWidgets('Register screen', (WidgetTester tester) async {
@@ -33,23 +38,30 @@ void main() {
 
     TestWidgetsFlutterBinding.ensureInitialized();
 
-    await tester.pumpWidget(MultiProvider(
-      providers: [
-        ChangeNotifierProvider<ThemeService>(
-          create: (_) => ThemeService(),
-        ),
-      ],
-      child: MaterialApp(
-        home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const RegisterScreen(),
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const RegisterScreen(),
+              ),
+            );
+          },
         ),
       ),
-    ));
+    );
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text('Inscription'), findsOneWidget);
+    expect(find.text('Inscrivez-vous sur le site RISU !'), findsOneWidget);
     expect(find.text('Adresse e-mail'), findsOneWidget);
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text('Valider le mot de passe'), findsOneWidget);

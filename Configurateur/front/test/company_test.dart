@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/company/company.dart';
@@ -9,23 +10,39 @@ import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
+  setUp(() async {
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
+  });
+
   testWidgets('CompanyPage should render without error',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: CompanyPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: CompanyPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     expect(find.byType(CompanyPage), findsOneWidget);
     await tester.pump();
@@ -37,19 +54,28 @@ void main() {
 
   testWidgets('CompanyPage should display team members',
       (WidgetTester tester) async {
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: CompanyPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: CompanyPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     expect(find.text("HENRI"), findsOneWidget);
     expect(find.text("LOUIS"), findsOneWidget);
@@ -57,19 +83,28 @@ void main() {
   });
 
   testWidgets('CompanyPage should display team', (WidgetTester tester) async {
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: CompanyPage(),
-          ),
-        ))));
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const MaterialApp(
+                  home: CompanyPage(),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
 
     late List<String> members = [
       'assets/Henri.png',

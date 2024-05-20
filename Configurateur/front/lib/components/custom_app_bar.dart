@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// CustomAppBar
 ///
-/// Custom rounded AppBar
-///
-/// @param title: title of the page
-///
+/// AppBar for the web pages
+/// [title] : Name of the page
+/// [preferredSize] : Define the size of the window
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   final Size preferredSize;
@@ -20,6 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       : preferredSize = Size.fromHeight(MediaQuery.of(context).size.height / 8),
         super(key: key);
 
+  /// [Widget] : build the AppBar
   @override
   Widget build(BuildContext context) {
     return AppBar(

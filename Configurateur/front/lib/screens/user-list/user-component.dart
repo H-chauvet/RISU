@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/styles/globalStyle.dart';
 
+/// Mobile user class
+///
+/// Store all the user's information from the database
+/// [id] : User's id
+/// [firstName] : User's firstname
+/// [lastName] : User's lastname
+/// [email] : User's mail
 class UserMobile {
   final String id;
   final String email;
@@ -21,6 +30,7 @@ class UserMobile {
       lastName: json['lastName'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -31,6 +41,11 @@ class UserMobile {
   }
 }
 
+/// UserMobileCard
+///
+/// Card for a mobile user informations
+/// [user] : User's informations
+/// [onDelete] : To delete a user
 class UserMobileCard extends StatelessWidget {
   final UserMobile user;
   final Function(UserMobile) onDelete;
@@ -39,20 +54,49 @@ class UserMobileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Card(
       child: Column(
         children: [
           ListTile(
-            title: Text("Prénom : " + user.firstName),
-            subtitle: Text("Nom : " + user.lastName),
-            leading: Row(
+            title: Text(
+              "Prénom : " + user.firstName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
+            subtitle: Text(
+              "Nom : " + user.lastName,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopFontSize
+                    : tabletFontSize,
+              ),
+            ),
+            trailing: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               mainAxisSize: MainAxisSize.min,
               children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Email : " + user.email,
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                      ),
+                    ),
+                  ],
+                ),
                 IconButton(
                   icon: const Icon(Icons.delete),
                   onPressed: () => onDelete(user),
                 ),
-                Text("Email : " + user.email),
               ],
             ),
           ),

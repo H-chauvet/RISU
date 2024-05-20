@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 const List<String> faceList = <String>['Devant', 'Derrière'];
 const List<String> directionList = <String>['Haut', 'Bas'];
 
+/// [StatefulWidget] : DeleteContainerDialog
+///
+/// Add a new dialog to delete design for a container's face
 class DeleteContainerDialog extends StatefulWidget {
   const DeleteContainerDialog({super.key, required this.callback});
 
@@ -29,6 +32,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
   String size = '';
   int lockerSize = 0;
 
+  /// [Function] : Get the theme of the app
+  ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return checkBoxMenuButtonColorDarkTheme;
@@ -37,6 +42,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
     }
   }
 
+  /// [Function] : Get the theme of the app for the text color
+  ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
       return containerDialogTextColorDarkTheme;
@@ -45,6 +52,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
     }
   }
 
+  /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(

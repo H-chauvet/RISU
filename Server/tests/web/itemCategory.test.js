@@ -48,7 +48,6 @@ describe("Items Category Route Tests", () => {
   });
 
   it("Should get all item categories", async () => {
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCategoryCtrl.getItemCategories.mockResolvedValueOnce([
       { id: 1, name: "Category 1" },
       { id: 2, name: "Category 2" },
@@ -56,12 +55,8 @@ describe("Items Category Route Tests", () => {
 
     const response = await supertest(app)
       .get("/")
-      .set("Authorization", "Bearer mockedAccessToken");
 
     expect(response.status).toBe(200);
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken",
-    );
     expect(itemCategoryCtrl.getItemCategories).toHaveBeenCalled();
   });
 

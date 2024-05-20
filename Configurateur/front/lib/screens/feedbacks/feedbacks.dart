@@ -5,19 +5,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
-import 'package:front/components/dialog/rating_dialog_content.dart';
+import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
 import 'package:front/components/footer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/main.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
+import 'package:front/screens/feedbacks/feedbacks_style.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// FeedbacksPage
+///
+/// Page to show the feedbacks about Risu
 class FeedbacksPage extends StatefulWidget {
   const FeedbacksPage({Key? key}) : super(key: key);
 
@@ -25,10 +30,13 @@ class FeedbacksPage extends StatefulWidget {
   _FeedbacksPageState createState() => _FeedbacksPageState();
 }
 
+/// FeedbacksPageState
+///
 class _FeedbacksPageState extends State<FeedbacksPage> {
   String jwtToken = '';
   List<Feedbacks> feedbacks = [];
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -47,6 +55,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     fetchFeedbacks();
   }
 
+  /// [Function] : Get all the feedbacks in the database
   Future<void> fetchFeedbacks() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/feedbacks/listAll'));
@@ -66,8 +75,11 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     }
   }
 
+  /// [Widget] : Build the feedback page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return BlocProvider(
       create: (context) => DialogCubit(),
       child: Scaffold(
@@ -103,17 +115,24 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                                     ? darkTheme.colorScheme.background
                                     : lightTheme.colorScheme.background,
                             child: Container(
-                              width: 600.0,
-                              height: 300.0,
+                              width: screenFormat == ScreenFormat.desktop
+                                  ? desktopContainerWidth
+                                  : tabletContainerWidth,
+                              height: screenFormat == ScreenFormat.desktop
+                                  ? desktopContainerHeight
+                                  : tabletContainerHeight,
                               child: Column(
                                 children: [
-                                  const Padding(
-                                    padding: EdgeInsets.all(16.0),
+                                  Padding(
+                                    padding: const EdgeInsets.all(16.0),
                                     child: Text(
                                       'Poster un avis',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
                                       ),
                                     ),
                                   ),
@@ -129,6 +148,9 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                   child: Text(
                     'Poster un avis',
                     style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,

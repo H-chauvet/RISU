@@ -2,6 +2,7 @@ const mobileSignUp = require("./Mobile/auth/signup");
 const mobileLogIn = require("./Mobile/auth/login");
 const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken');
 const mobileMailVerification = require("./Mobile/auth/mailVerification");
+const mobileNewMailVerification = require("./Mobile/auth/newEmailVerification");
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
@@ -9,6 +10,7 @@ const mobileFavorite = require("./Mobile/items/favorites/favorite");
 const mobileMyFavorites = require("./Mobile/items/favorites/myFavorites");
 const mobileItemId = require("./Mobile/items/itemId");
 const mobileItemListAll = require("./Mobile/items/listAll");
+const mobileItemSimilar = require("./Mobile/items/similarItems");
 const mobileOpinion = require("./Mobile/opinion/opinion");
 const mobileOpinionId = require("./Mobile/opinion/opinionId");
 const mobileRentArticle = require("./Mobile/rent/article");
@@ -22,20 +24,35 @@ const mobileUserResetPassword = require("./Mobile/user/resetPassword");
 const mobileUserUpdate = require("./Mobile/user/update");
 const mobileUserId = require("./Mobile/user/userId");
 
-const WebContact = require("./Web/contact/contact");
+const WebCreateTicket = require("./Web/tickets/create");
+const WebAllTickets = require("./Web/tickets/allTickets");
+const WebAssignTicket = require("./Web/tickets/assign");
+const WebUserTicket = require("./Web/tickets/userTicket");
 const WebContainerGet = require("./Web/container/get");
 const WebContainerDelete = require("./Web/container/delete");
 const WebContainerUpdate = require("./Web/container/update");
 const WebContainerListAll = require("./Web/container/listAll");
+const WebContainerListAllByContainer = require("./Web/container/listByContainer");
+const WebContainerListAllByOrganization = require("./Web/container/listByOrganization");
+const WebContainerUpdateAddress = require("./Web/container/updateAddress");
+const WebContainerUpdateCity = require("./Web/container/updateCity");
+const WebContainerUpdateInformation = require("./Web/container/updateInformation");
+const WebContainerUpdateName = require("./Web/container/updateName");
 const WebContainerCreate = require("./Web/container/create");
+const WebOrganizationCreate = require("./Web/organization/create");
+const WebOrganizationUpdateInformation = require("./Web/organization/updateInformation");
+const WebOrganizationUpdateType = require("./Web/organization/updateType");
 const WebFeedbacksPost = require("./Web/feedback/create");
 const WebFeedbacksListAll = require("./Web/feedback/listAll");
 const WebItemDelete = require("./Web/items/delete");
 const WebItemUpdate = require("./Web/items/update");
 const WebItemListAll = require("./Web/items/listAll");
 const WebItemCreate = require("./Web/items/create");
-const WebMessageList = require("./Web/messages/list");
-const WebMessageDelete = require("./Web/messages/delete");
+const WebItemListAllByCategory = require("./Web/items/listAllByCategory");
+const WebItemListAllByContainerId = require("./Web/items/listAllByContainerId");
+const WebItemUpdateName = require("./Web/items/updateName");
+const WebItemUpdateDescription = require("./Web/items/updateDescription");
+const WebItemUpdatePrice = require("./Web/items/updatePrice");
 const WebPayment = require("./Web/payment/card-pay");
 const WebUserConfirmedRegister = require("./Web/user/confirmed-register");
 const WebUserDelete = require("./Web/user/delete");
@@ -68,6 +85,9 @@ module.exports = {
     "/api/mobile/auth/mailVerification": {
       ...mobileMailVerification,
     },
+    "/api/mobile/auth/newEmailVerification": {
+      ...mobileNewMailVerification,
+    },
     "/api/mobile/container/listAll": {
       ...mobileContainerListAll,
     },
@@ -82,6 +102,9 @@ module.exports = {
     },
     "/api/mobile/article/:articleId": {
       ...mobileItemId,
+    },
+    "/api/mobile/article/:articleId/similar": {
+      ...mobileItemSimilar,
     },
     "/api/mobile/favorite": {
       ...mobileMyFavorites,
@@ -125,8 +148,17 @@ module.exports = {
     "/api/mobile/user/": {
       ...mobileUserUpdate,
     },
-    "/api/contact": {
-      ...WebContact,
+    "/api/tickets/create": {
+      ...WebCreateTicket,
+    },
+    "/api/tickets/assign/:assignedId": {
+      ...WebAssignTicket,
+    },
+    "/api/tickets/all-tickets": {
+      ...WebAllTickets,
+    },
+    "/api/tickets/user-ticket/:userId": {
+      ...WebUserTicket,
     },
     "/api/container/get": {
       ...WebContainerGet,
@@ -146,6 +178,24 @@ module.exports = {
     "/api/container/listAll": {
       ...WebContainerListAll,
     },
+    "/api/container/listAllByContainer": {
+      ...WebContainerListAllByContainer,
+    },
+    "/api/container/listAllByOrganization": {
+      ...WebContainerListAllByOrganization,
+    },
+    "/api/container/update-address": {
+      ...WebContainerUpdateAddress,
+    },
+    "/api/container/update-city": {
+      ...WebContainerUpdateCity,
+    },
+    "/api/container/update-information": {
+      ...WebContainerUpdateInformation,
+    },
+    "/api/container/update-name": {
+      ...WebContainerUpdateName,
+    },
     "/api/feedbacks/create": {
       ...WebFeedbacksPost,
     },
@@ -164,11 +214,20 @@ module.exports = {
     "/api/items/update": {
       ...WebItemUpdate,
     },
-    "/api/messages/list": {
-      ...WebMessageList,
+    "/api/items/listAllByCategory": {
+      ...WebItemListAllByCategory,
     },
-    "/api/messages/delete": {
-      ...WebMessageDelete,
+    "/api/items/listAllByContainerId": {
+      ...WebItemListAllByContainerId,
+    },
+    "/api/items/update-name": {
+      ...WebItemUpdateName,
+    },
+    "/api/items/update-description": {
+      ...WebItemUpdateDescription,
+    },
+    "/api/items/update-price": {
+      ...WebItemUpdatePrice,
     },
     "/api/payment/card-pay": {
       ...WebPayment,
@@ -211,6 +270,15 @@ module.exports = {
     },
     "/api/auth/update-password/:email": {
       ...WebUserUpdatePasswordEmail,
+    },
+    "/api/organization/create": {
+      ...WebOrganizationCreate,
+    },
+    "/api/organization/update-information/:id": {
+      ...WebOrganizationUpdateInformation,
+    },
+    "/api/organization/update-type/:id": {
+      ...WebOrganizationUpdateType,
     },
   },
 };

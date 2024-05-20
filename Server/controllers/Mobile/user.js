@@ -60,17 +60,18 @@ exports.generateRandomPassword = (length) => {
   return password
 }
 
-exports.sendResetPasswordEmail = async(email, newPassword) => {
+exports.sendResetPasswordEmail = async(email, resetToken) => {
   const mailOptions = {
     from: process.env.MAIL_ADDRESS,
     to: email,
     subject: 'Reset Your Password',
-    text: `Your new password is: ${newPassword}`
+    text: "",
+    html: '<p>Please follow the link to reset your password: <a href="http://risu.dns-dynamic.net/resetToken?token=' +
+      resetToken + '">here</a></p>',
   }
 
   try {
-    const info = transporter.sendMail(mailOptions)
-    console.log('Reset email sent to ' + email + ' (' + info.response + ')')
+    transporter.sendMail(mailOptions)
   } catch (error) {
     console.error('Error sending reset password email:', error)
   }
@@ -124,7 +125,6 @@ exports.updateUserInfo = (user, body) => {
     data: {
       firstName: body.firstName ?? user.firstName,
       lastName: body.lastName ?? user.lastName,
-      email: body.email ?? user.email,
       Notifications: {
         update: {
           favoriteItemsAvailable: body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,
@@ -195,6 +195,93 @@ exports.removeUserRefreshToken = userId => {
     include: { Notifications: true },
     data: {
       refreshToken: null
+    }
+  })
+}
+
+/**
+ * Update user's reset token
+ *
+ * @param {string} userId ID of the user
+ * @param {string} resetToken Reset token to be saved
+ */
+exports.updateUserResetToken = async (userId, resetToken) => {
+  try {
+    return await db.User_Mobile.update({
+      where: { id: userId },
+      data: { resetToken: resetToken },
+    });
+  } catch (error) {
+    throw new Error('Failed to update user reset token: ' + error);
+  }
+}
+
+/**
+ * Update the email of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.updateEmail = (id, newEmail) => {
+   return db.User_Mobile.update({
+    where: {
+      id: id
+    },
+    data: {
+      email: newEmail,
+      mailVerification: true
+    },
+    include: { Notifications: true }
+  })
+}
+
+/**
+ * Update the data of the user
+ *
+ * @param {*} user object to be updated
+ * @param {*} body where the updated data can be found
+ * @returns the updated user object
+ */
+exports.updateNewEmail = (user) => {
+  try {
+    return db.User_Mobile.update({
+      where: { id: user.id },
+      data: {
+        mailVerification: false
+      },
+      include: { Notifications: true }
+    })
+  } catch (error) {
+    throw new Error('Failed to update newEmail.')
+  }
+}
+
+/**
+ * Remove the resetToken of the user
+ *
+ * @param {number} id of the user
+ * @returns the updated user
+ */
+exports.removeUserResetToken = userId => {
+  return db.User_Mobile.update({
+    where: { id: userId },
+    include: { Notifications: true },
+    data: {
+      resetToken: null
+    }
+  })
+}
+
+/**
+ * Delete the user notifications before deleting his account
+ *
+ * @param {*} notificationsId of the notifications
+ * @returns none
+ */
+exports.cleanUserNotifications = notificationsId => {
+  return db.notifications_Mobile.delete({
+    where: {
+      id: notificationsId
     }
   })
 }

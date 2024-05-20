@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
+/// MyContainer
+///
+/// Page to show all the user's containers
 class MyContainer extends StatefulWidget {
   const MyContainer({super.key});
 
@@ -14,15 +19,14 @@ class MyContainer extends StatefulWidget {
   State<MyContainer> createState() => MyContainerState();
 }
 
+/// MyContainerState
 ///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
 class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
   List<dynamic> displayedContainers = [];
   dynamic body;
 
+  /// [Function] : Get all the containers in the database
   void getContainers() async {
     String? token = await storageService.readStorage('token');
     HttpService().getRequest(
@@ -59,8 +63,13 @@ class MyContainerState extends State<MyContainer> {
     super.initState();
   }
 
+  /// [Widget] : Build my containers page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
+    //debugPrint(displayedContainers[0]['name'].toString());
+
     return Scaffold(
       appBar: CustomAppBar(
         "Mes conteneurs",
@@ -70,14 +79,18 @@ class MyContainerState extends State<MyContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Mes conteneurs sauvegardés",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            ListView.builder(
+            Expanded(
+              child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                shrinkWrap: true,
                 itemCount: displayedContainers.length,
                 itemBuilder: (_, i) {
                   return Column(
@@ -86,25 +99,38 @@ class MyContainerState extends State<MyContainer> {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
+                          key: Key('container_button_$i'),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                           ),
                           onPressed: () {
-                            context.go('/container-creation',
-                                extra: jsonEncode({
+                            context.go(
+                              '/container-creation',
+                              extra: jsonEncode(
+                                {
                                   'id': displayedContainers[i]['id'],
                                   'container':
                                       jsonEncode(displayedContainers[i]),
-                                }));
+                                },
+                              ),
+                            );
                           },
-                          child: Text(displayedContainers[i]['saveName']),
+                          child: Text(
+                            displayedContainers[i]['saveName'],
+                            style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize),
+                          ),
                         ),
                       ),
                     ],
                   );
-                }),
+                },
+              ),
+            ),
           ],
         ),
       ),

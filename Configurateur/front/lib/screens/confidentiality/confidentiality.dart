@@ -2,9 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 
+/// ConfidentialityPage
+///
+/// Display the informations and the confidentiality about Risu
 class ConfidentialityPage extends StatelessWidget {
   const ConfidentialityPage({super.key});
 
+  /// [Widget] : Build the confidentiality page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
