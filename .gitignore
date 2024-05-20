@@ -1,3 +1,4 @@
 .env
 deploy-risu.sh
 coverage/
+Configurateur/front/pubspec.lock

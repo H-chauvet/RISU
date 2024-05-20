@@ -24,7 +24,10 @@ const mobileUserResetPassword = require("./Mobile/user/resetPassword");
 const mobileUserUpdate = require("./Mobile/user/update");
 const mobileUserId = require("./Mobile/user/userId");
 
-const WebContact = require("./Web/contact/contact");
+const WebCreateTicket = require("./Web/tickets/create");
+const WebAllTickets = require("./Web/tickets/allTickets");
+const WebAssignTicket = require("./Web/tickets/assign");
+const WebUserTicket = require("./Web/tickets/userTicket");
 const WebContainerGet = require("./Web/container/get");
 const WebContainerDelete = require("./Web/container/delete");
 const WebContainerUpdate = require("./Web/container/update");
@@ -50,8 +53,6 @@ const WebItemListAllByContainerId = require("./Web/items/listAllByContainerId");
 const WebItemUpdateName = require("./Web/items/updateName");
 const WebItemUpdateDescription = require("./Web/items/updateDescription");
 const WebItemUpdatePrice = require("./Web/items/updatePrice");
-const WebMessageList = require("./Web/messages/list");
-const WebMessageDelete = require("./Web/messages/delete");
 const WebPayment = require("./Web/payment/card-pay");
 const WebUserConfirmedRegister = require("./Web/user/confirmed-register");
 const WebUserDelete = require("./Web/user/delete");
@@ -147,8 +148,17 @@ module.exports = {
     "/api/mobile/user/": {
       ...mobileUserUpdate,
     },
-    "/api/contact": {
-      ...WebContact,
+    "/api/tickets/create": {
+      ...WebCreateTicket,
+    },
+    "/api/tickets/assign/:assignedId": {
+      ...WebAssignTicket,
+    },
+    "/api/tickets/all-tickets": {
+      ...WebAllTickets,
+    },
+    "/api/tickets/user-ticket/:userId": {
+      ...WebUserTicket,
     },
     "/api/container/get": {
       ...WebContainerGet,
@@ -218,12 +228,6 @@ module.exports = {
     },
     "/api/items/update-price": {
       ...WebItemUpdatePrice,
-    },
-    "/api/messages/list": {
-      ...WebMessageList,
-    },
-    "/api/messages/delete": {
-      ...WebMessageDelete,
     },
     "/api/payment/card-pay": {
       ...WebPayment,

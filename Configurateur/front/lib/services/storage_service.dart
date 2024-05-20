@@ -53,7 +53,6 @@ class StorageService {
   }
 
   /// [Function] : Get the user email in the storage
-  /// [key] : Name of the value
   Future<String> getUserMail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -71,8 +70,25 @@ class StorageService {
     }
   }
 
+  /// [Function] : Get the user uuid in the storage
+  Future<String> getUserUuid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      return '';
+    }
+    dynamic decodedToken = JwtDecoder.decode(token);
+
+    if (decodedToken != null) {
+      return decodedToken['userUuid'];
+    } else {
+      return '';
+    }
+  }
+
   /// [Function] : Get the user role in the storage
-  /// [key] : Name of the value
   Future<String> getUserRole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 

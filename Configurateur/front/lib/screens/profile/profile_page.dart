@@ -32,11 +32,11 @@ class ProfilePage extends StatefulWidget {
 /// ProfileState
 ///
 class _ProfilePageState extends State<ProfilePage> {
-  late String firstName;
-  late String lastName;
-  late DateTime createdDate;
-  late String formattedDate;
-  late String company;
+  late String firstName = '';
+  late String lastName = '';
+  late DateTime createdDate = DateTime.now();
+  late String formattedDate = '';
+  late String company = '';
   String userMail = '';
 
   /// [Function] : Get the user's details in the database
@@ -107,12 +107,14 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("first-name"),
                   controller: firstNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau prénom", hintText: initialFirstName),
                 ),
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("last-name"),
                   controller: lastNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom", hintText: initialLastName),
@@ -135,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-name"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -144,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             ElevatedButton(
+              key: const Key("button-name"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-details/$userMail";
@@ -228,6 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("company"),
                   controller: companyController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom d'entreprise",
@@ -251,6 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-company"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -260,6 +266,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             ElevatedButton(
+              key: const Key("button-company"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-company/$userMail";
@@ -341,6 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("user-mail"),
                   controller: mailController,
                   decoration: InputDecoration(
                       labelText: "Nouveau mail", hintText: initialMail),
@@ -363,6 +371,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-mail"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -541,9 +550,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text("Annuler"),
+                  child:
+                      const Text("Annuler", key: Key("cancel-edit-password")),
                 ),
                 ElevatedButton(
+                  key: const Key("button-password"),
                   onPressed: () async {
                     if (formKey.currentState!.validate() &&
                         password == validedPassword) {
@@ -673,6 +684,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(width: 5.0),
                           InkWell(
+                            key: const Key('edit-name'),
                             onTap: () async {
                               await showEditPopupName(
                                 context,
@@ -728,6 +740,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-mail'),
                               onTap: () async {
                                 await showEditPopupMail(context, userMail,
                                     (String newMail) {
@@ -786,6 +799,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-company'),
                               onTap: () async {
                                 await showEditPopupCompany(context, company,
                                     (String newCompany) {
@@ -844,6 +858,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-password'),
                               onTap: () async {
                                 await showEditPopupPassword(context, "",
                                     (String newPassword) {

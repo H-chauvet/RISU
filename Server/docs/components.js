@@ -181,27 +181,6 @@ module.exports = {
           },
         },
       },
-      Contact_Web: {
-        type: "object",
-        properties: {
-          email: {
-            type: "string",
-          },
-          message: {
-            type: "string",
-          },
-          firstName: {
-            type: "string",
-          },
-          lastName: {
-            type: "string",
-          },
-          createdAt: {
-            type: "integer",
-            format: "date-time",
-          },
-        },
-      },
       User_Mobile: {
         type: "object",
         required: ["email", "password"],
