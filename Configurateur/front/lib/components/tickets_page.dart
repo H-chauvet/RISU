@@ -377,7 +377,7 @@ class TicketsState extends State<TicketsPage> {
                                           maxWidth: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.10,
+                                              0.12,
                                           maxHeight: MediaQuery.of(context)
                                                   .size
                                                   .height *
@@ -432,7 +432,7 @@ class TicketsState extends State<TicketsPage> {
                                           maxWidth: MediaQuery.of(context)
                                                   .size
                                                   .width *
-                                              0.10,
+                                              0.12,
                                           maxHeight: MediaQuery.of(context)
                                                   .size
                                                   .height *
@@ -549,7 +549,11 @@ class TicketsState extends State<TicketsPage> {
                                                           overflow: TextOverflow
                                                               .ellipsis,
                                                           style: TextStyle(
-                                                            fontSize: 18,
+                                                            fontSize: screenFormat ==
+                                                                    ScreenFormat
+                                                                        .desktop
+                                                                ? desktopFontSize
+                                                                : tabletFontSize,
                                                             color:
                                                                 getCurrentTheme()
                                                                     .primaryColor,
@@ -563,6 +567,11 @@ class TicketsState extends State<TicketsPage> {
                                                                 "createdAt"],
                                                           )}",
                                                           style: TextStyle(
+                                                            fontSize: screenFormat ==
+                                                                    ScreenFormat
+                                                                        .desktop
+                                                                ? desktopFontSize
+                                                                : tabletFontSize,
                                                             color:
                                                                 getCurrentTheme()
                                                                     .primaryColor,
@@ -574,6 +583,11 @@ class TicketsState extends State<TicketsPage> {
                                                                 "createdAt"],
                                                           )}",
                                                           style: TextStyle(
+                                                            fontSize: screenFormat ==
+                                                                    ScreenFormat
+                                                                        .desktop
+                                                                ? desktopFontSize
+                                                                : tabletFontSize,
                                                             color:
                                                                 getCurrentTheme()
                                                                     .primaryColor,
@@ -593,9 +607,14 @@ class TicketsState extends State<TicketsPage> {
                                                                 tickets:
                                                                     tickets);
                                                           },
-                                                          child: const Text(
+                                                          child: Text(
                                                             "S'assigner",
                                                             style: TextStyle(
+                                                              fontSize: screenFormat ==
+                                                                      ScreenFormat
+                                                                          .desktop
+                                                                  ? desktopFontSize
+                                                                  : tabletFontSize,
                                                               color:
                                                                   Colors.blue,
                                                             ),
@@ -615,12 +634,12 @@ class TicketsState extends State<TicketsPage> {
                       ],
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: SizedBox(
-                      height: 512,
+                      height: MediaQuery.of(context).size.height * 0.5,
                       width: 1,
-                      child: VerticalDivider(
+                      child: const VerticalDivider(
                         thickness: 1,
                       ),
                     ),
@@ -697,6 +716,10 @@ class TicketsState extends State<TicketsPage> {
                                 child: Text(
                                   'Soumettre votre ticket',
                                   style: TextStyle(
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize,
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
                                         ? darkTheme.primaryColor
