@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 /// [faceList] : show the selected face of the container
 /// The face have this values :
@@ -71,12 +74,14 @@ class AutoFillDialogState extends State<AutoFillDialog> {
             padding: const EdgeInsets.all(8),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
-              child: const Text(
+              child: Text(
                 'Trier',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor),
               ),
               onPressed: () {
                 Navigator.pop(context, face);
