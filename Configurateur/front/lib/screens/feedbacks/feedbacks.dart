@@ -136,7 +136,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                                       ),
                                     ),
                                   ),
-                                  RatingDialogContent(),
+                                  RatingDialogContent(onSubmit: fetchFeedbacks),
                                 ],
                               ),
                             ),
