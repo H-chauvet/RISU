@@ -35,7 +35,7 @@ class MyContainerState extends State<MyContainer> {
     HttpService().getRequest(
       'http://$serverIp:3000/api/container/listAll',
       <String, String>{
-        'Authorization': token!,
+        'Authorization': 'Bearer $token',
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },

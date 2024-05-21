@@ -76,9 +76,9 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
+    checkToken();
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
