@@ -63,7 +63,7 @@ void main() {
     await tester.pumpAndSettle();
   });
 
-  testWidgets('Conversation page open and send ticket',
+  testWidgets('Conversation page open and sendticket',
       (WidgetTester tester) async {
     userInformation = initExampleUser();
     final testPage =
