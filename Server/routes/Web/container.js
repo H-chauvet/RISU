@@ -6,7 +6,7 @@ const jwtMiddleware = require("../../middleware/jwt");
 
 router.get("/get", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -27,7 +27,7 @@ router.get("/get", async function (req, res, next) {
 
 router.post("/delete", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -47,7 +47,7 @@ router.post("/delete", async function (req, res, next) {
 
 router.post("/create", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -70,7 +70,7 @@ router.post("/create", async function (req, res, next) {
 
 router.put("/update", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -109,7 +109,7 @@ router.put("/update", async function (req, res, next) {
 
 router.put("/update-position", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -134,7 +134,7 @@ router.put("/update-position", async function (req, res, next) {
 
 router.get("/listAll", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -152,7 +152,7 @@ router.get(
   "/listByOrganization/:organizationId",
   async function (req, res, next) {
     try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+      jwtMiddleware.verifyToken(req.headers.authorization);
     } catch (err) {
       res.status(401);
       throw new Error("Unauthorized");
@@ -171,7 +171,7 @@ router.get(
 
 router.get("/listByContainer/:id", async function (req, res, next) {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -188,7 +188,7 @@ router.get("/listByContainer/:id", async function (req, res, next) {
 
 router.post("/update-city/:id", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -222,7 +222,7 @@ router.post("/update-city/:id", async (req, res, next) => {
 
 router.post("/update-address/:id", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -256,7 +256,7 @@ router.post("/update-address/:id", async (req, res, next) => {
 
 router.post("/update-name/:id", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");
@@ -290,7 +290,7 @@ router.post("/update-name/:id", async (req, res, next) => {
 
 router.post("/update-information/:id", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+    jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
     throw new Error("Unauthorized");

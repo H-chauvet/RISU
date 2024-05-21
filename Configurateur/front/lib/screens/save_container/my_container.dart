@@ -6,8 +6,11 @@ import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 /// MyContainer
 ///
@@ -25,10 +28,10 @@ class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
   List<dynamic> displayedContainers = [];
   dynamic body;
+  String? token = '';
 
   /// [Function] : Get all the containers in the database
   void getContainers() async {
-    String? token = await storageService.readStorage('token');
     HttpService().getRequest(
       'http://$serverIp:3000/api/container/listAll',
       <String, String>{
@@ -36,31 +39,44 @@ class MyContainerState extends State<MyContainer> {
         'Content-Type': 'application/json; charset=UTF-8',
         'Access-Control-Allow-Origin': '*',
       },
-    ).then((value) => {
-          if (value.statusCode == 200)
-            {
-              setState(() {
-                body = jsonDecode(value.body);
-                containers = body['container'];
+    ).then(
+      (value) => {
+        if (value.statusCode == 200)
+          {
+            setState(() {
+              body = jsonDecode(value.body);
+              containers = body['container'];
 
-                for (int i = 0; i < containers.length; i++) {
-                  if (containers[i]['paid'] == false) {
-                    displayedContainers.add(containers[i]);
-                  }
+              for (int i = 0; i < containers.length; i++) {
+                if (containers[i]['paid'] == false) {
+                  displayedContainers.add(containers[i]);
                 }
-              }),
-            }
-          else
-            {
-              debugPrint('error'),
-            }
-        });
+              }
+            }),
+          }
+        else
+          {
+            debugPrint('error'),
+          }
+      },
+    );
+  }
+
+  Future<void> checkToken() async {
+    token = await storageService.readStorage('token');
+    if (token == "") {
+      context.go('/login');
+    } else {
+      getContainers();
+    }
   }
 
   @override
   void initState() {
-    getContainers();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkToken();
+    });
   }
 
   /// [Widget] : Build my containers page
@@ -79,6 +95,7 @@ class MyContainerState extends State<MyContainer> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 100),
             Text(
               "Mes conteneurs sauvegardés",
               style: TextStyle(
@@ -120,6 +137,9 @@ class MyContainerState extends State<MyContainer> {
                           child: Text(
                             displayedContainers[i]['saveName'],
                             style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
                                     : tabletFontSize),
