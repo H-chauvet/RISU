@@ -47,18 +47,14 @@ class MyContainerState extends State<MyContainer> {
         if (value.statusCode == 200)
           {
             setState(() {
-              debugPrint(value.body);
               body = jsonDecode(value.body);
               containers = body['container'];
-
-              debugPrint(containers.toString());
 
               for (int i = 0; i < containers.length; i++) {
                 if (containers[i]['paid'] == false) {
                   displayedContainers.add(containers[i]);
                 }
               }
-              debugPrint(displayedContainers.toString());
             }),
           }
         else
