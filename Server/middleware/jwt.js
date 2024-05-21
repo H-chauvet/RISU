@@ -17,7 +17,7 @@ function generateAccessToken(user) {
       role: user.role,
     },
     process.env.JWT_ACCESS_SECRET,
-    { expiresIn: "1h" },
+    { expiresIn: "1h" }
   );
 }
 
@@ -41,8 +41,13 @@ function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
 
+function decodeToken(token) {
+  return jwt.decode(token);
+}
+
 module.exports = {
   generateAccessToken,
   hashToken,
   verifyToken,
+  decodeToken,
 };
