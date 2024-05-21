@@ -45,7 +45,7 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
 /// [rating] : rating of Risu
 /// [message] : client's message
 ///
-void sendData(String rating, String message) async {
+void sendData(String rating, String message, Function() onSubmit) async {
   String userMail = await storageService.getUserMail();
   final userDetails = await fetchUserDetails(userMail);
   String firstName = userDetails['firstName'];
@@ -71,6 +71,7 @@ void sendData(String rating, String message) async {
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 3,
     );
+    onSubmit();
   } else {
     Fluttertoast.showToast(
         msg: "Erreur durant l'envoi de l'avis",
@@ -85,6 +86,10 @@ void sendData(String rating, String message) async {
 ///
 /// Add a new dialog to create rating with message to an item
 class RatingDialogContent extends StatelessWidget {
+  final Function() onSubmit;
+
+  const RatingDialogContent({super.key, required this.onSubmit});
+
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -114,6 +119,7 @@ class RatingDialogContent extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               constraints: BoxConstraints(
                 maxWidth: 30.0.w,
               ),
@@ -137,7 +143,7 @@ class RatingDialogContent extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 sendData(context.read<DialogCubit>().state.rating.toString(),
-                    context.read<DialogCubit>().state.message);
+                    context.read<DialogCubit>().state.message, onSubmit);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(

@@ -66,7 +66,7 @@ exports.sendResetPasswordEmail = async(email, resetToken) => {
     to: email,
     subject: 'Reset Your Password',
     text: "",
-    html: '<p>Please follow the link to reset your password: <a href="http://risu.dns-dynamic.net/resetToken?token=' +
+    html: '<p>Please follow the link to reset your password: <a href="http://51.77.215.103/resetToken?token=' +
       resetToken + '">here</a></p>',
   }
 

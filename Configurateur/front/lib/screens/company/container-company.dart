@@ -124,7 +124,7 @@ class ContainerCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  "prix du conteneur : " + container.price.toString(),
+                  "Prix du conteneur : ${container.price.toString()} €",
                   style: TextStyle(
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize

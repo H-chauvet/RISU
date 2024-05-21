@@ -14,7 +14,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     to: email,
     subject: 'Confirm your account',
     text: "",
-    html: '<p>Please follow the link to confirm your account: <a href="http://risu.dns-dynamic.net:3000/api/mobile/auth/mailVerification?token=' +
+    html: '<p>Please follow the link to confirm your account: <a href="http://51.77.215.103:3000/api/mobile/auth/mailVerification?token=' +
       token + '">here</a></p>',
   }
   try {
@@ -57,7 +57,7 @@ exports.sendConfirmationNewEmail = (email, token) => {
     to: email,
     subject: 'Confirm your New Email',
     text: "",
-    html: '<p>Please follow the link to confirm your New email: <a href="http://risu.dns-dynamic.net:3000/api/mobile/auth/' + encryptedEmail + '/newEmailVerification?token=' +
+    html: '<p>Please follow the link to confirm your New email: <a href="http://51.77.215.103:3000/api/mobile/auth/' + encryptedEmail + '/newEmailVerification?token=' +
       token + '">here</a></p>',
   }
   try {

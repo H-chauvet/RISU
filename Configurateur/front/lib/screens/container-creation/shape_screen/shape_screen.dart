@@ -122,6 +122,9 @@ class ShapeScreenState extends State<ShapeScreen> {
             child: Text(
               "Supprimer",
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -147,6 +150,9 @@ class ShapeScreenState extends State<ShapeScreen> {
             child: Text(
               'Annuler',
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -339,6 +345,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                 Text(
                   'Nombres de lignes',
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -372,13 +381,15 @@ class ShapeScreenState extends State<ShapeScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.colorScheme.background.withOpacity(0.8)
-                            : lightTheme.colorScheme.background
-                                .withOpacity(0.8),
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                       ),
                       child: Text(
                         row.toString(),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -410,6 +421,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                 Text(
                   'Nombres de colonnes',
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -443,13 +457,15 @@ class ShapeScreenState extends State<ShapeScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.colorScheme.background.withOpacity(0.8)
-                            : lightTheme.colorScheme.background
-                                .withOpacity(0.8),
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                       ),
                       child: Text(
                         column.toString(),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -504,10 +520,10 @@ class ShapeScreenState extends State<ShapeScreen> {
               height: desktopPanelHeight,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
                   color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.colorScheme.background.withOpacity(0.8)
-                      : lightTheme.colorScheme.background.withOpacity(0.8),
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(30.0),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xff4682B4).withOpacity(0.5),
@@ -526,6 +542,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           'Largeur:',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -535,6 +554,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           width <= 1 ? '$width mètre' : '$width mètres',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -548,6 +570,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           'Hauteur:',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -557,6 +582,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           height <= 1 ? '$height mètre' : '$height mètres',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -570,6 +598,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           "Nombre d'emplacements:",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -579,6 +610,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           '$nbLockers',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,

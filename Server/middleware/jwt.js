@@ -41,8 +41,13 @@ function verifyToken(token) {
   return jwt.verify(token, process.env.JWT_ACCESS_SECRET);
 }
 
+function decodeToken(token) {
+  return jwt.decode(token);
+}
+
 module.exports = {
   generateAccessToken,
   hashToken,
   verifyToken,
+  decodeToken,
 };
