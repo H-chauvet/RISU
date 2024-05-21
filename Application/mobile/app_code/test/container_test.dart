@@ -82,7 +82,8 @@ void main() {
   });
 
   group("ContainerPage tests", () {
-    testWidgets("ContainerPage basic page with containers", (WidgetTester tester) async {
+    testWidgets("ContainerPage basic page with containers",
+        (WidgetTester tester) async {
       final testpage = initPage(ContainerPage(
         onDirectionClicked: (id) {},
         testContainers: [container1, container2, container3],
@@ -92,10 +93,11 @@ void main() {
       await waitForLoader(tester: tester, testPage: testpage);
 
       Finder titleData = find.byKey(const Key('container-list_title'));
-      Finder containerData1 = find.byKey(const Key('container-list_container-1'));
-      Finder containerlocalization1 = find.byKey(const Key('container-list_icon-localization-1'));
+      Finder containerData1 =
+          find.byKey(const Key('container-list_container-1'));
+      Finder containerlocalization1 =
+          find.byKey(const Key('container-list_icon-localization-1'));
 
-      
       expect(titleData, findsOneWidget);
       expect(containerData1, findsOneWidget);
 
@@ -106,7 +108,8 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets("ContainerPage no container found", (WidgetTester tester) async {
+    testWidgets("ContainerPage no container found",
+        (WidgetTester tester) async {
       final testpage = initPage(ContainerPage(
         onDirectionClicked: (id) {},
         testContainers: [],
@@ -114,7 +117,8 @@ void main() {
 
       await waitForLoader(tester: tester, testPage: testpage);
 
-      Finder noContainerData = find.byKey(const Key('container-list_no-container'));
+      Finder noContainerData =
+          find.byKey(const Key('container-list_no-container'));
       expect(noContainerData, findsOneWidget);
     });
   });

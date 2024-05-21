@@ -19,27 +19,27 @@ void main() {
 
     Finder titleFinder = find.byKey(const Key('appbar-text_title'));
     Finder infoTextFinder =
-    find.byKey(const Key('profile_info-text_informations'));
+        find.byKey(const Key('profile_info-text_informations'));
     Finder firstNameFinder =
-    find.byKey(const Key('profile_info-text_field_firstname'));
+        find.byKey(const Key('profile_info-text_field_firstname'));
     Finder lastNameFinder =
-    find.byKey(const Key('profile_info-text_field_lastname'));
+        find.byKey(const Key('profile_info-text_field_lastname'));
     Finder updateInformationButtonFinder =
-    find.byKey(const Key('profile_info-button_update'));
+        find.byKey(const Key('profile_info-button_update'));
     Finder EmailTextFinder = find.byKey(const Key('profile_info-text_email'));
     Finder emailFinder = find.byKey(const Key('profile_info-text_field_email'));
     Finder updateEmailButtonFinder =
-    find.byKey(const Key('profile_email-button_update'));
+        find.byKey(const Key('profile_email-button_update'));
     Finder passwordTextFinder =
-    find.byKey(const Key('profile_info-text_password'));
+        find.byKey(const Key('profile_info-text_password'));
     Finder passwordFinder =
-    find.byKey(const Key('profile_info-text_field_current_password'));
+        find.byKey(const Key('profile_info-text_field_current_password'));
     Finder newPasswordFinder =
-    find.byKey(const Key('profile_info-text_field_new_password'));
+        find.byKey(const Key('profile_info-text_field_new_password'));
     Finder newPasswordConfirmationFinder = find
         .byKey(const Key('profile_info-text_field_new_password_confirmation'));
     Finder updatePasswordButtonFinder =
-    find.byKey(const Key('profile_info-button_update_password'));
+        find.byKey(const Key('profile_info-button_update_password'));
 
     Finder okButtonFinder = find.byKey(const Key('alertdialog-button_ok'));
 
