@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 
+/// Mobile user class
+///
+/// Store all the user's information from the database
+/// [id] : User's id
+/// [firstName] : User's firstname
+/// [lastName] : User's lastname
+/// [email] : User's mail
 class UserMobile {
   final String id;
   final String email;
@@ -23,6 +30,7 @@ class UserMobile {
       lastName: json['lastName'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -33,6 +41,11 @@ class UserMobile {
   }
 }
 
+/// UserMobileCard
+///
+/// Card for a mobile user informations
+/// [user] : User's informations
+/// [onDelete] : To delete a user
 class UserMobileCard extends StatelessWidget {
   final UserMobile user;
   final Function(UserMobile) onDelete;

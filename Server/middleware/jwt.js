@@ -13,6 +13,7 @@ function generateAccessToken(user) {
       userId: user.id,
       userMail: user.email,
       confirmed: user.confirmed,
+      userUuid: user.uuid,
       role: user.role,
     },
     process.env.JWT_ACCESS_SECRET,

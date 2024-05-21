@@ -1,71 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 class ContainerList {
   final int id;
-  final dynamic createdAt;
-  final dynamic containerMapping;
-  final double? price;
-  final String? address;
-  final String? city;
-  final double? longitude;
-  final double? latitude;
-  final String? designs;
-  final dynamic items;
-  final String? informations;
-  final bool? paid;
-  final String? saveName;
+  final String address;
+  final String city;
+  final double longitude;
+  final double latitude;
+  final int itemCount;
+  double distance;
 
   ContainerList({
     required this.id,
-    required this.createdAt,
-    required this.containerMapping,
-    required this.price,
     required this.address,
     required this.city,
     required this.longitude,
     required this.latitude,
-    required this.designs,
-    required this.items,
-    required this.informations,
-    required this.paid,
-    required this.saveName,
+    required this.itemCount,
+    this.distance = 0,
   });
 
   factory ContainerList.fromJson(Map<String, dynamic> json) {
-    double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ContainerList(
-      id: json['id'],
-      createdAt: json['createdAt'],
-      containerMapping: json['containerMapping'],
-      price: price,
-      address: json['address'],
-      city: json['city'],
-      longitude: json['longitude'],
-      latitude: json['latitude'],
-      designs: json['designs'],
-      items: json['items'],
-      informations: json['informations'],
-      paid: json['paid'],
-      saveName: json['saveName'],
-    );
+        id: json['id'],
+        address: json['address'],
+        city: json['city'],
+        longitude: json['longitude'],
+        latitude: json['latitude'],
+        itemCount: json['_count']['items']);
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'createdAt': createdAt,
-      'containerMapping': containerMapping,
-      'price': price,
       'address': address,
       'city': city,
-      'designs': designs,
-      'items': items,
-      'informations': informations,
-      'paid': paid,
-      'saveName': saveName,
+      'longitude': longitude,
+      'latitude': latitude,
+      'itemCount': itemCount,
+      'distance': distance,
     };
   }
 }
@@ -80,6 +56,16 @@ class ContainerCard extends StatelessWidget {
     required this.onDirectionClicked,
   });
 
+  String showDistance(BuildContext context, double distance) {
+    if (distance < 10) {
+      return AppLocalizations.of(context)!.containerDistanceLess10;
+    } else if (distance > 1000) {
+      return AppLocalizations.of(context)!
+          .containerDistanceKm((distance / 1000).round());
+    }
+    return AppLocalizations.of(context)!.containerDistanceM(distance.round());
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -93,8 +79,7 @@ class ContainerCard extends StatelessWidget {
         );
       },
       child: Container(
-        height: 120,
-        margin: const EdgeInsets.only(right: 25.0, left: 25.0, top: 10.0),
+        margin: const EdgeInsets.only(right: 10.0, left: 10.0, top: 10.0),
         child: Card(
           elevation: 5,
           shadowColor: context.select((ThemeProvider themeProvider) =>
@@ -106,21 +91,43 @@ class ContainerCard extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      container.city!,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    SizedBox(
+                      width: 100,
+                      height: 100,
+                      child: Image.asset('assets/logo.png'),
                     ),
-                    Text(
-                      container.address!,
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          container.city,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          container.address!,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          AppLocalizations.of(context)!
+                              .howManyAvailableArticles(container.itemCount),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                        Text(
+                          showDistance(context, container.distance),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -135,6 +142,8 @@ class ContainerCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.directions),
+                        key: Key(
+                            'container-list_icon-localization-${container.id}'),
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                         onPressed: () {

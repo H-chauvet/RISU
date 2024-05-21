@@ -5,7 +5,19 @@ import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:http/http.dart' as http;
 
-class ItemListInfo {
+/// ItemList
+///
+/// Define the data of item in back end
+/// [id] : Item's id
+/// [name] : Item's name
+/// [available] : Define if item is available or not
+/// [container] : Container where the item is stored
+/// [createdAt] : Creation of the item
+/// [containerId] : Container's id
+/// [price] : Item's price
+/// [image] : Image of the item
+/// [description] : Describe the item
+class ItemList {
   final int? id;
   final dynamic name;
   final bool? available;
@@ -17,7 +29,7 @@ class ItemListInfo {
   final String? description;
   final String? category;
 
-  ItemListInfo({
+  ItemList({
     required this.id,
     required this.name,
     required this.available,
@@ -30,8 +42,8 @@ class ItemListInfo {
     required this.category,
   });
 
-  factory ItemListInfo.fromJson(Map<String, dynamic> json) {
-    return ItemListInfo(
+  factory ItemList.fromJson(Map<String, dynamic> json) {
+    return ItemList(
       id: json['id'],
       name: json['name'],
       available: json['available'],

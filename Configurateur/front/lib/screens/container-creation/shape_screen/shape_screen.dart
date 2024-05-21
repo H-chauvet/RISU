@@ -13,6 +13,9 @@ import 'package:provider/provider.dart';
 
 import 'shape_screen_style.dart';
 
+/// ShapeScreen
+///
+/// Shape of the container
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
 
@@ -20,6 +23,8 @@ class ShapeScreen extends StatefulWidget {
   State<ShapeScreen> createState() => ShapeScreenState();
 }
 
+/// ShapeScreenState
+///
 class ShapeScreenState extends State<ShapeScreen> {
   int row = 5;
   int column = 12;
@@ -39,6 +44,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     calculateDimension();
   }
 
+  /// [Function] : Calculate the container's dimension
   void calculateDimension() {
     width = column / 2;
     height = row / 2;
@@ -55,6 +61,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// [Function] : Remove a locker in the container
   void removeLockers() {
     for (int i = 0; i < isClicked.length; i++) {
       if (isClicked[i] == true) {
@@ -65,6 +72,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// [Widget] : Create the remove button for lockers
   List<Widget> removeButtons(ScreenFormat screenFormat) {
     List<Widget> buttons = [];
 
@@ -152,6 +160,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     return buttons;
   }
 
+  /// [Widget] : Initialization of the container
   List<Widget> initContainer() {
     List<Widget> rows = [];
     List<Widget> line = [];
@@ -241,10 +250,12 @@ class ShapeScreenState extends State<ShapeScreen> {
     return rows;
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/');
   }
 
+  /// [Function] : Go to the next page
   void goNext() {
     List<List<String>> containerList;
 
@@ -289,6 +300,7 @@ class ShapeScreenState extends State<ShapeScreen> {
         }));
   }
 
+  /// [Widget] : Build the container's shape page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

@@ -9,6 +9,9 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
+/// MyContainer
+///
+/// Page to show all the user's containers
 class MyContainer extends StatefulWidget {
   const MyContainer({super.key});
 
@@ -16,15 +19,14 @@ class MyContainer extends StatefulWidget {
   State<MyContainer> createState() => MyContainerState();
 }
 
+/// MyContainerState
 ///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
 class MyContainerState extends State<MyContainer> {
   List<dynamic> containers = [];
   List<dynamic> displayedContainers = [];
   dynamic body;
 
+  /// [Function] : Get all the containers in the database
   void getContainers() async {
     String? token = await storageService.readStorage('token');
     HttpService().getRequest(
@@ -61,9 +63,12 @@ class MyContainerState extends State<MyContainer> {
     super.initState();
   }
 
+  /// [Widget] : Build my containers page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
+    //debugPrint(displayedContainers[0]['name'].toString());
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -94,6 +99,7 @@ class MyContainerState extends State<MyContainer> {
                       Padding(
                         padding: const EdgeInsets.all(10),
                         child: ElevatedButton(
+                          key: Key('container_button_$i'),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),

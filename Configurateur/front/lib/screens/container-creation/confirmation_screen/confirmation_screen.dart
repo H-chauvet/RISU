@@ -6,6 +6,9 @@ import 'package:go_router/go_router.dart';
 
 import 'confirmation_screen_style.dart';
 
+/// ConfirmationScreen
+///
+/// Redirect page for the confirmation of the order
 class ConfirmationScreen extends StatefulWidget {
   const ConfirmationScreen({super.key});
 
@@ -13,11 +16,10 @@ class ConfirmationScreen extends StatefulWidget {
   State<ConfirmationScreen> createState() => ConfirmationScreenState();
 }
 
+/// ConfirmationScreenState
 ///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
 class ConfirmationScreenState extends State<ConfirmationScreen> {
+  /// [Widget] : Build the confirmation page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

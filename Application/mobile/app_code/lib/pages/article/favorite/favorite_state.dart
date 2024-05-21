@@ -22,7 +22,11 @@ class FavoriteSate extends State<FavoritePage> {
   @override
   void initState() {
     super.initState();
-    getFavorites();
+    if (widget.testFavorites.isNotEmpty) {
+      favorites = widget.testFavorites;
+    } else {
+      getFavorites();
+    }
   }
 
   void getFavorites() async {
@@ -110,6 +114,9 @@ class FavoriteSate extends State<FavoritePage> {
 
   Future<bool> deleteFavorite(articleId) async {
     try {
+      if (userInformation == null) {
+        return false;
+      }
       setState(() {
         _loaderManager.setIsLoading(true);
       });
@@ -185,6 +192,7 @@ class FavoriteSate extends State<FavoritePage> {
                       child: (favorites.isEmpty)
                           ? Center(
                               child: Text(
+                                key: const Key('favorites-list_empty'),
                                 AppLocalizations.of(context)!
                                     .favoritesListEmpty,
                                 style: const TextStyle(
@@ -199,6 +207,7 @@ class FavoriteSate extends State<FavoritePage> {
                               itemBuilder: (BuildContext context, int index) {
                                 dynamic favorite = favorites[index];
                                 return GestureDetector(
+                                    key: Key('favorite-card_$index'),
                                     onTap: () {
                                       Navigator.push(
                                         context,
@@ -231,6 +240,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                 Column(
                                                   children: [
                                                     SizedBox(
+                                                      key: Key(
+                                                          'favorite-image_$index'),
                                                       height: 100,
                                                       width: 100,
                                                       child: Transform.scale(
@@ -246,6 +257,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
+                                                      key: Key(
+                                                          'favorite-name_$index'),
                                                       '${favorite['item']['name']}',
                                                       style: TextStyle(
                                                         color: themeProvider
@@ -258,6 +271,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                     ),
                                                     const SizedBox(height: 10),
                                                     Text(
+                                                      key: Key(
+                                                          'favorite-price_$index'),
                                                       AppLocalizations.of(
                                                               context)!
                                                           .priceXPerHour(
@@ -270,6 +285,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                     Row(
                                                       children: [
                                                         Text(
+                                                          key: Key(
+                                                              'favorite-status_$index'),
                                                           "${AppLocalizations.of(context)!.status}: ",
                                                           style:
                                                               const TextStyle(
@@ -277,6 +294,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                                       15.0),
                                                         ),
                                                         Container(
+                                                          key: Key(
+                                                              'favorite-status_circle_$index'),
                                                           width: 10,
                                                           height: 10,
                                                           decoration:
@@ -293,6 +312,8 @@ class FavoriteSate extends State<FavoritePage> {
                                                         const SizedBox(
                                                             width: 5),
                                                         Text(
+                                                          key: Key(
+                                                              'favorite-status_text_$index'),
                                                           favorite['item']
                                                                   ['available']
                                                               ? AppLocalizations
@@ -315,7 +336,7 @@ class FavoriteSate extends State<FavoritePage> {
                                             ),
                                           ),
                                         ),
-                                        const Positioned(
+                                        Positioned(
                                           right: 0,
                                           top: 0,
                                           bottom: 0,
@@ -323,10 +344,12 @@ class FavoriteSate extends State<FavoritePage> {
                                             child: Row(
                                               children: [
                                                 Icon(
+                                                  key: Key(
+                                                      'favorite-arrow_$index'),
                                                   Icons.chevron_right,
                                                   size: 28,
                                                 ),
-                                                SizedBox(width: 8),
+                                                const SizedBox(width: 8),
                                               ],
                                             ),
                                           ),
@@ -334,8 +357,8 @@ class FavoriteSate extends State<FavoritePage> {
                                         Align(
                                           alignment: Alignment.topRight,
                                           child: IconButton(
-                                            key: const Key(
-                                                'favorite-button-heart'),
+                                            key: Key(
+                                                'favorite-button_heart_$index'),
                                             onPressed: () async {
                                               if (deletedFavorites.contains(
                                                   favorite['item']['id'])) {

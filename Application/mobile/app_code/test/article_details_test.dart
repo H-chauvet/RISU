@@ -41,103 +41,53 @@ void main() {
   );
 
   testWidgets(
-    'Article details touching rent button',
-        (WidgetTester tester) async {
-      final item1 = {
-        "id": -1,
-        "name": "Ballon de volley",
-        "containerId": -1,
-        "price": 0.5,
-        "available": true,
-        "categories": []
-      };
-      final testPage =
-      initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
-      await waitForLoader(tester: tester, testPage: testPage);
+    'Similar articles',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(initPage(const ArticleDetailsPage(articleId: 1)));
       await tester.pumpAndSettle();
 
-      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-      Finder rentData = find.byKey(const Key('article-button_article-rent'));
-
-      expect(rentData, findsOneWidget);
-      expect(appBarTitleData, findsOneWidget);
-
-      await tester.tap(rentData);
-      await tester.pumpAndSettle();
+      Finder similarArticleTitle =
+          find.byKey(const Key('article-similar_title'));
+      expect(similarArticleTitle, findsNothing);
     },
   );
 
   testWidgets(
-    'Article details touching rent button',
-        (WidgetTester tester) async {
-      final item1 = {
-        "id": -1,
-        "name": "Ballon de volley",
-        "containerId": -1,
-        "price": 0.5,
-        "available": true,
-        "categories": []
-      };
-      final testPage =
-      initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
-      await waitForLoader(tester: tester, testPage: testPage);
-      await tester.pumpAndSettle();
+    'Similar articles',
+    (WidgetTester tester) async {
+      const similarArticlesData = [
+        {'id': 1, 'name': 'Article 1', 'price': 10.0},
+        {
+          'id': 2,
+          'name': 'Article 2 but with more than 15 letters',
+          'price': 20.0
+        },
+      ];
 
-      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-      Finder favoriteButton =
-      find.byKey(const Key('article-button_add-favorite'));
-
-      expect(appBarTitleData, findsOneWidget);
-      expect(favoriteButton, findsOneWidget);
-
-      await tester.tap(favoriteButton);
-      await tester.pumpAndSettle();
-    },
-  );
-
-  testWidgets(
-    'Article details with test data',
-        (WidgetTester tester) async {
-      final item1 = {
-        "id": -1,
-        "name": "Ballon de volley",
-        "containerId": -1,
-        "price": 0.5,
-        "available": true,
-        "categories": []
-      };
-      final testPage =
-      initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
-      await waitForLoader(tester: tester, testPage: testPage);
-      await tester.pumpAndSettle();
-
-      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-
-      Finder consultArticle =
-      find.byKey(const Key('article-button_article-opinion'));
-
-      expect(consultArticle, findsOneWidget);
-      expect(appBarTitleData, findsOneWidget);
-
-      await tester.dragUntilVisible(
-          consultArticle, // what you want to find
-          appBarTitleData, // widget you want to scroll
-          const Offset(0, -300) // delta to move
+      await tester.pumpWidget(
+        initPage(
+          const ArticleDetailsPage(
+            articleId: 1,
+            similarArticlesData: similarArticlesData,
+          ),
+        ),
       );
-
-      await tester.tap(consultArticle);
       await tester.pumpAndSettle();
-    },
-  );
 
-  testWidgets(
-    'Article details touching rent button',
-        (WidgetTester tester) async {
-      final testPage = ArticleDetailsState();
-      userInformation = initExampleUser();
-      testPage.checkFavorite(-1);
-      testPage.deleteFavorite(-1);
-      testPage.createFavorite(-1);
+      Finder similarArticleTitle =
+          find.byKey(const Key('article-similar_title'));
+      Finder articleSimilarImage1 =
+          find.byKey(const Key('article-similar_image_1'));
+      Finder articleSimilarName1 =
+          find.byKey(const Key('article-similar_name_1'));
+      Finder articleSimilarPrice1 =
+          find.byKey(const Key('article-similar_price_1'));
+      await tester.pumpAndSettle();
+
+      expect(similarArticleTitle, findsOneWidget);
+      expect(articleSimilarImage1, findsOneWidget);
+      expect(articleSimilarName1, findsOneWidget);
+      expect(articleSimilarPrice1, findsOneWidget);
     },
   );
 }

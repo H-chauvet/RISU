@@ -17,6 +17,9 @@ import 'package:sizer/sizer.dart';
 
 import 'rating_dialog_content_style.dart';
 
+/// [Function] : get the user details
+/// [email] : mail save in the storage service
+/// return userDetails
 Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -38,6 +41,10 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   }
 }
 
+/// [Function] : Send feedback in the back end
+/// [rating] : rating of Risu
+/// [message] : client's message
+///
 void sendData(String rating, String message) async {
   String userMail = await storageService.getUserMail();
   final userDetails = await fetchUserDetails(userMail);
@@ -74,6 +81,9 @@ void sendData(String rating, String message) async {
   }
 }
 
+/// RatingDialogContent
+///
+/// Add a new dialog to create rating with message to an item
 class RatingDialogContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
