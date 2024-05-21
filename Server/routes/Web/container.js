@@ -73,7 +73,6 @@ router.post("/create", async function (req, res, next) {
     );
     res.status(200).json(container);
   } catch (err) {
-    console.log(err);
     next(err);
   }
 });
