@@ -49,35 +49,36 @@ void main() {
   testWidgets('Conversation page open ticket', (WidgetTester tester) async {
     userInformation = initExampleUser();
     final testPage =
-    initPage(ConversationPage(tickets: ticketList, isOpen: true));
+        initPage(ConversationPage(tickets: ticketList, isOpen: true));
     await waitForLoader(tester: tester, testPage: testPage);
 
     Finder titleFinder = find.byKey(const Key('appbar-text_title'));
     expect(titleFinder, findsOneWidget);
 
     Finder buttonSendMessage =
-    find.byKey(const Key('chat-button-send-message'));
+        find.byKey(const Key('chat-button-send-message'));
     expect(buttonSendMessage, findsOneWidget);
 
     await tester.tap(buttonSendMessage);
     await tester.pumpAndSettle();
   });
 
-  testWidgets('Conversation page open ticket', (WidgetTester tester) async {
+  testWidgets('Conversation page open and send ticket',
+      (WidgetTester tester) async {
     userInformation = initExampleUser();
     final testPage =
-    initPage(ConversationPage(tickets: ticketList, isOpen: true));
+        initPage(ConversationPage(tickets: ticketList, isOpen: true));
     await waitForLoader(tester: tester, testPage: testPage);
 
     Finder titleFinder = find.byKey(const Key('appbar-text_title'));
     expect(titleFinder, findsOneWidget);
 
-    Finder fieldMessage = find.byKey(
-        const Key("conversation-text_field-message"));
+    Finder fieldMessage =
+        find.byKey(const Key("conversation-text_field-message"));
     expect(fieldMessage, findsOneWidget);
 
     Finder buttonSendMessage =
-    find.byKey(const Key('chat-button-send-message'));
+        find.byKey(const Key('chat-button-send-message'));
     expect(buttonSendMessage, findsOneWidget);
 
     await tester.enterText(fieldMessage, "Test Message");
@@ -90,11 +91,11 @@ void main() {
   testWidgets('Conversation page close ticket', (WidgetTester tester) async {
     userInformation = initExampleUser();
     final testPage =
-    initPage(ConversationPage(tickets: ticketList, isOpen: false));
+        initPage(ConversationPage(tickets: ticketList, isOpen: false));
     await waitForLoader(tester: tester, testPage: testPage);
 
     Finder buttonSendMessage =
-    find.byKey(const Key('chat-button-send-message'));
+        find.byKey(const Key('chat-button-send-message'));
     expect(buttonSendMessage, findsNothing);
   });
 }
