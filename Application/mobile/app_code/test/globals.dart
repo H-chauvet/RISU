@@ -27,18 +27,19 @@ UserData initExampleUser(
     {String? email,
     String? firstName,
     String? lastName,
-    List<bool>? notifications}) {
+    List<bool>? notifications,
+    String? ID}) {
   return UserData(
-    email: email ?? 'example@gmail.com',
-    firstName: firstName ?? 'Example',
-    lastName: lastName ?? 'Gmail',
-    notifications: notifications ??
-        [
-          false,
-          false,
-          false,
-        ],
-  );
+      email: email ?? 'example@gmail.com',
+      firstName: firstName ?? 'Example',
+      lastName: lastName ?? 'Gmail',
+      notifications: notifications ??
+          [
+            false,
+            false,
+            false,
+          ],
+      ID: ID ?? 'User');
 }
 
 UserData initNullUser({String? email, List<bool>? notifications}) {
