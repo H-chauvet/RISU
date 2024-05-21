@@ -57,6 +57,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
 
   /// [Function] : Get all the feedbacks in the database
   Future<void> fetchFeedbacks() async {
+    debugPrint('fetchFeedbacks');
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/feedbacks/listAll'));
     if (response.statusCode == 200) {
@@ -110,10 +111,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                               borderRadius: BorderRadius.circular(16.0),
                             ),
                             elevation: 0,
-                            backgroundColor:
-                                Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.colorScheme.background
-                                    : lightTheme.colorScheme.background,
                             child: Container(
                               width: screenFormat == ScreenFormat.desktop
                                   ? desktopContainerWidth
