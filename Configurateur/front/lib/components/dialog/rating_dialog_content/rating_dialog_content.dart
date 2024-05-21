@@ -85,6 +85,10 @@ void sendData(String rating, String message) async {
 ///
 /// Add a new dialog to create rating with message to an item
 class RatingDialogContent extends StatelessWidget {
+  final Function() onSubmit;
+
+  const RatingDialogContent({super.key, required this.onSubmit});
+
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -138,6 +142,7 @@ class RatingDialogContent extends StatelessWidget {
               onPressed: () {
                 sendData(context.read<DialogCubit>().state.rating.toString(),
                     context.read<DialogCubit>().state.message);
+                onSubmit();
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
