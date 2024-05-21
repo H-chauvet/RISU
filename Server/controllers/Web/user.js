@@ -105,7 +105,6 @@ exports.registerByEmail = async (user) => {
 exports.registerConfirmation = (email) => {
   let generatedUuid = "";
   this.findUserByEmail(email).then((user) => {
-    console.log(user);
     generatedUuid = user.uuid;
     let mail = {
       from: "risu.epitech@gmail.com",
@@ -184,7 +183,6 @@ exports.updatePassword = (user) => {
 exports.forgotPassword = (email) => {
   let generatedUuid = "";
   this.findUserByEmail(email).then((user) => {
-    console.log(user);
     generatedUuid = user.uuid;
     let mail = {
       from: "risu.epitech@gmail.com",
