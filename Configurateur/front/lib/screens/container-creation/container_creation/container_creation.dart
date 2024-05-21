@@ -16,8 +16,11 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -763,12 +766,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Ajouter un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.add,
                       ),
                     ),
@@ -792,12 +801,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Sauvegarder',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.save,
                       ),
                     ),
@@ -822,12 +837,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Remplissage',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.auto_fix_high,
                       ),
                     ),
@@ -836,8 +857,10 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ),
                     SizedBox(
                       width: sizedBoxWidth,
-                      child: const Divider(
-                        color: Colors.grey,
+                      child: Divider(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         height: 20,
                         thickness: 1,
                         indent: 30,
@@ -864,12 +887,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Supprimer un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.delete,
                       ),
                     ),
@@ -888,12 +917,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Réinitialiser le conteneur',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.refresh,
                       ),
                     ),
