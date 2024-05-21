@@ -127,6 +127,9 @@ class MyContainerState extends State<MyContainer> {
             Text(
               "Mes conteneurs sauvegardés",
               style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
                       : tabletFontSize,

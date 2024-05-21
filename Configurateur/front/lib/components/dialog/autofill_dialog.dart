@@ -50,12 +50,29 @@ class AutoFillDialogState extends State<AutoFillDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text(
-              'Quelle(s) face(s) du conteneur voulez-vous ranger automatiquement ?'),
+          Text(
+              'Quelle(s) face(s) du conteneur voulez-vous ranger automatiquement ?',
+              style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
+              )),
           Padding(
             padding: const EdgeInsets.all(8),
             child: DropdownMenu<String>(
               key: const Key('face'),
+              textStyle: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
+              ),
+              menuStyle: MenuStyle(
+                backgroundColor: WidgetStateProperty.all<Color>(
+                  Provider.of<ThemeService>(context).isDark
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
+                ),
+              ),
               hintText: 'Face du conteneur',
               label: const Text('Face du conteneur'),
               initialSelection: faceList.first,
@@ -66,7 +83,19 @@ class AutoFillDialogState extends State<AutoFillDialog> {
               },
               dropdownMenuEntries:
                   faceList.map<DropdownMenuEntry<String>>((String value) {
-                return DropdownMenuEntry<String>(value: value, label: value);
+                return DropdownMenuEntry<String>(
+                  value: value,
+                  label: value,
+                  style: ButtonStyle(
+                    textStyle: WidgetStateProperty.all<TextStyle>(
+                      TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
+                      ),
+                    ),
+                  ),
+                );
               }).toList(),
             ),
           ),

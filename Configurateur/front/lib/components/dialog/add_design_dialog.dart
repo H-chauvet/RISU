@@ -101,8 +101,11 @@ class AddDesignDialogState extends State<AddDesignDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Ajouter un conteneur',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('Ajouter un conteneur',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: getTextColor())),
           const SizedBox(height: 20),
           Form(
             child: Column(
@@ -122,10 +125,12 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                         children: <Widget>[
                           Text(widget.file!.files.first.name),
                           const SizedBox(height: 20),
-                          const Text(
+                          Text(
                             "Où souhaitez-vous ajouter ce design ?",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: getTextColor()),
                           ),
                           const SizedBox(height: 20),
                           Row(
@@ -332,7 +337,8 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                 Navigator.pop(context);
                               }
                             },
-                            child: const Text('Ajouter'),
+                            child: Text('Ajouter',
+                                style: TextStyle(color: getTextColor())),
                           ),
                         ],
                       ),
