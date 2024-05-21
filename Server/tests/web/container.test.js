@@ -3,9 +3,11 @@ const supertest = require("supertest");
 const containerRouter = require("../../routes/Web/container");
 const containerCtrl = require("../../controllers/Common/container");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../middleware/jwt");
+jest.mock("../../controllers/Web/user");
 
 const app = express();
 app.use(express.json());
@@ -29,9 +31,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.getContainerById).toHaveBeenCalledWith(1);
   });
 
@@ -45,9 +45,7 @@ describe("Container Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(400);
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.getContainerById).not.toHaveBeenCalled();
   });
 
@@ -82,6 +80,11 @@ describe("Container Route Tests", () => {
       name: "Container 1",
     });
 
+    userCtrl.findUserByEmail.mockResolvedValueOnce({
+      id: 1,
+      userMail: "test@gmail.com",
+    });
+
     const response = await supertest(app)
       .post("/create")
       .set("Authorization", "Bearer mockedAccessToken")
@@ -89,9 +92,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
     expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
   });
 
@@ -122,9 +123,7 @@ describe("Container Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 2" });
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "mockedAccessToken"
-    );
+    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
   });
 
   it("should update the localisation", async () => {
