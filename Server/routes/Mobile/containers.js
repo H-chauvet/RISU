@@ -33,7 +33,7 @@ router.get('/:containerId', async (req, res, next) => {
   }
 })
 
-router.get('/:containerId/articleslist/', async (req, res) => {
+router.get('/:containerId/articleslist', async (req, res) => {
   try {
     const articleName = req.query.articleName || '';
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
