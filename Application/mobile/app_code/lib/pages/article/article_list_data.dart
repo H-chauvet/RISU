@@ -101,7 +101,7 @@ class ArticleDataCard extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       AppLocalizations.of(context)!
-                          .priceXPerHour(articleData.price),
+                          .priceXPerHour(articleData.price.toStringAsFixed(2)),
                       style: const TextStyle(fontSize: 15.0),
                     ),
                     const SizedBox(height: 10),
