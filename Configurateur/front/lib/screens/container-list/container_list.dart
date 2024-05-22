@@ -27,24 +27,24 @@ class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
 
   @override
-  _ContainerPageState createState() => _ContainerPageState();
+  ContainerPageState createState() => ContainerPageState();
 }
 
 /// ContainerPageState
 ///
-class _ContainerPageState extends State<ContainerPage> {
-  List<ContainerListData> containers = [];
-  List<ItemList> items = [];
+class ContainerPageState extends State<ContainerPage> {
+  List<ContainerListData>? containers;
+  List<ItemList>? items;
   String jwtToken = '';
-  late String itemName = '';
-  late String itemDesc = '';
+  String itemName = '';
+  String itemDesc = '';
   bool available = false;
   String name = "";
   double price = 0.0;
   int containerId = 0;
   String description = '';
-  late String selectedCategory = "Tous";
-  List<String> categories = [];
+  String selectedCategory = "Tous";
+  List<String>? categories;
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
@@ -133,8 +133,8 @@ class _ContainerPageState extends State<ContainerPage> {
       setState(() {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
         categories =
-            items.map((item) => item.category ?? 'Tous').toSet().toList();
-        categories.sort();
+            items!.map((item) => item.category ?? 'Tous').toSet().toList();
+        categories!.sort();
       });
     } else {
       Fluttertoast.showToast(
@@ -308,6 +308,7 @@ class _ContainerPageState extends State<ContainerPage> {
                   children: [
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('name'),
                       controller: nameController,
                       decoration: InputDecoration(
                           labelText: "Nouveau nom", hintText: initialLastName),
@@ -335,6 +336,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('price'),
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
@@ -343,6 +345,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('description'),
                       controller: descController,
                       decoration: InputDecoration(
                           labelText: "Nouvelle description",
@@ -359,6 +362,7 @@ class _ContainerPageState extends State<ContainerPage> {
                   },
                   child: Text(
                     "Annuler",
+                    key: const Key('cancel-edit-item'),
                     style: TextStyle(
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
@@ -367,6 +371,7 @@ class _ContainerPageState extends State<ContainerPage> {
                   ),
                 ),
                 ElevatedButton(
+                  key: const Key('button-item'),
                   onPressed: () async {
                     apiUpdateItem(nameController, descController, available,
                         price, item, itemId);
@@ -544,7 +549,7 @@ class _ContainerPageState extends State<ContainerPage> {
                           selectedContainerId = int.tryParse(newValue!) ?? 0;
                         });
                       },
-                      items: containers.map((ContainerListData container) {
+                      items: containers!.map((ContainerListData container) {
                         return DropdownMenuItem<String>(
                           value: container.id.toString(),
                           child: Text(container.city!),
@@ -642,6 +647,7 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  key: Key('edit-items'),
                   icon: const Icon(Icons.mode_outlined),
                   onPressed: () async {
                     await showEditPopupName(
@@ -728,7 +734,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    containers.isEmpty
+                    containers == null
                         ? Center(
                             child: Text(
                               'Aucun conteneur trouvé.',
@@ -742,9 +748,9 @@ class _ContainerPageState extends State<ContainerPage> {
                           )
                         : ListView.builder(
                             shrinkWrap: true,
-                            itemCount: containers.length,
+                            itemCount: containers!.length,
                             itemBuilder: (context, index) {
-                              final product = containers[index];
+                              final product = containers![index];
                               return ContainerCards(
                                 container: product,
                                 onDelete: deleteContainer,
@@ -763,7 +769,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     const SizedBox(
                       height: 30,
                     ),
-                    containers.isEmpty
+                    items == null
                         ? Center(
                             child: Text(
                               'Aucun objet trouvé.',
@@ -847,17 +853,18 @@ class _ContainerPageState extends State<ContainerPage> {
                                         value: 'Tous',
                                         child: Text('Tous'),
                                       ),
-                                      for (var category in categories)
-                                        if (category != 'Tous')
-                                          DropdownMenuItem(
-                                            value: category,
-                                            child: Text(category),
-                                          ),
+                                      if (categories != null)
+                                        for (var category in categories!)
+                                          if (category != 'Tous')
+                                            DropdownMenuItem(
+                                              value: category,
+                                              child: Text(category),
+                                            ),
                                     ],
                                   ),
                                 ],
                               ),
-                              items.isEmpty
+                              items == null
                                   ? Center(
                                       child: Text(
                                         'Aucun objet trouvé.',
@@ -875,9 +882,9 @@ class _ContainerPageState extends State<ContainerPage> {
                                       spacing: 10.0,
                                       runSpacing: 8.0,
                                       children: List.generate(
-                                        items.length,
+                                        items!.length,
                                         (index) => buildItemWidget(
-                                            context, items[index]),
+                                            context, items![index]),
                                       ),
                                     ),
                             ],

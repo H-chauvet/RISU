@@ -20,24 +20,35 @@ class ContainerProfilPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ContainerProfilPageState createState() =>
-      _ContainerProfilPageState(container: container);
+  ContainerProfilPageState createState() =>
+      ContainerProfilPageState(container: container);
 }
 
 /// CompanyProfilPageState
 ///
-class _ContainerProfilPageState extends State<ContainerProfilPage> {
-  final ContainerListData container;
-  _ContainerProfilPageState({required this.container});
-  late List<ItemList> items;
+class ContainerProfilPageState extends State<ContainerProfilPage> {
+  ContainerListData container;
+  ContainerProfilPageState({required this.container});
+  List<ItemList>? items;
   late String itemName = '';
   late String itemDesc = '';
-  late String city;
-  late String address;
-  late String saveName;
-  late String information;
-  late int containerId;
-  late ContainerListData tmp;
+  String city = '';
+  String address = '';
+  String saveName = '';
+  String information = '';
+  int containerId = 0;
+  ContainerListData tmp = ContainerListData(
+      id: 0,
+      createdAt: null,
+      organization: null,
+      organizationId: null,
+      containerMapping: null,
+      price: 0.0,
+      address: null,
+      city: null,
+      design: null,
+      informations: null,
+      saveName: null);
   String jwtToken = '';
 
   /// [Function] : get information about the containers
@@ -148,7 +159,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
-                  key: const Key("city"),
+                  key: const Key('city'),
                   controller: nameController,
                   decoration: InputDecoration(
                       labelText: "Nouvelle ville", hintText: initialLastName),
@@ -175,6 +186,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               ),
             ),
             ElevatedButton(
+              key: const Key('button-city'),
               onPressed: () async {
                 apiUpdateCity(nameController);
                 onEdit(nameController.text);
@@ -247,7 +259,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
-                  key: const Key("address"),
+                  key: const Key('address'),
                   controller: addressController,
                   decoration: InputDecoration(
                       labelText: "Adresse postale", hintText: initialAddress),
@@ -274,6 +286,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               ),
             ),
             ElevatedButton(
+              key: const Key('button-address'),
               onPressed: () async {
                 apiUpdateAddress(addressController);
                 onEdit(addressController.text);
@@ -342,7 +355,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         gravity: ToastGravity.CENTER,
       );
       checkToken();
-      // fetchItemsbyCtnId();
     } else {
       Fluttertoast.showToast(
         msg: "Erreur lors de la suppression de l'objet: ${response.statusCode}",
@@ -444,6 +456,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   children: [
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('name'),
                       controller: nameController,
                       decoration: InputDecoration(
                           labelText: "Nouveau nom", hintText: initialLastName),
@@ -464,6 +477,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('price'),
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
@@ -472,6 +486,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key('description'),
                       controller: descController,
                       decoration: InputDecoration(
                           labelText: "Nouvelle description",
@@ -492,6 +507,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ),
                 ),
                 ElevatedButton(
+                  key: const Key('button-item'),
                   onPressed: () async {
                     apiUpdateItem(
                         nameController, descController, price, item, itemId);
@@ -527,6 +543,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  key: Key('edit-items'),
                   icon: const Icon(Icons.mode_outlined),
                   onPressed: () async {
                     await showUpdateItem(
@@ -570,7 +587,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           child: Column(
             children: [
               Container(
-                width: 500,
+                // width: 500,
                 height: 200,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -599,7 +616,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         Row(
                           children: [
                             Text(
-                              "Nom de la ville : ${tmp.city!}",
+                              "Nom de la ville : ${tmp.city ?? 'Non disponible'}",
                               style: const TextStyle(
                                 color: Color(0xff4682B4),
                                 fontSize: 15.0,
@@ -630,7 +647,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         Row(
                           children: [
                             Text(
-                              "Adresse : ${tmp.address!}",
+                              "Adresse de la ville : ${tmp.address ?? 'Non disponible'}",
                               style: const TextStyle(
                                 color: Color(0xff4682B4),
                                 fontSize: 15.0,
@@ -640,7 +657,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
-                              key: Key("edit-city"),
+                              key: Key("edit-address"),
                               onTap: () async {
                                 await showEditPopupAddress(context, address,
                                     (String newAddress) {
@@ -676,7 +693,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               SizedBox(
                 height: 65,
               ),
-              items.isEmpty
+              items == null
                   ? Center(
                       child: Text(
                         'Aucun objet trouvé.',
@@ -690,8 +707,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       spacing: 10.0,
                       runSpacing: 8.0,
                       children: List.generate(
-                        items.length,
-                        (index) => buildItemWidget(context, items[index]),
+                        items!.length,
+                        (index) => buildItemWidget(context, items![index]),
                       ),
                     ),
             ],

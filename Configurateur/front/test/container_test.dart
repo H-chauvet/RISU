@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/container.dart';
+import 'package:front/components/items-information.dart';
 import 'package:front/screens/container-list/container_list.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -37,7 +39,56 @@ void main() {
       ),
     );
 
+    final state_assign =
+        tester.state(find.byType(ContainerPage)) as ContainerPageState;
+
+    state_assign.setState(() {
+      state_assign.containers = [
+        ContainerListData(
+            id: 1,
+            createdAt: null,
+            organization: null,
+            organizationId: 1,
+            containerMapping: null,
+            price: 10,
+            address: 'oui',
+            city: 'nantes',
+            design: null,
+            informations: 'info',
+            saveName: "saveName"),
+        ContainerListData(
+            id: 2,
+            createdAt: null,
+            organization: null,
+            organizationId: 1,
+            containerMapping: null,
+            price: 10,
+            address: 'oui',
+            city: 'nantes',
+            design: null,
+            informations: 'info',
+            saveName: "saveName"),
+      ];
+      state_assign.items = [
+        ItemList(
+          id: 1,
+          name: 'Item1',
+          description: 'Description1',
+          price: 100.0,
+          available: true,
+          container: null,
+          createdAt: null,
+          containerId: 1,
+          image: null,
+          category: "ouais",
+        )
+      ];
+    });
+    await tester.pump();
     expect(find.text("Gestion des conteneurs et objets"), findsOneWidget);
+    // // EDIT ITEM
+    await tester.tap(find.byKey(Key('edit-items')));
+    await tester.pump();
   });
 
   testWidgets('ContainerMobilePage displays message details',
