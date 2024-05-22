@@ -41,13 +41,13 @@ router.get('/:containerId/articleslist/', async (req, res) => {
     }
     const articleName = req.query.articleName || '';
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
-    const isAvailable = req.query.isAvailable || true;
+    const isAvailable = req.query.isAvailable === 'true';
     const isAscending = req.query.isAscending === 'true';
     const sortBy = req.query.sortBy || 'price';
     const min = parseFloat(req.query.min) || 0;
     const max = parseFloat(req.query.max) || 1000000;
     const items = await containerCtrl.getItemsWithFilters(
-      parseInt(req.params.containerId),
+      parseInt(parseInt(containerId)),
       articleName,
       isAscending,
       isAvailable,
@@ -56,10 +56,10 @@ router.get('/:containerId/articleslist/', async (req, res) => {
       min,
       max
     );
-    return res.status(200).json(items)
+    return res.status(200).json(items);
   } catch (err) {
-    return res.status(401).send('An error occurred')
+    return res.status(401).send('An error occurred');
   }
-})
+});
 
 module.exports = router

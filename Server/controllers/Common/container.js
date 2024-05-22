@@ -246,7 +246,6 @@ exports.getItemsWithFilters = async (
       containerId: containerId,
       name: {
         contains: articleName,
-        containerId
       },
     };
 
@@ -256,7 +255,7 @@ exports.getItemsWithFilters = async (
         if (isNaN(categoryId)) {
           throw new Error("Invalid category id");
         }
-        whereCondition.categories = { some: { id: parseInt(categoryId) } };
+        whereCondition.categories = { some: { id: categoryId } };
       }
     }
 
@@ -274,7 +273,7 @@ exports.getItemsWithFilters = async (
       };
     }
 
-    const orderBy = isAscending === true ? 'asc' : 'desc';
+    const orderBy = isAscending ? 'asc' : 'desc';
 
     let items = await db.Item.findMany({
       where: whereCondition,
@@ -295,23 +294,17 @@ exports.getItemsWithFilters = async (
     const unavailableItems = items.filter(item => !item.available);
 
     availableItems.sort((a, b) => {
-      if (sortBy === 'price' || sortBy === 'rating') {
-        return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-      }
-      return 0;
+      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
     });
 
     unavailableItems.sort((a, b) => {
-      if (sortBy === 'price' || sortBy === 'rating') {
-        return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-      }
-      return 0;
+      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
     });
 
     if (!isAvailable) {
-      items = [...availableItems, ...unavailableItems];
-    } else {
       items = [...unavailableItems, ...availableItems];
+    } else {
+      items = [...availableItems, ...unavailableItems];
     }
 
     return items;
