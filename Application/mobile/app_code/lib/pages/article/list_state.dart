@@ -86,9 +86,14 @@ class ArticleListState extends State<ArticleListPage> {
     late http.Response response;
 
     try {
-      final url = Uri.parse(
-          '$baseUrl/api/mobile/container/$containerId/articleslist'
-          '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}&sortBy=$sortBy${min != null ? '&min=$min' : ''}${max != null ? '&max=$max' : ''}');
+      final url =
+          Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist?'
+              '${articleName.isNotEmpty ? 'articleName=$articleName&' : ''}'
+              'isAscending=$isAscending&isAvailable=$isAvailable'
+              '${categoryId != null ? '&categoryId=$categoryId' : ''}'
+              '&sortBy=$sortBy'
+              '${min != null ? '&min=$min' : ''}'
+              '${max != null ? '&max=$max' : ''}');
       response = await http.get(
         url,
         headers: <String, String>{
@@ -125,7 +130,7 @@ class ArticleListState extends State<ArticleListPage> {
 
   void _onTextChanged(String value) {
     _debounceTimer.cancel();
-    _debounceTimer = Timer(Duration(milliseconds: 500), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
       setState(() {
         articleName = value;
       });
