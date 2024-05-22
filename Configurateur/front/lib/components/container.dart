@@ -7,6 +7,18 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 
+/// ContainerListData
+///
+/// Define the data of container in back end
+/// [id] : Container's id
+/// [createdAt] : Creation of the container
+/// [organization] : Organization having created the container
+/// [organizationId] : Id of the organization
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [price] : Price of the container
+/// [design] : List of design for the container's faces
+/// [informations] : Informations about the container
+/// [saveName] : Name given during the creation of the container
 class ContainerListData {
   final int? id;
   final dynamic? createdAt;
@@ -66,6 +78,12 @@ class ContainerListData {
   }
 }
 
+/// ContainerCards
+///
+/// Component to create card for the container list
+/// [container] : Data of the container
+/// [onDelete] : To delete the container
+/// [page] : Value of the page when you click on the card
 class ContainerCards extends StatelessWidget {
   final ContainerListData container;
   final Function(ContainerListData) onDelete;
@@ -79,6 +97,7 @@ class ContainerCards extends StatelessWidget {
       required this.onDelete,
       required this.page});
 
+  /// [Widget] : build the Card component
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

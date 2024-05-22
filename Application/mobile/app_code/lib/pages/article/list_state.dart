@@ -1,21 +1,20 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/components/outlined_button.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/components/filled_button.dart';
 
+import 'article_filters_page.dart';
 import 'article_list_data.dart';
 import 'list_page.dart';
-import 'article_filters_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
   late Timer _debounceTimer;
@@ -143,12 +142,17 @@ class ArticleListState extends State<ArticleListPage> {
     super.initState();
     _debounceTimer = Timer(Duration.zero, () {});
     _containerId = widget.containerId;
-    getItemsData(context, _containerId, selectedCategoryId)
-        .then((dynamic value) {
-      setState(() {
-        _itemsDatas = value;
-      });
+    setState(() {
+      _itemsDatas = widget.testItemData;
     });
+    if (_itemsDatas.isEmpty) {
+      getItemsData(context, _containerId, selectedCategoryId)
+          .then((dynamic value) {
+        setState(() {
+          _itemsDatas = value;
+        });
+      });
+    }
     getArticleCategories().then((dynamic value) {
       setState(() {
         _articleCategories = value;
@@ -199,6 +203,7 @@ class ArticleListState extends State<ArticleListPage> {
                                 keyboardType: TextInputType.text,
                                 icon: Icons.search,
                                 rightIcon: Icons.tune,
+                                rightIconKey: const Key('list-icon-filter'),
                                 rightIconOnPressed: () async {
                                   Navigator.push(
                                     context,

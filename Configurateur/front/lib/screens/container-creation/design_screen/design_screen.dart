@@ -12,7 +12,10 @@ import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -24,6 +27,7 @@ import '../../../components/recap_panel/recap_panel.dart';
 import '../../../network/informations.dart';
 import 'design_screen_style.dart';
 
+/// List of the Face class to define all the faces
 const List<String> faceList = <String>[
   'Devant',
   'Derrière',
@@ -33,6 +37,9 @@ const List<String> faceList = <String>[
   'Bas'
 ];
 
+/// Design for a container
+/// [face] : Contient les face du conteneur
+/// [design] : Contient le design du conteneur
 class Design {
   Design(this.face, this.design);
 
@@ -52,6 +59,8 @@ class Design {
   }
 }
 
+/// DesignScreen
+/// Creation of container's design
 class DesignScreen extends StatefulWidget {
   const DesignScreen(
       {super.key,
@@ -75,10 +84,8 @@ class DesignScreen extends StatefulWidget {
   State<DesignScreen> createState() => DesignScreenState();
 }
 
+/// DesignScreenState
 ///
-/// ContainerCreation
-///
-/// page d'inscription pour le configurateur
 class DesignScreenState extends State<DesignScreen> {
   late List<Sp3dObj> objs = [];
 
@@ -93,6 +100,7 @@ class DesignScreenState extends State<DesignScreen> {
   String face = faceList.first;
   List<Design> designss = [];
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -127,6 +135,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Decode lockers for the container in json
   void decodeLockers() {
     dynamic decode = jsonDecode(widget.lockers!);
 
@@ -138,6 +147,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Decode designs for the container in json
   void decodeDesigns() {
     dynamic container = jsonDecode(widget.container!);
 
@@ -156,6 +166,7 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
+  /// [Function] : Load an image for the container's design
   Future<void> loadImage(bool unitTesting,
       {Uint8List? fileData, int? faceLoad}) async {
     if (fileData != null) {
@@ -216,6 +227,9 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
+  /// [Function] : Delete image of container's face
+  ///
+  /// [faceIndex] : Selected face of the container
   Future<void> removeImage(bool unitTesting, int faceIndex) async {
     picked = null;
 
@@ -244,6 +258,7 @@ class DesignScreenState extends State<DesignScreen> {
     });
   }
 
+  /// [Function] : Open dialog to pick an image for the design
   void openAddDialog(context) async {
     await showDialog(
         context: context,
@@ -251,6 +266,9 @@ class DesignScreenState extends State<DesignScreen> {
             AddDesignDialog(file: picked, callback: loadImage));
   }
 
+  /// [Function] : Remove design of a container
+  ///
+  /// [faceIndex] : Selected face of the container
   void removeDesign(int faceIndex) {
     for (int i = 0; i < lockerss.length; i++) {
       if (lockerss[i].type == 'Design personnalisé') {
@@ -267,6 +285,8 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Calculating the price of lockers
+  /// return the total price
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockerss.length; i++) {
@@ -275,6 +295,7 @@ class DesignScreenState extends State<DesignScreen> {
     return price;
   }
 
+  /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -283,6 +304,7 @@ class DesignScreenState extends State<DesignScreen> {
     return mapping;
   }
 
+  /// [Widget] : Open dialog
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -291,6 +313,9 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Save data of the container
+  ///
+  /// [name] : Name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': 'Bearer $jwtToken',
@@ -345,6 +370,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Go to the next page
   void goNext() async {
     if (widget.id == null) {
       HttpService().request(
@@ -411,6 +437,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     if (widget.container != null) {
       dynamic decode = jsonDecode(widget.container!);
@@ -440,6 +467,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Function] : Load the container form
   Widget loadCube() {
     if (world != null) {
       return Sp3dRenderer(
@@ -457,6 +485,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  /// [Widget] : Build the design page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -509,9 +538,12 @@ class DesignScreenState extends State<DesignScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.cloud_upload,
                                 size: 32.0,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -520,6 +552,10 @@ class DesignScreenState extends State<DesignScreen> {
                                 "Cliquez pour ajouter une image",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                   fontSize: screenFormat == ScreenFormat.desktop
                                       ? desktopFontSize
                                       : tabletFontSize,
@@ -529,6 +565,10 @@ class DesignScreenState extends State<DesignScreen> {
                                 height: 10,
                               ),
                               ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0))),
                                   onPressed: () async {
                                     picked =
                                         await FilePicker.platform.pickFiles(
@@ -556,6 +596,10 @@ class DesignScreenState extends State<DesignScreen> {
                                   child: Text(
                                     "Parcourir",
                                     style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                       fontSize:
                                           screenFormat == ScreenFormat.desktop
                                               ? desktopFontSize
@@ -597,10 +641,18 @@ class DesignScreenState extends State<DesignScreen> {
                                 RemoveDesignDialog(callback: removeImage),
                           );
                         },
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                         label: Text(
                           'Retirer une image',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -624,10 +676,18 @@ class DesignScreenState extends State<DesignScreen> {
                               builder: (context) => openDialog());
                           saveContainer(name);
                         },
-                        icon: const Icon(Icons.save),
+                        icon: Icon(
+                          Icons.save,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                         label: Text(
                           "Sauvegarder",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,

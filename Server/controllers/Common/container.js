@@ -32,6 +32,8 @@ exports.getContainerByOrganizationId = (organizationId) => {
       city: true,
       address: true,
       informations: true,
+      paid: true,
+      saveName: true,
       items: {
         where: {
           available: true,
@@ -65,11 +67,25 @@ exports.deleteContainer = (id) => {
  * @param {*} container the object with data
  * @returns the container object
  */
-exports.createContainer = (container) => {
+exports.createContainer = async (container, organizationId) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
+
   return db.Containers.create({
     data: container,
+  }).then(async (container) => {
+    await db.Organization.update({
+      where: {
+        id: organizationId,
+      },
+      data: {
+        containers: {
+          connect: {
+            id: container.id,
+          },
+        },
+      },
+    });
   });
 };
 
@@ -148,10 +164,10 @@ exports.getItemsFromContainer = (containerId) => {
         },
       },
     },
-  })
-}
+  });
+};
 
-exports.updateCity = container => {
+exports.updateCity = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -162,7 +178,7 @@ exports.updateCity = container => {
   });
 };
 
-exports.updateAddress = container => {
+exports.updateAddress = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -173,7 +189,7 @@ exports.updateAddress = container => {
   });
 };
 
-exports.updateSaveName = container => {
+exports.updateSaveName = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -184,7 +200,7 @@ exports.updateSaveName = container => {
   });
 };
 
-exports.updateInformation = container => {
+exports.updateInformation = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -196,19 +212,28 @@ exports.updateInformation = container => {
 };
 
 /**
-  * Retrieve items of the containers with filters
-  *
-  * @param {number} containerId id of the container
-  * @param {string} articleName name of the article
-  * @param {boolean} isAscending order of the items
-  * @param {boolean} isAvailable availability of the items
-  * @param {number} categoryId id of the category
-  * @param {string} sortBy sort by price or rating
-  * @param {number} min minimum value
-  * @param {number} max maximum value
-  * @returns the container object with its items
-  */
-exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId, sortBy, min, max) => {
+ * Retrieve items of the containers with filters
+ *
+ * @param {number} containerId id of the container
+ * @param {string} articleName name of the article
+ * @param {boolean} isAscending order of the items
+ * @param {boolean} isAvailable availability of the items
+ * @param {number} categoryId id of the category
+ * @param {string} sortBy sort by price or rating
+ * @param {number} min minimum value
+ * @param {number} max maximum value
+ * @returns the container object with its items
+ */
+exports.getItemsWithFilters = async (
+  containerId,
+  articleName,
+  isAscending,
+  isAvailable,
+  categoryId,
+  sortBy,
+  min,
+  max
+) => {
   try {
     const container = await db.Containers.findUnique({
       where: { id: containerId },
@@ -218,6 +243,7 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
     }
 
     let whereCondition = {
+      containerId: containerId,
       name: {
         contains: articleName,
         containerId
@@ -234,14 +260,14 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
       }
     }
 
-    if (sortBy === 'price') {
+    if (sortBy === "price") {
       whereCondition.price = {
         gte: min,
         lte: max,
       };
     }
 
-    if (sortBy === 'rating') {
+    if (sortBy === "rating") {
       whereCondition.rating = {
         gte: min,
         lte: max,

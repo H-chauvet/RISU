@@ -60,4 +60,15 @@ void main() {
     await tester.tap(okButton);
     await tester.pumpAndSettle();
   });
+
+  testWidgets('Logged in but want to get out of the app',
+      (WidgetTester tester) async {
+    userInformation = initExampleUser();
+    await tester.pumpWidget(initPage(const HomePage()));
+    await tester.pumpAndSettle();
+
+    final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+    await widgetsAppState.didPopRoute();
+    await tester.pump();
+  });
 }

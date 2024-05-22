@@ -17,6 +17,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import './login_style.dart';
 
+/// LoginScreen
+///
+/// Page to be connected to the web application
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -24,15 +27,13 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => LoginScreenState();
 }
 
-///
-/// Login screen
-///
-/// page de connexion pour le configurateur
+/// LoginScreenState
 ///
 class LoginScreenState extends State<LoginScreen> {
   String? token = '';
   String? userMail = '';
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
@@ -45,6 +46,7 @@ class LoginScreenState extends State<LoginScreen> {
     checkToken();
   }
 
+  /// [Widget] : Build the login page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

@@ -27,7 +27,7 @@ router.post(
   }
 );
 
-router.post("/create", async (req, res) => {
+router.post("/create", async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
@@ -48,7 +48,7 @@ router.post("/create", async (req, res) => {
     });
     res.status(200).json(item);
   } catch (err) {
-    console.log(err);
+    next(err);
     return res.status(400).json("An error occured.");
   }
 });
