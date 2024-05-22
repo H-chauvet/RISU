@@ -462,7 +462,7 @@ class _ProfilePageState extends State<ProfilePage> {
               content: Container(
                 height: SizeService().getScreenFormat(context) ==
                         ScreenFormat.desktop
-                    ? desktopDialogHeight
+                    ? desktopDialogHeight * 1.25
                     : tabletDialogHeight,
                 child: Form(
                   key: formKey,
@@ -944,6 +944,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               storageService.removeStorage('token');
                               storageService.removeStorage('tokenExpiration');
+                              Fluttertoast.showToast(
+                                msg: "Vous êtes bien déconnecté !",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                              );
                               context.go("/");
                             },
                             style: ElevatedButton.styleFrom(

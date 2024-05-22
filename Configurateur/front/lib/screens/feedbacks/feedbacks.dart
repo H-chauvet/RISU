@@ -110,10 +110,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                               borderRadius: BorderRadius.circular(16.0),
                             ),
                             elevation: 0,
-                            backgroundColor:
-                                Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.colorScheme.background
-                                    : lightTheme.colorScheme.background,
                             child: Container(
                               width: screenFormat == ScreenFormat.desktop
                                   ? desktopContainerWidth
@@ -136,7 +132,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                                       ),
                                     ),
                                   ),
-                                  RatingDialogContent(),
+                                  RatingDialogContent(onSubmit: fetchFeedbacks),
                                 ],
                               ),
                             ),

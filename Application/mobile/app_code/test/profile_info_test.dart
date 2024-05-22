@@ -138,5 +138,21 @@ void main() {
       await tester.enterText(newPasswordConfirmationFinder, 'wrong_password');
       await tester.pumpAndSettle();
     });
+
+    testWidgets('Password update', (WidgetTester tester) async {
+      userInformation = initExampleUser();
+      final testPage = initPage(const ProfileInformationsPage());
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      await tester.enterText(passwordFinder, 'current');
+      await tester.enterText(newPasswordFinder, 'newpassword');
+      await tester.enterText(newPasswordConfirmationFinder, 'newpassword');
+
+      await tester.dragUntilVisible(
+          updatePasswordButtonFinder, passwordFinder, const Offset(0, -300));
+
+      await tester.tap(updatePasswordButtonFinder);
+      await tester.pumpAndSettle();
+    });
   });
 }

@@ -275,15 +275,7 @@ void main() {
       await tester.pumpWidget(testPage);
       BuildContext context = tester.element(find.byType(OpinionPage));
 
-      while (true) {
-        try {
-          expect(find.byType(CircularProgressIndicator), findsOneWidget);
-          await tester.pumpWidget(testPage, duration: const Duration(milliseconds: 100));
-        } catch (e) {
-          break;
-        }
-      }
-
+      await waitForLoader(tester: tester, testPage: testPage);
       // Replace these keys with the actual keys used in your RentArticlePage UI
       Finder addOpinionButtonFinder =
           find.byKey(const Key('add_opinion-button'));

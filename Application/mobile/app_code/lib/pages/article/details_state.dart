@@ -283,17 +283,24 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.testArticleData.isEmpty) {
+      getArticleData(context, widget.articleId).then((dynamic value) {
+        setState(() {
+          articleData = ArticleData.fromJson(value);
+        });
+      });
+    } else {
+      setState(() {
+        articleData = ArticleData.fromJson(widget.testArticleData);
+      });
+    }
+
     if (widget.similarArticlesData.isNotEmpty) {
       setState(() {
         similarArticles = widget.similarArticlesData;
       });
     }
-    getArticleData(context, widget.articleId).then((dynamic value) {
-      setState(() {
-        articleData = ArticleData.fromJson(value);
-      });
-      getSimilarArticles(context);
-    });
   }
 
   @override
@@ -562,6 +569,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: GestureDetector(
+                                  key:
+                                      const Key('detail-gesture-go_to_similar'),
                                   onTap: () {
                                     Navigator.push(
                                       context,

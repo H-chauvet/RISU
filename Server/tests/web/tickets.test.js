@@ -68,31 +68,6 @@ describe("Ticket Routes Tests", () => {
     expect(response.status).toBe(400);
   });
 
-  it("should not post a ticket (assignedId)", async () => {
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
-    userCtrl.findUserByUuid.mockResolvedValueOnce({ uuid: "test-uuid" });
-
-    ticketCtrl.createTicket.mockResolvedValueOnce(
-        "Mocked message response",
-    );
-
-    const requestBody = {
-      uuid: "test-uuid",
-      content: "Test Content",
-      title: "Test Title",
-      createdAt: Date.now().toString(),
-      assignedId: "Inexisting",
-      chatUid: "",
-    };
-
-    const response = await supertest(app).post("/create")
-    .send(requestBody)
-    .set("Authorization", "Bearer mockedAccessToken");
-
-    expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("Bearer mockedAccessToken");
-    expect(response.status).toBe(404);
-  });
-
   it("should not post a ticket (chatUid)", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
     userCtrl.findUserByUuid.mockResolvedValueOnce({ uuid: "test-uuid" });

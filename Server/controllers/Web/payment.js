@@ -21,7 +21,6 @@ const generateResponse = async (intent, id) => {
         error: "Your card was denied, please provide a new payment method",
       };
     case "succeeded":
-      console.log("Payment received!");
       try {
         await db.Containers.update({
           where: {

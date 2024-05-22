@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -96,6 +97,11 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
                       child: ElevatedButton(
                         key: const Key('send-mail'),
                         onPressed: () async {
+                          Fluttertoast.showToast(
+                            msg: "Le mail de confirmation a bien été renvoyé !",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.CENTER,
+                          );
                           now = DateTime.now();
                           final difference =
                               now.difference(lastClicked).inMinutes;

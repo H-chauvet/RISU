@@ -27,7 +27,8 @@ UserData initExampleUser(
     {String? email,
     String? firstName,
     String? lastName,
-    List<bool>? notifications}) {
+    List<bool>? notifications,
+    String? ID}) {
   return UserData(
     email: email ?? 'example@gmail.com',
     firstName: firstName ?? 'Example',
@@ -38,6 +39,7 @@ UserData initExampleUser(
           false,
           false,
         ],
+    ID: ID ?? 'User',
   );
 }
 
@@ -61,7 +63,7 @@ Future<void> waitForLoader(
   while (true) {
     try {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pumpWidget(testPage, duration: const Duration(milliseconds: 100));
+      await tester.pumpWidget(testPage);
     } catch (e) {
       break;
     }

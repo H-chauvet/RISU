@@ -4,7 +4,7 @@ module.exports = {
       url: "http://localhost:3000/",
     },
     {
-      url: "http://risu.dns-dynamic.net:3000",
+      url: "http://51.77.215.103:3000",
     },
   ],
 };

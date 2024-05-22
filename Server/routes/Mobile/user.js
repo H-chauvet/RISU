@@ -9,12 +9,12 @@ const cleanCtrl = require('../../controllers/Mobile/cleandata')
 const bcrypt = require('bcrypt')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
 
-router.get('/listAll', async (req, res) => {
+router.get('/listAll', async (req, res, next) => {
   try {
     const user = await userCtrl.getAllUsers()
     return res.status(200).json({ user })
   } catch (err) {
-    console.log(err)
+    next(err)
     return res.status(400).json('An error occured.')
   }
 })
