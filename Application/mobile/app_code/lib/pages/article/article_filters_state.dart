@@ -231,7 +231,8 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: MyTextInput(
                           key: const Key('filter-input_min'),
-                          initialValue: (min != null) ? min.toString() : null,
+                          initialValue:
+                              (min != null) ? min?.toStringAsFixed(2) : null,
                           labelText: (sortBy == 'price')
                               ? AppLocalizations.of(context)!.minimumPrice
                               : AppLocalizations.of(context)!.minimumRating,
@@ -253,7 +254,8 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: MyTextInput(
                           key: const Key('filter-input_max'),
-                          initialValue: (max != null) ? max.toString() : null,
+                          initialValue:
+                              (max != null) ? max?.toStringAsFixed(2) : null,
                           labelText: (sortBy == 'price')
                               ? AppLocalizations.of(context)!.maximumPrice
                               : AppLocalizations.of(context)!.maximumRating,
