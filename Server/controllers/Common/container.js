@@ -221,8 +221,8 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
       name: {
         contains: articleName,
       },
-      available: isAvailable,
     };
+
     if (categoryId != undefined) {
       if (categoryId != null) {
         categoryId = parseInt(categoryId);
@@ -248,7 +248,8 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
     }
 
     const orderBy = isAscending === true ? 'asc' : 'desc';
-    return await db.Item.findMany({
+
+    let items = await db.Item.findMany({
       where: whereCondition,
       select: {
         id: true,
@@ -261,10 +262,32 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
         description: true,
         categories: true,
       },
-      orderBy: {
-        [sortBy]: orderBy,
-      },
     });
+
+    const availableItems = items.filter(item => item.available);
+    const unavailableItems = items.filter(item => !item.available);
+
+    availableItems.sort((a, b) => {
+      if (sortBy === 'price' || sortBy === 'rating') {
+        return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+      }
+      return 0;
+    });
+
+    unavailableItems.sort((a, b) => {
+      if (sortBy === 'price' || sortBy === 'rating') {
+        return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+      }
+      return 0;
+    });
+
+    if (!isAvailable) {
+      items = [...availableItems, ...unavailableItems];
+    } else {
+      items = [...unavailableItems, ...availableItems];
+    }
+
+    return items;
   } catch (error) {
     throw new Error("Failed to retrieve items with filters");
   }

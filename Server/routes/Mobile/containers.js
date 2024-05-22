@@ -34,17 +34,17 @@ router.get('/:containerId', async (req, res, next) => {
 
 router.get('/:containerId/articleslist/', async (req, res) => {
   try {
+    const containerId = req.params.containerId;
+    if (!containerId || containerId === '') {
+      return res.status(401).json({ message: 'Missing containerId' });
+    }
     const articleName = req.query.articleName || '';
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
-    const isAvailable = req.query.isAvailable === 'true';
+    const isAvailable = req.query.isAvailable || true;
     const isAscending = req.query.isAscending === 'true';
     const sortBy = req.query.sortBy || 'price';
-    const min = req.query.min || 0;
-    const max = req.query.max || 1000000;
-
-    if (!req.params.containerId || req.params.containerId === '') {
-      return res.status(401).json({ message: 'Missing containerId' })
-    }
+    const min = parseFloat(req.query.min) || 0;
+    const max = parseFloat(req.query.max) || 1000000;
     const items = await containerCtrl.getItemsWithFilters(
       parseInt(req.params.containerId),
       articleName,
