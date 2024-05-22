@@ -220,6 +220,7 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
     let whereCondition = {
       name: {
         contains: articleName,
+        containerId: containerId,
       },
     };
 
