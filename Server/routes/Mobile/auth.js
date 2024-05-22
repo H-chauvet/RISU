@@ -18,7 +18,6 @@ router.post('/signup', (req, res, next) => {
       if (err)
         throw new Error(err)
       if (user === false) {
-        console.log(info)
         return res.status(401).json(info)
       }
       const token = jwtMiddleware.generateToken(user.id)

@@ -36,9 +36,9 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
   ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return checkBoxMenuButtonColorDarkTheme;
+      return lightTheme.primaryColor;
     } else {
-      return checkBoxMenuButtonColorLightTheme;
+      return darkTheme.primaryColor;
     }
   }
 
@@ -46,9 +46,9 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
   ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return containerDialogTextColorDarkTheme;
+      return darkTheme.primaryColor;
     } else {
-      return lightTheme.colorScheme.background;
+      return lightTheme.primaryColor;
     }
   }
 
@@ -59,8 +59,11 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Supprimer un conteneur',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text('Supprimer un conteneur',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: getTextColor())),
           const SizedBox(height: 20),
           Form(
             key: _formKey,
@@ -130,8 +133,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                    "Sur quelle face du casier voulez-vous le supprimer ?"),
+                Text("Sur quelle face du casier voulez-vous le supprimer ?",
+                    style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
                 ),
@@ -203,8 +206,11 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
-                    child: const Text(
+                    child: Text(
                       'Supprimer',
+                      style: TextStyle(
+                        color: getTextColor(),
+                      ),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
@@ -216,16 +222,24 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                         if (ret == 'deleteError') {
                           await showDialog(
                               context: context,
-                              builder: (context) => const AlertDialog(
+                              builder: (context) => AlertDialog(
                                     content: Text(
-                                        "Vous ne pouvez pas réalisé cette action, la position est déjà vide"),
+                                      "Vous ne pouvez pas réaliser cette action, la position est déjà vide",
+                                      style: TextStyle(
+                                        color: getTextColor(),
+                                      ),
+                                    ),
                                   ));
                         } else if (ret == 'wrongPositionError') {
                           await showDialog(
                               context: context,
-                              builder: (context) => const AlertDialog(
+                              builder: (context) => AlertDialog(
                                     content: Text(
-                                        "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier."),
+                                      "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                      style: TextStyle(
+                                        color: getTextColor(),
+                                      ),
+                                    ),
                                   ));
                         } else {
                           Navigator.pop(context);

@@ -57,9 +57,9 @@ class ContainerDialogState extends State<ContainerDialog> {
   ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return checkBoxMenuButtonColorDarkTheme;
+      return lightTheme.primaryColor;
     } else {
-      return checkBoxMenuButtonColorLightTheme;
+      return darkTheme.primaryColor;
     }
   }
 
@@ -67,9 +67,9 @@ class ContainerDialogState extends State<ContainerDialog> {
   ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return containerDialogTextColorDarkTheme;
+      return darkTheme.primaryColor;
     } else {
-      return lightTheme.colorScheme.background;
+      return lightTheme.primaryColor;
     }
   }
 
@@ -80,15 +80,21 @@ class ContainerDialogState extends State<ContainerDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Ajouter un conteneur',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Ajouter un conteneur',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: getTextColor()),
+          ),
           const SizedBox(height: 20),
           Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text("Quelle taille de casier voulez-vous ajouter ?"),
+                Text("Quelle taille de casier voulez-vous ajouter ?",
+                    style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
                 ),
@@ -253,7 +259,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text("Sur quelle face du casier voulez-vous l'ajouter ?"),
+                Text("Sur quelle face du casier voulez-vous l'ajouter ?",
+                    style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
                 ),

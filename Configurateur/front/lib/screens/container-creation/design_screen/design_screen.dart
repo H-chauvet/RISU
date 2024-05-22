@@ -12,7 +12,10 @@ import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
@@ -535,9 +538,12 @@ class DesignScreenState extends State<DesignScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.cloud_upload,
                                 size: 32.0,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                               ),
                               const SizedBox(
                                 height: 20,
@@ -546,6 +552,10 @@ class DesignScreenState extends State<DesignScreen> {
                                 "Cliquez pour ajouter une image",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                   fontSize: screenFormat == ScreenFormat.desktop
                                       ? desktopFontSize
                                       : tabletFontSize,
@@ -555,6 +565,10 @@ class DesignScreenState extends State<DesignScreen> {
                                 height: 10,
                               ),
                               ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0))),
                                   onPressed: () async {
                                     picked =
                                         await FilePicker.platform.pickFiles(
@@ -582,6 +596,10 @@ class DesignScreenState extends State<DesignScreen> {
                                   child: Text(
                                     "Parcourir",
                                     style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                       fontSize:
                                           screenFormat == ScreenFormat.desktop
                                               ? desktopFontSize
@@ -623,10 +641,18 @@ class DesignScreenState extends State<DesignScreen> {
                                 RemoveDesignDialog(callback: removeImage),
                           );
                         },
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(
+                          Icons.delete,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                         label: Text(
                           'Retirer une image',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -650,10 +676,18 @@ class DesignScreenState extends State<DesignScreen> {
                               builder: (context) => openDialog());
                           saveContainer(name);
                         },
-                        icon: const Icon(Icons.save),
+                        icon: Icon(
+                          Icons.save,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                         label: Text(
                           "Sauvegarder",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,

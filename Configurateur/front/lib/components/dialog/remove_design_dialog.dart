@@ -71,9 +71,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
   ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return checkBoxMenuButtonColorDarkTheme;
+      return lightTheme.primaryColor;
     } else {
-      return checkBoxMenuButtonColorLightTheme;
+      return darkTheme.primaryColor;
     }
   }
 
@@ -81,9 +81,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
   ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return containerDialogTextColorDarkTheme;
+      return darkTheme.primaryColor;
     } else {
-      return lightTheme.colorScheme.background;
+      return lightTheme.primaryColor;
     }
   }
 
@@ -95,8 +95,14 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Retirer une image',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Retirer une image',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: getTextColor(),
+            ),
+          ),
           const SizedBox(height: 20),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,10 +112,13 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                 width: 500,
                 child: Column(
                   children: <Widget>[
-                    const Text(
+                    Text(
                       "Quelle image souhaitez-vous retirer ?",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: getTextColor(),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -295,6 +304,9 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
                       onPressed: () {
                         for (int i = 0; i < clicked.length; i++) {
                           if (clicked[i].clicked) {
@@ -310,7 +322,12 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                           Navigator.pop(context);
                         }
                       },
-                      child: const Text('Retirer'),
+                      child: Text(
+                        'Retirer',
+                        style: TextStyle(
+                          color: getTextColor(),
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -129,6 +129,9 @@ class RecapScreenState extends State<RecapScreen> {
                 Text(
                   "Récapitulatif de la commande",
                   style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -200,6 +203,9 @@ class RecapScreenState extends State<RecapScreen> {
                 Text(
                   "Prix total: ${widget.amount}€",
                   style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
