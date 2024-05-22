@@ -26,6 +26,8 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
     isAvailable = widget.isAvailable;
     selectedCategoryId = widget.selectedCategoryId;
     _articleCategories = widget.articleCategories;
+    min = widget.min;
+    max = widget.max;
   }
 
   @override
@@ -229,6 +231,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: MyTextInput(
                           key: const Key('filter-input_min'),
+                          initialValue: (min != null) ? min.toString() : null,
                           labelText: (sortBy == 'price')
                               ? AppLocalizations.of(context)!.minimumPrice
                               : AppLocalizations.of(context)!.minimumRating,
@@ -250,6 +253,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                         width: MediaQuery.of(context).size.width * 0.45,
                         child: MyTextInput(
                           key: const Key('filter-input_max'),
+                          initialValue: (max != null) ? max.toString() : null,
                           labelText: (sortBy == 'price')
                               ? AppLocalizations.of(context)!.maximumPrice
                               : AppLocalizations.of(context)!.maximumRating,
