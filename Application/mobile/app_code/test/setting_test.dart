@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 
 import 'globals.dart';
@@ -18,6 +19,7 @@ void main() {
     });
 
     testWidgets('Init Page', (WidgetTester tester) async {
+      userInformation = initExampleUser();
       await tester.pumpWidget(initPage(const SettingsPage()));
       BuildContext context = tester.element(find.byType(SettingsPage));
 
