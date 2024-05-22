@@ -4,9 +4,25 @@ import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 
+/// [faceList] : show the selected face of the container
+/// The face have this values :
+/// - "Devant": Show the front of the container.
+/// - "Derrière": Show the back of the container.
 const List<String> faceList = <String>['Devant', 'Derrière'];
+
+/// [directionList] : show the lenght or height of the container
+/// The direction have this values :
+/// - "Largeur": Show the lenght of the container.
+/// - "Hauteur": Show the height of the container.
 const List<String> directionList = <String>['Haut', 'Bas'];
 
+///
+/// [StatefulWidget] : ContainerDialog
+///
+/// [callback] :
+/// [size] : size of the container
+/// [width] : width of the container
+/// [height] : height of the container
 class ContainerDialog extends StatefulWidget {
   const ContainerDialog(
       {super.key,
@@ -25,7 +41,7 @@ class ContainerDialog extends StatefulWidget {
 }
 
 ///
-/// ContainerDialog
+/// ContainerDialogState
 ///
 class ContainerDialogState extends State<ContainerDialog> {
   final _formKey = GlobalKey<FormState>();
@@ -37,37 +53,48 @@ class ContainerDialogState extends State<ContainerDialog> {
   String size = '';
   int lockerSize = 0;
 
+  /// [Function] : Get the theme of the app
+  ///
   Color getColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return checkBoxMenuButtonColorDarkTheme;
+      return lightTheme.primaryColor;
     } else {
-      return checkBoxMenuButtonColorLightTheme;
+      return darkTheme.primaryColor;
     }
   }
 
+  /// [Function] : Get the theme of the app for the text color
+  ///
   Color? getTextColor() {
     if (Provider.of<ThemeService>(context).isDark) {
-      return containerDialogTextColorDarkTheme;
+      return darkTheme.primaryColor;
     } else {
-      return lightTheme.colorScheme.background;
+      return lightTheme.primaryColor;
     }
   }
 
+  /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Ajouter un conteneur',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          Text(
+            'Ajouter un conteneur',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: getTextColor()),
+          ),
           const SizedBox(height: 20),
           Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Text("Quelle taille de casier voulez-vous ajouter ?"),
+                Text("Quelle taille de casier voulez-vous ajouter ?",
+                    style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
                 ),
@@ -232,7 +259,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text("Sur quelle face du casier voulez-vous l'ajouter ?"),
+                Text("Sur quelle face du casier voulez-vous l'ajouter ?",
+                    style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
                 ),

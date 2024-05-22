@@ -7,6 +7,13 @@ import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
+///
+/// Locker
+///
+/// Define the type and the price of a locker
+///
+/// [type] : Change if the locker is big, medium or small
+/// [price] : Price of a locker
 class Locker {
   String type;
   int price;
@@ -21,6 +28,13 @@ class Locker {
   }
 }
 
+/// LockerList
+///
+/// List of [Locker]
+/// [type] : Change if the locker is big, medium or small
+/// [price] : Price of a locker
+/// [quantity] : quantity of lockers in container
+///
 class LockerList {
   String type;
   int price;
@@ -32,6 +46,7 @@ class LockerList {
 ///
 /// RecapPanel
 ///
+/// Summary of the lockers selected in a container
 // ignore: must_be_immutable
 class RecapPanel extends StatelessWidget {
   RecapPanel(
@@ -40,6 +55,8 @@ class RecapPanel extends StatelessWidget {
       required this.onSaved,
       required this.screenFormat});
 
+  /// [Function] : Calculating the price of lockers
+  /// return the total price
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < articles!.length; i++) {
@@ -54,6 +71,7 @@ class RecapPanel extends StatelessWidget {
   final Function() onSaved;
   final ScreenFormat screenFormat;
 
+  /// [Function] : Parsing all the articles of container
   List<LockerList> parseArticles() {
     List<LockerList> parsedLockers = [];
     int littleCount = 0;
@@ -103,13 +121,16 @@ class RecapPanel extends StatelessWidget {
     return parsedLockers;
   }
 
-  Widget articlesContent() {
+  /// [Widget] : Show the articles' content
+  Widget articlesContent(BuildContext context) {
     if (parsedArticles.isEmpty) {
       return Center(
         child: Text(
           "Aucun article dans le panier",
           style: TextStyle(
-            color: Colors.black,
+            color: Provider.of<ThemeService>(context).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.primaryColor,
             fontSize: screenFormat == ScreenFormat.desktop
                 ? desktopFontSize
                 : tabletFontSize,
@@ -133,6 +154,9 @@ class RecapPanel extends StatelessWidget {
                   child: Text(
                     parsedArticles[i].type,
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -145,7 +169,9 @@ class RecapPanel extends StatelessWidget {
                 child: Text(
                   parsedArticles[i].quantity.toString(),
                   style: TextStyle(
-                    color: Colors.black,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -159,7 +185,9 @@ class RecapPanel extends StatelessWidget {
                   child: Text(
                     "${parsedArticles[i].price.toString()}€",
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -175,6 +203,7 @@ class RecapPanel extends StatelessWidget {
     }
   }
 
+  /// [Widget] : build the recap panel
   @override
   Widget build(BuildContext context) {
     parseArticles();
@@ -190,6 +219,9 @@ class RecapPanel extends StatelessWidget {
                 'Panier',
                 textAlign: TextAlign.center,
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontWeight: FontWeight.bold,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
@@ -213,6 +245,9 @@ class RecapPanel extends StatelessWidget {
                         child: Text(
                           'Type',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -222,10 +257,14 @@ class RecapPanel extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 35),
                       child: Text(
                         'Quantité',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontWeight: FontWeight.bold,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -241,6 +280,9 @@ class RecapPanel extends StatelessWidget {
                           'Prix',
                           textAlign: TextAlign.right,
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -266,7 +308,7 @@ class RecapPanel extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            articlesContent(),
+            articlesContent(context),
             const SizedBox(
               height: 10,
             ),
@@ -283,6 +325,9 @@ class RecapPanel extends StatelessWidget {
             Center(
               child: Text('Total: ${price!}€',
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,

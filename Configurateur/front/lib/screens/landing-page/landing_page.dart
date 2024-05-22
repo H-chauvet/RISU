@@ -13,6 +13,9 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// LandingPage
+///
+/// Home page for the web application
 class LandingPage extends StatefulWidget {
   const LandingPage({Key? key}) : super(key: key);
 
@@ -20,11 +23,14 @@ class LandingPage extends StatefulWidget {
   State<LandingPage> createState() => LandingPageState();
 }
 
+/// LandingPageState
+///
 class LandingPageState extends State<LandingPage> {
   Function() disconnectFunction = () {};
   String? token = '';
   String? userMail = '';
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
@@ -37,6 +43,7 @@ class LandingPageState extends State<LandingPage> {
     checkToken();
   }
 
+  /// [Function] : Go to the creation page
   void goToCreation() async {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
@@ -45,6 +52,7 @@ class LandingPageState extends State<LandingPage> {
     }
   }
 
+  /// [Function] : Build the landing page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

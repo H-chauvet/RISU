@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 
+/// [Feedbacks]
+/// [id] : Id of the feedback
+/// [firstName] : User's name
+/// [lastName] : User's last name
+/// [email] : User's mail
+/// [message] : User's message
+/// [mark] : Number of stars for the rating (1 to 5)
 class Feedbacks {
   final int id;
   final String firstName;
@@ -29,6 +36,7 @@ class Feedbacks {
       mark: json['mark'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -41,11 +49,16 @@ class Feedbacks {
   }
 }
 
+/// FeedBacksCard
+///
+/// Creation of card for feednack
+/// [fb] : Feedback's informations
 class FeedbacksCard extends StatelessWidget {
   final Feedbacks fb;
 
   const FeedbacksCard({super.key, required this.fb});
 
+  /// [Widget] : Build card for a feedback
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

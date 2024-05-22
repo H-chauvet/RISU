@@ -3,12 +3,12 @@ const router = express.Router()
 
 const itemCtrl = require('../../controllers/Common/items')
 
-router.get('/listAll', async (req, res) => {
+router.get('/listAll', async (req, res, next) => {
   try {
     const articles = await itemCtrl.getItems()
     return res.status(200).json(articles)
   } catch (err) {
-    console.log(err)
+    next(err)
     return res.status(400).json('An error occured.')
   }
 })
@@ -25,5 +25,22 @@ router.get('/:articleId', async (req, res) => {
     return res.status(401).send('An error occurred')
   }
 })
+
+router.get('/:articleId/similar', async (req, res, next) => {
+  try {
+    const containerId = req.query.containerId
+    if (!containerId) {
+      return res.status(401).json("containerId is required")
+    }
+    const articles = await itemCtrl.getSimilarItems(parseInt(req.params.articleId), parseInt(containerId))
+    if (!articles) {
+      return res.status(401).json("article not found")
+    }
+    return res.status(200).json(articles)
+  } catch (err) {
+    next(err)
+    return res.status(400).json('An error occured.')
+  }
+});
 
 module.exports = router

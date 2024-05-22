@@ -175,6 +175,7 @@ class ConversationPageState extends State<ConversationPage> {
                       Expanded(
                         flex: 7,
                         child: TextField(
+                          key: const Key("conversation-text_field-message"),
                           controller: contentController,
                           onChanged: (String? value) {
                             setState(() {});

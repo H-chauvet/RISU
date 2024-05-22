@@ -19,6 +19,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+/// ProfilePage
+///
+/// Page of the user's profil
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
@@ -26,14 +29,17 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+/// ProfileState
+///
 class _ProfilePageState extends State<ProfilePage> {
-  late String firstName;
-  late String lastName;
-  late DateTime createdDate;
-  late String formattedDate;
-  late String company;
+  late String firstName = '';
+  late String lastName = '';
+  late DateTime createdDate = DateTime.now();
+  late String formattedDate = '';
+  late String company = '';
   String userMail = '';
 
+  /// [Function] : Get the user's details in the database
   Future<void> fetchUserDetails(String email) async {
     final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -62,6 +68,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+
+    /// Récupère l'email de l'utilisateur dans le stockage local
     storageService.getUserMail().then((value) {
       userMail = value;
       MyAlertTest.checkSignInStatus(context);
@@ -69,6 +77,9 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  /// [Function] : Show pop up to modify the user's name
+  /// [initialFirstName] : User's first name
+  /// [initialLastName] : User's last name
   Future<void> showEditPopupName(BuildContext context, String initialFirstName,
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
@@ -96,12 +107,14 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("first-name"),
                   controller: firstNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau prénom", hintText: initialFirstName),
                 ),
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("last-name"),
                   controller: lastNameController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom", hintText: initialLastName),
@@ -124,6 +137,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-name"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -133,6 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             ElevatedButton(
+              key: const Key("button-name"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-details/$userMail";
@@ -189,6 +204,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Check the token in the storage service
+  /// [initialCompany] : Initial user's company
   Future<void> showEditPopupCompany(BuildContext context, String initialCompany,
       Function(String) onEdit) async {
     TextEditingController companyController = TextEditingController();
@@ -215,6 +232,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("company"),
                   controller: companyController,
                   decoration: InputDecoration(
                       labelText: "Nouveau nom d'entreprise",
@@ -238,6 +256,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-company"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -247,6 +266,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             ElevatedButton(
+              key: const Key("button-company"),
               onPressed: () async {
                 final String apiUrl =
                     "http://$serverIp:3000/api/auth/update-company/$userMail";
@@ -301,6 +321,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Show pop up to modify the user's mail
   Future<void> showEditPopupMail(BuildContext context, String? initialMail,
       Function(String) onEdit) async {
     TextEditingController mailController = TextEditingController();
@@ -327,6 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextField(
+                  key: const Key("user-mail"),
                   controller: mailController,
                   decoration: InputDecoration(
                       labelText: "Nouveau mail", hintText: initialMail),
@@ -349,6 +371,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Text(
                 "Annuler",
+                key: const Key("cancel-edit-mail"),
                 style: TextStyle(
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
@@ -412,6 +435,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Function] : Show pop up to modify the user's password
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
     String password = '';
@@ -438,7 +462,7 @@ class _ProfilePageState extends State<ProfilePage> {
               content: Container(
                 height: SizeService().getScreenFormat(context) ==
                         ScreenFormat.desktop
-                    ? desktopDialogHeight
+                    ? desktopDialogHeight * 1.25
                     : tabletDialogHeight,
                 child: Form(
                   key: formKey,
@@ -526,9 +550,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text("Annuler"),
+                  child:
+                      const Text("Annuler", key: Key("cancel-edit-password")),
                 ),
                 ElevatedButton(
+                  key: const Key("button-password"),
                   onPressed: () async {
                     if (formKey.currentState!.validate() &&
                         password == validedPassword) {
@@ -580,6 +606,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  /// [Widget] : Build the user's profil page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -657,6 +684,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           const SizedBox(width: 5.0),
                           InkWell(
+                            key: const Key('edit-name'),
                             onTap: () async {
                               await showEditPopupName(
                                 context,
@@ -712,6 +740,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-mail'),
                               onTap: () async {
                                 await showEditPopupMail(context, userMail,
                                     (String newMail) {
@@ -770,6 +799,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-company'),
                               onTap: () async {
                                 await showEditPopupCompany(context, company,
                                     (String newCompany) {
@@ -828,6 +858,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-password'),
                               onTap: () async {
                                 await showEditPopupPassword(context, "",
                                     (String newPassword) {
@@ -913,6 +944,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               storageService.removeStorage('token');
                               storageService.removeStorage('tokenExpiration');
+                              Fluttertoast.showToast(
+                                msg: "Vous êtes bien déconnecté !",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                              );
                               context.go("/");
                             },
                             style: ElevatedButton.styleFrom(

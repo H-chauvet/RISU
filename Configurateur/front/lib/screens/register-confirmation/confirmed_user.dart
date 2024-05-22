@@ -9,6 +9,9 @@ import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 import 'dart:convert';
 
+/// ConfirmedUser
+///
+/// Page to inform the user of the account creation confirmation email
 class ConfirmedUser extends StatefulWidget {
   const ConfirmedUser({super.key, required this.params});
 
@@ -18,10 +21,8 @@ class ConfirmedUser extends StatefulWidget {
   State<ConfirmedUser> createState() => ConfirmedUserState();
 }
 
+/// ConfirmedState
 ///
-/// Password change screen
-///
-/// page de confirmation d'enregistrement pour le configurateur
 class ConfirmedUserState extends State<ConfirmedUser> {
   String jwtToken = '';
   dynamic response;
@@ -53,6 +54,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
     super.initState();
   }
 
+  /// [Widget] : Build the confirmation page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

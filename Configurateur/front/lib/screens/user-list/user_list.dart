@@ -14,6 +14,9 @@ import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// UserPage
+///
+/// Page for the user's management in the database
 class UserPage extends StatefulWidget {
   const UserPage({Key? key}) : super(key: key);
 
@@ -21,6 +24,8 @@ class UserPage extends StatefulWidget {
   _UserPageState createState() => _UserPageState();
 }
 
+/// UserPageState
+///
 class _UserPageState extends State<UserPage> {
   List<User> users = [];
   List<UserMobile> users_mobile = [];
@@ -34,6 +39,8 @@ class _UserPageState extends State<UserPage> {
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// [Function] : Delete web user
+  /// [user] : User who will be deleted
   Future<void> deleteUserWeb(User user) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/auth/delete");
     final response = await http.post(
@@ -59,6 +66,8 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
+  /// [Function] : Delete mboile user
+  /// [user] : User who will be deleted
   Future<void> deleteUserMobile(UserMobile user) async {
     final Uri url = Uri.parse("http://localhost:8080/api/dev/user/delete");
     final response = await http.post(
@@ -84,6 +93,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
+  /// [Function] : Get all the web users in the database
   Future<void> fetchUser() async {
     final response =
         await http.get(Uri.parse('http://${serverIp}:3000/api/auth/listAll'));
@@ -102,6 +112,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
+  /// [Function] : Get all the mobile users in the database
   Future<void> fetchUserMobile() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/mobile/user/listAll'));
@@ -121,6 +132,7 @@ class _UserPageState extends State<UserPage> {
     }
   }
 
+  /// [Widget] : Build the user's management page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

@@ -16,14 +16,24 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
 // ignore: must_be_immutable
+/// ContainerCreation
+///
+/// Creation of the container
+/// [container] : Informations about the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [width] : Container's width
+/// [height] : Container's height
 class ContainerCreation extends StatefulWidget {
   const ContainerCreation(
       {super.key,
@@ -43,10 +53,8 @@ class ContainerCreation extends StatefulWidget {
   State<ContainerCreation> createState() => ContainerCreationState();
 }
 
+/// ContainerCreationState
 ///
-/// ContainerCreation
-///
-/// page d'inscription pour le configurateur
 class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
   late Sp3dWorld world;
@@ -59,6 +67,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   late int width = 0;
   late int height = 0;
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -70,9 +79,9 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   @override
   void initState() {
-    checkToken();
     MyAlertTest.checkSignInStatus(context);
     super.initState();
+    checkToken();
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
@@ -157,6 +166,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Load the container's informations
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
     width = int.parse(container['width']);
@@ -183,6 +193,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
+  /// [Function] : Load the lockers' informations in the container
   void loadLockers() {
     int littleLocker = 0;
     int mediumLocker = 0;
@@ -218,6 +229,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Update the size of the container
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * width;
     int increment = 0;
@@ -304,6 +316,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "";
   }
 
+  /// [Widget] : Open dialog for the name of the container
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -312,6 +325,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Allow the locker to be moved
   void moveLocker(
       int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
@@ -366,6 +380,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Handle the locker
   Tuple2<int, int> handleMoveLocker(
       List<String> freeSpace, int i, int j, int fragmentIncrement, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
@@ -383,6 +398,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return const Tuple2(-1, -1);
   }
 
+  /// [Function] : Optimize the space in the containers by automatically filling the lockers
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
     int widths = width;
@@ -443,6 +459,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Optimize the space in the containers by automatically decrease the container's size
   void autoFillContainer(String face, bool unitTesting) {
     int fragmentIncrement = 0;
 
@@ -465,6 +482,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Load an image for the container's design
   void loadImage() async {
     world = Sp3dWorld(objs);
     world.initImages().then((List<Sp3dObj> errorObjs) {
@@ -474,6 +492,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
+  /// [Function] : Sum of the price of the lockers
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockers.length; i++) {
@@ -482,6 +501,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return price;
   }
 
+  /// [Function] : Reset the container
   void resetContainer() {
     for (int i = 0; i < objs[0].fragments.length; i++) {
       objs[0].fragments[i].faces[0].materialIndex = 0;
@@ -501,6 +521,9 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Delete a locker
+  /// [coord] : the locker's position in the container
+  /// [unitTesting] : Boolean that says if we came here from unit test or not
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {
     int fragment = coord.x - 1 + (coord.y - 1) * width;
     int increment = width;
@@ -571,6 +594,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "deleted";
   }
 
+  /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -579,6 +603,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return mapping;
   }
 
+  /// [Function] : Go to the next page
   void goNext() async {
     var data = {
       'amount': sumPrice(),
@@ -592,6 +617,8 @@ class ContainerCreationState extends State<ContainerCreation> {
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
+  /// [Function] : Save the container
+  /// [name] : name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': 'Bearer $jwtToken',
@@ -676,10 +703,12 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/container-creation/shape');
   }
 
+  /// [Widget]: build the configurator page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -737,12 +766,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Ajouter un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.add,
                       ),
                     ),
@@ -766,12 +801,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Sauvegarder',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.save,
                       ),
                     ),
@@ -796,12 +837,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Remplissage',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.auto_fix_high,
                       ),
                     ),
@@ -810,8 +857,10 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ),
                     SizedBox(
                       width: sizedBoxWidth,
-                      child: const Divider(
-                        color: Colors.grey,
+                      child: Divider(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         height: 20,
                         thickness: 1,
                         indent: 30,
@@ -838,12 +887,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Supprimer un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.delete,
                       ),
                     ),
@@ -862,12 +917,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Réinitialiser le conteneur',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.refresh,
                       ),
                     ),

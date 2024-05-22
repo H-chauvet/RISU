@@ -108,17 +108,55 @@ exports.updateItem = (id, item) => {
 };
 
 /**
- * Get the number of available items in a container
+ * Get the similar items of a specific item
  *
+ * @param {number} itemId id of the item
  * @param {number} containerId id of the container
- * @returns the number of available item in the containers
+ * @returns the articles that are similar to the one in parameter
+ * at least one same category
  */
 exports.getAvailableItemsCount = (containerId) => {
   return db.Item.count({
     where: { containerId: containerId },
-    select: { available: true },
-  });
-};
+    select: { available: true }
+  })
+}
+
+/**
+  * Get the similar items of a specific item
+  *
+  * @param {number} containerId id of the container
+  * @returns the articles that are similar to the one in parameter
+  * at least one same category
+  */
+exports.getSimilarItems = async (itemId, containerId) => {
+  try {
+    const item = await db.Item.findUnique({
+      where: { id: itemId },
+      include: { categories: true },
+    });
+    if (!item) {
+      throw new Error("Item not found");
+    }
+
+    const categoryIds = item.categories.map((category) => category.id);
+
+    const similarItems = await db.Item.findMany({
+      where: {
+        containerId: containerId,
+        id: { not: itemId },
+        categories: {
+          some: { id: { in: categoryIds } },
+        },
+        available: true,
+      },
+    });
+
+    return similarItems;
+  } catch (error) {
+    throw error;
+  }
+}
 
 /**
  * Update the name of the selected item

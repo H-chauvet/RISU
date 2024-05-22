@@ -32,10 +32,10 @@ import 'package:front/screens/save_container/my_container.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
+/// AppRouter
 ///
-/// App router
-///
-/// Gestion des routes de l'application
+/// Routes manager for the Web application
+/// [_router] : Define all the routes in the application
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
