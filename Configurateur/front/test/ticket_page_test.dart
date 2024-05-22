@@ -17,7 +17,7 @@ import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-  
+
   late MockSharedPreferences sharedPreferences;
 
   setUp(() async {

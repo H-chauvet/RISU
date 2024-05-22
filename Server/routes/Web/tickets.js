@@ -55,12 +55,6 @@ router.post('/create', async (req, res, next) => {
     if (!content || !title) {
       return res.status(400).send("Bad Request : Missing required parameters")
     }
-    if (assignedId) {
-      const assigned = await userCtrl.findUserByUuid(assignedId)
-      if (!assigned) {
-        return res.status(404).send('Bad Request : Assigned User not found');
-      }
-    }
 
     if (chatUid) {
       const conversation = await ticketCtrl.getConversation(chatUid)

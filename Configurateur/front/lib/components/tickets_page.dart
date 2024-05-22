@@ -84,7 +84,7 @@ class TicketsState extends State<TicketsPage> {
       return true;
     } else {
       Fluttertoast.showToast(
-          msg: "Erreur durant la création du ticket" + assignedId,
+          msg: "Erreur durant la création du ticket",
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 3,
@@ -303,7 +303,9 @@ class TicketsState extends State<TicketsPage> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Contactez le support RISU !',
+            isAdmin
+                ? 'Administration des tickets'
+                : 'Contactez le support RISU !',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
