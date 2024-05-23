@@ -50,7 +50,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('$baseUrl/api/mobile/user/password/reset'),
+        Uri.parse('$baseUrl/api/mobile/user/password/change'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',

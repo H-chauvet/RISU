@@ -47,7 +47,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
         _loaderManager.setIsLoading(true);
       });
       var response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/user/resetPassword'),
+        Uri.parse('$baseUrl/api/mobile/user/password/reset'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
