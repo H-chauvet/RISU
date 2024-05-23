@@ -279,7 +279,7 @@ class ArticleFiltersState extends State<ArticleFiltersPage> {
                   SwitchListTile(
                     key: const Key('filter-switch_available'),
                     title: Text(
-                      AppLocalizations.of(context)!.available,
+                      AppLocalizations.of(context)!.availableItemsOnly,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
                       ),

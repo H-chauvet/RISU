@@ -293,22 +293,13 @@ exports.getItemsWithFilters = async (
       },
     });
 
-    const availableItems = items.filter(item => item.available);
-    const unavailableItems = items.filter(item => !item.available);
-
-    availableItems.sort((a, b) => {
-      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-    });
-
-    unavailableItems.sort((a, b) => {
-      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
-    });
-
-    if (!isAvailable) {
-      items = [...unavailableItems, ...availableItems];
-    } else {
-      items = [...availableItems, ...unavailableItems];
+    if (isAvailable) {
+      items = items.filter(item => item.available);
     }
+
+    items.sort((a, b) => {
+      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+    });
 
     return items;
   } catch (error) {
