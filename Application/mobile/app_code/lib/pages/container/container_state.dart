@@ -7,6 +7,7 @@ import 'package:flutter_map_math/flutter_geo_math.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
@@ -18,6 +19,7 @@ import 'container_page.dart';
 
 class ContainerPageState extends State<ContainerPage> {
   final FlutterMapMath mapMath = FlutterMapMath();
+  PermissionStatus? permission;
   final LoaderManager _loaderManager = LoaderManager();
   LatLng _userPosition = const LatLng(47.210546, -1.566842); // Epitech Nantes
   List<ContainerList> containers = [];
@@ -31,7 +33,7 @@ class ContainerPageState extends State<ContainerPage> {
 
   void _updateLocation() async {
     if (widget.testPosition == null) {
-      await _getUserLocation();
+      await _requestLocationPermission();
     } else {
       setState(() {
         _userPosition = widget.testPosition!;
@@ -45,6 +47,17 @@ class ContainerPageState extends State<ContainerPage> {
       });
     }
     await _getDistances();
+  }
+
+  Future<void> _requestLocationPermission() async {
+    permission = await Permission.locationWhenInUse.status;
+    if (permission != PermissionStatus.granted) {
+      permission = await Permission.locationWhenInUse.request();
+      if (permission != PermissionStatus.granted) {
+        return;
+      }
+    }
+    _getUserLocation();
   }
 
   Future<void> _getUserLocation() async {
