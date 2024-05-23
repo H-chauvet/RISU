@@ -1,13 +1,13 @@
 const request = require('supertest');
 const async = require('async');
 
-describe('POST /api/mobile/user/resetPassword, invalid email', () => {
+describe('POST /api/mobile/user/password/reset, invalid email', () => {
     it('should not reset password', function (done) {
       async.series(
         [
           function (callback) {
             request('http://localhost:3000')
-              .post('/api/mobile/user/resetPassword')
+              .post('/api/mobile/user/password/reset')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ email: 'test' })
@@ -22,7 +22,7 @@ describe('POST /api/mobile/user/resetPassword, invalid email', () => {
         [
           function (callback) {
             request('http://localhost:3000')
-              .post('/api/mobile/user/resetPassword')
+              .post('/api/mobile/user/password/reset')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({  })
@@ -37,7 +37,7 @@ describe('POST /api/mobile/user/resetPassword, invalid email', () => {
         [
           function (callback) {
             request('http://localhost:3000')
-              .post('/api/mobile/user/resetPassword')
+              .post('/api/mobile/user/password/reset')
               .set('Content-Type', 'application/json')
               .set('Accept', 'application/json')
               .send({ email: '' })

@@ -50,7 +50,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.put(
-        Uri.parse('$baseUrl/api/mobile/user/password/reset'),
+        Uri.parse('$baseUrl/api/mobile/user/password/change'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -103,7 +103,7 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       appBar: MyAppBar(
         key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>

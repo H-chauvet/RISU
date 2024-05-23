@@ -34,6 +34,13 @@ exports.getContainerByOrganizationId = (organizationId) => {
       informations: true,
       paid: true,
       saveName: true,
+      width: true,
+      height: true,
+      designs: true,
+      price: true,
+      latitude: true,
+      longitude: true,
+      containerMapping: true,
       items: {
         where: {
           available: true,
@@ -71,22 +78,24 @@ exports.createContainer = async (container, organizationId) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
 
-  return db.Containers.create({
+  const containerObj = await db.Containers.create({
     data: container,
-  }).then(async (container) => {
-    await db.Organization.update({
-      where: {
-        id: organizationId,
-      },
-      data: {
-        containers: {
-          connect: {
-            id: container.id,
-          },
+  });
+
+  await db.Organization.update({
+    where: {
+      id: organizationId,
+    },
+    data: {
+      containers: {
+        connect: {
+          id: containerObj.id,
         },
       },
-    });
+    },
   });
+
+  return containerObj;
 };
 
 /**
@@ -247,15 +256,15 @@ exports.getItemsWithFilters = async (
       name: {
         contains: articleName,
       },
-      available: isAvailable,
     };
+
     if (categoryId != undefined) {
       if (categoryId != null) {
         categoryId = parseInt(categoryId);
         if (isNaN(categoryId)) {
           throw new Error("Invalid category id");
         }
-        whereCondition.categories = { some: { id: parseInt(categoryId) } };
+        whereCondition.categories = { some: { id: categoryId } };
       }
     }
 
@@ -273,8 +282,9 @@ exports.getItemsWithFilters = async (
       };
     }
 
-    const orderBy = isAscending === true ? "asc" : "desc";
-    return await db.Item.findMany({
+    const orderBy = isAscending ? 'asc' : 'desc';
+
+    let items = await db.Item.findMany({
       where: whereCondition,
       select: {
         id: true,
@@ -291,6 +301,16 @@ exports.getItemsWithFilters = async (
         [sortBy]: orderBy,
       },
     });
+
+    if (isAvailable) {
+      items = items.filter(item => item.available);
+    }
+
+    items.sort((a, b) => {
+      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+    });
+
+    return items;
   } catch (error) {
     throw new Error("Failed to retrieve items with filters");
   }
