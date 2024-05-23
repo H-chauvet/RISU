@@ -28,8 +28,8 @@ class ContainerList {
         id: json['id'],
         address: json['address'],
         city: json['city'],
-        longitude: json['longitude'],
-        latitude: json['latitude'],
+        longitude: json['longitude'].toDouble(),
+        latitude: json['latitude'].toDouble(),
         itemCount: json['_count']['items']);
   }
 

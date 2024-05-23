@@ -174,7 +174,7 @@ class ArticleListState extends State<ArticleListPage> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : SingleChildScrollView(

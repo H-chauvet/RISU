@@ -50,7 +50,7 @@ router.put('/password', jwtMiddleware.refreshTokenMiddleware,
   }
 )
 
-router.post('/resetPassword', async (req, res) => {
+router.post('/password/reset', async (req, res) => {
   const { email } = req.body
   if (!email || email === '') {
     return res.status(401).json({ message: 'Missing fields' })
@@ -127,7 +127,7 @@ router.put('/newEmail', jwtMiddleware.refreshTokenMiddleware,
       }
       const updatedUser = await userCtrl.updateNewEmail(user);
       const token = req.headers.authorization.split(' ')[1];
-      await authCtrl.sendConfirmationNewEmail(req.body.newEmail, token);
+      authCtrl.sendConfirmationNewEmail(req.body.newEmail, token);
       return res.status(200).json({ updatedUser });
     } catch (error) {
       return res.status(500).send('Fail updating new email');

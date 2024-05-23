@@ -49,20 +49,21 @@ exports.verifyEmail = id => {
  */
 exports.sendConfirmationNewEmail = (email, token) => {
   if (!email || email === '') {
-    return res.status(401).json({ message: 'Missing new email' });
-  }
-  const encryptedEmail = crypto.encrypt(email);
-  let mailOptions = {
-    from: process.env.MAIL_ADDRESS,
-    to: email,
-    subject: 'Confirm your New Email',
-    text: "",
-    html: '<p>Please follow the link to confirm your New email: <a href="http://51.77.215.103:3000/api/mobile/auth/' + encryptedEmail + '/newEmailVerification?token=' +
-      token + '">here</a></p>',
+    throw new Error('Missing new email')
   }
   try {
+    const encryptedEmail = crypto.encrypt(email);
+    let mailOptions = {
+      from: process.env.MAIL_ADDRESS,
+      to: email,
+      subject: 'Confirm your New Email',
+      text: "",
+      html: '<p>Please follow the link to confirm your New email: <a href="http://51.77.215.103:3000/api/mobile/auth/' + encryptedEmail + '/newEmailVerification?token=' +
+        token + '">here</a></p>',
+    }
     transporter.sendMail(mailOptions)
   } catch (error) {
-    console.error('Error sending reset password email:', error)
+    console.log('Error sending reset password email:', error)
+    throw new Error('Error sending reset password email')
   }
 }

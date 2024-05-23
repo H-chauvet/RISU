@@ -11,6 +11,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/image_loader.dart';
 
 import 'favorite_page.dart';
 
@@ -165,7 +166,7 @@ class FavoriteSate extends State<FavoritePage> {
         showBackButton: false,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: themeProvider.currentTheme.colorScheme.background,
+      backgroundColor: themeProvider.currentTheme.colorScheme.surface,
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : Center(
@@ -245,9 +246,11 @@ class FavoriteSate extends State<FavoritePage> {
                                                       height: 100,
                                                       width: 100,
                                                       child: Transform.scale(
-                                                        scale: 0.6,
+                                                        scale: 0.7,
                                                         child: Image.asset(
-                                                            'assets/volley.png'),
+                                                            imageLoader(
+                                                                favorite['item']
+                                                                    ['name'])),
                                                       ),
                                                     ),
                                                   ],

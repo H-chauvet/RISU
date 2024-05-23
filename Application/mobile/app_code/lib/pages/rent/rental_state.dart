@@ -117,7 +117,7 @@ class RentalPageState extends State<RentalPage> {
         textTitle: AppLocalizations.of(context)!.myRents,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: themeProvider.currentTheme.colorScheme.background,
+      backgroundColor: themeProvider.currentTheme.colorScheme.surface,
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : Center(
