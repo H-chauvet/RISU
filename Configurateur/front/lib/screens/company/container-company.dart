@@ -114,7 +114,7 @@ class ContainerCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        "Ville : ${container.city != null ? container.city! : "inconnue"}",
+                        "Ville : ${container.city != null ? container.city! : "Inconnue"}",
                         style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize

@@ -296,6 +296,9 @@ class _ContainerPageState extends State<ContainerPage> {
               title: Text(
                 "Modifier un objet",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
                       : tabletFontSize,
@@ -318,6 +321,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         Text(
                           "Disponible",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -354,12 +360,22 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text(
                     "Annuler",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -367,6 +383,13 @@ class _ContainerPageState extends State<ContainerPage> {
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiUpdateItem(nameController, descController, available,
                         price, item, itemId);
@@ -375,6 +398,9 @@ class _ContainerPageState extends State<ContainerPage> {
                   child: Text(
                     "Modifier",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -491,6 +517,9 @@ class _ContainerPageState extends State<ContainerPage> {
               title: Text(
                 "Créer un nouvel objet",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
                       : tabletBigFontSize,
@@ -513,6 +542,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         Text(
                           "Disponible",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletBigFontSize,
@@ -565,12 +597,22 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text(
                     "Annuler",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletBigFontSize,
@@ -578,6 +620,13 @@ class _ContainerPageState extends State<ContainerPage> {
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiCreateItem(nameController, description, available, price,
                         selectedContainerId);
@@ -587,6 +636,9 @@ class _ContainerPageState extends State<ContainerPage> {
                   child: Text(
                     "Créer",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletBigFontSize,
@@ -612,7 +664,7 @@ class _ContainerPageState extends State<ContainerPage> {
             Expanded(
               child: ListTile(
                 title: Text(
-                  "nom : ${item.name}",
+                  "Nom : ${item.name}",
                   style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
@@ -621,7 +673,7 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 subtitle: item.description != null
                     ? Text(
-                        "description : ${item.description!}",
+                        "Description : ${item.description!}",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -629,7 +681,7 @@ class _ContainerPageState extends State<ContainerPage> {
                         ),
                       )
                     : Text(
-                        "description : pas de description",
+                        "Description : Pas de description",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -685,16 +737,16 @@ class _ContainerPageState extends State<ContainerPage> {
               SliverAppBar(
                 floating: true,
                 elevation: 4,
-                backgroundColor: Provider.of<ThemeService>(context).isDark
-                    ? darkTheme.colorScheme.background
-                    : lightTheme.colorScheme.background,
+                backgroundColor: Colors.transparent,
                 bottom: TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         'Liste des conteneurs',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -705,7 +757,9 @@ class _ContainerPageState extends State<ContainerPage> {
                       child: Text(
                         'Liste des objets',
                         style: TextStyle(
-                            color: Colors.blue,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletBigFontSize),
@@ -713,7 +767,9 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                   ],
                   labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  indicatorColor: Colors.blue,
+                  indicatorColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                 ),
                 pinned: true,
               ),
@@ -803,8 +859,6 @@ class _ContainerPageState extends State<ContainerPage> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 28, 125, 182),
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 10),
                                       shape: RoundedRectangleBorder(
@@ -815,11 +869,23 @@ class _ContainerPageState extends State<ContainerPage> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.add),
+                                        Icon(
+                                          Icons.add,
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                        ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Ajouter un items',
+                                          'Ajouter un article',
                                           style: TextStyle(
+                                            color: Provider.of<ThemeService>(
+                                                        context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
                                             fontSize: screenFormat ==
                                                     ScreenFormat.desktop
                                                 ? desktopFontSize
