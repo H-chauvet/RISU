@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
@@ -7,8 +8,11 @@ import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
 /// ContainerProfilPage
 ///
@@ -140,7 +144,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
+          ),
           content: Container(
             height: 120.0,
             child: Column(
@@ -169,17 +180,17 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 "Annuler",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
                 key: const Key('cancel-edit-city'),
               ),
             ),
             ElevatedButton(
-              onPressed: () async {
-                apiUpdateCity(nameController);
-                onEdit(nameController.text);
-                Navigator.of(context).pop();
-              },
               style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -187,7 +198,19 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              onPressed: () async {
+                apiUpdateCity(nameController);
+                onEdit(nameController.text);
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
             ),
           ],
         );
@@ -239,7 +262,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
+          ),
           content: Container(
             height: 120.0,
             child: Column(
@@ -268,8 +298,13 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 "Annuler",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
                 key: const Key('cancel-edit-address'),
               ),
             ),
@@ -286,7 +321,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
             ),
           ],
         );
@@ -436,7 +478,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Modifier un objet"),
+              title: Text(
+                "Modifier un objet",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
               content: Container(
                 height: 250.0,
                 child: Column(
@@ -451,7 +500,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        const Text("Disponible"),
+                        Text("Disponible",
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            )),
                         Switch(
                           value: isAvailable,
                           onChanged: (bool newValue) {
@@ -483,21 +537,45 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
+                  child: Text(
                     "Annuler",
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
                     key: const Key('cancel-edit-item'),
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiUpdateItem(
                         nameController, descController, price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Modifier"),
+                  child: Text("Modifier",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      )),
                 ),
               ],
             );
@@ -517,17 +595,22 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           children: [
             Expanded(
               child: ListTile(
-                title: Text("nom : ${item.name}"),
+                title: Text("Nom : ${item.name}"),
                 subtitle: item.description != null
-                    ? Text("description : ${item.description!}")
-                    : Text("description : pas de description"),
+                    ? Text("Description : ${item.description!}")
+                    : Text("Description : Pas de description"),
               ),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.mode_outlined),
+                  icon: Icon(
+                    Icons.mode_outlined,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
                   onPressed: () async {
                     await showUpdateItem(
                         context, itemName, itemDesc, item.id!, item,
@@ -543,7 +626,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   width: 10,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
                   onPressed: () => deleteItem(item),
                 ),
                 SizedBox(
@@ -580,7 +668,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             width: 2.0,
                           ),
                         ),
@@ -600,8 +690,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                           children: [
                             Text(
                               "Nom de la ville : ${tmp.city!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Verdana',
@@ -609,7 +701,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
-                              key: Key('edit-city'),
+                              key: const Key('edit-city'),
                               onTap: () async {
                                 await showEditPopupCity(context, city,
                                     (String newcity) {
@@ -618,21 +710,25 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                   });
                                 });
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.edit,
-                                color: Colors.grey,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 size: 15.0,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Text(
                               "Adresse : ${tmp.address!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Verdana',
@@ -649,9 +745,11 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                   });
                                 });
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.edit,
-                                color: Colors.grey,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 size: 15.0,
                               ),
                             ),
@@ -662,10 +760,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ],
                 ),
               ),
-              const Text(
+              Text(
                 "Nos Objets :",
                 style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
@@ -677,7 +777,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 height: 65,
               ),
               items.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text(
                         'Aucun objet trouvé.',
                         style: TextStyle(

@@ -73,7 +73,7 @@ final darkTheme = ThemeData(
   primaryColor: const Color(0xffFEDC97),
   secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color.fromARGB(255, 32, 75, 110),
+    backgroundColor: Color(0xFF162A49),
     titleTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 40,
@@ -118,7 +118,7 @@ final darkTheme = ThemeData(
         )),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
-    color: Color.fromARGB(255, 32, 75, 110),
+    color: Color(0xFF162A49),
   ),
   colorScheme: const ColorScheme.dark(
     background: Color(0xFF303030),
