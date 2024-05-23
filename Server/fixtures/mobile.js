@@ -190,7 +190,7 @@ exports.createFixtures = async () => {
         title: "Coucou !",
         creatorId: "42",
         assignedId: "",
-        chatUid: "1"
+        chatUid: "1",
       },
     });
   } catch (err) {

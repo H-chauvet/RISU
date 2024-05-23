@@ -15,6 +15,7 @@ import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/image_loader.dart';
 
 import 'details_page.dart';
 
@@ -340,7 +341,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : SingleChildScrollView(
@@ -368,8 +369,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/volley.png'),
+                          image: DecorationImage(
+                            image: AssetImage(imageLoader(articleData.name)),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -597,8 +598,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                  article['image'] ??
-                                                      'assets/volley.png',
+                                                  imageLoader(articleData.name),
                                                 ),
                                                 fit: BoxFit.cover,
                                               ),

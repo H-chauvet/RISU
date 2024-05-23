@@ -93,7 +93,7 @@ class ConversationPageState extends State<ConversationPage> {
       ),
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         child: Column(
@@ -136,7 +136,7 @@ class ConversationPageState extends State<ConversationPage> {
                                 color: (currentTicket["creatorId"] ==
                                         userInformation?.ID
                                     ? themeProvider
-                                        .currentTheme.colorScheme.background
+                                        .currentTheme.colorScheme.surface
                                     : themeProvider
                                         .currentTheme
                                         .inputDecorationTheme
@@ -153,7 +153,7 @@ class ConversationPageState extends State<ConversationPage> {
                                 color: (currentTicket["creatorId"] ==
                                         userInformation?.ID
                                     ? themeProvider
-                                        .currentTheme.colorScheme.background
+                                        .currentTheme.colorScheme.surface
                                     : themeProvider
                                         .currentTheme
                                         .inputDecorationTheme
