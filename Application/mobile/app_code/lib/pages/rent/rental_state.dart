@@ -23,7 +23,13 @@ class RentalPageState extends State<RentalPage> {
   @override
   void initState() {
     super.initState();
-    getRentals();
+    if (widget.testRentals.isEmpty) {
+      getRentals();
+    } else {
+      setState(() {
+        rentals = widget.testRentals;
+      });
+    }
   }
 
   void getRentals() async {
@@ -275,7 +281,9 @@ class RentalPageState extends State<RentalPage> {
                                         Text(
                                             "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
                                         Text(
-                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}"),
+                                          key: const Key('rental-list-time'),
+                                          "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}",
+                                        ),
                                         Text(AppLocalizations.of(context)!
                                             .rentTimeOfRenting(
                                                 rental['duration'])),
