@@ -35,7 +35,7 @@ exports.createFixtures = async () => {
         price: 560.5,
         city: "Nantes 2.0",
         address: "Rue d'Alger",
-        latitude: 0.0, // Epitech Nantes
+        latitude: 0.0,
         longitude: 0.0,
         saveName: "container",
         containerMapping: "",
