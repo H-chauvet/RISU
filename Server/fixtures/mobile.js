@@ -157,12 +157,13 @@ exports.createFixtures = async () => {
       });
     if (
       !(await db.User_Mobile.findUnique({
-        where: { email: "armand.lartam@gmail.com" },
+        where: { email: "tanguybell@gmail.com" },
       }))
     )
       await db.User_Mobile.create({
         data: {
-          email: "armand.lartam@gmail.com",
+          id: "42",
+          email: "tanguybell@gmail.com",
           firstName: "Armand",
           lastName: "Lartam",
           password: bcrypt.hashSync("12345678", 12),
@@ -172,7 +173,7 @@ exports.createFixtures = async () => {
             create: [
               {
                 itemId: 3,
-                duration: 1,
+                duration: 48,
                 price: 100,
               },
             ],
@@ -182,6 +183,16 @@ exports.createFixtures = async () => {
           Notifications: true,
         },
       });
+    const emptyTicket1 = await db.Tickets.create({
+      data: {
+        id: 2,
+        content: "Vous êtes super !",
+        title: "Coucou !",
+        creatorId: "42",
+        assignedId: "",
+        chatUid: "1"
+      },
+    });
   } catch (err) {
     console.error(err.message);
   }
