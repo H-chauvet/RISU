@@ -52,10 +52,7 @@ class ContainerPageState extends State<ContainerPage> {
   Future<void> _requestLocationPermission() async {
     permission = await Permission.locationWhenInUse.status;
     if (permission != PermissionStatus.granted) {
-      permission = await Permission.locationWhenInUse.request();
-      if (permission != PermissionStatus.granted) {
-        return;
-      }
+      return;
     }
     _getUserLocation();
   }
