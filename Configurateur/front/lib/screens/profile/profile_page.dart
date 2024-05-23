@@ -92,6 +92,9 @@ class _ProfilePageState extends State<ProfilePage> {
           title: Text(
             "Modifier",
             style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
               fontSize:
                   SizeService().getScreenFormat(context) == ScreenFormat.desktop
                       ? desktopFontSize
@@ -191,6 +194,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text(
                 "Modifier",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
                       ? desktopFontSize
@@ -217,6 +223,9 @@ class _ProfilePageState extends State<ProfilePage> {
           title: Text(
             "Modifier",
             style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
               fontSize:
                   SizeService().getScreenFormat(context) == ScreenFormat.desktop
                       ? desktopFontSize
@@ -308,6 +317,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text(
                 "Modifier",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
                       ? desktopFontSize
@@ -333,6 +345,9 @@ class _ProfilePageState extends State<ProfilePage> {
           title: Text(
             "Modifier",
             style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
               fontSize:
                   SizeService().getScreenFormat(context) == ScreenFormat.desktop
                       ? desktopFontSize
@@ -422,6 +437,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text(
                 "Modifier",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
                       ? desktopFontSize
@@ -453,6 +471,9 @@ class _ProfilePageState extends State<ProfilePage> {
               title: Text(
                 "Modifier",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: SizeService().getScreenFormat(context) ==
                           ScreenFormat.desktop
                       ? desktopFontSize
@@ -596,7 +617,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text("Modifier"),
+                  child: Text("Modifier",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      )),
                 ),
               ],
             );
