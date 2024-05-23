@@ -42,7 +42,7 @@ router.get('/:containerId/articleslist/', async (req, res) => {
     const articleName = req.query.articleName || '';
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
     const isAvailable = req.query.isAvailable === 'false' ? false : true;
-    const isAscending = req.query.isAscending === 'true' ? true : false;
+    const isAscending = req.query.isAscending === 'false' ? false : true;
     const sortBy = req.query.sortBy || 'price';
     const min = parseFloat(req.query.min) || 0;
     const max = parseFloat(req.query.max) || 1000000;
