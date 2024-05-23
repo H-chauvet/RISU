@@ -27,7 +27,7 @@ class ArticleListState extends State<ArticleListPage> {
   double? min;
   double? max;
   bool isAscending = true;
-  bool isAvailable = true;
+  bool isAvailable = false;
   String articleName = '';
   String? selectedCategoryId = 'null';
   TextEditingController _searchController = TextEditingController();
