@@ -34,6 +34,13 @@ exports.getContainerByOrganizationId = (organizationId) => {
       informations: true,
       paid: true,
       saveName: true,
+      width: true,
+      height: true,
+      designs: true,
+      price: true,
+      latitude: true,
+      longitude: true,
+      containerMapping: true,
       items: {
         where: {
           available: true,
@@ -71,22 +78,24 @@ exports.createContainer = async (container, organizationId) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
 
-  return db.Containers.create({
+  const containerObj = await db.Containers.create({
     data: container,
-  }).then(async (container) => {
-    await db.Organization.update({
-      where: {
-        id: organizationId,
-      },
-      data: {
-        containers: {
-          connect: {
-            id: container.id,
-          },
+  });
+
+  await db.Organization.update({
+    where: {
+      id: organizationId,
+    },
+    data: {
+      containers: {
+        connect: {
+          id: containerObj.id,
         },
       },
-    });
+    },
   });
+
+  return containerObj;
 };
 
 /**

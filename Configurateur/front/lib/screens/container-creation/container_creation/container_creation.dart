@@ -103,7 +103,6 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
     if (widget.container != null) {
       loadContainer();
-
       loadLockers();
     }
 
