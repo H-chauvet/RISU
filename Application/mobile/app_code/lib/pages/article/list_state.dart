@@ -205,7 +205,6 @@ class ArticleListState extends State<ArticleListPage> {
                                 rightIcon: Icons.tune,
                                 rightIconKey: const Key('list-icon-filter'),
                                 rightIconOnPressed: () async {
-                                  print('min: $min, max: $max');
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -229,7 +228,6 @@ class ArticleListState extends State<ArticleListPage> {
                                         sortBy = filters['sortBy'];
                                         min = filters['min'];
                                         max = filters['max'];
-                                        print('min: $min, max: $max');
                                         updateItemsList();
                                       });
                                     }
