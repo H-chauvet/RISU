@@ -119,7 +119,7 @@ class SignupPageState extends State<SignupPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       appBar: MyAppBar(
         key: const Key('signup-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>

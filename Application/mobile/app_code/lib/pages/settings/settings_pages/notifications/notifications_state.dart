@@ -142,7 +142,7 @@ class NotificationsPageState extends State<NotificationsPage> {
       resizeToAvoidBottomInset: true,
       backgroundColor: context.select(
         (ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.background,
+            themeProvider.currentTheme.colorScheme.surface,
       ),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())

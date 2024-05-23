@@ -11,6 +11,7 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'return_page.dart';
@@ -181,7 +182,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         showBackButton: false,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: themeProvider.currentTheme.colorScheme.background,
+      backgroundColor: themeProvider.currentTheme.colorScheme.surface,
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : Center(
@@ -207,8 +208,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       height: 192,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        image: const DecorationImage(
-                          image: AssetImage('assets/volley.png'),
+                        image: DecorationImage(
+                          image: AssetImage(imageLoader(rental['item']['name'])),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -225,7 +226,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                             Container(
                               decoration: BoxDecoration(
                                 color: themeProvider
-                                    .currentTheme.colorScheme.background,
+                                    .currentTheme.colorScheme.surface,
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               padding: const EdgeInsets.all(8.0),
@@ -244,7 +245,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                               borderRadius: BorderRadius.circular(10.0),
                               child: Container(
                                 color: themeProvider
-                                    .currentTheme.colorScheme.background,
+                                    .currentTheme.colorScheme.surface,
                                 child: Table(
                                   columnWidths: const {
                                     0: FlexColumnWidth(1.0),
@@ -397,7 +398,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: themeProvider
-                                .currentTheme.colorScheme.background,
+                                .currentTheme.colorScheme.surface,
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           padding: const EdgeInsets.all(8.0),

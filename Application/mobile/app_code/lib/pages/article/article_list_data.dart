@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/utils/image_loader.dart';
 
 class ArticleData {
   final int id;
@@ -80,7 +81,7 @@ class ArticleDataCard extends StatelessWidget {
                 height: 100,
                 child: Transform.scale(
                   scale: 0.6,
-                  child: Image.asset('assets/volley.png'),
+                  child: Image.asset(imageLoader(articleData.name)),
                 ),
               ),
               const SizedBox(width: 20),

@@ -15,6 +15,7 @@ import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'rent_page.dart';
@@ -236,7 +237,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         textTitle: AppLocalizations.of(context)!.rentArticle,
       ),
       resizeToAvoidBottomInset: false,
-      backgroundColor: themeProvider.currentTheme.colorScheme.background,
+      backgroundColor: themeProvider.currentTheme.colorScheme.surface,
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : SingleChildScrollView(
@@ -253,8 +254,8 @@ class RentArticlePageState extends State<RentArticlePage> {
                         height: 192,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          image: const DecorationImage(
-                            image: AssetImage('assets/volley.png'),
+                          image: DecorationImage(
+                            image: AssetImage(imageLoader(_articleData.name)),
                             fit: BoxFit.cover,
                           ),
                         ),

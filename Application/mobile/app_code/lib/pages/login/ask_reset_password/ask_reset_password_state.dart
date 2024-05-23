@@ -93,7 +93,7 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       appBar: MyAppBar(
         key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>

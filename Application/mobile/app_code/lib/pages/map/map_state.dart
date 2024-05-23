@@ -14,6 +14,7 @@ import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/pages/container/container_list_data.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'map_page.dart';
@@ -206,7 +207,7 @@ class MapPageState extends State<MapPage> {
                             padding: const EdgeInsets.all(8),
                             child: Stack(
                               children: [
-                                Image.asset('assets/volley.png'),
+                                Image.asset(imageLoader(item['name'])),
                                 Positioned(
                                   left: 0,
                                   child: Container(
