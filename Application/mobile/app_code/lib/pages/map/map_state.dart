@@ -119,7 +119,7 @@ class MapPageState extends State<MapPage> {
     _getContainerItems(container.id).then(
       (value) => myShowModalBottomSheet(
         context,
-        container.city!,
+        container.city,
         subtitle: "${AppLocalizations.of(context)!.by} ${"Risu"}",
         SingleChildScrollView(
           child: Column(
@@ -135,7 +135,7 @@ class MapPageState extends State<MapPage> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(container.address!),
+                    child: Text(container.address),
                   ),
                 ],
               ),
@@ -251,16 +251,13 @@ class MapPageState extends State<MapPage> {
 
     Set<Marker> markers = {};
     for (ContainerList container in containers) {
-      if (container.latitude == null || container.longitude == null) {
-        continue;
-      }
       if (containerId != null && containerId == container.id) {
         setState(() {
           mapController?.animateCamera(CameraUpdate.newLatLng(
-              LatLng(container.latitude!, container.longitude!)));
+              LatLng(container.latitude, container.longitude)));
         });
       }
-      final position = LatLng(container.latitude!, container.longitude!);
+      final position = LatLng(container.latitude, container.longitude);
       markers.add(
         Marker(
           markerId: MarkerId(container.id.toString()),
