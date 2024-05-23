@@ -7,7 +7,7 @@ class RentalPage extends StatefulWidget {
 
   const RentalPage({
     super.key,
-    this.testRentals = const []
+    this.testRentals = const [],
   });
 
   @override
