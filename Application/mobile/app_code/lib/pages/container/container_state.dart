@@ -26,17 +26,25 @@ class ContainerPageState extends State<ContainerPage> {
   void initState() {
     super.initState();
 
+    _updateLocation();
+  }
+
+  void _updateLocation() async {
     if (widget.testPosition == null) {
-      _getUserLocation();
+      await _getUserLocation();
     } else {
-      _userPosition = widget.testPosition!;
+      setState(() {
+        _userPosition = widget.testPosition!;
+      });
     }
     if (widget.testContainers.isEmpty) {
-      _getContainer();
+      await _getContainer();
     } else {
-      containers = widget.testContainers;
-      _getDistances();
+      setState(() {
+        containers = widget.testContainers;
+      });
     }
+    await _getDistances();
   }
 
   Future<void> _getUserLocation() async {
@@ -98,7 +106,7 @@ class ContainerPageState extends State<ContainerPage> {
     }
   }
 
-  void _getDistances() {
+  Future<void> _getDistances() async {
     if (!mounted) return;
     containers.forEach((container) {
       setState(() {
@@ -111,6 +119,7 @@ class ContainerPageState extends State<ContainerPage> {
         );
       });
     });
+    return;
   }
 
   @override
