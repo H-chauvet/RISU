@@ -148,9 +148,7 @@ class _UserPageState extends State<UserPage> {
           headerSliverBuilder: (context, innerBoxIsScrolled) {
             return [
               SliverAppBar(
-                backgroundColor: Provider.of<ThemeService>(context).isDark
-                    ? darkTheme.colorScheme.background
-                    : lightTheme.colorScheme.background,
+                backgroundColor: Colors.transparent,
                 floating: true,
                 bottom: TabBar(
                   tabs: [
