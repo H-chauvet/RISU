@@ -288,6 +288,9 @@ exports.getItemsWithFilters = async (
         description: true,
         categories: true,
       },
+      orderBy: {
+        [sortBy]: orderBy,
+      },
     });
 
     const availableItems = items.filter(item => item.available);
