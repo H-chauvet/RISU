@@ -8,6 +8,8 @@ class ArticleFiltersPage extends StatefulWidget {
   final String? selectedCategoryId;
   final String? sortBy;
   final List<dynamic> articleCategories;
+  final double? min;
+  final double? max;
 
   const ArticleFiltersPage({
     super.key,
@@ -15,6 +17,8 @@ class ArticleFiltersPage extends StatefulWidget {
     this.isAvailable = true,
     this.selectedCategoryId = 'null',
     this.sortBy,
+    this.min = 0,
+    this.max = 1000000,
     required this.articleCategories,
   });
 
