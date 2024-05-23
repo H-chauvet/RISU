@@ -17,7 +17,7 @@ import 'return_page.dart';
 
 class ReturnArticleState extends State<ReturnArticlePage> {
   final LoaderManager _loaderManager = LoaderManager();
-  dynamic rent = {
+  dynamic rental = {
     'id': -1,
     'price': '',
     'createdAt': '',
@@ -81,7 +81,13 @@ class ReturnArticleState extends State<ReturnArticlePage> {
   @override
   void initState() {
     super.initState();
-    getRent();
+    if (widget.testRental == null) {
+      getRent();
+    } else {
+      setState(() {
+        rental = widget.testRental;
+      });
+    }
   }
 
   void getRent() async {
@@ -101,7 +107,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       if (response.statusCode == 201) {
         setState(() {
-          rent = jsonDecode(response.body)['rental'];
+          rental = jsonDecode(response.body)['rental'];
         });
       } else {
         if (mounted) {
@@ -131,7 +137,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       final token = userInformation?.token ?? 'defaultToken';
       final response = await http.post(
-        Uri.parse('$baseUrl/api/mobile/rent/${rent['id']}/return'),
+        Uri.parse('$baseUrl/api/mobile/rent/${rental['id']}/return'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token',
@@ -142,7 +148,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       });
       if (response.statusCode == 201) {
         setState(() {
-          rent['ended'] = true;
+          rental['ended'] = true;
         });
       } else {
         if (mounted) {
@@ -225,7 +231,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                               padding: const EdgeInsets.all(8.0),
                               alignment: Alignment.center,
                               child: Text(
-                                '${rent['item']['name']} | ${rent['item']['container']['address']}',
+                                '${rental['item']['name']} | ${rental['item']['container']['address']}',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -292,7 +298,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .currentTheme.primaryColor
                                                 .withOpacity(0.8),
                                             child: Text(
-                                              "${rent['price']}€",
+                                              "${rental['price']}€",
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -310,7 +316,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                                                 .withOpacity(0.8),
                                             child: Text(
                                               AppLocalizations.of(context)!
-                                                  .rentHours(rent['duration']),
+                                                  .rentHours(
+                                                      rental['duration']),
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
@@ -352,7 +359,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => ArticleDetailsPage(
-                                articleId: rent['item']['id'],
+                                articleId: rental['item']['id'],
                               ),
                             ),
                           );
@@ -360,7 +367,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    if (rent['ended'] == false) ...[
+                    if (rental['ended'] == false) ...[
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
