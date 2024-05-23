@@ -185,21 +185,25 @@ class LandingAppBarState extends State<LandingAppBar> {
                   if (token == '') {
                     items.addAll(
                       [
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'connexion',
                           child: Text(
                             'Connexion',
                             style: TextStyle(
-                              color: Color(0xff033F63),
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'inscription',
                           child: Text(
                             'Inscription',
                             style: TextStyle(
-                              color: Color(0xff033F63),
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -207,35 +211,41 @@ class LandingAppBarState extends State<LandingAppBar> {
                     );
                   } else {
                     items.add(
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'profil',
                         child: Text(
                           'Profil',
                           style: TextStyle(
-                            color: Color(0xff033F63),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                           ),
                         ),
                       ),
                     );
                     items.add(
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'company-profil',
                         child: Text(
                           'Mon Entreprise',
                           style: TextStyle(
-                            color: Color(0xff033F63),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                           ),
                         ),
                       ),
                     );
                     if (userRole == "admin") {
                       items.add(
-                        const PopupMenuItem<String>(
+                        PopupMenuItem<String>(
                           value: 'admin',
                           child: Text(
                             'Administration',
                             style: TextStyle(
-                              color: Color(0xff033F63),
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                             ),
                           ),
                         ),
