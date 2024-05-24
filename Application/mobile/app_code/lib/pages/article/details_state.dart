@@ -290,16 +290,17 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           articleData = ArticleData.fromJson(value);
         });
+        if (widget.similarArticlesData.isNotEmpty) {
+          setState(() {
+            similarArticles = widget.similarArticlesData;
+          });
+        } else {
+          getSimilarArticles(context);
+        }
       });
     } else {
       setState(() {
         articleData = ArticleData.fromJson(widget.testArticleData);
-      });
-    }
-
-    if (widget.similarArticlesData.isNotEmpty) {
-      setState(() {
-        similarArticles = widget.similarArticlesData;
       });
     }
   }
@@ -630,7 +631,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             bottom: 8.0,
                                           ),
                                           child: Text(
-                                            'Price: ${article['price']}€',
+                                            '${AppLocalizations.of(context)!.price} : ${article['price']}€',
                                             style: const TextStyle(
                                               fontSize: 14,
                                             ),
