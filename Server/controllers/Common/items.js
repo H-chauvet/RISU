@@ -29,12 +29,12 @@ exports.getItemByCategory = (category) => {
 };
 
 /**
- * Retrieve every item
+ * Retrieve every item in the database
  *
  * @returns every item in the database
  */
-exports.getAllItem = () => {
-  return db.Item.findMany({});
+exports.getAllItems = () => {
+  return db.Item.findMany();
 };
 
 /**
@@ -51,15 +51,6 @@ exports.getItemFromId = (id) => {
     }
   });
 }
-
-/**
- * Retrieve every item in the database
- *
- * @returns every item in the database
- */
-exports.getItems = () => {
-  return db.Item.findMany();
-};
 
 /**
  * Delete a specific item

@@ -5,7 +5,7 @@ const itemCtrl = require('../../controllers/Common/items')
 
 router.get('/listAll', async (req, res, next) => {
   try {
-    const articles = await itemCtrl.getItems()
+    const articles = await itemCtrl.getAllItems()
     return res.status(200).json(articles)
   } catch (err) {
     next(err)
