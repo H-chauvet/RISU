@@ -16,7 +16,7 @@ describe("GET /article/listall", () => {
     jest.clearAllMocks();
   });
 
-  it("should all items", async () => {
+  it("should get all items", async () => {
     const mockItems = [
       { id: 1, name: "Item 1", available: true, price: 10.99, containerId: 1 },
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },

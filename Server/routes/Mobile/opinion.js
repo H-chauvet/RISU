@@ -13,9 +13,9 @@ router.get('/', async (req, res) => {
     if (req.query.itemId == null) {
       return res.status(401).json({ message: 'Missing itemId' })
     }
-    const itemId = parseInt(req.query.itemId);
-    if (itemId == null) {
-      return res.status(401).json({ message: 'itemId not found' })
+    const itemId = await parseInt(req.query.itemId);
+    if (itemId == NaN || itemId == null) {
+      return res.status(401).json({ message: 'invalid itemId' })
     }
 
     var note = req.query.note
@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     }
     opinions = await opinionCtrl.getOpinions(itemId, note)
 
-    return res.status(201).json({ opinions })
+    return res.status(200).json({ opinions })
   } catch (err) {
     console.error(err.message)
     return res.status(401).send('An error occurred')
@@ -41,7 +41,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).json({ message: 'User not found' });
       }
       if (!req.body.comment || req.body.comment === '') {
         return res.status(401).json({ message: 'Missing comment' })
@@ -53,10 +53,13 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
         return res.status(401).json({ message: 'Missing itemId' })
       }
       const itemId = parseInt(req.query.itemId);
-      if (itemId == null) {
-        return res.status(401).json({ message: 'itemId not found' })
+      if (itemId == null || itemId == NaN) {
+        return res.status(401).json({ message: 'Invalid itemId' })
       }
       const item = await itemsCtrl.getItemFromId(itemId)
+      if (item == null) {
+        return res.status(401).json({ message: 'item not found' })
+      }
 
       await opinionCtrl.createOpinion(item.id, user.id, req.body.note, req.body.comment)
 
@@ -76,7 +79,7 @@ router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).send({ message: 'User not found' });
       }
       const opinionId = req.params.opinionId
       if (opinionId == null) {
@@ -107,7 +110,7 @@ router.put('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).send({ message: 'User not found' });
       }
       const opinionId = req.params.opinionId
       if (opinionId == null) {
