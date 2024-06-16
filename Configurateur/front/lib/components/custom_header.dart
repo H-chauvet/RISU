@@ -176,9 +176,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                 icon: Icon(
                   size: 35,
                   Icons.account_circle,
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
+                  color:
+                      Provider.of<ThemeService>(context, listen: false).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                 ),
                 itemBuilder: (BuildContext context) {
                   List<PopupMenuEntry<String>> items = [];
@@ -190,7 +191,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Connexion',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -201,7 +204,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Inscription',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -216,7 +221,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                         child: Text(
                           'Profil',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
                           ),
@@ -229,7 +236,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                         child: Text(
                           'Mon Entreprise',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
                           ),
@@ -243,7 +252,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Administration',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
