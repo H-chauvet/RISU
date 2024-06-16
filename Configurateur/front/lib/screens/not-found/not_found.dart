@@ -58,6 +58,8 @@ class NotFoundPageState extends State<NotFoundPage> {
           LandingAppBar(context: context),
           const SizedBox(height: 200),
           Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
                 "Cette page n'existe pas !",
