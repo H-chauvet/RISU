@@ -146,8 +146,6 @@ exports.getLocalisation = async (position) => {
 
   const responseJson = await response.json();
 
-  console.log(responseJson);
-
   if (responseJson.status === "OK") {
     let address = "";
     let city = "";
@@ -165,7 +163,6 @@ exports.getLocalisation = async (position) => {
         city = responseJson.results[0].address_components[i].long_name;
       }
     }
-    console.log(address + " " + city);
     return { address: address, city: city };
   } else if (responseJson.status === "ZERO_RESULTS") {
     return "No address found";
