@@ -133,8 +133,8 @@ describe("Container Route Tests", () => {
   it("should update the localisation", async () => {
     var requestBody = {
       id: 1,
-      latitude: 10.0,
-      longitude: 20.0,
+      latitude: 45.819608,
+      longitude: 15.897446,
     };
 
     containerCtrl.updateContainerPosition.mockResolvedValueOnce({
@@ -143,13 +143,18 @@ describe("Container Route Tests", () => {
       containerMapping: "mapping2",
       height: 15,
       width: 25,
-      latitude: 10.0,
-      longitude: 20.0,
-      city: "City",
-      adress: "123 Street",
+      latitude: 45.819608,
+      longitude: 15.897446,
+      city: "Zagreb",
+      adress: "Jačkovina",
       informations: "Updated info",
       designs: ["design3", "design4"],
       saveName: "container2",
+    });
+
+    containerCtrl.getLocalisation.mockResolvedValueOnce({
+      city: "Zagreb",
+      adress: "Jačkovina",
     });
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
 
@@ -165,10 +170,10 @@ describe("Container Route Tests", () => {
       containerMapping: "mapping2",
       height: 15,
       width: 25,
-      latitude: 10.0,
-      longitude: 20.0,
-      city: "City",
-      adress: "123 Street",
+      latitude: 45.819608,
+      longitude: 15.897446,
+      city: "Zagreb",
+      adress: "Jačkovina",
       informations: "Updated info",
       designs: ["design3", "design4"],
       saveName: "container2",
