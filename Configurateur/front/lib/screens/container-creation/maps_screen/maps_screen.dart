@@ -136,7 +136,7 @@ class MapsState extends State<MapsScreen> {
         );
       } else {
         Fluttertoast.showToast(
-          msg: 'La poisition n\'a pas pu être enregistrée',
+          msg: 'La position n\'a pas pu être enregistrée',
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
         );
