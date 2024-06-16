@@ -134,6 +134,11 @@ exports.updateContainerPosition = (id, container) => {
   });
 };
 
+/**
+ *
+ * @param {*} position the object with position data
+ * @returns the city and adress of the position
+ */
 exports.getLocalisation = async (position) => {
   const response = await fetch(
     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
