@@ -92,11 +92,11 @@ class NotFoundPageState extends State<NotFoundPage> {
                   ),
                   children: [
                     TextSpan(
-                      text: 'contacter le support',
+                      text: 'Contacter le support',
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
-                            ? lightTheme.secondaryHeaderColor
-                            : darkTheme.secondaryHeaderColor,
+                            ? Colors.blue[300]
+                            : Colors.blue,
                         decoration: TextDecoration.underline,
                       ),
                       recognizer: TapGestureRecognizer()
