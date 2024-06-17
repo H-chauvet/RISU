@@ -88,10 +88,10 @@ void main() {
 
     expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
     expect(find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
-    
+
     // expect(find.byKey(const Key('rental-list-time')), findsOneWidget);
     expect(find.byKey(const Key('rentals-list')), findsOneWidget);
-    
+
     await tester.tap(find.byKey(const Key('rentals-list')));
     await tester.pump();
   });

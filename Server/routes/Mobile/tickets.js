@@ -5,6 +5,7 @@ const passport = require('passport')
 const userCtrl = require("../../controllers/Mobile/user")
 const ticketCtrl = require("../../controllers/Common/tickets")
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const webUserCtrl = require("../../controllers/Web/user")
 
 router.get('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -157,5 +158,35 @@ router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
     }
   }
 )
+
+router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate('jwt', { session: false }), async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send('Invalid token');
+      }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(404).send('User not found');
+      }
+
+      const assignedId = req.params.assignedId
+      if (!assignedId) {
+        return res.status(400).json("Bad Request : Missing assigned id")
+      }
+
+      const assigned = await webUserCtrl.findUserByUuid(assignedId);
+      if (!assigned) {
+        return res.status(404).send('Assigned user not found');
+      }
+
+      return res.status(200).json({ "firstName" : assigned.firstName, "lastName" : assigned.lastName })
+    } catch (err) {
+      console.error(err.message)
+      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+    }
+  }
+)
+
 
 module.exports = router
