@@ -70,6 +70,7 @@ const WebUserUpdatePasswordEmail = require("./Web/user/update-password-email");
 const WebUserUpdatePassword = require("./Web/user/update-password");
 const WebUserDetails = require("./Web/user/userdetails");
 const WebContainerUpdatePosition = require("./Web/container/updatePosition");
+const WebDownloadApk = require("./Web/download/download");
 
 module.exports = {
   paths: {
@@ -279,6 +280,9 @@ module.exports = {
     },
     "/api/organization/update-type/:id": {
       ...WebOrganizationUpdateType,
+    },
+    "/api/apk/download": {
+      ...WebDownloadApk,
     },
   },
 };
