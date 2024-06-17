@@ -17,6 +17,7 @@ import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
+import 'package:front/screens/not-found/not_found.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/screens/password-recuperation/password_recuperation.dart';
@@ -337,6 +338,10 @@ class AppRouter {
         ),
       ),
     ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      key: state.pageKey,
+      child: const NotFoundPage(),
+    ),
   );
 
   static GoRouter get router => _router;
