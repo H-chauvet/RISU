@@ -75,7 +75,7 @@
   "errorOccurredDuringAccountDeletion": "Une erreur est survenue lors de la suppression du compte.",
   "errorOccurredDuringConnection": "Une erreur est survenue lors de la connexion.",
   "errorOccurredDuringCreatingFavorite": "Une erreur est survenue lors de l'ajout de l'article aux favoris.",
-  "errorOccurredDuringDeletingFavorite": "Une erreur est surverrorOccurredDuringGettingUserTicketsenue lors de la suppression de l'article des favoris.",
+  "errorOccurredDuringDeletingFavorite": "Une erreur est survenue lors de la suppression de l'article des favoris.",
   "errorOccurredDuringGettingAssignedInfo": "Une erreur est survenue lors de la récupération des informations de votre interlocuteur.",
   "errorOccurredDuringGettingData": "Une erreur est survenue lors de la récupération des données.",
   "errorOccurredDuringGettingFavorite": "Une erreur est survenue lors de la récupération des favoris.",
