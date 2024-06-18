@@ -26,7 +26,6 @@ import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
-// ignore: must_be_immutable
 /// ContainerCreation
 ///
 /// Creation of the container
@@ -34,8 +33,9 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 /// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [width] : Container's width
 /// [height] : Container's height
+// ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation(
+  ContainerCreation(
       {super.key,
       this.id,
       this.container,
@@ -43,11 +43,11 @@ class ContainerCreation extends StatefulWidget {
       this.width,
       this.height});
 
-  final String? id;
-  final String? container;
-  final String? containerMapping;
-  final String? width;
-  final String? height;
+  String? id;
+  String? container;
+  String? containerMapping;
+  String? width;
+  String? height;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
@@ -78,10 +78,32 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   @override
-  void initState() {
+  void dispose() {
+    debugPrint('dispose');
+    super.dispose();
+  }
+
+  @override
+  void initState() async {
     MyAlertTest.checkSignInStatus(context);
     super.initState();
     checkToken();
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      dynamic data = jsonDecode(storageData);
+      if (data['container'] != '') {
+        widget.container = data['container'];
+      }
+      widget.containerMapping = data['containerMapping'];
+      widget.width = data['width'];
+      widget.height = data['height'];
+      widget.id = data['id'];
+    }
+
+    debugPrint(widget.container.toString());
+    debugPrint(widget.containerMapping.toString());
+    debugPrint(widget.width.toString());
+    debugPrint(widget.height.toString());
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
@@ -591,6 +613,32 @@ class ContainerCreationState extends State<ContainerCreation> {
       }
     }
     return "deleted";
+  }
+
+  /// [Function] : Save the container in the storage service
+  void saveContainerToStorage(String name) {
+    var data = {
+      'amount': sumPrice(),
+      'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers),
+      'id': widget.id,
+      'container': widget.container,
+      'width': width.toString(),
+      'height': height.toString(),
+    };
+
+    storageService.writeStorage('containerData', jsonEncode(data));
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? test = await storageService.readStorage('containerData');
+
+    debugPrint('test: $test');
+
+    if (test == null) {
+      test = '';
+    }
+    return test;
   }
 
   /// [Function] : Get the containerMapping of a container
