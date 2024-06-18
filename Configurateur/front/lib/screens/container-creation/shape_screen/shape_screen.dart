@@ -5,6 +5,7 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
@@ -298,11 +299,23 @@ class ShapeScreenState extends State<ShapeScreen> {
         }
       }
     }
+    saveContainerToStorage(containerListTmp);
     context.go('/container-creation',
         extra: jsonEncode({
           'containerMapping': jsonEncode(containerListTmp),
           'height': row,
           'width': column
+        }));
+  }
+
+  void saveContainerToStorage(List<List<String>> containerListTmp) {
+    storageService.writeStorage(
+        'containerData',
+        jsonEncode({
+          'containerMapping': jsonEncode(containerListTmp),
+          'height': row,
+          'width': column,
+          'container': ''
         }));
   }
 
