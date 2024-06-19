@@ -631,14 +631,10 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   Future<String> getContainerFromStorage() async {
-    String? test = await storageService.readStorage('containerData');
+    String? data = await storageService.readStorage('containerData');
 
-    debugPrint('test: $test');
-
-    if (test == null) {
-      test = '';
-    }
-    return test;
+    data ??= '';
+    return data;
   }
 
   /// [Function] : Get the containerMapping of a container

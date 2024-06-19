@@ -39,10 +39,34 @@ class ShapeScreenState extends State<ShapeScreen> {
   List<Color?> colors = List.generate(60, (index) => Colors.grey[200]);
 
   @override
-  void initState() {
-    super.initState();
+  void initState() async {
     MyAlertTest.checkSignInStatus(context);
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      Map<String, dynamic> data = jsonDecode(storageData);
+      List<List<String>> containerList = jsonDecode(data['containerMapping']);
+      row = data['height'];
+      column = data['width'];
+      setState(() {
+        colors = List.generate(row * column, (index) {
+          if (containerList[(index / column).floor()][index % column] == '0') {
+            return Colors.grey[200];
+          } else {
+            return Colors.grey[600];
+          }
+        });
+        isClicked = List.generate(row * column, (index) => false);
+      });
+    }
     calculateDimension();
+    super.initState();
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? data = await storageService.readStorage('containerData');
+
+    data ??= '';
+    return data;
   }
 
   /// [Function] : Calculate the container's dimension
@@ -117,6 +141,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             onPressed: () {
               setState(() {
                 removeLockers();
+                saveContainerToStorage(generateContainerMapping());
                 isRemoveClicked = false;
               });
             },
@@ -201,8 +226,8 @@ class ShapeScreenState extends State<ShapeScreen> {
                       setState(() {
                         isClicked[(i * column) + j] =
                             !isClicked[(i * column) + j];
-                      })
-                    }
+                      }),
+                    },
                 },
                 child: Container(
                   width: desktopContainerSize,
@@ -262,8 +287,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     context.go('/');
   }
 
-  /// [Function] : Go to the next page
-  void goNext() {
+  List<List<String>> generateContainerMapping() {
     List<List<String>> containerList;
 
     containerList = List.generate(row, (index) => []);
@@ -279,6 +303,10 @@ class ShapeScreenState extends State<ShapeScreen> {
       }
     }
 
+    return containerList;
+  }
+
+  List<List<String>> reverseContainerMapping(List<List<String>> containerList) {
     List<List<String>> containerListTmp = List.generate(row, (index) => []);
     for (int i = 0; i < containerList.length; i++) {
       containerListTmp[i] = List.generate(column, (index) => '0');
@@ -299,6 +327,14 @@ class ShapeScreenState extends State<ShapeScreen> {
         }
       }
     }
+
+    return containerListTmp;
+  }
+
+  /// [Function] : Go to the next page
+  void goNext() {
+    List<List<String>> containerListTmp =
+        reverseContainerMapping(generateContainerMapping());
     saveContainerToStorage(containerListTmp);
     context.go('/container-creation',
         extra: jsonEncode({
@@ -383,6 +419,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -421,6 +458,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -459,6 +497,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -497,6 +536,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
