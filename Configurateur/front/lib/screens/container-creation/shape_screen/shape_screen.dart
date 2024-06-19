@@ -348,10 +348,11 @@ class ShapeScreenState extends State<ShapeScreen> {
     storageService.writeStorage(
         'containerData',
         jsonEncode({
-          'containerMapping': jsonEncode(containerListTmp),
+          'containerMappingShape': jsonEncode(containerListTmp),
           'height': row,
           'width': column,
-          'container': ''
+          'container': '',
+          'containerMapping': ''
         }));
   }
 

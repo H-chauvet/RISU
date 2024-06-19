@@ -64,6 +64,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   String jwtToken = '';
   dynamic decodedContainer;
   bool unitTest = false;
+  String? containerMappingStocked;
   late int width = 0;
   late int height = 0;
 
@@ -78,32 +79,24 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   @override
-  void dispose() {
-    debugPrint('dispose');
-    super.dispose();
-  }
-
-  @override
   void initState() async {
     MyAlertTest.checkSignInStatus(context);
-    super.initState();
     checkToken();
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
-      dynamic data = jsonDecode(storageData);
-      if (data['container'] != '') {
-        widget.container = data['container'];
-      }
-      widget.containerMapping = data['containerMapping'];
-      widget.width = data['width'];
-      widget.height = data['height'];
-      widget.id = data['id'];
+      setState(() {
+        dynamic data = jsonDecode(storageData);
+        if (data['container'] != '') {
+          widget.container = data['container'];
+        }
+        widget.containerMapping = data['containerMappingShape'];
+        containerMappingStocked = data['containerMapping'];
+        widget.width = data['width'];
+        widget.height = data['height'];
+        widget.id = data['id'];
+      });
     }
 
-    debugPrint(widget.container.toString());
-    debugPrint(widget.containerMapping.toString());
-    debugPrint(widget.width.toString());
-    debugPrint(widget.height.toString());
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
@@ -128,63 +121,82 @@ class ContainerCreationState extends State<ContainerCreation> {
       loadLockers();
     }
 
-    if (widget.containerMapping != null) {
-      dynamic decoded = jsonDecode(widget.containerMapping!);
-      for (int i = 0; i < decoded.length; i++) {
-        for (int j = 0; j < decoded[i].length; j++) {
-          if (decoded[i][j].toString() == '2') {
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[0]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[1]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[2]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[3]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[4]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[5]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[0]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[1]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[2]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[3]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[4]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[5]
-                .materialIndex = 4;
-          }
-        }
+    if (containerMappingStocked != '') {
+      for (int i = 0; i < containerMappingStocked!.length; i++) {
+        objs[0].fragments[i].faces[0].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[1].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[2].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[3].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[4].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[5].materialIndex =
+            int.parse(containerMappingStocked![i]);
       }
     }
+    if (widget.containerMapping != null) {
+      dynamic decoded = jsonDecode(widget.containerMapping!);
+      setState(() {
+        for (int i = 0; i < decoded.length; i++) {
+          for (int j = 0; j < decoded[i].length; j++) {
+            if (decoded[i][j].toString() == '2') {
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[0]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[1]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[2]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[3]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[4]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[5]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[0]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[1]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[2]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[3]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[4]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[5]
+                  .materialIndex = 4;
+            }
+          }
+        }
+      });
+    }
+    super.initState();
   }
 
   /// [Function] : Load the container's informations
@@ -318,6 +330,7 @@ class ContainerCreationState extends State<ContainerCreation> {
             break;
         }
         isLoaded = true;
+        saveContainerToStorage();
       });
     } else {
       switch (coordinates.size) {
@@ -333,6 +346,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         default:
           break;
       }
+      saveContainerToStorage();
     }
     return "";
   }
@@ -497,9 +511,11 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTesting == false) {
       setState(() {
         isLoaded = true;
+        saveContainerToStorage();
       });
     } else {
       isLoaded = true;
+      saveContainerToStorage();
     }
   }
 
@@ -536,9 +552,11 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTest == false) {
       setState(() {
         lockers = [];
+        saveContainerToStorage();
       });
     } else {
       lockers = [];
+      saveContainerToStorage();
     }
   }
 
@@ -616,7 +634,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   /// [Function] : Save the container in the storage service
-  void saveContainerToStorage(String name) {
+  void saveContainerToStorage() {
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
@@ -791,13 +809,15 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ElevatedButton.icon(
                       onPressed: () async {
                         await showDialog(
-                            context: context,
-                            builder: (context) => ContainerDialog(
-                                  callback: updateCube,
-                                  size: 1,
-                                  width: width,
-                                  height: height,
-                                ));
+                          context: context,
+                          builder: (context) => ContainerDialog(
+                            callback: updateCube,
+                            size: 1,
+                            width: width,
+                            height: height,
+                          ),
+                        );
+                        saveContainerToStorage();
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
@@ -919,6 +939,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                             context: context,
                             builder: (context) =>
                                 DeleteContainerDialog(callback: deleteLocker));
+                        saveContainerToStorage();
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
