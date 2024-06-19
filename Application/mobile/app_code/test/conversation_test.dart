@@ -19,7 +19,7 @@ void main() {
     'chatUid': '1',
     'title': 'Le titre mémoire',
     'content': 'Sylvie',
-    'creatorId': "PasUser",
+    'creatorId': "",
     'assignedId': "User",
   };
   sleep(const Duration(seconds: 1));
@@ -29,7 +29,7 @@ void main() {
     'title': 'Le titre mémoire',
     'content': 'Titouan',
     'creatorId': "User",
-    'assignedId': "PasUser",
+    'assignedId': "",
   };
   sleep(const Duration(seconds: 1));
   var ticket2 = {
@@ -38,7 +38,7 @@ void main() {
     'title': 'Le titre mémoire',
     'content': 'Rocket League',
     'creatorId': "User",
-    'assignedId': "PasUser",
+    'assignedId': "",
   };
 
   List<dynamic> ticketList = [ticket1, ticket2, ticket3];

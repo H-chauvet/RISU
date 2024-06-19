@@ -3,7 +3,7 @@ const router = express.Router();
 const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Web/user")
 const jwtMiddleware = require("../../middleware/jwt");
-
+const mobileUserCtrl = require("../../controllers/Mobile/user")
 
 router.get("/all-tickets", async function (req, res, next) {
   try {
@@ -125,6 +125,32 @@ router.put('/:chatId', async (req, res, next) => {
     await ticketCtrl.closeConversation(chatId)
 
     return res.status(201).send("Success : Conversation closed")
+  } catch (err) {
+    next(err);
+  }
+})
+
+router.get('/assigned-info/:assignedId', async (req, res, next) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
+  try {
+    const assignedId = req.params.assignedId
+    if (!assignedId) {
+      return res.status(400).json("Bad Request : Missing assigned id")
+    }
+    const webUser = await userCtrl.findUserByUuid(assignedId)
+    if (webUser) {
+      return res.status(200).json({ "firstName" : webUser.firstName, "lastName" : webUser.lastName })
+    }
+    const mobileUser = await mobileUserCtrl.findUserById(assignedId)
+    if (mobileUser) {
+      return res.status(200).json({ "firstName" : mobileUser.firstName, "lastName" : mobileUser.lastName })
+    }
+    return res.status(404).send('Assigned user was not found');
   } catch (err) {
     next(err);
   }
