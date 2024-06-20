@@ -17,12 +17,12 @@ import 'notifications_page.dart';
 
 class NotificationsPageState extends State<NotificationsPage> {
   static bool isFavoriteItemsAvailableChecked =
-      userInformation!.notifications?[0] ?? false;
+      userInformation?.notifications?[0] ?? false;
   final LoaderManager _loaderManager = LoaderManager();
 
   static bool isEndOfRentingChecked =
-      userInformation!.notifications?[1] ?? false;
-  static bool isNewsOffersChecked = userInformation!.notifications?[2] ?? false;
+      userInformation?.notifications?[1] ?? false;
+  static bool isNewsOffersChecked = userInformation?.notifications?[2] ?? false;
   static bool isAllChecked = false;
 
   @override
@@ -128,9 +128,13 @@ class NotificationsPageState extends State<NotificationsPage> {
 
   @override
   Widget build(BuildContext context) {
-    isAllChecked = isFavoriteItemsAvailableChecked &&
-        isEndOfRentingChecked &&
-        isNewsOffersChecked;
+    if (userInformation != null) {
+      isAllChecked = isFavoriteItemsAvailableChecked &&
+          isEndOfRentingChecked &&
+          isNewsOffersChecked;
+    } else {
+      isAllChecked = isNewsOffersChecked;
+    }
     return Scaffold(
       appBar: MyAppBar(
         curveColor: context.select(
@@ -163,22 +167,24 @@ class NotificationsPageState extends State<NotificationsPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  createSwitch(
-                    const Key('notifications-switch_disponibility_favorite'),
-                    AppLocalizations.of(context)!
-                        .availabilityOfAFavoriteArticle,
-                    isFavoriteItemsAvailableChecked,
-                    (newValue) => setState(
-                        () => isFavoriteItemsAvailableChecked = newValue),
-                  ),
-                  createSwitch(
-                    const Key('notifications-switch_end_renting'),
-                    AppLocalizations.of(context)!.endOfRenting,
-                    isEndOfRentingChecked,
-                    (newValue) =>
-                        setState(() => isEndOfRentingChecked = newValue),
-                  ),
-                  const MyDivider(),
+                  if (userInformation != null) ...[
+                    createSwitch(
+                      const Key('notifications-switch_disponibility_favorite'),
+                      AppLocalizations.of(context)!
+                          .availabilityOfAFavoriteArticle,
+                      isFavoriteItemsAvailableChecked,
+                      (newValue) => setState(
+                          () => isFavoriteItemsAvailableChecked = newValue),
+                    ),
+                    createSwitch(
+                      const Key('notifications-switch_end_renting'),
+                      AppLocalizations.of(context)!.endOfRenting,
+                      isEndOfRentingChecked,
+                      (newValue) =>
+                          setState(() => isEndOfRentingChecked = newValue),
+                    ),
+                    const MyDivider(),
+                  ],
                   createSwitch(
                     const Key('notifications-switch_news_offers_risu'),
                     AppLocalizations.of(context)!.newsOffersTipsRisu,
