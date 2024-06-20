@@ -76,6 +76,7 @@
   "errorOccurredDuringConnection": "An error occurred during connection.",
   "errorOccurredDuringCreatingFavorite": "An error occurred while adding the item to favorites.",
   "errorOccurredDuringDeletingFavorite": "An error occurred while deleting the item from favorites.",
+  "errorOccurredDuringGettingAssignedInfo": "An error occurred while retrieving corresponding user information's.",
   "errorOccurredDuringGettingData": "An error occurred while retrieving data.",
   "errorOccurredDuringGettingFavorite": "An error occurred while retrieving the favorites.",
   "errorOccurredDuringGettingRent": "An error occurred while retrieving the rental.",
@@ -232,5 +233,6 @@
   "total": "Total",
   "unavailable": "Unavailable",
   "update": "Update",
-  "viewMore": "View more"
+  "viewMore": "View more",
+  "you": "You"
 }
