@@ -43,15 +43,6 @@ class LandingPageState extends State<LandingPage> {
     checkToken();
   }
 
-  /// [Function] : Go to the creation page
-  void goToCreation() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/container-creation/shape");
-    }
-  }
-
   /// [Function] : Build the landing page
   @override
   Widget build(BuildContext context) {

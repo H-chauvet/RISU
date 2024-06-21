@@ -62,7 +62,6 @@ class ContainerCreationState extends State<ContainerCreation> {
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
   String jwtToken = '';
-  dynamic decodedContainer;
   bool unitTest = false;
   String? containerMappingStocked;
   late int width = 0;
@@ -118,10 +117,13 @@ class ContainerCreationState extends State<ContainerCreation> {
     loadImage();
     if (widget.container != null) {
       loadContainer();
-      loadLockers();
+      dynamic container = jsonDecode(widget.container!);
+      loadLockers(container['containerMapping'],
+          design: jsonDecode(container['designs']));
     }
 
     if (containerMappingStocked != '') {
+      loadLockers(containerMappingStocked!);
       for (int i = 0; i < containerMappingStocked!.length; i++) {
         objs[0].fragments[i].faces[0].materialIndex =
             int.parse(containerMappingStocked![i]);
@@ -140,6 +142,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (widget.containerMapping != null) {
       dynamic decoded = jsonDecode(widget.containerMapping!);
       setState(() {
+        loadLockers(widget.containerMapping!);
         for (int i = 0; i < decoded.length; i++) {
           for (int j = 0; j < decoded[i].length; j++) {
             if (decoded[i][j].toString() == '2') {
@@ -227,26 +230,23 @@ class ContainerCreationState extends State<ContainerCreation> {
   }
 
   /// [Function] : Load the lockers' informations in the container
-  void loadLockers() {
+  void loadLockers(dynamic containerMapping, {design}) {
     int littleLocker = 0;
     int mediumLocker = 0;
     int bigLocker = 0;
-    dynamic container = jsonDecode(widget.container!);
 
-    for (int i = 0; i < container['containerMapping'].length; i++) {
-      if (container['containerMapping'][i] == '1') {
+    for (int i = 0; i < containerMapping.length; i++) {
+      if (containerMapping[i] == '1') {
         littleLocker++;
-      } else if (container['containerMapping'][i] == '2') {
+      } else if (containerMapping[i] == '2') {
         mediumLocker++;
-      } else if (container['containerMapping'][i] == '3') {
+      } else if (containerMapping[i] == '3') {
         bigLocker++;
       }
     }
 
-    decodedContainer = jsonDecode(container['designs']);
-
-    if (decodedContainer != null) {
-      for (int i = 0; i < decodedContainer.length; i++) {
+    if (design != null) {
+      for (int i = 0; i < design.length; i++) {
         lockers.add(Locker('Design personnalisé', 50));
       }
     }

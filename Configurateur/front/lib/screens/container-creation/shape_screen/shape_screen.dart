@@ -44,7 +44,8 @@ class ShapeScreenState extends State<ShapeScreen> {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       Map<String, dynamic> data = jsonDecode(storageData);
-      List<List<String>> containerList = jsonDecode(data['containerMapping']);
+      List<List<String>> containerList =
+          jsonDecode(data['containerMappingShape']);
       row = data['height'];
       column = data['width'];
       setState(() {
