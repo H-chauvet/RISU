@@ -50,7 +50,7 @@ void main() {
             return MaterialApp(
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const DesignScreen(
+                child: DesignScreen(
                   lockers:
                       '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
                   amount: 60,

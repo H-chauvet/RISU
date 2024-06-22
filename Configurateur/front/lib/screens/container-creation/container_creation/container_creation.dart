@@ -115,15 +115,20 @@ class ContainerCreationState extends State<ContainerCreation> {
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
     loadImage();
+    bool loaded = false;
     if (widget.container != null) {
       loadContainer();
       dynamic container = jsonDecode(widget.container!);
       loadLockers(container['containerMapping'],
           design: jsonDecode(container['designs']));
+      loaded = true;
     }
 
     if (containerMappingStocked != '') {
-      loadLockers(containerMappingStocked!);
+      if (loaded == false) {
+        loadLockers(containerMappingStocked!);
+        loaded = true;
+      }
       for (int i = 0; i < containerMappingStocked!.length; i++) {
         objs[0].fragments[i].faces[0].materialIndex =
             int.parse(containerMappingStocked![i]);
@@ -142,7 +147,10 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (widget.containerMapping != null) {
       dynamic decoded = jsonDecode(widget.containerMapping!);
       setState(() {
-        loadLockers(widget.containerMapping!);
+        if (loaded == false) {
+          loadLockers(widget.containerMapping!);
+          loaded = true;
+        }
         for (int i = 0; i < decoded.length; i++) {
           for (int j = 0; j < decoded[i].length; j++) {
             if (decoded[i][j].toString() == '2') {
@@ -675,6 +683,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       'width': width.toString(),
       'height': height.toString(),
     };
+    saveContainerToStorage();
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
