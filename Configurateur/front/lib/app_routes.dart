@@ -248,7 +248,7 @@ class AppRouter {
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const DesignScreen(
+            return DesignScreen(
               amount: null,
               containerMapping: null,
               lockers: null,
