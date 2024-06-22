@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:intl/intl.dart';
@@ -69,6 +70,7 @@ class SaveDialogState extends State<SaveDialog> {
                 widget.name =
                     'Sauvegarde - ${DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())}';
               }
+              storageService.removeStorage('containerData');
               Navigator.pop(
                 context,
                 widget.name,

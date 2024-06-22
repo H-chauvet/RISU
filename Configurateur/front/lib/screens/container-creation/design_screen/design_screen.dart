@@ -195,7 +195,7 @@ class DesignScreenState extends State<DesignScreen> {
       'width': widget.width,
       'height': widget.height,
       'amount': widget.amount,
-      'lockers': widget.lockers,
+      'lockers': jsonEncode(lockerss),
       'containerMapping': widget.containerMapping,
     };
 

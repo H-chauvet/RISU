@@ -6,6 +6,7 @@ import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen_style.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
@@ -20,8 +21,9 @@ import 'package:provider/provider.dart';
 /// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
 /// [container] : Informations about the container
 /// [id] : User's Id
+// ignore: must_be_immutable
 class RecapScreen extends StatefulWidget {
-  const RecapScreen(
+  RecapScreen(
       {super.key,
       this.lockers,
       this.amount,
@@ -29,11 +31,11 @@ class RecapScreen extends StatefulWidget {
       this.id,
       this.container});
 
-  final String? lockers;
-  final int? amount;
-  final String? containerMapping;
-  final String? id;
-  final String? container;
+  String? lockers;
+  int? amount;
+  String? containerMapping;
+  String? id;
+  String? container;
 
   @override
   State<RecapScreen> createState() => RecapScreenState();
@@ -78,12 +80,30 @@ class RecapScreenState extends State<RecapScreen> {
   }
 
   @override
-  void initState() {
+  void initState() async {
     super.initState();
 
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      setState(() {
+        dynamic decode = jsonDecode(storageData);
+        widget.lockers = decode['lockers'];
+        widget.amount = decode['amount'];
+        widget.containerMapping = decode['containerMapping'];
+        widget.container = decode['container'];
+        widget.id = decode['id'];
+      });
+    }
     if (widget.lockers != null) {
       decodeLockers();
     }
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? data = await storageService.readStorage('containerData');
+
+    data ??= '';
+    return data;
   }
 
   /// [Widget] : Build of the container's summary page

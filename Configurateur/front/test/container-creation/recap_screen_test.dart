@@ -47,7 +47,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const RecapScreen(
+                child: RecapScreen(
                   lockers:
                       '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
                   amount: 60,

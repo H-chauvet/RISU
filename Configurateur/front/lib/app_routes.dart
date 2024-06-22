@@ -295,7 +295,7 @@ class AppRouter {
         path: '/container-creation/recap',
         builder: (context, state) {
           if (state.extra == null) {
-            return const RecapScreen(
+            return RecapScreen(
               lockers: null,
               amount: null,
               containerMapping: null,
