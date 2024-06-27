@@ -154,7 +154,7 @@ class AppRouter {
         path: '/container-creation',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const ContainerCreation();
+            return ContainerCreation();
           }
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
@@ -248,7 +248,7 @@ class AppRouter {
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const DesignScreen(
+            return DesignScreen(
               amount: null,
               containerMapping: null,
               lockers: null,
@@ -295,7 +295,7 @@ class AppRouter {
         path: '/container-creation/recap',
         builder: (context, state) {
           if (state.extra == null) {
-            return const RecapScreen(
+            return RecapScreen(
               lockers: null,
               amount: null,
               containerMapping: null,

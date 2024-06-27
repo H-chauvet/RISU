@@ -40,6 +40,7 @@ class LandingAppBarState extends State<LandingAppBar> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
+      await storageService.removeStorage('containerData');
       context.go("/container-creation/shape");
     }
   }
