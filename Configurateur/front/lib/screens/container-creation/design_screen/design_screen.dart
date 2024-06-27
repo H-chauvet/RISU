@@ -784,6 +784,7 @@ class DesignScreenState extends State<DesignScreen> {
                       saveContainer(name);
                     },
                     screenFormat: screenFormat,
+                    fullscreen: false,
                   )),
             ),
           ],

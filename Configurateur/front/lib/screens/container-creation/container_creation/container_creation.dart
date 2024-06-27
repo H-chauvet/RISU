@@ -1047,6 +1047,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                         saveContainer(name);
                       },
                       screenFormat: screenFormat,
+                      fullscreen: false,
                     )),
               ),
             ],
