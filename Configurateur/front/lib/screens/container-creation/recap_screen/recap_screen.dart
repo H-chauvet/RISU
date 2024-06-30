@@ -79,10 +79,7 @@ class RecapScreenState extends State<RecapScreen> {
     }
   }
 
-  @override
-  void initState() async {
-    super.initState();
-
+  void checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -94,6 +91,12 @@ class RecapScreenState extends State<RecapScreen> {
         widget.id = decode['id'];
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkContainer();
     if (widget.lockers != null) {
       decodeLockers();
     }
