@@ -778,11 +778,6 @@ class DesignScreenState extends State<DesignScreen> {
                   heightFactor: 0.7,
                   child: RecapPanel(
                     articles: lockerss,
-                    onSaved: () async {
-                      String name = await showDialog(
-                          context: context, builder: (context) => openDialog());
-                      saveContainer(name);
-                    },
                     screenFormat: screenFormat,
                     fullscreen: false,
                   )),

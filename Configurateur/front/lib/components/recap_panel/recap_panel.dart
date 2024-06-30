@@ -238,7 +238,7 @@ class RecapPanel extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             Column(
               children: [
@@ -318,8 +318,8 @@ class RecapPanel extends StatelessWidget {
               color: Colors.grey,
               height: 20,
               thickness: 1,
-              indent: 30,
-              endIndent: 30,
+              indent: 10,
+              endIndent: 10,
             ),
             const SizedBox(
               height: 10,
@@ -332,8 +332,8 @@ class RecapPanel extends StatelessWidget {
               color: Colors.grey,
               height: 20,
               thickness: 1,
-              indent: 30,
-              endIndent: 30,
+              indent: 10,
+              endIndent: 10,
             ),
             const SizedBox(
               height: 5,
