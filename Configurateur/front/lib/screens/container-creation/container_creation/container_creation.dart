@@ -1040,6 +1040,12 @@ class ContainerCreationState extends State<ContainerCreation> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
+                      onSaved: () async {
+                        String name = await showDialog(
+                            context: context,
+                            builder: (context) => openDialog());
+                        saveContainer(name);
+                      },
                       screenFormat: screenFormat,
                       fullscreen: false,
                     )),
