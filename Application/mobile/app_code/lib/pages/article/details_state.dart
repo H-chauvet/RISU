@@ -305,6 +305,17 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     }
   }
 
+  IconData getCategoryIcon(String categoryName) {
+    switch (categoryName.toLowerCase()) {
+      case 'beach':
+        return Icons.beach_access;
+      case 'sports':
+        return Icons.sports_soccer;
+      default:
+        return Icons.category;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -362,6 +373,22 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           color: context.select((ThemeProvider themeProvider) =>
                               themeProvider.currentTheme.primaryColor),
                         ),
+                      ),
+                      // icons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        key: const Key('article_categories_icons'),
+                        children:
+                            articleData.categories.map<Widget>((category) {
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: Icon(
+                              getCategoryIcon(category['name']),
+                              size: 24.0,
+                              color: Theme.of(context).primaryColor,
+                            ),
+                          );
+                        }).toList(),
                       ),
                       const SizedBox(height: 16),
                       Container(
