@@ -127,6 +127,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         },
       ).then((value) {
         if (value.statusCode == 200) {
+          storageService.removeStorage('containerData');
           context.go('/container-creation/confirmation');
         } else {
           Fluttertoast.showToast(

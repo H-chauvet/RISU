@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -25,6 +26,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -56,6 +58,7 @@ void main() {
       tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
       tester.binding.window.devicePixelRatioTestValue = 1.0;
 
+      when(sharedPreferences.getString('containerData')).thenReturn('');
       when(sharedPreferences.getString('token')).thenReturn('test-token');
 
       List<List<String>> containerList = [
@@ -98,6 +101,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -127,6 +131,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -158,6 +163,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -187,6 +193,7 @@ void main() {
   testWidgets('updateCube', (WidgetTester tester) async {
     ContainerCreationState containerCreationState = ContainerCreationState();
 
+    containerCreationState.unitTest = true;
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
@@ -228,6 +235,7 @@ void main() {
   testWidgets('moveLocker', (WidgetTester tester) async {
     ContainerCreationState containerCreationState = ContainerCreationState();
 
+    containerCreationState.unitTest = true;
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
     obj.materials.add(FSp3dMaterial.red.deepCopy());
@@ -254,6 +262,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     var container = {
       'id': '1',
@@ -332,6 +341,8 @@ void main() {
 
   testWidgets('Delete locker', (WidgetTester tester) async {
     ContainerCreationState containerCreationState = ContainerCreationState();
+
+    containerCreationState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 12, 5, 2);
     obj.materials.add(FSp3dMaterial.green.deepCopy());

@@ -16,6 +16,8 @@ import 'conversation_page.dart';
 class ConversationPageState extends State<ConversationPage> {
   List<dynamic> tickets = [];
   bool isOpen = false;
+  String firstName = "";
+  String lastName = "";
   TextEditingController contentController = TextEditingController();
 
   @override
@@ -23,6 +25,10 @@ class ConversationPageState extends State<ConversationPage> {
     super.initState();
     tickets = widget.tickets;
     isOpen = widget.isOpen;
+    final assigned = findAssigned();
+    if (assigned.isNotEmpty) {
+      getAssignedInfo(assigned);
+    }
   }
 
   @override
@@ -32,6 +38,63 @@ class ConversationPageState extends State<ConversationPage> {
   }
 
   final LoaderManager _loaderManager = LoaderManager();
+
+  String findAssigned() {
+    for (var element in tickets) {
+      final creator = element["creatorId"];
+      final assigned = element["assignedId"];
+      if (creator != null && creator != "" && creator != userInformation?.ID) {
+        return creator;
+      }
+      if (assigned != null &&
+          assigned != "" &&
+          assigned != userInformation?.ID) {
+        return assigned;
+      }
+    }
+    return "";
+  }
+
+  void getAssignedInfo(String assignedId) async {
+    late http.Response response;
+
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      response = await http.get(
+        Uri.parse('$baseUrl/api/mobile/ticket/assigned-info/$assignedId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        firstName = data["firstName"];
+        lastName = data["lastName"];
+      } else {
+        if (context.mounted) {
+          printServerResponse(context, response, 'getAssignedInfo',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingAssignedInfo);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingAssignedInfo);
+        return;
+      }
+    }
+  }
 
   Future<bool> postTicket(String content) async {
     late http.Response response;
@@ -145,8 +208,12 @@ class ConversationPageState extends State<ConversationPage> {
                               ),
                             ),
                             Text(
-                              formatDateTime(
-                                  dateTimeString: currentTicket["createdAt"]),
+                              (currentTicket["creatorId"] == userInformation?.ID
+                                      ? "${AppLocalizations.of(context)!.you}, "
+                                      : '$firstName $lastName, ') +
+                                  formatDateTime(
+                                      dateTimeString:
+                                          currentTicket["createdAt"]),
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontSize: 12,

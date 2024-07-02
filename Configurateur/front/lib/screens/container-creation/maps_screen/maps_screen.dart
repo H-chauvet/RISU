@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
@@ -117,15 +118,30 @@ class MapsState extends State<MapsScreen> {
         'latitude': location.latitude.toString(),
         'longitude': location.longitude.toString(),
       },
-    );
-    var data = {
-      'amount': widget.amount,
-      'containerMapping': widget.containerMapping,
-      'lockers': widget.lockers,
-      'id': widget.id,
-      'container': widget.container,
-    };
-    context.go('/container-creation/payment', extra: jsonEncode(data));
+    ).then((response) {
+      if (response.statusCode == 200) {
+        var data = {
+          'amount': widget.amount,
+          'containerMapping': widget.containerMapping,
+          'lockers': widget.lockers,
+          'id': widget.id,
+          'container': widget.container,
+        };
+        context.go('/container-creation/payment', extra: jsonEncode(data));
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(
+          msg: 'Erreur lors de la localisation',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: 'La position n\'a pas pu être enregistrée',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+      }
+    });
   }
 
   /// [Function] : Go to the previous page

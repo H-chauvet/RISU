@@ -33,6 +33,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -47,7 +48,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const RecapScreen(
+                child: RecapScreen(
                   lockers:
                       '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
                   amount: 60,
@@ -66,14 +67,7 @@ void main() {
     expect(find.text("Récapitulatif"), findsOneWidget);
     expect(find.text("Précédent"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
-    expect(find.text("Récapitulatif de la commande"), findsOneWidget);
-    expect(find.text("Petit casier"), findsOneWidget);
-    expect(find.text("10€"), findsOneWidget);
-    expect(find.text("Moyen casier"), findsOneWidget);
-    expect(find.text("20€"), findsOneWidget);
-    expect(find.text("Grand casier"), findsOneWidget);
-    expect(find.text("30€"), findsOneWidget);
-    expect(find.text("Prix total: 60€"), findsOneWidget);
+    expect(find.text("Panier"), findsOneWidget);
 
     await tester.tap(find.text("Précédent"));
     await tester.tap(find.text("Suivant"));
