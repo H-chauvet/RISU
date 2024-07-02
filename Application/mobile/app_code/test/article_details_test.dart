@@ -82,12 +82,15 @@ void main() {
           find.byKey(const Key('article-similar_name_1'));
       Finder articleSimilarPrice1 =
           find.byKey(const Key('article-similar_price_1'));
+      Finder articleCategoryIcons1 =
+          find.byKey(const Key('article_categories_icons'));
       await tester.pumpAndSettle();
 
       expect(similarArticleTitle, findsOneWidget);
       expect(articleSimilarImage1, findsOneWidget);
       expect(articleSimilarName1, findsOneWidget);
       expect(articleSimilarPrice1, findsOneWidget);
+      expect(articleCategoryIcons1, findsOneWidget);
     },
   );
 
