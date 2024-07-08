@@ -3,6 +3,10 @@ const mobileLogIn = require("./Mobile/auth/login");
 const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken');
 const mobileMailVerification = require("./Mobile/auth/mailVerification");
 const mobileNewMailVerification = require("./Mobile/auth/newEmailVerification");
+const mobileContactAssignedId = require("./Mobile/contact/assignedId")
+const mobileContactAssignedInfo = require("./Mobile/contact/assignedInfo")
+const mobileContactChatUid = require("./Mobile/contact/chatUid")
+const mobileContactTickets = require("./Mobile/contact/tickets")
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
@@ -28,6 +32,7 @@ const WebCreateTicket = require("./Web/tickets/create");
 const WebAllTickets = require("./Web/tickets/allTickets");
 const WebAssignTicket = require("./Web/tickets/assign");
 const WebUserTicket = require("./Web/tickets/userTicket");
+const WebAssignInfoTicket = require('./Web/tickets/assignedInfo');
 const WebContainerGet = require("./Web/container/get");
 const WebContainerDelete = require("./Web/container/delete");
 const WebContainerUpdate = require("./Web/container/update");
@@ -107,6 +112,18 @@ module.exports = {
     "/api/mobile/article/:articleId/similar": {
       ...mobileItemSimilar,
     },
+    "/api/mobile/ticket" : {
+      ...mobileContactTickets
+    },
+    "/api/mobile/ticket/assign/:assignedId":  {
+      ...mobileContactAssignedId
+    },
+    "/api/mobile/ticket/chatUid":  {
+      ...mobileContactChatUid
+    },
+    "/api/mobile/ticket/assigned-info/:assignedId":  {
+      ...mobileContactAssignedInfo
+    },
     "/api/mobile/favorite": {
       ...mobileMyFavorites,
     },
@@ -160,6 +177,9 @@ module.exports = {
     },
     "/api/tickets/user-ticket/:userId": {
       ...WebUserTicket,
+    },
+    "/api/tickets/assigned-info/:assignedId": {
+      ...WebAssignInfoTicket,
     },
     "/api/container/get": {
       ...WebContainerGet,
