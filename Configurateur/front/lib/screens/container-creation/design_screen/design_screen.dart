@@ -116,7 +116,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -139,22 +139,24 @@ class DesignScreenState extends State<DesignScreen> {
     checkToken();
     super.initState();
 
-    checkContainer();
+    checkContainer().then((result) {
+      setState(() {
+        Sp3dObj obj =
+            UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
+        obj.materials.add(FSp3dMaterial.green.deepCopy());
 
-    Sp3dObj obj =
-        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
-    obj.materials.add(FSp3dMaterial.green.deepCopy());
-
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    objs.add(obj);
-    loadImage(false).then((value) => null);
-    if (widget.lockers != null) {
-      decodeLockers();
-    }
-    if (widget.container != null) {
-      decodeDesigns();
-    }
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        objs.add(obj);
+        loadImage(false).then((value) => null);
+        if (widget.lockers != null) {
+          decodeLockers();
+        }
+        if (widget.container != null) {
+          decodeDesigns();
+        }
+      });
+    });
   }
 
   /// [Function] : Decode lockers for the container in json

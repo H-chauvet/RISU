@@ -79,7 +79,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -91,7 +91,11 @@ class ContainerCreationState extends State<ContainerCreation> {
         containerMappingStocked = data['containerMapping'];
         widget.width = data['width'];
         widget.height = data['height'];
+        width = data['width'];
+        height = data['height'];
         widget.id = data['id'];
+        debugPrint('test' + widget.height.toString());
+        debugPrint('test' + widget.width.toString());
       });
     }
   }
@@ -100,120 +104,133 @@ class ContainerCreationState extends State<ContainerCreation> {
   void initState() {
     MyAlertTest.checkSignInStatus(context);
     checkToken();
-    checkContainer();
 
-    if (widget.container != null) {
-      dynamic container = jsonDecode(widget.container!);
-      width = int.parse(container['width']);
-      height = int.parse(container['height']);
-    } else if (widget.width != null && widget.height != null) {
-      width = int.parse(widget.width!);
-      height = int.parse(widget.height!);
-    }
-
-    Sp3dObj obj =
-        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, width, height, 2);
-    obj.materials.add(FSp3dMaterial.green.deepCopy());
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.materials.add(FSp3dMaterial.blue.deepCopy());
-    obj.materials.add(FSp3dMaterial.black.deepCopy());
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    objs.add(obj);
-    loadImage();
-    bool loaded = false;
-    if (widget.container != null) {
-      loadContainer();
-      dynamic container = jsonDecode(widget.container!);
-      loadLockers(container['containerMapping'],
-          design: jsonDecode(container['designs']));
-      loaded = true;
-    }
-
-    if (containerMappingStocked != '') {
-      if (loaded == false) {
-        loadLockers(containerMappingStocked!);
-        loaded = true;
-      }
-      for (int i = 0; i < containerMappingStocked!.length; i++) {
-        objs[0].fragments[i].faces[0].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[1].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[2].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[3].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[4].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[5].materialIndex =
-            int.parse(containerMappingStocked![i]);
-      }
-    }
-    if (widget.containerMapping != null) {
-      dynamic decoded = jsonDecode(widget.containerMapping!);
+    checkContainer().then((result) {
       setState(() {
-        if (loaded == false) {
-          loadLockers(widget.containerMapping!);
+        if (widget.container != null) {
+          dynamic container = jsonDecode(widget.container!);
+          width = int.parse(container['width']);
+          height = int.parse(container['height']);
+        } else if (widget.width != null && widget.height != null) {
+          width = int.parse(widget.width!);
+          height = int.parse(widget.height!);
+          debugPrint('test');
+        }
+
+        debugPrint(height.toString());
+        debugPrint(width.toString());
+
+        Sp3dObj obj = UtilSp3dGeometry.cube(
+            cubeWidth, cubeHeight - 20, 50, width, height, 2);
+        obj.materials.add(FSp3dMaterial.green.deepCopy());
+        obj.materials.add(FSp3dMaterial.red.deepCopy());
+        obj.materials.add(FSp3dMaterial.blue.deepCopy());
+        obj.materials.add(FSp3dMaterial.black.deepCopy());
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        objs.add(obj);
+        loadImage();
+        bool loaded = false;
+        if (widget.container != null) {
+          loadContainer();
+          dynamic container = jsonDecode(widget.container!);
+          loadLockers(container['containerMapping'],
+              design: jsonDecode(container['designs']));
           loaded = true;
         }
-        for (int i = 0; i < decoded.length; i++) {
-          for (int j = 0; j < decoded[i].length; j++) {
-            if (decoded[i][j].toString() == '2') {
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[0]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[1]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[2]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[3]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[4]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[5]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[0]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[1]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[2]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[3]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[4]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[5]
-                  .materialIndex = 4;
-            }
+
+        if (containerMappingStocked != '') {
+          if (loaded == false) {
+            loadLockers(containerMappingStocked!);
+            loaded = true;
+          }
+          for (int i = 0; i < containerMappingStocked!.length; i++) {
+            objs[0].fragments[i].faces[0].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[1].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[2].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[3].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[4].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[5].materialIndex =
+                int.parse(containerMappingStocked![i]);
           }
         }
+        if (widget.containerMapping != null) {
+          dynamic decoded = jsonDecode(widget.containerMapping!);
+          setState(() {
+            if (loaded == false) {
+              loadLockers(widget.containerMapping!);
+              loaded = true;
+            }
+            for (int i = 0; i < decoded.length; i++) {
+              for (int j = 0; j < decoded[i].length; j++) {
+                if (decoded[i][j].toString() == '2') {
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[0]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[1]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[2]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[3]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[4]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[5]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[0]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[1]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[2]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[3]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[4]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[5]
+                      .materialIndex = 4;
+                }
+              }
+            }
+          });
+        }
+        super.initState();
       });
-    }
-    super.initState();
+    });
   }
 
   /// [Function] : Load the container's informations

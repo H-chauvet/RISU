@@ -38,7 +38,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   List<bool> isClicked = List.generate(60, (index) => false);
   List<Color?> colors = List.generate(60, (index) => Colors.grey[200]);
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       Map<String, dynamic> data = jsonDecode(storageData);
@@ -62,9 +62,12 @@ class ShapeScreenState extends State<ShapeScreen> {
   @override
   void initState() {
     MyAlertTest.checkSignInStatus(context);
-    checkContainer();
-    calculateDimension();
-    super.initState();
+    checkContainer().then((result) {
+      setState(() {
+        calculateDimension();
+        super.initState();
+      });
+    });
   }
 
   Future<String> getContainerFromStorage() async {
