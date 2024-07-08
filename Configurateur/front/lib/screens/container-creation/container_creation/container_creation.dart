@@ -67,7 +67,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   String? containerMappingStocked = '';
   late int width = 0;
   late int height = 0;
-  List<LockerCoordinates> inputLockers = [];
+  List<String> inputLockers = [];
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
@@ -91,11 +91,11 @@ class ContainerCreationState extends State<ContainerCreation> {
         containerMappingStocked = data['containerMapping'];
         widget.width = data['width'];
         widget.height = data['height'];
-        width = data['width'];
-        height = data['height'];
+        if (data['input'] != null) {
+          inputLockers = jsonDecode(data['input']);
+        }
+
         widget.id = data['id'];
-        debugPrint('test' + widget.height.toString());
-        debugPrint('test' + widget.width.toString());
       });
     }
   }
@@ -114,11 +114,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         } else if (widget.width != null && widget.height != null) {
           width = int.parse(widget.width!);
           height = int.parse(widget.height!);
-          debugPrint('test');
         }
-
-        debugPrint(height.toString());
-        debugPrint(width.toString());
 
         Sp3dObj obj = UtilSp3dGeometry.cube(
             cubeWidth, cubeHeight - 20, 50, width, height, 2);
@@ -315,7 +311,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         break;
     }
 
-    inputLockers.add(coordinates);
+    inputLockers.add(jsonEncode(coordinates.toJson()));
 
     if (coordinates.face == 'Derrière') {
       fragment += width * height;
@@ -607,9 +603,10 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   bool checkCoordinates(LockerCoordinates coord) {
     for (int i = 0; i < inputLockers.length; i++) {
-      if (inputLockers[i].x == coord.x &&
-          inputLockers[i].y == coord.y &&
-          inputLockers[i].face == coord.face) {
+      dynamic decoded = jsonDecode(inputLockers[i]);
+      if (decoded['x'] == coord.x &&
+          decoded['y'] == coord.y &&
+          decoded['face'] == coord.face) {
         inputLockers.removeAt(i);
         return true;
       }
@@ -696,6 +693,12 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   /// [Function] : Save the container in the storage service
   void saveContainerToStorage() {
+    dynamic input;
+    if (inputLockers.isNotEmpty) {
+      input = jsonEncode(inputLockers);
+    } else {
+      input = [];
+    }
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
@@ -704,6 +707,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       'container': widget.container,
       'width': width.toString(),
       'height': height.toString(),
+      'input': input,
     };
 
     storageService.writeStorage('containerData', jsonEncode(data));
@@ -760,6 +764,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'width': width,
           'height': height,
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       } else {
         body = {
@@ -767,6 +772,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'width': width,
           'height': height,
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       }
 
@@ -797,6 +803,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'informations': '',
           'address': '',
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       } else {
         body = {
@@ -809,6 +816,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'informations': '',
           'address': '',
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       }
       HttpService()
