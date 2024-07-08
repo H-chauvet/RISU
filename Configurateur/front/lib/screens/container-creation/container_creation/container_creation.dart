@@ -67,6 +67,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   String? containerMappingStocked = '';
   late int width = 0;
   late int height = 0;
+  List<LockerCoordinates> inputLockers = [];
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
@@ -296,6 +297,8 @@ class ContainerCreationState extends State<ContainerCreation> {
         coordinates.size = 1;
         break;
     }
+
+    inputLockers.add(coordinates);
 
     if (coordinates.face == 'Derrière') {
       fragment += width * height;
@@ -585,6 +588,18 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  bool checkCoordinates(LockerCoordinates coord) {
+    for (int i = 0; i < inputLockers.length; i++) {
+      if (inputLockers[i].x == coord.x &&
+          inputLockers[i].y == coord.y &&
+          inputLockers[i].face == coord.face) {
+        inputLockers.removeAt(i);
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// [Function] : Delete a locker
   /// [coord] : the locker's position in the container
   /// [unitTesting] : Boolean that says if we came here from unit test or not
@@ -607,6 +622,10 @@ class ContainerCreationState extends State<ContainerCreation> {
         return "wrongPositionError";
       }
       fragment += increment;
+    }
+
+    if (checkCoordinates(coord) == false) {
+      return "notFoundError";
     }
 
     fragment -= size * increment;
