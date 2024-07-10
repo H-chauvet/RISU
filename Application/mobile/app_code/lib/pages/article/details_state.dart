@@ -164,13 +164,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = true;
         });
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.addedToFavorites,
               context: context);
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringCreatingFavorite);
@@ -213,7 +213,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           isFavorite = jsonDecode(response.body);
         });
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingFavorite);
@@ -254,13 +254,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = false;
         });
-        if (context.mounted) {
+        if (mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.deletedFromFavorites,
               context: context);
         }
       } else {
-        if (context.mounted) {
+        if (mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringDeletingFavorite);
@@ -309,7 +309,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (mounted) {
+      if (context.mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
