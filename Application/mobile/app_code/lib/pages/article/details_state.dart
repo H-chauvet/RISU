@@ -571,6 +571,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                       const SizedBox(height: 16),
                       GestureDetector(
+                        key: const Key('article_details-opinion_see_all'),
                         onTap: () {
                           if (opinionsList.isEmpty) return;
                           Navigator.push(
