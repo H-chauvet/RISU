@@ -14,8 +14,8 @@ import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/image_loader.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'details_page.dart';
 
@@ -29,6 +29,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     categories: [],
   );
   List<dynamic> similarArticles = [];
+  List<dynamic> opinionsList = [];
 
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
@@ -99,6 +100,47 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         'available': false,
         'price': 0,
       };
+    }
+  }
+
+  void getOpinions(itemId) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        final data = json.decode(response.body);
+        setState(() {
+          opinionsList = data['opinions'];
+        });
+      } else {
+        if (mounted) {
+          printServerResponse(context, response, 'getOpinions',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingReviews);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingReviews);
+        return;
+      }
+      return;
     }
   }
 
