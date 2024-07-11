@@ -14,8 +14,8 @@ import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/image_loader.dart';
 
 import 'details_page.dart';
 
@@ -29,8 +29,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     categories: [],
   );
   List<dynamic> similarArticles = [];
-  List<dynamic> opinionsList = [];
-  int maxOpinionsDisplayed = 5;
 
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
@@ -104,47 +102,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     }
   }
 
-  void getOpinions(itemId) async {
-    try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
-      final response = await http.get(
-        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${userInformation?.token}',
-        },
-      );
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body);
-        setState(() {
-          opinionsList = data['opinions'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getOpinions',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingReviews);
-        }
-      }
-    } catch (err, stacktrace) {
-      if (mounted) {
-        setState(() {
-          _loaderManager.setIsLoading(false);
-        });
-        printCatchError(context, err, stacktrace,
-            message: AppLocalizations.of(context)!
-                .errorOccurredDuringGettingReviews);
-        return;
-      }
-      return;
-    }
-  }
-
   void createFavorite(articleId) async {
     try {
       setState(() {
@@ -165,13 +122,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = true;
         });
-        if (mounted) {
+        if (context.mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.addedToFavorites,
               context: context);
         }
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringCreatingFavorite);
@@ -214,7 +171,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           isFavorite = jsonDecode(response.body);
         });
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingFavorite);
@@ -255,13 +212,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = false;
         });
-        if (mounted) {
+        if (context.mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.deletedFromFavorites,
               context: context);
         }
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringDeletingFavorite);
@@ -310,7 +267,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -346,7 +303,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         articleData = ArticleData.fromJson(widget.testArticleData);
       });
     }
-    getOpinions(widget.articleId);
   }
 
   @override
@@ -555,7 +511,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                             key: const Key('article-button_article-rent'),
                             onPressed: () async {
                               bool signIn = await checkSignin(context);
-                              if (!signIn || !context.mounted) {
+                              if (!signIn) {
                                 return;
                               }
                               Navigator.push(
@@ -570,159 +526,35 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           ),
                         ),
                       const SizedBox(height: 16),
-                      GestureDetector(
-                        key: const Key('article_details-opinion_see_all'),
-                        onTap: () {
-                          if (opinionsList.isEmpty) return;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OpinionPage(
-                                itemId: articleData.id,
+                      SizedBox(
+                        width: double.infinity,
+                        child: MyOutlinedButton(
+                          text: AppLocalizations.of(context)!
+                              .consultArticleOpinions,
+                          key: const Key('article-button_article-opinion'),
+                          onPressed: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpinionPage(
+                                  itemId: articleData.id,
+                                ),
                               ),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.opinions,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              if (opinionsList.isNotEmpty)
-                                const Icon(Icons.arrow_forward),
-                            ],
-                          ),
+                            );
+                          },
                         ),
                       ),
-                      if (opinionsList.isNotEmpty)
-                        for (var i = 0;
-                            i < opinionsList.length && i < maxOpinionsDisplayed;
-                            i++)
-                          Card(
-                            key: Key('opinion-card_$i'),
-                            elevation: 5,
-                            margin: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 15, 15, 0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        key: Key('opinion-user_$i'),
-                                        child: Text(
-                                          (opinionsList[i]['user'] != null &&
-                                                  opinionsList[i]['user']
-                                                          ['firstName'] !=
-                                                      null &&
-                                                  opinionsList[i]['user']
-                                                          ['lastName'] !=
-                                                      null)
-                                              ? '${opinionsList[i]['user']['firstName']} ${opinionsList[i]['user']['lastName']}'
-                                              : AppLocalizations.of(context)!
-                                                  .anonymous,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                ListTile(
-                                  contentPadding:
-                                      const EdgeInsets.all(20).copyWith(top: 0),
-                                  title: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: List.generate(
-                                          5,
-                                          (index) => Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 2),
-                                            child: Icon(
-                                              key:
-                                                  Key('opinion-star_$i-$index'),
-                                              index <
-                                                      int.parse(opinionsList[i]
-                                                          ['note'])
-                                                  ? Icons.star
-                                                  : Icons.star_border,
-                                              color: index <
-                                                      int.parse(opinionsList[i]
-                                                          ['note'])
-                                                  ? Colors.yellow
-                                                  : Colors.grey,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        key: Key('opinion-comment_$i'),
-                                        opinionsList[i]['comment'],
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      if (opinionsList.isEmpty) ...[
-                        const SizedBox(height: 16),
-                        Text(
-                          key: const Key('opinion-empty_text'),
-                          AppLocalizations.of(context)!.reviewsEmpty,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
                       if (similarArticles.isNotEmpty) ...[
                         const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.symmetric(vertical: 8),
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: Colors.grey,
-                                width: 1.0,
-                              ),
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                key: const Key('article-similar_title'),
-                                AppLocalizations.of(context)!.similarArticles,
-                                style: const TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                            ],
+                        Text(
+                          AppLocalizations.of(context)!.similarArticles,
+                          key: const Key('article-similar_title'),
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: context.select(
+                                (ThemeProvider themeProvider) =>
+                                    themeProvider.currentTheme.primaryColor),
                           ),
                         ),
                         const SizedBox(height: 16),
