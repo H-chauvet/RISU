@@ -35,13 +35,14 @@ import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 /// [height] : Container's height
 // ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  ContainerCreation(
-      {super.key,
-      this.id,
-      this.container,
-      this.containerMapping,
-      this.width,
-      this.height});
+  ContainerCreation({
+    super.key,
+    this.id,
+    this.container,
+    this.containerMapping,
+    this.width,
+    this.height,
+  });
 
   String? id;
   String? container;
@@ -63,7 +64,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   double actualRotationDegree = 0.0;
   String jwtToken = '';
   bool unitTest = false;
-  String? containerMappingStocked;
+  String? containerMappingStocked = '';
   late int width = 0;
   late int height = 0;
 
@@ -77,10 +78,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  @override
-  void initState() async {
-    MyAlertTest.checkSignInStatus(context);
-    checkToken();
+  void checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -95,6 +93,13 @@ class ContainerCreationState extends State<ContainerCreation> {
         widget.id = data['id'];
       });
     }
+  }
+
+  @override
+  void initState() {
+    MyAlertTest.checkSignInStatus(context);
+    checkToken();
+    checkContainer();
 
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
@@ -344,7 +349,9 @@ class ContainerCreationState extends State<ContainerCreation> {
             break;
         }
         isLoaded = true;
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       switch (coordinates.size) {
@@ -360,7 +367,9 @@ class ContainerCreationState extends State<ContainerCreation> {
         default:
           break;
       }
-      saveContainerToStorage();
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
     return "";
   }
@@ -525,11 +534,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTesting == false) {
       setState(() {
         isLoaded = true;
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       isLoaded = true;
-      saveContainerToStorage();
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
   }
 
@@ -566,11 +579,15 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTest == false) {
       setState(() {
         lockers = [];
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       lockers = [];
-      saveContainerToStorage();
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
   }
 
@@ -689,7 +706,9 @@ class ContainerCreationState extends State<ContainerCreation> {
       'width': width.toString(),
       'height': height.toString(),
     };
-    saveContainerToStorage();
+    if (unitTest == false) {
+      saveContainerToStorage();
+    }
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
@@ -832,7 +851,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                             height: height,
                           ),
                         );
-                        saveContainerToStorage();
+                        if (unitTest == false) {
+                          saveContainerToStorage();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
@@ -954,7 +975,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                             context: context,
                             builder: (context) =>
                                 DeleteContainerDialog(callback: deleteLocker));
-                        saveContainerToStorage();
+                        if (unitTest == false) {
+                          saveContainerToStorage();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
@@ -1046,13 +1069,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
-                      onSaved: () async {
-                        String name = await showDialog(
-                            context: context,
-                            builder: (context) => openDialog());
-                        saveContainer(name);
-                      },
                       screenFormat: screenFormat,
+                      fullscreen: false,
                     )),
               ),
             ],

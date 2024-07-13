@@ -38,9 +38,7 @@ class ShapeScreenState extends State<ShapeScreen> {
   List<bool> isClicked = List.generate(60, (index) => false);
   List<Color?> colors = List.generate(60, (index) => Colors.grey[200]);
 
-  @override
-  void initState() async {
-    MyAlertTest.checkSignInStatus(context);
+  void checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       Map<String, dynamic> data = jsonDecode(storageData);
@@ -59,6 +57,12 @@ class ShapeScreenState extends State<ShapeScreen> {
         isClicked = List.generate(row * column, (index) => false);
       });
     }
+  }
+
+  @override
+  void initState() {
+    MyAlertTest.checkSignInStatus(context);
+    checkContainer();
     calculateDimension();
     super.initState();
   }
