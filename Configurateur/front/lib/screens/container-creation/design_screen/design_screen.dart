@@ -98,6 +98,7 @@ class DesignScreenState extends State<DesignScreen> {
   int imageIndex = 0;
   int materialIndex = 1;
   FilePickerResult? picked;
+  bool unitTest = false;
   String face = faceList.first;
   List<Design> designss = [];
 
@@ -115,11 +116,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  @override
-  void initState() async {
-    checkToken();
-    super.initState();
-
+  void checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -135,6 +132,14 @@ class DesignScreenState extends State<DesignScreen> {
         widget.lockers = decode['lockers'];
       });
     }
+  }
+
+  @override
+  void initState() {
+    checkToken();
+    super.initState();
+
+    checkContainer();
 
     Sp3dObj obj =
         UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
@@ -281,11 +286,15 @@ class DesignScreenState extends State<DesignScreen> {
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
       if (unitTesting == false) {
         setState(() {
-          saveContainerToStorage();
+          if (unitTest == false) {
+            saveContainerToStorage();
+          }
           isLoaded = true;
         });
       } else {
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         isLoaded = true;
       }
     });
@@ -314,11 +323,15 @@ class DesignScreenState extends State<DesignScreen> {
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
       if (unitTesting == false) {
         setState(() {
-          saveContainerToStorage();
+          if (unitTest == false) {
+            saveContainerToStorage();
+          }
           isLoaded = true;
         });
       } else {
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         isLoaded = true;
       }
     });
@@ -463,7 +476,9 @@ class DesignScreenState extends State<DesignScreen> {
           'lockers': jsonEncode(lockerss),
           'container': jsonEncode(response),
         };
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     } else {
@@ -499,7 +514,9 @@ class DesignScreenState extends State<DesignScreen> {
           'lockers': jsonEncode(lockerss),
           'container': jsonEncode(response),
         };
-        saveContainerToStorage();
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     }
@@ -518,7 +535,9 @@ class DesignScreenState extends State<DesignScreen> {
         'width': widget.width,
         'height': widget.height,
       };
-      saveContainerToStorage();
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
       context.go("/container-creation", extra: jsonEncode(data));
     } else {
       dynamic design = jsonEncode(designss);
@@ -532,7 +551,9 @@ class DesignScreenState extends State<DesignScreen> {
       var data = {
         'container': jsonEncode(container),
       };
-      saveContainerToStorage();
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
       context.go("/container-creation", extra: jsonEncode(data));
     }
   }
@@ -778,12 +799,8 @@ class DesignScreenState extends State<DesignScreen> {
                   heightFactor: 0.7,
                   child: RecapPanel(
                     articles: lockerss,
-                    onSaved: () async {
-                      String name = await showDialog(
-                          context: context, builder: (context) => openDialog());
-                      saveContainer(name);
-                    },
                     screenFormat: screenFormat,
+                    fullscreen: false,
                   )),
             ),
           ],
