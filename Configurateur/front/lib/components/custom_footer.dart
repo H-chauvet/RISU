@@ -23,6 +23,13 @@ class CustomFooter extends StatefulWidget {
 class CustomFooterState extends State<CustomFooter> {
   String? token = '';
   String? userMail = '';
+  bool isHoveringContact = false;
+  bool isHoveringFeedback = false;
+  bool isHoveringFaq = false;
+  bool isHoveringContactUs = false;
+  bool isHoveringProfil = false;
+  bool isHoveringContainers = false;
+  bool isHoveringCreateContainers = false;
 
   /// [Function] : Check in storage service is the token is available
   void checkToken() async {
@@ -56,104 +63,219 @@ class CustomFooterState extends State<CustomFooter> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
+          const SizedBox(height: 40),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Image.asset(
+                'assets/logo.png',
+                height: 100,
+              ),
+              Expanded(
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Communauté",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringContact = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringContact = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/contact');
+                              },
+                              child: Text(
+                                "Nous contacter",
+                                style: TextStyle(
+                                  decoration: isHoveringContact
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringFeedback = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringFeedback = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/feedback');
+                              },
+                              child: Text(
+                                "Vos avis",
+                                style: TextStyle(
+                                  decoration: isHoveringFeedback
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringFaq = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringFaq = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/faq');
+                              },
+                              child: Text(
+                                "Questions fréquentes",
+                                style: TextStyle(
+                                  decoration: isHoveringFaq
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: IconButton(
-                        tooltip: "Page de contact",
-                        icon: const Icon(
-                          Icons.contact_page,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {
-                          context.go("/contact");
-                        },
+                      const SizedBox(
+                          width:
+                              100),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Mon Compte",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          const SizedBox(height: 15),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringProfil = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringProfil = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/profil');
+                              },
+                              child: Text(
+                                "Mon Profil",
+                                style: TextStyle(
+                                  decoration: isHoveringProfil
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringContainers = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringContainers = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/company-profil');
+                              },
+                              child: Text(
+                                "Mes conteneurs",
+                                style: TextStyle(
+                                  decoration: isHoveringContainers
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringCreateContainers = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringCreateContainers = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/container-creation');
+                              },
+                              child: Text(
+                                "Créer un conteneur",
+                                style: TextStyle(
+                                  decoration: isHoveringCreateContainers
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
-                      ),
-                      child: IconButton(
-                        tooltip: "Développé par RISU",
-                        icon: const Icon(
-                          Icons.fingerprint,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
-                      ),
-                      child: IconButton(
-                        tooltip: "Page des avis",
-                        icon: const Icon(
-                          Icons.stars,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {
-                          context.go("/feedbacks");
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           const Text(
             'Copyright ©2024, Tous droits réservés.',
             style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 12.0,
-                color: Color(0xff033f63)),
+              fontWeight: FontWeight.w300,
+              fontSize: 12.0,
+            ),
           ),
           const SizedBox(height: 10),
           const Text(
             'Développé par RISU',
             style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 12.0,
-                color: Color(0xff033f63)),
+              fontWeight: FontWeight.w300,
+              fontSize: 12.0,
+            ),
           ),
         ],
       ),
