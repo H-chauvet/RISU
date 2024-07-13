@@ -164,9 +164,7 @@ class CustomFooterState extends State<CustomFooter> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                          width:
-                              100),
+                      const SizedBox(width: 100),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
