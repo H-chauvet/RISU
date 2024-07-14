@@ -50,7 +50,7 @@ model Item {
     containerId     Int?
     price           Float
     image           String?
-    images          String[]?
+    images          String[]
     description     String?
     rating          Float?            @default(0)
     Location_Mobile Location_Mobile[]
