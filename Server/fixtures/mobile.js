@@ -19,12 +19,12 @@ exports.createFixtures = async () => {
     });
     const itemCategory1 = await db.Item_Category.create({
       data: {
-        name: "Sport",
+        name: "sports",
       },
     });
     const itemCategory2 = await db.Item_Category.create({
       data: {
-        name: "Plage",
+        name: "beach",
       },
     });
     const container = await db.Containers.create({

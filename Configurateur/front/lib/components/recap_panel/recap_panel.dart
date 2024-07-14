@@ -52,8 +52,8 @@ class RecapPanel extends StatelessWidget {
   RecapPanel(
       {super.key,
       this.articles,
-      required this.onSaved,
-      required this.screenFormat});
+      required this.screenFormat,
+      required this.fullscreen});
 
   /// [Function] : Calculating the price of lockers
   /// return the total price
@@ -67,8 +67,8 @@ class RecapPanel extends StatelessWidget {
 
   final List<Locker>? articles;
   late List<LockerList> parsedArticles = parseArticles();
+  final bool fullscreen;
   late int? price = sumPrice();
-  final Function() onSaved;
   final ScreenFormat screenFormat;
 
   /// [Function] : Parsing all the articles of container
@@ -148,7 +148,12 @@ class RecapPanel extends StatelessWidget {
             children: [
               Container(
                 constraints: BoxConstraints(
-                    minWidth: boxConstraints, maxWidth: boxConstraints),
+                    minWidth: fullscreen == true
+                        ? fullScreenBoxConstraints
+                        : boxConstraints,
+                    maxWidth: fullscreen == true
+                        ? fullScreenBoxConstraints
+                        : boxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
                   child: Text(
@@ -179,7 +184,10 @@ class RecapPanel extends StatelessWidget {
                 ),
               ),
               Container(
-                constraints: BoxConstraints(minWidth: littleBoxConstraints),
+                constraints: BoxConstraints(
+                    minWidth: fullscreen == true
+                        ? fullScreenLittleBoxConstraints
+                        : littleBoxConstraints),
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, bottom: 10),
                   child: Text(
@@ -230,7 +238,7 @@ class RecapPanel extends StatelessWidget {
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             Column(
               children: [
@@ -239,7 +247,12 @@ class RecapPanel extends StatelessWidget {
                   children: [
                     Container(
                       constraints: BoxConstraints(
-                          minWidth: boxConstraints, maxWidth: boxConstraints),
+                          minWidth: fullscreen == true
+                              ? fullScreenBoxConstraints
+                              : boxConstraints,
+                          maxWidth: fullscreen == true
+                              ? fullScreenBoxConstraints
+                              : boxConstraints),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
@@ -273,7 +286,10 @@ class RecapPanel extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      constraints: BoxConstraints(minWidth: 5.0.w),
+                      constraints: BoxConstraints(
+                          minWidth: fullscreen == true
+                              ? fullScreenLittleBoxConstraints
+                              : littleBoxConstraints),
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
@@ -302,8 +318,8 @@ class RecapPanel extends StatelessWidget {
               color: Colors.grey,
               height: 20,
               thickness: 1,
-              indent: 30,
-              endIndent: 30,
+              indent: 10,
+              endIndent: 10,
             ),
             const SizedBox(
               height: 10,
@@ -316,8 +332,8 @@ class RecapPanel extends StatelessWidget {
               color: Colors.grey,
               height: 20,
               thickness: 1,
-              indent: 30,
-              endIndent: 30,
+              indent: 10,
+              endIndent: 10,
             ),
             const SizedBox(
               height: 5,
