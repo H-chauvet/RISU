@@ -29,7 +29,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     categories: [],
   );
   List<dynamic> similarArticles = [];
-
+  int nbImages = 0;
+  int selectedImageIndex = 0;
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -51,6 +52,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
+        setState(() {
+          nbImages = responseData['images'];
+        });
         checkFavorite(responseData['id']);
         return responseData;
       } else {
@@ -391,17 +395,75 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         }).toList(),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        width: 300,
-                        height: 200,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                            image: AssetImage(imageLoader(articleData.name)),
-                            fit: BoxFit.cover,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_circle_left_outlined),
+                            iconSize: 33,
+                            onPressed: () {
+                              setState(() {
+                                if (selectedImageIndex > 0) {
+                                  selectedImageIndex--;
+                                }
+                              });
+                            },
                           ),
-                        ),
+                          Container(
+                            width: 250,
+                            height: 200,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                image:
+                                    AssetImage(imageLoader(articleData.name)),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.arrow_circle_right_outlined),
+                            iconSize: 33,
+                            onPressed: () {
+                              setState(() {
+                                if (selectedImageIndex < nbImages - 1) {
+                                  selectedImageIndex++;
+                                }
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(nbImages, (index) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImageIndex = index;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                width: 10.0,
+                                height: 10.0,
+                                decoration: BoxDecoration(
+                                  color: selectedImageIndex == index
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).secondaryHeaderColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.0,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }),
                       ),
                       const SizedBox(height: 16),
                       Padding(
