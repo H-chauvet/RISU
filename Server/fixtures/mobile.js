@@ -50,6 +50,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }, { id: 2 }],
               },
+              images: 4,
             },
             {
               id: 2,
@@ -60,6 +61,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }],
               },
+              images: 2,
             },
             {
               id: 3,
@@ -69,6 +71,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 2 }],
               },
+              images: 1,
             },
             {
               id: 4,
@@ -78,6 +81,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }],
               },
+              images: 3,
             },
           ],
         },
