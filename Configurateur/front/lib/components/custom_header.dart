@@ -1,7 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -56,18 +56,12 @@ class LandingAppBarState extends State<LandingAppBar> {
         if (!await launchUrl(_url)) {
           throw Exception('Could not launch $_url');
         } else {
-          Fluttertoast.showToast(
-            msg: "L'application a bien été téléchargée !",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(
+              context, "L'application a bien été téléchargée !", true);
         }
       } else {
-        Fluttertoast.showToast(
-          msg: "Erreur lors du téléchargement de l'application.",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        showCustomToast(
+            context, "Erreur lors du téléchargement de l'application.", false);
       }
     } catch (e) {}
   }
@@ -348,11 +342,8 @@ class LandingAppBarState extends State<LandingAppBar> {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');
                     token = '';
-                    Fluttertoast.showToast(
-                      msg: "Vous êtes bien déconnecté !",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                    );
+                    showCustomToast(
+                        context, "Vous êtes bien déconnecté !", true);
                     context.go("/");
                   }
                 },

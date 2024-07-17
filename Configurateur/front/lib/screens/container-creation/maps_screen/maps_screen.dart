@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -129,17 +129,10 @@ class MapsState extends State<MapsScreen> {
         };
         context.go('/container-creation/payment', extra: jsonEncode(data));
       } else if (response.statusCode == 400) {
-        Fluttertoast.showToast(
-          msg: 'Erreur lors de la localisation',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        showCustomToast(context, "Erreur durant la localisation", false);
       } else {
-        Fluttertoast.showToast(
-          msg: 'La position n\'a pas pu être enregistrée',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        showCustomToast(
+            context, "La position n'a pas pu être enregistrée", false);
       }
     });
   }

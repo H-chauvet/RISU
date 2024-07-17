@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/delete_container_dialog.dart';
@@ -740,11 +740,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     } else {
@@ -782,11 +778,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     }
