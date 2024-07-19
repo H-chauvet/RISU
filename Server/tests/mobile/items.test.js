@@ -5,7 +5,6 @@ const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
 
 jest.mock("../../controllers/Common/items");
-jest.mock("../../middleware/jwt");
 
 const app = express();
 app.use(express.json());
@@ -22,7 +21,6 @@ describe("GET /article/listall", () => {
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
     ];
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getAllItems.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app)
@@ -43,7 +41,6 @@ describe("GET /article/:articleId", () => {
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
     ];
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getItemFromId.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app).get("/2");
@@ -54,13 +51,12 @@ describe("GET /article/:articleId", () => {
 
   it("should not get item from a wrong id", async () => {
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getItemFromId.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2");
 
-    expect(response.statusCode).toBe(401);
-    expect(response.text).toBe("\"article not found\"");
+    expect(response.statusCode).toBe(404);
+    expect(response.text).toBe("article not found");
   });
 });
 
@@ -75,7 +71,6 @@ describe("GET /article/:articleId/similar", () => {
       { id: 2, name: "Item 2", available: false, price: 20.99, containerId: 1 },
     ];
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getSimilarItems.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app).get("/2/similar")
@@ -87,24 +82,22 @@ describe("GET /article/:articleId/similar", () => {
 
   it("should not get similar items, container not found", async () => {
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2/similar");
 
-    expect(response.statusCode).toBe(401);
-    expect(response.text).toBe("\"containerId is required\"");
+    expect(response.statusCode).toBe(404);
+    expect(response.text).toBe("containerId is required");
   });
 
   it("should not get similar items, container not found", async () => {
 
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2/similar")
       .query({ containerId: 1 });
 
-    expect(response.statusCode).toBe(401);
-    expect(response.text).toBe("\"article not found\"");
+    expect(response.statusCode).toBe(404);
+    expect(response.text).toBe("article not found");
   });
 });

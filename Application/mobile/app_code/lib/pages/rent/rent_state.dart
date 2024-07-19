@@ -85,9 +85,12 @@ class RentArticlePageState extends State<RentArticlePage> {
         }
       } else {
         if (mounted) {
-          printServerResponse(context, response, 'rentArticle',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringRenting);
+          printServerResponse(
+            context,
+            jsonDecode(response.body)['message'],
+            'rentArticle',
+            message: AppLocalizations.of(context)!.errorOccurredDuringRenting,
+          );
         }
       }
     } catch (err, stacktrace) {

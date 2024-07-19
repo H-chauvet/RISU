@@ -6,12 +6,12 @@ const opinionCtrl = require("../../controllers/Mobile/opinion");
 const itemCtrl = require("../../controllers/Common/items");
 const userCtrl = require("../../controllers/Mobile/user");
 
-jest.mock("../../middleware/Mobile/jwt", () => ({
-  refreshTokenMiddleware: jest.fn((req, res, next) => next())
-}));
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Common/items");
 jest.mock("../../controllers/Mobile/opinion");
+jest.mock("../../middleware/Mobile/jwt", () => ({
+  refreshTokenMiddleware: jest.fn((req, res, next) => next())
+}));
 jest.mock("passport", () => ({
   authenticate: jest.fn(() => (req, res, next) => {
     req.user = { id: 1 }; // Mock user
@@ -35,21 +35,9 @@ describe("GET /", () => {
       .get("/")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing itemId");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing itemId");
   });
-
-  // it("should not get article opinions : invalid itemId", async () => {
-  //   opinionCtrl.getOpinions.mockResolvedValue({ id: 1 });
-
-  //   const response = await supertest(app)
-  //     .get("/")
-  //     .set("Authorization", "Bearer validToken")
-  //     .query({ "itemId": "invalidValue" });
-
-  //   expect(response.status).toBe(401);
-  //   expect(response.body.message).toBe("invalid itemId");
-  // });
 
   it("should not get article opinions : note < 0", async () => {
     opinionCtrl.getOpinions.mockResolvedValue({ id: 1 });
@@ -62,8 +50,8 @@ describe("GET /", () => {
         "note": -1
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Invalid note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Invalid note");
   });
 
   it("should not get article opinions : note > 0", async () => {
@@ -77,8 +65,8 @@ describe("GET /", () => {
         "note": 6
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Invalid note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Invalid note");
   });
 
   it("should get article opinions : test success", async () => {
@@ -119,8 +107,8 @@ describe("POST /", () => {
       .post("/")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("User not found");
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("User not found");
   });
 
   it("should not post article opinions : Missing comment", async () => {
@@ -130,8 +118,8 @@ describe("POST /", () => {
       .post("/")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing comment");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing comment");
   });
 
   it("should not post article opinions : empty comment", async () => {
@@ -144,8 +132,8 @@ describe("POST /", () => {
         comment: '',
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing comment");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing comment");
   });
 
   it("should not post article opinions : Missing note", async () => {
@@ -158,8 +146,8 @@ describe("POST /", () => {
         comment: "test comment",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing note");
   });
 
   it("should not post article opinions : empty note", async () => {
@@ -173,8 +161,8 @@ describe("POST /", () => {
         note: '',
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing note");
   });
 
   it("should not post article opinions : Missing itemId", async () => {
@@ -188,8 +176,8 @@ describe("POST /", () => {
         note: "5",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing itemId");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing itemId");
   });
 
   it("should not post article opinions : Missing itemId", async () => {
@@ -204,8 +192,8 @@ describe("POST /", () => {
         note: "5",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("item not found");
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("item not found");
   });
 
   it("should post article opinions with note : test success", async () => {
@@ -222,7 +210,7 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.body.message).toBe("opinion saved");
+    expect(response.text).toBe("opinion saved");
   });
 });
 
@@ -238,8 +226,8 @@ describe("PUT /", () => {
       .put("/849849")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("User not found");
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("User not found");
   });
 
   it("should not uppdate article opinions : Opinion not found", async () => {
@@ -250,8 +238,8 @@ describe("PUT /", () => {
       .put("/849849")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Opinion not found");
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("Opinion not found");
   });
 
   it("should not uppdate article opinions : Unauthorized", async () => {
@@ -262,8 +250,8 @@ describe("PUT /", () => {
       .put("/849849")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Unauthorized");
+    expect(response.status).toBe(403);
+    expect(response.text).toBe("Unauthorized");
   });
 
   it("should not uppdate article opinions : Missing comment", async () => {
@@ -274,8 +262,8 @@ describe("PUT /", () => {
       .put("/849849")
       .set("Authorization", "Bearer validToken");
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing comment");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing comment");
   });
 
   it("should not uppdate article opinions : empty comment", async () => {
@@ -289,8 +277,8 @@ describe("PUT /", () => {
         comment: "",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing comment");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing comment");
   });
 
   it("should not uppdate article opinions : Missing note", async () => {
@@ -304,8 +292,8 @@ describe("PUT /", () => {
         comment: "test comment",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing note");
   });
 
   it("should not uppdate article opinions : empty note", async () => {
@@ -320,8 +308,8 @@ describe("PUT /", () => {
         note: "",
       });
 
-    expect(response.status).toBe(401);
-    expect(response.body.message).toBe("Missing note");
+    expect(response.status).toBe(400);
+    expect(response.text).toBe("Missing note");
   });
 
   it("should uppdate article opinions : test success", async () => {
@@ -337,6 +325,6 @@ describe("PUT /", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.body.message).toBe("opinion updated");
+    expect(response.text).toBe("opinion updated");
   });
 });
