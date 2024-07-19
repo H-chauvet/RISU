@@ -176,7 +176,7 @@ router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
       if (rental.userId != req.user.id) {
         return res.status(403).send('Location from wrong user')
       }
-      return res.status(201).json({ rental: rental })
+      return res.status(200).json({ rental: rental })
     } catch (err) {
       console.error(err.message)
       return res.status(400).send('An error occurred')

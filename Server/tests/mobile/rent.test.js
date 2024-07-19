@@ -6,7 +6,6 @@ const containerCtrl = require('../../controllers/Common/container');
 const itemCtrl = require("../../controllers/Common/items");
 const userCtrl = require("../../controllers/Mobile/user");
 const rentCtrl = require("../../controllers/Mobile/rent");
-const invoiceUtils = require("../../invoice/rentUtils");
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../controllers/Common/items");
