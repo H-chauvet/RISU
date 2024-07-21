@@ -400,6 +400,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         children: [
                           if (nbImages > 1)
                             IconButton(
+                              key: const Key('article-button_previous_image'),
                               icon:
                                   const Icon(Icons.arrow_circle_left_outlined),
                               iconSize: 33,
@@ -426,6 +427,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           ),
                           if (nbImages > 1)
                             IconButton(
+                              key: const Key('article-button_next_image'),
                               icon:
                                   const Icon(Icons.arrow_circle_right_outlined),
                               iconSize: 33,
@@ -444,6 +446,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(nbImages, (index) {
+                            Key('article-image_indicator_$index');
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
