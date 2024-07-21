@@ -81,7 +81,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }],
               },
-              images: 3,
+              images: 1,
             },
           ],
         },
