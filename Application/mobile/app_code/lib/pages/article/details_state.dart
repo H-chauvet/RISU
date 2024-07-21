@@ -398,17 +398,19 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          IconButton(
-                            icon: const Icon(Icons.arrow_circle_left_outlined),
-                            iconSize: 33,
-                            onPressed: () {
-                              setState(() {
-                                if (selectedImageIndex > 0) {
-                                  selectedImageIndex--;
-                                }
-                              });
-                            },
-                          ),
+                          if (nbImages > 1)
+                            IconButton(
+                              icon:
+                                  const Icon(Icons.arrow_circle_left_outlined),
+                              iconSize: 33,
+                              onPressed: () {
+                                setState(() {
+                                  if (selectedImageIndex > 0) {
+                                    selectedImageIndex--;
+                                  }
+                                });
+                              },
+                            ),
                           Container(
                             width: 250,
                             height: 200,
@@ -416,55 +418,60 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
-                                image:
-                                    AssetImage(imageLoader(articleData.name)),
+                                image: AssetImage(imageLoader(
+                                    articleData.name, selectedImageIndex)),
                                 fit: BoxFit.cover,
                               ),
                             ),
                           ),
-                          IconButton(
-                            icon: const Icon(Icons.arrow_circle_right_outlined),
-                            iconSize: 33,
-                            onPressed: () {
-                              setState(() {
-                                if (selectedImageIndex < nbImages - 1) {
-                                  selectedImageIndex++;
-                                }
-                              });
-                            },
-                          ),
+                          if (nbImages > 1)
+                            IconButton(
+                              icon:
+                                  const Icon(Icons.arrow_circle_right_outlined),
+                              iconSize: 33,
+                              onPressed: () {
+                                setState(() {
+                                  if (selectedImageIndex < nbImages - 1) {
+                                    selectedImageIndex++;
+                                  }
+                                });
+                              },
+                            ),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(nbImages, (index) {
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedImageIndex = index;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                width: 10.0,
-                                height: 10.0,
-                                decoration: BoxDecoration(
-                                  color: selectedImageIndex == index
-                                      ? Theme.of(context).primaryColor
-                                      : Theme.of(context).secondaryHeaderColor,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Colors.black,
-                                    width: 1.0,
+                      if (nbImages > 1) ...[
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(nbImages, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedImageIndex = index;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  width: 10.0,
+                                  height: 10.0,
+                                  decoration: BoxDecoration(
+                                    color: selectedImageIndex == index
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .secondaryHeaderColor,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }),
-                      ),
+                            );
+                          }),
+                        ),
+                      ],
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(32),
