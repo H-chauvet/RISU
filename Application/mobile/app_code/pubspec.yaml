@@ -71,6 +71,8 @@ dev_dependencies:
 flutter:
   assets:
     - assets/
+    - assets/volley/
+    - assets/raquette/
     - lib/.env
 
   # The following line ensures that the Material Icons font is
