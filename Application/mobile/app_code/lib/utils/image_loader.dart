@@ -1,4 +1,12 @@
-String imageLoader(String articleName) {
+String imageLoader(String articleName, [int index = 0]) {
+  if (index != 0) {
+    switch (articleName) {
+      case 'Ballon de volley':
+        return 'assets/volley/$index.png';
+      case 'Raquette':
+        return 'assets/raquette/$index.png';
+    }
+  }
   switch (articleName) {
     case 'Ballon de volley':
       return 'assets/volley.png';
