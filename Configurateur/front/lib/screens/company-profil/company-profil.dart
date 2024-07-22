@@ -135,7 +135,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modification effectuée avev succès !", true);
+      showCustomToast(context, "Modification effectuée avec succès !", true);
       checkToken();
     } else {
       showCustomToast(
