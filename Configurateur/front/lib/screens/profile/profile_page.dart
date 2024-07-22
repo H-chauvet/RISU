@@ -1,12 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
@@ -165,22 +167,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
 
                 if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
+                  showCustomToast(
+                      context, "Modifications effectuées avec succès !", true);
                 } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
+                  showCustomToast(context,
+                      "Erreur durant la modifications des informations", false);
                 }
-
                 onEdit(firstNameController.text, lastNameController.text);
                 Navigator.of(context).pop();
               },
@@ -289,20 +281,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
 
                 if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Entreprise modifiée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
+                  showCustomToast(
+                      context,
+                      "Informations de l'entreprise modifiées avec succès !",
+                      true);
                 } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification de l'entreprise",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
+                  showCustomToast(
+                      context,
+                      "Erreur durant la modification des informations de l'entreprise",
+                      false);
                 }
                 onEdit(companyController.text);
                 Navigator.of(context).pop();
@@ -410,19 +397,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
 
                 if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Email modifié avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
+                  showCustomToast(context, "Email modifié avec succès !", true);
                 } else {
-                  Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification de l'email",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
+                  showCustomToast(context,
+                      "Erreur durant la modification de l'email", false);
                 }
                 onEdit(mailController.text);
                 Navigator.of(context).pop();
@@ -591,20 +569,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
 
                       if (response.statusCode == 200) {
-                        Fluttertoast.showToast(
-                          msg: 'Mot de passe modifié avec succès',
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                        );
+                        showCustomToast(context,
+                            "Mot de passe modifié avec succès !", true);
                       } else {
-                        Fluttertoast.showToast(
-                            msg:
-                                "Erreur durant l'envoi la modification du mot de passe",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: Colors.red);
+                        showCustomToast(
+                            context,
+                            "Erreur durant la modification du mot de passe",
+                            false);
                       }
                       onEdit(password);
                       Navigator.of(context).pop();
@@ -970,11 +941,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               storageService.removeStorage('token');
                               storageService.removeStorage('tokenExpiration');
-                              Fluttertoast.showToast(
-                                msg: "Vous êtes bien déconnecté !",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                              );
+                              showCustomToast(
+                                  context, "Vous êtes bien déconnecté !", true);
                               context.go("/");
                             },
                             style: ElevatedButton.styleFrom(
