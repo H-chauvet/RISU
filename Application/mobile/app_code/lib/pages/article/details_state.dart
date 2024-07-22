@@ -398,21 +398,20 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          if (nbImages > 1)
-                            IconButton(
-                              key: const Key('article-button_previous_image'),
-                              icon:
-                                  const Icon(Icons.arrow_circle_left_outlined),
-                              iconSize: 33,
-                              onPressed: () {
-                                setState(() {
-                                  if (selectedImageIndex > 0) {
-                                    selectedImageIndex--;
-                                  }
-                                });
-                              },
-                            ),
+                          IconButton(
+                            key: const Key('article-button_previous_image'),
+                            icon: const Icon(Icons.arrow_circle_left_outlined),
+                            iconSize: 33,
+                            onPressed: () {
+                              setState(() {
+                                if (selectedImageIndex > 0) {
+                                  selectedImageIndex--;
+                                }
+                              });
+                            },
+                          ),
                           Container(
+                            key: const Key('article-image'),
                             width: 250,
                             height: 200,
                             alignment: Alignment.center,
@@ -425,56 +424,51 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               ),
                             ),
                           ),
-                          if (nbImages > 1)
-                            IconButton(
-                              key: const Key('article-button_next_image'),
-                              icon:
-                                  const Icon(Icons.arrow_circle_right_outlined),
-                              iconSize: 33,
-                              onPressed: () {
-                                setState(() {
-                                  if (selectedImageIndex < nbImages - 1) {
-                                    selectedImageIndex++;
-                                  }
-                                });
-                              },
-                            ),
+                          IconButton(
+                            key: const Key('article-button_next_image'),
+                            icon: const Icon(Icons.arrow_circle_right_outlined),
+                            iconSize: 33,
+                            onPressed: () {
+                              setState(() {
+                                if (selectedImageIndex < nbImages - 1) {
+                                  selectedImageIndex++;
+                                }
+                              });
+                            },
+                          ),
                         ],
                       ),
-                      if (nbImages > 1) ...[
-                        const SizedBox(height: 16),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(nbImages, (index) {
-                            Key('article-image_indicator_$index');
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedImageIndex = index;
-                                });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Container(
-                                  width: 10.0,
-                                  height: 10.0,
-                                  decoration: BoxDecoration(
-                                    color: selectedImageIndex == index
-                                        ? Theme.of(context).primaryColor
-                                        : Theme.of(context)
-                                            .secondaryHeaderColor,
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: Colors.black,
-                                      width: 1.0,
-                                    ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: List.generate(nbImages, (index) {
+                          Key('article-image_indicator_$index');
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                selectedImageIndex = index;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                width: 10.0,
+                                height: 10.0,
+                                decoration: BoxDecoration(
+                                  color: selectedImageIndex == index
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).secondaryHeaderColor,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 1.0,
                                   ),
                                 ),
                               ),
-                            );
-                          }),
-                        ),
-                      ],
+                            ),
+                          );
+                        }),
+                      ),
                       const SizedBox(height: 16),
                       Padding(
                         padding: const EdgeInsets.all(32),
