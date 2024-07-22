@@ -105,6 +105,8 @@ class ContainerCreationState extends State<ContainerCreation> {
     MyAlertTest.checkSignInStatus(context);
     checkToken();
 
+    world = Sp3dWorld(objs);
+
     checkContainer().then((result) {
       setState(() {
         if (widget.container != null) {
@@ -723,8 +725,10 @@ class ContainerCreationState extends State<ContainerCreation> {
   /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
-    for (int i = 0; i < objs[0].fragments.length; i++) {
-      mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
+    if (objs.isNotEmpty) {
+      for (int i = 0; i < objs[0].fragments.length; i++) {
+        mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
+      }
     }
     return mapping;
   }
