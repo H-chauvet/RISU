@@ -182,6 +182,37 @@ void main() {
     await tester.pumpAndSettle();
   });
 
+  testWidgets('Article details, change images buttons',
+      (WidgetTester tester) async {
+    final item1 = {
+      "id": -1,
+      "name": "Ballon de volley",
+      "containerId": -1,
+      "price": 0.5,
+      "available": true,
+      "categories": []
+    };
+    final testPage =
+        initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
+    await waitForLoader(tester: tester, testPage: testPage);
+    await tester.pumpAndSettle();
+
+    Finder articleImage = find.byKey(const Key('article-image'));
+    Finder buttonPreviousImage =
+        find.byKey(const Key('article-button_previous_image'));
+    Finder buttonNextImage = find.byKey(const Key('article-button_next_image'));
+    Finder articleImageIndicator =
+        find.byKey(const Key('article-image_indicator_0'));
+
+    expect(articleImage, findsOneWidget);
+    expect(buttonPreviousImage, findsOneWidget);
+    await tester.tap(buttonPreviousImage);
+    expect(buttonNextImage, findsOneWidget);
+    await tester.tap(buttonNextImage);
+
+    await tester.pumpAndSettle();
+  });
+
   testWidgets(
     'Article details touching rent button',
     (WidgetTester tester) async {
