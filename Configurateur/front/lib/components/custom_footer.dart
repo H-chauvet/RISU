@@ -26,6 +26,7 @@ class CustomFooterState extends State<CustomFooter> {
   bool isHoveringContact = false;
   bool isHoveringFeedback = false;
   bool isHoveringFaq = false;
+  bool isHoveringCompany = false;
   bool isHoveringContactUs = false;
   bool isHoveringProfil = false;
   bool isHoveringContainers = false;
@@ -67,15 +68,16 @@ class CustomFooterState extends State<CustomFooter> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Image.asset(
-                'assets/logo.png',
-                height: 100,
-              ),
               Expanded(
                 child: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      Image.asset(
+                        'assets/logo.png',
+                        height: 100,
+                      ),
+                      const SizedBox(width: 100),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -125,7 +127,7 @@ class CustomFooterState extends State<CustomFooter> {
                             },
                             child: GestureDetector(
                               onTap: () {
-                                context.go('/feedback');
+                                context.go('/feedbacks');
                               },
                               child: Text(
                                 "Vos avis",
@@ -156,6 +158,31 @@ class CustomFooterState extends State<CustomFooter> {
                                 "Questions fréquentes",
                                 style: TextStyle(
                                   decoration: isHoveringFaq
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringCompany = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringCompany = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go('/company');
+                              },
+                              child: Text(
+                                "L'entreprise Risu",
+                                style: TextStyle(
+                                  decoration: isHoveringCompany
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
                                 ),
@@ -239,7 +266,7 @@ class CustomFooterState extends State<CustomFooter> {
                             },
                             child: GestureDetector(
                               onTap: () {
-                                context.go('/container-creation');
+                                context.go('/container-creation/shape');
                               },
                               child: Text(
                                 "Créer un conteneur",
