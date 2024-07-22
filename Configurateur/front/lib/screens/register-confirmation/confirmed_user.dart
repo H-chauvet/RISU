@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -64,50 +67,57 @@ class ConfirmedUserState extends State<ConfirmedUser> {
         "Confirmation d'inscription",
         context: context,
       ),
-      body: Center(
-        child: SizedBox(
-          width: 60.0.w,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                "Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application",
-                style: TextStyle(
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 20.0.h,
-              ),
-              InkWell(
-                key: const Key('go-home'),
-                onTap: () {
-                  context.go("/");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "Retour à l'accueil",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                      ]),
-                ),
-              ),
-            ],
-          ),
+      body: FooterView(
+        footer: Footer(
+          child: CustomFooter(context: context),
         ),
+        children: [
+          Center(
+            child: SizedBox(
+              width: 60.0.w,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application",
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopBigFontSize
+                          : tabletBigFontSize,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 20.0.h,
+                  ),
+                  InkWell(
+                    key: const Key('go-home'),
+                    onTap: () {
+                      context.go("/");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Retour à l'accueil",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
+                              ),
+                            ),
+                          ]),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

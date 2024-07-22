@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen_style.dart';
@@ -115,37 +118,42 @@ class RecapScreenState extends State<RecapScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        'Récapitulatif',
-        context: context,
-      ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ProgressBar(
-            length: 6,
-            progress: 3,
-            previous: 'Précédent',
-            next: 'Suivant',
-            previousFunc: previousFunc,
-            nextFunc: nextFunc,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.5,
-          child: RecapPanel(
-            fullscreen: true,
-            screenFormat: screenFormat,
-            articles: lockerss,
-          ),
+        appBar: CustomAppBar(
+          'Récapitulatif',
+          context: context,
         ),
-      ),
-    );
+        bottomSheet: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ProgressBar(
+              length: 6,
+              progress: 3,
+              previous: 'Précédent',
+              next: 'Suivant',
+              previousFunc: previousFunc,
+              nextFunc: nextFunc,
+            ),
+            const SizedBox(
+              height: 50,
+            )
+          ],
+        ),
+        body: FooterView(
+            footer: Footer(
+              child: CustomFooter(context: context),
+            ),
+            children: [
+              Center(
+                child: FractionallySizedBox(
+                  widthFactor: 0.5,
+                  heightFactor: 0.5,
+                  child: RecapPanel(
+                    fullscreen: true,
+                    screenFormat: screenFormat,
+                    articles: lockerss,
+                  ),
+                ),
+              ),
+            ]));
   }
 }
