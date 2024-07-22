@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/company/company_style.dart';
@@ -89,102 +92,108 @@ class CompanyPageState extends State<CompanyPage> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        'Entreprise',
-        context: context,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 15,
+        appBar: CustomAppBar(
+          'Entreprise',
+          context: context,
+        ),
+        body: FooterView(
+            footer: Footer(
+              child: CustomFooter(context: context),
             ),
-            Text("Notre équipe :",
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                  fontWeight: FontWeight.bold,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                )),
-            SizedBox(
-              height: 70,
-            ),
-            Center(
-              child: Wrap(
-                spacing: 70.0,
-                runSpacing: 20.0,
-                children: List.generate(
-                  members.length,
-                  (index) => Column(
-                    children: [
-                      Image.asset(
-                        members[index],
-                        key: Key('member_image_$index'),
-                        width: screenFormat == ScreenFormat.desktop
-                            ? desktopMemberImageSize
-                            : tabletMemberImageSize,
-                        height: screenFormat == ScreenFormat.desktop
-                            ? desktopMemberImageSize
-                            : tabletMemberImageSize,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        members[index]
-                            .substring(members[index].indexOf('/') + 1,
-                                members[index].indexOf('.'))
-                            .toUpperCase(),
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text("Notre équipe :",
                         style: TextStyle(
-                          color: const Color.fromRGBO(70, 130, 180, 1),
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.secondaryHeaderColor
+                              : lightTheme.secondaryHeaderColor,
                           fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
+                              ? desktopBigFontSize
+                              : tabletBigFontSize,
                           fontWeight: FontWeight.bold,
+                          decorationThickness: 2.0,
+                          decorationStyle: TextDecorationStyle.solid,
+                        )),
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Center(
+                      child: Wrap(
+                        spacing: 70.0,
+                        runSpacing: 20.0,
+                        children: List.generate(
+                          members.length,
+                          (index) => Column(
+                            children: [
+                              Image.asset(
+                                members[index],
+                                key: Key('member_image_$index'),
+                                width: screenFormat == ScreenFormat.desktop
+                                    ? desktopMemberImageSize
+                                    : tabletMemberImageSize,
+                                height: screenFormat == ScreenFormat.desktop
+                                    ? desktopMemberImageSize
+                                    : tabletMemberImageSize,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                members[index]
+                                    .substring(members[index].indexOf('/') + 1,
+                                        members[index].indexOf('.'))
+                                    .toUpperCase(),
+                                style: TextStyle(
+                                  color: const Color.fromRGBO(70, 130, 180, 1),
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 80,
+                    ),
+                    Text("Nos Conteneurs :",
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.secondaryHeaderColor
+                              : lightTheme.secondaryHeaderColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopBigFontSize
+                              : tabletBigFontSize,
+                          fontWeight: FontWeight.bold,
+                          decorationThickness: 2.0,
+                          decorationStyle: TextDecorationStyle.solid,
+                        )),
+                    SizedBox(
+                      height: 65,
+                    ),
+                    Wrap(
+                      spacing: 16.0,
+                      runSpacing: 16.0,
+                      children: List.generate(
+                        containers.length,
+                        (index) => ContainerCard(
+                          container: containers[index],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            SizedBox(
-              height: 80,
-            ),
-            Text("Nos Conteneurs :",
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                  fontWeight: FontWeight.bold,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                )),
-            SizedBox(
-              height: 65,
-            ),
-            Wrap(
-              spacing: 16.0,
-              runSpacing: 16.0,
-              children: List.generate(
-                containers.length,
-                (index) => ContainerCard(
-                  container: containers[index],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
-    );
+            ])
+        // bottomNavigationBar: const CustomBottomNavigationBar(),
+        );
   }
 }
