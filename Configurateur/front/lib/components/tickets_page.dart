@@ -111,7 +111,7 @@ class TicketsState extends State<TicketsPage> {
     );
     if (response.statusCode == 201) {
     } else {
-      showCustomToast(context, "Erreur durant la cloture du ticket", false);
+      showCustomToast(context, "Erreur durant la clôture du ticket", false);
     }
   }
 
