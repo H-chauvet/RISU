@@ -36,6 +36,7 @@
   "by": "par",
   "cancel": "Annuler",
   "category": "Catégorie",
+  "categories": "Catégories",
   "chooseAnArticleCategory": "Choisissez une catégorie d'article",
   "close": "Fermer",
   "closed": "Fermés",
@@ -76,6 +77,7 @@
   "errorOccurredDuringConnection": "Une erreur est survenue lors de la connexion.",
   "errorOccurredDuringCreatingFavorite": "Une erreur est survenue lors de l'ajout de l'article aux favoris.",
   "errorOccurredDuringDeletingFavorite": "Une erreur est survenue lors de la suppression de l'article des favoris.",
+  "errorOccurredDuringGettingAssignedInfo": "Une erreur est survenue lors de la récupération des informations de votre interlocuteur.",
   "errorOccurredDuringGettingData": "Une erreur est survenue lors de la récupération des données.",
   "errorOccurredDuringGettingFavorite": "Une erreur est survenue lors de la récupération des favoris.",
   "errorOccurredDuringGettingRent": "Une erreur est survenue lors de la récupération de la location.",
@@ -147,6 +149,7 @@
   "notificationsPreferencesManagement": "Gestion des préférences de notifications",
   "notificationsSaved": "Préférences de notifications enregistrées",
   "ok": "OK",
+  "opinions": "Avis",
   "other": "Autre",
   "password": "Mot de passe",
   "passwordCantResetAdmin": "Le mot de passe de l'administrateur ne peut pas être réinitialisé.",
@@ -170,7 +173,7 @@
   "price": "Prix",
   "pricePerHour": "Prix par heure",
   "priceTotal": "Coût total",
-  "priceXPerHour": "Prix: {price}€ par heure",
+  "priceXPerHour": "{price}€ par heure",
   "profile": "Profil",
   "profileAskCompletion": "Souhaitez-vous compléter votre profil ?",
   "profileDetails": "Détails du profil",
@@ -232,5 +235,6 @@
   "total": "Total",
   "unavailable": "Indisponible",
   "update": "Mettre à jour",
-  "viewMore": "Voir plus"
+  "viewMore": "Voir plus",
+  "you": "Vous"
 }

@@ -36,6 +36,7 @@
   "by": "by",
   "cancel": "Cancel",
   "category": "Category",
+  "categories": "Categories",
   "chooseAnArticleCategory": "Choose an article category",
   "close": "Close",
   "closed": "Closed",
@@ -76,6 +77,7 @@
   "errorOccurredDuringConnection": "An error occurred during connection.",
   "errorOccurredDuringCreatingFavorite": "An error occurred while adding the item to favorites.",
   "errorOccurredDuringDeletingFavorite": "An error occurred while deleting the item from favorites.",
+  "errorOccurredDuringGettingAssignedInfo": "An error occurred while retrieving corresponding user information's.",
   "errorOccurredDuringGettingData": "An error occurred while retrieving data.",
   "errorOccurredDuringGettingFavorite": "An error occurred while retrieving the favorites.",
   "errorOccurredDuringGettingRent": "An error occurred while retrieving the rental.",
@@ -147,6 +149,7 @@
   "notificationsPreferencesManagement": "Notifications preferences management",
   "notificationsSaved": "Saved notifications preferences",
   "ok": "OK",
+  "opinions": "Opinions",
   "other": "Other",
   "password": "Password",
   "passwordCantResetAdmin": "Administrator password cannot be reset.",
@@ -170,7 +173,7 @@
   "price": "Price",
   "pricePerHour": "Price per hour",
   "priceTotal": "Total cost",
-  "priceXPerHour": "Price: {price}€ per hour",
+  "priceXPerHour": "{price}€ per hour",
   "profile": "Profile",
   "profileAskCompletion": "Would you like to complete your profile?",
   "profileDetails": "Profile details",
@@ -232,5 +235,6 @@
   "total": "Total",
   "unavailable": "Unavailable",
   "update": "Update",
-  "viewMore": "View more"
+  "viewMore": "View more",
+  "you": "You"
 }
