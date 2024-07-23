@@ -417,6 +417,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
               k += widths, counter++) {}
+
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
@@ -445,9 +446,12 @@ class ContainerCreationState extends State<ContainerCreation> {
             if (ret.item1 != -1) {
               i = ret.item1;
               j = ret.item2;
+            } else {
+              j += size;
             }
+          } else {
+            j += size;
           }
-          j += size;
         } else {
           j += counter;
         }
