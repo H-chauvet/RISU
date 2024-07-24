@@ -1,17 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
-import 'dart:io';
 import 'dart:async';
-import 'dart:typed_data';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:front/services/http_service.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -82,11 +80,8 @@ class _ContainerPageState extends State<ContainerPage> {
             .toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
@@ -103,19 +98,11 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Conteneur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Le conteneur a bien été supprimé !", true);
       fetchContainers();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la suppression du conteneur: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression du conteneur", false);
     }
   }
 
@@ -137,12 +124,8 @@ class _ContainerPageState extends State<ContainerPage> {
         categories.sort();
       });
     } else {
-      Fluttertoast.showToast(
-        msg:
-            "Erreur lors de l'envoi des informations de l'objet: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
@@ -166,12 +149,8 @@ class _ContainerPageState extends State<ContainerPage> {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la récupération des items par catégorie: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
@@ -192,18 +171,11 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Objet supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Article supprimé avec succès", true);
       fetchItems();
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du objet: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression de l'article", false);
     }
   }
 
@@ -223,12 +195,7 @@ class _ContainerPageState extends State<ContainerPage> {
       ItemList item,
       int itemId) async {
     if (price <= 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un prix valide pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
     final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
@@ -249,21 +216,11 @@ class _ContainerPageState extends State<ContainerPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       fetchItemsByCategory();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
@@ -428,39 +385,19 @@ class _ContainerPageState extends State<ContainerPage> {
       double price,
       int selectedContainerId) async {
     if (nameController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un nom pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un nom d'article", false);
       return;
     }
     if (price <= 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un prix valide pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
     if (selectedContainerId == 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez sélectionner un conteneur",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez sélectionner un conteneur", false);
       return;
     }
     if (descController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir une description pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez saisir une description", false);
       return;
     }
     final String apiUrl = "http://$serverIp:3000/api/items/create";
@@ -481,19 +418,10 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Objet créé avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Article créé avec succès !", true);
       fetchItemsByCategory();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur lors de la création de l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Erreur durant la création de l'article", false);
     }
   }
 
