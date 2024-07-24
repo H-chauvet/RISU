@@ -236,7 +236,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -248,7 +248,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
