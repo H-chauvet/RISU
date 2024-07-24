@@ -15,8 +15,8 @@ import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/image_loader.dart';
 
 import 'details_page.dart';
 
@@ -32,9 +32,51 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   List<dynamic> similarArticles = [];
   List<dynamic> opinionsList = [];
   int maxOpinionsDisplayed = 5;
-
+  int nbImages = 0;
+  int selectedImageIndex = 0;
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
+
+  void getOpinions(itemId) async {
+    try {
+      setState(() {
+        _loaderManager.setIsLoading(true);
+      });
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer ${userInformation?.token}',
+        },
+      );
+      setState(() {
+        _loaderManager.setIsLoading(false);
+      });
+      if (response.statusCode == 201) {
+        final data = json.decode(response.body);
+        setState(() {
+          opinionsList = data['opinions'];
+        });
+      } else {
+        if (mounted) {
+          printServerResponse(context, response, 'getOpinions',
+              message: AppLocalizations.of(context)!
+                  .errorOccurredDuringGettingReviews);
+        }
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingReviews);
+        return;
+      }
+      return;
+    }
+  }
 
   Future<dynamic> getArticleData(BuildContext context, int articleId) async {
     late http.Response response;
@@ -54,6 +96,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       });
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
+        setState(() {
+          nbImages = responseData['images'];
+        });
         checkFavorite(responseData['id']);
         return responseData;
       } else {
@@ -105,47 +150,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     }
   }
 
-  void getOpinions(itemId) async {
-    try {
-      setState(() {
-        _loaderManager.setIsLoading(true);
-      });
-      final response = await http.get(
-        Uri.parse('$baseUrl/api/mobile/opinion?itemId=$itemId'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer ${userInformation?.token}',
-        },
-      );
-      setState(() {
-        _loaderManager.setIsLoading(false);
-      });
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body);
-        setState(() {
-          opinionsList = data['opinions'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getOpinions',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingReviews);
-        }
-      }
-    } catch (err, stacktrace) {
-      if (mounted) {
-        setState(() {
-          _loaderManager.setIsLoading(false);
-        });
-        printCatchError(context, err, stacktrace,
-            message: AppLocalizations.of(context)!
-                .errorOccurredDuringGettingReviews);
-        return;
-      }
-      return;
-    }
-  }
-
   void createFavorite(articleId) async {
     try {
       setState(() {
@@ -166,13 +170,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = true;
         });
-        if (mounted) {
+        if (context.mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.addedToFavorites,
               context: context);
         }
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringCreatingFavorite);
@@ -215,7 +219,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           isFavorite = jsonDecode(response.body);
         });
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringGettingFavorite);
@@ -256,13 +260,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         setState(() {
           isFavorite = false;
         });
-        if (mounted) {
+        if (context.mounted) {
           MyToastMessage.show(
               message: AppLocalizations.of(context)!.deletedFromFavorites,
               context: context);
         }
       } else {
-        if (mounted) {
+        if (context.mounted) {
           printServerResponse(context, response, 'createFavorite',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringDeletingFavorite);
@@ -311,7 +315,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -438,17 +442,82 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           }).toList(),
                         ),
                         const SizedBox(height: 16),
-                        Container(
-                          width: 300,
-                          height: 200,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: AssetImage(imageLoader(articleData.name)),
-                              fit: BoxFit.cover,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              key: const Key('article-button_previous_image'),
+                              icon:
+                                  const Icon(Icons.arrow_circle_left_outlined),
+                              iconSize: 33,
+                              onPressed: () {
+                                setState(() {
+                                  if (selectedImageIndex > 0) {
+                                    selectedImageIndex--;
+                                  }
+                                });
+                              },
                             ),
-                          ),
+                            Container(
+                              key: const Key('article-image'),
+                              width: 250,
+                              height: 200,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                  image: AssetImage(imageLoader(
+                                      articleData.name, selectedImageIndex)),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              key: const Key('article-button_next_image'),
+                              icon:
+                                  const Icon(Icons.arrow_circle_right_outlined),
+                              iconSize: 33,
+                              onPressed: () {
+                                setState(() {
+                                  if (selectedImageIndex < nbImages - 1) {
+                                    selectedImageIndex++;
+                                  }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: List.generate(nbImages, (index) {
+                            Key('article-image_indicator_$index');
+                            return GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  selectedImageIndex = index;
+                                });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  width: 10.0,
+                                  height: 10.0,
+                                  decoration: BoxDecoration(
+                                    color: selectedImageIndex == index
+                                        ? Theme.of(context).primaryColor
+                                        : Theme.of(context)
+                                            .secondaryHeaderColor,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: Colors.black,
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                         ),
                         const SizedBox(height: 16),
                         Padding(
