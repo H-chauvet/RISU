@@ -68,6 +68,9 @@ dependencies:
   sizer: ^2.0.15
   google_maps_flutter: ^2.3.0
   geolocator: ^11.0.0
+  country_flags: ^3.0.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -138,3 +141,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  # Use localizations for internationalization
+  generate: true
