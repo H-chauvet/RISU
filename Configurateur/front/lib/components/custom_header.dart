@@ -1,7 +1,10 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/services/language_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -23,6 +26,7 @@ class LandingAppBar extends StatefulWidget {
 class LandingAppBarState extends State<LandingAppBar> {
   String? token = '';
   String? userRole = '';
+  String currentLanguage = language;
 
   /// [Function] : Check in storage service is the token is available
   void checkToken() async {
@@ -77,9 +81,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        'Accueil',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.home,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -172,6 +176,54 @@ class LandingAppBarState extends State<LandingAppBar> {
                 ),
               ),
               PopupMenuButton<String>(
+                tooltip: "Langue",
+                icon: CountryFlag.fromLanguageCode(
+                  language,
+                  height: 32,
+                  width: 32,
+                ),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: 'fr',
+                      child: Row(
+                        children: [
+                          CountryFlag.fromLanguageCode(
+                            'fr',
+                            height: 32,
+                            width: 32,
+                          ),
+                          const SizedBox(width: 16),
+                          const Text("Français"),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'en',
+                      child: Row(
+                        children: [
+                          CountryFlag.fromLanguageCode(
+                            'en',
+                            height: 32,
+                            width: 32,
+                          ),
+                          const SizedBox(width: 16),
+                          const Text("English"),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+                onSelected: (String value) {
+                  setState(() {
+                    currentLanguage = value;
+                  });
+                  Provider.of<LanguageService>(context, listen: false)
+                      .changeLanguage(Locale(value));
+                },
+              ),
+              const SizedBox(width: 32),
+              PopupMenuButton<String>(
                 tooltip: "Authentification",
                 icon: Icon(
                   size: 35,
@@ -187,24 +239,12 @@ class LandingAppBarState extends State<LandingAppBar> {
                       [
                         PopupMenuItem<String>(
                           value: 'connexion',
-                          child: Text(
-                            'Connexion',
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
+                          child: Text('Connexion'),
                         ),
                         PopupMenuItem<String>(
                           value: 'inscription',
                           child: Text(
                             'Inscription',
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
                           ),
                         ),
                       ],
