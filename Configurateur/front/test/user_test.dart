@@ -55,7 +55,7 @@ void main() {
     expect(find.text('Nom : Doe'), findsOneWidget);
     expect(find.text('Email : john.doe@example.com'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 
   testWidgets('UserCard displays message details', (WidgetTester tester) async {
@@ -88,7 +88,7 @@ void main() {
     expect(find.text('Email : john.doe@example.com'), findsOneWidget);
     expect(find.text('Entreprise : company'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.delete));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 
   testWidgets('ContainerPage should render without error',
@@ -111,7 +111,7 @@ void main() {
 
     // Verify that the ContainerPage is rendered.
     expect(find.byType(UserPage), findsOneWidget);
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
     expect(find.text("Gestion des utilisateurs"), findsOneWidget);
     expect(find.text('Utilisateurs Web'), findsOneWidget);
     expect(find.text('Utilisateurs Mobile'), findsOneWidget);
