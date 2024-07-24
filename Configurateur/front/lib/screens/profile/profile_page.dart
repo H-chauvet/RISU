@@ -141,13 +141,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
 
                   if (response.statusCode == 200) {
-                    showCustomToast(
-                      context, "Modifications effectuées avec succès !", true);
+                    showCustomToast(context,
+                        "Modifications effectuées avec succès !", true);
                     onEdit(firstNameController.text, lastNameController.text);
                     Navigator.of(context).pop();
                   } else {
-                    showCustomToast(context,
-                      "Erreur durant la modifications des informations", false);
+                    showCustomToast(
+                        context,
+                        "Erreur durant la modifications des informations",
+                        false);
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
