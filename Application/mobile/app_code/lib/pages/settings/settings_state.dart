@@ -115,11 +115,19 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      MyParameter(
-                        goToPage: const ProfileInformationsPage(),
-                        title: AppLocalizations.of(context)!.seeProfileDetails,
-                        paramIcon: Icons.person,
-                      ),
+                      if (userInformation == null) ...[
+                        MyParameter(
+                          goToPage: const LoginPage(),
+                          title: AppLocalizations.of(context)!.signIn,
+                          paramIcon: Icons.login,
+                        ),
+                      ] else
+                        MyParameter(
+                          goToPage: const ProfileInformationsPage(),
+                          title:
+                              AppLocalizations.of(context)!.seeProfileDetails,
+                          paramIcon: Icons.person,
+                        ),
                       const SizedBox(height: 8),
                       MyParameter(
                         goToPage: const LoginPage(),
@@ -165,6 +173,7 @@ class SettingsPageState extends State<SettingsPage> {
                         goToPage: const ContactPage(),
                         title: AppLocalizations.of(context)!.contactUs,
                         paramIcon: Icons.message_outlined,
+                        locked: userInformation == null,
                       ),
                       const SizedBox(height: 8),
                       MyParameter(
@@ -175,57 +184,59 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                       const SizedBox(
                           height: 16, key: Key('settings-sized_box-bottom')),
-                      TextButton(
-                        key: const Key('settings-textbutton_delete-account'),
-                        onPressed: () {
-                          MyAlertDialog.showChoiceAlertDialog(
-                            context: context,
-                            title: AppLocalizations.of(context)!.confirmation,
-                            message: AppLocalizations.of(context)!
-                                .accountAskDeletion,
-                            onOkName: AppLocalizations.of(context)!.delete,
-                          ).then(
-                            (value) {
-                              if (value) {
-                                apiDeleteAccount().then(
-                                  (response) => {
-                                    if (response)
-                                      {
-                                        MyAlertDialog.showInfoAlertDialog(
-                                          context: context,
-                                          title: AppLocalizations.of(context)!
-                                              .accountDeleted,
-                                          message: AppLocalizations.of(context)!
-                                              .accountHasBeenDeleted,
-                                        ).then(
-                                          (x) {
-                                            userInformation = null;
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) {
-                                                  return const HomePage();
-                                                },
-                                              ),
-                                              (route) => false,
-                                            );
-                                          },
-                                        )
-                                      }
-                                  },
-                                );
-                              }
-                            },
-                          );
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.accountDelete,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.red,
+                      if (userInformation != null)
+                        TextButton(
+                          key: const Key('settings-textbutton_delete-account'),
+                          onPressed: () {
+                            MyAlertDialog.showChoiceAlertDialog(
+                              context: context,
+                              title: AppLocalizations.of(context)!.confirmation,
+                              message: AppLocalizations.of(context)!
+                                  .accountAskDeletion,
+                              onOkName: AppLocalizations.of(context)!.delete,
+                            ).then(
+                              (value) {
+                                if (value) {
+                                  apiDeleteAccount().then(
+                                    (response) => {
+                                      if (response)
+                                        {
+                                          MyAlertDialog.showInfoAlertDialog(
+                                            context: context,
+                                            title: AppLocalizations.of(context)!
+                                                .accountDeleted,
+                                            message:
+                                                AppLocalizations.of(context)!
+                                                    .accountHasBeenDeleted,
+                                          ).then(
+                                            (x) {
+                                              userInformation = null;
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) {
+                                                    return const HomePage();
+                                                  },
+                                                ),
+                                                (route) => false,
+                                              );
+                                            },
+                                          )
+                                        }
+                                    },
+                                  );
+                                }
+                              },
+                            );
+                          },
+                          child: Text(
+                            AppLocalizations.of(context)!.accountDelete,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.red,
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),

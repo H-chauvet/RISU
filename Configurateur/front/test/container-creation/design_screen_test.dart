@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -30,6 +31,7 @@ void main() {
 
   setUp(() {
     sharedPreferences = MockSharedPreferences();
+    SharedPreferences.setMockInitialValues({});
   });
 
   testWidgets('Payment confirmation screen', (WidgetTester tester) async {
@@ -37,6 +39,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -63,7 +66,7 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
 
     expect(find.text("Design"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
