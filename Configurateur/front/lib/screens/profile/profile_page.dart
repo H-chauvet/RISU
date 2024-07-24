@@ -94,8 +94,19 @@ class _ProfilePageState extends State<ProfilePage> {
           title: "Modification de votre identité",
           content: Column(
             children: <Widget>[
+              Text(
+                "Mettez à jour votre prénom et votre nom facilement !",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize - 5
+                      : tabletFontSize - 5,
+                ),
+              ),
               const SizedBox(
-                height: 20,
+                height: 50,
               ),
               TextField(
                 key: const Key("first-name"),
@@ -111,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     labelText: "Nouveau nom", hintText: initialLastName),
               ),
               const SizedBox(
-                height: 100,
+                height: 90,
               ),
               ElevatedButton(
                 key: const Key("button-name"),

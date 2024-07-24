@@ -54,10 +54,10 @@ class CustomPopup extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
-                        width: 2,
-                        color: Colors.grey,
-                      ),
+                      // Container(
+                      //   width: 2,
+                      //   color: Colors.grey,
+                      // ),
                       Expanded(
                         flex: 3,
                         child: Padding(
@@ -90,7 +90,7 @@ class CustomPopup extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 40),
+                              const SizedBox(height: 10),
                               Expanded(child: content),
                             ],
                           ),

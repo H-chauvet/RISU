@@ -73,19 +73,6 @@ void main() {
     await tester.tap(find.byKey(const Key('cancel-edit-password')));
     await tester.pump();
 
-    // Modification nom
-    await tester.tap(find.byKey(const Key('edit-name')));
-    await tester.pump();
-
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
-    await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
-
-    await tester.tap(find.byKey(const Key('cancel-edit-name')));
-    await tester.pump();
-
     // Modification entreprise
     await tester.tap(find.byKey(const Key('edit-company')));
     await tester.pump();
@@ -107,6 +94,17 @@ void main() {
 
     await tester.enterText(find.byKey(const Key('user-mail')), 'henri@risu.fr');
     await tester.tap(find.byKey(const Key('cancel-edit-mail')));
+    await tester.pump();
+
+    // Modification nom
+    await tester.tap(find.byKey(const Key('edit-name')));
+    await tester.pump();
+
+    expect(find.text('Mettre à jour'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
+    await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
+
     await tester.pump();
   });
 }
