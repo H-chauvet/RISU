@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user_list.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
