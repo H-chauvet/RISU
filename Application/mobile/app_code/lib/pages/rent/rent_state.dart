@@ -67,28 +67,33 @@ class RentArticlePageState extends State<RentArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) {
-                return ConfirmRentPage(
-                  hours: _rentalHours,
-                  data: _articleData,
-                  locationId: jsonDecode(response.body)['rentId'],
-                );
-              },
-            ),
-            (route) => false,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'rentArticle',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringRenting);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ConfirmRentPage(
+                    hours: _rentalHours,
+                    data: _articleData,
+                    locationId: jsonDecode(response.body)['rentId'],
+                  );
+                },
+              ),
+              (route) => false,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'rentArticle',
+                message:
+                    AppLocalizations.of(context)!.errorOccurredDuringRenting);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -123,15 +128,19 @@ class RentArticlePageState extends State<RentArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        final responseData = json.decode(response.body);
-        return responseData;
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'createPaymentIntent',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringPaymentCreation);
-        }
+      switch (response.statusCode) {
+        case 200:
+          final responseData = json.decode(response.body);
+          return responseData;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          return null;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'createPaymentIntent',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPaymentCreation);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {

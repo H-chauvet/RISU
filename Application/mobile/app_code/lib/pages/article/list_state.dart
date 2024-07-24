@@ -57,19 +57,20 @@ class ArticleListState extends State<ArticleListPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = jsonDecode(response.body);
-        return responseData;
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'getArticleCategories',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
-        }
-        return [];
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = jsonDecode(response.body);
+          return responseData;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'getArticleCategories',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingData);
+          }
+          return [];
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });
@@ -99,16 +100,18 @@ class ArticleListState extends State<ArticleListPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      if (response.statusCode == 200) {
-        dynamic responseData = jsonDecode(response.body);
-        return responseData;
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = jsonDecode(response.body);
+          return responseData;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'getItemsData',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingData);
+          }
+          return [];
       }
-      if (context.mounted) {
-        printServerResponse(context, response, 'getItemsData',
-            message:
-                AppLocalizations.of(context)!.errorOccurredDuringGettingData);
-      }
-      return [];
     } catch (err, stacktrace) {
       if (context.mounted) {
         printCatchError(context, err, stacktrace,

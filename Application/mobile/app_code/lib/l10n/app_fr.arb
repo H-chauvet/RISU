@@ -214,6 +214,7 @@
   "search": "Rechercher",
   "seeProfileDetails": "Voir les détails du profil",
   "send": "Envoyer",
+  "sessionExpired": "Session expirée. Veuillez vous reconnecter.",
   "settings": "Paramètres",
   "signIn": "Se connecter",
   "signInRequired": "Vous devez être connecté pour poursuivre.",

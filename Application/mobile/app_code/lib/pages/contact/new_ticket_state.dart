@@ -13,6 +13,7 @@ import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+import '../../utils/check_signin.dart';
 import 'new_ticket_page.dart';
 
 class NewTicketState extends State<NewTicketPage> {
@@ -45,15 +46,19 @@ class NewTicketState extends State<NewTicketPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createTicket',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
+      switch (response.statusCode) {
+        case 201:
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
           return false;
-        }
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'createTicket',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPostTicket);
+          }
+          return false;
       }
     } catch (err, stacktrace) {
       if (context.mounted) {

@@ -47,17 +47,22 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body);
-        setState(() {
-          opinionsList = data['opinions'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getOpinions',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingReviews);
-        }
+      switch (response.statusCode) {
+        case 201:
+          final data = json.decode(response.body);
+          setState(() {
+            opinionsList = data['opinions'];
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getOpinions',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingReviews);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -93,21 +98,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewAdded,
-            message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'postOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringSavingReview);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewAdded,
+              message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'postOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringSavingReview);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -142,21 +152,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewUpdated,
-            message: AppLocalizations.of(context)!.reviewUpdatedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'updateOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringReviewUpdate);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewUpdated,
+              message: AppLocalizations.of(context)!.reviewUpdatedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'updateOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringReviewUpdate);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -186,21 +201,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewDeleted,
-            message: AppLocalizations.of(context)!.reviewDeletedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'deleteOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringReviewDeletion);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewDeleted,
+              message: AppLocalizations.of(context)!.reviewDeletedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'deleteOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringReviewDeletion);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {

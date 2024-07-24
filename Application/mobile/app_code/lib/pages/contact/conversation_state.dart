@@ -11,6 +11,7 @@ import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/time.dart';
 
+import '../../utils/check_signin.dart';
 import 'conversation_page.dart';
 
 class ConversationPageState extends State<ConversationPage> {
@@ -56,18 +57,21 @@ class ConversationPageState extends State<ConversationPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'postTicket',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
-          return false;
-        }
+      switch (response.statusCode) {
+        case 201:
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'postTicket',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPostTicket);
+          }
       }
     } catch (err, stacktrace) {
-      if (context.mounted) {
+      if (mounted) {
         setState(() {
           _loaderManager.setIsLoading(false);
         });

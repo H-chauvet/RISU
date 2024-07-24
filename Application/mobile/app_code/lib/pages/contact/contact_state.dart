@@ -13,6 +13,7 @@ import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/time.dart';
 
+import '../../utils/check_signin.dart';
 import 'contact_page.dart';
 
 class ContactPageState extends State<ContactPage> {
@@ -61,37 +62,42 @@ class ContactPageState extends State<ContactPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        List<dynamic> tickets = data["tickets"];
-        Map<String, dynamic> tmpOpenedTickets = {};
-        Map<String, dynamic> tmpClosedTickets = {};
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          List<dynamic> tickets = data["tickets"];
+          Map<String, dynamic> tmpOpenedTickets = {};
+          Map<String, dynamic> tmpClosedTickets = {};
 
-        for (var element in tickets) {
-          if (element["closed"]) {
-            tmpClosedTickets.containsKey(element["chatUid"])
-                ? tmpClosedTickets[element["chatUid"]].add(element)
-                : tmpClosedTickets[element["chatUid"]] = [element];
-          } else {
-            tmpOpenedTickets.containsKey(element["chatUid"])
-                ? tmpOpenedTickets[element["chatUid"]].add(element)
-                : tmpOpenedTickets[element["chatUid"]] = [element];
+          for (var element in tickets) {
+            if (element["closed"]) {
+              tmpClosedTickets.containsKey(element["chatUid"])
+                  ? tmpClosedTickets[element["chatUid"]].add(element)
+                  : tmpClosedTickets[element["chatUid"]] = [element];
+            } else {
+              tmpOpenedTickets.containsKey(element["chatUid"])
+                  ? tmpOpenedTickets[element["chatUid"]].add(element)
+                  : tmpOpenedTickets[element["chatUid"]] = [element];
+            }
           }
-        }
 
-        sortTickets(tmpClosedTickets);
-        sortTickets(tmpOpenedTickets);
+          sortTickets(tmpClosedTickets);
+          sortTickets(tmpOpenedTickets);
 
-        setState(() {
-          openedTickets = tmpOpenedTickets;
-          closedTickets = tmpClosedTickets;
-        });
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'getTickets',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingUserTickets);
-        }
+          setState(() {
+            openedTickets = tmpOpenedTickets;
+            closedTickets = tmpClosedTickets;
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'getTickets',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingUserTickets);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {

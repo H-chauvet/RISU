@@ -14,6 +14,8 @@ import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+import '../../../utils/check_signin.dart';
+
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
   late ArticleData data;
@@ -36,20 +38,21 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
+      switch (response.statusCode) {
+        case 201:
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
             message: AppLocalizations.of(context)!.invoiceSentMessage,
           );
-        }
-      } else {
-        if (mounted) {
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
-        }
       }
     } catch (err, stacktrace) {
       if (mounted) {

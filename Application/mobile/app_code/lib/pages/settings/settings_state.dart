@@ -17,6 +17,7 @@ import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dar
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+import '../../utils/check_signin.dart';
 import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {
@@ -44,14 +45,18 @@ class SettingsPageState extends State<SettingsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'apiDeleteAccount',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringAccountDeletion);
-        }
+      switch (response.statusCode) {
+        case 200:
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'apiDeleteAccount',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringAccountDeletion);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
