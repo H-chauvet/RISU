@@ -10,10 +10,10 @@ import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import '../../utils/check_signin.dart';
 import 'new_ticket_page.dart';
 
 class NewTicketState extends State<NewTicketPage> {

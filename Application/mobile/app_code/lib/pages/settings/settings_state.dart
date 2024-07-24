@@ -14,10 +14,10 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/language/modal.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import '../../utils/check_signin.dart';
 import 'settings_page.dart';
 
 class SettingsPageState extends State<SettingsPage> {

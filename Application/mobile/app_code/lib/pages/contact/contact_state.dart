@@ -9,11 +9,11 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/pages/contact/new_ticket_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/time.dart';
 
-import '../../utils/check_signin.dart';
 import 'contact_page.dart';
 
 class ContactPageState extends State<ContactPage> {

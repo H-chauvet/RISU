@@ -7,11 +7,11 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/time.dart';
 
-import '../../utils/check_signin.dart';
 import 'conversation_page.dart';
 
 class ConversationPageState extends State<ConversationPage> {
@@ -201,7 +201,7 @@ class ConversationPageState extends State<ConversationPage> {
                           onPressed: (contentController.text.isNotEmpty)
                               ? () async {
                                   final newContent = contentController.text;
-                                  bool success = await postTicket(newContent!);
+                                  bool success = await postTicket(newContent);
                                   if (success) {
                                     final lastTicket = tickets.last;
                                     final newTicket = {

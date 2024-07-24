@@ -12,10 +12,9 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/reset_password/reset_password_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-
-import '../../utils/check_signin.dart';
 
 class ResetPasswordPageState extends State<ResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
