@@ -54,10 +54,6 @@ class CustomPopup extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   width: 2,
-                      //   color: Colors.grey,
-                      // ),
                       Expanded(
                         flex: 3,
                         child: Padding(
@@ -69,7 +65,7 @@ class CustomPopup extends StatelessWidget {
                               const SizedBox(height: 50),
                               Text(
                                 title,
-                                textAlign: TextAlign.center, // Centre le texter
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 30,
                                   fontFamily: 'Inter',
