@@ -51,7 +51,7 @@ model Item {
     price           Float
     image           String?
     description     String?
-    rating          Float?
+    rating          Float?            @default(0)
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     category        String?
@@ -106,15 +106,6 @@ model Feedbacks_Web {
     email     String
     message   String
     mark      String
-    createdAt DateTime @default(now())
-}
-
-model Contact_Web {
-    id        Int      @id @default(autoincrement())
-    firstName String
-    lastName  String
-    email     String
-    message   String
     createdAt DateTime @default(now())
 }
 

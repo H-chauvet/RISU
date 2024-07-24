@@ -5,6 +5,7 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
@@ -13,6 +14,9 @@ import 'package:provider/provider.dart';
 
 import 'shape_screen_style.dart';
 
+/// ShapeScreen
+///
+/// Shape of the container
 class ShapeScreen extends StatefulWidget {
   const ShapeScreen({super.key});
 
@@ -20,6 +24,8 @@ class ShapeScreen extends StatefulWidget {
   State<ShapeScreen> createState() => ShapeScreenState();
 }
 
+/// ShapeScreenState
+///
 class ShapeScreenState extends State<ShapeScreen> {
   int row = 5;
   int column = 12;
@@ -32,13 +38,43 @@ class ShapeScreenState extends State<ShapeScreen> {
   List<bool> isClicked = List.generate(60, (index) => false);
   List<Color?> colors = List.generate(60, (index) => Colors.grey[200]);
 
-  @override
-  void initState() {
-    super.initState();
-    MyAlertTest.checkSignInStatus(context);
-    calculateDimension();
+  void checkContainer() async {
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      Map<String, dynamic> data = jsonDecode(storageData);
+      List<List<String>> containerList =
+          jsonDecode(data['containerMappingShape']);
+      row = data['height'];
+      column = data['width'];
+      setState(() {
+        colors = List.generate(row * column, (index) {
+          if (containerList[(index / column).floor()][index % column] == '0') {
+            return Colors.grey[200];
+          } else {
+            return Colors.grey[600];
+          }
+        });
+        isClicked = List.generate(row * column, (index) => false);
+      });
+    }
   }
 
+  @override
+  void initState() {
+    MyAlertTest.checkSignInStatus(context);
+    checkContainer();
+    calculateDimension();
+    super.initState();
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? data = await storageService.readStorage('containerData');
+
+    data ??= '';
+    return data;
+  }
+
+  /// [Function] : Calculate the container's dimension
   void calculateDimension() {
     width = column / 2;
     height = row / 2;
@@ -55,6 +91,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// [Function] : Remove a locker in the container
   void removeLockers() {
     for (int i = 0; i < isClicked.length; i++) {
       if (isClicked[i] == true) {
@@ -65,6 +102,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// [Widget] : Create the remove button for lockers
   List<Widget> removeButtons(ScreenFormat screenFormat) {
     List<Widget> buttons = [];
 
@@ -108,12 +146,16 @@ class ShapeScreenState extends State<ShapeScreen> {
             onPressed: () {
               setState(() {
                 removeLockers();
+                saveContainerToStorage(generateContainerMapping());
                 isRemoveClicked = false;
               });
             },
             child: Text(
               "Supprimer",
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -139,6 +181,9 @@ class ShapeScreenState extends State<ShapeScreen> {
             child: Text(
               'Annuler',
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -152,6 +197,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     return buttons;
   }
 
+  /// [Widget] : Initialization of the container
   List<Widget> initContainer() {
     List<Widget> rows = [];
     List<Widget> line = [];
@@ -185,8 +231,8 @@ class ShapeScreenState extends State<ShapeScreen> {
                       setState(() {
                         isClicked[(i * column) + j] =
                             !isClicked[(i * column) + j];
-                      })
-                    }
+                      }),
+                    },
                 },
                 child: Container(
                   width: desktopContainerSize,
@@ -241,11 +287,12 @@ class ShapeScreenState extends State<ShapeScreen> {
     return rows;
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/');
   }
 
-  void goNext() {
+  List<List<String>> generateContainerMapping() {
     List<List<String>> containerList;
 
     containerList = List.generate(row, (index) => []);
@@ -261,6 +308,10 @@ class ShapeScreenState extends State<ShapeScreen> {
       }
     }
 
+    return containerList;
+  }
+
+  List<List<String>> reverseContainerMapping(List<List<String>> containerList) {
     List<List<String>> containerListTmp = List.generate(row, (index) => []);
     for (int i = 0; i < containerList.length; i++) {
       containerListTmp[i] = List.generate(column, (index) => '0');
@@ -281,6 +332,15 @@ class ShapeScreenState extends State<ShapeScreen> {
         }
       }
     }
+
+    return containerListTmp;
+  }
+
+  /// [Function] : Go to the next page
+  void goNext() {
+    List<List<String>> containerListTmp =
+        reverseContainerMapping(generateContainerMapping());
+    saveContainerToStorage(containerListTmp);
     context.go('/container-creation',
         extra: jsonEncode({
           'containerMapping': jsonEncode(containerListTmp),
@@ -289,6 +349,19 @@ class ShapeScreenState extends State<ShapeScreen> {
         }));
   }
 
+  void saveContainerToStorage(List<List<String>> containerListTmp) {
+    storageService.writeStorage(
+        'containerData',
+        jsonEncode({
+          'containerMappingShape': jsonEncode(containerListTmp),
+          'height': row,
+          'width': column,
+          'container': '',
+          'containerMapping': ''
+        }));
+  }
+
+  /// [Widget] : Build the container's shape page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -327,6 +400,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                 Text(
                   'Nombres de lignes',
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -349,6 +425,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -360,13 +437,15 @@ class ShapeScreenState extends State<ShapeScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.colorScheme.background.withOpacity(0.8)
-                            : lightTheme.colorScheme.background
-                                .withOpacity(0.8),
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                       ),
                       child: Text(
                         row.toString(),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -385,6 +464,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -398,6 +478,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                 Text(
                   'Nombres de colonnes',
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -420,6 +503,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -431,13 +515,15 @@ class ShapeScreenState extends State<ShapeScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30.0),
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.colorScheme.background.withOpacity(0.8)
-                            : lightTheme.colorScheme.background
-                                .withOpacity(0.8),
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                       ),
                       child: Text(
                         column.toString(),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -456,6 +542,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                             isClicked =
                                 List.generate(column * row, (index) => false);
                             calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
                           }
                         });
                       },
@@ -492,10 +579,10 @@ class ShapeScreenState extends State<ShapeScreen> {
               height: desktopPanelHeight,
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30.0),
                   color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.colorScheme.background.withOpacity(0.8)
-                      : lightTheme.colorScheme.background.withOpacity(0.8),
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(30.0),
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xff4682B4).withOpacity(0.5),
@@ -514,6 +601,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           'Largeur:',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -523,6 +613,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           width <= 1 ? '$width mètre' : '$width mètres',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -536,6 +629,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           'Hauteur:',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -545,6 +641,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           height <= 1 ? '$height mètre' : '$height mètres',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -558,6 +657,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           "Nombre d'emplacements:",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontWeight: FontWeight.bold,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -567,6 +669,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         Text(
                           '$nbLockers',
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,

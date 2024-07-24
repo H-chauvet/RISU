@@ -19,7 +19,7 @@ void main() {
     'chatUid': '1',
     'title': 'Le titre mémoire',
     'content': 'Sylvie',
-    'creatorId': "PasUser",
+    'creatorId': "",
     'assignedId': "User",
   };
   sleep(const Duration(seconds: 1));
@@ -29,7 +29,7 @@ void main() {
     'title': 'Le titre mémoire',
     'content': 'Titouan',
     'creatorId': "User",
-    'assignedId': "PasUser",
+    'assignedId': "",
   };
   sleep(const Duration(seconds: 1));
   var ticket2 = {
@@ -38,7 +38,7 @@ void main() {
     'title': 'Le titre mémoire',
     'content': 'Rocket League',
     'creatorId': "User",
-    'assignedId': "PasUser",
+    'assignedId': "",
   };
 
   List<dynamic> ticketList = [ticket1, ticket2, ticket3];
@@ -58,6 +58,31 @@ void main() {
     Finder buttonSendMessage =
         find.byKey(const Key('chat-button-send-message'));
     expect(buttonSendMessage, findsOneWidget);
+
+    await tester.tap(buttonSendMessage);
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('Conversation page open and sendticket',
+      (WidgetTester tester) async {
+    userInformation = initExampleUser();
+    final testPage =
+        initPage(ConversationPage(tickets: ticketList, isOpen: true));
+    await waitForLoader(tester: tester, testPage: testPage);
+
+    Finder titleFinder = find.byKey(const Key('appbar-text_title'));
+    expect(titleFinder, findsOneWidget);
+
+    Finder fieldMessage =
+        find.byKey(const Key("conversation-text_field-message"));
+    expect(fieldMessage, findsOneWidget);
+
+    Finder buttonSendMessage =
+        find.byKey(const Key('chat-button-send-message'));
+    expect(buttonSendMessage, findsOneWidget);
+
+    await tester.enterText(fieldMessage, "Test Message");
+    await tester.pumpAndSettle();
 
     await tester.tap(buttonSendMessage);
     await tester.pumpAndSettle();

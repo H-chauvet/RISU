@@ -7,6 +7,17 @@ import 'package:provider/provider.dart';
 
 import 'container-company_style.dart';
 
+/// MyContainerList
+///
+/// Define the data of container in back end
+/// [id] : Container's id
+/// [createdAt] : Creation of the container
+/// [organization] : Organization having created the container
+/// [organizationId] : Id of the organization
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [price] : Price of the container
+/// [design] : List of design for the container's faces
+/// [informations] : Informations about the container
 class MyContainerList {
   final int? id;
   final dynamic createdAt;
@@ -46,6 +57,7 @@ class MyContainerList {
       informations: json['informations'],
     );
   }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -61,11 +73,15 @@ class MyContainerList {
   }
 }
 
+/// ContainerCards
+///
+/// Component to create card for the container list
+/// [container] : Data of the container
 class ContainerCard extends StatelessWidget {
   final MyContainerList container;
-
   const ContainerCard({super.key, required this.container});
 
+  /// [Widget] : build the Card component
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -98,7 +114,7 @@ class ContainerCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        "Ville : ${container.city != null ? container.city! : "inconnue"}",
+                        "Ville : ${container.city != null ? container.city! : "Inconnue"}",
                         style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -108,7 +124,7 @@ class ContainerCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  "prix du conteneur : " + container.price.toString(),
+                  "Prix du conteneur : ${container.price.toString()} €",
                   style: TextStyle(
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize

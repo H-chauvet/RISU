@@ -6,7 +6,7 @@ import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  final ItemListInfo mockItem = ItemListInfo(
+  final ItemList mockItem = ItemList(
     id: 1,
     name: 'Test Item',
     available: true,
@@ -19,10 +19,10 @@ void main() {
     category: "sport",
   );
 
-  testWidgets('ItemListInfo should render without error',
+  testWidgets('ItemList should render without error',
       (WidgetTester tester) async {
     final Map<String, dynamic> containerJson = mockItem.toMap();
-    final ItemListInfo parsedContainer = ItemListInfo.fromJson(containerJson);
+    final ItemList parsedContainer = ItemList.fromJson(containerJson);
 
     expect(parsedContainer.id, mockItem.id);
     expect(parsedContainer.createdAt, mockItem.createdAt);

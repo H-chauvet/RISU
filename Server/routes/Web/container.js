@@ -3,6 +3,7 @@ const router = express.Router();
 
 const containerCtrl = require("../../controllers/Common/container");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
 
 router.get("/get", async function (req, res, next) {
   try {
@@ -55,13 +56,21 @@ router.post("/create", async function (req, res, next) {
   try {
     const { designs, containerMapping, height, width, saveName } = req.body;
 
-    const container = await containerCtrl.createContainer({
-      designs,
-      containerMapping,
-      height,
-      width,
-      saveName,
-    });
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(decodedToken.userMail);
+
+    const container = await containerCtrl.createContainer(
+      {
+        designs,
+        containerMapping,
+        height,
+        width,
+        saveName,
+      },
+      user.organizationId
+    );
     res.status(200).json(container);
   } catch (err) {
     next(err);
@@ -122,9 +131,21 @@ router.put("/update-position", async function (req, res, next) {
       throw new Error("id and position are required");
     }
 
+    const position = await containerCtrl.getLocalisation({
+      latitude,
+      longitude,
+    });
+
+    if (position == "No address found") {
+      res.status(400);
+      throw new Error("No address found");
+    }
+
     const container = await containerCtrl.updateContainerPosition(id, {
       latitude,
       longitude,
+      city: position.city,
+      address: position.address,
     });
     res.status(200).json(container);
   } catch (err) {

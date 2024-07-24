@@ -32,6 +32,15 @@ exports.getContainerByOrganizationId = (organizationId) => {
       city: true,
       address: true,
       informations: true,
+      paid: true,
+      saveName: true,
+      width: true,
+      height: true,
+      designs: true,
+      price: true,
+      latitude: true,
+      longitude: true,
+      containerMapping: true,
       items: {
         where: {
           available: true,
@@ -65,12 +74,28 @@ exports.deleteContainer = (id) => {
  * @param {*} container the object with data
  * @returns the container object
  */
-exports.createContainer = (container) => {
+exports.createContainer = async (container, organizationId) => {
   container.width = parseFloat(container.width);
   container.height = parseFloat(container.height);
-  return db.Containers.create({
+
+  const containerObj = await db.Containers.create({
     data: container,
   });
+
+  await db.Organization.update({
+    where: {
+      id: organizationId,
+    },
+    data: {
+      containers: {
+        connect: {
+          id: containerObj.id,
+        },
+      },
+    },
+  });
+
+  return containerObj;
 };
 
 /**
@@ -107,6 +132,46 @@ exports.updateContainerPosition = (id, container) => {
     },
     data: container,
   });
+};
+
+/**
+ *
+ * @param {*} position the object with position data
+ * @returns the city and adress of the position
+ */
+exports.getLocalisation = async (position) => {
+  const response = await fetch(
+    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+      position.latitude +
+      "," +
+      position.longitude +
+      "&result_type=street_address&key=" +
+      process.env.GOOGLE_API_KEY
+  );
+
+  const responseJson = await response.json();
+
+  if (responseJson.status === "OK") {
+    let address = "";
+    let city = "";
+    for (
+      let i = 0;
+      i < responseJson.results[0].address_components.length;
+      i++
+    ) {
+      if (responseJson.results[0].address_components[i].types[0] === "route") {
+        address = responseJson.results[0].address_components[i].long_name;
+      }
+      if (
+        responseJson.results[0].address_components[i].types[0] === "locality"
+      ) {
+        city = responseJson.results[0].address_components[i].long_name;
+      }
+    }
+    return { address: address, city: city };
+  } else if (responseJson.status === "ZERO_RESULTS") {
+    return "No address found";
+  }
 };
 
 /**
@@ -148,10 +213,10 @@ exports.getItemsFromContainer = (containerId) => {
         },
       },
     },
-  })
-}
+  });
+};
 
-exports.updateCity = container => {
+exports.updateCity = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -162,7 +227,7 @@ exports.updateCity = container => {
   });
 };
 
-exports.updateAddress = container => {
+exports.updateAddress = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -173,7 +238,7 @@ exports.updateAddress = container => {
   });
 };
 
-exports.updateSaveName = container => {
+exports.updateSaveName = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -184,7 +249,7 @@ exports.updateSaveName = container => {
   });
 };
 
-exports.updateInformation = container => {
+exports.updateInformation = (container) => {
   return db.Containers.update({
     where: {
       id: container.id,
@@ -196,19 +261,28 @@ exports.updateInformation = container => {
 };
 
 /**
-  * Retrieve items of the containers with filters
-  *
-  * @param {number} containerId id of the container
-  * @param {string} articleName name of the article
-  * @param {boolean} isAscending order of the items
-  * @param {boolean} isAvailable availability of the items
-  * @param {number} categoryId id of the category
-  * @param {string} sortBy sort by price or rating
-  * @param {number} min minimum value
-  * @param {number} max maximum value
-  * @returns the container object with its items
-  */
-exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAvailable, categoryId, sortBy, min, max) => {
+ * Retrieve items of the containers with filters
+ *
+ * @param {number} containerId id of the container
+ * @param {string} articleName name of the article
+ * @param {boolean} isAscending order of the items
+ * @param {boolean} isAvailable availability of the items
+ * @param {number} categoryId id of the category
+ * @param {string} sortBy sort by price or rating
+ * @param {number} min minimum value
+ * @param {number} max maximum value
+ * @returns the container object with its items
+ */
+exports.getItemsWithFilters = async (
+  containerId,
+  articleName,
+  isAscending,
+  isAvailable,
+  categoryId,
+  sortBy,
+  min,
+  max
+) => {
   try {
     const container = await db.Containers.findUnique({
       where: { id: containerId },
@@ -218,37 +292,39 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
     }
 
     let whereCondition = {
+      containerId: containerId,
       name: {
         contains: articleName,
       },
-      available: isAvailable,
     };
+
     if (categoryId != undefined) {
       if (categoryId != null) {
         categoryId = parseInt(categoryId);
         if (isNaN(categoryId)) {
           throw new Error("Invalid category id");
         }
-        whereCondition.categories = { some: { id: parseInt(categoryId) } };
+        whereCondition.categories = { some: { id: categoryId } };
       }
     }
 
-    if (sortBy === 'price') {
+    if (sortBy === "price") {
       whereCondition.price = {
         gte: min,
         lte: max,
       };
     }
 
-    if (sortBy === 'rating') {
+    if (sortBy === "rating") {
       whereCondition.rating = {
         gte: min,
         lte: max,
       };
     }
 
-    const orderBy = isAscending === true ? 'asc' : 'desc';
-    return await db.Item.findMany({
+    const orderBy = isAscending ? "asc" : "desc";
+
+    let items = await db.Item.findMany({
       where: whereCondition,
       select: {
         id: true,
@@ -265,6 +341,16 @@ exports.getItemsWithFilters = async (containerId, articleName, isAscending, isAv
         [sortBy]: orderBy,
       },
     });
+
+    if (isAvailable) {
+      items = items.filter((item) => item.available);
+    }
+
+    items.sort((a, b) => {
+      return isAscending ? a[sortBy] - b[sortBy] : b[sortBy] - a[sortBy];
+    });
+
+    return items;
   } catch (error) {
     throw new Error("Failed to retrieve items with filters");
   }

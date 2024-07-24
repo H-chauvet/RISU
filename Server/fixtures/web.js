@@ -6,6 +6,7 @@ exports.createFixtures = async () => {
     const userWeb = await db.User_Web.create({
       data: {
         id: 1,
+        uuid: "123456",
         email: "louis@gmail.com",
         firstName: "louis",
         lastName: "louis",
@@ -18,6 +19,7 @@ exports.createFixtures = async () => {
     const adminWeb = await db.User_Web.create({
       data: {
         id: 2,
+        uuid: "1234567",
         email: "michel.lefevre@gmail.com",
         firstName: "Michel",
         lastName: "Lefevre",
@@ -33,8 +35,8 @@ exports.createFixtures = async () => {
         price: 560.5,
         city: "Nantes 2.0",
         address: "Rue d'Alger",
-        latitude: 47.210537, // Epitech Nantes
-        longitude: -1.566808,
+        latitude: 0.0,
+        longitude: 0.0,
         saveName: "container",
         containerMapping: "",
         price: 500.5,
@@ -78,6 +80,22 @@ exports.createFixtures = async () => {
         containers: {
           connect: { id: container_web.id },
         },
+      },
+    });
+  } catch (err) {
+    console.error(err.message);
+  }
+
+  try {
+    const user2 = await db.User_Web.create({
+      data: {
+        firstName: "Henri",
+        lastName: "Chauvet",
+        uuid: "12345",
+        email: "henri@risu.com",
+        confirmed: true,
+        password: bcrypt.hashSync("henri", 12),
+        company: "Risu",
       },
     });
   } catch (err) {

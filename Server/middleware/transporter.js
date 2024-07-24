@@ -16,11 +16,9 @@ let transporter = nodemailer.createTransport({
  * @param {*} mail mail object
  */
 function sendMail(mail) {
-  transporter.sendMail(mail, (error, info) => {
+  transporter.sendMail(mail, (error, info, next) => {
     if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
+      next(error);
     }
   });
 }

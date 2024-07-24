@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/company/company_style.dart';
 import 'package:front/screens/company/container-company.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
-// import 'package:front/screens/company-company.dart';
-
+/// [StatefulWidget] : CompanyPage
+///
+/// Page of the Risu Company and the containers created with the configurator
 class CompanyPage extends StatefulWidget {
   const CompanyPage({Key? key}) : super(key: key);
 
@@ -24,6 +25,8 @@ class CompanyPage extends StatefulWidget {
   State<CompanyPage> createState() => CompanyPageState();
 }
 
+/// CompanyPageState
+///
 class CompanyPageState extends State<CompanyPage> {
   late List<String> members = [
     'assets/Henri.png',
@@ -35,16 +38,20 @@ class CompanyPageState extends State<CompanyPage> {
   ];
 
   List<MyContainerList> containers = [];
+  String? token = '';
 
-  @override
-  void initState() {
-    super.initState();
-    fetchContainers();
-  }
+  /// [Function] to get the containers in the database
+  /// return list of containers
+  void fetchContainers() async {
+    final response = await HttpService().getRequest(
+      'http://$serverIp:3000/api/container/listAll',
+      <String, String>{
+        'Authorization': 'Bearer ${token!}',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+    );
 
-  Future<void> fetchContainers() async {
-    final response = await http
-        .get(Uri.parse('http://${serverIp}:3000/api/container/listAll'));
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
@@ -54,12 +61,25 @@ class CompanyPageState extends State<CompanyPage> {
             .toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      debugPrint('error');
     }
+  }
+
+  Future<void> checkToken() async {
+    token = await storageService.readStorage('token');
+    if (token == "") {
+      context.go('/login');
+    } else {
+      fetchContainers();
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkToken();
+    });
   }
 
   @override

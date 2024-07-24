@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/delete_container_dialog.dart';
@@ -16,37 +16,46 @@ import 'package:front/services/http_service.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_3d/simple_3d.dart';
 import 'package:tuple/tuple.dart';
 import 'package:util_simple_3d/util_simple_3d.dart';
 import 'package:simple_3d_renderer/simple_3d_renderer.dart';
 
+/// ContainerCreation
+///
+/// Creation of the container
+/// [container] : Informations about the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [width] : Container's width
+/// [height] : Container's height
 // ignore: must_be_immutable
 class ContainerCreation extends StatefulWidget {
-  const ContainerCreation(
-      {super.key,
-      this.id,
-      this.container,
-      this.containerMapping,
-      this.width,
-      this.height});
+  ContainerCreation({
+    super.key,
+    this.id,
+    this.container,
+    this.containerMapping,
+    this.width,
+    this.height,
+  });
 
-  final String? id;
-  final String? container;
-  final String? containerMapping;
-  final String? width;
-  final String? height;
+  String? id;
+  String? container;
+  String? containerMapping;
+  String? width;
+  String? height;
 
   @override
   State<ContainerCreation> createState() => ContainerCreationState();
 }
 
+/// ContainerCreationState
 ///
-/// ContainerCreation
-///
-/// page d'inscription pour le configurateur
 class ContainerCreationState extends State<ContainerCreation> {
   late List<Sp3dObj> objs = [];
   late Sp3dWorld world;
@@ -54,11 +63,12 @@ class ContainerCreationState extends State<ContainerCreation> {
   List<Locker> lockers = [];
   double actualRotationDegree = 0.0;
   String jwtToken = '';
-  dynamic decodedContainer;
   bool unitTest = false;
+  String? containerMappingStocked = '';
   late int width = 0;
   late int height = 0;
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -68,11 +78,29 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  void checkContainer() async {
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      setState(() {
+        dynamic data = jsonDecode(storageData);
+        if (data['container'] != '') {
+          widget.container = data['container'];
+        }
+        widget.containerMapping = data['containerMappingShape'];
+        containerMappingStocked = data['containerMapping'];
+        widget.width = data['width'];
+        widget.height = data['height'];
+        widget.id = data['id'];
+      });
+    }
+  }
+
   @override
   void initState() {
-    checkToken();
     MyAlertTest.checkSignInStatus(context);
-    super.initState();
+    checkToken();
+    checkContainer();
+
     if (widget.container != null) {
       dynamic container = jsonDecode(widget.container!);
       width = int.parse(container['width']);
@@ -90,73 +118,110 @@ class ContainerCreationState extends State<ContainerCreation> {
     obj.materials.add(FSp3dMaterial.black.deepCopy());
     obj.materials[0] = FSp3dMaterial.grey.deepCopy()
       ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    obj.materials[1] = FSp3dMaterial.green.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    obj.materials[2] = FSp3dMaterial.red.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+    obj.materials[3] = FSp3dMaterial.black.deepCopy()
+      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
     objs.add(obj);
     loadImage();
+    bool loaded = false;
     if (widget.container != null) {
       loadContainer();
-
-      loadLockers();
+      dynamic container = jsonDecode(widget.container!);
+      loadLockers(container['containerMapping'],
+          design: jsonDecode(container['designs']));
+      loaded = true;
     }
 
-    if (widget.containerMapping != null) {
-      dynamic decoded = jsonDecode(widget.containerMapping!);
-      for (int i = 0; i < decoded.length; i++) {
-        for (int j = 0; j < decoded[i].length; j++) {
-          if (decoded[i][j].toString() == '2') {
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[0]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[1]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[2]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[3]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[4]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[(decoded[i].length * i) + j]
-                .faces[5]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[0]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[1]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[2]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[3]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[4]
-                .materialIndex = 4;
-            objs[0]
-                .fragments[((decoded[i].length * i) + j) + (width * height)]
-                .faces[5]
-                .materialIndex = 4;
-          }
-        }
+    if (containerMappingStocked != '') {
+      if (loaded == false) {
+        loadLockers(containerMappingStocked!);
+        loaded = true;
+      }
+      for (int i = 0; i < containerMappingStocked!.length; i++) {
+        objs[0].fragments[i].faces[0].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[1].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[2].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[3].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[4].materialIndex =
+            int.parse(containerMappingStocked![i]);
+        objs[0].fragments[i].faces[5].materialIndex =
+            int.parse(containerMappingStocked![i]);
       }
     }
+    if (widget.containerMapping != null) {
+      dynamic decoded = jsonDecode(widget.containerMapping!);
+      setState(() {
+        if (loaded == false) {
+          loadLockers(widget.containerMapping!);
+          loaded = true;
+        }
+        for (int i = 0; i < decoded.length; i++) {
+          for (int j = 0; j < decoded[i].length; j++) {
+            if (decoded[i][j].toString() == '2') {
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[0]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[1]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[2]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[3]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[4]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[(decoded[i].length * i) + j]
+                  .faces[5]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[0]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[1]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[2]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[3]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[4]
+                  .materialIndex = 4;
+              objs[0]
+                  .fragments[((decoded[i].length * i) + j) + (width * height)]
+                  .faces[5]
+                  .materialIndex = 4;
+            }
+          }
+        }
+      });
+    }
+    super.initState();
   }
 
+  /// [Function] : Load the container's informations
   void loadContainer() {
     dynamic container = jsonDecode(widget.container!);
     width = int.parse(container['width']);
@@ -183,26 +248,24 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
-  void loadLockers() {
+  /// [Function] : Load the lockers' informations in the container
+  void loadLockers(dynamic containerMapping, {design}) {
     int littleLocker = 0;
     int mediumLocker = 0;
     int bigLocker = 0;
-    dynamic container = jsonDecode(widget.container!);
 
-    for (int i = 0; i < container['containerMapping'].length; i++) {
-      if (container['containerMapping'][i] == '1') {
+    for (int i = 0; i < containerMapping.length; i++) {
+      if (containerMapping[i] == '1') {
         littleLocker++;
-      } else if (container['containerMapping'][i] == '2') {
+      } else if (containerMapping[i] == '2') {
         mediumLocker++;
-      } else if (container['containerMapping'][i] == '3') {
+      } else if (containerMapping[i] == '3') {
         bigLocker++;
       }
     }
 
-    decodedContainer = jsonDecode(container['designs']);
-
-    if (decodedContainer != null) {
-      for (int i = 0; i < decodedContainer.length; i++) {
+    if (design != null) {
+      for (int i = 0; i < design.length; i++) {
         lockers.add(Locker('Design personnalisé', 50));
       }
     }
@@ -218,6 +281,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Update the size of the container
   String updateCube(LockerCoordinates coordinates, bool unitTesting) {
     int fragment = coordinates.x - 1 + (coordinates.y - 1) * width;
     int increment = 0;
@@ -285,6 +349,9 @@ class ContainerCreationState extends State<ContainerCreation> {
             break;
         }
         isLoaded = true;
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       switch (coordinates.size) {
@@ -300,10 +367,14 @@ class ContainerCreationState extends State<ContainerCreation> {
         default:
           break;
       }
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
     return "";
   }
 
+  /// [Widget] : Open dialog for the name of the container
   Widget openDialog() {
     if (widget.container != null) {
       return SaveDialog(name: jsonDecode(widget.container!)['saveName']);
@@ -312,6 +383,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Allow the locker to be moved
   void moveLocker(
       int x, int y, int size, int oldX, int oldY, int fragmentIncrement) {
     for (int i = 0; i < size; i++) {
@@ -366,6 +438,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Handle the locker
   Tuple2<int, int> handleMoveLocker(
       List<String> freeSpace, int i, int j, int fragmentIncrement, int size) {
     for (int k = 0; k < freeSpace.length; k++) {
@@ -383,6 +456,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return const Tuple2(-1, -1);
   }
 
+  /// [Function] : Optimize the space in the containers by automatically filling the lockers
   void autoFilling(int fragmentIncrement) {
     List<String> freeSpace = [];
     int widths = width;
@@ -402,6 +476,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
               k += widths, counter++) {}
+
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
@@ -430,9 +505,12 @@ class ContainerCreationState extends State<ContainerCreation> {
             if (ret.item1 != -1) {
               i = ret.item1;
               j = ret.item2;
+            } else {
+              j += size;
             }
+          } else {
+            j += size;
           }
-          j += size;
         } else {
           j += counter;
         }
@@ -443,6 +521,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  /// [Function] : Optimize the space in the containers by automatically decrease the container's size
   void autoFillContainer(String face, bool unitTesting) {
     int fragmentIncrement = 0;
 
@@ -459,12 +538,19 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTesting == false) {
       setState(() {
         isLoaded = true;
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       isLoaded = true;
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
   }
 
+  /// [Function] : Load an image for the container's design
   void loadImage() async {
     world = Sp3dWorld(objs);
     world.initImages().then((List<Sp3dObj> errorObjs) {
@@ -474,6 +560,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     });
   }
 
+  /// [Function] : Sum of the price of the lockers
   int sumPrice() {
     int price = 0;
     for (int i = 0; i < lockers.length; i++) {
@@ -482,6 +569,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return price;
   }
 
+  /// [Function] : Reset the container
   void resetContainer() {
     for (int i = 0; i < objs[0].fragments.length; i++) {
       objs[0].fragments[i].faces[0].materialIndex = 0;
@@ -495,12 +583,21 @@ class ContainerCreationState extends State<ContainerCreation> {
     if (unitTest == false) {
       setState(() {
         lockers = [];
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
       });
     } else {
       lockers = [];
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
     }
   }
 
+  /// [Function] : Delete a locker
+  /// [coord] : the locker's position in the container
+  /// [unitTesting] : Boolean that says if we came here from unit test or not
   String deleteLocker(LockerCoordinates coord, bool unitTesting) {
     int fragment = coord.x - 1 + (coord.y - 1) * width;
     int increment = width;
@@ -571,6 +668,29 @@ class ContainerCreationState extends State<ContainerCreation> {
     return "deleted";
   }
 
+  /// [Function] : Save the container in the storage service
+  void saveContainerToStorage() {
+    var data = {
+      'amount': sumPrice(),
+      'containerMapping': getContainerMapping(),
+      'lockers': jsonEncode(lockers),
+      'id': widget.id,
+      'container': widget.container,
+      'width': width.toString(),
+      'height': height.toString(),
+    };
+
+    storageService.writeStorage('containerData', jsonEncode(data));
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? data = await storageService.readStorage('containerData');
+
+    data ??= '';
+    return data;
+  }
+
+  /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
     for (int i = 0; i < objs[0].fragments.length; i++) {
@@ -579,6 +699,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     return mapping;
   }
 
+  /// [Function] : Go to the next page
   void goNext() async {
     var data = {
       'amount': sumPrice(),
@@ -589,9 +710,14 @@ class ContainerCreationState extends State<ContainerCreation> {
       'width': width.toString(),
       'height': height.toString(),
     };
+    if (unitTest == false) {
+      saveContainerToStorage();
+    }
     context.go("/container-creation/design", extra: jsonEncode(data));
   }
 
+  /// [Function] : Save the container
+  /// [name] : name of the container
   void saveContainer(String name) async {
     var header = <String, String>{
       'Authorization': 'Bearer $jwtToken',
@@ -624,11 +750,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     } else {
@@ -666,20 +788,18 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     }
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     context.go('/container-creation/shape');
   }
 
+  /// [Widget]: build the configurator page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -719,13 +839,17 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ElevatedButton.icon(
                       onPressed: () async {
                         await showDialog(
-                            context: context,
-                            builder: (context) => ContainerDialog(
-                                  callback: updateCube,
-                                  size: 1,
-                                  width: width,
-                                  height: height,
-                                ));
+                          context: context,
+                          builder: (context) => ContainerDialog(
+                            callback: updateCube,
+                            size: 1,
+                            width: width,
+                            height: height,
+                          ),
+                        );
+                        if (unitTest == false) {
+                          saveContainerToStorage();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
@@ -737,12 +861,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Ajouter un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.add,
                       ),
                     ),
@@ -766,12 +896,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Sauvegarder',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.save,
                       ),
                     ),
@@ -796,12 +932,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Remplissage',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.auto_fix_high,
                       ),
                     ),
@@ -810,8 +952,10 @@ class ContainerCreationState extends State<ContainerCreation> {
                     ),
                     SizedBox(
                       width: sizedBoxWidth,
-                      child: const Divider(
-                        color: Colors.grey,
+                      child: Divider(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         height: 20,
                         thickness: 1,
                         indent: 30,
@@ -827,6 +971,9 @@ class ContainerCreationState extends State<ContainerCreation> {
                             context: context,
                             builder: (context) =>
                                 DeleteContainerDialog(callback: deleteLocker));
+                        if (unitTest == false) {
+                          saveContainerToStorage();
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                           fixedSize: Size.fromWidth(
@@ -838,12 +985,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Supprimer un casier',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.delete,
                       ),
                     ),
@@ -862,12 +1015,18 @@ class ContainerCreationState extends State<ContainerCreation> {
                       label: Text(
                         'Réinitialiser le conteneur',
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
                         ),
                       ),
-                      icon: const Icon(
+                      icon: Icon(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         Icons.refresh,
                       ),
                     ),
@@ -906,13 +1065,8 @@ class ContainerCreationState extends State<ContainerCreation> {
                     heightFactor: 0.7,
                     child: RecapPanel(
                       articles: lockers,
-                      onSaved: () async {
-                        String name = await showDialog(
-                            context: context,
-                            builder: (context) => openDialog());
-                        saveContainer(name);
-                      },
                       screenFormat: screenFormat,
+                      fullscreen: false,
                     )),
               ),
             ],

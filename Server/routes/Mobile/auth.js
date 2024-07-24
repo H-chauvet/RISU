@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken')
 const userCtrl = require('../../controllers/Mobile/user')
 const authCtrl = require('../../controllers/Mobile/auth')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const crypto = require('../../crypto/crypto')
 
 
 router.post('/signup', (req, res, next) => {
@@ -17,7 +18,6 @@ router.post('/signup', (req, res, next) => {
       if (err)
         throw new Error(err)
       if (user === false) {
-        console.log(info)
         return res.status(401).json(info)
       }
       const token = jwtMiddleware.generateToken(user.id)
@@ -82,6 +82,22 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
     await authCtrl.verifyEmail(user.id)
     return res.status(200).send(
       'Email now successfully verified !\nYou can go back to login page.'
+      )
+  } catch (err) {
+    return res.status(401).send('No matching user found.')
+  }
+})
+
+router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
+  const token = req.query.token
+  const email = req.params.email
+  decryptedEmail = crypto.decrypt(email)
+  try {
+    const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
+    var user = await userCtrl.findUserById(decoded.id)
+    user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
+    return res.status(200).send(
+      'New email now successfully verified !\nYou can go back to login page.'
       )
   } catch (err) {
     return res.status(401).send('No matching user found.')

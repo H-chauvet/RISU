@@ -1,13 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
@@ -17,6 +19,9 @@ import 'package:sizer/sizer.dart';
 
 import 'rating_dialog_content_style.dart';
 
+/// [Function] : get the user details
+/// [email] : mail save in the storage service
+/// return userDetails
 Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
@@ -38,7 +43,12 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
   }
 }
 
-void sendData(String rating, String message) async {
+/// [Function] : Send feedback in the back end
+/// [rating] : rating of Risu
+/// [message] : client's message
+///
+void sendData(BuildContext context, String rating, String message,
+    Function() onSubmit) async {
   String userMail = await storageService.getUserMail();
   final userDetails = await fetchUserDetails(userMail);
   String firstName = userDetails['firstName'];
@@ -58,23 +68,21 @@ void sendData(String rating, String message) async {
   );
 
   if (response.statusCode == 200) {
-    Fluttertoast.showToast(
-      msg: 'Avis envoyé avec succès',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 3,
-    );
+    showCustomToast(context, "Avis envoyé avec succès !", true);
+    onSubmit();
   } else {
-    Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de l'avis",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red);
+    showCustomToast(context, "Erreur durant l'envoi de l'avis", false);
   }
 }
 
+/// RatingDialogContent
+///
+/// Add a new dialog to create rating with message to an item
 class RatingDialogContent extends StatelessWidget {
+  final Function() onSubmit;
+
+  const RatingDialogContent({super.key, required this.onSubmit});
+
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -104,6 +112,7 @@ class RatingDialogContent extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               constraints: BoxConstraints(
                 maxWidth: 30.0.w,
               ),
@@ -126,8 +135,11 @@ class RatingDialogContent extends StatelessWidget {
             const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
-                sendData(context.read<DialogCubit>().state.rating.toString(),
-                    context.read<DialogCubit>().state.message);
+                sendData(
+                    context,
+                    context.read<DialogCubit>().state.rating.toString(),
+                    context.read<DialogCubit>().state.message,
+                    onSubmit);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(

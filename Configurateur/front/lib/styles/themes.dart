@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
+/// Themes file
+///
+/// File to define all the colors for the light and dark themes.
+
 const lightElevatedButtonBackground = Color(0xFF28666E);
 
 final lightTheme = ThemeData(
+  useMaterial3: false,
   brightness: Brightness.light,
   primaryColor: const Color(0xFF162A49),
-  secondaryHeaderColor: const Color(0xFF033F63),
+  secondaryHeaderColor: const Color(0xFF162A49),
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xffFEDC97),
     titleTextStyle: TextStyle(
@@ -59,14 +64,16 @@ final lightTheme = ThemeData(
     ),
   ),
   colorScheme: const ColorScheme.light(background: Color(0xFF162A49)),
+  dividerColor: const Color(0xff033F63),
 );
 
 final darkTheme = ThemeData(
+  useMaterial3: false,
   brightness: Brightness.dark,
   primaryColor: const Color(0xffFEDC97),
   secondaryHeaderColor: const Color(0xffFEDC97),
   appBarTheme: const AppBarTheme(
-    backgroundColor: Color.fromARGB(255, 32, 75, 110),
+    backgroundColor: Color(0xFF162A49),
     titleTextStyle: TextStyle(
       color: Colors.white,
       fontSize: 40,
@@ -111,11 +118,12 @@ final darkTheme = ThemeData(
         )),
   ),
   bottomAppBarTheme: const BottomAppBarTheme(
-    color: Color.fromARGB(255, 32, 75, 110),
+    color: Color(0xFF162A49),
   ),
   colorScheme: const ColorScheme.dark(
     background: Color(0xFF303030),
   ),
+  dividerColor: const Color(0xffFEDC97),
 );
 
 final boxDecorationLightTheme = BoxDecoration(

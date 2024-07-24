@@ -1,28 +1,82 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_map_math/flutter_geo_math.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'container_list.dart';
+import 'container_list_data.dart';
 import 'container_page.dart';
 
 class ContainerPageState extends State<ContainerPage> {
-  List<ContainerList> containers = [];
+  final FlutterMapMath mapMath = FlutterMapMath();
+  PermissionStatus? permission;
   final LoaderManager _loaderManager = LoaderManager();
+  LatLng _userPosition = const LatLng(47.210546, -1.566842); // Epitech Nantes
+  List<ContainerList> containers = [];
 
   @override
   void initState() {
     super.initState();
-    getContainer();
+
+    _updateLocation();
   }
 
-  void getContainer() async {
+  void _updateLocation() async {
+    if (widget.testPosition == null) {
+      await _requestLocationPermission();
+    } else {
+      setState(() {
+        _userPosition = widget.testPosition!;
+      });
+    }
+    if (widget.testContainers.isEmpty) {
+      await _getContainer();
+    } else {
+      setState(() {
+        containers = widget.testContainers;
+      });
+    }
+    await _getDistances();
+  }
+
+  Future<void> _requestLocationPermission() async {
+    permission = await Permission.locationWhenInUse.status;
+    if (permission != PermissionStatus.granted) {
+      return;
+    }
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      );
+      setState(() {
+        _userPosition = LatLng(position.latitude, position.longitude);
+      });
+    } catch (err, stacktrace) {
+      if (mounted) {
+        printCatchError(context, err, stacktrace,
+            message: AppLocalizations.of(context)!
+                .errorOccurredDuringGettingUserLocation);
+        return;
+      }
+      return;
+    }
+  }
+
+  Future<void> _getContainer() async {
     try {
       setState(() {
         _loaderManager.setIsLoading(true);
@@ -49,6 +103,7 @@ class ContainerPageState extends State<ContainerPage> {
           printServerResponse(context, response, 'getContainer');
         }
       }
+      _getDistances();
     } catch (err, stacktrace) {
       if (mounted) {
         setState(() {
@@ -59,6 +114,22 @@ class ContainerPageState extends State<ContainerPage> {
       }
       return;
     }
+  }
+
+  Future<void> _getDistances() async {
+    if (!mounted) return;
+    containers.forEach((container) {
+      setState(() {
+        container.distance = mapMath.distanceBetween(
+          _userPosition.latitude,
+          _userPosition.longitude,
+          container.latitude,
+          container.longitude,
+          "meters",
+        );
+      });
+    });
+    return;
   }
 
   @override
@@ -77,6 +148,7 @@ class ContainerPageState extends State<ContainerPage> {
                       const SizedBox(height: 30),
                       Text(
                         AppLocalizations.of(context)!.containersList,
+                        key: const Key('container-list_title'),
                         style: TextStyle(
                           fontSize: 36,
                           fontWeight: FontWeight.bold,
@@ -90,6 +162,7 @@ class ContainerPageState extends State<ContainerPage> {
                           if (containers.isEmpty)
                             Text(
                               AppLocalizations.of(context)!.containersListEmpty,
+                              key: const Key('container-list_no-container'),
                               style: TextStyle(
                                 fontSize: 18,
                                 color: context.select(
@@ -105,6 +178,8 @@ class ContainerPageState extends State<ContainerPage> {
                               itemBuilder: (context, index) {
                                 final product = containers.elementAt(index);
                                 return ContainerCard(
+                                  key: Key(
+                                      'container-list_container-${product.id}'),
                                   container: product,
                                   onDirectionClicked: widget.onDirectionClicked,
                                 );

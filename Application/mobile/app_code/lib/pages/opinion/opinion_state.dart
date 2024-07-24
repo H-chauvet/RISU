@@ -8,6 +8,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
@@ -19,7 +20,7 @@ import 'opinion_page.dart';
 class OpinionPageState extends State<OpinionPage> {
   int itemId;
 
-  OpinionPageState({required this.itemId});
+  OpinionPageState({required this.itemId, this.opinionsList = const []});
 
   List<dynamic> opinionsList = [];
   int selectedStarFilter = 6;
@@ -417,234 +418,276 @@ class OpinionPageState extends State<OpinionPage> {
   @override
   void initState() {
     super.initState();
-    getOpinions(itemId);
+    if (widget.testOpinions.isNotEmpty) {
+      setState(() {
+        opinionsList = widget.testOpinions;
+      });
+    } else {
+      getOpinions(itemId);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: false,
-        textTitle: AppLocalizations.of(context)!.reviewsList,
-      ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Column(
-                              children: [
-                                DropdownButton<int>(
-                                  key: const Key('opinion-filter_dropdown'),
-                                  value: selectedStarFilter,
-                                  items: [
-                                    DropdownMenuItem<int>(
-                                      value: 0,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_0'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(0),
+    return MyPopScope(
+      child: Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          textTitle: AppLocalizations.of(context)!.reviewsList,
+        ),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.colorScheme.surface),
+        body: (_loaderManager.getIsLoading())
+            ? Center(child: _loaderManager.getLoader())
+            : SingleChildScrollView(
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Column(
+                                children: [
+                                  DropdownButton<int>(
+                                    key: const Key('opinion-filter_dropdown'),
+                                    value: selectedStarFilter,
+                                    items: [
+                                      DropdownMenuItem<int>(
+                                        value: 0,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_0'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(0),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 1,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_1'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(1),
+                                      DropdownMenuItem<int>(
+                                        value: 1,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_1'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(1),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 2,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_2'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(2),
+                                      DropdownMenuItem<int>(
+                                        value: 2,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_2'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(2),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 3,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_3'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(3),
+                                      DropdownMenuItem<int>(
+                                        value: 3,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_3'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(3),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 4,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_4'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(4),
+                                      DropdownMenuItem<int>(
+                                        value: 4,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_4'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(4),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 5,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_5'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(5),
+                                      DropdownMenuItem<int>(
+                                        value: 5,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_5'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(5),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 6,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_all'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .reviewsAll,
+                                      DropdownMenuItem<int>(
+                                        value: 6,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_all'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .reviewsAll,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedStarFilter = value ?? 0;
-                                    });
-                                    getOpinions(itemId);
-                                  },
-                                ),
-                                if (opinionsList.isNotEmpty)
-                                  for (var opinion in opinionsList)
-                                    Card(
-                                      elevation: 5,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 15, 15, 0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  child: Text(
-                                                    (opinion['user'] != null &&
-                                                            opinion['user'][
-                                                                    'firstName'] !=
-                                                                null &&
-                                                            opinion['user'][
-                                                                    'lastName'] !=
-                                                                null)
-                                                        ? '${opinion['user']['firstName']} ${opinion['user']['lastName']}'
-                                                        : AppLocalizations.of(
-                                                                context)!
-                                                            .anonymous,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedStarFilter = value ?? 0;
+                                      });
+                                      getOpinions(itemId);
+                                    },
+                                  ),
+                                  if (opinionsList.isNotEmpty)
+                                    for (var i = 0;
+                                        i < opinionsList.length;
+                                        i++)
+                                      Card(
+                                        key: Key('opinion-card_$i'),
+                                        elevation: 5,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 15, 15, 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    key: Key('opinion-user_$i'),
+                                                    child: Text(
+                                                      (opinionsList[i][
+                                                                      'user'] !=
+                                                                  null &&
+                                                              opinionsList[i][
+                                                                          'user']
+                                                                      [
+                                                                      'firstName'] !=
+                                                                  null &&
+                                                              opinionsList[i][
+                                                                          'user']
+                                                                      [
+                                                                      'lastName'] !=
+                                                                  null)
+                                                          ? '${opinionsList[i]['user']['firstName']} ${opinionsList[i]['user']['lastName']}'
+                                                          : AppLocalizations.of(
+                                                                  context)!
+                                                              .anonymous,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
-                                                ),
-                                                if (opinion['userId'] ==
-                                                    userInformation?.ID)
-                                                  IconButton(
-                                                    key: const Key(
-                                                        'opinion-settings_button'),
-                                                    icon: const Icon(
-                                                        Icons.more_vert),
-                                                    onPressed: () {
-                                                      _showParameterDialog(
-                                                          opinion['id'],
-                                                          opinion['note'],
-                                                          opinion['comment']);
-                                                    },
-                                                  ),
-                                              ],
+                                                  if (opinionsList[i]
+                                                          ['userId'] ==
+                                                      userInformation?.ID)
+                                                    IconButton(
+                                                      key: Key(
+                                                          'opinion-settings_button_$i'),
+                                                      icon: const Icon(
+                                                          Icons.more_vert),
+                                                      onPressed: () {
+                                                        _showParameterDialog(
+                                                            opinionsList[i]
+                                                                ['id'],
+                                                            opinionsList[i]
+                                                                ['note'],
+                                                            opinionsList[i]
+                                                                ['comment']);
+                                                      },
+                                                    ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          ListTile(
-                                            contentPadding:
-                                                const EdgeInsets.all(20)
-                                                    .copyWith(top: 0),
-                                            title: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: List.generate(
-                                                    5,
-                                                    (index) => Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 2),
-                                                      child: Icon(
-                                                        index <
-                                                                int.parse(
-                                                                    opinion[
-                                                                        'note'])
-                                                            ? Icons.star
-                                                            : Icons.star_border,
-                                                        color: index <
-                                                                int.parse(
-                                                                    opinion[
-                                                                        'note'])
-                                                            ? Colors.yellow
-                                                            : Colors.grey,
+                                            ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.all(20)
+                                                      .copyWith(top: 0),
+                                              title: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: List.generate(
+                                                      5,
+                                                      (index) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 2),
+                                                        child: Icon(
+                                                          key: Key(
+                                                              'opinion-star_$i-$index'),
+                                                          index <
+                                                                  int.parse(
+                                                                      opinionsList[
+                                                                              i]
+                                                                          [
+                                                                          'note'])
+                                                              ? Icons.star
+                                                              : Icons
+                                                                  .star_border,
+                                                          color: index <
+                                                                  int.parse(
+                                                                      opinionsList[
+                                                                              i]
+                                                                          [
+                                                                          'note'])
+                                                              ? Colors.yellow
+                                                              : Colors.grey,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  opinion['comment'],
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                ),
-                                              ],
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    key: Key(
+                                                        'opinion-comment_$i'),
+                                                    opinionsList[i]['comment'],
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
+                                  if (opinionsList.isEmpty)
+                                    Text(
+                                      key: const Key('opinion-empty_text'),
+                                      AppLocalizations.of(context)!
+                                          .reviewsEmpty,
+                                      style: const TextStyle(fontSize: 16),
                                     ),
-                                if (opinionsList.isEmpty)
-                                  Text(
-                                    AppLocalizations.of(context)!.reviewsEmpty,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        key: const Key('add_opinion-button'),
-        onPressed: () async {
-          bool signIn = await checkSignin(context);
-          if (!signIn) {
-            return;
-          }
-          _showAddOpinionDialog();
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          key: const Key('add_opinion-button'),
+          onPressed: () async {
+            bool signIn = await checkSignin(context);
+            if (!signIn) {
+              return;
+            }
+            _showAddOpinionDialog();
+          },
+          backgroundColor: Colors.green,
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

@@ -1,17 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
-import 'dart:io';
 import 'dart:async';
-import 'dart:typed_data';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:front/services/http_service.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -20,6 +18,9 @@ import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// ContainerPage
+///
+/// Page who list all the containers and users in the database
 class ContainerPage extends StatefulWidget {
   const ContainerPage({Key? key}) : super(key: key);
 
@@ -27,9 +28,11 @@ class ContainerPage extends StatefulWidget {
   _ContainerPageState createState() => _ContainerPageState();
 }
 
+/// ContainerPageState
+///
 class _ContainerPageState extends State<ContainerPage> {
   List<ContainerListData> containers = [];
-  List<ItemListInfo> items = [];
+  List<ItemList> items = [];
   String jwtToken = '';
   late String itemName = '';
   late String itemDesc = '';
@@ -41,6 +44,7 @@ class _ContainerPageState extends State<ContainerPage> {
   late String selectedCategory = "Tous";
   List<String> categories = [];
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
@@ -59,6 +63,7 @@ class _ContainerPageState extends State<ContainerPage> {
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// [Function] : Get all the containers in the database
   Future<void> fetchContainers() async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/container/listAll'),
@@ -75,14 +80,13 @@ class _ContainerPageState extends State<ContainerPage> {
             .toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
+  /// [Function] : Delete container
+  /// [conteneur] : Container who will be deleted
   Future<void> deleteContainer(ContainerListData conteneur) async {
     final Uri url = Uri.parse("http://${serverIp}:3000/api/container/delete");
     final response = await http.post(
@@ -94,22 +98,15 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Conteneur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Le conteneur a bien été supprimé !", true);
       fetchContainers();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la suppression du conteneur: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression du conteneur", false);
     }
   }
 
+  /// [Function] : Get all the items in the database
   Future<void> fetchItems() async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/items/listAll'),
@@ -121,21 +118,18 @@ class _ContainerPageState extends State<ContainerPage> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> itemsData = responseData["item"];
       setState(() {
-        items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
         categories =
             items.map((item) => item.category ?? 'Tous').toSet().toList();
         categories.sort();
       });
     } else {
-      Fluttertoast.showToast(
-        msg:
-            "Erreur lors de l'envoi des informations de l'objet: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
+  /// [Function] : Get all the items with the selected category in the database
   Future<void> fetchItemsByCategory() async {
     if (selectedCategory == 'Tous') {
       fetchItems();
@@ -152,19 +146,17 @@ class _ContainerPageState extends State<ContainerPage> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> itemsData = responseData["item"];
       setState(() {
-        items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la récupération des items par catégorie: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
-  Future<void> deleteItem(ItemListInfo item) async {
+  /// [Function] : Delete Item
+  /// [item] : Item who will be deleted
+  Future<void> deleteItem(ItemList item) async {
     late int id;
     if (item.id != null) {
       id = item.id!;
@@ -179,35 +171,31 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Objet supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Article supprimé avec succès", true);
       fetchItems();
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la suppression du objet: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression de l'article", false);
     }
   }
 
+  /// [Function] : Update the item's informations
+  ///
+  /// [nameController] : Controller for the item's name
+  /// [descController] : Controller for the item's description
+  /// [isAvailable] : Boolean to know if the item is available or not
+  /// [price] : Item's price
+  /// [item] : Item's informations
+  /// [itemId] : Item's id
   Future<void> apiUpdateItem(
       TextEditingController nameController,
       TextEditingController descController,
       bool isAvailable,
       double price,
-      ItemListInfo item,
+      ItemList item,
       int itemId) async {
     if (price <= 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un prix valide pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
     final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
@@ -228,30 +216,27 @@ class _ContainerPageState extends State<ContainerPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       fetchItemsByCategory();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Show a pop up to modify the item's informations
+  ///
+  /// [initialLastName] : Item's name
+  /// [initialDesc] : Item's description
+  /// [price] : Item's price
+  /// [item] : Item's informations
+  /// [itemId] : Item's id
   Future<void> showEditPopupName(
       BuildContext context,
       String initialLastName,
       String initialDesc,
       int itemId,
-      ItemListInfo item,
+      ItemList item,
       Function(String, String) onEdit) async {
     TextEditingController nameController = TextEditingController();
     TextEditingController descController = TextEditingController();
@@ -268,6 +253,9 @@ class _ContainerPageState extends State<ContainerPage> {
               title: Text(
                 "Modifier un objet",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
                       : tabletFontSize,
@@ -290,6 +278,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         Text(
                           "Disponible",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize,
@@ -326,12 +317,22 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text(
                     "Annuler",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -339,6 +340,13 @@ class _ContainerPageState extends State<ContainerPage> {
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiUpdateItem(nameController, descController, available,
                         price, item, itemId);
@@ -347,6 +355,9 @@ class _ContainerPageState extends State<ContainerPage> {
                   child: Text(
                     "Modifier",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize,
@@ -361,6 +372,12 @@ class _ContainerPageState extends State<ContainerPage> {
     );
   }
 
+  /// [Function] : Create new item in the database
+  ///
+  /// [nameController] : Controller for the item's name
+  /// [descController] : Controller for the item's description
+  /// [price] : Item's price
+  /// [selectedContainerId] : Item's container id
   Future<void> apiCreateItem(
       TextEditingController nameController,
       TextEditingController descController,
@@ -368,39 +385,19 @@ class _ContainerPageState extends State<ContainerPage> {
       double price,
       int selectedContainerId) async {
     if (nameController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un nom pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un nom d'article", false);
       return;
     }
     if (price <= 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un prix valide pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
     if (selectedContainerId == 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez sélectionner un conteneur",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez sélectionner un conteneur", false);
       return;
     }
     if (descController.text.isEmpty) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir une description pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez saisir une description", false);
       return;
     }
     final String apiUrl = "http://$serverIp:3000/api/items/create";
@@ -421,22 +418,15 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Objet créé avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Article créé avec succès !", true);
       fetchItemsByCategory();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur lors de la création de l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Erreur durant la création de l'article", false);
     }
   }
 
+  /// [Function] : Show pop up to create new item in the database
+  ///
   Future<void> showCreateItems(BuildContext context,
       Function(String, bool, double, int, String) onEdit) async {
     TextEditingController nameController = TextEditingController();
@@ -455,6 +445,9 @@ class _ContainerPageState extends State<ContainerPage> {
               title: Text(
                 "Créer un nouvel objet",
                 style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize
                       : tabletBigFontSize,
@@ -477,6 +470,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         Text(
                           "Disponible",
                           style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletBigFontSize,
@@ -529,12 +525,22 @@ class _ContainerPageState extends State<ContainerPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                   child: Text(
                     "Annuler",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletBigFontSize,
@@ -542,6 +548,13 @@ class _ContainerPageState extends State<ContainerPage> {
                   ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiCreateItem(nameController, description, available, price,
                         selectedContainerId);
@@ -551,6 +564,9 @@ class _ContainerPageState extends State<ContainerPage> {
                   child: Text(
                     "Créer",
                     style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletBigFontSize,
@@ -565,7 +581,7 @@ class _ContainerPageState extends State<ContainerPage> {
     );
   }
 
-  Widget buildItemWidget(BuildContext context, ItemListInfo item) {
+  Widget buildItemWidget(BuildContext context, ItemList item) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return GestureDetector(
       onTap: () {},
@@ -576,7 +592,7 @@ class _ContainerPageState extends State<ContainerPage> {
             Expanded(
               child: ListTile(
                 title: Text(
-                  "nom : ${item.name}",
+                  "Nom : ${item.name}",
                   style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
@@ -585,7 +601,7 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 subtitle: item.description != null
                     ? Text(
-                        "description : ${item.description!}",
+                        "Description : ${item.description!}",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -593,7 +609,7 @@ class _ContainerPageState extends State<ContainerPage> {
                         ),
                       )
                     : Text(
-                        "description : pas de description",
+                        "Description : Pas de description",
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -633,6 +649,7 @@ class _ContainerPageState extends State<ContainerPage> {
     );
   }
 
+  /// [Widget] : Build the container and items manager page
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return DefaultTabController(
@@ -648,16 +665,16 @@ class _ContainerPageState extends State<ContainerPage> {
               SliverAppBar(
                 floating: true,
                 elevation: 4,
-                backgroundColor: Provider.of<ThemeService>(context).isDark
-                    ? darkTheme.colorScheme.background
-                    : lightTheme.colorScheme.background,
+                backgroundColor: Colors.transparent,
                 bottom: TabBar(
                   tabs: [
                     Tab(
                       child: Text(
                         'Liste des conteneurs',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -668,7 +685,9 @@ class _ContainerPageState extends State<ContainerPage> {
                       child: Text(
                         'Liste des objets',
                         style: TextStyle(
-                            color: Colors.blue,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletBigFontSize),
@@ -676,7 +695,9 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                   ],
                   labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                  indicatorColor: Colors.blue,
+                  indicatorColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                 ),
                 pinned: true,
               ),
@@ -766,8 +787,6 @@ class _ContainerPageState extends State<ContainerPage> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Color.fromARGB(255, 28, 125, 182),
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 20, vertical: 10),
                                       shape: RoundedRectangleBorder(
@@ -778,11 +797,23 @@ class _ContainerPageState extends State<ContainerPage> {
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        const Icon(Icons.add),
+                                        Icon(
+                                          Icons.add,
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                        ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Ajouter un items',
+                                          'Ajouter un article',
                                           style: TextStyle(
+                                            color: Provider.of<ThemeService>(
+                                                        context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
                                             fontSize: screenFormat ==
                                                     ScreenFormat.desktop
                                                 ? desktopFontSize

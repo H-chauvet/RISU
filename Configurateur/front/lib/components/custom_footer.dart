@@ -8,6 +8,9 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// [StatefulWidget] : CustomFooter
+///
+/// Footer for the web pages
 class CustomFooter extends StatefulWidget {
   const CustomFooter({super.key, required BuildContext context});
 
@@ -15,16 +18,21 @@ class CustomFooter extends StatefulWidget {
   State<CustomFooter> createState() => CustomFooterState();
 }
 
+/// CustomFooterState
+///
 class CustomFooterState extends State<CustomFooter> {
   String? token = '';
   String? userMail = '';
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
     setState(() {});
   }
 
+  /// [Function] : Check in storage service is the token is available
+  /// Change the path of page if you are connected or not
   void goToCreation() async {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
@@ -39,6 +47,7 @@ class CustomFooterState extends State<CustomFooter> {
     checkToken();
   }
 
+  /// [Widget] : build Footer Component
   @override
   Widget build(BuildContext context) {
     return Footer(

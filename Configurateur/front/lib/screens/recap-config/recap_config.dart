@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:go_router/go_router.dart';
 
+/// RecapConfigPage
+///
+/// The Page show all the informations of the container created by the user
 class RecapConfigPage extends StatefulWidget {
   const RecapConfigPage({Key? key}) : super(key: key);
 
@@ -9,13 +15,18 @@ class RecapConfigPage extends StatefulWidget {
   _RecapConfigPageState createState() => _RecapConfigPageState();
 }
 
+/// _RecapConfigPageState
+///
 class _RecapConfigPageState extends State<RecapConfigPage> {
   @override
   void initState() {
     super.initState();
+
+    /// Check if the user is connected
     MyAlertTest.checkSignInStatus(context);
   }
 
+  /// [Widget] : Build the recap of the container page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +80,13 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                 ),
                 const SizedBox(width: 16.0),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    storageService.removeStorage('token');
+                    storageService.removeStorage('tokenExpiration');
+                    showCustomToast(
+                        context, "Vous êtes bien déconnecté !", true);
+                    context.go("/");
+                  },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),

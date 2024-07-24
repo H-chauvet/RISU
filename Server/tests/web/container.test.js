@@ -3,9 +3,11 @@ const supertest = require("supertest");
 const containerRouter = require("../../routes/Web/container");
 const containerCtrl = require("../../controllers/Common/container");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../middleware/jwt");
+jest.mock("../../controllers/Web/user");
 
 const app = express();
 app.use(express.json());
@@ -73,9 +75,18 @@ describe("Container Route Tests", () => {
     };
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockReturnValueOnce({
+      userMail: "test@gmail.com",
+    });
     containerCtrl.createContainer.mockResolvedValueOnce({
       id: 1,
       name: "Container 1",
+    });
+
+    userCtrl.findUserByEmail.mockResolvedValueOnce({
+      id: 1,
+      userMail: "test@gmail.com",
+      organizationId: 1,
     });
 
     const response = await supertest(app)
@@ -86,7 +97,7 @@ describe("Container Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Container 1" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
-    expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody);
+    expect(containerCtrl.createContainer).toHaveBeenCalledWith(requestBody, 1);
   });
 
   it("should handle valid container update", async () => {
@@ -115,7 +126,6 @@ describe("Container Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(200);
-    console.log("body: " + response.body.name);
     expect(response.body).toEqual({ id: 1, name: "Container 2" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
   });
@@ -123,8 +133,8 @@ describe("Container Route Tests", () => {
   it("should update the localisation", async () => {
     var requestBody = {
       id: 1,
-      latitude: 10.0,
-      longitude: 20.0,
+      latitude: 45.819608,
+      longitude: 15.897446,
     };
 
     containerCtrl.updateContainerPosition.mockResolvedValueOnce({
@@ -133,13 +143,18 @@ describe("Container Route Tests", () => {
       containerMapping: "mapping2",
       height: 15,
       width: 25,
-      latitude: 10.0,
-      longitude: 20.0,
-      city: "City",
-      adress: "123 Street",
+      latitude: 45.819608,
+      longitude: 15.897446,
+      city: "Zagreb",
+      adress: "Jačkovina",
       informations: "Updated info",
       designs: ["design3", "design4"],
       saveName: "container2",
+    });
+
+    containerCtrl.getLocalisation.mockResolvedValueOnce({
+      city: "Zagreb",
+      adress: "Jačkovina",
     });
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
 
@@ -155,10 +170,10 @@ describe("Container Route Tests", () => {
       containerMapping: "mapping2",
       height: 15,
       width: 25,
-      latitude: 10.0,
-      longitude: 20.0,
-      city: "City",
-      adress: "123 Street",
+      latitude: 45.819608,
+      longitude: 15.897446,
+      city: "Zagreb",
+      adress: "Jačkovina",
       informations: "Updated info",
       designs: ["design3", "design4"],
       saveName: "container2",

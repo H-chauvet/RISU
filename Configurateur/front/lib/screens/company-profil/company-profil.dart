@@ -1,20 +1,25 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
-import 'package:front/screens/company-profil/container-profil.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/services/http_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
+/// OrganizationList
+///
+/// Define the data of organization in back end
+/// [id] : Organization's id
+/// [name] : Organization's name
+/// [type] : Organization's type
+/// [affiliate] : Users afiliate to the organization
+/// [containers] : Containers created by the organization
+/// [contactInformation] : More informations about the organization
 class OrganizationList {
   final int? id;
   final String? name;
@@ -54,6 +59,9 @@ class OrganizationList {
   }
 }
 
+/// CompanyProfilPage
+///
+/// Profil page for the organization of the user
 class CompanyProfilPage extends StatefulWidget {
   const CompanyProfilPage({
     Key? key,
@@ -63,6 +71,8 @@ class CompanyProfilPage extends StatefulWidget {
   State<CompanyProfilPage> createState() => CompanyProfilPageState();
 }
 
+/// CompanyProfilPageState
+///
 class CompanyProfilPageState extends State<CompanyProfilPage> {
   OrganizationList organization = OrganizationList(
       id: null,
@@ -80,9 +90,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late DateTime createdDate;
   late String contactInformation = '';
   late String company;
-  late int organizationId;
+  int organizationId = 0;
   String jwtToken = '';
 
+  /// [Function] : get all the containers created by the organization
   Future<void> fetchContainersById() async {
     final response = await http.get(
       Uri.parse(
@@ -100,14 +111,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             .toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur lors de la récupération des informations", false);
     }
   }
 
+  /// [Function] : Update contact information of the organization
+  /// [contactInformationController] : Controller to modify the contactInformation value
   Future<void> apiUpdateContactInfoOrganization(
       TextEditingController contactInformationController) async {
     final String apiUrl =
@@ -125,26 +135,18 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modification effectuée avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Display pop up where you can modify the contactInformation
+  /// [initialContactInformation] : Contact information of the organization
   Future<void> showEditPopupContactInformation(BuildContext context,
-      String initialLastName, Function(String) onEdit) async {
+      String initialContactInformation, Function(String) onEdit) async {
     TextEditingController contactInformationController =
         TextEditingController();
 
@@ -160,10 +162,11 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key('information'),
                   controller: contactInformationController,
                   decoration: InputDecoration(
                       labelText: "Nouvelles informations",
-                      hintText: initialLastName),
+                      hintText: initialContactInformation),
                 ),
               ],
             ),
@@ -181,9 +184,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-information'),
+              ),
             ),
             ElevatedButton(
+              key: const Key('button-information'),
               onPressed: () async {
                 apiUpdateContactInfoOrganization(contactInformationController);
                 onEdit(contactInformationController.text);
@@ -196,7 +203,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: const Text(
+                "Modifier",
+              ),
             ),
           ],
         );
@@ -204,12 +213,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
   }
 
-  Future<void> apiUpdateType(
-      TextEditingController contactInformationController) async {
+  /// [Function] : Update type of the organization
+  /// [typeController] : Controller to modify the type value
+  Future<void> apiUpdateType(TextEditingController typeController) async {
     final String apiUrl =
         "http://$serverIp:3000/api/organization/update-type/$organizationId";
     var body = {
-      'type': contactInformationController.text,
+      'type': typeController.text,
     };
 
     var response = await http.post(
@@ -221,24 +231,16 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Display pop up where you can modify the type
+  /// [initialType] : Type of the organization
   Future<void> showEditPopupType(
       BuildContext context, String initialType, Function(String) onEdit) async {
     TextEditingController typeController = TextEditingController();
@@ -255,6 +257,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key('type'),
                   controller: typeController,
                   decoration: InputDecoration(
                       labelText: "Nouveau type", hintText: initialType),
@@ -275,9 +278,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: const Text(
+                "Annuler",
+                key: const Key('cancel-edit-type'),
+              ),
             ),
             ElevatedButton(
+              key: const Key('button-type'),
               onPressed: () async {
                 apiUpdateType(typeController);
                 onEdit(typeController.text);
@@ -290,7 +297,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: const Text(
+                "Modifier",
+              ),
             ),
           ],
         );
@@ -298,6 +307,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
   }
 
+  /// [Function] : Delete container
+  /// [container] : The container who will be deleted
   Future<void> deleteContainer(ContainerListData container) async {
     late int id;
     if (container.id != null) {
@@ -314,22 +325,16 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Conteneur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Conteneur supprimé avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la suppression du container: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression du conteneur", false);
     }
   }
 
+  /// [Function] : Get the organization details
+  /// [email] : User's mail
   Future<void> fetchOrganizationDetails(String email) async {
     try {
       final String apiUrl =
@@ -347,7 +352,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         final dynamic organizationData = userDetails["organization"];
         final dynamic organizationIdData = userDetails["organizationId"];
         organizationId = organizationIdData;
-        if (organizationId != null) {
+        if (organizationId > 0) {
           fetchContainersById();
         } else {
           return;
@@ -374,6 +379,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     }
   }
 
+  /// [Function] : Check if the token is still available
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
@@ -395,6 +401,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     checkToken();
   }
 
+  /// [Widget] : Build the company profil page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -408,7 +415,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             children: [
               organization.id != null
                   ? Container(
-                      width: 500,
+                      // width: 500,
                       height: 200,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -478,6 +485,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         ),
                                   const SizedBox(width: 5.0),
                                   InkWell(
+                                    key: Key('edit-information'),
                                     onTap: () async {
                                       await showEditPopupContactInformation(
                                           context, contactInformation,
@@ -521,6 +529,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         ),
                                   const SizedBox(width: 5.0),
                                   InkWell(
+                                    key: const Key('edit-type'),
                                     onTap: () async {
                                       await showEditPopupType(context, type,
                                           (String newtype) {

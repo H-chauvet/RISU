@@ -2,6 +2,11 @@ const mobileSignUp = require("./Mobile/auth/signup");
 const mobileLogIn = require("./Mobile/auth/login");
 const mobileLogInRefreshToken = require('./Mobile/auth/loginRefreshToken');
 const mobileMailVerification = require("./Mobile/auth/mailVerification");
+const mobileNewMailVerification = require("./Mobile/auth/newEmailVerification");
+const mobileContactAssignedId = require("./Mobile/contact/assignedId")
+const mobileContactAssignedInfo = require("./Mobile/contact/assignedInfo")
+const mobileContactChatUid = require("./Mobile/contact/chatUid")
+const mobileContactTickets = require("./Mobile/contact/tickets")
 const mobileContainerListAll = require("./Mobile/container/listAll");
 const mobileContainerId = require("./Mobile/container/containerId");
 const mobileContainerArticleList = require("./Mobile/container/articleList");
@@ -9,6 +14,7 @@ const mobileFavorite = require("./Mobile/items/favorites/favorite");
 const mobileMyFavorites = require("./Mobile/items/favorites/myFavorites");
 const mobileItemId = require("./Mobile/items/itemId");
 const mobileItemListAll = require("./Mobile/items/listAll");
+const mobileItemSimilar = require("./Mobile/items/similarItems");
 const mobileOpinion = require("./Mobile/opinion/opinion");
 const mobileOpinionId = require("./Mobile/opinion/opinionId");
 const mobileRentArticle = require("./Mobile/rent/article");
@@ -22,7 +28,11 @@ const mobileUserResetPassword = require("./Mobile/user/resetPassword");
 const mobileUserUpdate = require("./Mobile/user/update");
 const mobileUserId = require("./Mobile/user/userId");
 
-const WebContact = require("./Web/contact/contact");
+const WebCreateTicket = require("./Web/tickets/create");
+const WebAllTickets = require("./Web/tickets/allTickets");
+const WebAssignTicket = require("./Web/tickets/assign");
+const WebUserTicket = require("./Web/tickets/userTicket");
+const WebAssignInfoTicket = require('./Web/tickets/assignedInfo');
 const WebContainerGet = require("./Web/container/get");
 const WebContainerDelete = require("./Web/container/delete");
 const WebContainerUpdate = require("./Web/container/update");
@@ -48,8 +58,6 @@ const WebItemListAllByContainerId = require("./Web/items/listAllByContainerId");
 const WebItemUpdateName = require("./Web/items/updateName");
 const WebItemUpdateDescription = require("./Web/items/updateDescription");
 const WebItemUpdatePrice = require("./Web/items/updatePrice");
-const WebMessageList = require("./Web/messages/list");
-const WebMessageDelete = require("./Web/messages/delete");
 const WebPayment = require("./Web/payment/card-pay");
 const WebUserConfirmedRegister = require("./Web/user/confirmed-register");
 const WebUserDelete = require("./Web/user/delete");
@@ -67,6 +75,7 @@ const WebUserUpdatePasswordEmail = require("./Web/user/update-password-email");
 const WebUserUpdatePassword = require("./Web/user/update-password");
 const WebUserDetails = require("./Web/user/userdetails");
 const WebContainerUpdatePosition = require("./Web/container/updatePosition");
+const WebDownloadApk = require("./Web/download/download");
 
 module.exports = {
   paths: {
@@ -82,6 +91,9 @@ module.exports = {
     "/api/mobile/auth/mailVerification": {
       ...mobileMailVerification,
     },
+    "/api/mobile/auth/newEmailVerification": {
+      ...mobileNewMailVerification,
+    },
     "/api/mobile/container/listAll": {
       ...mobileContainerListAll,
     },
@@ -96,6 +108,21 @@ module.exports = {
     },
     "/api/mobile/article/:articleId": {
       ...mobileItemId,
+    },
+    "/api/mobile/article/:articleId/similar": {
+      ...mobileItemSimilar,
+    },
+    "/api/mobile/ticket" : {
+      ...mobileContactTickets
+    },
+    "/api/mobile/ticket/assign/:assignedId":  {
+      ...mobileContactAssignedId
+    },
+    "/api/mobile/ticket/chatUid":  {
+      ...mobileContactChatUid
+    },
+    "/api/mobile/ticket/assigned-info/:assignedId":  {
+      ...mobileContactAssignedInfo
     },
     "/api/mobile/favorite": {
       ...mobileMyFavorites,
@@ -139,8 +166,20 @@ module.exports = {
     "/api/mobile/user/": {
       ...mobileUserUpdate,
     },
-    "/api/contact": {
-      ...WebContact,
+    "/api/tickets/create": {
+      ...WebCreateTicket,
+    },
+    "/api/tickets/assign/:assignedId": {
+      ...WebAssignTicket,
+    },
+    "/api/tickets/all-tickets": {
+      ...WebAllTickets,
+    },
+    "/api/tickets/user-ticket/:userId": {
+      ...WebUserTicket,
+    },
+    "/api/tickets/assigned-info/:assignedId": {
+      ...WebAssignInfoTicket,
     },
     "/api/container/get": {
       ...WebContainerGet,
@@ -211,12 +250,6 @@ module.exports = {
     "/api/items/update-price": {
       ...WebItemUpdatePrice,
     },
-    "/api/messages/list": {
-      ...WebMessageList,
-    },
-    "/api/messages/delete": {
-      ...WebMessageDelete,
-    },
     "/api/payment/card-pay": {
       ...WebPayment,
     },
@@ -267,6 +300,9 @@ module.exports = {
     },
     "/api/organization/update-type/:id": {
       ...WebOrganizationUpdateType,
+    },
+    "/api/apk/download": {
+      ...WebDownloadApk,
     },
   },
 };

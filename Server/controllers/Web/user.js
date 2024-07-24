@@ -105,14 +105,13 @@ exports.registerByEmail = async (user) => {
 exports.registerConfirmation = (email) => {
   let generatedUuid = "";
   this.findUserByEmail(email).then((user) => {
-    console.log(user);
     generatedUuid = user.uuid;
     let mail = {
       from: "risu.epitech@gmail.com",
       to: email,
       subject: "Confirmation d'inscription",
       html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://risu.dns-dynamic.net:80/#/confirmed-user/' +
+        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.77.215.103/#/confirmed-user/' +
         generatedUuid +
         '">Confirmer</a>' +
         "</p>",
@@ -184,14 +183,13 @@ exports.updatePassword = (user) => {
 exports.forgotPassword = (email) => {
   let generatedUuid = "";
   this.findUserByEmail(email).then((user) => {
-    console.log(user);
     generatedUuid = user.uuid;
     let mail = {
       from: "risu.epitech@gmail.com",
       to: email,
       subject: "Réinitialisation de mot de passe",
       html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://risu.dns-dynamic.net:80/#/password-change/' +
+        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/password-change/' +
         generatedUuid +
         '">Réinitialiser le mot de passe</a>' +
         "</p>",

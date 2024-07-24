@@ -8,6 +8,7 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
@@ -131,96 +132,98 @@ class NotificationsPageState extends State<NotificationsPage> {
     isAllChecked = isFavoriteItemsAvailableChecked &&
         isEndOfRentingChecked &&
         isNewsOffersChecked;
-    return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select(
-          (ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor,
+    return MyPopScope(
+      child: Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select(
+            (ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.secondaryHeaderColor,
+          ),
+          showBackButton: true,
         ),
-        showBackButton: true,
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: context.select(
-        (ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.background,
-      ),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)!
-                        .notificationsPreferencesManagement,
-                    style: TextStyle(
-                      fontSize: 32, // Taille de la police
-                      fontWeight: FontWeight.bold, // Gras
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.primaryColor),
+        resizeToAvoidBottomInset: true,
+        backgroundColor: context.select(
+          (ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.colorScheme.surface,
+        ),
+        body: (_loaderManager.getIsLoading())
+            ? Center(child: _loaderManager.getLoader())
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
+                      AppLocalizations.of(context)!
+                          .notificationsPreferencesManagement,
+                      style: TextStyle(
+                        fontSize: 32, // Taille de la police
+                        fontWeight: FontWeight.bold, // Gras
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.primaryColor),
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  createSwitch(
-                    const Key('notifications-switch_disponibility_favorite'),
-                    AppLocalizations.of(context)!
-                        .availabilityOfAFavoriteArticle,
-                    isFavoriteItemsAvailableChecked,
-                    (newValue) => setState(
-                        () => isFavoriteItemsAvailableChecked = newValue),
-                  ),
-                  createSwitch(
-                    const Key('notifications-switch_end_renting'),
-                    AppLocalizations.of(context)!.endOfRenting,
-                    isEndOfRentingChecked,
-                    (newValue) =>
-                        setState(() => isEndOfRentingChecked = newValue),
-                  ),
-                  const MyDivider(),
-                  createSwitch(
-                    const Key('notifications-switch_news_offers_risu'),
-                    AppLocalizations.of(context)!.newsOffersTipsRisu,
-                    isNewsOffersChecked,
-                    (newValue) =>
-                        setState(() => isNewsOffersChecked = newValue),
-                  ),
-                  const MyDivider(),
-                  createSwitch(
-                    const Key('notifications-switch_all'),
-                    AppLocalizations.of(context)!.all,
-                    isAllChecked,
-                    (newValue) => {
-                      setState(() {
-                        isAllChecked = newValue;
-                        isFavoriteItemsAvailableChecked = newValue;
-                        isEndOfRentingChecked = newValue;
-                        isNewsOffersChecked = newValue;
-                      })
-                    },
-                  ),
-                  // Put the button at the bottom of the screen
-                  const Expanded(child: SizedBox()),
-                  MyButton(
-                    key: const Key('notifications-button_save'),
-                    text: AppLocalizations.of(context)!.save,
-                    onPressed: () => saveNotifications().then(
-                      (response) => {
-                        if (response != null && response.statusCode == 200)
-                          {
-                            MyToastMessage.show(
-                              context: context,
-                              message: AppLocalizations.of(context)!
-                                  .notificationsSaved,
-                            ),
-                          },
+                    const SizedBox(height: 20),
+                    createSwitch(
+                      const Key('notifications-switch_disponibility_favorite'),
+                      AppLocalizations.of(context)!
+                          .availabilityOfAFavoriteArticle,
+                      isFavoriteItemsAvailableChecked,
+                      (newValue) => setState(
+                          () => isFavoriteItemsAvailableChecked = newValue),
+                    ),
+                    createSwitch(
+                      const Key('notifications-switch_end_renting'),
+                      AppLocalizations.of(context)!.endOfRenting,
+                      isEndOfRentingChecked,
+                      (newValue) =>
+                          setState(() => isEndOfRentingChecked = newValue),
+                    ),
+                    const MyDivider(),
+                    createSwitch(
+                      const Key('notifications-switch_news_offers_risu'),
+                      AppLocalizations.of(context)!.newsOffersTipsRisu,
+                      isNewsOffersChecked,
+                      (newValue) =>
+                          setState(() => isNewsOffersChecked = newValue),
+                    ),
+                    const MyDivider(),
+                    createSwitch(
+                      const Key('notifications-switch_all'),
+                      AppLocalizations.of(context)!.all,
+                      isAllChecked,
+                      (newValue) => {
+                        setState(() {
+                          isAllChecked = newValue;
+                          isFavoriteItemsAvailableChecked = newValue;
+                          isEndOfRentingChecked = newValue;
+                          isNewsOffersChecked = newValue;
+                        })
                       },
                     ),
-                  ),
-                ],
+                    // Put the button at the bottom of the screen
+                    const Expanded(child: SizedBox()),
+                    MyButton(
+                      key: const Key('notifications-button_save'),
+                      text: AppLocalizations.of(context)!.save,
+                      onPressed: () => saveNotifications().then(
+                        (response) => {
+                          if (response != null && response.statusCode == 200)
+                            {
+                              MyToastMessage.show(
+                                context: context,
+                                message: AppLocalizations.of(context)!
+                                    .notificationsSaved,
+                              ),
+                            },
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }

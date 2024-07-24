@@ -1,21 +1,21 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/components/outlined_button.dart';
-import 'package:risu/components/text_input.dart';
-import 'package:risu/components/filled_button.dart';
 
+import 'article_filters_page.dart';
 import 'article_list_data.dart';
 import 'list_page.dart';
-import 'article_filters_page.dart';
 
 class ArticleListState extends State<ArticleListPage> {
   late Timer _debounceTimer;
@@ -28,7 +28,7 @@ class ArticleListState extends State<ArticleListPage> {
   double? min;
   double? max;
   bool isAscending = true;
-  bool isAvailable = true;
+  bool isAvailable = false;
   String articleName = '';
   String? selectedCategoryId = 'null';
   TextEditingController _searchController = TextEditingController();
@@ -86,9 +86,14 @@ class ArticleListState extends State<ArticleListPage> {
     late http.Response response;
 
     try {
-      final url = Uri.parse(
-          '$baseUrl/api/mobile/container/$containerId/articleslist'
-          '?articleName=$articleName&isAscending=$isAscending&isAvailable=$isAvailable${categoryId != null ? '&categoryId=$categoryId' : 'null'}&sortBy=$sortBy${min != null ? '&min=$min' : ''}${max != null ? '&max=$max' : ''}');
+      final url =
+          Uri.parse('$baseUrl/api/mobile/container/$containerId/articleslist?'
+              '${articleName.isNotEmpty ? 'articleName=$articleName&' : ''}'
+              'isAscending=$isAscending&isAvailable=$isAvailable'
+              '${categoryId != null ? '&categoryId=$categoryId' : ''}'
+              '&sortBy=$sortBy'
+              '${min != null ? '&min=$min' : ''}'
+              '${max != null ? '&max=$max' : ''}');
       response = await http.get(
         url,
         headers: <String, String>{
@@ -98,8 +103,6 @@ class ArticleListState extends State<ArticleListPage> {
       if (response.statusCode == 200) {
         dynamic responseData = jsonDecode(response.body);
         return responseData;
-      } else if (response.statusCode == 204) {
-        return [];
       }
       if (context.mounted) {
         printServerResponse(context, response, 'getItemsData',
@@ -125,7 +128,7 @@ class ArticleListState extends State<ArticleListPage> {
 
   void _onTextChanged(String value) {
     _debounceTimer.cancel();
-    _debounceTimer = Timer(Duration(milliseconds: 500), () {
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
       setState(() {
         articleName = value;
       });
@@ -138,12 +141,17 @@ class ArticleListState extends State<ArticleListPage> {
     super.initState();
     _debounceTimer = Timer(Duration.zero, () {});
     _containerId = widget.containerId;
-    getItemsData(context, _containerId, selectedCategoryId)
-        .then((dynamic value) {
-      setState(() {
-        _itemsDatas = value;
-      });
+    setState(() {
+      _itemsDatas = widget.testItemData;
     });
+    if (_itemsDatas.isEmpty) {
+      getItemsData(context, _containerId, selectedCategoryId)
+          .then((dynamic value) {
+        setState(() {
+          _itemsDatas = value;
+        });
+      });
+    }
     getArticleCategories().then((dynamic value) {
       setState(() {
         _articleCategories = value;
@@ -158,117 +166,124 @@ class ArticleListState extends State<ArticleListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: false,
-        textTitle: AppLocalizations.of(context)!.articlesList,
-      ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  margin: const EdgeInsets.only(
-                      left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 32),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.8,
-                              child: MyTextInput(
-                                key: const Key('filter-textInput_name'),
-                                onChanged: (value) {
-                                  _onTextChanged(value);
-                                },
-                                labelText:
-                                    AppLocalizations.of(context)!.articleName,
-                                keyboardType: TextInputType.text,
-                                icon: Icons.search,
-                                rightIcon: Icons.tune,
-                                rightIconOnPressed: () async {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ArticleFiltersPage(
-                                        isAscending: isAscending,
-                                        isAvailable: isAvailable,
-                                        selectedCategoryId: selectedCategoryId,
-                                        sortBy: sortBy,
-                                        articleCategories: _articleCategories,
+    return MyPopScope(
+      child: Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          textTitle: AppLocalizations.of(context)!.articlesList,
+        ),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.colorScheme.surface),
+        body: (_loaderManager.getIsLoading())
+            ? Center(child: _loaderManager.getLoader())
+            : SingleChildScrollView(
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                        left: 10.0, right: 10.0, top: 20.0, bottom: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 32),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                child: MyTextInput(
+                                  key: const Key('filter-textInput_name'),
+                                  onChanged: (value) {
+                                    _onTextChanged(value);
+                                  },
+                                  labelText:
+                                      AppLocalizations.of(context)!.articleName,
+                                  keyboardType: TextInputType.text,
+                                  icon: Icons.search,
+                                  rightIcon: Icons.tune,
+                                  rightIconKey: const Key('list-icon-filter'),
+                                  rightIconOnPressed: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            ArticleFiltersPage(
+                                          isAscending: isAscending,
+                                          isAvailable: isAvailable,
+                                          selectedCategoryId:
+                                              selectedCategoryId,
+                                          sortBy: sortBy,
+                                          articleCategories: _articleCategories,
+                                          min: min,
+                                          max: max,
+                                        ),
                                       ),
-                                    ),
-                                  ).then((filters) {
-                                    if (filters != null) {
-                                      setState(() {
-                                        isAscending = filters['isAscending'];
-                                        isAvailable = filters['isAvailable'];
-                                        selectedCategoryId =
-                                            filters['selectedCategoryId'];
-                                        sortBy = filters['sortBy'];
-                                        min = filters['min'];
-                                        max = filters['max'];
-                                        updateItemsList();
-                                      });
-                                    }
-                                  });
-                                },
+                                    ).then((filters) {
+                                      if (filters != null) {
+                                        setState(() {
+                                          isAscending = filters['isAscending'];
+                                          isAvailable = filters['isAvailable'];
+                                          selectedCategoryId =
+                                              filters['selectedCategoryId'];
+                                          sortBy = filters['sortBy'];
+                                          min = filters['min'];
+                                          max = filters['max'];
+                                          updateItemsList();
+                                        });
+                                      }
+                                    });
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      if (_itemsDatas.isEmpty) ...[
-                        Text(
-                          AppLocalizations.of(context)!.articlesListEmpty,
-                          key: const Key('articles-list_no-article'),
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: context.select(
-                                (ThemeProvider themeProvider) =>
-                                    themeProvider.currentTheme.primaryColor),
-                            shadows: [
-                              Shadow(
-                                color: context.select(
-                                    (ThemeProvider themeProvider) =>
-                                        themeProvider
-                                            .currentTheme
-                                            .bottomNavigationBarTheme
-                                            .selectedItemColor!),
-                                blurRadius: 24,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                        )
-                      ] else ...[
-                        ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: _itemsDatas.length,
-                          itemBuilder: (context, index) {
-                            final item = _itemsDatas.elementAt(index);
-                            return ArticleDataCard(
-                              articleData: ArticleData.fromJson(item),
-                            );
-                          },
+                          ],
                         ),
-                      ]
-                    ],
+                        const SizedBox(height: 16),
+                        if (_itemsDatas.isEmpty) ...[
+                          Text(
+                            AppLocalizations.of(context)!.articlesListEmpty,
+                            key: const Key('articles-list_no-article'),
+                            style: TextStyle(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
+                              shadows: [
+                                Shadow(
+                                  color: context.select(
+                                      (ThemeProvider themeProvider) =>
+                                          themeProvider
+                                              .currentTheme
+                                              .bottomNavigationBarTheme
+                                              .selectedItemColor!),
+                                  blurRadius: 24,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                          )
+                        ] else ...[
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: _itemsDatas.length,
+                            itemBuilder: (context, index) {
+                              final item = _itemsDatas.elementAt(index);
+                              return ArticleDataCard(
+                                articleData: ArticleData.fromJson(item),
+                              );
+                            },
+                          ),
+                        ]
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
+      ),
     );
   }
 }

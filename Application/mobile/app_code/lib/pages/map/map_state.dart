@@ -12,8 +12,9 @@ import 'package:risu/components/showModalBottomSheet.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/pages/article/list_page.dart';
-import 'package:risu/pages/container/container_list.dart';
+import 'package:risu/pages/container/container_list_data.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'map_page.dart';
@@ -118,7 +119,7 @@ class MapPageState extends State<MapPage> {
     _getContainerItems(container.id).then(
       (value) => myShowModalBottomSheet(
         context,
-        container.city!,
+        container.city,
         subtitle: "${AppLocalizations.of(context)!.by} ${"Risu"}",
         SingleChildScrollView(
           child: Column(
@@ -134,7 +135,7 @@ class MapPageState extends State<MapPage> {
                   ),
                   const SizedBox(width: 8),
                   Expanded(
-                    child: Text(container.address!),
+                    child: Text(container.address),
                   ),
                 ],
               ),
@@ -206,7 +207,7 @@ class MapPageState extends State<MapPage> {
                             padding: const EdgeInsets.all(8),
                             child: Stack(
                               children: [
-                                Image.asset('assets/volley.png'),
+                                Image.asset(imageLoader(item['name'])),
                                 Positioned(
                                   left: 0,
                                   child: Container(
@@ -250,16 +251,13 @@ class MapPageState extends State<MapPage> {
 
     Set<Marker> markers = {};
     for (ContainerList container in containers) {
-      if (container.latitude == null || container.longitude == null) {
-        continue;
-      }
       if (containerId != null && containerId == container.id) {
         setState(() {
           mapController?.animateCamera(CameraUpdate.newLatLng(
-              LatLng(container.latitude!, container.longitude!)));
+              LatLng(container.latitude, container.longitude)));
         });
       }
-      final position = LatLng(container.latitude!, container.longitude!);
+      final position = LatLng(container.latitude, container.longitude);
       markers.add(
         Marker(
           markerId: MarkerId(container.id.toString()),

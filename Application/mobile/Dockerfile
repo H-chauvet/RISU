@@ -10,5 +10,8 @@ RUN rm -f .packages
 RUN flutter pub get
 RUN flutter build apk
 
-RUN mkdir /apk/
-ENTRYPOINT cp build/app/outputs/apk/release/app-release.apk /apk/client.apk
+RUN mkdir -p /apk
+RUN cp build/app/outputs/flutter-apk/app-release.apk /apk/client.apk
+
+# Entrypoint to copy the APK and then exit
+ENTRYPOINT ["sh", "-c", "cp build/app/outputs/flutter-apk/app-release.apk ../apk/client.apk && echo 'APK copied' && exit 0"]

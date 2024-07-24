@@ -1,13 +1,15 @@
 // feedbacks_page.dart
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
 import 'package:front/components/footer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
 import 'package:front/screens/feedbacks/feedbacks_style.dart';
 import 'package:front/services/size_service.dart';
@@ -20,6 +22,9 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+/// FeedbacksPage
+///
+/// Page to show the feedbacks about Risu
 class FeedbacksPage extends StatefulWidget {
   const FeedbacksPage({Key? key}) : super(key: key);
 
@@ -27,10 +32,13 @@ class FeedbacksPage extends StatefulWidget {
   _FeedbacksPageState createState() => _FeedbacksPageState();
 }
 
+/// FeedbacksPageState
+///
 class _FeedbacksPageState extends State<FeedbacksPage> {
   String jwtToken = '';
   List<Feedbacks> feedbacks = [];
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != "") {
@@ -49,6 +57,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     fetchFeedbacks();
   }
 
+  /// [Function] : Get all the feedbacks in the database
   Future<void> fetchFeedbacks() async {
     final response = await http
         .get(Uri.parse('http://${serverIp}:3000/api/feedbacks/listAll'));
@@ -60,14 +69,12 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
             feedbacksData.map((data) => Feedbacks.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
+  /// [Widget] : Build the feedback page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -102,10 +109,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                               borderRadius: BorderRadius.circular(16.0),
                             ),
                             elevation: 0,
-                            backgroundColor:
-                                Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.colorScheme.background
-                                    : lightTheme.colorScheme.background,
                             child: Container(
                               width: screenFormat == ScreenFormat.desktop
                                   ? desktopContainerWidth
@@ -128,7 +131,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                                       ),
                                     ),
                                   ),
-                                  RatingDialogContent(),
+                                  RatingDialogContent(onSubmit: fetchFeedbacks),
                                 ],
                               ),
                             ),

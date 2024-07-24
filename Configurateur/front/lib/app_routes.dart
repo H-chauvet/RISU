@@ -17,6 +17,7 @@ import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
+import 'package:front/screens/not-found/not_found.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/screens/password-recuperation/password_recuperation.dart';
@@ -32,10 +33,10 @@ import 'package:front/screens/save_container/my_container.dart';
 import 'package:front/screens/user-list/user_list.dart';
 import 'package:go_router/go_router.dart';
 
+/// AppRouter
 ///
-/// App router
-///
-/// Gestion des routes de l'application
+/// Routes manager for the Web application
+/// [_router] : Define all the routes in the application
 class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -153,7 +154,7 @@ class AppRouter {
         path: '/container-creation',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const ContainerCreation();
+            return ContainerCreation();
           }
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
@@ -247,7 +248,7 @@ class AppRouter {
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const DesignScreen(
+            return DesignScreen(
               amount: null,
               containerMapping: null,
               lockers: null,
@@ -294,7 +295,7 @@ class AppRouter {
         path: '/container-creation/recap',
         builder: (context, state) {
           if (state.extra == null) {
-            return const RecapScreen(
+            return RecapScreen(
               lockers: null,
               amount: null,
               containerMapping: null,
@@ -337,6 +338,10 @@ class AppRouter {
         ),
       ),
     ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      key: state.pageKey,
+      child: const NotFoundPage(),
+    ),
   );
 
   static GoRouter get router => _router;

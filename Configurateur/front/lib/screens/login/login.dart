@@ -3,6 +3,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/google/google.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -13,10 +14,12 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import './login_style.dart';
 
+/// LoginScreen
+///
+/// Page to be connected to the web application
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -24,15 +27,13 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => LoginScreenState();
 }
 
-///
-/// Login screen
-///
-/// page de connexion pour le configurateur
+/// LoginScreenState
 ///
 class LoginScreenState extends State<LoginScreen> {
   String? token = '';
   String? userMail = '';
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     token = await storageService.readStorage('token');
     storageService.getUserMail().then((value) => userMail = value);
@@ -45,6 +46,7 @@ class LoginScreenState extends State<LoginScreen> {
     checkToken();
   }
 
+  /// [Widget] : Build the login page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -184,12 +186,10 @@ class LoginScreenState extends State<LoginScreen> {
                                 .then((value) => {
                                       if (value.statusCode == 200)
                                         {
-                                          Fluttertoast.showToast(
-                                            msg:
-                                                "Vous êtes désormais connecté !",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.CENTER,
-                                          ),
+                                          showCustomToast(
+                                              context,
+                                              "Vous êtes désormais connecté !",
+                                              true),
                                           response = jsonDecode(value.body),
                                           response['accessToken'],
                                           storageService.writeStorage(
@@ -200,11 +200,8 @@ class LoginScreenState extends State<LoginScreen> {
                                         }
                                       else
                                         {
-                                          Fluttertoast.showToast(
-                                            msg: "Echec de la connexion",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.CENTER,
-                                          ),
+                                          showCustomToast(context,
+                                              "Echec de la connexion", false),
                                         }
                                     });
                           }

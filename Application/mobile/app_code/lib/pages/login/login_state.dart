@@ -105,12 +105,12 @@ class LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.background),
+          themeProvider.currentTheme.colorScheme.surface),
       appBar: MyAppBar(
         key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: true,
+        showBackButton: false,
         textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())

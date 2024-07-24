@@ -11,6 +11,9 @@ import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+/// [StatefulWidget] : AdminPage
+///
+/// Page only for the admin to manage the database easier
 class AdminPage extends StatefulWidget {
   const AdminPage({Key? key}) : super(key: key);
 
@@ -18,13 +21,18 @@ class AdminPage extends StatefulWidget {
   _AdminPageState createState() => _AdminPageState();
 }
 
+/// AdminPageState
+///
 class _AdminPageState extends State<AdminPage> {
   @override
   void initState() {
     super.initState();
+
+    /// Regarde si l'utilisateur est administrateur
     MyAlertTest.checkSignInStatusAdmin(context);
   }
 
+  /// [Widget] : Build the admin page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);

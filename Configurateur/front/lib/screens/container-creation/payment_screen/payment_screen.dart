@@ -1,21 +1,34 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'payment_screen_style.dart';
 
+/// PaymentScreen
+///
+/// Creation of the container
+/// [lockers] : All the lockers of the container
+/// [amount] : Price of the container
+/// [containerMapping] : String that contains numbers representing where lockers is positioned in the container.
+/// [container] : Informations about the container
+/// [id] : User's Id
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen(
       {super.key,
@@ -35,11 +48,14 @@ class PaymentScreen extends StatefulWidget {
   State<PaymentScreen> createState() => _PaymentScreenState();
 }
 
+/// _PaymentScreenState
+///
 class _PaymentScreenState extends State<PaymentScreen> {
   final controller = CardEditController();
   String jwtToken = '';
   String informations = '';
 
+  /// [Function] : Check in storage service is the token is available
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token == '') {
@@ -66,6 +82,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.dispose();
   }
 
+  /// [Function] : Go to the previous page
   void goPrevious() {
     var data = {
       'amount': widget.amount,
@@ -77,15 +94,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
     context.go('/container-creation/maps', extra: jsonEncode(data));
   }
 
+  /// [Function] : Go to the next page
   void goNext() async {
     if (controller.complete) {
       bool response = await makePayment();
       if (response == false) {
-        Fluttertoast.showToast(
-          msg: "Echec de la commande",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        showCustomToast(context, "Echec de la commande", false);
         return;
       }
     } else {
@@ -111,24 +125,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
         },
       ).then((value) {
         if (value.statusCode == 200) {
+          storageService.removeStorage('containerData');
           context.go('/container-creation/confirmation');
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la commande",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la commande", false);
         }
       });
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Echec de la commande",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Echec de la commande", false);
     }
   }
 
+  /// [Widget] : Build the payment page
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -163,6 +171,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Text(
                     "Coordonnées bancaires",
                     style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
                             : tabletFontSize,
@@ -176,6 +187,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   Text(
                     "Des demandes supplémentaires à nous faire parvenir ?",
                     style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
                             : tabletFontSize,

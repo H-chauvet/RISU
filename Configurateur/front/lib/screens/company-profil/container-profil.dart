@@ -1,15 +1,23 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 
+/// ContainerProfilPage
+///
+/// Container profil page of the organization
+/// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
   final ContainerListData container;
   const ContainerProfilPage({Key? key, required this.container})
@@ -20,10 +28,12 @@ class ContainerProfilPage extends StatefulWidget {
       _ContainerProfilPageState(container: container);
 }
 
+/// CompanyProfilPageState
+///
 class _ContainerProfilPageState extends State<ContainerProfilPage> {
   final ContainerListData container;
   _ContainerProfilPageState({required this.container});
-  late List<ItemListInfo> items;
+  late List<ItemList> items;
   late String itemName = '';
   late String itemDesc = '';
   late String city;
@@ -34,6 +44,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   late ContainerListData tmp;
   String jwtToken = '';
 
+  /// [Function] : get information about the containers
+  /// [id] : Container's id
   Future<void> fetchContainer(String id) async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'),
@@ -54,23 +66,22 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         }
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des données", false);
     }
   }
 
+  /// [Function] : Check the container id in the storage service
   void checkContainerId() async {
     String? ctnId = await storageService.readStorage('containerId');
     if (ctnId != '' || ctnId != null) {
       containerId = int.parse(ctnId!);
-      fetchContainer(ctnId!);
+      fetchContainer(ctnId);
       fetchItemsbyCtnId();
     }
   }
 
+  /// [Function] : Check the token in the storage service
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
@@ -85,6 +96,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     checkToken();
   }
 
+  /// [Function] : Update the city of the container
+  /// [nameController] : Controller for the container's name
   Future<void> apiUpdateCity(TextEditingController nameController) async {
     final String apiUrl =
         "http://$serverIp:3000/api/container/update-city/$containerId";
@@ -101,25 +114,15 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès! ", true);
       checkToken();
-      // fetchContainer(containerId.toString());
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Display pop up to modify the container's city
   Future<void> showEditPopupCity(BuildContext context, String initialLastName,
       Function(String) onEdit) async {
     TextEditingController nameController = TextEditingController();
@@ -128,7 +131,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
+          ),
           content: Container(
             height: 120.0,
             child: Column(
@@ -136,6 +146,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("city"),
                   controller: nameController,
                   decoration: InputDecoration(
                       labelText: "Nouvelle ville", hintText: initialLastName),
@@ -156,14 +167,17 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+                key: const Key('cancel-edit-city'),
+              ),
             ),
             ElevatedButton(
-              onPressed: () async {
-                apiUpdateCity(nameController);
-                onEdit(nameController.text);
-                Navigator.of(context).pop();
-              },
               style: ElevatedButton.styleFrom(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -171,7 +185,19 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              onPressed: () async {
+                apiUpdateCity(nameController);
+                onEdit(nameController.text);
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
             ),
           ],
         );
@@ -179,6 +205,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Function] : Update the address of the container
+  /// [addressController] : Controller of the container's address
   Future<void> apiUpdateAddress(TextEditingController addressController) async {
     final String apiUrl =
         "http://$serverIp:3000/api/container/update-address/$containerId";
@@ -195,25 +223,15 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
-      // fetchContainer(containerId.toString());
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Display pop up to modify the container's address
   Future<void> showEditPopupAddress(BuildContext context, String initialAddress,
       Function(String) onEdit) async {
     TextEditingController addressController = TextEditingController();
@@ -221,7 +239,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(
+            "Modifier",
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+            ),
+          ),
           content: Container(
             height: 120.0,
             child: Column(
@@ -229,6 +254,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               children: [
                 const SizedBox(height: 10.0),
                 TextField(
+                  key: const Key("address"),
                   controller: addressController,
                   decoration: InputDecoration(
                       labelText: "Adresse postale", hintText: initialAddress),
@@ -249,7 +275,15 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Annuler"),
+              child: Text(
+                "Annuler",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+                key: const Key('cancel-edit-address'),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -264,7 +298,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text("Modifier"),
+              child: Text(
+                "Modifier",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
             ),
           ],
         );
@@ -272,6 +313,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Function] : Get all the items with the container id
   Future<void> fetchItemsbyCtnId() async {
     final response = await http.get(
       Uri.parse(
@@ -284,19 +326,17 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> itemsData = responseData["item"];
       setState(() {
-        items = itemsData.map((data) => ItemListInfo.fromJson(data)).toList();
+        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg:
-            "Erreur lors de l'envoi des informations de l'objet: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
-  Future<void> deleteItem(ItemListInfo item) async {
+  /// [Function] : Delete the selected item
+  /// [item] : The item who will be deleted
+  Future<void> deleteItem(ItemList item) async {
     late int id;
     final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
     if (item.id != null) {
@@ -311,36 +351,31 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Objet supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Article supprimé avec succès !", true);
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur lors de la suppression de l'objet: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur lors la suppression de l'article", false);
     }
   }
 
+  /// [Function] : Update the selected item
+  /// [nameController] : Controller of the item's name
+  /// [descController] : Controller of the item's description
+  /// [price] : Item's price
+  /// [item] : Item's informations
+  /// [itemId] : Item's id
+  ///
   Future<void> apiUpdateItem(
       TextEditingController nameController,
       TextEditingController descController,
       double price,
-      ItemListInfo item,
+      ItemList item,
       int itemId) async {
     bool isAvailable = item.available!;
     if (price <= 0) {
-      Fluttertoast.showToast(
-        msg: "Veuillez saisir un prix valide pour l'objet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
     final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
@@ -361,31 +396,27 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(
+          context, "Erreur durant la modification des informations", false);
     }
   }
 
+  /// [Function] : Display pop up to modify the item
+  ///
+  /// [initialLastName] : Item's name
+  /// [initialDesc] : Item's description
+  /// [itemId] : Item's id
+  /// [item] : Item's informations
   Future<void> showUpdateItem(
       BuildContext context,
       String initialLastName,
       String initialDesc,
       int itemId,
-      ItemListInfo item,
+      ItemList item,
       Function(String, String) onEdit) async {
     TextEditingController nameController = TextEditingController();
     TextEditingController descController = TextEditingController();
@@ -398,7 +429,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Modifier un objet"),
+              title: Text(
+                "Modifier un objet",
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
               content: Container(
                 height: 250.0,
                 child: Column(
@@ -413,7 +451,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        const Text("Disponible"),
+                        Text("Disponible",
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            )),
                         Switch(
                           value: isAvailable,
                           onChanged: (bool newValue) {
@@ -445,18 +488,45 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               ),
               actions: [
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Annuler"),
+                  child: Text(
+                    "Annuler",
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
+                    key: const Key('cancel-edit-item'),
+                  ),
                 ),
                 ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
                   onPressed: () async {
                     apiUpdateItem(
                         nameController, descController, price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: const Text("Modifier"),
+                  child: Text("Modifier",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      )),
                 ),
               ],
             );
@@ -466,7 +536,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
-  Widget buildItemWidget(BuildContext context, ItemListInfo item) {
+  /// [Widget] : Build card component for the items
+  Widget buildItemWidget(BuildContext context, ItemList item) {
     return GestureDetector(
       onTap: () {},
       child: Card(
@@ -475,17 +546,22 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           children: [
             Expanded(
               child: ListTile(
-                title: Text("nom : ${item.name}"),
+                title: Text("Nom : ${item.name}"),
                 subtitle: item.description != null
-                    ? Text("description : ${item.description!}")
-                    : Text("description : pas de description"),
+                    ? Text("Description : ${item.description!}")
+                    : Text("Description : Pas de description"),
               ),
             ),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.mode_outlined),
+                  icon: Icon(
+                    Icons.mode_outlined,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
                   onPressed: () async {
                     await showUpdateItem(
                         context, itemName, itemDesc, item.id!, item,
@@ -501,7 +577,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   width: 10,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
                   onPressed: () => deleteItem(item),
                 ),
                 SizedBox(
@@ -515,6 +596,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
   }
 
+  /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -537,7 +619,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: Colors.black,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             width: 2.0,
                           ),
                         ),
@@ -557,8 +641,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                           children: [
                             Text(
                               "Nom de la ville : ${tmp.city!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Verdana',
@@ -566,6 +652,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: const Key('edit-city'),
                               onTap: () async {
                                 await showEditPopupCity(context, city,
                                     (String newcity) {
@@ -574,21 +661,25 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                   });
                                 });
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.edit,
-                                color: Colors.grey,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 size: 15.0,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Text(
                               "Adresse : ${tmp.address!}",
-                              style: const TextStyle(
-                                color: Color(0xff4682B4),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Verdana',
@@ -596,6 +687,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             ),
                             const SizedBox(width: 5.0),
                             InkWell(
+                              key: Key("edit-city"),
                               onTap: () async {
                                 await showEditPopupAddress(context, address,
                                     (String newAddress) {
@@ -604,9 +696,11 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                   });
                                 });
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.edit,
-                                color: Colors.grey,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 size: 15.0,
                               ),
                             ),
@@ -617,10 +711,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ],
                 ),
               ),
-              const Text(
+              Text(
                 "Nos Objets :",
                 style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
@@ -632,7 +728,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 height: 65,
               ),
               items.isEmpty
-                  ? Center(
+                  ? const Center(
                       child: Text(
                         'Aucun objet trouvé.',
                         style: TextStyle(

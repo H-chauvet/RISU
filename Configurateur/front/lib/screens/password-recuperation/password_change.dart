@@ -1,15 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 import 'password_change_style.dart';
 
+/// PasswordChange
+///
+/// Page where the user can change is password
+/// [params] : uuid of the user
 class PasswordChange extends StatefulWidget {
   const PasswordChange({super.key, required this.params});
 
@@ -19,11 +25,10 @@ class PasswordChange extends StatefulWidget {
   State<PasswordChange> createState() => PasswordChangeState();
 }
 
+/// PasswordChangeState
 ///
-/// Password change screen
-///
-/// page de changement de mot de passe pour le configurateur
 class PasswordChangeState extends State<PasswordChange> {
+  /// [Widget] : Build the password change page
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -115,19 +120,14 @@ class PasswordChangeState extends State<PasswordChange> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          Fluttertoast.showToast(
-                            msg: 'Mot de passe changé avec succès',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(context,
+                              "Mot de passe modifié avec succès !", true);
                         } else {
-                          Fluttertoast.showToast(
-                            msg: 'Echec lors du changement du mot de passe',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(
+                              context,
+                              "Erreur durant la modification du mot de passe",
+                              false);
                         }
-                        // ignore: use_build_context_synchronously
                         context.go("/");
                       }
                     },

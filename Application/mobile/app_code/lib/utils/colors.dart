@@ -11,7 +11,7 @@ final lightTheme = ThemeData(
   primaryColor: MyColors.primary,
   secondaryHeaderColor: MyColors.secondary,
   colorScheme: const ColorScheme.light(
-    background: Color(0xFFE5E1D5),
+    surface: Color(0xFFE5E1D5),
   ),
   dialogTheme: const DialogTheme(
     backgroundColor: Color(0xFFE5E1D5),
