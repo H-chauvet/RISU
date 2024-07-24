@@ -155,34 +155,6 @@ exports.createFixtures = async () => {
           Notifications: true,
         },
       });
-    if (
-      !(await db.User_Mobile.findUnique({
-        where: { email: "tanguybell@gmail.com" },
-      }))
-    )
-      await db.User_Mobile.create({
-        data: {
-          id: "42",
-          email: "tanguybell@gmail.com",
-          firstName: "Armand",
-          lastName: "Lartam",
-          password: bcrypt.hashSync("12345678", 12),
-          mailVerification: true,
-          notificationsId: notification2.id,
-          locations: {
-            create: [
-              {
-                itemId: 3,
-                duration: 48,
-                price: 100,
-              },
-            ],
-          },
-        },
-        include: {
-          Notifications: true,
-        },
-      });
     const emptyTicket1 = await db.Tickets.create({
       data: {
         id: 2,

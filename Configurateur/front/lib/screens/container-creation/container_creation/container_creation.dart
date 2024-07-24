@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/components/dialog/delete_container_dialog.dart';
@@ -125,6 +125,12 @@ class ContainerCreationState extends State<ContainerCreation> {
         obj.materials.add(FSp3dMaterial.blue.deepCopy());
         obj.materials.add(FSp3dMaterial.black.deepCopy());
         obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[1] = FSp3dMaterial.green.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[2] = FSp3dMaterial.red.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[3] = FSp3dMaterial.black.deepCopy()
           ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
         objs.add(obj);
         loadImage();
@@ -488,6 +494,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
               k += widths, counter++) {}
+
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
@@ -516,9 +523,12 @@ class ContainerCreationState extends State<ContainerCreation> {
             if (ret.item1 != -1) {
               i = ret.item1;
               j = ret.item2;
+            } else {
+              j += size;
             }
+          } else {
+            j += size;
           }
-          j += size;
         } else {
           j += counter;
         }
@@ -786,11 +796,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     } else {
@@ -830,11 +836,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     }

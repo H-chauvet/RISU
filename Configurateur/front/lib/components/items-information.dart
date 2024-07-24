@@ -1,9 +1,4 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:front/components/custom_app_bar.dart';
-import 'package:front/network/informations.dart';
-import 'package:http/http.dart' as http;
+// ignore_for_file: file_names, dangling_library_doc_comments
 
 /// ItemList
 ///
@@ -17,6 +12,7 @@ import 'package:http/http.dart' as http;
 /// [price] : Item's price
 /// [image] : Image of the item
 /// [description] : Describe the item
+
 class ItemList {
   final int? id;
   final dynamic name;

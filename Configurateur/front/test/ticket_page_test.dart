@@ -54,7 +54,7 @@ void main() {
       ),
     );
 
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 
   testWidgets('Test du composant TicketPage', (WidgetTester tester) async {
@@ -86,7 +86,7 @@ void main() {
       ),
     );
 
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     expect(find.text('Contactez le support RISU !'), findsOneWidget);
     expect(find.text('Liste des tickets'), findsOneWidget);
@@ -98,7 +98,7 @@ void main() {
     expect(find.byKey(const Key("ticket-state-open")), findsOneWidget);
 
     await tester.tap(find.byKey(const Key("ticket-state-open")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     final state = tester.state(find.byType(TicketsPage)) as TicketsState;
     expect(state.showOpenedTickets, isTrue);
@@ -106,7 +106,7 @@ void main() {
     expect(find.byKey(const Key("ticket-state-closed")), findsOneWidget);
 
     await tester.tap(find.byKey(const Key("ticket-state-closed")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     final state2 = tester.state(find.byType(TicketsPage)) as TicketsState;
     expect(state2.showOpenedTickets, isFalse);
@@ -213,7 +213,7 @@ void main() {
     expect(tickets_sort['category2'][2]["createdAt"], "2024-05-16T14:00:00Z");
 
     state_tickets.isAdmin = true;
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     state_assign.conversation = [
       {
@@ -292,10 +292,10 @@ void main() {
       ]
     };
     await tester.tap(find.byKey(const Key("ticket-state-open")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     await tester.tap(find.byKey(const Key("ticket-state-closed")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 }
 

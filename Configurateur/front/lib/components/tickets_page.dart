@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -86,12 +88,7 @@ class TicketsState extends State<TicketsPage> {
     if (response.statusCode == 201) {
       return true;
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la création du ticket",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, "Erreur durant la création du ticket", false);
     }
     return false;
   }
@@ -114,12 +111,7 @@ class TicketsState extends State<TicketsPage> {
     );
     if (response.statusCode == 201) {
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la cloture du ticket",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, "Erreur durant la clôture du ticket", false);
     }
   }
 
@@ -157,12 +149,8 @@ class TicketsState extends State<TicketsPage> {
       );
       return true;
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant l'assignement des tickets",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(
+          context, "Erreur durant l'assignement des tickets", false);
     }
     return false;
   }
@@ -221,23 +209,19 @@ class TicketsState extends State<TicketsPage> {
         return true;
       } else {
         if (context.mounted) {
-          Fluttertoast.showToast(
-              msg: "Erreur durant la récupération des infos de l'interlocuteur",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 3,
-              backgroundColor: Colors.red);
+          showCustomToast(
+              context,
+              "Erreur durant la récupération des informations de l'interlocuteur",
+              false);
         }
         return false;
       }
     } catch (err, stacktrace) {
       if (mounted) {
-        Fluttertoast.showToast(
-            msg: "Erreur durant la récupération des infos de l'interlocuteur",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 3,
-            backgroundColor: Colors.red);
+        showCustomToast(
+            context,
+            "Erreur durant la récupération des informations de l'interlocuteur",
+            false);
       }
       return false;
     }
@@ -306,12 +290,8 @@ class TicketsState extends State<TicketsPage> {
         },
       );
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la récupération des tickets",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(
+          context, "Erreur durant la récupération des tickets", false);
     }
   }
 
