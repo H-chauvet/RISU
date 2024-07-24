@@ -1,10 +1,8 @@
 const express = require("express");
-const passport = require("passport");
 const supertest = require("supertest");
 const ticketRouter = require("../../routes/Mobile/tickets");
 const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Mobile/user");
-const { assign } = require("nodemailer/lib/shared");
 const webUserCtrl = require("../../controllers/Web/user");
 
 jest.mock("../../controllers/Common/tickets");
