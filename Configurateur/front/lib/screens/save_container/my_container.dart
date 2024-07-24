@@ -150,6 +150,16 @@ class MyContainerState extends State<MyContainer> {
                             ),
                           ),
                           onPressed: () {
+                            storageService.writeStorage(
+                              'containerData',
+                              jsonEncode(
+                                {
+                                  'id': displayedContainers[i]['id'],
+                                  'container':
+                                      jsonEncode(displayedContainers[i]),
+                                },
+                              ),
+                            );
                             context.go(
                               '/container-creation',
                               extra: jsonEncode(

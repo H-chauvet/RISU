@@ -19,12 +19,12 @@ exports.createFixtures = async () => {
     });
     const itemCategory1 = await db.Item_Category.create({
       data: {
-        name: "Sport",
+        name: "sports",
       },
     });
     const itemCategory2 = await db.Item_Category.create({
       data: {
-        name: "Plage",
+        name: "beach",
       },
     });
     const container = await db.Containers.create({
@@ -147,34 +147,6 @@ exports.createFixtures = async () => {
                 date: new Date(),
                 note: "4",
                 comment: "Ballon de qualité.",
-              },
-            ],
-          },
-        },
-        include: {
-          Notifications: true,
-        },
-      });
-    if (
-      !(await db.User_Mobile.findUnique({
-        where: { email: "tanguybell@gmail.com" },
-      }))
-    )
-      await db.User_Mobile.create({
-        data: {
-          id: "42",
-          email: "tanguybell@gmail.com",
-          firstName: "Armand",
-          lastName: "Lartam",
-          password: bcrypt.hashSync("12345678", 12),
-          mailVerification: true,
-          notificationsId: notification2.id,
-          locations: {
-            create: [
-              {
-                itemId: 3,
-                duration: 48,
-                price: 100,
               },
             ],
           },
