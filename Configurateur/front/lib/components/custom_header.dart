@@ -2,9 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_popup.dart';
 import 'package:front/network/informations.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -81,6 +84,8 @@ class LandingAppBarState extends State<LandingAppBar> {
   /// [Widget] : Build Header Component
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Column(
       children: [
         Container(
@@ -164,6 +169,75 @@ class LandingAppBarState extends State<LandingAppBar> {
                       ),
                       child: const Text(
                         'Créer un conteneur',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const SizedBox(
+                      height: 24,
+                      child: VerticalDivider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 172, 167, 167),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomPopup(
+                              title: "Test",
+                              content: Column(
+                                children: <Widget>[
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const SizedBox(
+                                    height: 200,
+                                  ),
+                                  ElevatedButton(
+                                    key: const Key('login'),
+                                    onPressed: () {},
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Mettre à jour",
+                                      style: TextStyle(
+                                        color:
+                                            Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        "Test POPUP",
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,

@@ -1,6 +1,9 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 class CustomPopup extends StatelessWidget {
   final Widget content;
@@ -39,46 +42,57 @@ class CustomPopup extends StatelessWidget {
                   ),
                   width: constraints.maxWidth * 0.5,
                   height: constraints.maxHeight * 0.5,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              'assets/logonew.png',
-                              width: 100,
-                              height: 100,
-                            ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Center(
+                          child: Image.asset(
+                            'assets/logonew.png',
+                            width: 300,
+                            height: 300,
                           ),
-                          const Spacer(),
-                        ],
-                      ),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const SizedBox(height: 15),
-                      Expanded(child: content),
-                      const SizedBox(height: 22),
-                      Align(
-                        alignment: Alignment.bottomRight,
+                      Container(
+                        width: 2,
+                        color: Colors.grey,
+                      ),
+                      Expanded(
+                        flex: 3,
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text(
-                              'Fermer',
-                              style: TextStyle(
-                                fontSize: 18,
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 50),
+                              Text(
+                                title,
+                                textAlign: TextAlign.center, // Centre le texter
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
+                                  shadows: [
+                                    Shadow(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor,
+                                      offset: const Offset(0.75, 0.75),
+                                      blurRadius: 1.5,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
+                              const SizedBox(height: 40),
+                              Expanded(child: content),
+                            ],
                           ),
                         ),
                       ),
@@ -86,8 +100,8 @@ class CustomPopup extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  right: -10,
-                  top: -10,
+                  right: 10,
+                  top: 10,
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
@@ -95,12 +109,8 @@ class CustomPopup extends StatelessWidget {
                         Navigator.of(context).pop();
                       },
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                          shape: BoxShape.circle,
-                        ),
                         padding: const EdgeInsets.all(8),
-                        child: const Icon(Icons.close, color: Colors.white),
+                        child: const Icon(Icons.close, color: Colors.grey),
                       ),
                     ),
                   ),

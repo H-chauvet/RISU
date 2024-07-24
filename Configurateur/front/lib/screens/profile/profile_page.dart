@@ -7,6 +7,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_popup.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
@@ -84,127 +85,88 @@ class _ProfilePageState extends State<ProfilePage> {
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Modifier",
-            style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.primaryColor
-                  : lightTheme.primaryColor,
-              fontSize:
-                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-            ),
-          ),
-          content: Container(
-            height:
-                SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                    ? desktopDialogHeight
-                    : tabletDialogHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  key: const Key("first-name"),
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau prénom", hintText: initialFirstName),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  key: const Key("last-name"),
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialLastName),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
+        return CustomPopup(
+          title: "Modification de votre identité",
+          content: Column(
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
               ),
-              child: Text(
-                "Annuler",
-                key: const Key("cancel-edit-name"),
-                style: TextStyle(
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
+              TextField(
+                key: const Key("first-name"),
+                controller: firstNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau prénom", hintText: initialFirstName),
               ),
-            ),
-            ElevatedButton(
-              key: const Key("button-name"),
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/auth/update-details/$userMail";
-                var body = {
-                  'firstName': firstNameController.text,
-                  'lastName': lastNameController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
+              const SizedBox(height: 10.0),
+              TextField(
+                key: const Key("last-name"),
+                controller: lastNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau nom", hintText: initialLastName),
+              ),
+              const SizedBox(
+                height: 100,
+              ),
+              ElevatedButton(
+                key: const Key("button-name"),
+                onPressed: () async {
+                  final String apiUrl =
+                      "http://$serverIp:3000/api/auth/update-details/$userMail";
+                  var body = {
+                    'firstName': firstNameController.text,
+                    'lastName': lastNameController.text,
+                  };
+                  var response = await http.post(
+                    Uri.parse(apiUrl),
+                    body: body,
                   );
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
+
+                  if (response.statusCode == 200) {
+                    Fluttertoast.showToast(
+                      msg: 'Modification effectuée avec succès',
                       toastLength: Toast.LENGTH_LONG,
                       gravity: ToastGravity.CENTER,
                       timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-
-                onEdit(firstNameController.text, lastNameController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+                    );
+                    onEdit(firstNameController.text, lastNameController.text);
+                    Navigator.of(context).pop();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg:
+                            "Erreur durant l'envoi la modification des informations",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 3,
+                        backgroundColor: Colors.red);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: Text(
+                  "Mettre à jour",
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
                 ),
               ),
-              child: Text(
-                "Modifier",
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
