@@ -19,6 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install docker-compose
+          sudo docker volume create --name=common
       - name: Start Docker Compose
         working-directory: ./Configurateur
         run: docker-compose up -d
@@ -38,6 +39,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install docker-compose
+          sudo docker volume create --name=common
       - name: Start Docker Compose
         working-directory: ./Application
         run: docker-compose up -d
@@ -73,6 +75,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install docker-compose
+          sudo docker volume create --name=common
       - name: Start Docker Compose
         working-directory: ./
         run: docker-compose up -d
@@ -87,4 +90,3 @@ jobs:
       - name: Stop Docker Compose
         working-directory: ./
         run: docker-compose down
-

@@ -90,18 +90,20 @@ class ContainerPageState extends State<ContainerPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = json.decode(response.body);
-        final List<dynamic> containersData = responseData;
-        setState(() {
-          containers = containersData
-              .map((data) => ContainerList.fromJson(data))
-              .toList();
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getContainer');
-        }
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = json.decode(response.body);
+          final List<dynamic> containersData = responseData;
+          setState(() {
+            containers = containersData
+                .map((data) => ContainerList.fromJson(data))
+                .toList();
+          });
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getContainer');
+          }
       }
       _getDistances();
     } catch (err, stacktrace) {
