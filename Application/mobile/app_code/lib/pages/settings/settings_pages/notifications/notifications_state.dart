@@ -11,6 +11,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -51,21 +52,23 @@ class NotificationsPageState extends State<NotificationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          userInformation!.notifications = [
-            isFavoriteItemsAvailableChecked,
-            isEndOfRentingChecked,
-            isNewsOffersChecked
-          ];
-        });
-        return response;
-      } else {
-        if (mounted) {
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            userInformation!.notifications = [
+              isFavoriteItemsAvailableChecked,
+              isEndOfRentingChecked,
+              isNewsOffersChecked
+            ];
+          });
+          return response;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
           printServerResponse(context, response, 'saveNotifications',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringSavingData);
-        }
       }
     } catch (err, stacktrace) {
       if (mounted) {

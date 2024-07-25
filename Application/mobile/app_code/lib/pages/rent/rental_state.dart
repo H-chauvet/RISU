@@ -9,6 +9,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/return_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/time.dart';
@@ -49,16 +50,21 @@ class RentalPageState extends State<RentalPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          rentals = jsonDecode(response.body)['rentals'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getRentals',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingRents);
-        }
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            rentals = jsonDecode(response.body)['rentals'];
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getRentals',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingRents);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {

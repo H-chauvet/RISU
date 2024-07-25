@@ -6,7 +6,7 @@ import 'package:risu/pages/login/login_page.dart';
 
 Function checkSignin = (BuildContext context) async {
   if (userInformation == null) {
-    bool isUserSignedIn = await MyAlertDialog.showChoiceAlertDialog(
+    bool dialogConfirm = await MyAlertDialog.showChoiceAlertDialog(
       context: context,
       key: const Key('check_sign_in-alert_dialog-required_auth'),
       title: AppLocalizations.of(context)!.connectionRequired,
@@ -15,7 +15,7 @@ Function checkSignin = (BuildContext context) async {
       onCancelName: AppLocalizations.of(context)!.cancel,
     );
 
-    if (isUserSignedIn && context.mounted) {
+    if (dialogConfirm && context.mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -27,6 +27,33 @@ Function checkSignin = (BuildContext context) async {
         ),
       );
     }
+    return false;
+  }
+  return true;
+};
+
+Function tokenExpiredShowDialog = (BuildContext context) async {
+  userInformation = null;
+  await MyAlertDialog.showInfoAlertDialog(
+    context: context,
+    key: const Key('token_expired-alert_dialog'),
+    barrierDismissible: false,
+    title: AppLocalizations.of(context)!.error,
+    message: AppLocalizations.of(context)!.sessionExpired,
+  );
+
+  if (context.mounted) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return const LoginPage(
+            keepPath: false,
+          );
+        },
+      ),
+      (route) => false,
+    );
     return false;
   }
   return true;

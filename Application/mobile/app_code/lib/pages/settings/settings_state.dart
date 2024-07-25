@@ -15,6 +15,7 @@ import 'package:risu/pages/profile/informations/informations_page.dart';
 import 'package:risu/pages/settings/settings_pages/language/modal.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -45,14 +46,18 @@ class SettingsPageState extends State<SettingsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        return true;
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'apiDeleteAccount',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringAccountDeletion);
-        }
+      switch (response.statusCode) {
+        case 200:
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'apiDeleteAccount',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringAccountDeletion);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
