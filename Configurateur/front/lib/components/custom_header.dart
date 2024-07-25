@@ -243,9 +243,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                         ),
                         PopupMenuItem<String>(
                           value: 'inscription',
-                          child: Text(
-                            'Inscription',
-                          ),
+                          child: Text('Inscription'),
                         ),
                       ],
                     );
