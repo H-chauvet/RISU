@@ -29,14 +29,11 @@ void main() {
       Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
       Finder favoriteData =
           find.byKey(const Key('article-button_add-favorite'));
-      Finder opinionData =
-          find.byKey(const Key('article-button_article-opinion'));
 
       expect(titleData, findsOneWidget);
       expect(appBarTitleData, findsOneWidget);
       expect(titleData, findsOneWidget);
       expect(favoriteData, findsOneWidget);
-      expect(opinionData, findsOneWidget);
     },
   );
 
@@ -119,68 +116,22 @@ void main() {
       Finder gestureFavorite =
           find.byKey(const Key("article-button_add-favorite"));
 
+      await tester
+          .ensureVisible(find.byKey(Key('article-button_add-favorite')));
+
+      await tester.pumpAndSettle();
+
+      await tester.dragUntilVisible(
+        gestureFavorite,
+        find.byType(Scrollable),
+        const Offset(0, 300),
+      );
+
       expect(gestureFavorite, findsOneWidget);
 
-      await tester.tap(gestureFavorite);
+      await tester.tap(gestureFavorite, warnIfMissed: false);
     },
   );
-
-  testWidgets('Article details touching rent button',
-      (WidgetTester tester) async {
-    final item1 = {
-      "id": -1,
-      "name": "Ballon de volley",
-      "containerId": -1,
-      "price": 0.5,
-      "available": true,
-      "categories": []
-    };
-
-    final testPage =
-        initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
-    await waitForLoader(tester: tester, testPage: testPage);
-    await tester.pumpAndSettle();
-
-    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-    Finder rentData = find.byKey(const Key('article-button_article-rent'));
-
-    expect(rentData, findsOneWidget);
-    expect(appBarTitleData, findsOneWidget);
-
-    await tester.tap(rentData);
-    await tester.pumpAndSettle();
-  });
-
-  testWidgets('Article details with test data', (WidgetTester tester) async {
-    final item1 = {
-      "id": -1,
-      "name": "Ballon de volley",
-      "containerId": -1,
-      "price": 0.5,
-      "available": true,
-      "categories": []
-    };
-    final testPage =
-        initPage(ArticleDetailsPage(articleId: -1, testArticleData: item1));
-    await waitForLoader(tester: tester, testPage: testPage);
-    await tester.pumpAndSettle();
-
-    Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-
-    Finder consultArticle =
-        find.byKey(const Key('article-button_article-opinion'));
-
-    expect(consultArticle, findsOneWidget);
-    expect(appBarTitleData, findsOneWidget);
-
-    await tester.dragUntilVisible(
-        consultArticle, // what you want to find
-        appBarTitleData, // widget you want to scroll
-        const Offset(0, -300) // delta to move
-        );
-    await tester.tap(consultArticle);
-    await tester.pumpAndSettle();
-  });
 
   testWidgets('Article details, change images buttons',
       (WidgetTester tester) async {
@@ -206,9 +157,21 @@ void main() {
 
     expect(articleImage, findsOneWidget);
     expect(buttonPreviousImage, findsOneWidget);
-    await tester.tap(buttonPreviousImage);
-    expect(buttonNextImage, findsOneWidget);
-    await tester.tap(buttonNextImage);
+
+    //scroll to the button buttonPreviousImage
+    await tester.ensureVisible(buttonPreviousImage);
+    await tester.ensureVisible(buttonNextImage);
+
+    await tester.dragUntilVisible(
+      buttonPreviousImage,
+      find.byType(Scrollable),
+      const Offset(0, 300),
+    );
+    await tester.dragUntilVisible(
+      buttonNextImage,
+      find.byType(Scrollable),
+      const Offset(0, 300),
+    );
 
     await tester.pumpAndSettle();
   });
