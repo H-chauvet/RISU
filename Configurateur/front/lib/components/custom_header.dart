@@ -239,11 +239,29 @@ class LandingAppBarState extends State<LandingAppBar> {
                       [
                         PopupMenuItem<String>(
                           value: 'connexion',
-                          child: Text('Connexion'),
+                          child: Text(
+                            'Connexion',
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                          ),
                         ),
                         PopupMenuItem<String>(
                           value: 'inscription',
-                          child: Text('Inscription'),
+                          child: Text(
+                            'Inscription',
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                          ),
                         ),
                       ],
                     );
