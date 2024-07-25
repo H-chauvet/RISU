@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:risu/pages/rent/rental_page.dart';
+import 'package:risu/pages/rent/my_rents/rental_page.dart';
 
 import 'globals.dart';
 
