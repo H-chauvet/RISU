@@ -8,6 +8,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_popup.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/profile/profile_page_style.dart';
@@ -86,117 +87,92 @@ class _ProfilePageState extends State<ProfilePage> {
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Modifier",
-            style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.primaryColor
-                  : lightTheme.primaryColor,
-              fontSize:
-                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-            ),
-          ),
-          content: Container(
-            height:
-                SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                    ? desktopDialogHeight
-                    : tabletDialogHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  key: const Key("first-name"),
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau prénom", hintText: initialFirstName),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  key: const Key("last-name"),
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialLastName),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: Text(
-                "Annuler",
-                key: const Key("cancel-edit-name"),
-                style: TextStyle(
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              key: const Key("button-name"),
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/auth/update-details/$userMail";
-                var body = {
-                  'firstName': firstNameController.text,
-                  'lastName': lastNameController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  showCustomToast(
-                      context, "Modifications effectuées avec succès !", true);
-                } else {
-                  showCustomToast(context,
-                      "Erreur durant la modifications des informations", false);
-                }
-                onEdit(firstNameController.text, lastNameController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: Text(
-                "Modifier",
+        return CustomPopup(
+          title: "Modification de votre identité",
+          content: Column(
+            children: <Widget>[
+              Text(
+                "Mettez à jour votre prénom et votre nom facilement !",
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
                       : lightTheme.primaryColor,
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize - 5
+                      : tabletFontSize - 5,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 50,
+              ),
+              TextField(
+                key: const Key("first-name"),
+                controller: firstNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau prénom", hintText: initialFirstName),
+              ),
+              const SizedBox(height: 10.0),
+              TextField(
+                key: const Key("last-name"),
+                controller: lastNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau nom", hintText: initialLastName),
+              ),
+              const SizedBox(
+                height: 90,
+              ),
+              ElevatedButton(
+                key: const Key("button-name"),
+                onPressed: () async {
+                  final String apiUrl =
+                      "http://$serverIp:3000/api/auth/update-details/$userMail";
+                  var body = {
+                    'firstName': firstNameController.text,
+                    'lastName': lastNameController.text,
+                  };
+                  var response = await http.post(
+                    Uri.parse(apiUrl),
+                    body: body,
+                  );
+
+                  if (response.statusCode == 200) {
+                    showCustomToast(context,
+                        "Modifications effectuées avec succès !", true);
+                    onEdit(firstNameController.text, lastNameController.text);
+                    Navigator.of(context).pop();
+                  } else {
+                    showCustomToast(
+                        context,
+                        "Erreur durant la modifications des informations",
+                        false);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: Text(
+                  "Mettre à jour",
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

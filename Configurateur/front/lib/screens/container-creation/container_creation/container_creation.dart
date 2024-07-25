@@ -67,6 +67,7 @@ class ContainerCreationState extends State<ContainerCreation> {
   String? containerMappingStocked = '';
   late int width = 0;
   late int height = 0;
+  List<String> inputLockers = [];
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
@@ -78,7 +79,7 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -90,6 +91,10 @@ class ContainerCreationState extends State<ContainerCreation> {
         containerMappingStocked = data['containerMapping'];
         widget.width = data['width'];
         widget.height = data['height'];
+        if (data['input'] != null) {
+          inputLockers = jsonDecode(data['input']);
+        }
+
         widget.id = data['id'];
       });
     }
@@ -99,120 +104,137 @@ class ContainerCreationState extends State<ContainerCreation> {
   void initState() {
     MyAlertTest.checkSignInStatus(context);
     checkToken();
-    checkContainer();
 
-    if (widget.container != null) {
-      dynamic container = jsonDecode(widget.container!);
-      width = int.parse(container['width']);
-      height = int.parse(container['height']);
-    } else if (widget.width != null && widget.height != null) {
-      width = int.parse(widget.width!);
-      height = int.parse(widget.height!);
-    }
+    world = Sp3dWorld(objs);
 
-    Sp3dObj obj =
-        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, width, height, 2);
-    obj.materials.add(FSp3dMaterial.green.deepCopy());
-    obj.materials.add(FSp3dMaterial.red.deepCopy());
-    obj.materials.add(FSp3dMaterial.blue.deepCopy());
-    obj.materials.add(FSp3dMaterial.black.deepCopy());
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    objs.add(obj);
-    loadImage();
-    bool loaded = false;
-    if (widget.container != null) {
-      loadContainer();
-      dynamic container = jsonDecode(widget.container!);
-      loadLockers(container['containerMapping'],
-          design: jsonDecode(container['designs']));
-      loaded = true;
-    }
-
-    if (containerMappingStocked != '') {
-      if (loaded == false) {
-        loadLockers(containerMappingStocked!);
-        loaded = true;
-      }
-      for (int i = 0; i < containerMappingStocked!.length; i++) {
-        objs[0].fragments[i].faces[0].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[1].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[2].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[3].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[4].materialIndex =
-            int.parse(containerMappingStocked![i]);
-        objs[0].fragments[i].faces[5].materialIndex =
-            int.parse(containerMappingStocked![i]);
-      }
-    }
-    if (widget.containerMapping != null) {
-      dynamic decoded = jsonDecode(widget.containerMapping!);
+    checkContainer().then((result) {
       setState(() {
-        if (loaded == false) {
-          loadLockers(widget.containerMapping!);
+        if (widget.container != null) {
+          dynamic container = jsonDecode(widget.container!);
+          width = int.parse(container['width']);
+          height = int.parse(container['height']);
+        } else if (widget.width != null && widget.height != null) {
+          width = int.parse(widget.width!);
+          height = int.parse(widget.height!);
+        }
+
+        Sp3dObj obj = UtilSp3dGeometry.cube(
+            cubeWidth, cubeHeight - 20, 50, width, height, 2);
+        obj.materials.add(FSp3dMaterial.green.deepCopy());
+        obj.materials.add(FSp3dMaterial.red.deepCopy());
+        obj.materials.add(FSp3dMaterial.blue.deepCopy());
+        obj.materials.add(FSp3dMaterial.black.deepCopy());
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[1] = FSp3dMaterial.green.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[2] = FSp3dMaterial.red.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[3] = FSp3dMaterial.black.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        objs.add(obj);
+        loadImage();
+        bool loaded = false;
+        if (widget.container != null) {
+          loadContainer();
+          dynamic container = jsonDecode(widget.container!);
+          loadLockers(container['containerMapping'],
+              design: jsonDecode(container['designs']));
           loaded = true;
         }
-        for (int i = 0; i < decoded.length; i++) {
-          for (int j = 0; j < decoded[i].length; j++) {
-            if (decoded[i][j].toString() == '2') {
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[0]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[1]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[2]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[3]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[4]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[(decoded[i].length * i) + j]
-                  .faces[5]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[0]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[1]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[2]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[3]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[4]
-                  .materialIndex = 4;
-              objs[0]
-                  .fragments[((decoded[i].length * i) + j) + (width * height)]
-                  .faces[5]
-                  .materialIndex = 4;
-            }
+
+        if (containerMappingStocked != '') {
+          if (loaded == false) {
+            loadLockers(containerMappingStocked!);
+            loaded = true;
+          }
+          for (int i = 0; i < containerMappingStocked!.length; i++) {
+            objs[0].fragments[i].faces[0].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[1].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[2].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[3].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[4].materialIndex =
+                int.parse(containerMappingStocked![i]);
+            objs[0].fragments[i].faces[5].materialIndex =
+                int.parse(containerMappingStocked![i]);
           }
         }
+        if (widget.containerMapping != null) {
+          dynamic decoded = jsonDecode(widget.containerMapping!);
+          setState(() {
+            if (loaded == false) {
+              loadLockers(widget.containerMapping!);
+              loaded = true;
+            }
+            for (int i = 0; i < decoded.length; i++) {
+              for (int j = 0; j < decoded[i].length; j++) {
+                if (decoded[i][j].toString() == '2') {
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[0]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[1]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[2]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[3]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[4]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[(decoded[i].length * i) + j]
+                      .faces[5]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[0]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[1]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[2]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[3]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[4]
+                      .materialIndex = 4;
+                  objs[0]
+                      .fragments[
+                          ((decoded[i].length * i) + j) + (width * height)]
+                      .faces[5]
+                      .materialIndex = 4;
+                }
+              }
+            }
+          });
+        }
+        super.initState();
       });
-    }
-    super.initState();
+    });
   }
 
   /// [Function] : Load the container's informations
@@ -296,6 +318,8 @@ class ContainerCreationState extends State<ContainerCreation> {
         coordinates.size = 1;
         break;
     }
+
+    inputLockers.add(jsonEncode(coordinates.toJson()));
 
     if (coordinates.face == 'Derrière') {
       fragment += width * height;
@@ -470,6 +494,7 @@ class ContainerCreationState extends State<ContainerCreation> {
               counter + j < heights &&
                   objs[0].fragments[k].faces[0].materialIndex == 0;
               k += widths, counter++) {}
+
           freeSpace.add("$i,$j,$counter");
         }
         if (objs[0]
@@ -498,9 +523,12 @@ class ContainerCreationState extends State<ContainerCreation> {
             if (ret.item1 != -1) {
               i = ret.item1;
               j = ret.item2;
+            } else {
+              j += size;
             }
+          } else {
+            j += size;
           }
-          j += size;
         } else {
           j += counter;
         }
@@ -585,6 +613,19 @@ class ContainerCreationState extends State<ContainerCreation> {
     }
   }
 
+  bool checkCoordinates(LockerCoordinates coord) {
+    for (int i = 0; i < inputLockers.length; i++) {
+      dynamic decoded = jsonDecode(inputLockers[i]);
+      if (decoded['x'] == coord.x &&
+          decoded['y'] == coord.y &&
+          decoded['face'] == coord.face) {
+        inputLockers.removeAt(i);
+        return true;
+      }
+    }
+    return false;
+  }
+
   /// [Function] : Delete a locker
   /// [coord] : the locker's position in the container
   /// [unitTesting] : Boolean that says if we came here from unit test or not
@@ -607,6 +648,10 @@ class ContainerCreationState extends State<ContainerCreation> {
         return "wrongPositionError";
       }
       fragment += increment;
+    }
+
+    if (checkCoordinates(coord) == false) {
+      return "notFoundError";
     }
 
     fragment -= size * increment;
@@ -660,6 +705,12 @@ class ContainerCreationState extends State<ContainerCreation> {
 
   /// [Function] : Save the container in the storage service
   void saveContainerToStorage() {
+    dynamic input;
+    if (inputLockers.isNotEmpty) {
+      input = jsonEncode(inputLockers);
+    } else {
+      input = [];
+    }
     var data = {
       'amount': sumPrice(),
       'containerMapping': getContainerMapping(),
@@ -668,6 +719,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       'container': widget.container,
       'width': width.toString(),
       'height': height.toString(),
+      'input': input,
     };
 
     storageService.writeStorage('containerData', jsonEncode(data));
@@ -683,8 +735,10 @@ class ContainerCreationState extends State<ContainerCreation> {
   /// [Function] : Get the containerMapping of a container
   String getContainerMapping() {
     String mapping = "";
-    for (int i = 0; i < objs[0].fragments.length; i++) {
-      mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
+    if (objs.isNotEmpty) {
+      for (int i = 0; i < objs[0].fragments.length; i++) {
+        mapping += objs[0].fragments[i].faces[0].materialIndex.toString();
+      }
     }
     return mapping;
   }
@@ -724,6 +778,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'width': width,
           'height': height,
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       } else {
         body = {
@@ -731,6 +786,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'width': width,
           'height': height,
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       }
 
@@ -757,6 +813,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'informations': '',
           'address': '',
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       } else {
         body = {
@@ -769,6 +826,7 @@ class ContainerCreationState extends State<ContainerCreation> {
           'informations': '',
           'address': '',
           'saveName': name,
+          'input': jsonEncode(inputLockers),
         };
       }
       HttpService()
