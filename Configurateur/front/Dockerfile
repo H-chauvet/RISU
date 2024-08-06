@@ -1,4 +1,4 @@
-FROM dart:3.4.0 as build-env
+FROM dart:3.4.0 AS build-env
 
 ARG 2.4.1
 
