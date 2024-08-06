@@ -14,7 +14,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     to: email,
     subject: 'Confirm your account',
     text: "",
-    html: '<p>Please follow the link to confirm your account: <a href="http://51.77.215.103:3000/api/mobile/auth/mailVerification?token=' +
+    html: '<p>Please follow the link to confirm your account: <a href="http://51.77.215.103/#/mobile/user/confirm/' +
       token + '">here</a></p>',
   }
   try {
