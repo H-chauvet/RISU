@@ -12,6 +12,7 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/reset_password/reset_password_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -62,28 +63,31 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        json.decode(response.body);
-        if (mounted) {
-          MyToastMessage.show(
-            context: context,
-            message: AppLocalizations.of(context)!.passwordUpdated,
-          );
-        }
-      } else {
-        if (response.statusCode == 401) {
+      switch (response.statusCode) {
+        case 200:
+          json.decode(response.body);
           if (mounted) {
+            MyToastMessage.show(
+              context: context,
+              message: AppLocalizations.of(context)!.passwordUpdated,
+            );
+          }
+          break;
+        case 401:
+          if (mounted) {
+            await tokenExpiredShowDialog(context);
             printServerResponse(context, response, 'resetPassword',
                 message:
                     AppLocalizations.of(context)!.passwordCurrentIncorrect);
           }
-        } else {
+          break;
+        default:
           if (mounted) {
             printServerResponse(context, response, 'resetPassword',
                 message: AppLocalizations.of(context)!
                     .errorOccurredDuringPasswordUpdate);
           }
-        }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,7 +7,6 @@ import 'package:front/screens/company/company.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
@@ -106,20 +104,12 @@ void main() {
       ),
     );
 
-    late List<String> members = [
-      'assets/Henri.png',
-      'assets/Louis.png',
-      'assets/Hugo.png',
-      'assets/Quentin.png',
-      'assets/Tanguy.png',
-      'assets/Cédric.png',
-    ];
 
-    expect(find.byKey(Key('member_image_0')), findsOneWidget);
-    expect(find.byKey(Key('member_image_1')), findsOneWidget);
-    expect(find.byKey(Key('member_image_2')), findsOneWidget);
-    expect(find.byKey(Key('member_image_3')), findsOneWidget);
-    expect(find.byKey(Key('member_image_4')), findsOneWidget);
+    expect(find.byKey(const Key('member_image_0')), findsOneWidget);
+    expect(find.byKey(const Key('member_image_1')), findsOneWidget);
+    expect(find.byKey(const Key('member_image_2')), findsOneWidget);
+    expect(find.byKey(const Key('member_image_3')), findsOneWidget);
+    expect(find.byKey(const Key('member_image_4')), findsOneWidget);
   });
 
   test('ContainerTest toJson and fromJson', () {

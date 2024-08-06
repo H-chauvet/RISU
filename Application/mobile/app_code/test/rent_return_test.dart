@@ -47,7 +47,7 @@ void main() {
     Finder returnButton =
         find.byKey(const Key('rent_return-button-return_article'));
     expect(returnButton, findsOneWidget);
-    
+
     await tester.tap(returnButton);
     await tester.pump();
   });
@@ -92,7 +92,7 @@ void main() {
     Finder detailsButton =
         find.byKey(const Key('return_rent-button-go-to-details'));
     expect(detailsButton, findsOneWidget);
-    
+
     await tester.tap(detailsButton);
     await tester.pump();
   });

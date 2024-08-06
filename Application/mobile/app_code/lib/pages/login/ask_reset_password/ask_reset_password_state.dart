@@ -58,23 +58,25 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.email,
-            message:
-                AppLocalizations.of(context)!.passwordTemporarySent(_email!),
-          );
-          return true;
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'apiResetPassword',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringPasswordReset);
+      switch (response.statusCode) {
+        case 200:
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.email,
+              message:
+                  AppLocalizations.of(context)!.passwordTemporarySent(_email!),
+            );
+            return true;
+          }
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'apiResetPassword',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPasswordReset);
+          }
           return false;
-        }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {

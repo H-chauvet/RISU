@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
@@ -30,6 +31,7 @@ void main() {
 
   setUp(() {
     sharedPreferences = MockSharedPreferences();
+    SharedPreferences.setMockInitialValues({});
   });
 
   testWidgets('Payment confirmation screen', (WidgetTester tester) async {
@@ -37,6 +39,7 @@ void main() {
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('containerData')).thenReturn('');
 
     await tester.pumpWidget(
       MultiProvider(
@@ -50,7 +53,7 @@ void main() {
             return MaterialApp(
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const DesignScreen(
+                child: DesignScreen(
                   lockers:
                       '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
                   amount: 60,
@@ -63,7 +66,7 @@ void main() {
       ),
     );
 
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.pumpAndSettle();
 
     expect(find.text("Design"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
@@ -86,6 +89,8 @@ void main() {
   testWidgets('loadImage devant', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
 
+    designScreenState.unitTest = true;
+
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
 
@@ -107,6 +112,8 @@ void main() {
 
   testWidgets('loadImage derrière', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -131,6 +138,8 @@ void main() {
   testWidgets('loadImage gauche', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
 
+    designScreenState.unitTest = true;
+
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
 
@@ -153,6 +162,7 @@ void main() {
 
   testWidgets('loadImage droite', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -176,6 +186,7 @@ void main() {
 
   testWidgets('loadImage Haut', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -199,6 +210,7 @@ void main() {
 
   testWidgets('loadImage Bas', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -222,6 +234,7 @@ void main() {
 
   testWidgets('removeImage Bas', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -242,6 +255,7 @@ void main() {
 
   testWidgets('removeImage Haut', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -262,6 +276,7 @@ void main() {
 
   testWidgets('removeImage Gauche', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -282,6 +297,7 @@ void main() {
 
   testWidgets('removeImage Droite', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -302,6 +318,7 @@ void main() {
 
   testWidgets('removeImage Devant', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -322,6 +339,7 @@ void main() {
 
   testWidgets('sumPrice', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());
@@ -344,6 +362,7 @@ void main() {
 
   testWidgets('removeImage Devant', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
+    designScreenState.unitTest = true;
 
     Sp3dObj obj = UtilSp3dGeometry.cube(200, 100, 50, 1, 1, 1);
     obj.materials.add(FSp3dMaterial.green.deepCopy());

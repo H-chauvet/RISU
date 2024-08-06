@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'dart:ui';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/add_design_dialog.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
@@ -61,8 +61,9 @@ class Design {
 
 /// DesignScreen
 /// Creation of container's design
+// ignore: must_be_immutable
 class DesignScreen extends StatefulWidget {
-  const DesignScreen(
+  DesignScreen(
       {super.key,
       this.lockers,
       this.amount,
@@ -72,13 +73,13 @@ class DesignScreen extends StatefulWidget {
       this.width,
       this.height});
 
-  final String? lockers;
-  final int? amount;
-  final String? containerMapping;
-  final String? id;
-  final String? container;
-  final String? width;
-  final String? height;
+  String? lockers;
+  int? amount;
+  String? containerMapping;
+  String? id;
+  String? container;
+  String? width;
+  String? height;
 
   @override
   State<DesignScreen> createState() => DesignScreenState();
@@ -97,6 +98,7 @@ class DesignScreenState extends State<DesignScreen> {
   int imageIndex = 0;
   int materialIndex = 1;
   FilePickerResult? picked;
+  bool unitTest = false;
   String face = faceList.first;
   List<Design> designss = [];
 
@@ -114,25 +116,47 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
+  Future<void> checkContainer() async {
+    var storageData = await getContainerFromStorage();
+    if (storageData != "") {
+      setState(() {
+        dynamic decode = jsonDecode(storageData);
+        widget.id = decode['id'];
+        if (decode['container'] != '') {
+          widget.container = decode['container'];
+        }
+        widget.containerMapping = decode['containerMapping'];
+        widget.width = decode['width'];
+        widget.height = decode['height'];
+        widget.amount = decode['amount'];
+        widget.lockers = decode['lockers'];
+      });
+    }
+  }
+
   @override
   void initState() {
     checkToken();
     super.initState();
 
-    Sp3dObj obj =
-        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
-    obj.materials.add(FSp3dMaterial.green.deepCopy());
+    checkContainer().then((result) {
+      setState(() {
+        Sp3dObj obj =
+            UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
+        obj.materials.add(FSp3dMaterial.green.deepCopy());
 
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    objs.add(obj);
-    loadImage(false).then((value) => null);
-    if (widget.lockers != null) {
-      decodeLockers();
-    }
-    if (widget.container != null) {
-      decodeDesigns();
-    }
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        objs.add(obj);
+        loadImage(false).then((value) => null);
+        if (widget.lockers != null) {
+          decodeLockers();
+        }
+        if (widget.container != null) {
+          decodeDesigns();
+        }
+      });
+    });
   }
 
   /// [Function] : Decode lockers for the container in json
@@ -145,6 +169,51 @@ class DesignScreenState extends State<DesignScreen> {
       }
       lockerss.add(Locker(decode[i]['type'], decode[i]['price']));
     }
+  }
+
+  /// [Function] : Save the container in the storage service
+  void saveContainerToStorage() {
+    dynamic design = jsonEncode(designss);
+    dynamic decode = {
+      'containerMapping': '',
+      'designs': '',
+      'height': '',
+      'width': '',
+    };
+    if (widget.container != null) {
+      decode = jsonDecode(widget.container!);
+    }
+
+    if (widget.container != null) {
+      decode['designs'] = jsonEncode(designss);
+      decode['containerMapping'] = widget.containerMapping;
+    } else {
+      decode = {
+        'containerMapping': widget.containerMapping,
+        'designs': design,
+        'height': widget.height,
+        'width': widget.width,
+      };
+    }
+
+    var data = {
+      'container': jsonEncode(decode),
+      'id': widget.id,
+      'width': widget.width,
+      'height': widget.height,
+      'amount': widget.amount,
+      'lockers': jsonEncode(lockerss),
+      'containerMapping': widget.containerMapping,
+    };
+
+    storageService.writeStorage('containerData', jsonEncode(data));
+  }
+
+  Future<String> getContainerFromStorage() async {
+    String? data = await storageService.readStorage('containerData');
+
+    data ??= '';
+    return data;
   }
 
   /// [Function] : Decode designs for the container in json
@@ -219,9 +288,15 @@ class DesignScreenState extends State<DesignScreen> {
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
       if (unitTesting == false) {
         setState(() {
+          if (unitTest == false) {
+            saveContainerToStorage();
+          }
           isLoaded = true;
         });
       } else {
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         isLoaded = true;
       }
     });
@@ -250,9 +325,15 @@ class DesignScreenState extends State<DesignScreen> {
     await world?.initImages().then((List<Sp3dObj> errorObjs) {
       if (unitTesting == false) {
         setState(() {
+          if (unitTest == false) {
+            saveContainerToStorage();
+          }
           isLoaded = true;
         });
       } else {
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         isLoaded = true;
       }
     });
@@ -335,11 +416,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     } else {
@@ -360,11 +437,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     }
@@ -397,6 +470,9 @@ class DesignScreenState extends State<DesignScreen> {
           'lockers': jsonEncode(lockerss),
           'container': jsonEncode(response),
         };
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     } else {
@@ -432,6 +508,9 @@ class DesignScreenState extends State<DesignScreen> {
           'lockers': jsonEncode(lockerss),
           'container': jsonEncode(response),
         };
+        if (unitTest == false) {
+          saveContainerToStorage();
+        }
         context.go("/container-creation/recap", extra: jsonEncode(data));
       });
     }
@@ -450,6 +529,9 @@ class DesignScreenState extends State<DesignScreen> {
         'width': widget.width,
         'height': widget.height,
       };
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
       context.go("/container-creation", extra: jsonEncode(data));
     } else {
       dynamic design = jsonEncode(designss);
@@ -463,6 +545,9 @@ class DesignScreenState extends State<DesignScreen> {
       var data = {
         'container': jsonEncode(container),
       };
+      if (unitTest == false) {
+        saveContainerToStorage();
+      }
       context.go("/container-creation", extra: jsonEncode(data));
     }
   }
@@ -581,12 +666,10 @@ class DesignScreenState extends State<DesignScreen> {
                                     if (picked != null) {
                                       if (picked!.files.single.bytes!.length >
                                           1000000) {
-                                        Fluttertoast.showToast(
-                                          msg:
-                                              "L'image ne doit pas dépasser 1 Mo",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.CENTER,
-                                        );
+                                        showCustomToast(
+                                            context,
+                                            "La taille de l'image ne dois pas excéder 1 Mo",
+                                            false);
                                       } else {
                                         openAddDialog(context);
                                       }
@@ -708,12 +791,8 @@ class DesignScreenState extends State<DesignScreen> {
                   heightFactor: 0.7,
                   child: RecapPanel(
                     articles: lockerss,
-                    onSaved: () async {
-                      String name = await showDialog(
-                          context: context, builder: (context) => openDialog());
-                      saveContainer(name);
-                    },
                     screenFormat: screenFormat,
+                    fullscreen: false,
                   )),
             ),
           ],

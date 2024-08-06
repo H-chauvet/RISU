@@ -14,6 +14,16 @@ class LockerCoordinates {
   int size;
 
   LockerCoordinates(this.x, this.y, this.face, this.direction, this.size);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'x': x,
+      'y': y,
+      'face': face,
+      'direction': direction,
+      'size': size,
+    };
+  }
 }
 
 /// LockerService

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
-import 'package:front/services/storage_service.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';

@@ -131,9 +131,21 @@ router.put("/update-position", async function (req, res, next) {
       throw new Error("id and position are required");
     }
 
+    const position = await containerCtrl.getLocalisation({
+      latitude,
+      longitude,
+    });
+
+    if (position == "No address found") {
+      res.status(400);
+      throw new Error("No address found");
+    }
+
     const container = await containerCtrl.updateContainerPosition(id, {
       latitude,
       longitude,
+      city: position.city,
+      address: position.address,
     });
     res.status(200).json(container);
   } catch (err) {
