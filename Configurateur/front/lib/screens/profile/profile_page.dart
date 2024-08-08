@@ -1,12 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_popup.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
@@ -84,127 +87,92 @@ class _ProfilePageState extends State<ProfilePage> {
       String initialLastName, Function(String, String) onEdit) async {
     TextEditingController firstNameController = TextEditingController();
     TextEditingController lastNameController = TextEditingController();
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            "Modifier",
-            style: TextStyle(
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.primaryColor
-                  : lightTheme.primaryColor,
-              fontSize:
-                  SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-            ),
-          ),
-          content: Container(
-            height:
-                SizeService().getScreenFormat(context) == ScreenFormat.desktop
-                    ? desktopDialogHeight
-                    : tabletDialogHeight,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  key: const Key("first-name"),
-                  controller: firstNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau prénom", hintText: initialFirstName),
-                ),
-                const SizedBox(height: 10.0),
-                TextField(
-                  key: const Key("last-name"),
-                  controller: lastNameController,
-                  decoration: InputDecoration(
-                      labelText: "Nouveau nom", hintText: initialLastName),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: Text(
-                "Annuler",
-                key: const Key("cancel-edit-name"),
-                style: TextStyle(
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              key: const Key("button-name"),
-              onPressed: () async {
-                final String apiUrl =
-                    "http://$serverIp:3000/api/auth/update-details/$userMail";
-                var body = {
-                  'firstName': firstNameController.text,
-                  'lastName': lastNameController.text,
-                };
-
-                var response = await http.post(
-                  Uri.parse(apiUrl),
-                  body: body,
-                );
-
-                if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Modification effectuée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
-                } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification des informations",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
-                }
-
-                onEdit(firstNameController.text, lastNameController.text);
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-              ),
-              child: Text(
-                "Modifier",
+        return CustomPopup(
+          title: "Modification de votre identité",
+          content: Column(
+            children: <Widget>[
+              Text(
+                "Mettez à jour votre prénom et votre nom facilement !",
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
                       : lightTheme.primaryColor,
-                  fontSize: SizeService().getScreenFormat(context) ==
-                          ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize - 5
+                      : tabletFontSize - 5,
                 ),
               ),
-            ),
-          ],
+              const SizedBox(
+                height: 50,
+              ),
+              TextField(
+                key: const Key("first-name"),
+                controller: firstNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau prénom", hintText: initialFirstName),
+              ),
+              const SizedBox(height: 10.0),
+              TextField(
+                key: const Key("last-name"),
+                controller: lastNameController,
+                decoration: InputDecoration(
+                    labelText: "Nouveau nom", hintText: initialLastName),
+              ),
+              const SizedBox(
+                height: 90,
+              ),
+              ElevatedButton(
+                key: const Key("button-name"),
+                onPressed: () async {
+                  final String apiUrl =
+                      "http://$serverIp:3000/api/auth/update-details/$userMail";
+                  var body = {
+                    'firstName': firstNameController.text,
+                    'lastName': lastNameController.text,
+                  };
+                  var response = await http.post(
+                    Uri.parse(apiUrl),
+                    body: body,
+                  );
+
+                  if (response.statusCode == 200) {
+                    showCustomToast(context,
+                        "Modifications effectuées avec succès !", true);
+                    onEdit(firstNameController.text, lastNameController.text);
+                    Navigator.of(context).pop();
+                  } else {
+                    showCustomToast(
+                        context,
+                        "Erreur durant la modifications des informations",
+                        false);
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                child: Text(
+                  "Mettre à jour",
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
@@ -289,20 +257,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
 
                 if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Entreprise modifiée avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
+                  showCustomToast(
+                      context,
+                      "Informations de l'entreprise modifiées avec succès !",
+                      true);
                 } else {
-                  Fluttertoast.showToast(
-                      msg:
-                          "Erreur durant l'envoi la modification de l'entreprise",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
+                  showCustomToast(
+                      context,
+                      "Erreur durant la modification des informations de l'entreprise",
+                      false);
                 }
                 onEdit(companyController.text);
                 Navigator.of(context).pop();
@@ -410,19 +373,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
 
                 if (response.statusCode == 200) {
-                  Fluttertoast.showToast(
-                    msg: 'Email modifié avec succès',
-                    toastLength: Toast.LENGTH_LONG,
-                    gravity: ToastGravity.CENTER,
-                    timeInSecForIosWeb: 3,
-                  );
+                  showCustomToast(context, "Email modifié avec succès !", true);
                 } else {
-                  Fluttertoast.showToast(
-                      msg: "Erreur durant l'envoi la modification de l'email",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 3,
-                      backgroundColor: Colors.red);
+                  showCustomToast(context,
+                      "Erreur durant la modification de l'email", false);
                 }
                 onEdit(mailController.text);
                 Navigator.of(context).pop();
@@ -591,20 +545,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
 
                       if (response.statusCode == 200) {
-                        Fluttertoast.showToast(
-                          msg: 'Mot de passe modifié avec succès',
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.CENTER,
-                          timeInSecForIosWeb: 3,
-                        );
+                        showCustomToast(context,
+                            "Mot de passe modifié avec succès !", true);
                       } else {
-                        Fluttertoast.showToast(
-                            msg:
-                                "Erreur durant l'envoi la modification du mot de passe",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                            timeInSecForIosWeb: 3,
-                            backgroundColor: Colors.red);
+                        showCustomToast(
+                            context,
+                            "Erreur durant la modification du mot de passe",
+                            false);
                       }
                       onEdit(password);
                       Navigator.of(context).pop();
@@ -970,11 +917,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               storageService.removeStorage('token');
                               storageService.removeStorage('tokenExpiration');
-                              Fluttertoast.showToast(
-                                msg: "Vous êtes bien déconnecté !",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.CENTER,
-                              );
+                              showCustomToast(
+                                  context, "Vous êtes bien déconnecté !", true);
                               context.go("/");
                             },
                             style: ElevatedButton.styleFrom(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/alert_dialog.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
@@ -83,11 +83,8 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                   onPressed: () {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');
-                    Fluttertoast.showToast(
-                      msg: "Vous êtes bien déconnecté !",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                    );
+                    showCustomToast(
+                        context, "Vous êtes bien déconnecté !", true);
                     context.go("/");
                   },
                   style: ElevatedButton.styleFrom(

@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/size_service.dart';
@@ -50,19 +52,11 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Utilisateur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Utilisateur supprimé avec succès !", true);
       fetchUser();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression de l'utilisateur", false);
     }
   }
 
@@ -77,19 +71,11 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Utilisateur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Utilisateur supprimé avec succès !", true);
       fetchUserMobile();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            "Erreur lors de la suppression de l'utilisateur: ${response.statusCode}",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la suppression de l'utilisateur", false);
     }
   }
 
@@ -104,11 +90,8 @@ class _UserPageState extends State<UserPage> {
         users = usersData.map((data) => User.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 
@@ -124,11 +107,8 @@ class _UserPageState extends State<UserPage> {
             usersData.map((data) => UserMobile.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(
+          context, "Erreur durant la récupération des informations", false);
     }
   }
 

@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  void blankSaved() {}
   testWidgets('test sum price', (WidgetTester tester) async {
     await tester.binding.setSurfaceSize(const Size(1920, 1080));
 
@@ -29,8 +28,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: RecapPanel(
                   articles: list,
-                  onSaved: blankSaved,
                   screenFormat: ScreenFormat.desktop,
+                  fullscreen: false,
                 ),
               ),
             );
@@ -61,8 +60,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: RecapPanel(
                   articles: list,
-                  onSaved: blankSaved,
                   screenFormat: ScreenFormat.desktop,
+                  fullscreen: true,
                 ),
               ),
             );
