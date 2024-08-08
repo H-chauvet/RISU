@@ -20,10 +20,8 @@ import 'package:sizer/sizer.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockSharedPreferences sharedPreferences;
 
   setUp(() async {
-    sharedPreferences = MockSharedPreferences();
     final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
     final fontLoader = FontLoader('Roboto')..addFont(roboto);
     await fontLoader.load();

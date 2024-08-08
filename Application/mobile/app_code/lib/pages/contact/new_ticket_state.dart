@@ -11,6 +11,7 @@ import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -46,15 +47,19 @@ class NewTicketState extends State<NewTicketPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        return true;
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createTicket',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringPostTicket);
+      switch (response.statusCode) {
+        case 201:
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
           return false;
-        }
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'createTicket',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPostTicket);
+          }
+          return false;
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
