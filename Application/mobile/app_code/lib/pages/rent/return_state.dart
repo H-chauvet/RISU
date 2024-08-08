@@ -106,7 +106,7 @@ class ReturnArticleState extends State<ReturnArticlePage> {
         _loaderManager.setIsLoading(false);
       });
       switch (response.statusCode) {
-        case 201:
+        case 200:
           setState(() {
             rental = jsonDecode(response.body)['rental'];
           });

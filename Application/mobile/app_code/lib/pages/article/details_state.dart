@@ -122,7 +122,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final data = json.decode(response.body);
         setState(() {
           opinionsList = data['opinions'];

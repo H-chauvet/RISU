@@ -62,9 +62,9 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
         content,
         title,
         creatorId,
-        createdAt : new Date(createdAt),
-        assignedId : assignedId ?? "",
-        chatUid : chatUid
+        createdAt: new Date(createdAt),
+        assignedId: assignedId ?? "",
+        chatUid: chatUid
       })
 
       return res.status(201).send("Success: Ticket Created.")
@@ -90,16 +90,16 @@ router.put('/assign/:assignedId', jwtMiddleware.refreshTokenMiddleware,
       const ticketId = req.body.ticketId
 
       if (!assignedId || !ticketId) {
-        return res.status(400).json("Bad Request : Missing required parameters")
+        return res.status(400).send("Bad Request : Missing required parameters")
       }
       const assigned = await userCtrl.findUserById(assignedId)
-        if (!assigned) {
-          return res.status(404).send('Bad Request : Assigned User not found');
-        }
+      if (!assigned) {
+        return res.status(404).send('Bad Request : Assigned User not found');
+      }
 
       await ticketCtrl.assignTicket(ticketId, assignedId)
 
-      return res.status(201).send("Success : Ticket assigned")
+      return res.status(201).send("Success: Ticket assigned")
     } catch (err) {
       console.error(err.message)
       return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
@@ -120,7 +120,7 @@ router.put('/:chatId', jwtMiddleware.refreshTokenMiddleware,
 
       const chatId = req.params.chatId
       if (!chatId) {
-        return res.status(400).json("Bad Request : Missing conversation id")
+        return res.status(400).send("Bad Request : Missing conversation id")
       }
 
       await ticketCtrl.closeConversation(chatId)
@@ -146,7 +146,7 @@ router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
 
       const chatId = req.params.chatId
       if (!chatId) {
-        return res.status(400).json("Bad Request : Missing conversation id")
+        return res.status(400).send("Bad Request : Missing conversation id")
       }
 
       await ticketCtrl.deleteConversation(chatId)
@@ -172,7 +172,7 @@ router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
 
       const assignedId = req.params.assignedId
       if (!assignedId) {
-        return res.status(400).json("Bad Request : Missing assigned id")
+        return res.status(400).send("Bad Request : Missing assigned id")
       }
 
       const assigned = await webUserCtrl.findUserByUuid(assignedId);
@@ -187,6 +187,5 @@ router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
     }
   }
 )
-
 
 module.exports = router

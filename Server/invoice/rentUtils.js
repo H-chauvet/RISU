@@ -1,5 +1,5 @@
-const { formatDate } = require("../../invoice/invoiceUtils");
-const transporter = require("../../middleware/transporter");
+const { formatDate } = require("../invoice/invoiceUtils");
+const transporter = require("../middleware/transporter");
 
 /**
  * Send an email to the user to confirm a rent
