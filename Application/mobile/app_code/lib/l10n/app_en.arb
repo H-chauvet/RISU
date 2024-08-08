@@ -173,6 +173,7 @@
   "price": "Price",
   "pricePerHour": "Price per hour",
   "priceTotal": "Total cost",
+  "priceTotalData": "Total cost: {price}€",
   "priceXPerHour": "{price}€ per hour",
   "profile": "Profile",
   "profileAskCompletion": "Would you like to complete your profile?",
