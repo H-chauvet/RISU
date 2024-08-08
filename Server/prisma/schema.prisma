@@ -92,6 +92,7 @@ model User_Web {
     email          String        @unique
     token          String?       @unique
     role           String        @default("user")
+    language       String        @default("fr")
     password       String
     organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
@@ -135,6 +136,7 @@ model User_Mobile {
     refreshToken     String?               @unique
     resetToken       String?               @unique
     createdAt        DateTime              @default(now())
+    language         String                @default("fr")
     locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
