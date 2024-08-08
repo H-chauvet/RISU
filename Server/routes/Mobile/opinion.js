@@ -71,7 +71,7 @@ router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(404).send({ message: 'User not found' })
+        return res.status(404).send('User not found')
       }
       const opinionId = req.params.opinionId
       if (opinionId == null) {
@@ -82,11 +82,11 @@ router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
         return res.status(404).send('Opinion not found')
       }
       if (opinion.userId != user.id) {
-        return res.status(400).send('Unauthorized')
+        return res.status(403).send('Forbidden')
       }
       await opinionCtrl.deleteOpinion(opinionId)
 
-      return res.status(201).send('opinion deleted')
+      return res.status(200).send('opinion deleted')
     } catch (err) {
       console.error(err.message)
       return res.status(400).send('An error occurred')

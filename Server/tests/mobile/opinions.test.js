@@ -219,7 +219,7 @@ describe("PUT /", () => {
     jest.clearAllMocks();
   });
 
-  it("should not uppdate article opinions : User not found", async () => {
+  it("should not update article opinions : User not found", async () => {
     userCtrl.findUserById.mockResolvedValue(null);
 
     const response = await supertest(app)
@@ -230,7 +230,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("User not found");
   });
 
-  it("should not uppdate article opinions : Opinion not found", async () => {
+  it("should not update article opinions : Opinion not found", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue(null);
 
@@ -242,7 +242,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Opinion not found");
   });
 
-  it("should not uppdate article opinions : Unauthorized", async () => {
+  it("should not update article opinions : Unauthorized", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 2 });
 
@@ -254,7 +254,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Unauthorized");
   });
 
-  it("should not uppdate article opinions : Missing comment", async () => {
+  it("should not update article opinions : Missing comment", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 1 });
 
@@ -266,7 +266,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Missing comment");
   });
 
-  it("should not uppdate article opinions : empty comment", async () => {
+  it("should not update article opinions : empty comment", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 1 });
 
@@ -281,7 +281,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Missing comment");
   });
 
-  it("should not uppdate article opinions : Missing note", async () => {
+  it("should not update article opinions : Missing note", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 1 });
 
@@ -296,7 +296,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Missing note");
   });
 
-  it("should not uppdate article opinions : empty note", async () => {
+  it("should not update article opinions : empty note", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 1 });
 
@@ -312,7 +312,7 @@ describe("PUT /", () => {
     expect(response.text).toBe("Missing note");
   });
 
-  it("should uppdate article opinions : test success", async () => {
+  it("should update article opinions : test success", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     opinionCtrl.getOpinionFromId.mockResolvedValue({ userId: 1 });
 
@@ -326,5 +326,69 @@ describe("PUT /", () => {
 
     expect(response.status).toBe(201);
     expect(response.text).toBe("opinion updated");
+  });
+});
+
+
+describe("DELETE /:opinionId", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("should not delete article opinions : User not found", async () => {
+    userCtrl.findUserById.mockResolvedValue(null);
+
+    const response = await supertest(app)
+      .delete("/849849")
+      .set("Authorization", "Bearer validToken")
+      .send();
+
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("User not found");
+  });
+
+  it("should not delete article opinions : Opinion not found", async () => {
+    userCtrl.findUserById.mockResolvedValue({ id: 1 });
+    opinionCtrl.getOpinionFromId.mockResolvedValue(null);
+
+    const response = await supertest(app)
+      .delete("/849849")
+      .set("Authorization", "Bearer validToken")
+      .send();
+
+    expect(response.status).toBe(404);
+    expect(response.text).toBe("Opinion not found");
+  });
+
+  it("should not delete article opinions : Forbidden", async () => {
+    userCtrl.findUserById.mockResolvedValue({ id: 1 });
+    opinionCtrl.getOpinionFromId.mockResolvedValue({
+      id: 1,
+      userId: 2,
+    });
+
+    const response = await supertest(app)
+      .delete("/849849")
+      .set("Authorization", "Bearer validToken")
+      .send();
+
+    expect(response.status).toBe(403);
+    expect(response.text).toBe("Forbidden");
+  });
+
+  it("should delete article opinions : test success", async () => {
+    userCtrl.findUserById.mockResolvedValue({ id: 1 });
+    opinionCtrl.getOpinionFromId.mockResolvedValue({
+      id: 1,
+      userId: 1,
+    });
+
+    const response = await supertest(app)
+      .delete("/849849")
+      .set("Authorization", "Bearer validToken")
+      .send();
+
+    expect(response.status).toBe(200);
+    expect(response.text).toBe("opinion deleted");
   });
 });
