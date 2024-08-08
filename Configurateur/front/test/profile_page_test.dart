@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/components/custom_footer.dart';
-import 'package:front/components/custom_header.dart';
-import 'package:front/components/tickets_page.dart';
-import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,19 +68,6 @@ void main() {
     await tester.tap(find.byKey(const Key('cancel-edit-password')));
     await tester.pump();
 
-    // Modification nom
-    await tester.tap(find.byKey(const Key('edit-name')));
-    await tester.pump();
-
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
-    await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
-
-    await tester.tap(find.byKey(const Key('cancel-edit-name')));
-    await tester.pump();
-
     // Modification entreprise
     await tester.tap(find.byKey(const Key('edit-company')));
     await tester.pump();
@@ -107,6 +89,17 @@ void main() {
 
     await tester.enterText(find.byKey(const Key('user-mail')), 'henri@risu.fr');
     await tester.tap(find.byKey(const Key('cancel-edit-mail')));
+    await tester.pump();
+
+    // Modification nom
+    await tester.tap(find.byKey(const Key('edit-name')));
+    await tester.pump();
+
+    expect(find.text('Mettre à jour'), findsOneWidget);
+
+    await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
+    await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
+
     await tester.pump();
   });
 }

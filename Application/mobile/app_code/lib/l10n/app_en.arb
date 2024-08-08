@@ -217,6 +217,7 @@
   "search": "Search",
   "seeProfileDetails": "View profile details",
   "send": "Send",
+  "sessionExpired": "Session expired. Please reconnect.",
   "settings": "Settings",
   "signIn": "Sign in",
   "signInRequired": "You must be logged in to continue.",

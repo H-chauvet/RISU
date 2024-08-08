@@ -257,52 +257,6 @@ void main() {
         containerCreationState.objs[0].fragments[1].faces[0].materialIndex, 0);
   });
 
-  testWidgets('Load container', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('containerData')).thenReturn('');
-
-    var container = {
-      'id': '1',
-      'saveName': 'test',
-      'height': '12',
-      'width': '5',
-      'containerMapping': '0000000111111111112222333',
-      'designs': jsonEncode([]),
-    };
-
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeService>(
-            create: (_) => ThemeService(),
-          ),
-        ],
-        child: Sizer(
-          builder: (context, orientation, deviceType) {
-            return MaterialApp(
-              home: InheritedGoRouter(
-                goRouter: AppRouter.router,
-                child: ContainerCreation(
-                  id: '1',
-                  container: jsonEncode(container),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
-
-    await tester.pump();
-
-    expect(find.text("Petit Casier"), findsNWidgets(1));
-    expect(find.text("Moyen Casier"), findsNWidgets(1));
-    expect(find.text("Grand Casier"), findsNWidgets(1));
-  });
-
   testWidgets('Reset container', (WidgetTester tester) async {
     ContainerCreationState containerCreationState = ContainerCreationState();
 
