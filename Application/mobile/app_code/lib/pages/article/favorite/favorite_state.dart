@@ -10,6 +10,7 @@ import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -48,16 +49,21 @@ class FavoriteSate extends State<FavoritePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          favorites = jsonDecode(response.body)['favorites'];
-        });
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'getFavorites',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingFavorite);
-        }
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            favorites = jsonDecode(response.body)['favorites'];
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'getFavorites',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingFavorite);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -85,18 +91,21 @@ class FavoriteSate extends State<FavoritePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        setState(() {
-          deletedFavorites.remove(articleId);
-        });
-        return;
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createFavorite',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringCreatingFavorite);
-        }
-        return;
+      switch (response.statusCode) {
+        case 201:
+          setState(() {
+            deletedFavorites.remove(articleId);
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'createFavorite',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringCreatingFavorite);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -133,20 +142,24 @@ class FavoriteSate extends State<FavoritePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode != 200) {
-        if (context.mounted) {
-          printServerResponse(context, response, 'deleteFavorite',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringDeletingFavorite);
-        }
-        return false;
-      }
-      if (context.mounted) {
-        MyToastMessage.show(
+      switch (response.statusCode) {
+        case 200:
+          MyToastMessage.show(
             message: AppLocalizations.of(context)!.deletedFromFavorites,
-            context: context);
+            context: context,
+          );
+          return true;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          return false;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'deleteFavorite',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringDeletingFavorite);
+          }
+          return false;
       }
-      return true;
     } catch (err, stacktrace) {
       if (mounted) {
         setState(() {

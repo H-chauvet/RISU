@@ -94,23 +94,22 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = jsonDecode(response.body);
-        setState(() {
-          nbImages = responseData['images'];
-        });
-        checkFavorite(responseData['id']);
-        return responseData;
-      } else {
-        if (context.mounted) {
-          printServerResponse(
-            context,
-            response,
-            'getArticleData',
-            message:
-                AppLocalizations.of(context)!.errorOccurredDuringGettingData,
-          );
-        }
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = jsonDecode(response.body);
+          checkFavorite(responseData['id']);
+          return responseData;
+        default:
+          if (context.mounted) {
+            printServerResponse(
+              context,
+              response,
+              'getArticleData',
+              message:
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData,
+            );
+          }
+          break;
       }
       return {
         'id': -1,
@@ -166,21 +165,33 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        setState(() {
-          isFavorite = true;
-        });
-        if (context.mounted) {
-          MyToastMessage.show(
+
+      switch (response.statusCode) {
+        case 201:
+          setState(() {
+            isFavorite = true;
+          });
+          if (context.mounted) {
+            MyToastMessage.show(
               message: AppLocalizations.of(context)!.addedToFavorites,
-              context: context);
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createFavorite',
+              context: context,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(
+              context,
+              response,
+              'createFavorite',
               message: AppLocalizations.of(context)!
-                  .errorOccurredDuringCreatingFavorite);
-        }
+                  .errorOccurredDuringCreatingFavorite,
+            );
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -214,16 +225,26 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          isFavorite = jsonDecode(response.body);
-        });
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createFavorite',
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            isFavorite = jsonDecode(response.body);
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(
+              context,
+              response,
+              'checkFavorite',
               message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingFavorite);
-        }
+                  .errorOccurredDuringGettingFavorite,
+            );
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -256,21 +277,32 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          isFavorite = false;
-        });
-        if (context.mounted) {
-          MyToastMessage.show(
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            isFavorite = false;
+          });
+          if (context.mounted) {
+            MyToastMessage.show(
               message: AppLocalizations.of(context)!.deletedFromFavorites,
-              context: context);
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'createFavorite',
+              context: context,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(
+              context,
+              response,
+              'deleteFavorite',
               message: AppLocalizations.of(context)!
-                  .errorOccurredDuringDeletingFavorite);
-        }
+                  .errorOccurredDuringDeletingFavorite,
+            );
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -302,17 +334,24 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = jsonDecode(response.body);
-        setState(() {
-          similarArticles = responseData;
-        });
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'getSimilarArticles',
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = jsonDecode(response.body);
+          setState(() {
+            similarArticles = responseData;
+          });
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(
+              context,
+              response,
+              'getSimilarArticles',
               message:
-                  AppLocalizations.of(context)!.errorOccurredDuringGettingData);
-        }
+                  AppLocalizations.of(context)!.errorOccurredDuringGettingData,
+            );
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {

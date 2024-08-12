@@ -1,10 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -97,11 +99,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     if (controller.complete) {
       bool response = await makePayment();
       if (response == false) {
-        Fluttertoast.showToast(
-          msg: "Echec de la commande",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-        );
+        showCustomToast(context, "Echec de la commande", false);
         return;
       }
     } else {
@@ -130,19 +128,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
           storageService.removeStorage('containerData');
           context.go('/container-creation/confirmation');
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la commande",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la commande", false);
         }
       });
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Echec de la commande",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Echec de la commande", false);
     }
   }
 

@@ -1,14 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/container.dart';
 import 'package:front/screens/container-list/container_list.dart';
-import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
