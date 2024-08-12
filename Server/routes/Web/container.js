@@ -37,7 +37,7 @@ router.post("/delete", async function (req, res, next) {
     const { id } = req.body;
     if (!id) {
       res.status(400);
-      throw new Error("container is required");
+      throw new Error("container id is required");
     }
     await containerCtrl.deleteContainer(id);
     res.status(200).json("container deleted");
@@ -98,7 +98,7 @@ router.put("/update", async function (req, res, next) {
 
     if (!id) {
       res.status(400);
-      throw new Error("id and name are required");
+      throw new Error("id is required");
     }
 
     const container = await containerCtrl.updateContainer(id, {
@@ -220,7 +220,7 @@ router.post("/update-city/:id", async (req, res, next) => {
 
     if (!city) {
       res.status(400).json({
-        error: "Email and at least one of city or city are required",
+        error: "Id and at least one city are required",
       });
       return;
     }
@@ -254,7 +254,7 @@ router.post("/update-address/:id", async (req, res, next) => {
 
     if (!address) {
       res.status(400).json({
-        error: "Email and at least one of address or address are required",
+        error: "Id and at least one address are required",
       });
       return;
     }
@@ -288,7 +288,7 @@ router.post("/update-name/:id", async (req, res, next) => {
 
     if (!saveName) {
       res.status(400).json({
-        error: "Email and at least one of saveName or saveName are required",
+        error: "Id and a save name are required",
       });
       return;
     }
@@ -322,8 +322,7 @@ router.post("/update-information/:id", async (req, res, next) => {
 
     if (!informations) {
       res.status(400).json({
-        error:
-          "Email and at least one of informations or informations are required",
+        error: "Id and at least one informations are required",
       });
       return;
     }
