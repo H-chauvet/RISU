@@ -13,6 +13,7 @@ const paymentRoutes = require("./routes/Web/payment");
 const organizationRoutes = require("./routes/Web/organization");
 const itemCategoryRoutes = require('./routes/Web/itemCategory');
 const ticketsRoutes = require('./routes/Web/tickets');
+const imagesRoutes = require('./routes/Web/images');
 
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
@@ -58,6 +59,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/organization", organizationRoutes);
 app.use('/api/itemCategory', itemCategoryRoutes)
 app.use('/api/tickets', ticketsRoutes)
+app.use('/api/images', imagesRoutes);
 
 app.use("/api/mobile/user", userMobileRoutes)
 app.use("/api/mobile/auth", authMobileRoutes)
