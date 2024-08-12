@@ -130,7 +130,9 @@ class ContainerCreationState extends State<ContainerCreation> {
           ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
         obj.materials[2] = FSp3dMaterial.red.deepCopy()
           ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-        obj.materials[3] = FSp3dMaterial.black.deepCopy()
+        obj.materials[3] = FSp3dMaterial.blue.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        obj.materials[4] = FSp3dMaterial.black.deepCopy()
           ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
         objs.add(obj);
         loadImage();
