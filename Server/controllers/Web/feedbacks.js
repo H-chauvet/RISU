@@ -6,10 +6,16 @@ const { db } = require('../../middleware/database')
  * @param {*} data of the feedback to be created
  * @returns the newly created feedback
  */
-exports.registerFeedbacks = data => {
-  return db.Feedbacks_Web.create({
-    data: data
-  })
+exports.registerFeedbacks = async data => {
+  try {
+    const feedback = await db.Feedbacks_Web.create({
+      data: data
+    })
+
+    return feedback;
+  } catch (error) {
+    throw "Something happen during the creation"
+  }
 }
 
 /**

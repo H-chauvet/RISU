@@ -7,7 +7,7 @@ router.post("/create", async function (req, res, next) {
     const { firstName, lastName, email, message, mark } = req.body;
     if (!firstName || !lastName || !email || !message || !mark) {
       res.status(400);
-      throw new Error("Some informations are missing");
+      throw "Some informations are missing";
     }
     const msg = await feedbacksCtrl.registerFeedbacks({
       lastName,
@@ -16,9 +16,11 @@ router.post("/create", async function (req, res, next) {
       message,
       mark,
     });
+    
     res.status(200).json("Avis enregistré !");
   } catch (err) {
-    next(err);
+    console.log(err)
+    res.status(400).send(err)
   }
 });
 
