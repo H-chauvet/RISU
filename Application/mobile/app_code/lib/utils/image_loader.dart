@@ -1,13 +1,22 @@
-String imageLoader(String articleName) {
-  switch (articleName) {
-    case 'Ballon de volley':
-      return 'assets/volley.png';
-    case 'Raquette':
-      return 'assets/raquette.jpg';
-    case 'Ballon de football':
-      return 'assets/football.jpg';
-    case 'Freesbee':
-      return 'assets/freesbee.jpg';
-  }
-  return 'assets/logo.png';
+import 'package:flutter/cupertino.dart';
+
+Widget loadImageFromURL(String? imageURL) {
+  return imageURL != null
+      ? FadeInImage.assetNetwork(
+          placeholder: 'assets/image_placeholder.png',
+          image: imageURL ?? '',
+          fit: BoxFit.cover,
+          fadeInDuration: const Duration(milliseconds: 50),
+          fadeOutDuration: const Duration(milliseconds: 50),
+          imageErrorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              'assets/image_placeholder.png',
+              fit: BoxFit.cover,
+            );
+          },
+        )
+      : Image.asset(
+          'assets/image_placeholder.png',
+          fit: BoxFit.cover,
+        );
 }

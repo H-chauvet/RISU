@@ -10,8 +10,8 @@ import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/errors.dart';
-import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/image_loader.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 import 'favorite_page.dart';
 
@@ -247,10 +247,9 @@ class FavoriteSate extends State<FavoritePage> {
                                                       width: 100,
                                                       child: Transform.scale(
                                                         scale: 0.7,
-                                                        child: Image.asset(
-                                                            imageLoader(
-                                                                favorite['item']
-                                                                    ['name'])),
+                                                        child: loadImageFromURL(
+                                                            favorite[
+                                                                'imageUrl']),
                                                       ),
                                                     ),
                                                   ],
