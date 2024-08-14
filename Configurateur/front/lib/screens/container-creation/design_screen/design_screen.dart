@@ -658,6 +658,7 @@ class DesignScreenState extends State<DesignScreen> {
                                     picked =
                                         await FilePicker.platform.pickFiles(
                                       type: FileType.image,
+                                      withData: true,
                                     );
 
                                     if (!mounted) {
