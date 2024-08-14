@@ -32,7 +32,7 @@ router.get("/listAll", async function (req, res, next) {
 
     res.status(200).json({ feedbacks });
   } catch (err) {
-    next(err);
+    res.status(400).send(err)
   }
 });
 

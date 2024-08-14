@@ -37,6 +37,6 @@ exports.getAllFeedbacks = async (mark) => {
     return feedbacks;
   } catch (error) {
     console.error('Error retrieving feedbacks:', error);
-    throw new Error('Failed to retrieve feedbacks');
+    throw 'Failed to retrieve feedbacks';
   }
 };

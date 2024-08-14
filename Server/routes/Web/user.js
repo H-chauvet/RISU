@@ -219,10 +219,16 @@ router.get("/user-details/:email", async (req, res) => {
 
   try {
     const userDetails = await userCtrl.findUserDetailsByEmail(email);
+
+    if (!userDetails) {
+      res.status(400);
+      throw "Email don't exist";
+    }
+
     res.status(200).json(userDetails);
   } catch (error) {
     console.error("Error retrieving user details:", error);
-    res.status(500).json({ error: "Failed to retrieve user details" });
+    res.status(500).send(error);
   }
 });
 
