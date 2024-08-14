@@ -22,7 +22,7 @@ import 'rating_dialog_content_style.dart';
 /// [Function] : get the user details
 /// [email] : mail save in the storage service
 /// return userDetails
-Future<Map<String, dynamic>> fetchUserDetails(String email) async {
+Future<Map<String, dynamic>> fetchUserDetails(BuildContext context, String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
   try {
@@ -35,7 +35,7 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
     } else {
       debugPrint(
           'Failed to fetch user details. Status code: ${response.statusCode}');
-      return {};
+      return {"error": true};
     }
   } catch (error) {
     debugPrint('Error fetching user details: $error');
@@ -47,12 +47,20 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
 /// [rating] : rating of Risu
 /// [message] : client's message
 ///
-void sendData(BuildContext context, String rating, String message,
+Future<void> sendData(BuildContext context, String rating, String message,
     Function() onSubmit) async {
   String userMail = await storageService.getUserMail();
-  final userDetails = await fetchUserDetails(userMail);
+  final userDetails = await fetchUserDetails(context, userMail);
+  if (userDetails['error'] == true) {
+    if (context.mounted) {
+      showCustomToast(context, "Failed to fetch user details.", false);
+    }
+    return;
+  }
   String firstName = userDetails['firstName'];
   String lastName = userDetails['lastName'];
+
+  
 
   var body = {
     'firstName': firstName,
@@ -67,11 +75,12 @@ void sendData(BuildContext context, String rating, String message,
     body: body,
   );
 
+  debugPrint(response.toString());
   if (response.statusCode == 200) {
-    showCustomToast(context, "Avis envoyé avec succès !", true);
+    showCustomToast(context, response.body, true);
     onSubmit();
   } else {
-    showCustomToast(context, "Erreur durant l'envoi de l'avis", false);
+    showCustomToast(context, response.body, false);
   }
 }
 
@@ -134,8 +143,8 @@ class RatingDialogContent extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                sendData(
+              onPressed:  () async {
+                await sendData(
                     context,
                     context.read<DialogCubit>().state.rating.toString(),
                     context.read<DialogCubit>().state.message,
