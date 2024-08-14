@@ -17,25 +17,25 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__('invalidToken'))
       }
       const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).send(res.__('userNotFound'))
       }
       if (!req.body.itemId || req.body.itemId === '') {
-        return res.status(401).json({ message: 'Missing itemId' })
+        return res.status(401).send(res.__('missingItemId'))
       }
 
       const item = await itemCtrl.getItemFromId(parseInt(req.body.itemId))
       if (!item) {
-        return res.status(401).send('Item not found');
+        return res.status(401).send(res.__('itemNotFound'))
       }
       if (!req.body.duration || req.body.duration < 0) {
-        return res.status(401).json({ message: 'Missing duration' })
+        return res.status(401).send(res.__('missingTime'))
       }
       if (!item.available) {
-        return res.status(401).send('Item not available');
+        return res.status(401).send(res.__('itemUnavailable'))
       }
       const locationPrice = item.price * req.body.duration
 
@@ -97,10 +97,10 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
 
       await rentCtrl.updateRentInvoice(location.id, invoiceData);
 
-      return res.status(201).json({ rentId: location.id, message: 'location saved'})
+      return res.status(201).json({ rentId: location.id, message: res.__('rentSaved')})
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred' + err.message)
+      return res.status(401).send(res.__('errorOccured'))
     }
   }
 )
@@ -109,11 +109,11 @@ router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__('invalidToken'))
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).send(res.__('userNotFound'))
       }
 
       const locationId = req.params.locationId;
@@ -121,19 +121,19 @@ router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
       const location = await rentCtrl.getRentFromId(parseInt(locationId))
 
       if (!location) {
-        return res.status(404).send('Location not found');
+        return res.status(404).send(res.__('rentNotFound'))
       }
 
       if (!location.invoice) {
-        return res.status(404).send('Invoice not found');
+        return res.status(404).send(res.__('invoiceNotFound'));
       }
 
       await sendInvoice(location.invoice, user.email);
 
-      return res.status(201).json({ message: 'invoice sent' })
+      return res.status(201).send(res.__('invoiceSent'));
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred')
+      return res.status(401).send(res.__('errorOccured'))
     }
   }
 )
@@ -142,17 +142,17 @@ router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token')
+        return res.status(401).send(res.__('invalidToken'))
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(404).send('User not found')
+        return res.status(401).send(res.__('userNotFound'))
       }
       const rentals = await rentCtrl.getUserRents(user.id)
       return res.status(200).json({ rentals: rentals })
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred')
+      return res.status(401).send(res.__('errorOccured'))
     }
   }
 )
@@ -161,26 +161,26 @@ router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token')
+        return res.status(401).send(res.__('invalidToken'))
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send('User not found');
+        return res.status(401).send(res.__('userNotFound'))
       }
       if (!req.params.rentId || req.params.rentId == '') {
-        return res.status(401).json({ message: 'Missing rentId' })
+        return res.status(401).send(res.__('missingRentId'))
       }
       const rental = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rental) {
-        return res.status(401).send('Location not found')
+        return res.status(401).send(res.__('rentNotFound'))
       }
       if (rental.userId != req.user.id) {
-        return res.status(401).send('Location from wrong user')
+        return res.status(401).send(res.__('wrongUserRent'))
       }
       return res.status(201).json({ rental: rental })
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred')
+      return res.status(401).send(res.__('errorOccured'))
     }
   }
 )
@@ -189,23 +189,23 @@ router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token')
+        return res.status(401).send(res.__('invalidToken'))
       }
       if (!req.params.rentId || req.params.rentId == '') {
-        return res.status(401).json({ message: 'Missing rentId' })
+        return res.status(401).send(res.__('missingRentId'))
       }
       const rent = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rent) {
-        return res.status(401).send('Location not found')
+        return res.status(401).send(res.__('rentNotFound'))
       }
       if (rent.userId != req.user.id) {
-        return res.status(401).send('Location from wrong user')
+        return res.status(401).send(res.__('wrongUserRent'))
       }
       await rentCtrl.returnRent(parseInt(req.params.rentId))
-      return res.status(201).json({ message: 'location returned' })
+      return res.status(201).send(res.__('rentReturned'))
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send('An error occurred')
+      return res.status(401).send(res.__('errorOccured'))
     }
   }
 )
