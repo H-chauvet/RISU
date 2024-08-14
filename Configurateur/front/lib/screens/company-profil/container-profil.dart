@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -19,20 +20,18 @@ import 'package:provider/provider.dart';
 /// Container profil page of the organization
 /// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
-  final ContainerListData container;
-  const ContainerProfilPage({Key? key, required this.container})
+  const ContainerProfilPage({Key? key})
       : super(key: key);
 
   @override
   _ContainerProfilPageState createState() =>
-      _ContainerProfilPageState(container: container);
+      _ContainerProfilPageState();
 }
 
 /// CompanyProfilPageState
 ///
 class _ContainerProfilPageState extends State<ContainerProfilPage> {
-  final ContainerListData container;
-  _ContainerProfilPageState({required this.container});
+  _ContainerProfilPageState();
   late List<ItemList> items;
   late String itemName = '';
   late String itemDesc = '';
@@ -758,6 +757,17 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    context.go(
+                      "/object-creation",
+                    );
+                  },
+                  child: Text('Nouvel Objet'),
                 ),
               ),
               Text(
