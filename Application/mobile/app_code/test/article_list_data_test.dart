@@ -20,12 +20,13 @@ void main() {
 
       test('ArticleListData constructor should create an instance', () {
         final articleListData = ArticleData(
-            id: 0,
-            containerId: 0,
-            name: 'name',
-            available: true,
-            price: 3,
-            categories: []);
+          id: 0,
+          containerId: 0,
+          name: 'name',
+          available: true,
+          price: 3,
+          categories: [],
+        );
         expect(articleListData.id, 0);
         expect(articleListData.containerId, 0);
         expect(articleListData.name, 'name');
