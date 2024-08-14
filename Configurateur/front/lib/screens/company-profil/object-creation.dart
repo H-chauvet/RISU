@@ -171,8 +171,7 @@ class _ObjectCreationState extends State<ObjectCreation> {
     if (_formKey.currentState!.validate() && containerId != 0) {
       Fluttertoast.showToast(msg: "L'objet a bien été créé");
       createItems().then((_) {
-        context.go(
-            '/container-profil');
+        context.go('/container-profil');
       });
     } else {
       Fluttertoast.showToast(msg: "L'objet n'a pas pu être créé");

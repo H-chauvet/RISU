@@ -20,12 +20,10 @@ import 'package:provider/provider.dart';
 /// Container profil page of the organization
 /// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
-  const ContainerProfilPage({Key? key})
-      : super(key: key);
+  const ContainerProfilPage({Key? key}) : super(key: key);
 
   @override
-  _ContainerProfilPageState createState() =>
-      _ContainerProfilPageState();
+  _ContainerProfilPageState createState() => _ContainerProfilPageState();
 }
 
 /// CompanyProfilPageState
