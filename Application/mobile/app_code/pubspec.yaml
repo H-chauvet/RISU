@@ -48,6 +48,7 @@ dependencies:
     sdk: flutter
   flutter_map_math: ^0.1.7
   country_flags: ^2.2.0
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   integration_test:
