@@ -94,8 +94,6 @@ class _ObjectCreationState extends State<ObjectCreation> {
     if (token != null) {
       jwtToken = token!;
       fetchCategories();
-
-      // String? img = await storageService.readStorage('imageByte');
     } else {
       jwtToken = "";
     }
@@ -169,7 +167,6 @@ class _ObjectCreationState extends State<ObjectCreation> {
 
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate() && containerId != 0) {
-      Fluttertoast.showToast(msg: "L'objet a bien été créé");
       createItems().then((_) {
         context.go('/container-profil');
       });
@@ -437,10 +434,18 @@ class _ObjectCreationState extends State<ObjectCreation> {
                       const SizedBox(height: 20),
                       Center(
                         child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          child: Text('Soumettre',
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                              )),
                           onPressed: () {
                             _submitForm(context);
                           },
-                          child: const Text('Soumettre'),
                         ),
                       ),
                     ],

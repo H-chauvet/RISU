@@ -765,7 +765,15 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       "/object-creation",
                     );
                   },
-                  child: Text('Nouvel Objet'),
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                  child: Text('Nouvel Objet',
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      )),
                 ),
               ),
               Text(
