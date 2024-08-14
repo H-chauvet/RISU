@@ -17,9 +17,7 @@ const generateResponse = async (intent, id) => {
         status: intent.status,
       };
     case "requires_payment_method":
-      return {
-        error: "Your card was denied, please provide a new payment method",
-      };
+      throw "Your card was denied, please provide a new payment method";
     case "succeeded":
       try {
         await db.Containers.update({
@@ -30,7 +28,7 @@ const generateResponse = async (intent, id) => {
         });
       } catch (error) {
         console.error("Error retrieving users:", error);
-        throw new Error("Failed to retrieve container");
+        throw "Failed to retrieve container";
       }
       return { clientSecret: intent.client_secret, status: intent.status };
   }
@@ -47,22 +45,28 @@ const generateResponse = async (intent, id) => {
  * @returns a response for the payment
  */
 exports.makePayments = async (data) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET, {
-    apiVersion: "2023-08-16",
-    typescript: false,
-  });
+  try {
+    const stripe = new Stripe(process.env.STRIPE_SECRET, {
+      apiVersion: "2023-08-16",
+      typescript: false,
+    });
 
-  if (data.paymentMethodId) {
-    const params = {
-      amount: data.amount * 100,
-      confirm: true,
-      confirmation_method: "manual",
-      currency: data.currency,
-      payment_method: data.paymentMethodId,
-      use_stripe_sdk: data.useStripeSdk,
-      return_url: "risu://stripe-redirect",
-    };
+    if (data.paymentMethodId) {
+      const params = {
+        amount: data.amount * 100,
+        confirm: true,
+        confirmation_method: "manual",
+        currency: data.currency,
+        payment_method: data.paymentMethodId,
+        use_stripe_sdk: data.useStripeSdk,
+        return_url: "risu://stripe-redirect",
+      };
+
     const intent = await stripe.paymentIntents.create(params);
-    return generateResponse(intent, data.containerId);
+    }
+  } catch (err) {
+    throw "An error occured during the payment initialization."
   }
+  return generateResponse(intent, data.containerId);
+  
 };

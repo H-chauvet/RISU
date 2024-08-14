@@ -275,6 +275,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'containerId': widget.id,
       }),
     );
+
+    if (response.statusCode != 200) {
+      return {'error': true};
+    }
     return json.decode(response.body);
   }
 }

@@ -17,9 +17,7 @@ router.post("/card-pay", async function (req, res, next) {
       }),
     );
   } catch (e) {
-    res.status(500).send({
-      error: e.message,
-    });
+    res.status(500).send(e.message);
   }
 });
 
