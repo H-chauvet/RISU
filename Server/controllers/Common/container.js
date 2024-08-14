@@ -167,7 +167,6 @@ exports.getItemsFromContainer = (containerId) => {
           createdAt: true,
           containerId: true,
           price: true,
-          image: true,
           description: true,
           categories: true,
         },
@@ -293,7 +292,6 @@ exports.getItemsWithFilters = async (
         createdAt: true,
         containerId: true,
         price: true,
-        image: true,
         description: true,
         categories: true,
       },
@@ -312,6 +310,6 @@ exports.getItemsWithFilters = async (
 
     return items;
   } catch (error) {
-    throw new Error("Failed to retrieve items with filters");
+    throw error;
   }
 };
