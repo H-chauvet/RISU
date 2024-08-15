@@ -6,12 +6,16 @@ const { db } = require("../../middleware/database");
  * @param {number} containerId id of the container
  * @returns every item in a specific container
  */
-exports.getItemByContainerId = (containerId) => {
-  return db.Item.findMany({
-    where: {
-      containerId: containerId,
-    },
-  });
+exports.getItemByContainerId = async (containerId) => {
+  try {
+    return await db.Item.findMany({
+      where: {
+        containerId: containerId,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
 };
 
 /**
@@ -20,12 +24,16 @@ exports.getItemByContainerId = (containerId) => {
  * @param {number} category category of the items
  * @returns every item with specific category in a specific container
  */
-exports.getItemByCategory = (category) => {
-  return db.Item.findMany({
-    where: {
-      category: category,
-    },
-  });
+exports.getItemByCategory = async (category) => {
+  try {
+    return await db.Item.findMany({
+      where: {
+        category: category,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
 };
 
 /**
@@ -33,8 +41,12 @@ exports.getItemByCategory = (category) => {
  *
  * @returns every item in the database
  */
-exports.getAllItem = () => {
-  return db.Item.findMany({});
+exports.getAllItem = async () => {
+  try {
+    return await db.Item.findMany({});
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
 };
 
 /**
@@ -43,22 +55,30 @@ exports.getAllItem = () => {
  * @param {number} id of the item
  * @returns one item if an id correspond
  */
-exports.getItemFromId = (id) => {
-  return db.Item.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      categories: true // inclure les catégories liées à l'élément
-    }
-  });
-}
+exports.getItemFromId = async (id) => {
+  try {
+    return await db.Item.findUnique({
+      where: { id: parseInt(id) },
+      include: {
+        categories: true, // inclure les catégories liées à l'élément
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
+};
 
 /**
  * Retrieve every item in the database
  *
  * @returns every item in the database
  */
-exports.getItems = () => {
-  return db.Item.findMany();
+exports.getItems = async () => {
+  try {
+    return await db.Item.findMany();
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
 };
 
 /**
@@ -67,12 +87,16 @@ exports.getItems = () => {
  * @param {number} id of the item to be deleted
  * @returns none
  */
-exports.deleteItem = (id) => {
-  return db.Item.delete({
-    where: {
-      id: parseInt(id),
-    },
-  });
+exports.deleteItem = async (id) => {
+  try {
+    return await db.Item.delete({
+      where: {
+        id: parseInt(id),
+      },
+    });
+  } catch (err) {
+    throw "Something happen while deleting item";
+  }
 };
 
 /**
@@ -81,12 +105,16 @@ exports.deleteItem = (id) => {
  * @param {*} item object that contains the data
  * @returns the new object stored in the database
  */
-exports.createItem = (item) => {
-  item.price = parseFloat(item.price);
-  item.containerId = parseInt(item.containerId);
-  return db.Item.create({
-    data: item,
-  });
+exports.createItem = async (item) => {
+  try {
+    item.price = parseFloat(item.price);
+    item.containerId = parseInt(item.containerId);
+    return await db.Item.create({
+      data: item,
+    });
+  } catch (err) {
+    throw "Something happen while creating item";
+  }
 };
 
 /**
@@ -96,15 +124,19 @@ exports.createItem = (item) => {
  * @param {*} item object that contains the data to update the item
  * @returns the freshly updated object
  */
-exports.updateItem = (id, item) => {
-  intId = parseInt(id);
-  item.price = parseFloat(item.price);
-  return db.Item.update({
-    where: {
-      id: intId,
-    },
-    data: item,
-  });
+exports.updateItem = async (id, item) => {
+  try {
+    intId = parseInt(id);
+    item.price = parseFloat(item.price);
+    return await db.Item.update({
+      where: {
+        id: intId,
+      },
+      data: item,
+    });
+  } catch (err) {
+    throw "Something happen while updating item";
+  }
 };
 
 /**
@@ -115,20 +147,24 @@ exports.updateItem = (id, item) => {
  * @returns the articles that are similar to the one in parameter
  * at least one same category
  */
-exports.getAvailableItemsCount = (containerId) => {
-  return db.Item.count({
-    where: { containerId: containerId },
-    select: { available: true }
-  })
-}
+exports.getAvailableItemsCount = async (containerId) => {
+  try {
+    return await db.Item.count({
+      where: { containerId: containerId },
+      select: { available: true },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving items";
+  }
+};
 
 /**
-  * Get the similar items of a specific item
-  *
-  * @param {number} containerId id of the container
-  * @returns the articles that are similar to the one in parameter
-  * at least one same category
-  */
+ * Get the similar items of a specific item
+ *
+ * @param {number} containerId id of the container
+ * @returns the articles that are similar to the one in parameter
+ * at least one same category
+ */
 exports.getSimilarItems = async (itemId, containerId) => {
   try {
     const item = await db.Item.findUnique({
@@ -136,7 +172,7 @@ exports.getSimilarItems = async (itemId, containerId) => {
       include: { categories: true },
     });
     if (!item) {
-      throw new Error("Item not found");
+      throw "Item not found";
     }
 
     const categoryIds = item.categories.map((category) => category.id);
@@ -154,9 +190,9 @@ exports.getSimilarItems = async (itemId, containerId) => {
 
     return similarItems;
   } catch (error) {
-    throw error;
+    throw "Something happen while retrieving items";
   }
-}
+};
 
 /**
  * Update the name of the selected item
@@ -164,15 +200,19 @@ exports.getSimilarItems = async (itemId, containerId) => {
  * @param {number} item information about the item
  * @returns the item with the name changed
  */
-exports.updateName = (item) => {
-  return db.Item.update({
-    where: {
-      id: item.id,
-    },
-    data: {
-      name: item.name,
-    },
-  });
+exports.updateName = async (item) => {
+  try {
+    return await db.Item.update({
+      where: {
+        id: item.id,
+      },
+      data: {
+        name: item.name,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating item";
+  }
 };
 
 /**
@@ -181,18 +221,22 @@ exports.updateName = (item) => {
  * @param {number} item information about the item
  * @returns the item with the name changed
  */
-exports.updateItemCtn = (item) => {
-  return db.Item.update({
-    where: {
-      id: item.id,
-    },
-    data: {
-      name: item.name,
-      description: item.description,
-      price: item.price,
-      available: item.available,
-    },
-  });
+exports.updateItemCtn = async (item) => {
+  try {
+    return await db.Item.update({
+      where: {
+        id: item.id,
+      },
+      data: {
+        name: item.name,
+        description: item.description,
+        price: item.price,
+        available: item.available,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating item";
+  }
 };
 
 /**
@@ -201,15 +245,19 @@ exports.updateItemCtn = (item) => {
  * @param {number} item information about the item
  * @returns the item with the price changed
  */
-exports.updatePrice = (item) => {
-  return db.Item.update({
-    where: {
-      id: item.id,
-    },
-    data: {
-      price: item.priceTmp,
-    },
-  });
+exports.updatePrice = async (item) => {
+  try {
+    return await db.Item.update({
+      where: {
+        id: item.id,
+      },
+      data: {
+        price: item.priceTmp,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating item";
+  }
 };
 
 /**
@@ -218,13 +266,17 @@ exports.updatePrice = (item) => {
  * @param {number} item information about the item
  * @returns the item with the description changed
  */
-exports.updateDescription = (item) => {
-  return db.Item.update({
-    where: {
-      id: item.id,
-    },
-    data: {
-      description: item.description,
-    },
-  });
+exports.updateDescription = async (item) => {
+  try {
+    return await db.Item.update({
+      where: {
+        id: item.id,
+      },
+      data: {
+        description: item.description,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating item";
+  }
 };
