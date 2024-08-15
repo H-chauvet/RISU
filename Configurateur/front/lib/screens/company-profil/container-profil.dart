@@ -329,8 +329,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -355,8 +354,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      showCustomToast(
-          context, "Erreur lors la suppression de l'article", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -400,8 +398,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
