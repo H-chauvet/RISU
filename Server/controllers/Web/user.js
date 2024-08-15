@@ -10,12 +10,16 @@ const transporter = require("../../middleware/transporter");
  * @param {string} email of the user
  * @returns user finded by email
  */
-exports.findUserByEmail = (email) => {
-  return db.User_Web.findUnique({
-    where: {
-      email,
-    },
-  });
+exports.findUserByEmail = async (email) => {
+  try {
+    return await db.User_Web.findUnique({
+      where: {
+        email,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving user";
+  }
 };
 
 /**
@@ -24,12 +28,16 @@ exports.findUserByEmail = (email) => {
  * @param {string} uuid of the user
  * @returns user finded by uuid
  */
-exports.findUserByUuid = (uuid) => {
-  return db.User_Web.findUnique({
-    where: {
-      uuid,
-    },
-  });
+exports.findUserByUuid = async (uuid) => {
+  try {
+    return await db.User_Web.findUnique({
+      where: {
+        uuid,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving user";
+  }
 };
 
 /**
@@ -38,12 +46,16 @@ exports.findUserByUuid = (uuid) => {
  * @param {number} id of the user
  * @returns user finded by id
  */
-exports.findUserById = (id) => {
-  return db.User_Web.findUnique({
-    where: {
-      id,
-    },
-  });
+exports.findUserById = async (id) => {
+  try {
+    return await db.User_Web.findUnique({
+      where: {
+        id,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving user";
+  }
 };
 
 /**
@@ -52,12 +64,16 @@ exports.findUserById = (id) => {
  * @param {string} email of user to delete
  * @returns user deleted
  */
-exports.deleteUser = (email) => {
-  return db.User_Web.delete({
-    where: {
-      email,
-    },
-  });
+exports.deleteUser = async (email) => {
+  try {
+    return await db.User_Web.delete({
+      where: {
+        email,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while deleting user";
+  }
 };
 
 /**
@@ -67,34 +83,38 @@ exports.deleteUser = (email) => {
  * @returns created user object
  */
 exports.registerByEmail = async (user) => {
-  user.password = bcrypt.hashSync(user.password, 12);
-  user.uuid = uuid.v4();
-  let data;
-  await db.Organization.findUnique({
-    where: {
-      name: user.company,
-    },
-  }).then(async (org) => {
-    if (org === null) {
-      await db.Organization.create({
-        data: {
-          name: user.company,
-          containers: undefined,
-        },
-      }).then(async (org) => {
+  try {
+    user.password = bcrypt.hashSync(user.password, 12);
+    user.uuid = uuid.v4();
+    let data;
+    await db.Organization.findUnique({
+      where: {
+        name: user.company,
+      },
+    }).then(async (org) => {
+      if (org === null) {
+        await db.Organization.create({
+          data: {
+            name: user.company,
+            containers: undefined,
+          },
+        }).then(async (org) => {
+          user.organizationId = org.id;
+          data = await db.User_Web.create({
+            data: user,
+          });
+        });
+      } else {
         user.organizationId = org.id;
         data = await db.User_Web.create({
           data: user,
         });
-      });
-    } else {
-      user.organizationId = org.id;
-      data = await db.User_Web.create({
-        data: user,
-      });
-    }
-  });
-  return data;
+      }
+    });
+    return data;
+  } catch (err) {
+    throw "Something happen while registering user";
+  }
 };
 
 /**
@@ -102,22 +122,26 @@ exports.registerByEmail = async (user) => {
  *
  * @param {string} email of the receiver
  */
-exports.registerConfirmation = (email) => {
-  let generatedUuid = "";
-  this.findUserByEmail(email).then((user) => {
-    generatedUuid = user.uuid;
-    let mail = {
-      from: "risu.epitech@gmail.com",
-      to: email,
-      subject: "Confirmation d'inscription",
-      html:
-        '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.77.215.103/#/confirmed-user/' +
-        generatedUuid +
-        '">Confirmer</a>' +
-        "</p>",
-    };
-    transporter.sendMail(mail);
-  });
+exports.registerConfirmation = async (email) => {
+  try {
+    let generatedUuid = "";
+    this.findUserByEmail(email).then((user) => {
+      generatedUuid = user.uuid;
+      let mail = {
+        from: "risu.epitech@gmail.com",
+        to: email,
+        subject: "Confirmation d'inscription",
+        html:
+          '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.77.215.103/#/confirmed-user/' +
+          generatedUuid +
+          '">Confirmer</a>' +
+          "</p>",
+      };
+      transporter.sendMail(mail);
+    });
+  } catch (err) {
+    throw "Something happen while sending confirmation mail";
+  }
 };
 
 /**
@@ -126,15 +150,19 @@ exports.registerConfirmation = (email) => {
  * @param {string} uuid
  * @returns user object
  */
-exports.confirmedRegister = (uuid) => {
-  return db.User_Web.update({
-    where: {
-      uuid: uuid,
-    },
-    data: {
-      confirmed: true,
-    },
-  });
+exports.confirmedRegister = async (uuid) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        uuid: uuid,
+      },
+      data: {
+        confirmed: true,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };
 
 /**
@@ -143,18 +171,22 @@ exports.confirmedRegister = (uuid) => {
  * @param {*} user
  * @returns user object logged in
  */
-exports.loginByEmail = (user) => {
-  return db.User_Web.findUnique({
-    where: {
-      email: user.email,
-    },
-  }).then((findUser) => {
-    if (!bcrypt.compareSync(user.password, findUser.password)) {
-      throw new Error("Invalid password");
-    }
+exports.loginByEmail = async (user) => {
+  try {
+    return await db.User_Web.findUnique({
+      where: {
+        email: user.email,
+      },
+    }).then((findUser) => {
+      if (!bcrypt.compareSync(user.password, findUser.password)) {
+        throw new Error("Invalid password");
+      }
 
-    return findUser;
-  });
+      return findUser;
+    });
+  } catch (err) {
+    throw "Something happen while logging user";
+  }
 };
 
 /**
@@ -163,16 +195,20 @@ exports.loginByEmail = (user) => {
  * @param {*} user
  * @returns user object with updated password
  */
-exports.updatePassword = (user) => {
-  user.password = bcrypt.hashSync(user.password, 12);
-  return db.User_Web.update({
-    where: {
-      uuid: user.uuid,
-    },
-    data: {
-      password: user.password,
-    },
-  });
+exports.updatePassword = async (user) => {
+  try {
+    user.password = bcrypt.hashSync(user.password, 12);
+    return await db.User_Web.update({
+      where: {
+        uuid: user.uuid,
+      },
+      data: {
+        password: user.password,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating password";
+  }
 };
 
 /**
@@ -180,22 +216,26 @@ exports.updatePassword = (user) => {
  *
  * @param {string} email of the receiver
  */
-exports.forgotPassword = (email) => {
-  let generatedUuid = "";
-  this.findUserByEmail(email).then((user) => {
-    generatedUuid = user.uuid;
-    let mail = {
-      from: "risu.epitech@gmail.com",
-      to: email,
-      subject: "Réinitialisation de mot de passe",
-      html:
-        '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/password-change/' +
-        generatedUuid +
-        '">Réinitialiser le mot de passe</a>' +
-        "</p>",
-    };
-    transporter.sendMail(mail);
-  });
+exports.forgotPassword = async (email) => {
+  try {
+    let generatedUuid = "";
+    this.findUserByEmail(email).then((user) => {
+      generatedUuid = user.uuid;
+      let mail = {
+        from: "risu.epitech@gmail.com",
+        to: email,
+        subject: "Réinitialisation de mot de passe",
+        html:
+          '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/password-change/' +
+          generatedUuid +
+          '">Réinitialiser le mot de passe</a>' +
+          "</p>",
+      };
+      transporter.sendMail(mail);
+    });
+  } catch (err) {
+    throw "Something happen while sending mail";
+  }
 };
 
 /**
@@ -209,7 +249,7 @@ exports.getAllUsers = async () => {
     return users;
   } catch (error) {
     console.error("Error retrieving users:", error);
-    throw new Error("Failed to retrieve users");
+    throw "Failed to retrieve users";
   }
 };
 
@@ -219,22 +259,26 @@ exports.getAllUsers = async () => {
  * @param {string} email of the user
  * @returns user details (including first name and last name)
  */
-exports.findUserDetailsByEmail = (email) => {
-  return db.User_Web.findUnique({
-    where: {
-      email,
-    },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      createdAt: true,
-      company: true,
-      email: true,
-      organizationId: true,
-      organization: true,
-    },
-  });
+exports.findUserDetailsByEmail = async (email) => {
+  try {
+    return await db.User_Web.findUnique({
+      where: {
+        email,
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        createdAt: true,
+        company: true,
+        email: true,
+        organizationId: true,
+        organization: true,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving user";
+  }
 };
 
 /**
@@ -243,16 +287,20 @@ exports.findUserDetailsByEmail = (email) => {
  * @param {*} user
  * @returns user object with updated firstName and lastName
  */
-exports.updateName = (user) => {
-  return db.User_Web.update({
-    where: {
-      email: user.email,
-    },
-    data: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-    },
-  });
+exports.updateName = async (user) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };
 
 /**
@@ -261,15 +309,19 @@ exports.updateName = (user) => {
  * @param {*} user
  * @returns user object with updated organization
  */
-exports.updateOrganization = user => {
-  return db.User_Web.update({
-    where: {
-      email: user.email,
-    },
-    data: {
-      organizationId: user.id
-    },
-  });
+exports.updateOrganization = async (user) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        organizationId: user.id,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };
 
 /**
@@ -278,15 +330,19 @@ exports.updateOrganization = user => {
  * @param {*} user
  * @returns user object with updated mail
  */
-exports.updateMail = (user) => {
-  return db.User_Web.update({
-    where: {
-      email: user.oldMail,
-    },
-    data: {
-      email: user.newMail,
-    },
-  });
+exports.updateMail = async (user) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        email: user.oldMail,
+      },
+      data: {
+        email: user.newMail,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };
 
 /**
@@ -295,15 +351,19 @@ exports.updateMail = (user) => {
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateCompany = (user) => {
-  return db.User_Web.update({
-    where: {
-      email: user.email,
-    },
-    data: {
-      company: user.company,
-    },
-  });
+exports.updateCompany = async (user) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        company: user.company,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };
 
 /**
@@ -312,14 +372,18 @@ exports.updateCompany = (user) => {
  * @param {*} user
  * @returns user object with updated company
  */
-exports.updateUserPassword = (user) => {
-  user.password = bcrypt.hashSync(user.password, 12);
-  return db.User_Web.update({
-    where: {
-      email: user.email,
-    },
-    data: {
-      password: user.password,
-    },
-  });
+exports.updateUserPassword = async (user) => {
+  try {
+    user.password = bcrypt.hashSync(user.password, 12);
+    return await db.User_Web.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        password: user.password,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating user";
+  }
 };

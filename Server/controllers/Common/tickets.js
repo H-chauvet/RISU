@@ -1,4 +1,4 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
 /**
  * Create a new ticket in the database
@@ -8,10 +8,14 @@ const { db } = require('../../middleware/database')
  * @param {*} ticketInfo object that contains the data
  * @returns the new object stored in the database
  */
-exports.createTicket = (ticketInfo) => {
-  return db.Tickets.create({
-    data: ticketInfo,
-  });
+exports.createTicket = async (ticketInfo) => {
+  try {
+    return await db.Tickets.create({
+      data: ticketInfo,
+    });
+  } catch (err) {
+    throw "Something happen while creating ticket";
+  }
 };
 
 /**
@@ -21,17 +25,21 @@ exports.createTicket = (ticketInfo) => {
  * @param {*} assignedId of the admin who will be assigned to the ticket
  * @returns the freshly updated object
  */
-exports.assignTicket = (id, assignedId) => {
-  intId = parseInt(id)
-  return db.Tickets.update({
-    where: {
-      id: intId,
-    },
-    data: {
-      assignedId
-    }
-  });
-}
+exports.assignTicket = async (id, assignedId) => {
+  try {
+    intId = parseInt(id);
+    return await db.Tickets.update({
+      where: {
+        id: intId,
+      },
+      data: {
+        assignedId,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Make every tickets within the same conversation closed
@@ -39,16 +47,20 @@ exports.assignTicket = (id, assignedId) => {
  * @param {*} chatUid of the conversation to be closed
  * @returns the freshly updated objects
  */
-exports.closeConversation = (chatUid) => {
-  return db.Tickets.updateMany({
-    where: {
-      chatUid,
-    },
-    data: {
-      closed: true
-    }
-  })
-}
+exports.closeConversation = async (chatUid) => {
+  try {
+    return await db.Tickets.updateMany({
+      where: {
+        chatUid,
+      },
+      data: {
+        closed: true,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Delete a conversation of the database
@@ -56,13 +68,17 @@ exports.closeConversation = (chatUid) => {
  * @param {*} chatUid of the conversation to be deleted
  * @returns none
  */
-exports.deleteConversation = (chatUid) => {
-  return db.Tickets.deleteMany({
-    where: {
-      chatUid,
-    },
-  });
-}
+exports.deleteConversation = async (chatUid) => {
+  try {
+    return await db.Tickets.deleteMany({
+      where: {
+        chatUid,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Get every ticket that the user has created or has been assigned to
@@ -70,16 +86,17 @@ exports.deleteConversation = (chatUid) => {
  * @param {*} id of the user
  * @returns the user's tickets
  */
-exports.getAllUserTickets = (id) => {
-  return db.Tickets.findMany({
-    where: {
-      OR: [
-        { creatorId: id },
-        { assignedId: id },
-      ]
-    }
-  });
-}
+exports.getAllUserTickets = async (id) => {
+  try {
+    return await db.Tickets.findMany({
+      where: {
+        OR: [{ creatorId: id }, { assignedId: id }],
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Retrieve a specific conversation from the database
@@ -87,13 +104,17 @@ exports.getAllUserTickets = (id) => {
  * @param {*} id of the searched conversation
  * @returns the tickets related to the conversation
  */
-exports.getConversation = (id) => {
-  return db.Tickets.findMany({
-    where: {
-      chatUid : id
-    }
-  });
-}
+exports.getConversation = async (id) => {
+  try {
+    return await db.Tickets.findMany({
+      where: {
+        chatUid: id,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Retrieve every tickets of the database (Admin purpose only)
@@ -101,8 +122,12 @@ exports.getConversation = (id) => {
  * @returns every tickets in a list
  */
 exports.getAllTickets = async () => {
-  return db.Tickets.findMany();
-}
+  try {
+    return await db.Tickets.findMany();
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
 
 /**
  * Clean every ticket related to a mobile user before deleting his account
@@ -110,13 +135,14 @@ exports.getAllTickets = async () => {
  * @param {*} userId of the user
  * @returns none
  */
-exports.cleanMobileUserTickets = (userId) => {
-  return db.Tickets.deleteMany({
-    where: {
-      OR: [
-        { creatorId: userId },
-        { assignedId: userId },
-      ]
-    }
-  });
-}
+exports.cleanMobileUserTickets = async (userId) => {
+  try {
+    return await db.Tickets.deleteMany({
+      where: {
+        OR: [{ creatorId: userId }, { assignedId: userId }],
+      },
+    });
+  } catch (err) {
+    throw "Something happen while assigning ticket";
+  }
+};
