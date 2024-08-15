@@ -1,13 +1,17 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
 /**
  * Retrieve every item category
  *
  * @returns every item category
  */
-exports.getItemCategories = () => {
-  return db.Item_Category.findMany()
-}
+exports.getItemCategories = async () => {
+  try {
+    return await db.Item_Category.findMany();
+  } catch (err) {
+    throw "Something happen while retrieving item categories";
+  }
+};
 
 /**
  * Retrieve a specific item category
@@ -15,12 +19,16 @@ exports.getItemCategories = () => {
  * @param {number} id of the item category
  * @returns one item if an id correspond
  */
-exports.getItemCategoryFromId = (id) => {
-  intId = parseInt(id)
-  return db.Item_Category.findUnique({
-    where: { id: intId }
-  })
-}
+exports.getItemCategoryFromId = async (id) => {
+  try {
+    intId = parseInt(id);
+    return await db.Item_Category.findUnique({
+      where: { id: intId },
+    });
+  } catch (err) {
+    throw "Something happen while retrieving item categories";
+  }
+};
 
 /**
  * Create a new item category
@@ -28,13 +36,17 @@ exports.getItemCategoryFromId = (id) => {
  * @param {string} name of the item category
  * @returns the new object stored in the database
  */
-exports.createItemCategory = (name) => {
-  return db.Item_Category.create({
-    data: {
-      name: name
-    }
-  })
-}
+exports.createItemCategory = async (name) => {
+  try {
+    return await db.Item_Category.create({
+      data: {
+        name: name,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while creating item category";
+  }
+};
 
 /**
  * Update an item category
@@ -42,14 +54,18 @@ exports.createItemCategory = (name) => {
  * @param {string} name of the item category
  * @returns the freshly updated object
  */
-exports.updateItemCategory = (id, name) => {
-  return db.Item_Category.update({
-    where: { id: id },
-    data: {
-      name: name
-    }
-  })
-}
+exports.updateItemCategory = async (id, name) => {
+  try {
+    return await db.Item_Category.update({
+      where: { id: id },
+      data: {
+        name: name,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating item category";
+  }
+};
 
 /**
  * Delete a specific item category
@@ -57,11 +73,15 @@ exports.updateItemCategory = (id, name) => {
  * @param {number} id of the item category to be deleted
  * @returns none
  */
-exports.deleteItemCategory = (id) => {
-  return db.Item_Category.delete({
-    where: { id: id }
-  })
-}
+exports.deleteItemCategory = async (id) => {
+  try {
+    return await db.Item_Category.delete({
+      where: { id: id },
+    });
+  } catch (err) {
+    throw "Something happen while deleting item category";
+  }
+};
 
 /**
  * Set the item categories of an item
@@ -72,15 +92,17 @@ exports.deleteItemCategory = (id) => {
  * @param {Array} categories array of item categories id
  * @returns none
  */
-exports.setItemCategories = (id, categories) => {
-  return db.Item.update({
-    where: { id: id },
-    data: {
-      categories: {
-        set: categories
-      }
-    }
-  });
-}
-
-
+exports.setItemCategories = async (id, categories) => {
+  try {
+    return await db.Item.update({
+      where: { id: id },
+      data: {
+        categories: {
+          set: categories,
+        },
+      },
+    });
+  } catch (err) {
+    throw "Something happen while setting item categories";
+  }
+};
