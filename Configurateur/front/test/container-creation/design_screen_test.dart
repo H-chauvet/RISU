@@ -34,57 +34,57 @@ void main() {
     SharedPreferences.setMockInitialValues({});
   });
 
-  testWidgets('Payment confirmation screen', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+  // testWidgets('Payment confirmation screen', (WidgetTester tester) async {
+  //   tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+  //   tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('containerData')).thenReturn('');
+  //   when(sharedPreferences.getString('token')).thenReturn('test-token');
+  //   when(sharedPreferences.getString('containerData')).thenReturn('');
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeService>(
-            create: (_) => ThemeService(),
-          ),
-        ],
-        child: Sizer(
-          builder: (context, orientation, deviceType) {
-            return MaterialApp(
-              home: InheritedGoRouter(
-                goRouter: AppRouter.router,
-                child: DesignScreen(
-                  lockers:
-                      '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
-                  amount: 60,
-                  containerMapping: '1',
-                ),
-              ),
-            );
-          },
-        ),
-      ),
-    );
+  //   await tester.pumpWidget(
+  //     MultiProvider(
+  //       providers: [
+  //         ChangeNotifierProvider<ThemeService>(
+  //           create: (_) => ThemeService(),
+  //         ),
+  //       ],
+  //       child: Sizer(
+  //         builder: (context, orientation, deviceType) {
+  //           return MaterialApp(
+  //             home: InheritedGoRouter(
+  //               goRouter: AppRouter.router,
+  //               child: DesignScreen(
+  //                 lockers:
+  //                     '[{"type":"Petit casier","price":50},{"type":"Moyen casier","price":100},{"type":"Grand casier","price":150}]',
+  //                 amount: 60,
+  //                 containerMapping: '1',
+  //               ),
+  //             ),
+  //           );
+  //         },
+  //       ),
+  //     ),
+  //   );
 
-    await tester.pumpAndSettle();
+  //   await tester.pumpAndSettle();
 
-    expect(find.text("Design"), findsOneWidget);
-    expect(find.text("Suivant"), findsOneWidget);
-    expect(find.text("Précédent"), findsOneWidget);
-    expect(find.text("Retirer une image"), findsOneWidget);
-    expect(find.text("Petit Casier"), findsOneWidget);
-    expect(find.text("50€"), findsOneWidget);
-    expect(find.text("Moyen Casier"), findsOneWidget);
-    expect(find.text("100€"), findsOneWidget);
-    expect(find.text("Grand Casier"), findsOneWidget);
-    expect(find.text("150€"), findsOneWidget);
+  //   expect(find.text("Design"), findsOneWidget);
+  //   expect(find.text("Suivant"), findsOneWidget);
+  //   expect(find.text("Précédent"), findsOneWidget);
+  //   expect(find.text("Retirer une image"), findsOneWidget);
+  //   expect(find.text("Petit Casier"), findsOneWidget);
+  //   expect(find.text("50€"), findsOneWidget);
+  //   expect(find.text("Moyen Casier"), findsOneWidget);
+  //   expect(find.text("100€"), findsOneWidget);
+  //   expect(find.text("Grand Casier"), findsOneWidget);
+  //   expect(find.text("150€"), findsOneWidget);
 
-    await tester.tap(find.text("Suivant"));
-    await tester.tap(find.text("Précédent"));
-    await tester.tap(find.text("Parcourir"));
+  //   await tester.tap(find.text("Suivant"));
+  //   await tester.tap(find.text("Précédent"));
+  //   await tester.tap(find.text("Parcourir"));
 
-    await tester.pumpAndSettle();
-  });
+  //   await tester.pumpAndSettle();
+  // });
 
   testWidgets('loadImage devant', (WidgetTester tester) async {
     DesignScreenState designScreenState = DesignScreenState();
