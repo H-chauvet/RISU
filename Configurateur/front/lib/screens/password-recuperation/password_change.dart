@@ -123,10 +123,7 @@ class PasswordChangeState extends State<PasswordChange> {
                           showCustomToast(context,
                               "Mot de passe modifié avec succès !", true);
                         } else {
-                          showCustomToast(
-                              context,
-                              "Erreur durant la modification du mot de passe",
-                              false);
+                          showCustomToast(context, response.body, false);
                         }
                         context.go("/");
                       }
