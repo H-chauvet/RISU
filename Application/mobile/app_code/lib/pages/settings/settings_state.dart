@@ -16,6 +16,7 @@ import 'package:risu/pages/settings/settings_pages/notifications/notifications_p
 import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/pages/faq/faq_page.dart';
 
 import 'settings_page.dart';
 
@@ -163,6 +164,12 @@ class SettingsPageState extends State<SettingsPage> {
                       title: AppLocalizations.of(context)!.aboutUs,
                       paramIcon: Icons.question_mark,
                       locked: true,
+                    ),
+                    const SizedBox(height: 8),
+                    MyParameter(
+                      goToPage: const FaqPage(),
+                      title: AppLocalizations.of(context)!.faq,
+                      paramIcon: Icons.help,
                     ),
                     const SizedBox(
                         height: 16, key: Key('settings-sized_box-bottom')),
