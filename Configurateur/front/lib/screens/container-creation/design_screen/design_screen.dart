@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'dart:ui';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/add_design_dialog.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/components/dialog/save_dialog.dart';
@@ -116,7 +116,7 @@ class DesignScreenState extends State<DesignScreen> {
     }
   }
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -139,22 +139,24 @@ class DesignScreenState extends State<DesignScreen> {
     checkToken();
     super.initState();
 
-    checkContainer();
+    checkContainer().then((result) {
+      setState(() {
+        Sp3dObj obj =
+            UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
+        obj.materials.add(FSp3dMaterial.green.deepCopy());
 
-    Sp3dObj obj =
-        UtilSp3dGeometry.cube(cubeWidth, cubeHeight - 20, 50, 1, 1, 1);
-    obj.materials.add(FSp3dMaterial.green.deepCopy());
-
-    obj.materials[0] = FSp3dMaterial.grey.deepCopy()
-      ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
-    objs.add(obj);
-    loadImage(false).then((value) => null);
-    if (widget.lockers != null) {
-      decodeLockers();
-    }
-    if (widget.container != null) {
-      decodeDesigns();
-    }
+        obj.materials[0] = FSp3dMaterial.grey.deepCopy()
+          ..strokeColor = const Color.fromARGB(255, 0, 0, 255);
+        objs.add(obj);
+        loadImage(false).then((value) => null);
+        if (widget.lockers != null) {
+          decodeLockers();
+        }
+        if (widget.container != null) {
+          decodeDesigns();
+        }
+      });
+    });
   }
 
   /// [Function] : Decode lockers for the container in json
@@ -414,11 +416,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     } else {
@@ -439,11 +437,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          Fluttertoast.showToast(
-            msg: "Echec de la sauvegarde",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.CENTER,
-          );
+          showCustomToast(context, "Echec de la sauvegarde", false);
         }
       });
     }
@@ -672,12 +666,10 @@ class DesignScreenState extends State<DesignScreen> {
                                     if (picked != null) {
                                       if (picked!.files.single.bytes!.length >
                                           1000000) {
-                                        Fluttertoast.showToast(
-                                          msg:
-                                              "L'image ne doit pas dépasser 1 Mo",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.CENTER,
-                                        );
+                                        showCustomToast(
+                                            context,
+                                            "La taille de l'image ne dois pas excéder 1 Mo",
+                                            false);
                                       } else {
                                         openAddDialog(context);
                                       }

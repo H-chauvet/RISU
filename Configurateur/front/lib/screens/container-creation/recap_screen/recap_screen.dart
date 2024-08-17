@@ -79,7 +79,7 @@ class RecapScreenState extends State<RecapScreen> {
     }
   }
 
-  void checkContainer() async {
+  Future<void> checkContainer() async {
     var storageData = await getContainerFromStorage();
     if (storageData != "") {
       setState(() {
@@ -95,11 +95,14 @@ class RecapScreenState extends State<RecapScreen> {
 
   @override
   void initState() {
-    super.initState();
-    checkContainer();
-    if (widget.lockers != null) {
-      decodeLockers();
-    }
+    checkContainer().then((result) {
+      setState(() {
+        if (widget.lockers != null) {
+          decodeLockers();
+        }
+        super.initState();
+      });
+    });
   }
 
   Future<String> getContainerFromStorage() async {

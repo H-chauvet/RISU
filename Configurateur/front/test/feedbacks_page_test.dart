@@ -6,8 +6,6 @@ import 'package:front/components/dialog/rating_dialog_content/rating_dialog_cont
 import 'package:front/components/footer.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:flutter/material.dart';
-import 'package:front/screens/feedbacks/feedbacks_card.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
