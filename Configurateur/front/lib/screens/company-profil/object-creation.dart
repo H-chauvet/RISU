@@ -72,7 +72,8 @@ class _ObjectCreationState extends State<ObjectCreation> {
 
   List<Uint8List?> _imageBytesList = [];
   final ImagePicker _picker = ImagePicker();
-  final CarouselSliderController _carouselController = CarouselSliderController();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
 
   @override
   void initState() {
@@ -370,6 +371,7 @@ class _ObjectCreationState extends State<ObjectCreation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextFormField(
+                        key: const Key('name'),
                         controller: _nameController,
                         decoration: const InputDecoration(
                           labelText: 'Nom',
@@ -383,6 +385,7 @@ class _ObjectCreationState extends State<ObjectCreation> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('description'),
                         controller: _descriptionController,
                         decoration: const InputDecoration(
                           labelText: 'Description',
@@ -396,6 +399,7 @@ class _ObjectCreationState extends State<ObjectCreation> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('price'),
                         controller: _priceController,
                         decoration: const InputDecoration(
                           labelText: 'Prix',
