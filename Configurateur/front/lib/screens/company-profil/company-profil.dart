@@ -138,8 +138,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       showCustomToast(context, "Modification effectuée avec succès !", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -234,8 +233,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

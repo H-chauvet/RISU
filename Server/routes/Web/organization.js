@@ -10,7 +10,7 @@ router.post("/create", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const { name, type, affiliate, containers, contactInformation } = req.body;
@@ -23,7 +23,10 @@ router.post("/create", async function (req, res, next) {
     });
     res.status(200).json(organization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -32,23 +35,20 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   const id = parseInt(req.params.id);
   try {
     const { contactInformation } = req.body;
 
     if (!contactInformation) {
-      res.status(400).json({
-        error:
-          "Email and at least one of contactInformation or type are required",
-      });
+      res.status(400).send("Contact information is required");
       return;
     }
 
     const existingOrganization = await organizationCtrl.getOrganizationById(id);
     if (!existingOrganization) {
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).send("Organization not found");
       return;
     }
 
@@ -60,7 +60,10 @@ router.post("/update-information/:id", async (req, res, next) => {
     );
     res.status(200).json(updatedOrganization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -69,22 +72,20 @@ router.post("/update-type/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const id = parseInt(req.params.id);
     const { type } = req.body;
 
     if (!type) {
-      res.status(400).json({
-        error: "Email and at least one of type or type are required",
-      });
+      res.status(400).send("Type is required");
       return;
     }
 
     const existingOrganization = await organizationCtrl.getOrganizationById(id);
     if (!existingOrganization) {
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).send("Organization not found");
       return;
     }
 
@@ -94,7 +95,10 @@ router.post("/update-type/:id", async (req, res, next) => {
     });
     res.status(200).json(updatedOrganization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
