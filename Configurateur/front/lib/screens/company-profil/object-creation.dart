@@ -51,11 +51,11 @@ class Category {
 class ObjectCreation extends StatefulWidget {
   const ObjectCreation({Key? key}) : super(key: key);
   @override
-  _ObjectCreationState createState() => _ObjectCreationState();
+  ObjectCreationState createState() => ObjectCreationState();
 }
 
-class _ObjectCreationState extends State<ObjectCreation> {
-  _ObjectCreationState();
+class ObjectCreationState extends State<ObjectCreation> {
+  ObjectCreationState();
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for the text fields
@@ -86,7 +86,6 @@ class _ObjectCreationState extends State<ObjectCreation> {
     String? ctnId = await storageService.readStorage('containerId');
     if (ctnId != '' || ctnId != null) {
       containerId = int.parse(ctnId!);
-      debugPrint(containerId.toString());
     }
   }
 
