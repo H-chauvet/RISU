@@ -69,7 +69,7 @@ dependencies:
   google_maps_flutter: ^2.3.0
   geolocator: ^11.0.0
   image_picker: ^0.8.4+8
-  carousel_slider: ^4.1.1
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

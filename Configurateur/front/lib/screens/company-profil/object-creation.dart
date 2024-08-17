@@ -72,7 +72,7 @@ class _ObjectCreationState extends State<ObjectCreation> {
 
   List<Uint8List?> _imageBytesList = [];
   final ImagePicker _picker = ImagePicker();
-  final CarouselController _carouselController = CarouselController();
+  final CarouselSliderController _carouselController = CarouselSliderController();
 
   @override
   void initState() {
