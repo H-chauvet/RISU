@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 ///
 /// Footer for the web pages
 class CustomFooter extends StatefulWidget {
-  const CustomFooter({super.key, required BuildContext context});
+  const CustomFooter({super.key});
 
   @override
   State<CustomFooter> createState() => CustomFooterState();

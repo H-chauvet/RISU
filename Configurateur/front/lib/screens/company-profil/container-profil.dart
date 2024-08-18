@@ -612,7 +612,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         ),
         body: FooterView(
             footer: Footer(
-              child: CustomFooter(context: context),
+              child: CustomFooter(),
             ),
             children: [
               SingleChildScrollView(

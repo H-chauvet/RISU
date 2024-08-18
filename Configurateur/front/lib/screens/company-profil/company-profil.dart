@@ -417,7 +417,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         ),
         body: FooterView(
             footer: Footer(
-              child: CustomFooter(context: context),
+              child: CustomFooter(),
             ),
             children: [
               Center(

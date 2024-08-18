@@ -51,7 +51,7 @@ class LandingPageState extends State<LandingPage> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
-            child: CustomFooter(context: context),
+            child: CustomFooter(),
           ),
           children: [
             Column(

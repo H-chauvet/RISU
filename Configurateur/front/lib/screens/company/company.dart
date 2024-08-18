@@ -96,7 +96,7 @@ class CompanyPageState extends State<CompanyPage> {
       ),
       body: FooterView(
           footer: Footer(
-            child: CustomFooter(context: context),
+            child: CustomFooter(),
           ),
           children: [
             SingleChildScrollView(
