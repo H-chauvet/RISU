@@ -585,7 +585,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
-            child: CustomFooter(context: context),
+            child: CustomFooter(),
           ),
           children: [
             Column(
