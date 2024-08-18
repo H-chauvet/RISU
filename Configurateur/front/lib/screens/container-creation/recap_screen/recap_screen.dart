@@ -141,17 +141,16 @@ class RecapScreenState extends State<RecapScreen> {
             )
           ],
         ),
-        body: 
-              Center(
-                child: FractionallySizedBox(
-                  widthFactor: 0.5,
-                  heightFactor: 0.5,
-                  child: RecapPanel(
-                    fullscreen: true,
-                    screenFormat: screenFormat,
-                    articles: lockerss,
-                  ),
-                ),
-));
+        body: Center(
+          child: FractionallySizedBox(
+            widthFactor: 0.5,
+            heightFactor: 0.5,
+            child: RecapPanel(
+              fullscreen: true,
+              screenFormat: screenFormat,
+              articles: lockerss,
+            ),
+          ),
+        ));
   }
 }
