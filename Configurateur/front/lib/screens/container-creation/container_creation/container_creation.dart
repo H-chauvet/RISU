@@ -877,270 +877,253 @@ class ContainerCreationState extends State<ContainerCreation> {
             )
           ],
         ),
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(context: context),
-            ),
-            children: [
-              Stack(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: Stack(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Flexible(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                await showDialog(
-                                  context: context,
-                                  builder: (context) => ContainerDialog(
-                                    callback: updateCube,
-                                    size: 1,
-                                    width: width,
-                                    height: height,
-                                  ),
-                                );
-                                if (unitTest == false) {
-                                  saveContainerToStorage();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: Size.fromWidth(
-                                      screenFormat == ScreenFormat.desktop
-                                          ? desktopButtonWidth
-                                          : tabletButtonWidth),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              label: Text(
-                                'Ajouter un casier',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
-                              ),
-                              icon: Icon(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                Icons.add,
-                              ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (context) => ContainerDialog(
+                              callback: updateCube,
+                              size: 1,
+                              width: width,
+                              height: height,
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                String name = await showDialog(
-                                    context: context,
-                                    builder: (context) => openDialog());
-                                saveContainer(name);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: Size.fromWidth(
-                                      screenFormat == ScreenFormat.desktop
-                                          ? desktopButtonWidth
-                                          : tabletButtonWidth),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              label: Text(
-                                'Sauvegarder',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
-                              ),
-                              icon: Icon(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                Icons.save,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                String face = await showDialog(
-                                    context: context,
-                                    builder: (context) => AutoFillDialog(
-                                        callback: autoFillContainer));
-                                autoFillContainer(face, false);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: Size.fromWidth(
-                                      screenFormat == ScreenFormat.desktop
-                                          ? desktopButtonWidth
-                                          : tabletButtonWidth),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              label: Text(
-                                'Remplissage',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
-                              ),
-                              icon: Icon(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                Icons.auto_fix_high,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: sizedBoxWidth,
-                              child: Divider(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                height: 20,
-                                thickness: 1,
-                                indent: 30,
-                                endIndent: 30,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                await showDialog(
-                                    context: context,
-                                    builder: (context) => DeleteContainerDialog(
-                                        callback: deleteLocker));
-                                if (unitTest == false) {
-                                  saveContainerToStorage();
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: Size.fromWidth(
-                                      screenFormat == ScreenFormat.desktop
-                                          ? desktopButtonWidth
-                                          : tabletButtonWidth),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              label: Text(
-                                'Supprimer un casier',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
-                              ),
-                              icon: Icon(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                Icons.delete,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: resetContainer,
-                              style: ElevatedButton.styleFrom(
-                                  fixedSize: Size.fromWidth(
-                                      screenFormat == ScreenFormat.desktop
-                                          ? desktopButtonWidth
-                                          : tabletButtonWidth),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              label: Text(
-                                'Réinitialiser le conteneur',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
-                              ),
-                              icon: Icon(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                Icons.refresh,
-                              ),
-                            ),
-                          ],
+                          );
+                          if (unitTest == false) {
+                            saveContainerToStorage();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        label: Text(
+                          'Ajouter un casier',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        icon: Icon(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          Icons.add,
                         ),
                       ),
                       const SizedBox(
-                        width: 50,
+                        height: 10,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Flexible(
-                            child: Sp3dRenderer(
-                              Size(cubeCameraWidth, cubeCameraHeight),
-                              Sp3dV2D(
-                                  cubeCameraWidth / 2, cubeCameraHeight / 2),
-                              world,
-                              // If you want to reduce distortion, shoot from a distance at high magnification.
-                              Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
-                              Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
-                              allowUserWorldRotation: true,
-                              allowUserWorldZoom: false,
-                            ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          String name = await showDialog(
+                              context: context,
+                              builder: (context) => openDialog());
+                          saveContainer(name);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        label: Text(
+                          'Sauvegarder',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
-                        ],
+                        ),
+                        icon: Icon(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          Icons.save,
+                        ),
                       ),
                       const SizedBox(
-                        width: 50,
+                        height: 10,
                       ),
-                      Flexible(
-                        child: FractionallySizedBox(
-                            widthFactor: screenFormat == ScreenFormat.desktop
-                                ? desktopRecapPanelWidth
-                                : tabletRecapPanelWidth,
-                            heightFactor: 0.7,
-                            child: RecapPanel(
-                              articles: lockers,
-                              screenFormat: screenFormat,
-                              fullscreen: false,
-                            )),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          String face = await showDialog(
+                              context: context,
+                              builder: (context) =>
+                                  AutoFillDialog(callback: autoFillContainer));
+                          autoFillContainer(face, false);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        label: Text(
+                          'Remplissage',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        icon: Icon(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          Icons.auto_fix_high,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: sizedBoxWidth,
+                        child: Divider(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          height: 20,
+                          thickness: 1,
+                          indent: 30,
+                          endIndent: 30,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (context) => DeleteContainerDialog(
+                                  callback: deleteLocker));
+                          if (unitTest == false) {
+                            saveContainerToStorage();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        label: Text(
+                          'Supprimer un casier',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        icon: Icon(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          Icons.delete,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton.icon(
+                        onPressed: resetContainer,
+                        style: ElevatedButton.styleFrom(
+                            fixedSize: Size.fromWidth(
+                                screenFormat == ScreenFormat.desktop
+                                    ? desktopButtonWidth
+                                    : tabletButtonWidth),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        label: Text(
+                          'Réinitialiser le conteneur',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        icon: Icon(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          Icons.refresh,
+                        ),
                       ),
                     ],
-                  )
-                ],
-              ),
-            ]));
+                  ),
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Sp3dRenderer(
+                        Size(cubeCameraWidth, cubeCameraHeight),
+                        Sp3dV2D(cubeCameraWidth / 2, cubeCameraHeight / 2),
+                        world,
+                        // If you want to reduce distortion, shoot from a distance at high magnification.
+                        Sp3dCamera(Sp3dV3D(0, 0, 3000), 6000),
+                        Sp3dLight(Sp3dV3D(0, 0, -1), syncCam: true),
+                        allowUserWorldRotation: true,
+                        allowUserWorldZoom: false,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  width: 50,
+                ),
+                Flexible(
+                  child: FractionallySizedBox(
+                      widthFactor: screenFormat == ScreenFormat.desktop
+                          ? desktopRecapPanelWidth
+                          : tabletRecapPanelWidth,
+                      heightFactor: 0.7,
+                      child: RecapPanel(
+                        articles: lockers,
+                        screenFormat: screenFormat,
+                        fullscreen: false,
+                      )),
+                ),
+              ],
+            )
+          ],
+        ));
   }
 }

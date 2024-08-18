@@ -771,8 +771,6 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ),
                 ),
               ),
-            ])
-        // bottomNavigationBar: const CustomBottomNavigationBar(),
-        );
+            ]));
   }
 }

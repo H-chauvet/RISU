@@ -162,67 +162,61 @@ class _PaymentScreenState extends State<PaymentScreen> {
             )
           ],
         ),
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(context: context),
-            ),
-            children: [
-              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Center(
-                  child: FractionallySizedBox(
-                    widthFactor: screenFormat == ScreenFormat.desktop
-                        ? desktopWidthFactor
-                        : tabletWidthFactor,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 50),
-                        Text(
-                          "Coordonnées bancaires",
-                          style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletFontSize,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        CardField(
-                          controller: controller,
-                        ),
-                        const SizedBox(height: 100),
-                        Text(
-                          "Des demandes supplémentaires à nous faire parvenir ?",
-                          style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletFontSize,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 20),
-                        TextFormField(
-                          key: const Key('informations'),
-                          maxLines: 5,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onChanged: (String? value) {
-                            informations = value!;
-                          },
-                        ),
-                      ],
-                    ),
+        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Center(
+            child: FractionallySizedBox(
+              widthFactor: screenFormat == ScreenFormat.desktop
+                  ? desktopWidthFactor
+                  : tabletWidthFactor,
+              child: Column(
+                children: [
+                  const SizedBox(height: 50),
+                  Text(
+                    "Coordonnées bancaires",
+                    style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        fontWeight: FontWeight.bold),
                   ),
-                ),
-                const SizedBox(height: 20),
-              ])
-            ]));
+                  const SizedBox(height: 20),
+                  CardField(
+                    controller: controller,
+                  ),
+                  const SizedBox(height: 100),
+                  Text(
+                    "Des demandes supplémentaires à nous faire parvenir ?",
+                    style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  TextFormField(
+                    key: const Key('informations'),
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                    ),
+                    onChanged: (String? value) {
+                      informations = value!;
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+        ]));
   }
 
   Future<bool> makePayment() async {

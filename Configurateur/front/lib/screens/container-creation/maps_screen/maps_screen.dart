@@ -179,11 +179,7 @@ class MapsState extends State<MapsScreen> {
           )
         ],
       ),
-      body: FooterView(
-        footer: Footer(
-          child: CustomFooter(context: context),
-        ),
-        children: [
+      body: 
           Center(
             child: FractionallySizedBox(
               widthFactor: screenFormat == ScreenFormat.desktop
@@ -216,8 +212,7 @@ class MapsState extends State<MapsScreen> {
               ]),
             ),
           ),
-        ],
-      ),
+
     );
   }
 }

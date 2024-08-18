@@ -34,54 +34,48 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
           "Confirmation de commande",
           context: context,
         ),
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(context: context),
-            ),
-            children: [
-              Center(
-                  child: FractionallySizedBox(
-                      widthFactor: screenFormat == ScreenFormat.desktop
-                          ? desktopWidthFactor
-                          : tabletWidthFactor,
-                      heightFactor: heightFactor,
-                      child: Column(
-                        children: [
-                          Text(
-                            "Votre commande a bien été confirmée, vous pouvez maintenant retournez à l'accueil et nous vous contacterons dès que votre commande sera prête",
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopBigFontSize
-                                  : tabletBigFontSize,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(
-                            height: 80.0,
-                          ),
-                          InkWell(
-                            key: const Key('go-home'),
-                            onTap: () {
-                              context.go("/");
-                            },
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Retour à l'accueil",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 16),
-                                    ),
-                                  ]),
-                            ),
-                          ),
-                        ],
-                      )))
-            ]));
+        body: Center(
+            child: FractionallySizedBox(
+                widthFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopWidthFactor
+                    : tabletWidthFactor,
+                heightFactor: heightFactor,
+                child: Column(
+                  children: [
+                    Text(
+                      "Votre commande a bien été confirmée, vous pouvez maintenant retournez à l'accueil et nous vous contacterons dès que votre commande sera prête",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopBigFontSize
+                            : tabletBigFontSize,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(
+                      height: 80.0,
+                    ),
+                    InkWell(
+                      key: const Key('go-home'),
+                      onTap: () {
+                        context.go("/");
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "Retour à l'accueil",
+                                style:
+                                    TextStyle(color: Colors.blue, fontSize: 16),
+                              ),
+                            ]),
+                      ),
+                    ),
+                  ],
+                ))));
   }
 }

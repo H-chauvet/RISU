@@ -584,365 +584,372 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FooterView(
-        footer: Footer(
-          child: CustomFooter(context: context),
-        ),
-        children: [
-          LandingAppBar(context: context),
-          Text(
-            'Modifier votre profil à votre convenance !',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 35,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.bold,
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.secondaryHeaderColor
-                  : lightTheme.secondaryHeaderColor,
-              shadows: [
-                Shadow(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  offset: const Offset(0.75, 0.75),
-                  blurRadius: 1.5,
+          footer: Footer(
+            child: CustomFooter(context: context),
+          ),
+          children: [
+            Column(
+              children: [
+                LandingAppBar(context: context),
+                Text(
+                  'Modifier votre profil à votre convenance !',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.bold,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    shadows: [
+                      Shadow(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : lightTheme.secondaryHeaderColor,
+                        offset: const Offset(0.75, 0.75),
+                        blurRadius: 1.5,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 100),
+                Center(
+                  child: Container(
+                    width: 700.0,
+                    height: 600.0,
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 231, 223, 223),
+                      borderRadius: BorderRadius.circular(30.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xff4682B4).withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              firstName,
+                              style: TextStyle(
+                                color: lightTheme.primaryColor,
+                                fontSize: 26.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Verdana',
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Row(
+                              children: [
+                                Text(
+                                  lastName,
+                                  style: TextStyle(
+                                    color: lightTheme.primaryColor,
+                                    fontSize: 26.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Verdana',
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                InkWell(
+                                  key: const Key('edit-name'),
+                                  onTap: () async {
+                                    await showEditPopupName(
+                                      context,
+                                      firstName,
+                                      lastName,
+                                      (String newFirstName,
+                                          String newLastName) {
+                                        setState(() {
+                                          firstName = newFirstName;
+                                          lastName = newLastName;
+                                        });
+                                      },
+                                    );
+                                  },
+                                  child: const Icon(
+                                    Icons.edit,
+                                    color: Colors.grey,
+                                    size: 26.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 90),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'E-mail',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Verdana',
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    userMail,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5.0),
+                                  InkWell(
+                                    key: const Key('edit-mail'),
+                                    onTap: () async {
+                                      await showEditPopupMail(context, userMail,
+                                          (String newMail) {
+                                        setState(() {
+                                          userMail = newMail;
+                                        });
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                      size: 18.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        const Divider(
+                          color: Colors.black,
+                          thickness: 2,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'Entreprise',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Verdana',
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    company,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5.0),
+                                  InkWell(
+                                    key: const Key('edit-company'),
+                                    onTap: () async {
+                                      await showEditPopupCompany(
+                                          context, company,
+                                          (String newCompany) {
+                                        setState(() {
+                                          company = newCompany;
+                                        });
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                      size: 18.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        const Divider(
+                          color: Colors.black,
+                          thickness: 2,
+                          indent: 20,
+                          endIndent: 20,
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(left: 20.0),
+                              child: Text(
+                                'Mot de passe',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Verdana',
+                                ),
+                              ),
+                            ),
+                            const Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20.0),
+                              child: Row(
+                                children: [
+                                  const Text(
+                                    '*********',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Verdana',
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5.0),
+                                  InkWell(
+                                    key: const Key('edit-password'),
+                                    onTap: () async {
+                                      await showEditPopupPassword(context, "",
+                                          (String newPassword) {
+                                        setState(() {});
+                                      });
+                                    },
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.grey,
+                                      size: 18.0,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            context.go("/my-container");
+                          },
+                          child: Text(
+                            "Mes sauvegardes",
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    context.go("/");
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "Retour à l'accueil",
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Créé le : $formattedDate',
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 10.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Verdana',
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    storageService.removeStorage('token');
+                                    storageService
+                                        .removeStorage('tokenExpiration');
+                                    showCustomToast(context,
+                                        "Vous êtes bien déconnecté !", true);
+                                    context.go("/");
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.red,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Déconnexion",
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 100),
-          Center(
-            child: Container(
-              width: 700.0,
-              height: 600.0,
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 231, 223, 223),
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xff4682B4).withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        firstName,
-                        style: TextStyle(
-                          color: lightTheme.primaryColor,
-                          fontSize: 26.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Verdana',
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Row(
-                        children: [
-                          Text(
-                            lastName,
-                            style: TextStyle(
-                              color: lightTheme.primaryColor,
-                              fontSize: 26.0,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Verdana',
-                            ),
-                          ),
-                          const SizedBox(width: 5.0),
-                          InkWell(
-                            key: const Key('edit-name'),
-                            onTap: () async {
-                              await showEditPopupName(
-                                context,
-                                firstName,
-                                lastName,
-                                (String newFirstName, String newLastName) {
-                                  setState(() {
-                                    firstName = newFirstName;
-                                    lastName = newLastName;
-                                  });
-                                },
-                              );
-                            },
-                            child: const Icon(
-                              Icons.edit,
-                              color: Colors.grey,
-                              size: 26.0,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 90),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          'E-mail',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              userMail,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              key: const Key('edit-mail'),
-                              onTap: () async {
-                                await showEditPopupMail(context, userMail,
-                                    (String newMail) {
-                                  setState(() {
-                                    userMail = newMail;
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 18.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(
-                    color: Colors.black,
-                    thickness: 2,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          'Entreprise',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              company,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              key: const Key('edit-company'),
-                              onTap: () async {
-                                await showEditPopupCompany(context, company,
-                                    (String newCompany) {
-                                  setState(() {
-                                    company = newCompany;
-                                  });
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 18.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  const Divider(
-                    color: Colors.black,
-                    thickness: 2,
-                    indent: 20,
-                    endIndent: 20,
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 20.0),
-                        child: Text(
-                          'Mot de passe',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Verdana',
-                          ),
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0),
-                        child: Row(
-                          children: [
-                            const Text(
-                              '*********',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Verdana',
-                              ),
-                            ),
-                            const SizedBox(width: 5.0),
-                            InkWell(
-                              key: const Key('edit-password'),
-                              onTap: () async {
-                                await showEditPopupPassword(context, "",
-                                    (String newPassword) {
-                                  setState(() {});
-                                });
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.grey,
-                                size: 18.0,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    onPressed: () {
-                      context.go("/my-container");
-                    },
-                    child: Text(
-                      "Mes sauvegardes",
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.go("/");
-                            },
-                            style: ElevatedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            child: Text(
-                              "Retour à l'accueil",
-                              style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        'Créé le : $formattedDate',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Verdana',
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              storageService.removeStorage('token');
-                              storageService.removeStorage('tokenExpiration');
-                              showCustomToast(
-                                  context, "Vous êtes bien déconnecté !", true);
-                              context.go("/");
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                            ),
-                            child: const Text(
-                              "Déconnexion",
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+          ]),
     );
   }
 }

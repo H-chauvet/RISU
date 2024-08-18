@@ -663,240 +663,228 @@ class _ContainerPageState extends State<ContainerPage> {
           'Gestion des conteneurs et objets',
           context: context,
         ),
-        body: FooterView(
-          footer: Footer(
-            child: CustomFooter(context: context),
-          ),
-          children: [
-            NestedScrollView(
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    floating: true,
-                    elevation: 4,
-                    backgroundColor: Colors.transparent,
-                    bottom: TabBar(
-                      tabs: [
-                        Tab(
-                          child: Text(
-                            'Liste des conteneurs',
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletBigFontSize,
-                            ),
-                          ),
+        body: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxIsScrolled) {
+            return [
+              SliverAppBar(
+                floating: true,
+                elevation: 4,
+                backgroundColor: Colors.transparent,
+                bottom: TabBar(
+                  tabs: [
+                    Tab(
+                      child: Text(
+                        'Liste des conteneurs',
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletBigFontSize,
                         ),
-                        Tab(
-                          child: Text(
-                            'Liste des objets',
-                            style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
+                      ),
+                    ),
+                    Tab(
+                      child: Text(
+                        'Liste des objets',
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletBigFontSize),
+                      ),
+                    ),
+                  ],
+                  labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                  indicatorColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+                pinned: true,
+              ),
+            ];
+          },
+          body: TabBarView(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    containers.isEmpty
+                        ? Center(
+                            child: Text(
+                              'Aucun conteneur trouvé.',
+                              style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
-                                    : tabletBigFontSize),
-                          ),
-                        ),
-                      ],
-                      labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
-                      indicatorColor: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                    ),
-                    pinned: true,
-                  ),
-                ];
-              },
-              body: TabBarView(
-                children: [
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        containers.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'Aucun conteneur trouvé.',
-                                  style: TextStyle(
-                                    fontSize:
-                                        screenFormat == ScreenFormat.desktop
-                                            ? desktopFontSize
-                                            : tabletBigFontSize,
-                                    color: Color.fromARGB(255, 211, 11, 11),
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: containers.length,
-                                itemBuilder: (context, index) {
-                                  final product = containers[index];
-                                  return ContainerCards(
-                                    container: product,
-                                    onDelete: deleteContainer,
-                                    page: "/container-profil",
-                                    key: ValueKey<String>(
-                                        'delete_${product.id}'),
-                                  );
-                                },
+                                    : tabletBigFontSize,
+                                color: Color.fromARGB(255, 211, 11, 11),
                               ),
-                      ],
+                            ),
+                          )
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: containers.length,
+                            itemBuilder: (context, index) {
+                              final product = containers[index];
+                              return ContainerCards(
+                                container: product,
+                                onDelete: deleteContainer,
+                                page: "/container-profil",
+                                key: ValueKey<String>('delete_${product.id}'),
+                              );
+                            },
+                          ),
+                  ],
+                ),
+              ),
+              SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 30,
                     ),
-                  ),
-                  SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(
-                          height: 30,
-                        ),
-                        containers.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'Aucun objet trouvé.',
-                                  style: TextStyle(
-                                    fontSize:
-                                        screenFormat == ScreenFormat.desktop
-                                            ? desktopFontSize
-                                            : tabletBigFontSize,
-                                    color: Color.fromARGB(255, 211, 11, 11),
-                                  ),
-                                ),
-                              )
-                            : Column(
+                    containers.isEmpty
+                        ? Center(
+                            child: Text(
+                              'Aucun objet trouvé.',
+                              style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletBigFontSize,
+                                color: Color.fromARGB(255, 211, 11, 11),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          await showCreateItems(
-                                            context,
-                                            (String newName,
-                                                bool newAvailable,
-                                                double newPrice,
-                                                int newContainerId,
-                                                String newDescription) {
-                                              setState(() {
-                                                name = newName;
-                                                available = newAvailable;
-                                                price = newPrice;
-                                                containerId = newContainerId;
-                                                description = newDescription;
-                                                fetchItems();
-                                              });
-                                            },
-                                          );
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await showCreateItems(
+                                        context,
+                                        (String newName,
+                                            bool newAvailable,
+                                            double newPrice,
+                                            int newContainerId,
+                                            String newDescription) {
+                                          setState(() {
+                                            name = newName;
+                                            available = newAvailable;
+                                            price = newPrice;
+                                            containerId = newContainerId;
+                                            description = newDescription;
+                                            fetchItems();
+                                          });
                                         },
-                                        style: ElevatedButton.styleFrom(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20, vertical: 10),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20.0),
-                                          ),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.add,
-                                              color: Provider.of<ThemeService>(
-                                                          context)
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(20.0),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.add,
+                                          color:
+                                              Provider.of<ThemeService>(context)
                                                       .isDark
                                                   ? darkTheme.primaryColor
                                                   : lightTheme.primaryColor,
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              'Ajouter un article',
-                                              style: TextStyle(
-                                                color:
-                                                    Provider.of<ThemeService>(
-                                                                context)
-                                                            .isDark
-                                                        ? darkTheme.primaryColor
-                                                        : lightTheme
-                                                            .primaryColor,
-                                                fontSize: screenFormat ==
-                                                        ScreenFormat.desktop
-                                                    ? desktopFontSize
-                                                    : tabletBigFontSize,
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        width: 30,
-                                      ),
-                                      DropdownButton<String>(
-                                        value: selectedCategory,
-                                        onChanged: (String? newValue) {
-                                          if (newValue != null) {
-                                            setState(() {
-                                              selectedCategory = newValue;
-                                              fetchItemsByCategory();
-                                            });
-                                          }
-                                        },
-                                        items: [
-                                          DropdownMenuItem(
-                                            value: 'Tous',
-                                            child: Text('Tous'),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          'Ajouter un article',
+                                          style: TextStyle(
+                                            color: Provider.of<ThemeService>(
+                                                        context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                            fontSize: screenFormat ==
+                                                    ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletBigFontSize,
                                           ),
-                                          for (var category in categories)
-                                            if (category != 'Tous')
-                                              DropdownMenuItem(
-                                                value: category,
-                                                child: Text(category),
-                                              ),
-                                        ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                  DropdownButton<String>(
+                                    value: selectedCategory,
+                                    onChanged: (String? newValue) {
+                                      if (newValue != null) {
+                                        setState(() {
+                                          selectedCategory = newValue;
+                                          fetchItemsByCategory();
+                                        });
+                                      }
+                                    },
+                                    items: [
+                                      DropdownMenuItem(
+                                        value: 'Tous',
+                                        child: Text('Tous'),
                                       ),
+                                      for (var category in categories)
+                                        if (category != 'Tous')
+                                          DropdownMenuItem(
+                                            value: category,
+                                            child: Text(category),
+                                          ),
                                     ],
                                   ),
-                                  items.isEmpty
-                                      ? Center(
-                                          child: Text(
-                                            'Aucun objet trouvé.',
-                                            style: TextStyle(
-                                              fontSize: screenFormat ==
-                                                      ScreenFormat.desktop
-                                                  ? desktopFontSize
-                                                  : tabletBigFontSize,
-                                              color: Color.fromARGB(
-                                                  255, 211, 11, 11),
-                                            ),
-                                          ),
-                                        )
-                                      : Wrap(
-                                          spacing: 10.0,
-                                          runSpacing: 8.0,
-                                          children: List.generate(
-                                            items.length,
-                                            (index) => buildItemWidget(
-                                                context, items[index]),
-                                          ),
-                                        ),
                                 ],
                               ),
-                      ],
-                    ),
-                  ),
-                ],
+                              items.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'Aucun objet trouvé.',
+                                        style: TextStyle(
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletBigFontSize,
+                                          color:
+                                              Color.fromARGB(255, 211, 11, 11),
+                                        ),
+                                      ),
+                                    )
+                                  : Wrap(
+                                      spacing: 10.0,
+                                      runSpacing: 8.0,
+                                      children: List.generate(
+                                        items.length,
+                                        (index) => buildItemWidget(
+                                            context, items[index]),
+                                      ),
+                                    ),
+                            ],
+                          ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

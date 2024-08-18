@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 
 import 'package:front/screens/register/register.dart';
 import 'package:front/services/theme_service.dart';
@@ -70,6 +71,7 @@ void main() {
     expect(
         find.image(const AssetImage("assets/google-logo.png")), findsOneWidget);
     expect(find.text('Google'), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
 
     await tester.enterText(find.byKey(const Key('email')), 'test@gmail.com');
     await tester.enterText(find.byKey(const Key('password')), 'password');

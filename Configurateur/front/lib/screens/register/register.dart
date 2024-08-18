@@ -46,9 +46,11 @@ class RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       body: FooterView(
-        footer: Footer(
-          child: CustomFooter(context: context),
-        ),
+            footer: Footer(
+              child: CustomFooter(context: context),
+            ),
+            children: [
+      Column(
         children: [
           LandingAppBar(context: context),
           Text(
@@ -341,7 +343,7 @@ class RegisterScreenState extends State<RegisterScreen> {
             ),
           )
         ],
-      ),
+      ),])
     );
   }
 }

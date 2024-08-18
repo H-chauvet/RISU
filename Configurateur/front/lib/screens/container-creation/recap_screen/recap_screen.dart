@@ -141,11 +141,7 @@ class RecapScreenState extends State<RecapScreen> {
             )
           ],
         ),
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(context: context),
-            ),
-            children: [
+        body: 
               Center(
                 child: FractionallySizedBox(
                   widthFactor: 0.5,
@@ -156,7 +152,6 @@ class RecapScreenState extends State<RecapScreen> {
                     articles: lockerss,
                   ),
                 ),
-              ),
-            ]));
+));
   }
 }

@@ -67,10 +67,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
         "Confirmation d'inscription",
         context: context,
       ),
-      body: FooterView(
-        footer: Footer(
-          child: CustomFooter(context: context),
-        ),
+      body: Column(
         children: [
           Center(
             child: SizedBox(
