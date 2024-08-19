@@ -5,11 +5,11 @@
  * @param {*} user the user object
  */
 function setServerLanguage(req, user) {
-    if (user && user.language) {
-        req.setLocale(user.language);
-    } else {
-        req.setLocale('en');
-    }
+  if (user && user.language) {
+    req.setLocale(user.language);
+  } else {
+    req.setLocale("en");
+  }
 }
 
 module.exports = { setServerLanguage };
