@@ -74,6 +74,7 @@
     "missingMailPwd" : "L'email ou / et le mot de passe sont absents de la requête.",
     "mailNotExist" : "Cet e-mail n'existe pas.",
     "mailAlreadyExist" : "Cet email existe déjà dans la base de données.",
+    "missingMail" : "L'adresse mail est absente de la requête.",
     "wrongMail" : "L'email envoyé n'est pas lié à ce compte.",
     "accountNotExist" : "Ce compte n'existe pas.",
     "Success" : "Succès",

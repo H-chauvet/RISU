@@ -74,6 +74,7 @@
     "missingMailPwd" : "The email or / and the password are missing from the request.",
     "mailNotExist" : "This email does not exist.",
     "mailAlreadyExist" : "This email already exist in the database.",
+    "missingMail" : "The email is missing from the request.",
     "wrongMail" : "The email sent is not linked to this account.",
     "accountNotExist" : "This account does not exist.",
     "Success" : "Success",

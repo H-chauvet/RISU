@@ -10,7 +10,7 @@ router.post("/create", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const { name, type, affiliate, containers, contactInformation } = req.body;
@@ -32,7 +32,7 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   const id = parseInt(req.params.id);
   try {
@@ -40,15 +40,14 @@ router.post("/update-information/:id", async (req, res, next) => {
 
     if (!contactInformation) {
       res.status(400).json({
-        error:
-          "Email and at least one of contactInformation or type are required",
+        error: res.__('missingMailContact')
       });
       return;
     }
 
     const existingOrganization = await organizationCtrl.getOrganizationById(id);
     if (!existingOrganization) {
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).json({ error: res.__('organizationNotFound') });
       return;
     }
 
@@ -69,7 +68,7 @@ router.post("/update-type/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const id = parseInt(req.params.id);
@@ -77,14 +76,14 @@ router.post("/update-type/:id", async (req, res, next) => {
 
     if (!type) {
       res.status(400).json({
-        error: "Email and at least one of type or type are required",
+        error: res.__('missingMailType'),
       });
       return;
     }
 
     const existingOrganization = await organizationCtrl.getOrganizationById(id);
     if (!existingOrganization) {
-      res.status(404).json({ error: "Organization not found" });
+      res.status(404).json({ error: res.__('organizationNotFound') });
       return;
     }
 

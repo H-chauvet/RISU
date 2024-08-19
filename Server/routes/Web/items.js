@@ -11,16 +11,16 @@ router.post(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
       const { id } = req.body;
       if (!id) {
         res.status(400);
-        throw new Error("userId is required");
+        throw new Error(res.__('missingId'));
       }
       await itemCtrl.deleteItem(id);
-      res.status(200).json("items deleted");
+      res.status(200).json(res.__('itemsDeleted'));
     } catch (err) {
       next(err);
     }
@@ -32,7 +32,7 @@ router.post("/create", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const { id, name, available, price, containerId, description, image } =
@@ -49,7 +49,7 @@ router.post("/create", async (req, res, next) => {
     res.status(200).json(item);
   } catch (err) {
     next(err);
-    return res.status(400).json("An error occured.");
+    return res.status(400).json(res.__('errorOccured'));
   }
 });
 
@@ -60,7 +60,7 @@ router.put(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
       const { id, name, available, containerId, price, image, description } =
@@ -68,7 +68,7 @@ router.put(
 
       if (!id) {
         res.status(400);
-        throw new Error("id and name are required");
+        throw new Error(res.__('missingIdName'));
       }
 
       const item = await containerCtrl.updateItem(id, {
@@ -94,7 +94,7 @@ router.post(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     const id = parseInt(req.params.itemId);
     try {
@@ -108,14 +108,14 @@ router.post(
       }
       if (!name) {
         res.status(400).json({
-          error: "Email and at least one of name or name are required",
+          error: res.__('missingMailName'),
         });
         return;
       }
 
       const existingUser = await itemCtrl.getItemFromId(id);
       if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
 
@@ -140,7 +140,7 @@ router.get(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
       const containerId = req.query.containerId;
@@ -160,7 +160,7 @@ router.get(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
       const category = req.query.category;
@@ -180,7 +180,7 @@ router.get(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
       const item = await itemCtrl.getAllItem();
@@ -199,7 +199,7 @@ router.post(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     const id = parseInt(req.params.id);
     try {
@@ -207,14 +207,14 @@ router.post(
 
       if (!name) {
         res.status(400).json({
-          error: "Email and at least one of name or name are required",
+          error: res.__('missingMailName'),
         });
         return;
       }
 
       const existingUser = await itemCtrl.getItemFromId(id);
       if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
 
@@ -236,7 +236,7 @@ router.post(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     const id = parseInt(req.params.id);
     try {
@@ -244,14 +244,14 @@ router.post(
       const priceTmp = parseFloat(price);
       if (!price) {
         res.status(400).json({
-          error: "Email and at least one of price or price are required",
+          error: res.__('missingMailPrice'),
         });
         return;
       }
 
       const existingUser = await itemCtrl.getItemFromId(id);
       if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
 
@@ -273,7 +273,7 @@ router.post(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     const id = parseInt(req.params.id);
     try {
@@ -281,15 +281,14 @@ router.post(
 
       if (!description) {
         res.status(400).json({
-          error:
-            "Email and at least one of description or description are required",
+          error: res.__('missingMailDescription')
         });
         return;
       }
 
       const existingUser = await itemCtrl.getItemFromId(id);
       if (!existingUser) {
-        res.status(404).json({ error: "User not found" });
+        res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
 
