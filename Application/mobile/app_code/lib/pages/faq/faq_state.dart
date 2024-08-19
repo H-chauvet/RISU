@@ -1,19 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/pages/contact/contact_page.dart';
-import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/utils/time.dart';
 
 import 'faq_page.dart';
+import 'answer_page.dart';
 
 class FaqPageState extends State<FaqPage> {
   List<dynamic> questions = [];
@@ -69,7 +64,7 @@ class FaqPageState extends State<FaqPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        textTitle: AppLocalizations.of(context)!.myTickets,
+        textTitle: AppLocalizations.of(context)!.faq,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
@@ -79,9 +74,10 @@ class FaqPageState extends State<FaqPage> {
           : Container(
               margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
+                    key: const Key('faq-title-text'),
                     AppLocalizations.of(context)!
                         .faqTitle(userInformation!.firstName!),
                     style: TextStyle(
@@ -90,7 +86,53 @@ class FaqPageState extends State<FaqPage> {
                       color: themeProvider.currentTheme.primaryColor,
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  ...questions.map((question) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AnswerPage(
+                              question: question,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Row(
+                            key: Key('faq-question-${question['title_fr']}'),
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(Icons.help_outline, size: 24.0),
+                              const SizedBox(width: 8.0),
+                              Expanded(
+                                child: Text(
+                                  question['title_fr'],
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color:
+                                        themeProvider.currentTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                              const Icon(Icons.chevron_right, size: 24.0),
+                            ],
+                          ),
+                          const Divider(
+                            thickness: 1.5,
+                            color: Colors.black,
+                          ),
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 50),
                   Text(
+                    key: const Key('need-to-join-us-text'),
                     AppLocalizations.of(context)!.needToJoinUs,
                     style: TextStyle(
                       fontSize: 24,
@@ -100,6 +142,7 @@ class FaqPageState extends State<FaqPage> {
                   ),
                   const SizedBox(height: 20),
                   Text(
+                    key: const Key('some-questions-faq-text'),
                     AppLocalizations.of(context)!.someQuestionsFaq,
                     style: TextStyle(
                       fontSize: 18,
