@@ -6,6 +6,8 @@ const userCtrl = require("../../controllers/Mobile/user")
 const ticketCtrl = require("../../controllers/Common/tickets")
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
 const webUserCtrl = require("../../controllers/Web/user")
+const languageMiddleware = require('../../middleware/language')
+
 
 router.get('/', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -17,6 +19,7 @@ router.get('/', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const tickets = await ticketCtrl.getAllUserTickets(user.id);
 
       return res.status(200).json({ tickets })
@@ -37,7 +40,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
-
+      languageMiddleware.setServerLanguage(req, user)
       const { content, title, createdAt, assignedId, chatUid } = req.body
 
       if (!content || !title) {
@@ -85,7 +88,7 @@ router.put('/assign/:assignedId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(404).send(res.__('userNotFound'))
       }
-
+      languageMiddleware.setServerLanguage(req, user)
       const assignedId = req.params.assignedId
       const ticketId = req.body.ticketId
 
@@ -117,7 +120,7 @@ router.put('/:chatId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
-
+      languageMiddleware.setServerLanguage(req, user)
       const chatId = req.params.chatId
       if (!chatId) {
         return res.status(400).send(res.__('missingChatId'))
@@ -143,7 +146,7 @@ router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
-
+      languageMiddleware.setServerLanguage(req, user)
       const chatId = req.params.chatId
       if (!chatId) {
         return res.status(400).send(res.__('missingChatId'))
@@ -169,7 +172,7 @@ router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
-
+      languageMiddleware.setServerLanguage(req, user)
       const assignedId = req.params.assignedId
       if (!assignedId) {
         return res.status(400).send(res.__('missingAssignedId'))

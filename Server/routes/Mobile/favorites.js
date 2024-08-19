@@ -6,6 +6,7 @@ const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
 const favoriteCtrl = require("../../controllers/Mobile/favorites")
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const languageMiddleware = require('../../middleware/language')
 
 router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
@@ -17,6 +18,7 @@ router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 			if (!user) {
 				return res.status(401).send(res.__('userNotFound'))
 			}
+			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
 				return res.status(401).send(res.__('missingItemId'))
 			}
@@ -48,7 +50,7 @@ router.get('/', jwtMiddleware.refreshTokenMiddleware,
 			if (!user) {
 				return res.status(401).send(res.__('userNotFound'))
 			}
-
+			languageMiddleware.setServerLanguage(req, user)
 			const favorites = await favoriteCtrl.getUserFavorites(user.id)
 			if (!favorites) {
 				return res.status(401).send(res.__('favNotFound'))
@@ -72,6 +74,7 @@ router.get('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 			if (!user) {
 				return res.status(401).send(res.__('userNotFound'))
 			}
+			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
 				return res.status(401).send(res.__('missingItemId'))
 			}
@@ -99,6 +102,7 @@ router.delete('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 			if (!user) {
 				return res.status(401).send(res.__('userNotFound'))
 			}
+			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
 				return res.status(401).send(res.__('missingItemId'))
 			}

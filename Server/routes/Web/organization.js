@@ -4,6 +4,7 @@ const router = express.Router();
 const passport = require("passport");
 const organizationCtrl = require("../../controllers/Web/organization");
 const jwtMiddleware = require("../../middleware/jwt");
+const languageMiddleware = require('../../middleware/language')
 
 router.post("/create", async function (req, res, next) {
   try {
@@ -13,6 +14,9 @@ router.post("/create", async function (req, res, next) {
     throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { name, type, affiliate, containers, contactInformation } = req.body;
     const organization = await organizationCtrl.createOrganization({
       name,
@@ -37,6 +41,9 @@ router.post("/update-information/:id", async (req, res, next) => {
   const id = parseInt(req.params.id);
   try {
     const { contactInformation } = req.body;
+
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
 
     if (!contactInformation) {
       res.status(400).json({
@@ -71,6 +78,9 @@ router.post("/update-type/:id", async (req, res, next) => {
     throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const id = parseInt(req.params.id);
     const { type } = req.body;
 

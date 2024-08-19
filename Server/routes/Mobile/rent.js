@@ -12,6 +12,7 @@ const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const languageMiddleware = require('../../middleware/language')
 
 router.post('/article', jwtMiddleware.refreshTokenMiddleware,
   passport.authenticate('jwt', { session: false }), async (req, res) => {
@@ -23,6 +24,7 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       if (!req.body.itemId || req.body.itemId === '') {
         return res.status(401).send(res.__('missingItemId'))
       }
@@ -115,6 +117,7 @@ router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
 
       const locationId = req.params.locationId;
 
@@ -148,6 +151,7 @@ router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const rentals = await rentCtrl.getUserRents(user.id)
       return res.status(200).json({ rentals: rentals })
     } catch (err) {
@@ -167,6 +171,7 @@ router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).send(res.__('missingRentId'))
       }
@@ -191,6 +196,11 @@ router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
       if (!req.user) {
         return res.status(401).send(res.__('invalidToken'))
       }
+      const user = await userCtrl.findUserById(req.user.id)
+      if (!user) {
+        return res.status(401).send(res.__('userNotFound'))
+      }
+      languageMiddleware.setServerLanguage(req, user)
       if (!req.params.rentId || req.params.rentId == '') {
         return res.status(401).send(res.__('missingRentId'))
       }

@@ -10,7 +10,6 @@ const jwtMiddleware = require('../../middleware/Mobile/jwt')
 const crypto = require('../../crypto/crypto')
 const languageMiddleware = require('../../middleware/language')
 
-
 router.post('/signup', (req, res, next) => {
   passport.authenticate(
     'signup',
@@ -71,6 +70,7 @@ router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (
   if (!user) {
     return res.status(401).send(res.__('userNotFound'))
   }
+  languageMiddleware.setServerLanguage(req, user)
   const token = jwtMiddleware.generateToken(user.id)
   return res.status(201).json({ user : user, token : token })
 })
@@ -80,6 +80,7 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     const user = await userCtrl.findUserById(decoded.id)
+    languageMiddleware.setServerLanguage(req, user)
     await authCtrl.verifyEmail(user.id)
     return res.status(200).send(res.__('emailVerified'))
   } catch (err) {
@@ -94,6 +95,7 @@ router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware,
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     var user = await userCtrl.findUserById(decoded.id)
+    languageMiddleware.setServerLanguage(req, user) 
     user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
     return res.status(200).send(res.__('emailVerified'))
   } catch (err) {

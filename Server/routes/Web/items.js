@@ -3,6 +3,7 @@ const router = express.Router();
 
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
+const languageMiddleware = require('../../middleware/language')
 
 router.post(
   "/delete",
@@ -14,6 +15,9 @@ router.post(
       throw new Error(res.__('unauthorized'));
     }
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const { id } = req.body;
       if (!id) {
         res.status(400);
@@ -35,6 +39,9 @@ router.post("/create", async (req, res, next) => {
     throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { id, name, available, price, containerId, description, image } =
       req.body;
     const item = await itemCtrl.createItem({
@@ -63,6 +70,9 @@ router.put(
       throw new Error(res.__('unauthorized'));
     }
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const { id, name, available, containerId, price, image, description } =
         req.body;
 
@@ -114,11 +124,12 @@ router.post(
       }
 
       const existingUser = await itemCtrl.getItemFromId(id);
+
       if (!existingUser) {
         res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
-
+      languageMiddleware.setServerLanguage(req, existingUser)
       const updatedUser = await itemCtrl.updateItemCtn({
         id,
         name,
@@ -143,6 +154,9 @@ router.get(
       throw new Error(res.__('unauthorized'));
     }
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const containerId = req.query.containerId;
       const item = await itemCtrl.getItemByContainerId(parseInt(containerId));
 
@@ -163,6 +177,9 @@ router.get(
       throw new Error(res.__('unauthorized'));
     }
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const category = req.query.category;
       const item = await itemCtrl.getItemByCategory(category);
 
@@ -203,6 +220,9 @@ router.post(
     }
     const id = parseInt(req.params.id);
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const { name } = req.body;
 
       if (!name) {
@@ -240,6 +260,9 @@ router.post(
     }
     const id = parseInt(req.params.id);
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const { price } = req.body;
       const priceTmp = parseFloat(price);
       if (!price) {
@@ -277,6 +300,9 @@ router.post(
     }
     const id = parseInt(req.params.id);
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const { description } = req.body;
 
       if (!description) {
@@ -291,7 +317,7 @@ router.post(
         res.status(404).json({ error: res.__('userNotFound') });
         return;
       }
-
+      languageMiddleware.setServerLanguage(req, existingUser)
       const updatedUser = await itemCtrl.updateDescription({
         id,
         description,

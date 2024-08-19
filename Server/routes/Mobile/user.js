@@ -8,6 +8,7 @@ const authCtrl = require('../../controllers/Mobile/auth')
 const cleanCtrl = require('../../controllers/Mobile/cleandata')
 const bcrypt = require('bcrypt')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const languageMiddleware = require('../../middleware/language')
 
 router.get('/listAll', async (req, res, next) => {
   try {
@@ -29,6 +30,7 @@ router.put('/password', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const currentPassword = req.body.currentPassword
       if (!currentPassword || currentPassword === '') {
         return res.status(401).send(res.__('missingCurrPwd'))
@@ -61,6 +63,7 @@ router.post('/password/reset', async (req, res) => {
     if (!user) {
       return res.status(401).send(res.__('userNotFound'))
     }
+    languageMiddleware.setServerLanguage(req, user)
     resetToken = jwtMiddleware.generateResetToken(user)
     resetToken = resetToken.substring(0, 64)
     user = await userCtrl.updateUserResetToken(user.id, resetToken)
@@ -84,7 +87,7 @@ router.get('/:userId', jwtMiddleware.refreshTokenMiddleware,
         return res.status(401).send(res.__('unauthorized'));
       }
       const user = await userCtrl.findUserById(req.params.userId)
-
+      languageMiddleware.setServerLanguage(req, user)
       return res.status(200).json({ user });
     } catch (err) {
       console.error(err.message)
@@ -103,6 +106,7 @@ router.put('/', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const updatedUser = await userCtrl.updateUserInfo(user, req.body)
       return res.status(200).json({ updatedUser });
     } catch (error) {
@@ -122,6 +126,7 @@ router.put('/newEmail', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       if (!req.body.newEmail || req.body.newEmail === '') {
         return res.status(401).send(res.__('missingNewMail'))
       }
@@ -152,6 +157,7 @@ router.delete('/:userId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       await cleanCtrl.cleanUserData(user.id, user.notificationsId)
       await userCtrl.deleteUser(user.id)
       return res.status(200).send(res.__('userDeleted'))

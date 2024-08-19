@@ -4,6 +4,7 @@ const router = express.Router();
 const userCtrl = require("../../controllers/Web/user");
 const jwtMiddleware = require("../../middleware/jwt");
 const generator = require("generate-password");
+const languageMiddleware = require('../../middleware/language')
 
 router.post("/login", async function (req, res, next) {
   try {
@@ -20,6 +21,7 @@ router.post("/login", async function (req, res, next) {
     }
 
     const user = await userCtrl.loginByEmail({ email, password });
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
     res.json({
@@ -83,6 +85,7 @@ router.post("/register", async function (req, res, next) {
       email,
       password,
     });
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
     res.status(200).json({
@@ -107,9 +110,9 @@ router.post("/forgot-password", async function (req, res, next) {
       res.status(400);
       throw new Error(res.__('wrongMail'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     userCtrl.forgotPassword(email);
-    res.json("ok");
+    res.json(res.__('Success'));
   } catch (err) {
     next(err);
   }
@@ -129,7 +132,7 @@ router.post("/update-password", async function (req, res, next) {
       res.status(401);
       throw new Error(res.__('accountNotExist'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const ret = await userCtrl.updatePassword({ uuid, password });
     res.json(ret);
   } catch (err) {
@@ -157,7 +160,7 @@ router.post("/register-confirmation", async function (req, res, next) {
       res.status(400);
       throw new Error(res.__('wrongMail'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     userCtrl.registerConfirmation(email);
     res.json(res.__('Success'));
   } catch (err) {
@@ -175,6 +178,7 @@ router.post("/confirmed-register", async function (req, res, next) {
     }
 
     const user = await userCtrl.confirmedRegister(uuid);
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
     res.json({ accessToken });
   } catch (err) {
@@ -270,7 +274,7 @@ router.post("/update-mail", async (req, res, next) => {
       res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateMail({ oldMail, newMail });
     res.status(200).json(updatedUser);
   } catch (err) {
@@ -294,7 +298,7 @@ router.post("/update-company/:email", async (req, res, next) => {
       res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateCompany({ email, company });
     res.status(200).json(updatedUser);
   } catch (err) {
@@ -318,7 +322,7 @@ router.post("/update-password/:email", async (req, res, next) => {
       res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateUserPassword({ email, password });
     res.status(200).json(updatedUser);
   } catch (err) {

@@ -6,6 +6,7 @@ const userCtrl = require("../../controllers/Mobile/user")
 const opinionCtrl = require("../../controllers/Mobile/opinion")
 const itemsCtrl = require("../../controllers/Common/items")
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const languageMiddleware = require('../../middleware/language')
 
 router.get('/', async (req, res) => {
   var opinions = []
@@ -43,6 +44,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       if (!req.body.comment || req.body.comment === '') {
         return res.status(401).send(res.__('missingComment'))
       }
@@ -78,6 +80,7 @@ router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const opinionId = req.params.opinionId
       if (opinionId == null) {
         return res.status(401).send(res.__('missingReviewId'))
@@ -109,6 +112,7 @@ router.put('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       if (!user) {
         return res.status(401).send(res.__('userNotFound'))
       }
+      languageMiddleware.setServerLanguage(req, user)
       const opinionId = req.params.opinionId
       if (opinionId == null) {
         return res.status(401).send(res.__('missingReviewId'))
