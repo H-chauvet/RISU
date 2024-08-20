@@ -35,7 +35,7 @@ router.post("/create", async (req, res, next) => {
     throw new Error("Unauthorized");
   }
   try {
-    const { id, name, available, price, containerId, description, image } =
+    const { id, name, available, price, containerId, description } =
       req.body;
     const item = await itemCtrl.createItem({
       id,
@@ -44,9 +44,8 @@ router.post("/create", async (req, res, next) => {
       price,
       containerId,
       description,
-      image,
     });
-    res.status(200).json(item);
+    return res.status(200).json(item);
   } catch (err) {
     next(err);
     return res.status(400).json("An error occured.");
@@ -63,7 +62,7 @@ router.put(
       throw new Error("Unauthorized");
     }
     try {
-      const { id, name, available, containerId, price, image, description } =
+      const { id, name, available, containerId, price, description } =
         req.body;
 
       if (!id) {
@@ -76,7 +75,6 @@ router.put(
         available,
         containerId,
         price,
-        image,
         description,
       });
 
