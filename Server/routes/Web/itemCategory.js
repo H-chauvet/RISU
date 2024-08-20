@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const itemCategoryCtrl = require('../../controllers/Common/itemCategory');
-const jwtMiddleware = require('../../middleware/jwt');
+const itemCategoryCtrl = require("../../controllers/Common/itemCategory");
+const jwtMiddleware = require("../../middleware/jwt");
 
 router.get("/", async function (req, res, next) {
   try {
@@ -13,6 +13,21 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+router.get("/listAll", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401);
+    throw new Error("Unauthorized");
+  }
+
+  try {
+    const itemCategories = await itemCategoryCtrl.getItemCategories();
+    res.status(200).json({ itemCategories });
+  } catch (err) {
+    next(err);
+  }
+});
 
 router.get("/:id", async function (req, res, next) {
   try {
@@ -26,7 +41,9 @@ router.get("/:id", async function (req, res, next) {
       res.status(400);
       throw new Error("id of the item category is required");
     }
-    const itemCategory = await itemCategoryCtrl.getItemCategoryFromId(req.params.id);
+    const itemCategory = await itemCategoryCtrl.getItemCategoryFromId(
+      req.params.id
+    );
     res.status(200).json(itemCategory);
   } catch (err) {
     next(err);
