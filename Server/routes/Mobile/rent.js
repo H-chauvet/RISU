@@ -7,6 +7,7 @@ const passport = require('passport')
 const rentCtrl = require("../../controllers/Mobile/rent")
 const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
+const imagesCtrl = require('../../controllers/Common/images')
 const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
@@ -177,7 +178,9 @@ router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
       if (rental.userId != req.user.id) {
         return res.status(401).send('Location from wrong user')
       }
-      return res.status(201).json({ rental: rental })
+      const imageUrl = await imagesCtrl.getItemImagesUrl(rental.item.id, 0)
+      rental.item.imageUrl = imageUrl[0]
+      return res.status(201).json({ rental })
     } catch (err) {
       console.error(err.message)
       return res.status(401).send('An error occurred')
