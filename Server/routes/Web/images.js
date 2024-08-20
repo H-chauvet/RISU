@@ -1,36 +1,34 @@
-const express = require('express')
-const router = express.Router()
-const passport = require('passport')
+const express = require('express');
+const router = express.Router();
+const passport = require('passport');
 const { PutObjectCommand, GetObjectCommand, ListObjectsV2Command } = require("@aws-sdk/client-s3");
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 
-const imagesMiddleware = require('../../middleware/images')
-const itemsCtrl = require('../../controllers/Common/items');
+const imagesMiddleware = require('../../middleware/images');
+const imagesCtrl = require('../../controllers/Common/images');
+const userCtrl = require('../../controllers/Web/user');
 
 // POST /api/images
 router.post('/',
     imagesMiddleware.upload.array('images', 5),
-    // passport.authenticate('jwt', { session: false}),
+    passport.authenticate('jwt', { session: false}),
     async (req, res) => {
         try {
-			// if (!req.user) {
-			// 	return res.status(401).send('Invalid token')
-			// }
-			// const user = await userCtrl.findUserById(req.user.id)
-			// if (!user) {
-			// 	return res.status(401).send('User not found')
-			// }
-            // const item = req.item
-            // if (!item.id) {
-            //     return res.status(400).send('Item id is required')
-            // }
-            const item = { name: 'Ballon de volley', id: 1 }; // TODO: DELETE THIS LINE
+            if (!req.user) {
+                return res.status(401).send('Invalid token')
+            }
+            const user = await userCtrl.findUserById(req.user.id)
+            if (!user) {
+                return res.status(401).send('User not found')
+            }
+            const item = req.item
+            if (!item.id) {
+                return res.status(400).send('Item id is required')
+            }
             var count = 0;
             const uploadPromises = req.files.map(file => {
-                console.log('File:', file);
                 const params = {
                     Bucket: imagesMiddleware.awsBucketName,
-                    Key: `${item.name}-${item.id}/${count}`,
+                    Key: `${imagesMiddleware.itemImagesFolder}${item.name}-${item.id}/${count}`,
                     Body: file.buffer,
                     ContentType: file.mimetype
                 };
@@ -45,6 +43,17 @@ router.post('/',
         catch (error) {
             console.log('Error sending image:', error);
         }
+});
+
+// GET /api/images/:id
+router.get('/:id', async (req, res) => {
+    try {
+        const files = await imagesCtrl.getItemImagesUrl(req.params.id);
+        return res.status(200).send(files);
+    } catch (error) {
+        console.error('Error listing files: ', error);
+        return res.status(500).send('Error listing files');
+    }
 });
 
 module.exports = router;
