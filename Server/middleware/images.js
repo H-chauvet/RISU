@@ -18,11 +18,18 @@ const s3Client = new S3Client({
     },
 });
 
+const itemImagesFolder = 'items/';
+const profileImagesFolder = 'profiles/';
+const containerImagesFolder = 'containers/';
+
 module.exports = {
     awsBucketName,
     awsBucketRegion,
     awsAccessKey,
     awsSecretAccessKey,
+    itemImagesFolder,
+    profileImagesFolder,
+    containerImagesFolder,
     upload,
     storage,
     s3Client,
