@@ -4,6 +4,7 @@ const router = express.Router()
 const containerCtrl = require("../../controllers/Common/container");
 const mobileContainerCtrl = require("../../controllers/Mobile/container");
 const itemCtrl = require("../../controllers/Common/items");
+const imagesCtrl = require("../../controllers/Common/images");
 const passport = require('passport')
 
 router.get("/listAll", async function (req, res, next) {
@@ -56,9 +57,13 @@ router.get('/:containerId/articleslist', async (req, res) => {
       min,
       max
     );
+    for (const item of items) {
+      imageUrl = await imagesCtrl.getItemImagesUrl(item.id, 0);
+      item.imageUrl = imageUrl[0];
+    }
     return res.status(200).json(items);
   } catch (err) {
-    return res.status(401).send('An error occurred while getting the items');
+    return res.status(401).send('An error occurred while getting the items: ' + err);
   }
 });
 
