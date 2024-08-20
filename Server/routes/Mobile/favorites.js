@@ -6,6 +6,7 @@ const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
 const favoriteCtrl = require("../../controllers/Mobile/favorites")
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const imagesCtrl = require('../../controllers/Common/images')
 
 router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 	passport.authenticate('jwt', { session: false}), async (req, res) => {
@@ -53,7 +54,10 @@ router.get('/', jwtMiddleware.refreshTokenMiddleware,
 			if (!favorites) {
 				return res.status(401).send('Favorites not found')
 			}
-
+			for (const favorite of favorites) {
+				const imageUrl = await imagesCtrl.getItemImagesUrl(favorite.item.id, 0);
+				favorite.imageUrl = imageUrl[0];
+			}
 			return res.status(200).json({ favorites })
 		} catch (err) {
 			console.error(err.message)
