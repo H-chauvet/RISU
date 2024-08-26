@@ -53,7 +53,7 @@ router.put('/password', jwtMiddleware.refreshTokenMiddleware,
 router.post('/password/reset', async (req, res) => {
   const { email } = req.body
   if (!email || email === '') {
-    return res.status(401).send('Missing fields')
+    return res.status(400).send('Missing email')
   }
 
   try {
