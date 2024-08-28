@@ -80,8 +80,7 @@ class _ContainerPageState extends State<ContainerPage> {
             .toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -101,8 +100,7 @@ class _ContainerPageState extends State<ContainerPage> {
       showCustomToast(context, "Le conteneur a bien été supprimé !", true);
       fetchContainers();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression du conteneur", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

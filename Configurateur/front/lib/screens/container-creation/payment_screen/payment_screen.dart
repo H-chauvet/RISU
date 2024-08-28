@@ -128,7 +128,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           storageService.removeStorage('containerData');
           context.go('/container-creation/confirmation');
         } else {
-          showCustomToast(context, "Echec de la commande", false);
+          showCustomToast(context, value.body, false);
         }
       });
     } catch (e) {

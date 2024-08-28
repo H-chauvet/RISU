@@ -111,8 +111,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             .toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur lors de la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -326,8 +325,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       showCustomToast(context, "Conteneur supprimé avec succès !", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression du conteneur", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

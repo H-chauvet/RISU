@@ -798,7 +798,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          showCustomToast(context, "Echec de la sauvegarde", false);
+          showCustomToast(context, value.body, false);
         }
       });
     } else {
@@ -838,7 +838,7 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          showCustomToast(context, "Echec de la sauvegarde", false);
+          showCustomToast(context, value.body, false);
         }
       });
     }

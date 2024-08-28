@@ -10,19 +10,22 @@ router.get("/get", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const { id } = req.query;
 
     if (!id) {
       res.status(400);
-      throw new Error("id is required");
+      throw "id is required";
     }
     const container = await containerCtrl.getContainerById(parseInt(id));
     res.status(200).json(container);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -31,18 +34,21 @@ router.post("/delete", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const { id } = req.body;
     if (!id) {
       res.status(400);
-      throw new Error("container id is required");
+      throw "container id is required";
     }
     await containerCtrl.deleteContainer(id);
     res.status(200).json("container deleted");
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -51,7 +57,7 @@ router.post("/create", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const { designs, containerMapping, height, width, saveName } = req.body;
@@ -60,6 +66,11 @@ router.post("/create", async function (req, res, next) {
     const decodedToken = jwtMiddleware.decodeToken(token);
 
     const user = await userCtrl.findUserByEmail(decodedToken.userMail);
+
+    if (!user) {
+      res.status(401);
+      throw "Unable to find user";
+    }
 
     const container = await containerCtrl.createContainer(
       {
@@ -73,7 +84,10 @@ router.post("/create", async function (req, res, next) {
     );
     res.status(200).json(container);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -82,7 +96,7 @@ router.put("/update", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const {
@@ -98,7 +112,7 @@ router.put("/update", async function (req, res, next) {
 
     if (!id) {
       res.status(400);
-      throw new Error("id is required");
+      throw "id is required";
     }
 
     const container = await containerCtrl.updateContainer(id, {
@@ -112,7 +126,10 @@ router.put("/update", async function (req, res, next) {
     });
     res.status(200).json(container);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -121,14 +138,14 @@ router.put("/update-position", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const { id, latitude, longitude } = req.body;
 
     if (!id || !latitude || !longitude) {
       res.status(400);
-      throw new Error("id and position are required");
+      throw "id and position are required";
     }
 
     const position = await containerCtrl.getLocalisation({
@@ -138,7 +155,7 @@ router.put("/update-position", async function (req, res, next) {
 
     if (position == "No address found") {
       res.status(400);
-      throw new Error("No address found");
+      throw "No address found";
     }
 
     const container = await containerCtrl.updateContainerPosition(id, {
@@ -149,7 +166,10 @@ router.put("/update-position", async function (req, res, next) {
     });
     res.status(200).json(container);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -158,14 +178,17 @@ router.get("/listAll", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const container = await containerCtrl.getAllContainers();
 
     res.status(200).json({ container });
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -176,7 +199,7 @@ router.get(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw "Unauthorized";
     }
     try {
       const organizationId = req.params.organizationId;
@@ -185,7 +208,10 @@ router.get(
 
       res.status(200).json({ container });
     } catch (err) {
-      next(err);
+      if (res.statusCode == 200) {
+        res.status(500);
+      }
+      res.send(err);
     }
   }
 );
@@ -195,7 +221,7 @@ router.get("/listByContainer/:id", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   try {
     const id = req.params.id;
@@ -203,7 +229,10 @@ router.get("/listByContainer/:id", async function (req, res, next) {
     const container = await containerCtrl.getContainerById(id);
     res.status(200).json({ container });
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -212,23 +241,21 @@ router.post("/update-city/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   const id = parseInt(req.params.id);
   try {
     const { city } = req.body;
 
     if (!city) {
-      res.status(400).json({
-        error: "Id and at least one city are required",
-      });
-      return;
+      res.status(400);
+      throw "Id and at least one city are required";
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
-      return;
+      res.status(404);
+      throw "Container not found";
     }
 
     const updateContainer = await containerCtrl.updateCity({
@@ -237,7 +264,10 @@ router.post("/update-city/:id", async (req, res, next) => {
     });
     res.status(200).json(updateContainer);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -246,23 +276,21 @@ router.post("/update-address/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   const id = parseInt(req.params.id);
   try {
     const { address } = req.body;
 
     if (!address) {
-      res.status(400).json({
-        error: "Id and at least one address are required",
-      });
-      return;
+      res.status(400);
+      throw "Id and at least one address are required";
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
-      return;
+      res.status(404);
+      throw "Container not found";
     }
 
     const updateContainer = await containerCtrl.updateAddress({
@@ -271,7 +299,10 @@ router.post("/update-address/:id", async (req, res, next) => {
     });
     res.status(200).json(updateContainer);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -280,23 +311,21 @@ router.post("/update-name/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   const id = parseInt(req.params.id);
   try {
     const { saveName } = req.body;
 
     if (!saveName) {
-      res.status(400).json({
-        error: "Id and a save name are required",
-      });
-      return;
+      res.status(400);
+      throw "Id and a save name are required";
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
-      return;
+      res.status(404);
+      throw "Container not found";
     }
 
     const updateContainer = await containerCtrl.updateSaveName({
@@ -305,7 +334,10 @@ router.post("/update-name/:id", async (req, res, next) => {
     });
     res.status(200).json(updateContainer);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -314,23 +346,21 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw "Unauthorized";
   }
   const id = parseInt(req.params.id);
   try {
     const { informations } = req.body;
 
     if (!informations) {
-      res.status(400).json({
-        error: "Id and at least one informations are required",
-      });
-      return;
+      res.status(400);
+      throw "Id and at least one informations are required";
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
-      return;
+      res.status(404);
+      throw "Container not found";
     }
 
     const updateContainer = await containerCtrl.updateInformation({
@@ -339,7 +369,10 @@ router.post("/update-information/:id", async (req, res, next) => {
     });
     res.status(200).json(updateContainer);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 

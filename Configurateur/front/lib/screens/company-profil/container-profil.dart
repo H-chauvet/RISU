@@ -66,8 +66,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         }
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des données", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -117,8 +116,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Modifications effectuées avec succès! ", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -226,8 +224,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

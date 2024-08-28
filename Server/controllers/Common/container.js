@@ -6,52 +6,64 @@ const { db } = require("../../middleware/database");
  * @param {number} id of the container object
  * @returns a container object in case it's found, otherwise empty
  */
-exports.getContainerById = (id) => {
-  let idtest = parseInt(id);
-  return db.Containers.findUnique({
-    where: { id: idtest },
-    select: {
-      city: true,
-      address: true,
-      items: {
-        where: { available: true },
+exports.getContainerById = async (id) => {
+  try {
+    let idtest = parseInt(id);
+    return await db.Containers.findUnique({
+      where: { id: idtest },
+      select: {
+        city: true,
+        address: true,
+        items: {
+          where: { available: true },
+        },
+        latitude: true,
+        longitude: true,
       },
-      latitude: true,
-      longitude: true,
-    },
-  });
+    });
+  } catch (err) {
+    throw "Something happen while retrieving containers";
+  }
 };
 
-exports.getContainerByOrganizationId = (organizationId) => {
-  return db.Containers.findMany({
-    where: {
-      organizationId: parseInt(organizationId),
-    },
-    select: {
-      id: true,
-      city: true,
-      address: true,
-      informations: true,
-      paid: true,
-      saveName: true,
-      width: true,
-      height: true,
-      designs: true,
-      price: true,
-      latitude: true,
-      longitude: true,
-      containerMapping: true,
-      items: {
-        where: {
-          available: true,
+exports.getContainerByOrganizationId = async (organizationId) => {
+  try {
+    return await db.Containers.findMany({
+      where: {
+        organizationId: parseInt(organizationId),
+      },
+      select: {
+        id: true,
+        city: true,
+        address: true,
+        informations: true,
+        paid: true,
+        saveName: true,
+        width: true,
+        height: true,
+        designs: true,
+        price: true,
+        latitude: true,
+        longitude: true,
+        containerMapping: true,
+        items: {
+          where: {
+            available: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch (err) {
+    throw "Something happen while retrieving organization's containers";
+  }
 };
 
-exports.getAllContainer = (id) => {
-  return db.Containers.findMany();
+exports.getAllContainer = async (id) => {
+  try {
+    return await db.Containers.findMany();
+  } catch (err) {
+    throw "Something happen while retrieving containers";
+  }
 };
 
 /**
@@ -60,12 +72,16 @@ exports.getAllContainer = (id) => {
  * @param {number} id of the container object
  * @returns none
  */
-exports.deleteContainer = (id) => {
-  return db.Containers.delete({
-    where: {
-      id: id,
-    },
-  });
+exports.deleteContainer = async (id) => {
+  try {
+    return await db.Containers.delete({
+      where: {
+        id: id,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while deleting containers";
+  }
 };
 
 /**
@@ -75,27 +91,31 @@ exports.deleteContainer = (id) => {
  * @returns the container object
  */
 exports.createContainer = async (container, organizationId) => {
-  container.width = parseFloat(container.width);
-  container.height = parseFloat(container.height);
+  try {
+    container.width = parseFloat(container.width);
+    container.height = parseFloat(container.height);
 
-  const containerObj = await db.Containers.create({
-    data: container,
-  });
+    const containerObj = await db.Containers.create({
+      data: container,
+    });
 
-  await db.Organization.update({
-    where: {
-      id: organizationId,
-    },
-    data: {
-      containers: {
-        connect: {
-          id: containerObj.id,
+    await db.Organization.update({
+      where: {
+        id: organizationId,
+      },
+      data: {
+        containers: {
+          connect: {
+            id: containerObj.id,
+          },
         },
       },
-    },
-  });
+    });
 
-  return containerObj;
+    return containerObj;
+  } catch (err) {
+    throw "Something happen while creating containers";
+  }
 };
 
 /**
@@ -105,16 +125,20 @@ exports.createContainer = async (container, organizationId) => {
  * @param {*} container the object with updated data
  * @returns the container object
  */
-exports.updateContainer = (id, container) => {
-  container.price = parseFloat(container.price);
-  container.width = parseFloat(container.width);
-  container.height = parseFloat(container.height);
-  return db.Containers.update({
-    where: {
-      id: id,
-    },
-    data: container,
-  });
+exports.updateContainer = async (id, container) => {
+  try {
+    container.price = parseFloat(container.price);
+    container.width = parseFloat(container.width);
+    container.height = parseFloat(container.height);
+    return await db.Containers.update({
+      where: {
+        id: id,
+      },
+      data: container,
+    });
+  } catch (err) {
+    throw "Something happen while updating container";
+  }
 };
 
 /**
@@ -123,15 +147,19 @@ exports.updateContainer = (id, container) => {
  * @param {*} container the object with position data
  * @returns the container object
  */
-exports.updateContainerPosition = (id, container) => {
-  container.latitude = parseFloat(container.latitude);
-  container.longitude = parseFloat(container.longitude);
-  return db.Containers.update({
-    where: {
-      id: id,
-    },
-    data: container,
-  });
+exports.updateContainerPosition = async (id, container) => {
+  try {
+    container.latitude = parseFloat(container.latitude);
+    container.longitude = parseFloat(container.longitude);
+    return await db.Containers.update({
+      where: {
+        id: id,
+      },
+      data: container,
+    });
+  } catch (err) {
+    throw "Something happen while updating container's position";
+  }
 };
 
 /**
@@ -182,10 +210,9 @@ exports.getLocalisation = async (position) => {
  */
 exports.getAllContainers = async () => {
   try {
-    return db.Containers.findMany();
-  } catch (error) {
-    console.error("Error retrieving containers:", error);
-    throw new Error("Failed to retrieve containers");
+    return await db.Containers.findMany();
+  } catch (err) {
+    throw "Something happen while retrieving container";
   }
 };
 
@@ -195,69 +222,89 @@ exports.getAllContainers = async () => {
  * @param {number} containerId id of the container
  * @returns the container object with its items
  */
-exports.getItemsFromContainer = (containerId) => {
-  return db.Containers.findUnique({
-    where: { id: containerId },
-    select: {
-      items: {
-        select: {
-          id: true,
-          name: true,
-          available: true,
-          createdAt: true,
-          containerId: true,
-          price: true,
-          image: true,
-          description: true,
-          categories: true,
+exports.getItemsFromContainer = async (containerId) => {
+  try {
+    return await db.Containers.findUnique({
+      where: { id: containerId },
+      select: {
+        items: {
+          select: {
+            id: true,
+            name: true,
+            available: true,
+            createdAt: true,
+            containerId: true,
+            price: true,
+            image: true,
+            description: true,
+            categories: true,
+          },
         },
       },
-    },
-  });
+    });
+  } catch (err) {
+    throw "Something happen while retrieving container's items";
+  }
 };
 
-exports.updateCity = (container) => {
-  return db.Containers.update({
-    where: {
-      id: container.id,
-    },
-    data: {
-      city: container.city,
-    },
-  });
+exports.updateCity = async (container) => {
+  try {
+    return await db.Containers.update({
+      where: {
+        id: container.id,
+      },
+      data: {
+        city: container.city,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating container's city";
+  }
 };
 
-exports.updateAddress = (container) => {
-  return db.Containers.update({
-    where: {
-      id: container.id,
-    },
-    data: {
-      address: container.address,
-    },
-  });
+exports.updateAddress = async (container) => {
+  try {
+    return await db.Containers.update({
+      where: {
+        id: container.id,
+      },
+      data: {
+        address: container.address,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating container's address";
+  }
 };
 
-exports.updateSaveName = (container) => {
-  return db.Containers.update({
-    where: {
-      id: container.id,
-    },
-    data: {
-      saveName: container.saveName,
-    },
-  });
+exports.updateSaveName = async (container) => {
+  try {
+    return await db.Containers.update({
+      where: {
+        id: container.id,
+      },
+      data: {
+        saveName: container.saveName,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating container's name";
+  }
 };
 
-exports.updateInformation = (container) => {
-  return db.Containers.update({
-    where: {
-      id: container.id,
-    },
-    data: {
-      informations: container.informations,
-    },
-  });
+exports.updateInformation = async (container) => {
+  try {
+    return await db.Containers.update({
+      where: {
+        id: container.id,
+      },
+      data: {
+        informations: container.informations,
+      },
+    });
+  } catch (err) {
+    throw "Something happen while updating container's information";
+  }
 };
 
 /**
@@ -352,6 +399,6 @@ exports.getItemsWithFilters = async (
 
     return items;
   } catch (error) {
-    throw new Error("Failed to retrieve items with filters");
+    throw "Something happen while sorting container's items";
   }
 };
