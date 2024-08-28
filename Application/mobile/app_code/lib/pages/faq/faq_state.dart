@@ -76,17 +76,19 @@ class FaqPageState extends State<FaqPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const SizedBox(height: 10),
                   Text(
                     key: const Key('faq-title-text'),
                     AppLocalizations.of(context)!
                         .faqTitle(userInformation!.firstName!),
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: themeProvider.currentTheme.primaryColor,
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   ...questions.map((question) {
                     return GestureDetector(
                       onTap: () {

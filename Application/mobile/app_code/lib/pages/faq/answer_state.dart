@@ -25,15 +25,11 @@ class AnswerPageState extends State<AnswerPage> {
       final currentLocale = Localizations.localeOf(context);
 
       setState(() {
-        print('title_${currentLocale.languageCode}');
-        print(question['title_${currentLocale.languageCode}']);
         translatedQuestion = {
           'title': question['title_${currentLocale.languageCode}'],
           'content': question['content_${currentLocale.languageCode}'],
         };
       });
-
-      print("Current locale: ${currentLocale.languageCode}");
     });
   }
 
@@ -57,6 +53,7 @@ class AnswerPageState extends State<AnswerPage> {
               margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
                     key: const Key('answer-title-text'),
@@ -71,6 +68,7 @@ class AnswerPageState extends State<AnswerPage> {
                   Text(
                     key: const Key('answer-content-text'),
                     translatedQuestion['content'],
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 16,
                       color: themeProvider.currentTheme.primaryColor,
@@ -78,11 +76,12 @@ class AnswerPageState extends State<AnswerPage> {
                   ),
                   const SizedBox(height: 50),
                   Align(
-                    alignment: Alignment.bottomCenter,
+                    alignment: Alignment.center,
                     child: Container(
                       margin: const EdgeInsets.all(20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             key: const Key('need-more-details-text'),
@@ -110,8 +109,8 @@ class AnswerPageState extends State<AnswerPage> {
                             label: Text(
                               AppLocalizations.of(context)!.contactUs,
                               style: TextStyle(
-                                  color:
-                                      themeProvider.currentTheme.primaryColor),
+                                color: themeProvider.currentTheme.primaryColor,
+                              ),
                             ),
                           ),
                         ],
