@@ -22,7 +22,8 @@ import 'rating_dialog_content_style.dart';
 /// [Function] : get the user details
 /// [email] : mail save in the storage service
 /// return userDetails
-Future<Map<String, dynamic>> fetchUserDetails(BuildContext context, String email) async {
+Future<Map<String, dynamic>> fetchUserDetails(
+    BuildContext context, String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
   try {
@@ -59,8 +60,6 @@ Future<void> sendData(BuildContext context, String rating, String message,
   }
   String firstName = userDetails['firstName'];
   String lastName = userDetails['lastName'];
-
-  
 
   var body = {
     'firstName': firstName,
@@ -143,7 +142,7 @@ class RatingDialogContent extends StatelessWidget {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed:  () async {
+              onPressed: () async {
                 await sendData(
                     context,
                     context.read<DialogCubit>().state.rating.toString(),

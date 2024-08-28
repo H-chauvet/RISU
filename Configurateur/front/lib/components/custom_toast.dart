@@ -5,7 +5,6 @@ void showCustomToast(BuildContext context, String message, bool isSuccessful) {
   late OverlayEntry overlayEntry;
   bool isOverlayEntryActive = true;
 
-
   overlayEntry = OverlayEntry(
     builder: (context) => Positioned(
       top: 50,
@@ -26,7 +25,6 @@ void showCustomToast(BuildContext context, String message, bool isSuccessful) {
     ),
   );
 
-
   overlay.insert(overlayEntry);
   Future.delayed(const Duration(seconds: 3), () {
     if (isOverlayEntryActive) {
@@ -34,7 +32,6 @@ void showCustomToast(BuildContext context, String message, bool isSuccessful) {
       isOverlayEntryActive = false;
     }
   });
-
 }
 
 class CustomToast extends StatefulWidget {
