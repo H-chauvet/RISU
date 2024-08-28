@@ -167,6 +167,7 @@ class FaqPageState extends State<FaqPage> {
                     backgroundColor:
                         themeProvider.currentTheme.secondaryHeaderColor,
                     label: Text(
+                      key: const Key('contact-us-button-text'),
                       AppLocalizations.of(context)!.contactUs,
                       style: TextStyle(
                           color: themeProvider.currentTheme.primaryColor),
