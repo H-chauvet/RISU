@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/company-profil/object-creation.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen.dart';
@@ -59,29 +60,9 @@ class AppRouter {
       ),
       GoRoute(
         path: '/container-profil',
-        builder: (BuildContext context, GoRouterState state) {
-          if (state.extra != null) {
-            final ContainerListData container =
-                state.extra as ContainerListData;
-            return ContainerProfilPage(container: container);
-          } else {
-            return ContainerProfilPage(
-              container: ContainerListData(
-                id: null,
-                createdAt: null,
-                organization: null,
-                organizationId: null,
-                containerMapping: null,
-                price: null,
-                address: null,
-                city: null,
-                design: null,
-                informations: null,
-                saveName: null,
-              ),
-            );
-          }
-        },
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ContainerProfilPage(),
+        ),
       ),
       GoRoute(
         path: '/register',
@@ -335,6 +316,12 @@ class AppRouter {
         path: '/my-container',
         pageBuilder: (context, state) => const NoTransitionPage(
           child: MyContainer(),
+        ),
+      ),
+      GoRoute(
+        path: '/object-creation',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: ObjectCreation(),
         ),
       ),
     ],

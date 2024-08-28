@@ -37,7 +37,7 @@ exports.getItemByCategory = async (category) => {
 };
 
 /**
- * Retrieve every item
+ * Retrieve every item in the database
  *
  * @returns every item in the database
  */

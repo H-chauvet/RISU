@@ -38,7 +38,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
   passport.authenticate(
     'login',
     { session: false },
-    async (err, user, info) =>  {
+    async (err, user, info) => {
       if (err)
         throw new Error(err)
       if (user == false)
@@ -56,7 +56,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
         user = await userCtrl.removeUserRefreshToken(user.id)
       }
 
-      return res.status(201).json({ user : user, token : token })
+      return res.status(201).json({ user: user, token: token })
     }
   )(req, res, next)
 })
@@ -68,10 +68,10 @@ router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (
   }
   const user = await userCtrl.findUserByRefreshToken(refreshToken)
   if (!user) {
-    return res.status(401).send('No matching user found.')
+    return res.status(404).send('No matching user found.')
   }
   const token = jwtMiddleware.generateToken(user.id)
-  return res.status(201).json({ user : user, token : token })
+  return res.status(201).json({ user: user, token: token })
 })
 
 router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
@@ -82,7 +82,7 @@ router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req
     await authCtrl.verifyEmail(user.id)
     return res.status(200).send(
       'Email now successfully verified !\nYou can go back to login page.'
-      )
+    )
   } catch (err) {
     return res.status(401).send('No matching user found.')
   }
@@ -98,7 +98,7 @@ router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware,
     user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
     return res.status(200).send(
       'New email now successfully verified !\nYou can go back to login page.'
-      )
+    )
   } catch (err) {
     return res.status(401).send('No matching user found.')
   }

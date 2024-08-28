@@ -16,6 +16,25 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+router.get("/listAll", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401);
+    throw "Unauthorized";
+  }
+
+  try {
+    const itemCategories = await itemCategoryCtrl.getItemCategories();
+    res.status(200).json({ itemCategories });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
 router.get("/:id", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);

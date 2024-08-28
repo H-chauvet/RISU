@@ -67,6 +67,38 @@ exports.getAllContainer = async (id) => {
 };
 
 /**
+ * Retrieve all containers with specific datas
+ *
+ * @throws {Error} with a specific message to find the problem
+ * @returns every exitsting container
+ */
+exports.listContainers = async () => {
+  try {
+    return db.containers.findMany({
+      select: {
+        id: true,
+        address: true,
+        city: true,
+        longitude: true,
+        latitude: true,
+        _count: {
+          select: {
+            items: {
+              where: {
+                available: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error retrieving containers:", error);
+    throw new Error("Failed to retrieve containers");
+  }
+};
+
+/**
  * Delete a unique container by its id
  *
  * @param {number} id of the container object
@@ -331,9 +363,7 @@ exports.getItemsWithFilters = async (
   max
 ) => {
   try {
-    const container = await db.Containers.findUnique({
-      where: { id: containerId },
-    });
+    const container = await this.getContainerById(containerId);
     if (!container) {
       throw new Error("Container not found");
     }
