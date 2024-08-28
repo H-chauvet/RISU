@@ -200,7 +200,7 @@ router.get(
       throw new Error(res.__('unauthorized'));
     }
     try {
-      const item = await itemCtrl.getAllItem();
+      const item = await itemCtrl.getAllItems();
 
       res.status(200).json({ item });
     } catch (err) {

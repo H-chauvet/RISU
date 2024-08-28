@@ -65,9 +65,9 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
         content,
         title,
         creatorId,
-        createdAt : new Date(createdAt),
-        assignedId : assignedId ?? "",
-        chatUid : chatUid
+        createdAt: new Date(createdAt),
+        assignedId: assignedId ?? "",
+        chatUid: chatUid
       })
 
       return res.status(201).send(res.__('ticketCreated'))
@@ -190,6 +190,5 @@ router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
     }
   }
 )
-
 
 module.exports = router

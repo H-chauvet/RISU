@@ -9,14 +9,14 @@ const jwtMiddleware = require('../../middleware/Mobile/jwt')
 const languageMiddleware = require('../../middleware/language')
 
 router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
-	passport.authenticate('jwt', { session: false}), async (req, res) => {
+	passport.authenticate('jwt', { session: false }), async (req, res) => {
 		try {
 			if (!req.user) {
 				return res.status(401).send(res.__('invalidToken'))
 			}
 			const user = await userCtrl.findUserById(req.user.id)
 			if (!user) {
-				return res.status(401).send(res.__('userNotFound'))
+				return res.status(404).send(res.__('userNotFound'))
 			}
 			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
@@ -24,102 +24,102 @@ router.post('/:itemId', jwtMiddleware.refreshTokenMiddleware,
 			}
 			const item = await itemCtrl.getItemFromId(req.params.itemId)
 			if (!item) {
-				return res.status(401).send(res.__('itemNotFound'))
+				return res.status(404).send(res.__('itemNotFound'))
 			}
 			const favorite = await favoriteCtrl.checkFavorite(user.id, item.id)
 			if (favorite) {
-				return res.status(401).send(res.__('favExist'))
+				return res.status(403).send(res.__('favExist'))
 			}
 			await favoriteCtrl.createFavoriteItem(user.id, item.id)
 
 			return res.status(201).send(res.__('favAdded'))
 		} catch (err) {
 			console.error(err.message)
-			return res.status(401).send(res.__('errorOccured'))
+			return res.status(400).send(res.__('errorOccured'))
 		}
 	}
 )
 
 router.get('/', jwtMiddleware.refreshTokenMiddleware,
-	passport.authenticate('jwt', { session: false}), async (req, res) => {
+	passport.authenticate('jwt', { session: false }), async (req, res) => {
 		try {
 			if (!req.user) {
 				return res.status(401).send(res.__('invalidToken'))
 			}
 			const user = await userCtrl.findUserById(req.user.id)
 			if (!user) {
-				return res.status(401).send(res.__('userNotFound'))
+				return res.status(404).send(res.__('userNotFound'))
 			}
 			languageMiddleware.setServerLanguage(req, user)
 			const favorites = await favoriteCtrl.getUserFavorites(user.id)
 			if (!favorites) {
-				return res.status(401).send(res.__('favNotFound'))
+				return res.status(404).send(res.__('favNotFound'))
 			}
 
 			return res.status(200).json({ favorites })
 		} catch (err) {
 			console.error(err.message)
-			return res.status(401).send(res.__('errorOccured'))
+			return res.status(400).send(res.__('errorOccured'))
 		}
 	}
 )
 
 router.get('/:itemId', jwtMiddleware.refreshTokenMiddleware,
-	passport.authenticate('jwt', { session: false}), async (req, res) => {
+	passport.authenticate('jwt', { session: false }), async (req, res) => {
 		try {
 			if (!req.user) {
 				return res.status(401).send(res.__('invalidToken'))
 			}
 			const user = await userCtrl.findUserById(req.user.id)
 			if (!user) {
-				return res.status(401).send(res.__('userNotFound'))
+				return res.status(404).send(res.__('userNotFound'))
 			}
 			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
-				return res.status(401).send(res.__('missingItemId'))
+				return res.status(400).send(res.__('missingItemId'))
 			}
 			const item = await itemCtrl.getItemFromId(req.params.itemId)
 			if (!item) {
-				return res.status(401).send(res.__('itemNotFound'))
+				return res.status(404).send(res.__('itemNotFound'))
 			}
 			const favorite = await favoriteCtrl.checkFavorite(user.id, item.id)
 
 			return res.status(200).json(favorite)
 		} catch (err) {
 			console.error(err.message)
-			return res.status(401).send(res.__('errorOccured'))
+			return res.status(400).send(res.__('errorOccured'))
 		}
 	}
 )
 
 router.delete('/:itemId', jwtMiddleware.refreshTokenMiddleware,
-	passport.authenticate('jwt', { session: false}), async (req, res) => {
+	passport.authenticate('jwt', { session: false }), async (req, res) => {
 		try {
 			if (!req.user) {
 				return res.status(401).send(res.__('invalidToken'))
 			}
 			const user = await userCtrl.findUserById(req.user.id)
 			if (!user) {
-				return res.status(401).send(res.__('userNotFound'))
+				return res.status(404).send(res.__('userNotFound'))
 			}
 			languageMiddleware.setServerLanguage(req, user)
 			if (!req.params.itemId) {
-				return res.status(401).send(res.__('missingItemId'))
+				return res.status(400).send(res.__('missingItemId'))
 			}
 			const item = await itemCtrl.getItemFromId(req.params.itemId)
 			if (!item) {
-				return res.status(401).send(res.__('itemNotFound'))
+				return res.status(404).send(res.__('itemNotFound'))
 			}
 			const favorite = await favoriteCtrl.getItemFavorite(user.id, item.id)
 			if (!favorite) {
-				return res.status(401).send(res.__('favNotFound'))
+				return res.status(404).send(res.__('favNotFound'))
 			}
 			await favoriteCtrl.deleteFavorite(favorite.id)
 
 			return res.status(200).send(res.__('favDeleted'))
 		} catch (err) {
 			console.error(err.message)
-			return res.status(401).send(res.__('errorOccured'))
+			return res.status(400).send(res.__('errorOccured'))
 		}
 	}
 )

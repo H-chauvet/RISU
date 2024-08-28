@@ -7,7 +7,6 @@ const passport = require('passport')
 const rentCtrl = require("../../controllers/Mobile/rent")
 const userCtrl = require("../../controllers/Mobile/user")
 const itemCtrl = require("../../controllers/Common/items")
-const transporter = require('../../middleware/transporter')
 const containerCtrl = require('../../controllers/Common/container')
 const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const { sendEmailConfirmationLocation, sendInvoice } = require('../../invoice/rentUtils');
@@ -22,22 +21,22 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       if (!req.body.itemId || req.body.itemId === '') {
-        return res.status(401).send(res.__('missingItemId'))
+        return res.status(400).send(res.__('missingItemId'))
       }
 
       const item = await itemCtrl.getItemFromId(parseInt(req.body.itemId))
       if (!item) {
-        return res.status(401).send(res.__('itemNotFound'))
+        return res.status(404).send(res.__('itemNotFound'))
       }
       if (!req.body.duration || req.body.duration < 0) {
-        return res.status(401).send(res.__('missingTime'))
+        return res.status(400).send(res.__('missingTime'))
       }
       if (!item.available) {
-        return res.status(401).send(res.__('itemUnavailable'))
+        return res.status(400).send(res.__('itemUnavailable'))
       }
       const locationPrice = item.price * req.body.duration
 
@@ -102,7 +101,7 @@ router.post('/article', jwtMiddleware.refreshTokenMiddleware,
       return res.status(201).json({ rentId: location.id, message: res.__('rentSaved')})
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccured'))
     }
   }
 )
@@ -115,7 +114,7 @@ router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
 
@@ -136,7 +135,7 @@ router.post('/:locationId/invoice', jwtMiddleware.refreshTokenMiddleware,
       return res.status(201).send(res.__('invoiceSent'));
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccured'))
     }
   }
 )
@@ -149,14 +148,14 @@ router.get('/listAll', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const rentals = await rentCtrl.getUserRents(user.id)
       return res.status(200).json({ rentals: rentals })
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccured'))
     }
   }
 )
@@ -169,23 +168,23 @@ router.get('/:rentId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       if (!req.params.rentId || req.params.rentId == '') {
-        return res.status(401).send(res.__('missingRentId'))
+        return res.status(400).send(res.__('missingRentId'))
       }
       const rental = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rental) {
-        return res.status(401).send(res.__('rentNotFound'))
+        return res.status(404).send(res.__('rentNotFound'))
       }
       if (rental.userId != req.user.id) {
-        return res.status(401).send(res.__('wrongUserRent'))
+        return res.status(403).send(res.__('wrongUserRent'))
       }
-      return res.status(201).json({ rental: rental })
+      return res.status(200).json({ rental: rental })
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccured'))
     }
   }
 )
@@ -198,24 +197,24 @@ router.post('/:rentId/return', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       if (!req.params.rentId || req.params.rentId == '') {
-        return res.status(401).send(res.__('missingRentId'))
+        return res.status(400).send(res.__('missingRentId'))
       }
       const rent = await rentCtrl.getRentFromId(parseInt(req.params.rentId))
       if (!rent) {
-        return res.status(401).send(res.__('rentNotFound'))
+        return res.status(404).send(res.__('rentNotFound'))
       }
       if (rent.userId != req.user.id) {
-        return res.status(401).send(res.__('wrongUserRent'))
+        return res.status(403).send(res.__('wrongUserRent'))
       }
       await rentCtrl.returnRent(parseInt(req.params.rentId))
       return res.status(201).send(res.__('rentReturned'))
     } catch (err) {
       console.error(err.message)
-      return res.status(401).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccured'))
     }
   }
 )

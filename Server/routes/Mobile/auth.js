@@ -38,7 +38,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
   passport.authenticate(
     'login',
     { session: false },
-    async (err, user, info) =>  {
+    async (err, user, info) => {
       if (err)
         throw new Error(err)
       if (user == false)
@@ -56,7 +56,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
         user = await userCtrl.removeUserRefreshToken(user.id)
       }
 
-      return res.status(201).json({ user : user, token : token })
+      return res.status(201).json({ user: user, token: token })
     }
   )(req, res, next)
 })
@@ -68,11 +68,11 @@ router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (
   }
   const user = await userCtrl.findUserByRefreshToken(refreshToken)
   if (!user) {
-    return res.status(401).send(res.__('userNotFound'))
+    return res.status(404).send(res.__('userNotFound'))
   }
   languageMiddleware.setServerLanguage(req, user)
   const token = jwtMiddleware.generateToken(user.id)
-  return res.status(201).json({ user : user, token : token })
+  return res.status(201).json({ user: user, token: token })
 })
 
 router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
@@ -95,7 +95,7 @@ router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware,
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     var user = await userCtrl.findUserById(decoded.id)
-    languageMiddleware.setServerLanguage(req, user) 
+    languageMiddleware.setServerLanguage(req, user)
     user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
     return res.status(200).send(res.__('emailVerified'))
   } catch (err) {

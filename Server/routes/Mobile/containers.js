@@ -2,13 +2,11 @@ const express = require('express')
 const router = express.Router()
 
 const containerCtrl = require("../../controllers/Common/container");
-const mobileContainerCtrl = require("../../controllers/Mobile/container");
 const itemCtrl = require("../../controllers/Common/items");
-const passport = require('passport')
 
 router.get("/listAll", async function (req, res, next) {
   try {
-    const container = await mobileContainerCtrl.listContainers();
+    const container = await containerCtrl.listContainers();
 
     return res.status(200).json(container);
   } catch (err) {
@@ -23,7 +21,7 @@ router.get('/:containerId', async (req, res, next) => {
     }
     const container = await containerCtrl.getContainerById(parseInt(req.params.containerId))
     if (!container) {
-      return res.status(401).send(res.__('containerNotFound'))
+      return res.status(404).send(res.__('containerNotFound'))
     }
     const count = await itemCtrl.getAvailableItemsCount(parseInt(req.params.containerId))
 
@@ -37,7 +35,7 @@ router.get('/:containerId/articleslist', async (req, res) => {
   try {
     const containerId = req.params.containerId;
     if (!containerId || containerId === '') {
-      return res.status(401).send(res.__('missingContainerId'))
+      return res.status(400).send(res.__('missingContainerId'))
     }
     const articleName = req.query.articleName || '';
     const categoryId = req.query.categoryId === 'null' ? null : req.query.categoryId;
@@ -58,7 +56,7 @@ router.get('/:containerId/articleslist', async (req, res) => {
     );
     return res.status(200).json(items);
   } catch (err) {
-    return res.status(401).send(res.__('errorRetrievingItems'))
+    return res.status(400).send(res.__('errorRetrievingItems'))
   }
 });
 
