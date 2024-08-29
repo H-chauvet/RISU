@@ -44,6 +44,7 @@ class AnswerPageState extends State<AnswerPage> {
           Text(
             key: const Key('answer-title-text'),
             translatedQuestion['title'] ?? '',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
