@@ -461,6 +461,7 @@ class DesignScreenState extends State<DesignScreen> {
       ).then((value) {
         if (value.statusCode != 200) {
           showCustomToast(context, value.body, false);
+          return;
         }
         dynamic response = jsonDecode(value.body);
         var data = {
