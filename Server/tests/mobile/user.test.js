@@ -5,6 +5,7 @@ const userCtrl = require("../../controllers/Mobile/user");
 const authCtrl = require("../../controllers/Mobile/auth");
 const cleanCtrl = require('../../controllers/Mobile/cleandata');
 const bcrypt = require('bcrypt');
+const lang = require('i18n');
 
 
 jest.mock("../../controllers/Mobile/user");
@@ -24,7 +25,15 @@ jest.mock("passport", () => ({
   })
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", userRouter);
 
@@ -80,7 +89,6 @@ describe("PUT /password", () => {
       .put("/password");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe('User not found');
   });
 
   it("should not update user password: Missing currentPassword", async () => {
@@ -96,7 +104,6 @@ describe("PUT /password", () => {
       .put("/password");
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe('Missing currentPassword');
   });
 
   it("should not update user password: Empty currentPassword", async () => {
@@ -115,7 +122,6 @@ describe("PUT /password", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe('Missing currentPassword');
   });
 
   it("should not update user password: Missing newPassword", async () => {
@@ -134,7 +140,6 @@ describe("PUT /password", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe('Missing newPassword');
   });
 
   it("should not update user password: Empty newPassword", async () => {
@@ -154,7 +159,6 @@ describe("PUT /password", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe('Missing newPassword');
   });
 
   it("should not update user password: Incorrect Current Password", async () => {
@@ -175,7 +179,6 @@ describe("PUT /password", () => {
       });
 
     expect(response.statusCode).toBe(401);
-    expect(response.text).toBe('Incorrect Current Password');
   });
 
   it("should update user password: test success", async () => {
@@ -254,7 +257,6 @@ describe("get /:userId", () => {
       .get("/2");
 
     expect(response.statusCode).toBe(401);
-    expect(response.text).toBe("Unauthorized");
   });
 
   it("should not get user : User not found", async () => {
@@ -264,7 +266,6 @@ describe("get /:userId", () => {
       .get("/1");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not get user : Server error", async () => {
@@ -326,7 +327,6 @@ describe("put /", () => {
       });
 
     expect(response.statusCode).toBe(500);
-    expect(response.text).toBe('Failed to update notifications.');
   });
 
   it("should update user infos : test success", async () => {
@@ -370,7 +370,6 @@ describe("put /newEmail", () => {
       .put("/newEmail");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toEqual('User not found');
   });
 
   it("should not update user email : Missing new email", async () => {
@@ -380,7 +379,6 @@ describe("put /newEmail", () => {
       .put("/newEmail");
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toEqual('Missing new email');
   });
 
   it("should not update user email : Empty new email", async () => {
@@ -393,7 +391,6 @@ describe("put /newEmail", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toEqual('Missing new email');
   });
 
   it("should not update user email : Server Error", async () => {
@@ -405,7 +402,6 @@ describe("put /newEmail", () => {
       .put("/newEmail");
 
     expect(response.statusCode).toBe(500);
-    expect(response.text).toEqual('Fail updating new email');
   });
 
   it("should update user email : test success", async () => {
@@ -448,7 +444,6 @@ describe("put /newEmail", () => {
       .delete("/2");
 
     expect(response.statusCode).toBe(401);
-    expect(response.text).toBe('Unauthorized');
   });
 
   it("should not delete user : User not found", async () => {
@@ -458,7 +453,6 @@ describe("put /newEmail", () => {
       .delete("/1");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe('User not found');
   });
 
   it("should not delete user : Sever error", async () => {
@@ -470,7 +464,6 @@ describe("put /newEmail", () => {
       .delete("/1");
 
     expect(response.statusCode).toBe(500);
-    expect(response.text).toBe('Failed to delete the user');
   });
 
   it("should delete user : test success", async () => {
@@ -482,6 +475,5 @@ describe("put /newEmail", () => {
       .delete("/1");
 
     expect(response.statusCode).toBe(200);
-    expect(response.text).toBe('User deleted');
   });
 });

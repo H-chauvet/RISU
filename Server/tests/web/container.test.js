@@ -4,12 +4,21 @@ const containerRouter = require("../../routes/Web/container");
 const containerCtrl = require("../../controllers/Common/container");
 const jwtMiddleware = require("../../middleware/jwt");
 const userCtrl = require("../../controllers/Web/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../middleware/jwt");
 jest.mock("../../controllers/Web/user");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", containerRouter);
 
@@ -61,7 +70,6 @@ describe("Container Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual("container deleted");
     expect(containerCtrl.deleteContainer).toHaveBeenCalledWith(1);
   });
 

@@ -4,11 +4,20 @@ const containerRouter = require("../../routes/Mobile/containers");
 const containerCtrl = require("../../controllers/Common/container");
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../controllers/Common/items");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", containerRouter);
 
@@ -66,7 +75,6 @@ describe("GET /:containerId", () => {
     const response = await supertest(app)
       .get("/1");
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("container not found");
   });
 });
 

@@ -4,20 +4,24 @@ const router = express.Router();
 const containerCtrl = require("../../controllers/Common/container");
 const jwtMiddleware = require("../../middleware/jwt");
 const userCtrl = require("../../controllers/Web/user");
+const languageMiddleware = require('../../middleware/language')
 
 router.get("/get", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { id } = req.query;
 
     if (!id) {
       res.status(400);
-      throw new Error("id is required");
+      throw new Error(res.__('missingContainerId'));
     }
     const container = await containerCtrl.getContainerById(parseInt(id));
     res.status(200).json(container);
@@ -31,16 +35,19 @@ router.post("/delete", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { id } = req.body;
     if (!id) {
       res.status(400);
-      throw new Error("container is required");
+      throw new Error(res.__('missingContainerId'));
     }
     await containerCtrl.deleteContainer(id);
-    res.status(200).json("container deleted");
+    res.status(200).send(res.__('containerDeleted'));
   } catch (err) {
     next(err);
   }
@@ -51,7 +58,7 @@ router.post("/create", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const { designs, containerMapping, height, width, saveName } = req.body;
@@ -60,7 +67,7 @@ router.post("/create", async function (req, res, next) {
     const decodedToken = jwtMiddleware.decodeToken(token);
 
     const user = await userCtrl.findUserByEmail(decodedToken.userMail);
-
+    languageMiddleware.setServerLanguage(req, user)
     const container = await containerCtrl.createContainer(
       {
         designs,
@@ -82,7 +89,7 @@ router.put("/update", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const {
@@ -96,9 +103,12 @@ router.put("/update", async function (req, res, next) {
       saveName,
     } = req.body;
 
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     if (!id) {
       res.status(400);
-      throw new Error("id and name are required");
+      throw new Error(res.__('missingIdName'));
     }
 
     const container = await containerCtrl.updateContainer(id, {
@@ -121,14 +131,17 @@ router.put("/update-position", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { id, latitude, longitude } = req.body;
 
     if (!id || !latitude || !longitude) {
       res.status(400);
-      throw new Error("id and position are required");
+      throw new Error(res.__('missingIdPos'));
     }
 
     const position = await containerCtrl.getLocalisation({
@@ -138,7 +151,7 @@ router.put("/update-position", async function (req, res, next) {
 
     if (position == "No address found") {
       res.status(400);
-      throw new Error("No address found");
+      throw new Error(res.__('missingAddress'));
     }
 
     const container = await containerCtrl.updateContainerPosition(id, {
@@ -158,9 +171,12 @@ router.get("/listAll", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const container = await containerCtrl.getAllContainers();
 
     res.status(200).json({ container });
@@ -176,9 +192,12 @@ router.get(
       jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
     } catch (err) {
       res.status(401);
-      throw new Error("Unauthorized");
+      throw new Error(res.__('unauthorized'));
     }
     try {
+      const user = userCtrl.getUserFromToken(req)
+      languageMiddleware.setServerLanguage(req, user)
+
       const organizationId = req.params.organizationId;
       const container =
         await containerCtrl.getContainerByOrganizationId(organizationId);
@@ -195,9 +214,12 @@ router.get("/listByContainer/:id", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const id = req.params.id;
 
     const container = await containerCtrl.getContainerById(id);
@@ -212,22 +234,23 @@ router.post("/update-city/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   const id = parseInt(req.params.id);
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { city } = req.body;
 
     if (!city) {
-      res.status(400).json({
-        error: "Email and at least one of city or city are required",
-      });
+      res.status(400).send(res.__('missingMailCity'));
       return;
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
+      res.status(404).json({ error: res.__('containerNotFound') });
       return;
     }
 
@@ -246,22 +269,25 @@ router.post("/update-address/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   const id = parseInt(req.params.id);
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { address } = req.body;
 
     if (!address) {
       res.status(400).json({
-        error: "Email and at least one of address or address are required",
+        error: res.__('missingMailAddress'),
       });
       return;
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
+      res.status(404).json({ error: res.__('containerNotFound') });
       return;
     }
 
@@ -280,22 +306,25 @@ router.post("/update-name/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   const id = parseInt(req.params.id);
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { saveName } = req.body;
 
     if (!saveName) {
       res.status(400).json({
-        error: "Email and at least one of saveName or saveName are required",
+        error: res.__('missingMailName'),
       });
       return;
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
+      res.status(404).json({ error: res.__('containerNotFound') });
       return;
     }
 
@@ -314,23 +343,25 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   const id = parseInt(req.params.id);
   try {
+    const user = userCtrl.getUserFromToken(req)
+    languageMiddleware.setServerLanguage(req, user)
+
     const { informations } = req.body;
 
     if (!informations) {
       res.status(400).json({
-        error:
-          "Email and at least one of informations or informations are required",
+        error: res.__('missingNameInfo'),
       });
       return;
     }
 
     const existingContainer = await containerCtrl.getContainerById(id);
     if (!existingContainer) {
-      res.status(404).json({ error: "Container not found" });
+      res.status(404).json({ error: res.__('containerNotFound') });
       return;
     }
 

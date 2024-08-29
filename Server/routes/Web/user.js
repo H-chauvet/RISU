@@ -4,22 +4,24 @@ const router = express.Router();
 const userCtrl = require("../../controllers/Web/user");
 const jwtMiddleware = require("../../middleware/jwt");
 const generator = require("generate-password");
+const languageMiddleware = require('../../middleware/language')
 
 router.post("/login", async function (req, res, next) {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
       res.status(400);
-      throw new Error("Email and password are required");
+      throw new Error(res.__('missingMailPwd'));
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
       res.status(400);
-      throw new Error("Email don't exist");
+      throw new Error(res.__('mailNotExist'));
     }
 
     const user = await userCtrl.loginByEmail({ email, password });
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
     res.json({
@@ -35,7 +37,7 @@ router.post("/google-login", async function (req, res, next) {
     const { email } = req.body;
     if (!email) {
       res.status(400);
-      throw new Error("Email and password are required");
+      throw new Error(res.__('missingMailPwd'));
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
@@ -67,13 +69,13 @@ router.post("/register", async function (req, res, next) {
     const { firstName, lastName, company, email, password } = req.body;
     if (!email || !password) {
       res.status(400);
-      throw new Error("Email and password are required");
+      throw new Error(res.__('missingMailPwd'));
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (existingUser) {
       res.status(400);
-      throw new Error("Email already exists");
+      throw new Error(res.__('mailAlreadyExist'));
     }
 
     const user = await userCtrl.registerByEmail({
@@ -83,6 +85,7 @@ router.post("/register", async function (req, res, next) {
       email,
       password,
     });
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
     res.status(200).json({
@@ -99,17 +102,17 @@ router.post("/forgot-password", async function (req, res, next) {
 
     if (!email) {
       res.status(400);
-      throw new Error("Email is required");
+      throw new Error(res.__('missingMail'));
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
       res.status(400);
-      throw new Error("Invalid email");
+      throw new Error(res.__('wrongMail'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     userCtrl.forgotPassword(email);
-    res.json("ok");
+    res.json(res.__('Success'));
   } catch (err) {
     next(err);
   }
@@ -121,15 +124,15 @@ router.post("/update-password", async function (req, res, next) {
 
     if (!uuid || !password) {
       res.status(400);
-      throw new Error("Email and password are required");
+      throw new Error(res.__('missingMailPwd'));
     }
 
     const existingUser = await userCtrl.findUserByUuid(uuid);
     if (!existingUser) {
       res.status(401);
-      throw new Error("Account don't exist");
+      throw new Error(res.__('accountNotExist'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const ret = await userCtrl.updatePassword({ uuid, password });
     res.json(ret);
   } catch (err) {
@@ -142,24 +145,24 @@ router.post("/register-confirmation", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
   try {
     const { email } = req.body;
 
     if (!email) {
       res.status(400);
-      throw new Error("Email is required");
+      throw new Error(res.__('missingMail'));
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
       res.status(400);
-      throw new Error("Invalid email");
+      throw new Error(res.__('wrongMail'));
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     userCtrl.registerConfirmation(email);
-    res.json("ok");
+    res.json(res.__('Success'));
   } catch (err) {
     next(err);
   }
@@ -171,10 +174,11 @@ router.post("/confirmed-register", async function (req, res, next) {
 
     if (!uuid) {
       res.status(400);
-      throw new Error("uuid is required");
+      throw new Error(res.__('missingUuid'));
     }
 
     const user = await userCtrl.confirmedRegister(uuid);
+    languageMiddleware.setServerLanguage(req, user)
     const accessToken = jwtMiddleware.generateAccessToken(user);
     res.json({ accessToken });
   } catch (err) {
@@ -187,9 +191,9 @@ router.post("/delete", async function (req, res, next) {
 
   try {
     await userCtrl.deleteUser(email);
-    res.json("ok").status(200);
+    res.json(res.__('Success')).status(200);
   } catch (err) {
-    res.json("ok").status(200);
+    res.json(res.__('Success')).status(200);
   }
 });
 
@@ -222,7 +226,7 @@ router.get("/user-details/:email", async (req, res) => {
     res.status(200).json(userDetails);
   } catch (error) {
     console.error("Error retrieving user details:", error);
-    res.status(500).json({ error: "Failed to retrieve user details" });
+    res.status(500).json({ error: res.__('failedRetrieveDetails') });
   }
 });
 
@@ -234,14 +238,14 @@ router.post("/update-details/:email", async (req, res, next) => {
 
     if (!firstName && !lastName) {
       res.status(400).json({
-        error: "Email and at least one of firstName or lastName are required",
+        error: res.__('missingMailName'),
       });
       return;
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
 
@@ -261,16 +265,16 @@ router.post("/update-mail", async (req, res, next) => {
     const { oldMail, newMail } = req.body;
 
     if (!oldMail && !newMail) {
-      res.status(400).json({ error: "Email is required" });
+      res.status(400).json({ error: res.__('missingMail') });
       return;
     }
 
     const existingUser = await userCtrl.findUserByEmail(oldMail);
     if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateMail({ oldMail, newMail });
     res.status(200).json(updatedUser);
   } catch (err) {
@@ -285,16 +289,16 @@ router.post("/update-company/:email", async (req, res, next) => {
     const { company } = req.body;
 
     if (!company) {
-      res.status(400).json({ error: "Company is required" });
+      res.status(400).json({ error: res.__('missingCompany') });
       return;
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateCompany({ email, company });
     res.status(200).json(updatedUser);
   } catch (err) {
@@ -309,16 +313,16 @@ router.post("/update-password/:email", async (req, res, next) => {
     const { password } = req.body;
 
     if (!password) {
-      res.status(400).json({ error: "Password is required" });
+      res.status(400).json({ error: res.__('missingParameters') });
       return;
     }
 
     const existingUser = await userCtrl.findUserByEmail(email);
     if (!existingUser) {
-      res.status(404).json({ error: "User not found" });
+      res.status(404).json({ error: res.__('userNotFound') });
       return;
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser)
     const updatedUser = await userCtrl.updateUserPassword({ email, password });
     res.status(200).json(updatedUser);
   } catch (err) {
