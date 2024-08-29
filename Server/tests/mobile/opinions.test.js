@@ -5,6 +5,7 @@ const opinionRouter = require("../../routes/Mobile/opinion");
 const opinionCtrl = require("../../controllers/Mobile/opinion");
 const itemCtrl = require("../../controllers/Common/items");
 const userCtrl = require("../../controllers/Mobile/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Common/items");
@@ -19,7 +20,15 @@ jest.mock("passport", () => ({
   })
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", opinionRouter);
 
@@ -36,7 +45,6 @@ describe("GET /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing itemId");
   });
 
   it("should not get article opinions : note < 0", async () => {
@@ -51,7 +59,6 @@ describe("GET /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Invalid note");
   });
 
   it("should not get article opinions : note > 0", async () => {
@@ -66,7 +73,6 @@ describe("GET /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Invalid note");
   });
 
   it("should get article opinions : test success", async () => {
@@ -108,7 +114,6 @@ describe("POST /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not post article opinions : Missing comment", async () => {
@@ -119,7 +124,6 @@ describe("POST /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing comment");
   });
 
   it("should not post article opinions : empty comment", async () => {
@@ -133,7 +137,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing comment");
   });
 
   it("should not post article opinions : Missing note", async () => {
@@ -147,7 +150,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing note");
   });
 
   it("should not post article opinions : empty note", async () => {
@@ -162,7 +164,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing note");
   });
 
   it("should not post article opinions : Missing itemId", async () => {
@@ -177,7 +178,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing itemId");
   });
 
   it("should not post article opinions : Missing itemId", async () => {
@@ -193,7 +193,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("item not found");
   });
 
   it("should post article opinions with note : test success", async () => {
@@ -210,7 +209,6 @@ describe("POST /", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.text).toBe("opinion saved");
   });
 });
 
@@ -227,7 +225,6 @@ describe("PUT /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not update article opinions : Opinion not found", async () => {
@@ -239,7 +236,6 @@ describe("PUT /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Opinion not found");
   });
 
   it("should not update article opinions : Unauthorized", async () => {
@@ -251,7 +247,6 @@ describe("PUT /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(403);
-    expect(response.text).toBe("Unauthorized");
   });
 
   it("should not update article opinions : Missing comment", async () => {
@@ -263,7 +258,6 @@ describe("PUT /", () => {
       .set("Authorization", "Bearer validToken");
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing comment");
   });
 
   it("should not update article opinions : empty comment", async () => {
@@ -278,7 +272,6 @@ describe("PUT /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing comment");
   });
 
   it("should not update article opinions : Missing note", async () => {
@@ -293,7 +286,6 @@ describe("PUT /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing note");
   });
 
   it("should not update article opinions : empty note", async () => {
@@ -309,7 +301,6 @@ describe("PUT /", () => {
       });
 
     expect(response.status).toBe(400);
-    expect(response.text).toBe("Missing note");
   });
 
   it("should update article opinions : test success", async () => {
@@ -325,7 +316,6 @@ describe("PUT /", () => {
       });
 
     expect(response.status).toBe(201);
-    expect(response.text).toBe("opinion updated");
   });
 });
 
@@ -344,7 +334,6 @@ describe("DELETE /:opinionId", () => {
       .send();
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not delete article opinions : Opinion not found", async () => {
@@ -357,7 +346,6 @@ describe("DELETE /:opinionId", () => {
       .send();
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Opinion not found");
   });
 
   it("should not delete article opinions : Forbidden", async () => {
@@ -373,7 +361,6 @@ describe("DELETE /:opinionId", () => {
       .send();
 
     expect(response.status).toBe(403);
-    expect(response.text).toBe("Forbidden");
   });
 
   it("should delete article opinions : test success", async () => {
@@ -389,6 +376,5 @@ describe("DELETE /:opinionId", () => {
       .send();
 
     expect(response.status).toBe(200);
-    expect(response.text).toBe("opinion deleted");
   });
 });

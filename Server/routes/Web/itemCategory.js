@@ -21,7 +21,7 @@ router.get("/listAll", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401);
-    throw new Error("Unauthorized");
+    throw new Error(res.__('unauthorized'));
   }
 
   try {

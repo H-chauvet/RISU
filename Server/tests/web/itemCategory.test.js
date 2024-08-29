@@ -3,11 +3,22 @@ const supertest = require("supertest");
 const itemsCategoryRouter = require("../../routes/Web/itemCategory");
 const itemCategoryCtrl = require("../../controllers/Common/itemCategory");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Common/itemCategory");
+jest.mock("../../controllers/Web/user");
 jest.mock("../../middleware/jwt");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", itemsCategoryRouter);
 
@@ -20,6 +31,7 @@ describe("Items Category Route Tests", () => {
 
   it("Should create an item category", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    userCtrl.getUserFromToken.mockResolvedValueOnce();
 
     const response = await supertest(app)
       .post("/")
@@ -62,6 +74,7 @@ describe("Items Category Route Tests", () => {
 
   it("Should get an item category by ID", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    userCtrl.getUserFromToken.mockResolvedValueOnce();
     itemCategoryCtrl.getItemCategoryFromId.mockResolvedValueOnce({ id: 1, name: "Category 1" });
 
     const response = await supertest(app)
@@ -77,7 +90,8 @@ describe("Items Category Route Tests", () => {
 
   it("Should update an item category", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
-     itemCategoryCtrl.updateItemCategory.mockResolvedValueOnce({ id: 1, name: "Category 1" });
+    userCtrl.getUserFromToken.mockResolvedValueOnce();
+    itemCategoryCtrl.updateItemCategory.mockResolvedValueOnce({ id: 1, name: "Category 1" });
 
     const response = await supertest(app)
       .put("/")
@@ -93,6 +107,7 @@ describe("Items Category Route Tests", () => {
 
   it("Should delete an item category", async () => {
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    userCtrl.getUserFromToken.mockResolvedValueOnce();
     itemCategoryCtrl.deleteItemCategory.mockResolvedValueOnce();
 
     const response = await supertest(app)

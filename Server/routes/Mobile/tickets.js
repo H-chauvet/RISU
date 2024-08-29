@@ -17,7 +17,7 @@ router.get('/', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const tickets = await ticketCtrl.getAllUserTickets(user.id);
@@ -38,18 +38,18 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const { content, title, createdAt, assignedId, chatUid } = req.body
 
       if (!content || !title) {
-        return res.status(401).send(res.__('missingParamaters'))
+        return res.status(400).send(res.__('missingParamaters'))
       }
       if (assignedId) {
         const assigned = await userCtrl.findUserById(assignedId)
         if (!assigned) {
-          return res.status(401).send(res.__('assignedUserNotFound'))
+          return res.status(404).send(res.__('assignedUserNotFound'))
         }
       }
       if (chatUid) {
@@ -118,7 +118,7 @@ router.put('/:chatId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const chatId = req.params.chatId
@@ -144,7 +144,7 @@ router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const chatId = req.params.chatId
@@ -170,7 +170,7 @@ router.get('/assigned-info/:assignedId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.user.id)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       const assignedId = req.params.assignedId

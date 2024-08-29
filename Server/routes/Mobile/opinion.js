@@ -50,9 +50,9 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       if (req.query.itemId == null) {
         return res.status(400).send(res.__('missingItemId'))
       }
-      const itemId = parseInt(req.query.itemId);
-      if (itemId == null) {
-        return res.status(404).send(res.__('missingItemId'))
+      const item = await itemsCtrl.getItemFromId(parseInt(req.query.itemId))
+      if (item == null) {
+        return res.status(404).send(res.__('itemNotFound'))
       }
 
       await opinionCtrl.createOpinion(item.id, user.id, req.body.note, req.body.comment)

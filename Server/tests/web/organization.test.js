@@ -3,11 +3,22 @@ const supertest = require("supertest");
 const organizationRouter = require("../../routes/Web/organization");
 const organizationCtrl = require("../../controllers/Web/organization");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Web/organization");
+jest.mock("../../controllers/Web/user");
 jest.mock("../../middleware/jwt");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", organizationRouter);
 
@@ -26,6 +37,7 @@ describe("Organization Route Tests", () => {
     };
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    userCtrl.getUserFromToken.mockResolvedValueOnce();
     organizationCtrl.createOrganization.mockResolvedValueOnce({
       id: 1,
       name: "Test Org",

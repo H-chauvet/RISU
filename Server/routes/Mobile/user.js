@@ -154,7 +154,7 @@ router.delete('/:userId', jwtMiddleware.refreshTokenMiddleware,
       }
       const user = await userCtrl.findUserById(req.params.userId)
       if (!user) {
-        return res.status(401).send(res.__('userNotFound'))
+        return res.status(404).send(res.__('userNotFound'))
       }
       languageMiddleware.setServerLanguage(req, user)
       await cleanCtrl.cleanUserData(user.id, user.notificationsId)

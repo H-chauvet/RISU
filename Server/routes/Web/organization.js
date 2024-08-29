@@ -4,7 +4,8 @@ const router = express.Router();
 const passport = require("passport");
 const organizationCtrl = require("../../controllers/Web/organization");
 const jwtMiddleware = require("../../middleware/jwt");
-const languageMiddleware = require('../../middleware/language')
+const languageMiddleware = require('../../middleware/language');
+const userCtrl = require("../../controllers/Web/user");
 
 router.post("/create", async function (req, res, next) {
   try {

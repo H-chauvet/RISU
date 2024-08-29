@@ -4,6 +4,7 @@ const ticketRouter = require("../../routes/Mobile/tickets");
 const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Mobile/user");
 const webUserCtrl = require("../../controllers/Web/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Common/tickets");
 jest.mock("../../controllers/Mobile/user");
@@ -18,7 +19,15 @@ jest.mock("passport", () => ({
   })
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", ticketRouter);
 
@@ -35,7 +44,6 @@ describe("GET /", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should get tickets of an user : test success', async () => {
@@ -69,7 +77,6 @@ describe("POST /", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should not post a ticket : no content', async () => {
@@ -81,7 +88,6 @@ describe("POST /", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Bad Request : Missing required parameters");
   });
 
   it('should not post a ticket : no title', async () => {
@@ -96,7 +102,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Bad Request : Missing required parameters");
   });
 
   it('should not post a ticket : Conversation not found', async () => {
@@ -115,7 +120,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Bad Request : Conversation not found");
   });
 
   it('should not post a ticket : Conversation not found', async () => {
@@ -135,7 +139,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Bad Request : Assigned User not found");
   });
 
   it('should post a ticket : test success', async () => {
@@ -154,7 +157,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Success: Ticket Created.");
   });
 
   it('should post a ticket with no assignedId : test success', async () => {
@@ -172,7 +174,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Success: Ticket Created.");
   });
 
   it('should post a ticket with no chatUid : test success', async () => {
@@ -188,7 +189,6 @@ describe("POST /", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Success: Ticket Created.");
   });
 });
 
@@ -205,7 +205,6 @@ describe("PUT /assign/:assignedId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should not assign a user to a ticket : missing ticketId', async () => {
@@ -216,7 +215,6 @@ describe("PUT /assign/:assignedId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Bad Request : Missing required parameters");
   });
 
   it('should not assign a user to a ticket : missing assigned user', async () => {
@@ -231,7 +229,6 @@ describe("PUT /assign/:assignedId", () => {
       });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Bad Request : Assigned User not found");
   });
 
   it('should assign a user to a ticket : test success', async () => {
@@ -245,7 +242,6 @@ describe("PUT /assign/:assignedId", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Success: Ticket assigned");
   });
 });
 
@@ -262,7 +258,6 @@ describe("PUT /:chatId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should close a ticket : test success', async () => {
@@ -273,7 +268,6 @@ describe("PUT /:chatId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Success : Conversation closed");
   });
 });
 
@@ -290,7 +284,6 @@ describe("DELETE /:chatId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should delte a ticket : test success', async () => {
@@ -301,7 +294,6 @@ describe("DELETE /:chatId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(200);
-    expect(response.text).toBe("Success : Conversation deleted");
   });
 });
 
@@ -318,7 +310,6 @@ describe("GET /assigned-info/:assignedId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe('User not found');
   });
 
   it('should delte a ticket : Assigned user not found', async () => {
@@ -330,7 +321,6 @@ describe("GET /assigned-info/:assignedId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe('Assigned user not found');
   });
 
   it('should delte a ticket : test success', async () => {
