@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/faq/answer_page.dart';
 import 'package:risu/pages/faq/faq_page.dart';
+import 'package:risu/pages/faq/answer_page.dart';
 
 import 'globals.dart';
 
@@ -44,6 +45,29 @@ void main() {
     expect(needToJoinUsButton, findsOneWidget);
 
     Finder contactUsButton = find.byKey(const Key("contact-us-button-text"));
+    expect(contactUsButton, findsOneWidget);
+    await tester.tap(contactUsButton);
+    await tester.pumpAndSettle();
+  });
+
+  testWidgets('Faq answer Page, find elements', (WidgetTester tester) async {
+    userInformation = initExampleUser();
+    final testPage = initPage(AnswerPage(
+      question: questions[0],
+    ));
+    await waitForLoader(tester: tester, testPage: testPage);
+
+    Finder answerTitleText = find.byKey(const Key("answer-title-text"));
+    expect(answerTitleText, findsOneWidget);
+
+    Finder answerContentText = find.byKey(const Key("answer-content-text"));
+    expect(answerContentText, findsOneWidget);
+
+    Finder needMoreDetailsText =
+        find.byKey(const Key("need-more-details-text"));
+    expect(needMoreDetailsText, findsOneWidget);
+
+    Finder contactUsButton = find.byKey(const Key("contact-us-button"));
     expect(contactUsButton, findsOneWidget);
     await tester.tap(contactUsButton);
     await tester.pumpAndSettle();
