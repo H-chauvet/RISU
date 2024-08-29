@@ -58,6 +58,7 @@ class FaqPageState extends State<FaqPage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
+    final currentLocale = Localizations.localeOf(context);
 
     return Scaffold(
       appBar: MyAppBar(
@@ -111,7 +112,8 @@ class FaqPageState extends State<FaqPage> {
                               const SizedBox(width: 8.0),
                               Expanded(
                                 child: Text(
-                                  question['title_fr'],
+                                  question[
+                                      'title_${currentLocale.languageCode}'],
                                   style: TextStyle(
                                     fontSize: 16,
                                     color:
