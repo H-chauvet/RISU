@@ -1,6 +1,6 @@
-const express = require('express')
-const router = express.Router()
-const feedbacksCtrl = require('../../controllers/Web/feedbacks')
+const express = require("express");
+const router = express.Router();
+const feedbacksCtrl = require("../../controllers/Web/feedbacks");
 
 router.post("/create", async function (req, res, next) {
   try {
@@ -16,11 +16,13 @@ router.post("/create", async function (req, res, next) {
       message,
       mark,
     });
-    
+
     res.status(200).json("Avis enregistré !");
   } catch (err) {
-    console.log(err)
-    res.status(400).send(err)
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -32,7 +34,10 @@ router.get("/listAll", async function (req, res, next) {
 
     res.status(200).json({ feedbacks });
   } catch (err) {
-    res.status(400).send(err)
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 

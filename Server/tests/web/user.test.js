@@ -62,7 +62,7 @@ describe("User Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith(
-      "john.doe@example.com",
+      "john.doe@example.com"
     );
     expect(userCtrl.registerByEmail).toHaveBeenCalledWith({
       firstName: "John",
@@ -214,7 +214,7 @@ describe("User Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedToken");
     expect(userCtrl.findUserByEmail).toHaveBeenCalledWith("test@example.com");
     expect(userCtrl.registerConfirmation).toHaveBeenCalledWith(
-      "test@example.com",
+      "test@example.com"
     );
   });
 
@@ -251,7 +251,7 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.text).toEqual(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
     );
   });
 
@@ -320,9 +320,7 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({
-      error: "Email and at least one of firstName or lastName are required",
-    });
+    expect(response.text).toEqual("FirstName and lastName are required");
   });
 
   it("should handle valid request to update user email", async () => {
@@ -361,7 +359,7 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: "Email is required" });
+    expect(response.text).toEqual("Email is required");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -373,7 +371,7 @@ describe("User Route Tests", () => {
       .send({ oldMail: mockNonExistingMail, newMail: "new@example.com" });
 
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: "User not found" });
+    expect(response.text).toEqual("User not found");
   });
 
   it("should handle valid request to update user company", async () => {
@@ -417,7 +415,7 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: "Company is required" });
+    expect(response.text).toEqual("Company is required");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -429,7 +427,7 @@ describe("User Route Tests", () => {
       .send({ company: "NewCompany" });
 
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: "User not found" });
+    expect(response.text).toEqual("User not found");
   });
 
   it("should handle valid request to update user password", async () => {
@@ -472,7 +470,7 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: "Password is required" });
+    expect(response.text).toEqual("Password is required");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -484,6 +482,6 @@ describe("User Route Tests", () => {
       .send({ password: "newPassword" });
 
     expect(response.status).toBe(404);
-    expect(response.body).toEqual({ error: "User not found" });
+    expect(response.text).toEqual("User not found");
   });
 });

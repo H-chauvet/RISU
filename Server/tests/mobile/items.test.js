@@ -23,8 +23,7 @@ describe("GET /article/listall", () => {
 
     itemCtrl.getAllItems.mockResolvedValueOnce(mockItems);
 
-    const response = await supertest(app)
-      .get("/listAll");
+    const response = await supertest(app).get("/listAll");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockItems);
@@ -50,7 +49,6 @@ describe("GET /article/:articleId", () => {
   });
 
   it("should not get item from a wrong id", async () => {
-
     itemCtrl.getItemFromId.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2");
@@ -73,7 +71,8 @@ describe("GET /article/:articleId/similar", () => {
 
     itemCtrl.getSimilarItems.mockResolvedValueOnce(mockItems);
 
-    const response = await supertest(app).get("/2/similar")
+    const response = await supertest(app)
+      .get("/2/similar")
       .query({ containerId: 1 });
 
     expect(response.statusCode).toBe(200);
@@ -81,7 +80,6 @@ describe("GET /article/:articleId/similar", () => {
   });
 
   it("should not get similar items, container not found", async () => {
-
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2/similar");
@@ -91,10 +89,10 @@ describe("GET /article/:articleId/similar", () => {
   });
 
   it("should not get similar items, container not found", async () => {
-
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
-    const response = await supertest(app).get("/2/similar")
+    const response = await supertest(app)
+      .get("/2/similar")
       .query({ containerId: 1 });
 
     expect(response.statusCode).toBe(404);

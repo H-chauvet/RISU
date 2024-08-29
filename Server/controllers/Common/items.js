@@ -41,7 +41,7 @@ exports.getItemByCategory = async (category) => {
  *
  * @returns every item in the database
  */
-exports.getAllItem = async () => {
+exports.getAllItems = async () => {
   try {
     return await db.Item.findMany({});
   } catch (err) {

@@ -78,7 +78,7 @@ describe("Items Route Tests", () => {
       .set("Authorization", "Bearer mockedAccessToken")
       .send(requestBody);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
     expect(itemCtrl.createItem).toHaveBeenCalledWith(requestBody);
   });
 
