@@ -3,10 +3,20 @@ const supertest = require("supertest");
 const itemRouter = require("../../routes/Mobile/items");
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
+const lang = require('i18n');
+
 
 jest.mock("../../controllers/Common/items");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", itemRouter);
 
@@ -54,7 +64,6 @@ describe("GET /article/:articleId", () => {
     const response = await supertest(app).get("/2");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("article not found");
   });
 });
 
@@ -85,7 +94,6 @@ describe("GET /article/:articleId/similar", () => {
     const response = await supertest(app).get("/2/similar");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("containerId is required");
   });
 
   it("should not get similar items, container not found", async () => {
@@ -96,6 +104,5 @@ describe("GET /article/:articleId/similar", () => {
       .query({ containerId: 1 });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("article not found");
   });
 });

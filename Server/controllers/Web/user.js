@@ -387,3 +387,15 @@ exports.updateUserPassword = async (user) => {
     throw "Something happen while updating user";
   }
 };
+
+/**
+ * Get user information from token stored in the request
+ *
+ * @param {*} req the request
+ * @returns user object
+ */
+exports.getUserFromToken = (req) => {
+  const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+    return userCtrl.findUserByEmail(decodedToken.userMail);
+}

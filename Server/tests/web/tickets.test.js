@@ -5,14 +5,22 @@ const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Web/user");
 const mobileUserCtrl = require("../../controllers/Mobile/user");
 const jwtMiddleware = require("../../middleware/jwt");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Common/tickets");
 jest.mock("../../middleware/jwt");
 jest.mock("../../controllers/Web/user");
 jest.mock("../../controllers/Mobile/user");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
 
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", ticketRouter);
 

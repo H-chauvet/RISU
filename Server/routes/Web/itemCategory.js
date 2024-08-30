@@ -3,6 +3,8 @@ const router = express.Router();
 
 const itemCategoryCtrl = require("../../controllers/Common/itemCategory");
 const jwtMiddleware = require("../../middleware/jwt");
+const userCtrl = require("../../controllers/Web/user");
+const languageMiddleware = require("../../middleware/language");
 
 router.get("/", async function (req, res, next) {
   try {
@@ -20,8 +22,8 @@ router.get("/listAll", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401);
-    throw "Unauthorized";
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
 
   try {
@@ -39,13 +41,16 @@ router.get("/:id", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     if (!req.params.id) {
       res.status(400);
-      throw "Id of the item category is required";
+      throw res.__("missingCategoryId");
     }
     const itemCategory = await itemCategoryCtrl.getItemCategoryFromId(
       req.params.id
@@ -63,14 +68,17 @@ router.post("/", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const name = req.body.name;
     if (!name) {
       res.status(400);
-      throw "Name is required";
+      throw res.__("missingName");
     }
 
     const itemCategory = await itemCategoryCtrl.createItemCategory(name);
@@ -87,14 +95,17 @@ router.put("/", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const { id, name } = req.body;
     if (!id || !name) {
       res.status(400);
-      throw "id and name are required";
+      throw res.__("missingIdName");
     }
 
     const itemCategory = await itemCategoryCtrl.updateItemCategory(id, name);
@@ -111,18 +122,21 @@ router.delete("/", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const { id } = req.body;
     if (!id) {
       res.status(400);
-      throw "id is required";
+      throw res.__("missingId");
     }
 
     await itemCategoryCtrl.deleteItemCategory(id);
-    res.status(200).json("item category deleted");
+    res.status(200).json(res.__("categoryDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);

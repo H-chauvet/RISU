@@ -8,14 +8,14 @@ router.get("/download", async function (req, res, next) {
     res.download(filePath, 'client.apk', (err) => {
         if (err) {
             console.error('Error during file download:', err);
-            res.status(500).send('Error during file download');
+            res.status(500).send(res.__('failedDownload'));
         } else {
             res.status(200);
         }
     });
   } catch (err) {
     console.error('Error:', err);
-    res.status(500).send('Internal server error');
+    res.status(500).send(res.__('errorOccured'));
   }
 });
 

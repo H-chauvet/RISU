@@ -3,22 +3,27 @@ const router = express.Router();
 
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
+const languageMiddleware = require("../../middleware/language");
+const userCtrl = require("../../controllers/Web/user");
 
 router.post("/delete", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const { id } = req.body;
     if (!id) {
       res.status(400);
       throw "Id is required";
     }
     await itemCtrl.deleteItem(id);
-    res.status(200).json("items deleted");
+    res.status(200).json(res.__("itemsDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);
@@ -31,10 +36,13 @@ router.post("/create", async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const { id, name, available, price, containerId, description, image } =
       req.body;
     const item = await itemCtrl.createItem({
@@ -59,16 +67,19 @@ router.put("/update", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const { id, name, available, containerId, price, image, description } =
       req.body;
 
     if (!id) {
       res.status(400);
-      throw "id is required";
+      throw res.__("missingId");
     }
 
     const item = await containerCtrl.updateItem(id, {
@@ -109,15 +120,15 @@ router.post("/update/:itemId", async function (req, res, next) {
     }
     if (!name) {
       res.status(400);
-      throw "Name is required";
+      throw res.__("missingMailName");
     }
 
     const existingUser = await itemCtrl.getItemFromId(id);
     if (!existingUser) {
       res.status(404);
-      throw "User not found";
+      throw res.__("userNotFound");
     }
-
+    languageMiddleware.setServerLanguage(req, existingUser);
     const updatedUser = await itemCtrl.updateItemCtn({
       id,
       name,
@@ -138,10 +149,13 @@ router.get("/listAllByContainerId", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const containerId = req.query.containerId;
     const item = await itemCtrl.getItemByContainerId(parseInt(containerId));
 
@@ -158,10 +172,13 @@ router.get("/listAllByCategory", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
+
     const category = req.query.category;
     const item = await itemCtrl.getItemByCategory(category);
 
@@ -178,7 +195,7 @@ router.get("/listAll", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
@@ -197,23 +214,25 @@ router.post("/update-name/:id", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
 
   try {
     const id = parseInt(req.params.id);
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
     const { name } = req.body;
 
     if (!name) {
       res.status(400);
-      throw "Name is required";
+      throw res.__("missingMailName");
     }
 
     const existingUser = await itemCtrl.getItemFromId(id);
     if (!existingUser) {
       res.status(404);
-      throw "User not found";
+      throw res.__("userNotFound");
     }
 
     const updatedUser = await itemCtrl.updateName({
@@ -233,16 +252,18 @@ router.post("/update-price/:id", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
   try {
     const id = parseInt(req.params.id);
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
     const { price } = req.body;
     const priceTmp = parseFloat(price);
     if (!price) {
       res.status(400);
-      throw "Price is required";
+      throw res.__("missingMailPrice");
     }
 
     const existingUser = await itemCtrl.getItemFromId(id);
@@ -268,23 +289,25 @@ router.post("/update-description/:id", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
 
   try {
     const id = parseInt(req.params.id);
+    const user = userCtrl.getUserFromToken(req);
+    languageMiddleware.setServerLanguage(req, user);
     const { description } = req.body;
 
     if (!description) {
       res.status(400);
-      throw "Description is required";
+      throw res.__("missingMailDescription");
     }
 
     const existingUser = await itemCtrl.getItemFromId(id);
     if (!existingUser) {
       res.status(404);
-      throw "User not found";
+      throw res.__("userNotFound");
     }
 
     const updatedUser = await itemCtrl.updateDescription({

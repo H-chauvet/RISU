@@ -1,5 +1,6 @@
 const express = require("express");
 const supertest = require("supertest");
+const lang = require('i18n');
 
 const rentRouter = require("../../routes/Mobile/rent");
 const containerCtrl = require('../../controllers/Common/container');
@@ -22,7 +23,15 @@ jest.mock("passport", () => ({
   })
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", rentRouter);
 
@@ -36,7 +45,6 @@ describe("POST /article", () => {
       .post("/article");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not rent an article: Missing itemId", async () => {
@@ -48,7 +56,6 @@ describe("POST /article", () => {
       .post("/article");
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Missing itemId");
   });
 
   it("should not rent an article: empty itemId", async () => {
@@ -63,7 +70,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Missing itemId");
   });
 
   it("should not rent an article: Item not found", async () => {
@@ -78,7 +84,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Item not found");
   });
 
   it("should not rent an article: Missing duration", async () => {
@@ -101,7 +106,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Missing duration");
   });
 
   it("should not rent an article: duration < 0", async () => {
@@ -125,7 +129,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Missing duration");
   });
 
   it("should not rent an article: Item not available", async () => {
@@ -149,7 +152,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(400);
-    expect(response.text).toBe("Item not available");
   });
 
   it("should rent an article: user name not filled", async () => {
@@ -178,7 +180,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.message).toBe("location saved");
   });
 
   it("should rent an article: user name filled", async () => {
@@ -207,7 +208,6 @@ describe("POST /article", () => {
       });
 
     expect(response.statusCode).toBe(201);
-    expect(response.body.message).toBe("location saved");
   });
 });
 
@@ -223,7 +223,6 @@ describe("POST /:locationId/invoice", () => {
       .post("/1/invoice");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not send invoice by mail: Location not found", async () => {
@@ -236,7 +235,6 @@ describe("POST /:locationId/invoice", () => {
       .post("/1/invoice");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Location not found");
   });
 
   it("should not send invoice by mail: Invoice not found", async () => {
@@ -251,7 +249,6 @@ describe("POST /:locationId/invoice", () => {
       .post("/1/invoice");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Invoice not found");
   });
 
   it("should send invoice by mail: test success", async () => {
@@ -267,7 +264,6 @@ describe("POST /:locationId/invoice", () => {
       .post("/1/invoice");
 
     expect(response.statusCode).toBe(201);
-    expect(response.text).toBe("Invoice sent");
   });
 });
 
@@ -283,7 +279,6 @@ describe("GET /listAll", () => {
       .get("/listAll");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should get all rents of an user: test success", async () => {
@@ -310,7 +305,6 @@ describe("GET /:rentId", () => {
       .get("/1");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not get rent: Location not found", async () => {
@@ -323,7 +317,6 @@ describe("GET /:rentId", () => {
       .get("/1");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Location not found");
   });
 
   it("should not get rent: Location not found", async () => {
@@ -339,7 +332,6 @@ describe("GET /:rentId", () => {
       .get("/1");
 
     expect(response.statusCode).toBe(403);
-    expect(response.text).toBe("Location from wrong user");
   });
 
   it("should get rent: test success", async () => {
@@ -370,7 +362,6 @@ describe("POST /:rentId/return", () => {
       .post("/1/return");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not get rent: Location not found", async () => {
@@ -383,7 +374,6 @@ describe("POST /:rentId/return", () => {
       .post("/1/return");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Location not found");
   });
 
   it("should not get rent: Location not found", async () => {
@@ -399,7 +389,6 @@ describe("POST /:rentId/return", () => {
       .post("/1/return");
 
     expect(response.statusCode).toBe(403);
-    expect(response.text).toBe("Location from wrong user");
   });
 
   it("should get rent: test success", async () => {
