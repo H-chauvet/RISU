@@ -62,6 +62,7 @@
     "missingNameInfo" : "L'email ou / et les informations manquent dans la requête.",
     "failedDownload" : "Échec du téléchargement. Veuillez consulter le journal pour plus de détails.",
     "missingCategoryId" : "L'identifiant de la catégorie est absent de la requête.",
+    "invalidCategoryId": "L'identifiant de la catégorie est invalide.",
     "missingName" : "Le nom est absent de la requête.",
     "missingIdName" : "L'identifiant et le nom sont absents de la requête.",
     "categoryDeleted" : "La catégorie a été supprimée.",

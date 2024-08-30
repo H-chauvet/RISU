@@ -75,7 +75,7 @@ exports.getAllContainer = async (res, id) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw "Something happen while retrieving containers";
+    throw res.__("errorOccured");
   }
 };
 
@@ -85,7 +85,7 @@ exports.getAllContainer = async (res, id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every exitsting container
  */
-exports.listContainers = async () => {
+exports.listContainers = async (res) => {
   try {
     return db.containers.findMany({
       select: {
@@ -410,7 +410,7 @@ exports.getItemsWithFilters = async (
   try {
     const container = await this.getContainerById(res, containerId);
     if (!container) {
-      throw new Error("Container not found");
+      throw res.__("containerNotFound");
     }
 
     let whereCondition = {
@@ -424,7 +424,7 @@ exports.getItemsWithFilters = async (
       if (categoryId != null) {
         categoryId = parseInt(categoryId);
         if (isNaN(categoryId)) {
-          throw new Error("Invalid category id");
+          throw res.__("invalidCategoryId");
         }
         whereCondition.categories = { some: { id: categoryId } };
       }

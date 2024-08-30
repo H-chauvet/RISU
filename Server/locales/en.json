@@ -62,6 +62,7 @@
 	"missingNameInfo": "The email or / and the informations are missing from the request.",
 	"failedDownload": "Download Failure. Please check the log for more details.",
 	"missingCategoryId": "The category id is missing from the request.",
+	"invalidCategoryId": "The category id is invalid.",
 	"missingName": "The name is missing from the request.",
 	"missingIdName": "The id and the name are missing from the request.",
 	"categoryDeleted": "The category was deleted.",
