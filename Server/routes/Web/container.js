@@ -79,7 +79,7 @@ router.post("/create", async function (req, res, next) {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwtMiddleware.decodeToken(token);
 
-    const user = await userCtrl.findUserByEmail(decodedToken.userMail);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
 
     if (!user) {
       res.status(401);

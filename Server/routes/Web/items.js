@@ -91,7 +91,7 @@ router.put("/update", async function (req, res, next) {
       throw res.__("missingId");
     }
 
-    const item = await containerCtrl.updateItem(id, {
+    const item = await containerCtrl.updateItem(res, id, {
       name,
       available,
       containerId,

@@ -4,16 +4,16 @@ const itemsRouter = require("../../routes/Web/items");
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
 const userCtrl = require("../../controllers/Web/user");
-const lang = require('i18n');
+const lang = require("i18n");
 
 jest.mock("../../controllers/Common/items");
 jest.mock("../../controllers/Web/user");
 jest.mock("../../middleware/jwt");
 
 lang.configure({
-  locales: ['en'],
-  directory: __dirname + '/../../locales',
-  defaultLocale: 'en',
+  locales: ["en"],
+  directory: __dirname + "/../../locales",
+  defaultLocale: "en",
   objectNotation: true,
 });
 
@@ -31,7 +31,9 @@ describe("Items Route Tests", () => {
     const requestBody = { id: 1 };
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockResolvedValueOnce();
     userCtrl.getUserFromToken.mockResolvedValueOnce();
+    userCtrl.findUserByEmail.mockResolvedValueOnce();
     itemCtrl.deleteItem.mockResolvedValueOnce();
 
     const response = await supertest(app)
@@ -46,7 +48,9 @@ describe("Items Route Tests", () => {
   it("should handle missing userId during item deletion", async () => {
     const requestBody = {}; // Missing userId
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockResolvedValueOnce();
     userCtrl.getUserFromToken.mockResolvedValueOnce();
+    userCtrl.findUserByEmail.mockResolvedValueOnce();
 
     const response = await supertest(app)
       .post("/delete")
@@ -67,7 +71,9 @@ describe("Items Route Tests", () => {
     };
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockResolvedValueOnce();
     userCtrl.getUserFromToken.mockResolvedValueOnce();
+    userCtrl.findUserByEmail.mockResolvedValueOnce();
     itemCtrl.createItem.mockResolvedValueOnce(requestBody);
 
     const response = await supertest(app)
@@ -84,7 +90,9 @@ describe("Items Route Tests", () => {
     const requestBody = {};
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockResolvedValueOnce();
     userCtrl.getUserFromToken.mockResolvedValueOnce();
+    userCtrl.findUserByEmail.mockResolvedValueOnce();
     itemCtrl.createItem.mockRejectedValueOnce(new Error("Mocked error"));
 
     const response = await supertest(app)
@@ -105,7 +113,9 @@ describe("Items Route Tests", () => {
     ];
 
     jwtMiddleware.verifyToken.mockResolvedValueOnce();
+    jwtMiddleware.decodeToken.mockResolvedValueOnce();
     userCtrl.getUserFromToken.mockResolvedValueOnce();
+    userCtrl.findUserByEmail.mockResolvedValueOnce();
     itemCtrl.getItemByContainerId.mockResolvedValueOnce(mockItems);
 
     const response = await supertest(app)

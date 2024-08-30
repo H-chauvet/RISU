@@ -43,7 +43,7 @@ router.post("/google-login", async function (req, res, next) {
       throw res.__("missingMailPwd");
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     let user = null;
     if (!existingUser) {
       const password = generator.generate({
@@ -78,7 +78,7 @@ router.post("/register", async function (req, res, next) {
       throw res.__("missingMailPwd");
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (existingUser) {
       res.status(400);
       throw res.__("mailAlreadyExist");
@@ -114,7 +114,7 @@ router.post("/forgot-password", async function (req, res, next) {
       throw res.__("missingMail");
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(400);
       throw res.__("wrongMail");
@@ -170,7 +170,7 @@ router.post("/register-confirmation", async function (req, res, next) {
       throw res.__("missingMail");
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(400);
       throw res.__("wrongMail");
@@ -276,7 +276,7 @@ router.post("/update-details/:email", async (req, res, next) => {
       return;
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(404).send(res.__("userNotFound"));
       return;
@@ -305,7 +305,7 @@ router.post("/update-mail", async (req, res, next) => {
       return;
     }
 
-    const existingUser = await userCtrl.findUserByEmail(oldMail);
+    const existingUser = await userCtrl.findUserByEmail(res, oldMail);
     if (!existingUser) {
       res.status(404).send(res.__("userNotFound"));
       return;
@@ -332,7 +332,7 @@ router.post("/update-company/:email", async (req, res, next) => {
       return;
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(404).send(res.__("userNotFound"));
       return;
@@ -359,7 +359,7 @@ router.post("/update-password/:email", async (req, res, next) => {
       return;
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(404).send(res.__("userNotFound"));
       return;
