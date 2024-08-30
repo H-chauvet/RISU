@@ -4,6 +4,7 @@ const { db } = require("../../middleware/database");
  * Retrieve every item from a container
  *
  * @param {number} containerId id of the container
+ * @throws {Error} with a specific message to find the problem
  * @returns every item in a specific container
  */
 exports.getItemByContainerId = async (containerId) => {
@@ -22,6 +23,7 @@ exports.getItemByContainerId = async (containerId) => {
  * Retrieve every item with category from a container
  *
  * @param {number} category category of the items
+ * @throws {Error} with a specific message to find the problem
  * @returns every item with specific category in a specific container
  */
 exports.getItemByCategory = async (category) => {
@@ -39,6 +41,7 @@ exports.getItemByCategory = async (category) => {
 /**
  * Retrieve every item in the database
  *
+ * @throws {Error} with a specific message to find the problem
  * @returns every item in the database
  */
 exports.getAllItems = async () => {
@@ -53,6 +56,7 @@ exports.getAllItems = async () => {
  * Retrieve a specific item
  *
  * @param {number} id of the item
+ * @throws {Error} with a specific message to find the problem
  * @returns one item if an id correspond
  */
 exports.getItemFromId = async (id) => {
@@ -71,6 +75,7 @@ exports.getItemFromId = async (id) => {
 /**
  * Retrieve every item in the database
  *
+ * @throws {Error} with a specific message to find the problem
  * @returns every item in the database
  */
 exports.getItems = async () => {
@@ -85,6 +90,7 @@ exports.getItems = async () => {
  * Delete a specific item
  *
  * @param {number} id of the item to be deleted
+ * @throws {Error} with a specific message to find the problem
  * @returns none
  */
 exports.deleteItem = async (id) => {
@@ -103,6 +109,7 @@ exports.deleteItem = async (id) => {
  * Create a new item ensuring that the price is a float
  *
  * @param {*} item object that contains the data
+ * @throws {Error} with a specific message to find the problem
  * @returns the new object stored in the database
  */
 exports.createItem = async (item) => {
@@ -122,6 +129,7 @@ exports.createItem = async (item) => {
  *
  * @param {number} id of the item to be updated
  * @param {*} item object that contains the data to update the item
+ * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated object
  */
 exports.updateItem = async (id, item) => {
@@ -144,6 +152,7 @@ exports.updateItem = async (id, item) => {
  *
  * @param {number} itemId id of the item
  * @param {number} containerId id of the container
+ * @throws {Error} with a specific message to find the problem
  * @returns the articles that are similar to the one in parameter
  * at least one same category
  */
@@ -162,6 +171,7 @@ exports.getAvailableItemsCount = async (containerId) => {
  * Get the similar items of a specific item
  *
  * @param {number} containerId id of the container
+ * @throws {Error} with a specific message to find the problem
  * @returns the articles that are similar to the one in parameter
  * at least one same category
  */
@@ -198,6 +208,7 @@ exports.getSimilarItems = async (itemId, containerId) => {
  * Update the name of the selected item
  *
  * @param {number} item information about the item
+ * @throws {Error} with a specific message to find the problem
  * @returns the item with the name changed
  */
 exports.updateName = async (item) => {
@@ -219,6 +230,7 @@ exports.updateName = async (item) => {
  * Update the selected item
  *
  * @param {number} item information about the item
+ * @throws {Error} with a specific message to find the problem
  * @returns the item with the name changed
  */
 exports.updateItemCtn = async (item) => {
@@ -243,6 +255,7 @@ exports.updateItemCtn = async (item) => {
  * Update the price of the selected item
  *
  * @param {number} item information about the item
+ * @throws {Error} with a specific message to find the problem
  * @returns the item with the price changed
  */
 exports.updatePrice = async (item) => {
@@ -264,6 +277,7 @@ exports.updatePrice = async (item) => {
  * Update the description of the selected item
  *
  * @param {number} item information about the item
+ * @throws {Error} with a specific message to find the problem
  * @returns the item with the description changed
  */
 exports.updateDescription = async (item) => {

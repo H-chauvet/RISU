@@ -14,7 +14,10 @@ router.post("/create", async function (req, res, next) {
     res.status(401).send(res.__("unauthorized"));
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { name, type, affiliate, containers, contactInformation } = req.body;
@@ -44,7 +47,10 @@ router.post("/update-information/:id", async (req, res, next) => {
   try {
     const { contactInformation } = req.body;
 
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     if (!contactInformation) {
@@ -80,7 +86,10 @@ router.post("/update-type/:id", async (req, res, next) => {
     res.status(401).send(res.__("unauthorized"));
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const id = parseInt(req.params.id);

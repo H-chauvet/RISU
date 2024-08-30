@@ -97,7 +97,10 @@ router.put("/assign/:assignedId", async (req, res, next) => {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const assignedId = req.params.assignedId;
@@ -158,7 +161,10 @@ router.get("/assigned-info/:assignedId", async (req, res, next) => {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const assignedId = req.params.assignedId;

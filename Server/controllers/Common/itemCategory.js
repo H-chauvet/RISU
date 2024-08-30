@@ -3,6 +3,7 @@ const { db } = require("../../middleware/database");
 /**
  * Retrieve every item category
  *
+ * @throws {Error} with a specific message to find the problem
  * @returns every item category
  */
 exports.getItemCategories = async () => {
@@ -17,6 +18,7 @@ exports.getItemCategories = async () => {
  * Retrieve a specific item category
  *
  * @param {number} id of the item category
+ * @throws {Error} with a specific message to find the problem
  * @returns one item if an id correspond
  */
 exports.getItemCategoryFromId = async (id) => {
@@ -34,6 +36,7 @@ exports.getItemCategoryFromId = async (id) => {
  * Create a new item category
  *
  * @param {string} name of the item category
+ * @throws {Error} with a specific message to find the problem
  * @returns the new object stored in the database
  */
 exports.createItemCategory = async (name) => {
@@ -52,6 +55,7 @@ exports.createItemCategory = async (name) => {
  * Update an item category
  *
  * @param {string} name of the item category
+ * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated object
  */
 exports.updateItemCategory = async (id, name) => {
@@ -71,6 +75,7 @@ exports.updateItemCategory = async (id, name) => {
  * Delete a specific item category
  *
  * @param {number} id of the item category to be deleted
+ * @throws {Error} with a specific message to find the problem
  * @returns none
  */
 exports.deleteItemCategory = async (id) => {
@@ -90,6 +95,7 @@ exports.deleteItemCategory = async (id) => {
  *
  * @param {number} id of the item
  * @param {Array} categories array of item categories id
+ * @throws {Error} with a specific message to find the problem
  * @returns none
  */
 exports.setItemCategories = async (id, categories) => {

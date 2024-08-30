@@ -4,6 +4,7 @@ const { db } = require("../../middleware/database");
  * Created organization
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns created organization
  */
 exports.createOrganization = async (organization) => {
@@ -20,6 +21,7 @@ exports.createOrganization = async (organization) => {
  * Display all organization
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns Display all organization
  */
 exports.getAllOrganizations = async () => {
@@ -35,6 +37,7 @@ exports.getAllOrganizations = async () => {
  * Display organization by id
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns Display organization by id
  */
 exports.getOrganizationById = async (id) => {
@@ -58,6 +61,7 @@ exports.getOrganizationById = async (id) => {
  * Update organization name
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns Updated name of the organization
  */
 exports.updateName = async (organization) => {
@@ -79,6 +83,7 @@ exports.updateName = async (organization) => {
  * Update organization contact information
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns Updated contact information of the organization
  */
 exports.updateContactInformation = async (organization) => {
@@ -100,6 +105,7 @@ exports.updateContactInformation = async (organization) => {
  * Update organization type
  *
  * @param {*} organization
+ * @throws {Error} with a specific message to find the problem
  * @returns Updated type of the organization
  */
 exports.updateType = (organization) => {

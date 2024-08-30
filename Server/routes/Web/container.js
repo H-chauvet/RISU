@@ -14,7 +14,10 @@ router.get("/get", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id } = req.query;
@@ -23,7 +26,7 @@ router.get("/get", async function (req, res, next) {
       res.status(400);
       throw res.__("missingContainerId");
     }
-    const container = await containerCtrl.getContainerById(parseInt(id));
+    const container = await containerCtrl.getContainerById(res, parseInt(id));
     res.status(200).json(container);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -41,7 +44,11 @@ router.post("/delete", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+
     languageMiddleware.setServerLanguage(req, user);
 
     const { id } = req.body;
@@ -49,7 +56,7 @@ router.post("/delete", async function (req, res, next) {
       res.status(400);
       throw res.__("missingContainerId");
     }
-    await containerCtrl.deleteContainer(id);
+    await containerCtrl.deleteContainer(res, id);
     res.status(200).send(res.__("containerDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
@@ -81,6 +88,7 @@ router.post("/create", async function (req, res, next) {
     languageMiddleware.setServerLanguage(req, user);
 
     const container = await containerCtrl.createContainer(
+      res,
       {
         designs,
         containerMapping,
@@ -118,7 +126,10 @@ router.put("/update", async function (req, res, next) {
       saveName,
     } = req.body;
 
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     if (!id) {
@@ -126,7 +137,7 @@ router.put("/update", async function (req, res, next) {
       throw res.__("missingIdName");
     }
 
-    const container = await containerCtrl.updateContainer(id, {
+    const container = await containerCtrl.updateContainer(res, id, {
       price,
       containerMapping,
       height,
@@ -152,7 +163,10 @@ router.put("/update-position", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id, latitude, longitude } = req.body;
@@ -162,7 +176,7 @@ router.put("/update-position", async function (req, res, next) {
       throw res.__("missingIdPos");
     }
 
-    const position = await containerCtrl.getLocalisation({
+    const position = await containerCtrl.getLocalisation(res, {
       latitude,
       longitude,
     });
@@ -172,7 +186,7 @@ router.put("/update-position", async function (req, res, next) {
       throw res.__("missingAddress");
     }
 
-    const container = await containerCtrl.updateContainerPosition(id, {
+    const container = await containerCtrl.updateContainerPosition(res, id, {
       latitude,
       longitude,
       city: position.city,
@@ -195,17 +209,17 @@ router.get("/listAll", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
-
-    const container = await containerCtrl.getAllContainers();
-
+    const container = await containerCtrl.getAllContainers(res);
     res.status(200).json({ container });
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);
     }
-    console.log();
     res.send(err);
   }
 });
@@ -220,12 +234,17 @@ router.get(
       return;
     }
     try {
-      const user = userCtrl.getUserFromToken(req);
+      const token = req.headers.authorization.split(" ")[1];
+      const decodedToken = jwtMiddleware.decodeToken(token);
+
+      const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
       languageMiddleware.setServerLanguage(req, user);
 
       const organizationId = req.params.organizationId;
-      const container =
-        await containerCtrl.getContainerByOrganizationId(organizationId);
+      const container = await containerCtrl.getContainerByOrganizationId(
+        res,
+        organizationId
+      );
 
       res.status(200).json({ container });
     } catch (err) {
@@ -245,12 +264,15 @@ router.get("/listByContainer/:id", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const id = req.params.id;
 
-    const container = await containerCtrl.getContainerById(id);
+    const container = await containerCtrl.getContainerById(res, id);
     res.status(200).json({ container });
   } catch (err) {
     if (res.statusCode == 200) {
@@ -269,7 +291,10 @@ router.post("/update-city/:id", async (req, res, next) => {
   }
   const id = parseInt(req.params.id);
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { city } = req.body;
@@ -279,13 +304,13 @@ router.post("/update-city/:id", async (req, res, next) => {
       throw res.__("missingMailCity");
     }
 
-    const existingContainer = await containerCtrl.getContainerById(id);
+    const existingContainer = await containerCtrl.getContainerById(res, id);
     if (!existingContainer) {
       res.status(404);
       throw res.__("containerNotFound");
     }
 
-    const updateContainer = await containerCtrl.updateCity({
+    const updateContainer = await containerCtrl.updateCity(res, {
       id,
       city,
     });
@@ -307,7 +332,10 @@ router.post("/update-address/:id", async (req, res, next) => {
   }
   const id = parseInt(req.params.id);
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { address } = req.body;
@@ -317,13 +345,13 @@ router.post("/update-address/:id", async (req, res, next) => {
       throw res.__("missingMailAddress");
     }
 
-    const existingContainer = await containerCtrl.getContainerById(id);
+    const existingContainer = await containerCtrl.getContainerById(res, id);
     if (!existingContainer) {
       res.status(404);
       throw res.__("containerNotFound");
     }
 
-    const updateContainer = await containerCtrl.updateAddress({
+    const updateContainer = await containerCtrl.updateAddress(res, {
       id,
       address,
     });
@@ -345,7 +373,10 @@ router.post("/update-name/:id", async (req, res, next) => {
   }
   const id = parseInt(req.params.id);
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { saveName } = req.body;
@@ -355,13 +386,13 @@ router.post("/update-name/:id", async (req, res, next) => {
       throw res.__("missingMailName");
     }
 
-    const existingContainer = await containerCtrl.getContainerById(id);
+    const existingContainer = await containerCtrl.getContainerById(res, id);
     if (!existingContainer) {
       res.status(404);
       throw res.__("containerNotFound");
     }
 
-    const updateContainer = await containerCtrl.updateSaveName({
+    const updateContainer = await containerCtrl.updateSaveName(res, {
       id,
       saveName,
     });
@@ -383,7 +414,10 @@ router.post("/update-information/:id", async (req, res, next) => {
   }
   const id = parseInt(req.params.id);
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { informations } = req.body;
@@ -393,13 +427,13 @@ router.post("/update-information/:id", async (req, res, next) => {
       throw res.__("missingNameInfo");
     }
 
-    const existingContainer = await containerCtrl.getContainerById(id);
+    const existingContainer = await containerCtrl.getContainerById(res, id);
     if (!existingContainer) {
       res.status(404);
       throw res.__("containerNotFound");
     }
 
-    const updateContainer = await containerCtrl.updateInformation({
+    const updateContainer = await containerCtrl.updateInformation(res, {
       id,
       informations,
     });

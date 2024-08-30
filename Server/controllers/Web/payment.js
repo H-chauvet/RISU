@@ -6,6 +6,7 @@ const { db } = require("../../middleware/database");
  *
  * @param {number} intent stripe object
  * @param {*} id id of the container
+ * @throws {Error} with a specific message to find the problem
  * @returns the corresponding response
  */
 const generateResponse = async (intent, id) => {
@@ -42,6 +43,7 @@ const generateResponse = async (intent, id) => {
  * Realize a payment with the provided data
  *
  * @param {*} data for the payment
+ * @throws {Error} with a specific message to find the problem
  * @returns a response for the payment
  */
 exports.makePayments = async (data) => {
@@ -62,11 +64,10 @@ exports.makePayments = async (data) => {
         return_url: "risu://stripe-redirect",
       };
 
-    const intent = await stripe.paymentIntents.create(params);
+      const intent = await stripe.paymentIntents.create(params);
     }
   } catch (err) {
-    throw "An error occured during the payment initialization."
+    throw "An error occured during the payment initialization.";
   }
   return generateResponse(intent, data.containerId);
-  
 };

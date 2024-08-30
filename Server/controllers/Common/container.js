@@ -4,9 +4,10 @@ const { db } = require("../../middleware/database");
  * Get a unique container by its id
  *
  * @param {number} id of the container object
+ * @throws {Error} with a specific message to find the problem
  * @returns a container object in case it's found, otherwise empty
  */
-exports.getContainerById = async (id) => {
+exports.getContainerById = async (res, id) => {
   try {
     let idtest = parseInt(id);
     return await db.Containers.findUnique({
@@ -22,11 +23,17 @@ exports.getContainerById = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving containers";
+    throw res.__("errorOccured");
   }
 };
 
-exports.getContainerByOrganizationId = async (organizationId) => {
+/**
+ *
+ * @param {number} organizationId of the container
+ * @throws {Error} with a specific message to find the problem
+ * @returns containers of the organization
+ */
+exports.getContainerByOrganizationId = async (res, organizationId) => {
   try {
     return await db.Containers.findMany({
       where: {
@@ -54,11 +61,17 @@ exports.getContainerByOrganizationId = async (organizationId) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving organization's containers";
+    throw res.__("errorOccured");
   }
 };
 
-exports.getAllContainer = async (id) => {
+/**
+ *
+ * @param {*} id
+ * @throws {Error} with a specific message to find the problem
+ * @returns all containers
+ */
+exports.getAllContainer = async (res, id) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
@@ -94,7 +107,7 @@ exports.listContainers = async () => {
     });
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw new Error("Failed to retrieve containers");
+    throw res.__("errorOccured");
   }
 };
 
@@ -102,9 +115,10 @@ exports.listContainers = async () => {
  * Delete a unique container by its id
  *
  * @param {number} id of the container object
+ * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.deleteContainer = async (id) => {
+exports.deleteContainer = async (res, id) => {
   try {
     return await db.Containers.delete({
       where: {
@@ -112,7 +126,7 @@ exports.deleteContainer = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while deleting containers";
+    throw res.__("errorOccured");
   }
 };
 
@@ -120,9 +134,10 @@ exports.deleteContainer = async (id) => {
  * Create a new container
  *
  * @param {*} container the object with data
+ * @throws {Error} with a specific message to find the problem
  * @returns the container object
  */
-exports.createContainer = async (container, organizationId) => {
+exports.createContainer = async (res, container, organizationId) => {
   try {
     container.width = parseFloat(container.width);
     container.height = parseFloat(container.height);
@@ -146,7 +161,7 @@ exports.createContainer = async (container, organizationId) => {
 
     return containerObj;
   } catch (err) {
-    throw "Something happen while creating containers";
+    throw res.__("errorOccured");
   }
 };
 
@@ -155,9 +170,10 @@ exports.createContainer = async (container, organizationId) => {
  *
  * @param {number} id of the container
  * @param {*} container the object with updated data
+ * @throws {Error} with a specific message to find the problem
  * @returns the container object
  */
-exports.updateContainer = async (id, container) => {
+exports.updateContainer = async (res, id, container) => {
   try {
     container.price = parseFloat(container.price);
     container.width = parseFloat(container.width);
@@ -169,7 +185,7 @@ exports.updateContainer = async (id, container) => {
       data: container,
     });
   } catch (err) {
-    throw "Something happen while updating container";
+    throw res.__("errorOccured");
   }
 };
 
@@ -177,9 +193,10 @@ exports.updateContainer = async (id, container) => {
  *
  * @param {number} id of the container
  * @param {*} container the object with position data
+ * @throws {Error} with a specific message to find the problem
  * @returns the container object
  */
-exports.updateContainerPosition = async (id, container) => {
+exports.updateContainerPosition = async (res, id, container) => {
   try {
     container.latitude = parseFloat(container.latitude);
     container.longitude = parseFloat(container.longitude);
@@ -190,16 +207,17 @@ exports.updateContainerPosition = async (id, container) => {
       data: container,
     });
   } catch (err) {
-    throw "Something happen while updating container's position";
+    throw res.__("errorOccured");
   }
 };
 
 /**
  *
  * @param {*} position the object with position data
+ * @throws {Error} with a specific message to find the problem
  * @returns the city and adress of the position
  */
-exports.getLocalisation = async (position) => {
+exports.getLocalisation = async (res, position) => {
   const response = await fetch(
     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
       position.latitude +
@@ -240,11 +258,11 @@ exports.getLocalisation = async (position) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every exitsting container
  */
-exports.getAllContainers = async () => {
+exports.getAllContainers = async (res) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw "Something happen while retrieving container";
+    throw res.__("errorOccured");
   }
 };
 
@@ -253,8 +271,9 @@ exports.getAllContainers = async () => {
  *
  * @param {number} containerId id of the container
  * @returns the container object with its items
+ * @throws {Error} with a specific message to find the problem
  */
-exports.getItemsFromContainer = async (containerId) => {
+exports.getItemsFromContainer = async (res, containerId) => {
   try {
     return await db.Containers.findUnique({
       where: { id: containerId },
@@ -275,11 +294,17 @@ exports.getItemsFromContainer = async (containerId) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving container's items";
+    throw res.__("errorOccured");
   }
 };
 
-exports.updateCity = async (container) => {
+/**
+ *
+ * @param {*} container with informations to update
+ * @throws {Error} with a specific message to find the problem
+ * @returns the updated container
+ */
+exports.updateCity = async (res, container) => {
   try {
     return await db.Containers.update({
       where: {
@@ -290,11 +315,17 @@ exports.updateCity = async (container) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating container's city";
+    throw res.__("errorOccured");
   }
 };
 
-exports.updateAddress = async (container) => {
+/**
+ *
+ * @param {*} container with informations to update
+ * @throws {Error} with a specific message to find the problem
+ * @returns the updated container
+ */
+exports.updateAddress = async (res, container) => {
   try {
     return await db.Containers.update({
       where: {
@@ -305,11 +336,17 @@ exports.updateAddress = async (container) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating container's address";
+    throw res.__("errorOccured");
   }
 };
 
-exports.updateSaveName = async (container) => {
+/**
+ *
+ * @param {*} container with informations to update
+ * @throws {Error} with a specific message to find the problem
+ * @returns the updated container
+ */
+exports.updateSaveName = async (res, container) => {
   try {
     return await db.Containers.update({
       where: {
@@ -320,11 +357,17 @@ exports.updateSaveName = async (container) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating container's name";
+    throw res.__("errorOccured");
   }
 };
 
-exports.updateInformation = async (container) => {
+/**
+ *
+ * @param {*} container with informations to update
+ * @throws {Error} with a specific message to find the problem
+ * @returns the updated container
+ */
+exports.updateInformation = async (res, container) => {
   try {
     return await db.Containers.update({
       where: {
@@ -335,7 +378,7 @@ exports.updateInformation = async (container) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating container's information";
+    throw res.__("errorOccured");
   }
 };
 
@@ -350,9 +393,11 @@ exports.updateInformation = async (container) => {
  * @param {string} sortBy sort by price or rating
  * @param {number} min minimum value
  * @param {number} max maximum value
+ * @throws {Error} with a specific message to find the problem
  * @returns the container object with its items
  */
 exports.getItemsWithFilters = async (
+  res,
   containerId,
   articleName,
   isAscending,
@@ -363,7 +408,7 @@ exports.getItemsWithFilters = async (
   max
 ) => {
   try {
-    const container = await this.getContainerById(containerId);
+    const container = await this.getContainerById(res, containerId);
     if (!container) {
       throw new Error("Container not found");
     }
@@ -429,6 +474,6 @@ exports.getItemsWithFilters = async (
 
     return items;
   } catch (error) {
-    throw "Something happen while sorting container's items";
+    throw res.__("errorOccured");
   }
 };

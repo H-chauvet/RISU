@@ -1,22 +1,23 @@
-const { db } = require('../../middleware/database')
+const { db } = require("../../middleware/database");
 
 /**
  * Create a new feedback
  *
  * @param {*} data of the feedback to be created
+ * @throws {Error} with a specific message to find the problem
  * @returns the newly created feedback
  */
-exports.registerFeedbacks = async data => {
+exports.registerFeedbacks = async (data) => {
   try {
     const feedback = await db.Feedbacks_Web.create({
-      data: data
-    })
+      data: data,
+    });
 
     return feedback;
   } catch (error) {
-    throw "Something happen during the creation"
+    throw "Something happen during the creation";
   }
-}
+};
 
 /**
  * Get every feedbacks that correspond to the mark
@@ -31,12 +32,12 @@ exports.getAllFeedbacks = async (mark) => {
     const filter = mark ? { mark } : {};
 
     const feedbacks = await db.Feedbacks_Web.findMany({
-      where: filter
+      where: filter,
     });
 
     return feedbacks;
   } catch (error) {
-    console.error('Error retrieving feedbacks:', error);
-    throw 'Failed to retrieve feedbacks';
+    console.error("Error retrieving feedbacks:", error);
+    throw "Failed to retrieve feedbacks";
   }
 };

@@ -14,7 +14,7 @@ router.post("/login", async function (req, res, next) {
       throw res.__("missingMailPwd");
     }
 
-    const existingUser = await userCtrl.findUserByEmail(email);
+    const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(400);
       throw res.__("mailNotExist");

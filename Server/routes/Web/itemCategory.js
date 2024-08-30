@@ -45,7 +45,10 @@ router.get("/:id", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     if (!req.params.id) {
@@ -72,7 +75,10 @@ router.post("/", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const name = req.body.name;
@@ -99,7 +105,10 @@ router.put("/", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id, name } = req.body;
@@ -126,7 +135,10 @@ router.delete("/", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id } = req.body;

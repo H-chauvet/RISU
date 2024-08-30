@@ -14,7 +14,10 @@ router.post("/delete", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id } = req.body;
@@ -40,7 +43,10 @@ router.post("/create", async (req, res, next) => {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id, name, available, price, containerId, description, image } =
@@ -71,7 +77,10 @@ router.put("/update", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const { id, name, available, containerId, price, image, description } =
@@ -153,7 +162,10 @@ router.get("/listAllByContainerId", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const containerId = req.query.containerId;
@@ -176,7 +188,10 @@ router.get("/listAllByCategory", async function (req, res, next) {
     return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
     const category = req.query.category;
@@ -220,7 +235,10 @@ router.post("/update-name/:id", async function (req, res, next) {
 
   try {
     const id = parseInt(req.params.id);
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
     const { name } = req.body;
 
@@ -257,7 +275,10 @@ router.post("/update-price/:id", async function (req, res, next) {
   }
   try {
     const id = parseInt(req.params.id);
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
     const { price } = req.body;
     const priceTmp = parseFloat(price);
@@ -295,7 +316,10 @@ router.post("/update-description/:id", async function (req, res, next) {
 
   try {
     const id = parseInt(req.params.id);
-    const user = userCtrl.getUserFromToken(req);
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
     const { description } = req.body;
 

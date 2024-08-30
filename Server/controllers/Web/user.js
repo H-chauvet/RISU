@@ -3,14 +3,16 @@ const jwt = require("jsonwebtoken");
 const { db } = require("../../middleware/database");
 const uuid = require("uuid");
 const transporter = require("../../middleware/transporter");
+const jwtMiddleware = require("../../middleware/jwt");
 
 /**
  * Find user by email
  *
  * @param {string} email of the user
+ * @throws {Error} with a specific message to find the problem
  * @returns user finded by email
  */
-exports.findUserByEmail = async (email) => {
+exports.findUserByEmail = async (res, email) => {
   try {
     return await db.User_Web.findUnique({
       where: {
@@ -18,7 +20,7 @@ exports.findUserByEmail = async (email) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -26,6 +28,7 @@ exports.findUserByEmail = async (email) => {
  * Find user by uuid
  *
  * @param {string} uuid of the user
+ * @throws {Error} with a specific message to find the problem
  * @returns user finded by uuid
  */
 exports.findUserByUuid = async (uuid) => {
@@ -44,6 +47,7 @@ exports.findUserByUuid = async (uuid) => {
  * Find user by id
  *
  * @param {number} id of the user
+ * @throws {Error} with a specific message to find the problem
  * @returns user finded by id
  */
 exports.findUserById = async (id) => {
@@ -62,6 +66,7 @@ exports.findUserById = async (id) => {
  * Delete a user
  *
  * @param {string} email of user to delete
+ * @throws {Error} with a specific message to find the problem
  * @returns user deleted
  */
 exports.deleteUser = async (email) => {
@@ -80,6 +85,7 @@ exports.deleteUser = async (email) => {
  * Create new user
  *
  * @param {*} user information
+ * @throws {Error} with a specific message to find the problem
  * @returns created user object
  */
 exports.registerByEmail = async (user) => {
@@ -121,6 +127,7 @@ exports.registerByEmail = async (user) => {
  * Define the mail object for register confirmation and call associate middleware
  *
  * @param {string} email of the receiver
+ * @throws {Error} with a specific message to find the problem
  */
 exports.registerConfirmation = async (email) => {
   try {
@@ -148,6 +155,7 @@ exports.registerConfirmation = async (email) => {
  * Set confirmed at true
  *
  * @param {string} uuid
+ * @throws {Error} with a specific message to find the problem
  * @returns user object
  */
 exports.confirmedRegister = async (uuid) => {
@@ -169,6 +177,7 @@ exports.confirmedRegister = async (uuid) => {
  * Authentification of an user
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object logged in
  */
 exports.loginByEmail = async (user) => {
@@ -193,6 +202,7 @@ exports.loginByEmail = async (user) => {
  * Update password
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated password
  */
 exports.updatePassword = async (user) => {
@@ -215,6 +225,7 @@ exports.updatePassword = async (user) => {
  * Define the mail object for password change and call associate middleware
  *
  * @param {string} email of the receiver
+ * @throws {Error} with a specific message to find the problem
  */
 exports.forgotPassword = async (email) => {
   try {
@@ -241,6 +252,7 @@ exports.forgotPassword = async (email) => {
 /**
  * Retrieve every web users of the database
  *
+ * @throws {Error} with a specific message to find the problem
  * @returns every user found
  */
 exports.getAllUsers = async () => {
@@ -257,6 +269,7 @@ exports.getAllUsers = async () => {
  * Find user details by email (including first name and last name)
  *
  * @param {string} email of the user
+ * @throws {Error} with a specific message to find the problem
  * @returns user details (including first name and last name)
  */
 exports.findUserDetailsByEmail = async (email) => {
@@ -285,6 +298,7 @@ exports.findUserDetailsByEmail = async (email) => {
  * Update firstName and LastName
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated firstName and lastName
  */
 exports.updateName = async (user) => {
@@ -307,6 +321,7 @@ exports.updateName = async (user) => {
  * Update organization
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated organization
  */
 exports.updateOrganization = async (user) => {
@@ -328,6 +343,7 @@ exports.updateOrganization = async (user) => {
  * Update mail
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated mail
  */
 exports.updateMail = async (user) => {
@@ -349,6 +365,7 @@ exports.updateMail = async (user) => {
  * Update company
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated company
  */
 exports.updateCompany = async (user) => {
@@ -370,6 +387,7 @@ exports.updateCompany = async (user) => {
  * Update company
  *
  * @param {*} user
+ * @throws {Error} with a specific message to find the problem
  * @returns user object with updated company
  */
 exports.updateUserPassword = async (user) => {
@@ -392,10 +410,11 @@ exports.updateUserPassword = async (user) => {
  * Get user information from token stored in the request
  *
  * @param {*} req the request
+ * @throws {Error} with a specific message to find the problem
  * @returns user object
  */
 exports.getUserFromToken = (req) => {
   const token = req.headers.authorization.split(" ")[1];
-    const decodedToken = jwtMiddleware.decodeToken(token);
-    return userCtrl.findUserByEmail(decodedToken.userMail);
-}
+  const decodedToken = jwtMiddleware.decodeToken(token);
+  return userCtrl.findUserByEmail(decodedToken.userMail);
+};
