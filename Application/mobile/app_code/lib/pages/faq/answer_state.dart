@@ -31,8 +31,7 @@ class AnswerPageState extends State<AnswerPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        textTitle: AppLocalizations.of(context)!
-            .faqAnswer(question['title_${currentLocale.languageCode}']),
+        textTitle: AppLocalizations.of(context)!.faqAnswer,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
