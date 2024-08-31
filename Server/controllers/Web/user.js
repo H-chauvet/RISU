@@ -31,7 +31,7 @@ exports.findUserByEmail = async (res, email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user finded by uuid
  */
-exports.findUserByUuid = async (uuid) => {
+exports.findUserByUuid = async (res, uuid) => {
   try {
     return await db.User_Web.findUnique({
       where: {
@@ -50,7 +50,7 @@ exports.findUserByUuid = async (uuid) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user finded by id
  */
-exports.findUserById = async (id) => {
+exports.findUserById = async (res, id) => {
   try {
     return await db.User_Web.findUnique({
       where: {
@@ -69,7 +69,7 @@ exports.findUserById = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user deleted
  */
-exports.deleteUser = async (email) => {
+exports.deleteUser = async (res, email) => {
   try {
     return await db.User_Web.delete({
       where: {
@@ -88,7 +88,7 @@ exports.deleteUser = async (email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns created user object
  */
-exports.registerByEmail = async (user) => {
+exports.registerByEmail = async (res, user) => {
   try {
     user.password = bcrypt.hashSync(user.password, 12);
     user.uuid = uuid.v4();
@@ -129,7 +129,7 @@ exports.registerByEmail = async (user) => {
  * @param {string} email of the receiver
  * @throws {Error} with a specific message to find the problem
  */
-exports.registerConfirmation = async (email) => {
+exports.registerConfirmation = async (res, email) => {
   try {
     let generatedUuid = "";
     this.findUserByEmail(email).then((user) => {
@@ -158,7 +158,7 @@ exports.registerConfirmation = async (email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object
  */
-exports.confirmedRegister = async (uuid) => {
+exports.confirmedRegister = async (res, uuid) => {
   try {
     return await db.User_Web.update({
       where: {
@@ -180,7 +180,7 @@ exports.confirmedRegister = async (uuid) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object logged in
  */
-exports.loginByEmail = async (user) => {
+exports.loginByEmail = async (res, user) => {
   try {
     return await db.User_Web.findUnique({
       where: {
@@ -205,7 +205,7 @@ exports.loginByEmail = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated password
  */
-exports.updatePassword = async (user) => {
+exports.updatePassword = async (res, user) => {
   try {
     user.password = bcrypt.hashSync(user.password, 12);
     return await db.User_Web.update({
@@ -227,7 +227,7 @@ exports.updatePassword = async (user) => {
  * @param {string} email of the receiver
  * @throws {Error} with a specific message to find the problem
  */
-exports.forgotPassword = async (email) => {
+exports.forgotPassword = async (res, email) => {
   try {
     let generatedUuid = "";
     this.findUserByEmail(email).then((user) => {
@@ -255,7 +255,7 @@ exports.forgotPassword = async (email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every user found
  */
-exports.getAllUsers = async () => {
+exports.getAllUsers = async (res) => {
   try {
     const users = await db.User_Web.findMany();
     return users;
@@ -272,7 +272,7 @@ exports.getAllUsers = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns user details (including first name and last name)
  */
-exports.findUserDetailsByEmail = async (email) => {
+exports.findUserDetailsByEmail = async (res, email) => {
   try {
     return await db.User_Web.findUnique({
       where: {
@@ -301,7 +301,7 @@ exports.findUserDetailsByEmail = async (email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated firstName and lastName
  */
-exports.updateName = async (user) => {
+exports.updateName = async (res, user) => {
   try {
     return await db.User_Web.update({
       where: {
@@ -324,7 +324,7 @@ exports.updateName = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated organization
  */
-exports.updateOrganization = async (user) => {
+exports.updateOrganization = async (res, user) => {
   try {
     return await db.User_Web.update({
       where: {
@@ -346,7 +346,7 @@ exports.updateOrganization = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated mail
  */
-exports.updateMail = async (user) => {
+exports.updateMail = async (res, user) => {
   try {
     return await db.User_Web.update({
       where: {
@@ -368,7 +368,7 @@ exports.updateMail = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated company
  */
-exports.updateCompany = async (user) => {
+exports.updateCompany = async (res, user) => {
   try {
     return await db.User_Web.update({
       where: {
@@ -390,7 +390,7 @@ exports.updateCompany = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated company
  */
-exports.updateUserPassword = async (user) => {
+exports.updateUserPassword = async (res, user) => {
   try {
     user.password = bcrypt.hashSync(user.password, 12);
     return await db.User_Web.update({
@@ -413,8 +413,8 @@ exports.updateUserPassword = async (user) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object
  */
-exports.getUserFromToken = (req) => {
+exports.getUserFromToken = (res, req) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwtMiddleware.decodeToken(token);
-  return userCtrl.findUserByEmail(decodedToken.userMail);
+  return userCtrl.findUserByEmail(res, decodedToken.userMail);
 };

@@ -7,7 +7,7 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns created organization
  */
-exports.createOrganization = async (organization) => {
+exports.createOrganization = async (res, organization) => {
   try {
     return await db.Organization.create({
       data: organization,
@@ -24,7 +24,7 @@ exports.createOrganization = async (organization) => {
  * @throws {Error} with a specific message to find the problem
  * @returns Display all organization
  */
-exports.getAllOrganizations = async () => {
+exports.getAllOrganizations = async (res) => {
   try {
     return await db.Organization.findMany();
   } catch (error) {
@@ -40,7 +40,7 @@ exports.getAllOrganizations = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns Display organization by id
  */
-exports.getOrganizationById = async (id) => {
+exports.getOrganizationById = async (res, id) => {
   try {
     return await db.Organization.findUnique({
       where: { id: id },
@@ -64,7 +64,7 @@ exports.getOrganizationById = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns Updated name of the organization
  */
-exports.updateName = async (organization) => {
+exports.updateName = async (res, organization) => {
   try {
     return await db.Organization.update({
       where: {
@@ -86,7 +86,7 @@ exports.updateName = async (organization) => {
  * @throws {Error} with a specific message to find the problem
  * @returns Updated contact information of the organization
  */
-exports.updateContactInformation = async (organization) => {
+exports.updateContactInformation = async (res, organization) => {
   try {
     return await db.Organization.update({
       where: {
@@ -108,7 +108,7 @@ exports.updateContactInformation = async (organization) => {
  * @throws {Error} with a specific message to find the problem
  * @returns Updated type of the organization
  */
-exports.updateType = (organization) => {
+exports.updateType = (res, organization) => {
   try {
     return db.Organization.update({
       where: {

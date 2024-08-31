@@ -27,6 +27,7 @@ router.get("/:containerId", async (req, res, next) => {
       return res.status(404).send(res.__("containerNotFound"));
     }
     const count = await itemCtrl.getAvailableItemsCount(
+      res,
       parseInt(req.params.containerId)
     );
 

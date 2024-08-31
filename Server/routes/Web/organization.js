@@ -21,7 +21,7 @@ router.post("/create", async function (req, res, next) {
     languageMiddleware.setServerLanguage(req, user);
 
     const { name, type, affiliate, containers, contactInformation } = req.body;
-    const organization = await organizationCtrl.createOrganization({
+    const organization = await organizationCtrl.createOrganization(res, {
       name,
       type,
       affiliate,
@@ -58,13 +58,17 @@ router.post("/update-information/:id", async (req, res, next) => {
       return;
     }
 
-    const existingOrganization = await organizationCtrl.getOrganizationById(id);
+    const existingOrganization = await organizationCtrl.getOrganizationById(
+      res,
+      id
+    );
     if (!existingOrganization) {
       res.status(404).send(res.__("organizationNotFound"));
       return;
     }
 
     const updatedOrganization = await organizationCtrl.updateContactInformation(
+      res,
       {
         id,
         contactInformation,
@@ -100,13 +104,16 @@ router.post("/update-type/:id", async (req, res, next) => {
       return;
     }
 
-    const existingOrganization = await organizationCtrl.getOrganizationById(id);
+    const existingOrganization = await organizationCtrl.getOrganizationById(
+      res,
+      id
+    );
     if (!existingOrganization) {
       res.status(404).send(res.__("organizationNotFound"));
       return;
     }
 
-    const updatedOrganization = await organizationCtrl.updateType({
+    const updatedOrganization = await organizationCtrl.updateType(res, {
       id,
       type,
     });

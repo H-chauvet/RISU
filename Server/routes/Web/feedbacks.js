@@ -9,7 +9,7 @@ router.post("/create", async function (req, res, next) {
       res.status(400);
       throw res.__("missingParamaters");
     }
-    const msg = await feedbacksCtrl.registerFeedbacks({
+    const msg = await feedbacksCtrl.registerFeedbacks(res, {
       lastName,
       firstName,
       email,
@@ -30,7 +30,7 @@ router.get("/listAll", async function (req, res, next) {
   const mark = parseInt(req.query.mark);
 
   try {
-    const feedbacks = await feedbacksCtrl.getAllFeedbacks(mark);
+    const feedbacks = await feedbacksCtrl.getAllFeedbacks(res, mark);
 
     res.status(200).json({ feedbacks });
   } catch (err) {

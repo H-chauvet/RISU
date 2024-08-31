@@ -6,11 +6,11 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns every item category
  */
-exports.getItemCategories = async () => {
+exports.getItemCategories = async (res) => {
   try {
     return await db.Item_Category.findMany();
   } catch (err) {
-    throw "Something happen while retrieving item categories";
+    throw res.__("errorOccured");
   }
 };
 
@@ -21,14 +21,14 @@ exports.getItemCategories = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns one item if an id correspond
  */
-exports.getItemCategoryFromId = async (id) => {
+exports.getItemCategoryFromId = async (res, id) => {
   try {
     intId = parseInt(id);
     return await db.Item_Category.findUnique({
       where: { id: intId },
     });
   } catch (err) {
-    throw "Something happen while retrieving item categories";
+    throw res.__("errorOccured");
   }
 };
 
@@ -39,7 +39,7 @@ exports.getItemCategoryFromId = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the new object stored in the database
  */
-exports.createItemCategory = async (name) => {
+exports.createItemCategory = async (res, name) => {
   try {
     return await db.Item_Category.create({
       data: {
@@ -47,7 +47,7 @@ exports.createItemCategory = async (name) => {
       },
     });
   } catch (err) {
-    throw "Something happen while creating item category";
+    throw res.__("errorOccured");
   }
 };
 
@@ -58,7 +58,7 @@ exports.createItemCategory = async (name) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated object
  */
-exports.updateItemCategory = async (id, name) => {
+exports.updateItemCategory = async (res, id, name) => {
   try {
     return await db.Item_Category.update({
       where: { id: id },
@@ -67,7 +67,7 @@ exports.updateItemCategory = async (id, name) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating item category";
+    throw res.__("errorOccured");
   }
 };
 
@@ -78,13 +78,13 @@ exports.updateItemCategory = async (id, name) => {
  * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.deleteItemCategory = async (id) => {
+exports.deleteItemCategory = async (res, id) => {
   try {
     return await db.Item_Category.delete({
       where: { id: id },
     });
   } catch (err) {
-    throw "Something happen while deleting item category";
+    throw res.__("errorOccured");
   }
 };
 
@@ -98,7 +98,7 @@ exports.deleteItemCategory = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.setItemCategories = async (id, categories) => {
+exports.setItemCategories = async (res, id, categories) => {
   try {
     return await db.Item.update({
       where: { id: id },
@@ -109,6 +109,6 @@ exports.setItemCategories = async (id, categories) => {
       },
     });
   } catch (err) {
-    throw "Something happen while setting item categories";
+    throw res.__("errorOccured");
   }
 };

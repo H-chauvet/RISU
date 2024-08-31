@@ -82,5 +82,6 @@
 	"missingUuid": "The uuid is missing from the request.",
 	"failedRetrieveDetails": "Failure: The user detail could not been retrieved.",
 	"missingCompany": "The company is missing from the request.",
-	"missingParameters": "missingParameters"
+	"missingParameters": "missingParameters",
+	"cardBlocked": "Your card was denied, please provide a new payment method"
 }

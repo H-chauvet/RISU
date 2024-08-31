@@ -172,7 +172,7 @@ router.delete(
         return res.status(404).send(res.__("userNotFound"));
       }
       languageMiddleware.setServerLanguage(req, user);
-      await cleanCtrl.cleanUserData(user.id, user.notificationsId);
+      await cleanCtrl.cleanUserData(res, user.id, user.notificationsId);
       await userCtrl.deleteUser(user.id);
       return res.status(200).send(res.__("userDeleted"));
     } catch (error) {

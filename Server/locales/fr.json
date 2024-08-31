@@ -81,5 +81,6 @@
     "Success" : "Succès",
     "missingUuid" : "L'uuid est absent de la requête.",
     "failedRetrieveDetails" : "Échec : Les détails de l'utilisateur n'ont pas pu être récupérés.",
-    "missingCompany" : "L'entreprise est absente de la requête."
+    "missingCompany" : "L'entreprise est absente de la requête.",
+    "cardBlocked": "Votre carte est bloquée, renseignez une carte valide"
 }

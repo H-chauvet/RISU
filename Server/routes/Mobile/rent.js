@@ -34,7 +34,7 @@ router.post(
         return res.status(400).send(res.__("missingItemId"));
       }
 
-      const item = await itemCtrl.getItemFromId(parseInt(req.body.itemId));
+      const item = await itemCtrl.getItemFromId(res, parseInt(req.body.itemId));
       if (!item) {
         return res.status(404).send(res.__("itemNotFound"));
       }
@@ -46,7 +46,7 @@ router.post(
       }
       const locationPrice = item.price * req.body.duration;
 
-      await itemCtrl.updateItem(item.id, {
+      await itemCtrl.updateItem(res, item.id, {
         price: item.price,
         available: false,
       });

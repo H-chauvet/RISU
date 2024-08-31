@@ -8,7 +8,7 @@ const languageMiddleware = require("../../middleware/language");
 
 router.get("/", async function (req, res, next) {
   try {
-    const itemCategories = await itemCategoryCtrl.getItemCategories();
+    const itemCategories = await itemCategoryCtrl.getItemCategories(res);
     res.status(200).json(itemCategories);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -27,7 +27,7 @@ router.get("/listAll", async function (req, res, next) {
   }
 
   try {
-    const itemCategories = await itemCategoryCtrl.getItemCategories();
+    const itemCategories = await itemCategoryCtrl.getItemCategories(res);
     res.status(200).json({ itemCategories });
   } catch (err) {
     if (res.statusCode == 200) {
@@ -56,6 +56,7 @@ router.get("/:id", async function (req, res, next) {
       throw res.__("missingCategoryId");
     }
     const itemCategory = await itemCategoryCtrl.getItemCategoryFromId(
+      res,
       req.params.id
     );
     res.status(200).json(itemCategory);
@@ -87,7 +88,7 @@ router.post("/", async function (req, res, next) {
       throw res.__("missingName");
     }
 
-    const itemCategory = await itemCategoryCtrl.createItemCategory(name);
+    const itemCategory = await itemCategoryCtrl.createItemCategory(res, name);
     res.status(200).json(name);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -117,7 +118,11 @@ router.put("/", async function (req, res, next) {
       throw res.__("missingIdName");
     }
 
-    const itemCategory = await itemCategoryCtrl.updateItemCategory(id, name);
+    const itemCategory = await itemCategoryCtrl.updateItemCategory(
+      res,
+      id,
+      name
+    );
     res.status(200).json(itemCategory);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -147,7 +152,7 @@ router.delete("/", async function (req, res, next) {
       throw res.__("missingId");
     }
 
-    await itemCategoryCtrl.deleteItemCategory(id);
+    await itemCategoryCtrl.deleteItemCategory(res, id);
     res.status(200).json(res.__("categoryDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {

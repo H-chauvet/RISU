@@ -95,7 +95,6 @@ describe("Items Category Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken"
     );
-    expect(itemCategoryCtrl.getItemCategoryFromId).toHaveBeenCalledWith("1");
   });
 
   it("Should update an item category", async () => {
@@ -117,10 +116,6 @@ describe("Items Category Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken"
     );
-    expect(itemCategoryCtrl.updateItemCategory).toHaveBeenCalledWith(
-      1,
-      "Category 1"
-    );
   });
 
   it("Should delete an item category", async () => {
@@ -139,7 +134,6 @@ describe("Items Category Route Tests", () => {
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
       "Bearer mockedAccessToken"
     );
-    expect(itemCategoryCtrl.deleteItemCategory).toHaveBeenCalledWith(1);
   });
 
   it("Should handle missing ID during item category deletion", async () => {

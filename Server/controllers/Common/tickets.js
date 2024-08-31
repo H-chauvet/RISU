@@ -9,13 +9,13 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns the new object stored in the database
  */
-exports.createTicket = async (ticketInfo) => {
+exports.createTicket = async (res, ticketInfo) => {
   try {
     return await db.Tickets.create({
       data: ticketInfo,
     });
   } catch (err) {
-    throw "Something happen while creating ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -27,7 +27,7 @@ exports.createTicket = async (ticketInfo) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated object
  */
-exports.assignTicket = async (id, assignedId) => {
+exports.assignTicket = async (res, id, assignedId) => {
   try {
     intId = parseInt(id);
     return await db.Tickets.update({
@@ -39,7 +39,7 @@ exports.assignTicket = async (id, assignedId) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -50,7 +50,7 @@ exports.assignTicket = async (id, assignedId) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated objects
  */
-exports.closeConversation = async (chatUid) => {
+exports.closeConversation = async (res, chatUid) => {
   try {
     return await db.Tickets.updateMany({
       where: {
@@ -61,7 +61,7 @@ exports.closeConversation = async (chatUid) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -72,7 +72,7 @@ exports.closeConversation = async (chatUid) => {
  * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.deleteConversation = async (chatUid) => {
+exports.deleteConversation = async (res, chatUid) => {
   try {
     return await db.Tickets.deleteMany({
       where: {
@@ -80,7 +80,7 @@ exports.deleteConversation = async (chatUid) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -91,7 +91,7 @@ exports.deleteConversation = async (chatUid) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the user's tickets
  */
-exports.getAllUserTickets = async (id) => {
+exports.getAllUserTickets = async (res, id) => {
   try {
     return await db.Tickets.findMany({
       where: {
@@ -99,7 +99,7 @@ exports.getAllUserTickets = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -110,7 +110,7 @@ exports.getAllUserTickets = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the tickets related to the conversation
  */
-exports.getConversation = async (id) => {
+exports.getConversation = async (res, id) => {
   try {
     return await db.Tickets.findMany({
       where: {
@@ -118,7 +118,7 @@ exports.getConversation = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -128,11 +128,11 @@ exports.getConversation = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every tickets in a list
  */
-exports.getAllTickets = async () => {
+exports.getAllTickets = async (res) => {
   try {
     return await db.Tickets.findMany();
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };
 
@@ -143,7 +143,7 @@ exports.getAllTickets = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.cleanMobileUserTickets = async (userId) => {
+exports.cleanMobileUserTickets = async (res, userId) => {
   try {
     return await db.Tickets.deleteMany({
       where: {
@@ -151,6 +151,6 @@ exports.cleanMobileUserTickets = async (userId) => {
       },
     });
   } catch (err) {
-    throw "Something happen while assigning ticket";
+    throw res.__("errorOccured");
   }
 };

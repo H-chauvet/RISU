@@ -7,7 +7,7 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns the newly created feedback
  */
-exports.registerFeedbacks = async (data) => {
+exports.registerFeedbacks = async (res, data) => {
   try {
     const feedback = await db.Feedbacks_Web.create({
       data: data,
@@ -15,7 +15,7 @@ exports.registerFeedbacks = async (data) => {
 
     return feedback;
   } catch (error) {
-    throw "Something happen during the creation";
+    throw res.__("errorOccured");
   }
 };
 
@@ -27,7 +27,7 @@ exports.registerFeedbacks = async (data) => {
  * @throws {Error} if the data retrieve has failed and log the error
  * @returns the found feedbacks
  */
-exports.getAllFeedbacks = async (mark) => {
+exports.getAllFeedbacks = async (res, mark) => {
   try {
     const filter = mark ? { mark } : {};
 
@@ -38,6 +38,6 @@ exports.getAllFeedbacks = async (mark) => {
     return feedbacks;
   } catch (error) {
     console.error("Error retrieving feedbacks:", error);
-    throw "Failed to retrieve feedbacks";
+    throw res.__("errorOccured");
   }
 };

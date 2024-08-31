@@ -9,7 +9,7 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns the corresponding response
  */
-const generateResponse = async (intent, id) => {
+const generateResponse = async (res, intent, id) => {
   switch (intent.status) {
     case "requires_action":
       return {
@@ -18,7 +18,7 @@ const generateResponse = async (intent, id) => {
         status: intent.status,
       };
     case "requires_payment_method":
-      throw "Your card was denied, please provide a new payment method";
+      throw res.__("cardBlocked");
     case "succeeded":
       try {
         await db.Containers.update({
@@ -29,7 +29,7 @@ const generateResponse = async (intent, id) => {
         });
       } catch (error) {
         console.error("Error retrieving users:", error);
-        throw "Failed to retrieve container";
+        throw res.__("errorOccured");
       }
       return { clientSecret: intent.client_secret, status: intent.status };
   }
@@ -46,7 +46,7 @@ const generateResponse = async (intent, id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns a response for the payment
  */
-exports.makePayments = async (data) => {
+exports.makePayments = async (res, data) => {
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET, {
       apiVersion: "2023-08-16",
@@ -67,7 +67,7 @@ exports.makePayments = async (data) => {
       const intent = await stripe.paymentIntents.create(params);
     }
   } catch (err) {
-    throw "An error occured during the payment initialization.";
+    throw res.__("errorOccured");
   }
-  return generateResponse(intent, data.containerId);
+  return generateResponse(res, intent, data.containerId);
 };

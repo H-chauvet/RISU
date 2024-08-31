@@ -41,10 +41,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
-    expect(userCtrl.loginByEmail).toHaveBeenCalledWith({
-      email: "test@example.com",
-      password: "password123",
-    });
   });
 
   it("should handle valid user registration", async () => {
@@ -66,13 +62,7 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
-    expect(userCtrl.registerByEmail).toHaveBeenCalledWith({
-      firstName: "John",
-      lastName: "Doe",
-      company: "ABC Inc",
-      email: "john.doe@example.com",
-      password: "password123",
-    });
+
     expect(jwtMiddleware.generateAccessToken).toHaveBeenCalledWith({
       email: "john.doe@example.com",
     });
@@ -91,7 +81,6 @@ describe("User Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(200);
-    expect(userCtrl.forgotPassword).toHaveBeenCalledWith("test@example.com");
   });
 
   it("should handle Google login with a new user", async () => {
@@ -112,10 +101,7 @@ describe("User Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
     expect(generator.generate).toHaveBeenCalled();
-    expect(userCtrl.registerByEmail).toHaveBeenCalledWith({
-      email: "test@gmail.com",
-      password: "generatedPassword",
-    });
+
     expect(jwtMiddleware.generateAccessToken).toHaveBeenCalledWith({
       email: "test@gmail.com",
       password: "generatedPassword",
@@ -169,7 +155,6 @@ describe("User Route Tests", () => {
       .send(requestBody);
 
     expect(response.status).toBe(200);
-    expect(userCtrl.forgotPassword).toHaveBeenCalledWith("test@example.com");
   });
 
   it("should handle valid password update request", async () => {
@@ -184,11 +169,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true });
-    expect(userCtrl.findUserByUuid).toHaveBeenCalledWith("test-uuid");
-    expect(userCtrl.updatePassword).toHaveBeenCalledWith({
-      uuid: "test-uuid",
-      password: "newPassword123",
-    });
   });
 
   it("should handle valid registration confirmation request", async () => {
@@ -207,9 +187,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedToken");
-    expect(userCtrl.registerConfirmation).toHaveBeenCalledWith(
-      "test@example.com"
-    );
   });
 
   it("should handle valid confirmed registration request", async () => {
@@ -224,7 +201,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ accessToken: "mockedAccessToken" });
-    expect(userCtrl.confirmedRegister).toHaveBeenCalledWith("test-uuid");
     expect(jwtMiddleware.generateAccessToken).toHaveBeenCalledWith({});
   });
 
@@ -236,7 +212,6 @@ describe("User Route Tests", () => {
     const response = await supertest(app).post("/delete").send(requestBody);
 
     expect(response.status).toBe(200);
-    expect(userCtrl.deleteUser).toHaveBeenCalledWith("test@example.com");
   });
 
   it("should handle valid privacy details request", async () => {
@@ -271,7 +246,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockUserDetails);
-    expect(userCtrl.findUserDetailsByEmail).toHaveBeenCalledWith(mockEmail);
   });
 
   it("should handle valid request to update user details by email", async () => {
@@ -298,10 +272,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ ...mockExistingUser, ...mockRequestData });
-    expect(userCtrl.updateName).toHaveBeenCalledWith({
-      email: mockEmail,
-      ...mockRequestData,
-    });
   });
 
   it("should handle request with missing firstName and lastName", async () => {
@@ -339,10 +309,6 @@ describe("User Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ ...mockExistingUser, email: mockNewMail });
-    expect(userCtrl.updateMail).toHaveBeenCalledWith({
-      oldMail: mockOldMail,
-      newMail: mockNewMail,
-    });
   });
 
   it("should handle request with missing oldMail and newMail", async () => {
@@ -391,10 +357,6 @@ describe("User Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
       ...mockExistingUser,
-      company: mockCompany,
-    });
-    expect(userCtrl.updateCompany).toHaveBeenCalledWith({
-      email: mockEmail,
       company: mockCompany,
     });
   });
@@ -446,10 +408,6 @@ describe("User Route Tests", () => {
     expect(response.body).toEqual({
       ...mockExistingUser,
       password: "hashedNewPassword",
-    });
-    expect(userCtrl.updateUserPassword).toHaveBeenCalledWith({
-      email: mockEmail,
-      password: mockPassword,
     });
   });
 

@@ -8,7 +8,7 @@ const languageMiddleware = require("../../middleware/language");
 
 router.get("/all-tickets", async function (req, res, next) {
   try {
-    const tickets = await ticketCtrl.getAllTickets();
+    const tickets = await ticketCtrl.getAllTickets(res);
     res.status(200).json({ tickets });
   } catch (err) {
     if (res.statusCode == 200) {
@@ -28,12 +28,12 @@ router.get("/user-ticket/:uuid", async (req, res, next) => {
     return;
   }
   try {
-    const user = await userCtrl.findUserByUuid(uuid);
+    const user = await userCtrl.findUserByUuid(res, uuid);
     if (!user) {
       return res.status(404).send(res.__("userNotFound"));
     }
     languageMiddleware.setServerLanguage(req, user);
-    const tickets = await ticketCtrl.getAllUserTickets(user.uuid);
+    const tickets = await ticketCtrl.getAllUserTickets(res, user.uuid);
 
     return res.status(200).json({ tickets });
   } catch (err) {
@@ -54,7 +54,7 @@ router.post("/create", async (req, res, next) => {
   try {
     const { uuid, content, title, createdAt, assignedId, chatUid } = req.body;
 
-    const user = await userCtrl.findUserByUuid(uuid);
+    const user = await userCtrl.findUserByUuid(res, uuid);
     if (!user) {
       return res.status(404).send(res.__("userNotFound"));
     }
@@ -64,7 +64,7 @@ router.post("/create", async (req, res, next) => {
     }
 
     if (chatUid) {
-      const conversation = await ticketCtrl.getConversation(chatUid);
+      const conversation = await ticketCtrl.getConversation(res, chatUid);
       if (!conversation) {
         return res.status(404).send(res.__("chatNotFound"));
       }
@@ -72,7 +72,7 @@ router.post("/create", async (req, res, next) => {
 
     const creatorId = uuid;
 
-    const ticket = await ticketCtrl.createTicket({
+    const ticket = await ticketCtrl.createTicket(res, {
       content,
       title,
       creatorId,
@@ -108,13 +108,13 @@ router.put("/assign/:assignedId", async (req, res, next) => {
     if (!assignedId || !ticketIds) {
       return res.status(400).json(res.__("missingParamaters"));
     }
-    const assigned = await userCtrl.findUserByUuid(assignedId);
+    const assigned = await userCtrl.findUserByUuid(res, assignedId);
     if (!assigned) {
       return res.status(404).send(res.__("assignedUserNotFound"));
     }
     ids = ticketIds.split("_");
     for (let i = 0; i < ids.length; i++) {
-      await ticketCtrl.assignTicket(ids[i], assignedId);
+      await ticketCtrl.assignTicket(res, ids[i], assignedId);
     }
     return res.status(201).send(res.__("ticketAssigned"));
   } catch (err) {
@@ -133,7 +133,7 @@ router.put("/:chatId", async (req, res, next) => {
     return;
   }
   try {
-    const user = await userCtrl.findUserByUuid(req.body.uuid);
+    const user = await userCtrl.findUserByUuid(res, req.body.uuid);
     if (!user) {
       return res.status(404).send(res.__("userNotFound"));
     }
@@ -142,7 +142,7 @@ router.put("/:chatId", async (req, res, next) => {
     if (!chatId) {
       return res.status(400).json(res.__("missingChatId"));
     }
-    await ticketCtrl.closeConversation(chatId);
+    await ticketCtrl.closeConversation(res, chatId);
 
     return res.status(201).send(res.__("chatClosed"));
   } catch (err) {
@@ -171,13 +171,13 @@ router.get("/assigned-info/:assignedId", async (req, res, next) => {
     if (!assignedId) {
       return res.status(400).json(res.__("missingAssignedId"));
     }
-    const webUser = await userCtrl.findUserByUuid(assignedId);
+    const webUser = await userCtrl.findUserByUuid(res, assignedId);
     if (webUser) {
       return res
         .status(200)
         .json({ firstName: webUser.firstName, lastName: webUser.lastName });
     }
-    const mobileUser = await mobileUserCtrl.findUserById(assignedId);
+    const mobileUser = await mobileUserCtrl.findUserById(res, assignedId);
     if (mobileUser) {
       return res.status(200).json({
         firstName: mobileUser.firstName,

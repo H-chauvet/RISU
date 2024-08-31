@@ -20,7 +20,7 @@ router.post("/login", async function (req, res, next) {
       throw res.__("mailNotExist");
     }
 
-    const user = await userCtrl.loginByEmail({ email, password });
+    const user = await userCtrl.loginByEmail(res, { email, password });
     languageMiddleware.setServerLanguage(req, user);
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
@@ -54,7 +54,7 @@ router.post("/google-login", async function (req, res, next) {
         excludeSimilarCharacters: true,
         strict: true,
       });
-      user = await userCtrl.registerByEmail({ email, password: password });
+      user = await userCtrl.registerByEmail(res, { email, password: password });
     }
 
     const accessToken = jwtMiddleware.generateAccessToken(user);
@@ -84,7 +84,7 @@ router.post("/register", async function (req, res, next) {
       throw res.__("mailAlreadyExist");
     }
 
-    const user = await userCtrl.registerByEmail({
+    const user = await userCtrl.registerByEmail(res, {
       firstName,
       lastName,
       company,
@@ -120,7 +120,7 @@ router.post("/forgot-password", async function (req, res, next) {
       throw res.__("wrongMail");
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    userCtrl.forgotPassword(email);
+    userCtrl.forgotPassword(res, email);
     res.json(res.__("Success"));
   } catch (err) {
     if (res.statusCode == 200) {
@@ -139,13 +139,13 @@ router.post("/update-password", async function (req, res, next) {
       throw res.__("missingMailPwd");
     }
 
-    const existingUser = await userCtrl.findUserByUuid(uuid);
+    const existingUser = await userCtrl.findUserByUuid(res, uuid);
     if (!existingUser) {
       res.status(401);
       throw res.__("accountNotExist");
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    const ret = await userCtrl.updatePassword({ uuid, password });
+    const ret = await userCtrl.updatePassword(res, { uuid, password });
     res.json(ret);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -176,7 +176,7 @@ router.post("/register-confirmation", async function (req, res, next) {
       throw res.__("wrongMail");
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    userCtrl.registerConfirmation(email);
+    userCtrl.registerConfirmation(res, email);
     res.json(res.__("Success"));
   } catch (err) {
     if (res.statusCode == 200) {
@@ -195,7 +195,7 @@ router.post("/confirmed-register", async function (req, res, next) {
       throw res.__("missingUuid");
     }
 
-    const user = await userCtrl.confirmedRegister(uuid);
+    const user = await userCtrl.confirmedRegister(res, uuid);
     languageMiddleware.setServerLanguage(req, user);
     const accessToken = jwtMiddleware.generateAccessToken(user);
     res.json({ accessToken });
@@ -211,7 +211,7 @@ router.post("/delete", async function (req, res, next) {
   const { email } = req.body;
 
   try {
-    await userCtrl.deleteUser(email);
+    await userCtrl.deleteUser(res, email);
     res.json(res.__("Success")).status(200);
   } catch (err) {
     res.status(500).send(err);
@@ -234,7 +234,7 @@ router.get("/privacy", async function (req, res, next) {
 
 router.get("/listAll", async function (req, res, next) {
   try {
-    const user = await userCtrl.getAllUsers();
+    const user = await userCtrl.getAllUsers(res);
 
     res.status(200).json({ user });
   } catch (err) {
@@ -249,7 +249,7 @@ router.get("/user-details/:email", async (req, res) => {
   const email = req.params.email;
 
   try {
-    const userDetails = await userCtrl.findUserDetailsByEmail(email);
+    const userDetails = await userCtrl.findUserDetailsByEmail(res, email);
 
     if (!userDetails) {
       res.status(400);
@@ -282,7 +282,7 @@ router.post("/update-details/:email", async (req, res, next) => {
       return;
     }
 
-    const updatedUser = await userCtrl.updateName({
+    const updatedUser = await userCtrl.updateName(res, {
       email,
       firstName,
       lastName,
@@ -311,7 +311,7 @@ router.post("/update-mail", async (req, res, next) => {
       return;
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    const updatedUser = await userCtrl.updateMail({ oldMail, newMail });
+    const updatedUser = await userCtrl.updateMail(res, { oldMail, newMail });
     res.status(200).json(updatedUser);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -338,7 +338,7 @@ router.post("/update-company/:email", async (req, res, next) => {
       return;
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    const updatedUser = await userCtrl.updateCompany({ email, company });
+    const updatedUser = await userCtrl.updateCompany(res, { email, company });
     res.status(200).json(updatedUser);
   } catch (err) {
     if (res.statusCode == 200) {
@@ -365,7 +365,10 @@ router.post("/update-password/:email", async (req, res, next) => {
       return;
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    const updatedUser = await userCtrl.updateUserPassword({ email, password });
+    const updatedUser = await userCtrl.updateUserPassword(res, {
+      email,
+      password,
+    });
     res.status(200).json(updatedUser);
   } catch (err) {
     if (res.statusCode == 200) {

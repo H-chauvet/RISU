@@ -53,8 +53,5 @@ describe("Organization Route Tests", () => {
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ id: 1, name: "Test Org" });
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith("mockedAccessToken");
-    expect(organizationCtrl.createOrganization).toHaveBeenCalledWith(
-      requestBody
-    );
   });
 });

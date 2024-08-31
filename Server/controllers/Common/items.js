@@ -7,7 +7,7 @@ const { db } = require("../../middleware/database");
  * @throws {Error} with a specific message to find the problem
  * @returns every item in a specific container
  */
-exports.getItemByContainerId = async (containerId) => {
+exports.getItemByContainerId = async (res, containerId) => {
   try {
     return await db.Item.findMany({
       where: {
@@ -15,7 +15,7 @@ exports.getItemByContainerId = async (containerId) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -26,7 +26,7 @@ exports.getItemByContainerId = async (containerId) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every item with specific category in a specific container
  */
-exports.getItemByCategory = async (category) => {
+exports.getItemByCategory = async (res, category) => {
   try {
     return await db.Item.findMany({
       where: {
@@ -34,7 +34,7 @@ exports.getItemByCategory = async (category) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -44,11 +44,11 @@ exports.getItemByCategory = async (category) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every item in the database
  */
-exports.getAllItems = async () => {
+exports.getAllItems = async (res) => {
   try {
     return await db.Item.findMany({});
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -59,7 +59,7 @@ exports.getAllItems = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns one item if an id correspond
  */
-exports.getItemFromId = async (id) => {
+exports.getItemFromId = async (res, id) => {
   try {
     return await db.Item.findUnique({
       where: { id: parseInt(id) },
@@ -68,7 +68,7 @@ exports.getItemFromId = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -78,11 +78,11 @@ exports.getItemFromId = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns every item in the database
  */
-exports.getItems = async () => {
+exports.getItems = async (res) => {
   try {
     return await db.Item.findMany();
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -93,7 +93,7 @@ exports.getItems = async () => {
  * @throws {Error} with a specific message to find the problem
  * @returns none
  */
-exports.deleteItem = async (id) => {
+exports.deleteItem = async (res, id) => {
   try {
     return await db.Item.delete({
       where: {
@@ -101,7 +101,7 @@ exports.deleteItem = async (id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while deleting item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -112,7 +112,7 @@ exports.deleteItem = async (id) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the new object stored in the database
  */
-exports.createItem = async (item) => {
+exports.createItem = async (res, item) => {
   try {
     item.price = parseFloat(item.price);
     item.containerId = parseInt(item.containerId);
@@ -120,7 +120,7 @@ exports.createItem = async (item) => {
       data: item,
     });
   } catch (err) {
-    throw "Something happen while creating item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -132,7 +132,7 @@ exports.createItem = async (item) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the freshly updated object
  */
-exports.updateItem = async (id, item) => {
+exports.updateItem = async (res, id, item) => {
   try {
     intId = parseInt(id);
     item.price = parseFloat(item.price);
@@ -143,7 +143,7 @@ exports.updateItem = async (id, item) => {
       data: item,
     });
   } catch (err) {
-    throw "Something happen while updating item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -156,14 +156,14 @@ exports.updateItem = async (id, item) => {
  * @returns the articles that are similar to the one in parameter
  * at least one same category
  */
-exports.getAvailableItemsCount = async (containerId) => {
+exports.getAvailableItemsCount = async (res, containerId) => {
   try {
     return await db.Item.count({
       where: { containerId: containerId },
       select: { available: true },
     });
   } catch (err) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -175,14 +175,14 @@ exports.getAvailableItemsCount = async (containerId) => {
  * @returns the articles that are similar to the one in parameter
  * at least one same category
  */
-exports.getSimilarItems = async (itemId, containerId) => {
+exports.getSimilarItems = async (res, itemId, containerId) => {
   try {
     const item = await db.Item.findUnique({
       where: { id: itemId },
       include: { categories: true },
     });
     if (!item) {
-      throw "Item not found";
+      throw res.__("itemNotFound");
     }
 
     const categoryIds = item.categories.map((category) => category.id);
@@ -200,7 +200,7 @@ exports.getSimilarItems = async (itemId, containerId) => {
 
     return similarItems;
   } catch (error) {
-    throw "Something happen while retrieving items";
+    throw res.__("errorOccured");
   }
 };
 
@@ -211,7 +211,7 @@ exports.getSimilarItems = async (itemId, containerId) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the item with the name changed
  */
-exports.updateName = async (item) => {
+exports.updateName = async (res, item) => {
   try {
     return await db.Item.update({
       where: {
@@ -222,7 +222,7 @@ exports.updateName = async (item) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -233,7 +233,7 @@ exports.updateName = async (item) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the item with the name changed
  */
-exports.updateItemCtn = async (item) => {
+exports.updateItemCtn = async (res, item) => {
   try {
     return await db.Item.update({
       where: {
@@ -247,7 +247,7 @@ exports.updateItemCtn = async (item) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -258,7 +258,7 @@ exports.updateItemCtn = async (item) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the item with the price changed
  */
-exports.updatePrice = async (item) => {
+exports.updatePrice = async (res, item) => {
   try {
     return await db.Item.update({
       where: {
@@ -269,7 +269,7 @@ exports.updatePrice = async (item) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating item";
+    throw res.__("errorOccured");
   }
 };
 
@@ -280,7 +280,7 @@ exports.updatePrice = async (item) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the item with the description changed
  */
-exports.updateDescription = async (item) => {
+exports.updateDescription = async (res, item) => {
   try {
     return await db.Item.update({
       where: {
@@ -291,6 +291,6 @@ exports.updateDescription = async (item) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating item";
+    throw res.__("errorOccured");
   }
 };

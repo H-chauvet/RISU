@@ -25,7 +25,7 @@ router.post("/delete", async function (req, res, next) {
       res.status(400);
       throw "Id is required";
     }
-    await itemCtrl.deleteItem(id);
+    await itemCtrl.deleteItem(res, id);
     res.status(200).json(res.__("itemsDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
@@ -51,7 +51,7 @@ router.post("/create", async (req, res, next) => {
 
     const { id, name, available, price, containerId, description, image } =
       req.body;
-    const item = await itemCtrl.createItem({
+    const item = await itemCtrl.createItem(res, {
       id,
       name,
       available,
@@ -132,13 +132,13 @@ router.post("/update/:itemId", async function (req, res, next) {
       throw res.__("missingMailName");
     }
 
-    const existingUser = await itemCtrl.getItemFromId(id);
+    const existingUser = await itemCtrl.getItemFromId(res, id);
     if (!existingUser) {
       res.status(404);
       throw res.__("userNotFound");
     }
     languageMiddleware.setServerLanguage(req, existingUser);
-    const updatedUser = await itemCtrl.updateItemCtn({
+    const updatedUser = await itemCtrl.updateItemCtn(res, {
       id,
       name,
       description,
@@ -169,7 +169,10 @@ router.get("/listAllByContainerId", async function (req, res, next) {
     languageMiddleware.setServerLanguage(req, user);
 
     const containerId = req.query.containerId;
-    const item = await itemCtrl.getItemByContainerId(parseInt(containerId));
+    const item = await itemCtrl.getItemByContainerId(
+      res,
+      parseInt(containerId)
+    );
 
     res.status(200).json({ item });
   } catch (err) {
@@ -195,7 +198,7 @@ router.get("/listAllByCategory", async function (req, res, next) {
     languageMiddleware.setServerLanguage(req, user);
 
     const category = req.query.category;
-    const item = await itemCtrl.getItemByCategory(category);
+    const item = await itemCtrl.getItemByCategory(res, category);
 
     res.status(200).json({ item });
   } catch (err) {
@@ -214,7 +217,7 @@ router.get("/listAll", async function (req, res, next) {
     return;
   }
   try {
-    const item = await itemCtrl.getAllItem();
+    const item = await itemCtrl.getAllItem(res);
 
     res.status(200).json({ item });
   } catch (err) {
@@ -247,13 +250,13 @@ router.post("/update-name/:id", async function (req, res, next) {
       throw res.__("missingMailName");
     }
 
-    const existingUser = await itemCtrl.getItemFromId(id);
+    const existingUser = await itemCtrl.getItemFromId(res, id);
     if (!existingUser) {
       res.status(404);
       throw res.__("userNotFound");
     }
 
-    const updatedUser = await itemCtrl.updateName({
+    const updatedUser = await itemCtrl.updateName(res, {
       id,
       name,
     });
@@ -287,13 +290,13 @@ router.post("/update-price/:id", async function (req, res, next) {
       throw res.__("missingMailPrice");
     }
 
-    const existingUser = await itemCtrl.getItemFromId(id);
+    const existingUser = await itemCtrl.getItemFromId(res, id);
     if (!existingUser) {
       res.status(404);
       throw "User not found";
     }
 
-    const updatedUser = await itemCtrl.updatePrice({
+    const updatedUser = await itemCtrl.updatePrice(res, {
       id,
       priceTmp,
     });
@@ -328,13 +331,13 @@ router.post("/update-description/:id", async function (req, res, next) {
       throw res.__("missingMailDescription");
     }
 
-    const existingUser = await itemCtrl.getItemFromId(id);
+    const existingUser = await itemCtrl.getItemFromId(res, id);
     if (!existingUser) {
       res.status(404);
       throw res.__("userNotFound");
     }
 
-    const updatedUser = await itemCtrl.updateDescription({
+    const updatedUser = await itemCtrl.updateDescription(res, {
       id,
       description,
     });
