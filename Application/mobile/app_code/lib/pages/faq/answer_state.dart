@@ -42,6 +42,7 @@ class AnswerPageState extends State<AnswerPage> {
               margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     key: const Key('answer-title-text'),
