@@ -103,7 +103,7 @@
   "errorOccurredDuringSettingStripe": "An error occurred while setting up Stripe.",
   "errorOccurredDuringUpdateUserInformation": "An error occurred while updating user information.",
   "faq": "Questions",
-  "faqAnswer": "FAQ - {question}",
+  "faqAnswer": "FAQ",
   "faqTitle": "Hi {name},\nhow can we\nhelp you?",
   "favoritesListEmpty": "No favorites",
   "fieldRequired": "This field is required.",
