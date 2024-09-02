@@ -19,6 +19,9 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'map_page.dart';
 
+/// MapPageState
+/// This class is the state of the MapPage class
+/// It contains the methods to display the map and the containers
 class MapPageState extends State<MapPage> {
   GoogleMapController? mapController;
   PermissionStatus? permission;
@@ -38,6 +41,8 @@ class MapPageState extends State<MapPage> {
     _getContainersData();
   }
 
+  /// _getContainersData
+  /// This method is used to get the containers data from the API
   void _getContainersData() async {
     try {
       setState(() {
@@ -74,6 +79,8 @@ class MapPageState extends State<MapPage> {
     }
   }
 
+  /// _getContainerItems
+  /// This method is used to get the items of a container from the API
   Future<void> _getContainerItems(int containerId) async {
     if (containersData.containsKey('$containerId')) {
       setState(() {
@@ -114,6 +121,8 @@ class MapPageState extends State<MapPage> {
     }
   }
 
+  /// displayBottomSheet
+  /// This method is used to display the bottom sheet of a container
   void displayBottomSheet(ContainerList container) {
     if (!context.mounted) return;
     _getContainerItems(container.id).then(
@@ -236,6 +245,9 @@ class MapPageState extends State<MapPage> {
     );
   }
 
+  /// displayMap
+  /// This method is used to display the map
+  /// It returns a widget that contains the GoogleMap widget
   Widget displayMap(BuildContext context) {
     setState(() {
       _loaderManager.setIsLoading(true);
@@ -286,16 +298,24 @@ class MapPageState extends State<MapPage> {
     );
   }
 
+  /// _onMapCreated
+  /// This method is called when the map is created
+  /// It sets the mapController
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
     });
   }
 
+  /// testOnMapCreated
+  /// This method is used to test the _onMapCreated method
   void testOnMapCreated(GoogleMapController controller) {
     _onMapCreated(controller);
   }
 
+  /// _requestLocationPermission
+  /// This method is used to request the location permission
+  /// It sets the permission status and gets the user location
   Future<void> _requestLocationPermission() async {
     permission = await Permission.locationWhenInUse.status;
     if (permission != PermissionStatus.granted) {
@@ -307,6 +327,9 @@ class MapPageState extends State<MapPage> {
     _getUserLocation();
   }
 
+  /// _getUserLocation
+  /// This method is used to get the user location
+  /// It sets the _center variable and animates the camera
   Future<void> _getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(

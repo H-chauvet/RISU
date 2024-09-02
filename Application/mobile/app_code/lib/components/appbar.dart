@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// Custom AppBar with a curve at the bottom
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final Color curveColor;

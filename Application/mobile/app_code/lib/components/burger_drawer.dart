@@ -9,6 +9,7 @@ import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/settings/settings_pages/notifications/notifications_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// The burger drawer that appears when the user clicks on the burger icon
 class BurgerDrawer extends StatelessWidget {
   const BurgerDrawer({
     super.key,

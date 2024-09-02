@@ -19,6 +19,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'settings_page.dart';
 
+/// Settings page state
+/// Contains the settings page state
 class SettingsPageState extends State<SettingsPage> {
   final LoaderManager _loaderManager = LoaderManager();
 
@@ -27,6 +29,8 @@ class SettingsPageState extends State<SettingsPage> {
     super.initState();
   }
 
+  /// Delete the account
+  /// This function is used to delete the account
   Future<bool> apiDeleteAccount() async {
     try {
       setState(() {

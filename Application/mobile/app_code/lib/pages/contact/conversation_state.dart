@@ -13,6 +13,9 @@ import 'package:risu/utils/time.dart';
 
 import 'conversation_page.dart';
 
+/// State class for the [ConversationPage] widget.
+/// It contains the logic for the conversation page.
+/// It is used to manage the state of the conversation page.
 class ConversationPageState extends State<ConversationPage> {
   List<dynamic> tickets = [];
   bool isOpen = false;
@@ -33,6 +36,9 @@ class ConversationPageState extends State<ConversationPage> {
 
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// Function to post a ticket.
+  /// It sends a POST request to the server to post a ticket.
+  /// It returns a boolean value indicating if the request was successful.
   Future<bool> postTicket(String content) async {
     late http.Response response;
     dynamic previousTicket = tickets.last;

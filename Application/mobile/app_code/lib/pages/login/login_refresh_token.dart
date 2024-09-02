@@ -4,6 +4,8 @@ import '../../globals.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/utils/user_data.dart';
 
+/// Function to refresh the token
+/// This function is used to login the user using the refresh token
 void loginRefreshToken(refreshToken) async {
   try {
     http.Response response = await http.post(

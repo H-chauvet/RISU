@@ -16,6 +16,8 @@ import 'package:risu/utils/validators.dart';
 
 import 'signup_page.dart';
 
+/// The state of the SignupPage widget.
+/// Contains the email, password, password confirmation, and visibility of the password and password confirmation fields.
 class SignupPageState extends State<SignupPage> {
   String? _email;
   String? _password;
@@ -29,6 +31,7 @@ class SignupPageState extends State<SignupPage> {
     super.initState();
   }
 
+  /// Attempts to sign up a user with the provided email and password, showing error dialogs for validation issues or server errors.
   Future<bool> apiSignup() async {
     if (_email == null) {
       await MyAlertDialog.showErrorAlertDialog(
@@ -104,6 +107,7 @@ class SignupPageState extends State<SignupPage> {
     }
   }
 
+  /// Validates the password and its confirmation, returning an error message if they are empty or do not match.
   String? _isPasswordValid() {
     if (_password == null || _password!.isEmpty) {
       return AppLocalizations.of(context)!.passwordEmpty;

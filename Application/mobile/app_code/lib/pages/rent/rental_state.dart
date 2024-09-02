@@ -14,6 +14,8 @@ import 'package:risu/utils/time.dart';
 
 import 'rental_page.dart';
 
+/// Page to display the rentals of the user
+/// It displays all the rentals of the user and the rentals in progress
 class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
@@ -32,6 +34,8 @@ class RentalPageState extends State<RentalPage> {
     }
   }
 
+  /// Get the rentals of the user
+  /// The user must be logged in to get the rentals
   void getRentals() async {
     try {
       setState(() {
@@ -71,6 +75,7 @@ class RentalPageState extends State<RentalPage> {
     }
   }
 
+  /// Calculate the remaining time of the rental
   String calculateRemainingTime(dynamic rental) {
     DateTime rentalStart = DateTime.parse(rental['createdAt']);
     int rentalDuration = rental['duration'];
@@ -81,6 +86,7 @@ class RentalPageState extends State<RentalPage> {
     return AppLocalizations.of(context)!.hoursAndMinutes(hours, minutes);
   }
 
+  /// Check if the rental is in progress
   bool isRentalInProgress(dynamic rental) {
     if (rental['createdAt'] != null &&
         rental['duration'] != null &&
@@ -93,6 +99,7 @@ class RentalPageState extends State<RentalPage> {
     return false;
   }
 
+  /// Get the rentals in progress
   void getRentalsInProgress() async {
     try {
       setState(() {

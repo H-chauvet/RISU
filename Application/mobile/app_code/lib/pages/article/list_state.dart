@@ -16,6 +16,9 @@ import 'article_filters_page.dart';
 import 'article_list_data.dart';
 import 'list_page.dart';
 
+/// ArticleListPage class
+/// This class is responsible for displaying the list of articles.
+/// It contains the logic for fetching the data from the server and displaying it.
 class ArticleListState extends State<ArticleListPage> {
   late Timer _debounceTimer;
   late int _containerId;
@@ -32,6 +35,8 @@ class ArticleListState extends State<ArticleListPage> {
   String? selectedCategoryId = 'null';
   TextEditingController _searchController = TextEditingController();
 
+  /// Function to update the list of items
+  /// This function is called when the user changes the filters or search query.
   void updateItemsList() {
     getItemsData(context, _containerId, selectedCategoryId)
         .then((dynamic value) {
@@ -41,6 +46,8 @@ class ArticleListState extends State<ArticleListPage> {
     });
   }
 
+  /// Function to get the article categories
+  /// This function is called when the page is loaded to get the article categories.
   Future<dynamic> getArticleCategories() async {
     late http.Response response;
 
@@ -80,6 +87,8 @@ class ArticleListState extends State<ArticleListPage> {
     }
   }
 
+  /// Function to get the items data
+  /// This function is called when the page is loaded to get the items data.
   Future<dynamic> getItemsData(
       BuildContext context, int containerId, String? categoryId) async {
     late http.Response response;
@@ -125,6 +134,8 @@ class ArticleListState extends State<ArticleListPage> {
     super.dispose();
   }
 
+  /// Function to handle the text change
+  /// This function is called when the user types in the search bar.
   void _onTextChanged(String value) {
     _debounceTimer.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {

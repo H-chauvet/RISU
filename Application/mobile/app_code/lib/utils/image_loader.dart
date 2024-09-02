@@ -1,3 +1,5 @@
+/// This function is used to load the image of the article
+/// according to the article name.
 String imageLoader(String articleName) {
   switch (articleName) {
     case 'Ballon de volley':

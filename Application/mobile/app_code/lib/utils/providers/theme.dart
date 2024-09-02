@@ -8,6 +8,9 @@ dynamic appTheme = {
   'systeme': 'Système',
 };
 
+/// This class is used to manage the theme of the application
+/// It allows to change the theme of the application
+/// It also allows to know if the application is in dark mode
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _currentTheme;
 
@@ -29,10 +32,12 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeData get currentTheme => _currentTheme;
 
+  /// Check if the app is in dark mode
   bool isAppInDarkMode() {
     return _currentTheme == darkTheme;
   }
 
+  /// Start the system theme listener
   void startSystemThemeListener() {
     SharedPreferences.getInstance().then((prefs) {
       final theme = prefs.getString('appTheme') ?? 'Clair';
@@ -44,12 +49,14 @@ class ThemeProvider extends ChangeNotifier {
     });
   }
 
+  /// Get the system theme
   Future<bool> getIsSystemInDarkMode() async {
     final brightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
     return brightness == Brightness.dark;
   }
 
+  /// Set the theme
   void setTheme(String theme) async {
     if (theme != appTheme['clair'] &&
         theme != appTheme['sombre'] &&

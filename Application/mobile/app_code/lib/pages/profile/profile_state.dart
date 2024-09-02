@@ -16,12 +16,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile_page.dart';
 
+/// ProfilePageState is the stateful widget that is responsible for the profile page
+/// It displays the user's information and allows him to access his settings, his rentals and his favorites
 class ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
   }
 
+  /// toComplete is a function that returns a button to complete the user's informations if they are not complete
+  /// It returns a container if the user's information is complete
   Widget toComplete() {
     if (userInformation!.lastName == null ||
         userInformation!.firstName == null) {

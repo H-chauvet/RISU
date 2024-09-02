@@ -12,8 +12,13 @@ class ThemeChangeModalContent extends StatefulWidget {
   ThemeChangeModalContentState createState() => ThemeChangeModalContentState();
 }
 
+/// The state of the theme change modal content.
+/// This class is used to manage the state of the theme change modal content.
 class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
   String selectedTheme = '';
+
+  /// The list of themes available in the application.
+  /// This list contains the themes available in the application.
   Future<String> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> items = [
@@ -35,6 +40,8 @@ class ThemeChangeModalContentState extends State<ThemeChangeModalContent> {
     });
   }
 
+  /// Check if the system is in dark mode.
+  /// This function is used to check if the system is in dark mode.
   Future<bool> isSystemInDarkMode() async {
     final brightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;

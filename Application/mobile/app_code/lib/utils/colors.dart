@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
+/// Custom colors
 class MyColors {
   static const Color primary = Color(0xFF033F63);
   static const Color secondary = Color(0xFFFEDC97);
   static const Color alertDialogChoiceCancel = Color(0xFF808080);
 }
 
+/// Light theme data
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: MyColors.primary,
@@ -65,6 +67,7 @@ final lightTheme = ThemeData(
   ),
 );
 
+/// Dark theme data
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: MyColors.secondary,

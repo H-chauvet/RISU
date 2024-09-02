@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'package:risu/components/alert_dialog.dart';
 
+/// Print error message and show an alert dialog
 void printCatchError(
   BuildContext context,
   dynamic e,
@@ -20,6 +21,7 @@ void printCatchError(
   }
 }
 
+/// Print server response and show an alert dialog
 void printServerResponse(
   BuildContext context,
   http.Response response,

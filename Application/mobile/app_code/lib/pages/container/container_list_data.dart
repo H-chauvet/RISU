@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// ContainerList class
 class ContainerList {
   final int id;
   final String address;
@@ -23,6 +24,7 @@ class ContainerList {
     this.distance = 0,
   });
 
+  /// Create a ContainerList object from a JSON object
   factory ContainerList.fromJson(Map<String, dynamic> json) {
     return ContainerList(
         id: json['id'],
@@ -33,6 +35,7 @@ class ContainerList {
         itemCount: json['_count']['items']);
   }
 
+  /// Create a ContainerList object from a map object
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -46,6 +49,8 @@ class ContainerList {
   }
 }
 
+/// ContainerCard class
+/// This class is a StatelessWidget that displays a card with the container information
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
   final Function(int?) onDirectionClicked;
@@ -56,6 +61,8 @@ class ContainerCard extends StatelessWidget {
     required this.onDirectionClicked,
   });
 
+  /// Show the distance in the correct format
+  /// If the distance is less than 10 meters, it will return a string with the distance in less than 10 meters
   String showDistance(BuildContext context, double distance) {
     if (distance < 10) {
       return AppLocalizations.of(context)!.containerDistanceLess10;

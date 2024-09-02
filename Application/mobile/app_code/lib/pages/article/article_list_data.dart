@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/image_loader.dart';
 
+/// ArticleData class
+/// This class is used to store the data of an article
 class ArticleData {
   final int id;
   final int containerId;
@@ -20,6 +22,7 @@ class ArticleData {
     required this.categories,
   });
 
+  /// Factory method to create an ArticleData object from a JSON object
   factory ArticleData.fromJson(Map<String, dynamic> json) {
     double price = json['price'] != null ? json['price'].toDouble() : 0.0;
     return ArticleData(
@@ -32,6 +35,7 @@ class ArticleData {
     );
   }
 
+  /// Method to convert an ArticleData object to a JSON object
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -44,6 +48,9 @@ class ArticleData {
   }
 }
 
+/// ArticleDataCard class
+/// This class is used to display the data of an article in a card
+/// It is used in the ArticleListPage
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 

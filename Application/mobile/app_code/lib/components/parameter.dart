@@ -14,6 +14,8 @@ enum DIVIDERPLACE {
   bottom,
 }
 
+/// This class is used to create a divider that redirects to another page.
+/// It is used in the settings page.
 class MyRedirectDivider extends StatelessWidget {
   final String title;
   final Widget goToPage;
@@ -30,6 +32,8 @@ class MyRedirectDivider extends StatelessWidget {
     this.chosenPlace = DIVIDERPLACE.bottom,
   });
 
+  /// This function is called when the user clicks on the divider.
+  /// If the user is not connected, it will ask him to connect.
   void onChanging(BuildContext context) {
     if (userInformation == null) {
       checkSignin(context);
@@ -74,6 +78,8 @@ class MyRedirectDivider extends StatelessWidget {
     }
   }
 
+  /// This function is used to place a divider at the top or at the bottom of the
+  /// widget.
   Widget placeDivider(DIVIDERPLACE currPlace) {
     if (chosenPlace == currPlace) {
       return const MyDivider();
@@ -121,6 +127,8 @@ class MyRedirectDivider extends StatelessWidget {
   }
 }
 
+/// This class is used to create a parameter that redirects to another page.
+/// It is used in the settings page.
 class MyParameter extends StatelessWidget {
   final String title;
   final Widget goToPage;
@@ -135,6 +143,7 @@ class MyParameter extends StatelessWidget {
     this.locked = false,
   });
 
+  /// This function is called when the user clicks on the parameter.
   Widget correspondingIcon() {
     if (locked) {
       return const Icon(Icons.lock);

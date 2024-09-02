@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/validators.dart';
 
+/// Custom text input widget
+/// It is used to create a custom text input
 class MyTextInput extends StatefulWidget {
   final String? labelText;
   final TextInputType keyboardType;
@@ -41,6 +43,8 @@ class MyTextInput extends StatefulWidget {
   State<MyTextInput> createState() => _MyTextInputState();
 }
 
+/// State class for MyTextInput
+/// It is used to manage the state of the MyTextInput widget
 class _MyTextInputState extends State<MyTextInput> {
   late Function(String?)? validator;
   late TextEditingController _controller;

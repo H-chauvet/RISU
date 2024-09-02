@@ -17,6 +17,8 @@ import 'package:risu/utils/validators.dart';
 
 import 'informations_page.dart';
 
+/// ProfileInformationsPage class
+/// This class is responsible for the state of the ProfileInformationsPage
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   String newFirstName = '';
   String newLastName = '';
@@ -43,6 +45,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     newPasswordConfirmationController.dispose();
   }
 
+  /// Fetch user data
+  /// This function fetches the user data from the server
   Future<void> fetchUserData(BuildContext context) async {
     try {
       setState(() {
@@ -81,6 +85,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update email
+  /// This function updates the email of the user
   Future<void> updateEmail() async {
     try {
       final token = userInformation!.token;
@@ -152,6 +158,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update user
+  /// This function updates the user information
   Future<void> updateUser() async {
     try {
       final token = userInformation!.token;
@@ -221,6 +229,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update password
+  /// This function updates the password of the user
   Future<void> updatePassword(
       String currentPassword, String newPassword) async {
     try {
@@ -306,6 +316,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Build field
+  /// This function builds the text form field
   Widget buildField(String label,
       {Key? key,
       String? initialValue,

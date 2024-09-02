@@ -8,6 +8,8 @@ import 'package:risu/components/text_input.dart';
 import 'article_filters_page.dart';
 import 'package:risu/components/alert_dialog.dart';
 
+/// State class for the ArticleFiltersPage
+/// Contains the state of the filters
 class ArticleFiltersState extends State<ArticleFiltersPage> {
   late String? sortBy;
   late bool isAscending;

@@ -16,6 +16,9 @@ import 'package:risu/utils/providers/theme.dart';
 import '../profile/informations/informations_page.dart';
 import 'home_page.dart';
 
+/// HomePageState
+/// This class is the state of the HomePage class
+/// It contains the logic of the HomePage class
 class HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   late List<Widget> _pages;
@@ -44,6 +47,9 @@ class HomePageState extends State<HomePage> {
     ];
   }
 
+  /// configProfile
+  /// This function checks if the user has completed his profile
+  /// If not, it will ask the user to complete it
   void configProfile(BuildContext context) async {
     try {
       String? firstName = userInformation?.firstName;

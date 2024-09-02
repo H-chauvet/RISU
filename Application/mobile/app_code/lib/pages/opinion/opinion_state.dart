@@ -16,6 +16,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'opinion_page.dart';
 
+/// Manages the state of the OpinionPage.
+/// Handles fetching, posting, updating, and deleting opinions.
 class OpinionPageState extends State<OpinionPage> {
   int itemId;
 
@@ -25,6 +27,7 @@ class OpinionPageState extends State<OpinionPage> {
   int selectedStarFilter = 6;
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// Fetches opinions for the given item based on the selected star filter.
   void getOpinions(itemId) async {
     try {
       setState(() {
@@ -73,6 +76,11 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Posts a new opinion for the given item.
+  /// This function sends a POST request with the note (rating) and comment
+  /// to the server to add a new review for the item specified by itemId.
+  /// It handles the loading state and displays a success or error message
+  /// based on the response from the server.
   void postOpinion(note, comment) async {
     late http.Response response;
     try {
@@ -122,6 +130,7 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Updates an existing opinion by sending a PUT request with the given note and comment.
   void updateOpinion(opinionId, note, comment) async {
     late http.Response response;
     try {
@@ -170,6 +179,7 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Deletes an opinion by sending a DELETE request using the given opinionId.
   void deleteOpinion(opinionId) async {
     late http.Response response;
     try {
@@ -293,6 +303,7 @@ class OpinionPageState extends State<OpinionPage> {
     );
   }
 
+  /// Displays a dialog to add a new opinion with a star rating and comment input.
   void _showUpdateOpinionDialog(opinionId, currentNote, currentComment) {
     String comment = currentComment;
     int selectedStar = int.parse(currentNote);
@@ -365,6 +376,7 @@ class OpinionPageState extends State<OpinionPage> {
     );
   }
 
+  /// Shows a dialog for opinion settings, allowing the user to delete or update an opinion.
   void _showParameterDialog(opinionId, note, comment) {
     showDialog(
       context: context,
