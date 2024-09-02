@@ -4,25 +4,25 @@ const ticketRouter = require("../../routes/Mobile/tickets");
 const ticketCtrl = require("../../controllers/Common/tickets");
 const userCtrl = require("../../controllers/Mobile/user");
 const webUserCtrl = require("../../controllers/Web/user");
-const lang = require('i18n');
+const lang = require("i18n");
 
 jest.mock("../../controllers/Common/tickets");
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Web/user");
 jest.mock("../../middleware/Mobile/jwt", () => ({
-  refreshTokenMiddleware: jest.fn((req, res, next) => next())
+  refreshTokenMiddleware: jest.fn((req, res, next) => next()),
 }));
 jest.mock("passport", () => ({
   authenticate: jest.fn(() => (req, res, next) => {
     req.user = { id: 1 }; // Mock user
     next();
-  })
+  }),
 }));
 
 lang.configure({
-  locales: ['en'],
-  directory: __dirname + '/../../locales',
-  defaultLocale: 'en',
+  locales: ["en"],
+  directory: __dirname + "/../../locales",
+  defaultLocale: "en",
   objectNotation: true,
 });
 
@@ -36,28 +36,28 @@ describe("GET /", () => {
     jest.clearAllMocks();
   });
 
-  it('should not get tickets of an user : User not found', async () => {
+  it("should not get tickets of an user : User not found", async () => {
     userCtrl.findUserById.mockResolvedValue(null);
 
     const response = await supertest(app)
-      .get('/')
-      .set('Authorization', 'Bearer validToken');
+      .get("/")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should get tickets of an user : test success', async () => {
+  it("should get tickets of an user : test success", async () => {
     const mockItems = [
-      { id: 1, name: 'test name', type: 'test type' },
-      { id: 2, name: 'test name2', type: 'test type2' },
+      { id: 1, name: "test name", type: "test type" },
+      { id: 2, name: "test name2", type: "test type2" },
     ];
 
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getAllUserTickets.mockResolvedValue(mockItems);
 
     const response = await supertest(app)
-      .get('/')
-      .set('Authorization', 'Bearer validToken');
+      .get("/")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toEqual({ tickets: mockItems });
@@ -69,122 +69,122 @@ describe("POST /", () => {
     jest.clearAllMocks();
   });
 
-  it('should not post a ticket : User not found', async () => {
+  it("should not post a ticket : User not found", async () => {
     userCtrl.findUserById.mockResolvedValue(null);
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken');
+      .post("/")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should not post a ticket : no content', async () => {
+  it("should not post a ticket : no content", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken');
+      .post("/")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(400);
   });
 
-  it('should not post a ticket : no title', async () => {
+  it("should not post a ticket : no title", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
+        content: "test content",
       });
 
     expect(response.statusCode).toBe(400);
   });
 
-  it('should not post a ticket : Conversation not found', async () => {
+  it("should not post a ticket : Conversation not found", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue(null);
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
-        title: 'test title',
+        content: "test content",
+        title: "test title",
         createdAt: "test timestamp",
         assignedId: "test assignedId",
-        chatUid: "test chatUid"
+        chatUid: "test chatUid",
       });
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should not post a ticket : Conversation not found', async () => {
+  it("should not post a ticket : Conversation not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue({ id: 1 });
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
-        title: 'test title',
+        content: "test content",
+        title: "test title",
         createdAt: "test timestamp",
         assignedId: "test assignedId",
-        chatUid: "test chatUid"
+        chatUid: "test chatUid",
       });
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should post a ticket : test success', async () => {
+  it("should post a ticket : test success", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
-        title: 'test title',
+        content: "test content",
+        title: "test title",
         createdAt: "test timestamp",
         assignedId: "test assignedId",
-        chatUid: "test chatUid"
+        chatUid: "test chatUid",
       });
 
     expect(response.statusCode).toBe(201);
   });
 
-  it('should post a ticket with no assignedId : test success', async () => {
+  it("should post a ticket with no assignedId : test success", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
     ticketCtrl.getConversation.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
-        title: 'test title',
+        content: "test content",
+        title: "test title",
         createdAt: "test timestamp",
-        chatUid: "test chatUid"
+        chatUid: "test chatUid",
       });
 
     expect(response.statusCode).toBe(201);
   });
 
-  it('should post a ticket with no chatUid : test success', async () => {
+  it("should post a ticket with no chatUid : test success", async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
-      .post('/')
-      .set('Authorization', 'Bearer validToken')
+      .post("/")
+      .set("Authorization", "Bearer validToken")
       .send({
-        content: 'test content',
-        title: 'test title',
+        content: "test content",
+        title: "test title",
         createdAt: "test timestamp",
       });
 
@@ -197,48 +197,48 @@ describe("PUT /assign/:assignedId", () => {
     jest.clearAllMocks();
   });
 
-  it('should not assign a user to a ticket : User not found', async () => {
+  it("should not assign a user to a ticket : User not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .put('/assign/1')
-      .set('Authorization', 'Bearer validToken');
+      .put("/assign/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should not assign a user to a ticket : missing ticketId', async () => {
+  it("should not assign a user to a ticket : missing ticketId", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
 
     const response = await supertest(app)
-      .put('/assign/1')
-      .set('Authorization', 'Bearer validToken');
+      .put("/assign/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(400);
   });
 
-  it('should not assign a user to a ticket : missing assigned user', async () => {
+  it("should not assign a user to a ticket : missing assigned user", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .put('/assign/1')
-      .set('Authorization', 'Bearer validToken')
+      .put("/assign/1")
+      .set("Authorization", "Bearer validToken")
       .send({
-        ticketId: '1',
+        ticketId: "1",
       });
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should assign a user to a ticket : test success', async () => {
+  it("should assign a user to a ticket : test success", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
 
     const response = await supertest(app)
-      .put('/assign/1')
-      .set('Authorization', 'Bearer validToken')
+      .put("/assign/1")
+      .set("Authorization", "Bearer validToken")
       .send({
-        ticketId: '1',
+        ticketId: "1",
       });
 
     expect(response.statusCode).toBe(201);
@@ -250,22 +250,22 @@ describe("PUT /:chatId", () => {
     jest.clearAllMocks();
   });
 
-  it('should not close a ticket : User not found', async () => {
+  it("should not close a ticket : User not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .put('/1')
-      .set('Authorization', 'Bearer validToken');
+      .put("/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should close a ticket : test success', async () => {
+  it("should close a ticket : test success", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
 
     const response = await supertest(app)
-      .put('/1')
-      .set('Authorization', 'Bearer validToken');
+      .put("/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(201);
   });
@@ -276,22 +276,22 @@ describe("DELETE /:chatId", () => {
     jest.clearAllMocks();
   });
 
-  it('should not delte a ticket : User not found', async () => {
+  it("should not delte a ticket : User not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .delete('/1')
-      .set('Authorization', 'Bearer validToken');
+      .delete("/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should delte a ticket : test success', async () => {
+  it("should delte a ticket : test success", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
 
     const response = await supertest(app)
-      .delete('/1')
-      .set('Authorization', 'Bearer validToken');
+      .delete("/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(200);
   });
@@ -302,39 +302,39 @@ describe("GET /assigned-info/:assignedId", () => {
     jest.clearAllMocks();
   });
 
-  it('should delte a ticket : User not found', async () => {
+  it("should delte a ticket : User not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .get('/assigned-info/1')
-      .set('Authorization', 'Bearer validToken');
+      .get("/assigned-info/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should delte a ticket : Assigned user not found', async () => {
+  it("should delte a ticket : Assigned user not found", async () => {
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
     webUserCtrl.findUserByUuid.mockResolvedValueOnce(null);
 
     const response = await supertest(app)
-      .get('/assigned-info/1')
-      .set('Authorization', 'Bearer validToken');
+      .get("/assigned-info/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(404);
   });
 
-  it('should delte a ticket : test success', async () => {
+  it("should delte a ticket : test success", async () => {
     mockUserName = {
-      firstname: 'testFirstName',
-      lastname: 'testLastName',
+      firstname: "testFirstName",
+      lastname: "testLastName",
     };
 
     userCtrl.findUserById.mockResolvedValueOnce({ id: 1 });
     webUserCtrl.findUserByUuid.mockResolvedValueOnce(mockUserName);
 
     const response = await supertest(app)
-      .get('/assigned-info/1')
-      .set('Authorization', 'Bearer validToken');
+      .get("/assigned-info/1")
+      .set("Authorization", "Bearer validToken");
 
     expect(response.statusCode).toBe(200);
   });

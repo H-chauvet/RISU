@@ -3,49 +3,55 @@ const router = express.Router();
 
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
-const languageMiddleware = require('../../middleware/language');
+const languageMiddleware = require("../../middleware/language");
 const userCtrl = require("../../controllers/Web/user");
 
-router.post(
-  "/delete",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
-
-      const { id } = req.body;
-      if (!id) {
-        res.status(400);
-        throw new Error(res.__('missingId'));
-      }
-      await itemCtrl.deleteItem(id);
-      res.status(200).json(res.__('itemsDeleted'));
-    } catch (err) {
-      next(err);
-    }
+router.post("/delete", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
-);
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const { id } = req.body;
+    if (!id) {
+      res.status(400);
+      throw "Id is required";
+    }
+    await itemCtrl.deleteItem(res, id);
+    res.status(200).json(res.__("itemsDeleted"));
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
 
 router.post("/create", async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401);
-    throw new Error(res.__('unauthorized'));
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
-    const user = userCtrl.getUserFromToken(req)
-    languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
 
     const { id, name, available, price, containerId, description, image } =
       req.body;
-    const item = await itemCtrl.createItem({
+    const item = await itemCtrl.createItem(res, {
       id,
       name,
       available,
@@ -56,278 +62,292 @@ router.post("/create", async (req, res, next) => {
     });
     res.status(200).json(item);
   } catch (err) {
-    next(err);
-    return res.status(400).json(res.__('errorOccured'));
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
-router.put(
-  "/update",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
-
-      const { id, name, available, containerId, price, image, description } =
-        req.body;
-
-      if (!id) {
-        res.status(400);
-        throw new Error(res.__('missingIdName'));
-      }
-
-      const item = await containerCtrl.updateItem(id, {
-        name,
-        available,
-        containerId,
-        price,
-        image,
-        description,
-      });
-
-      res.status(200).json(item);
-    } catch (err) {
-      next(err);
-    }
+router.put("/update", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
-);
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-router.post(
-  "/update/:itemId",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const { id, name, available, containerId, price, image, description } =
+      req.body;
+
+    if (!id) {
+      res.status(400);
+      throw res.__("missingId");
     }
+
+    const item = await containerCtrl.updateItem(res, id, {
+      name,
+      available,
+      containerId,
+      price,
+      image,
+      description,
+    });
+
+    res.status(200).json(item);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
+router.post("/update/:itemId", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send("Unauthorized");
+    return;
+  }
+
+  try {
     const id = parseInt(req.params.itemId);
-    try {
-      const { name, description, price, available } = req.body;
-      const isPrice = parseInt(price);
-      let isAvailable = false;
-      if (available == "true") {
-        isAvailable = true;
-      } else {
-        isAvailable = false;
-      }
-      if (!name) {
-        res.status(400).json({
-          error: res.__('missingMailName'),
-        });
-        return;
-      }
-
-      const existingUser = await itemCtrl.getItemFromId(id);
-
-      if (!existingUser) {
-        res.status(404).json({ error: res.__('userNotFound') });
-        return;
-      }
-      languageMiddleware.setServerLanguage(req, existingUser)
-      const updatedUser = await itemCtrl.updateItemCtn({
-        id,
-        name,
-        description,
-        isPrice,
-        isAvailable,
-      });
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      next(err);
+    const { name, description, price, available } = req.body;
+    const isPrice = parseInt(price);
+    let isAvailable = false;
+    if (available == "true") {
+      isAvailable = true;
+    } else {
+      isAvailable = false;
     }
+    if (!name) {
+      res.status(400);
+      throw res.__("missingMailName");
+    }
+
+    const existingUser = await itemCtrl.getItemFromId(res, id);
+    if (!existingUser) {
+      res.status(404);
+      throw res.__("userNotFound");
+    }
+    languageMiddleware.setServerLanguage(req, existingUser);
+    const updatedUser = await itemCtrl.updateItemCtn(res, {
+      id,
+      name,
+      description,
+      isPrice,
+      isAvailable,
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
-);
+});
 
-router.get(
-  "/listAllByContainerId",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
-
-      const containerId = req.query.containerId;
-      const item = await itemCtrl.getItemByContainerId(parseInt(containerId));
-
-      res.status(200).json({ item });
-    } catch (err) {
-      next(err);
-    }
+router.get("/listAllByContainerId", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
-);
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-router.get(
-  "/listAllByCategory",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const containerId = req.query.containerId;
+    const item = await itemCtrl.getItemByContainerId(
+      res,
+      parseInt(containerId)
+    );
+
+    res.status(200).json({ item });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
     }
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
-
-      const category = req.query.category;
-      const item = await itemCtrl.getItemByCategory(category);
-
-      res.status(200).json({ item });
-    } catch (err) {
-      next(err);
-    }
+    res.send(err);
   }
-);
+});
 
-router.get(
-  "/listAll",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
-    try {
-      const item = await itemCtrl.getAllItems();
-
-      res.status(200).json({ item });
-    } catch (err) {
-      next(err);
-    }
+router.get("/listAllByCategory", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
-);
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-router.post(
-  "/update-name/:id",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const category = req.query.category;
+    const item = await itemCtrl.getItemByCategory(res, category);
+
+    res.status(200).json({ item });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
     }
+    res.send(err);
+  }
+});
+
+router.get("/listAll", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+  try {
+    const item = await itemCtrl.getAllItem(res);
+
+    res.status(200).json({ item });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
+router.post("/update-name/:id", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
     const id = parseInt(req.params.id);
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-      const { name } = req.body;
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+    const { name } = req.body;
 
-      if (!name) {
-        res.status(400).json({
-          error: res.__('missingMailName'),
-        });
-        return;
-      }
-
-      const existingUser = await itemCtrl.getItemFromId(id);
-      if (!existingUser) {
-        res.status(404).json({ error: res.__('userNotFound') });
-        return;
-      }
-
-      const updatedUser = await itemCtrl.updateName({
-        id,
-        name,
-      });
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      next(err);
+    if (!name) {
+      res.status(400);
+      throw res.__("missingMailName");
     }
+
+    const existingUser = await itemCtrl.getItemFromId(res, id);
+    if (!existingUser) {
+      res.status(404);
+      throw res.__("userNotFound");
+    }
+
+    const updatedUser = await itemCtrl.updateName(res, {
+      id,
+      name,
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
-);
+});
 
-router.post(
-  "/update-price/:id",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
+router.post("/update-price/:id", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+  try {
     const id = parseInt(req.params.id);
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-      const { price } = req.body;
-      const priceTmp = parseFloat(price);
-      if (!price) {
-        res.status(400).json({
-          error: res.__('missingMailPrice'),
-        });
-        return;
-      }
-
-      const existingUser = await itemCtrl.getItemFromId(id);
-      if (!existingUser) {
-        res.status(404).json({ error: res.__('userNotFound') });
-        return;
-      }
-
-      const updatedUser = await itemCtrl.updatePrice({
-        id,
-        priceTmp,
-      });
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      next(err);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+    const { price } = req.body;
+    const priceTmp = parseFloat(price);
+    if (!price) {
+      res.status(400);
+      throw res.__("missingMailPrice");
     }
+
+    const existingUser = await itemCtrl.getItemFromId(res, id);
+    if (!existingUser) {
+      res.status(404);
+      throw "User not found";
+    }
+
+    const updatedUser = await itemCtrl.updatePrice(res, {
+      id,
+      priceTmp,
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
-);
+});
 
-router.post(
-  "/update-description/:id",
-  async function (req, res, next) {
-    try {
-      jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
-    } catch (err) {
-      res.status(401);
-      throw new Error(res.__('unauthorized'));
-    }
+router.post("/update-description/:id", async function (req, res, next) {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
     const id = parseInt(req.params.id);
-    try {
-      const user = userCtrl.getUserFromToken(req)
-      languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
 
-      const { description } = req.body;
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+    const { description } = req.body;
 
-      if (!description) {
-        res.status(400).json({
-          error: res.__('missingMailDescription')
-        });
-        return;
-      }
-
-      const existingUser = await itemCtrl.getItemFromId(id);
-      if (!existingUser) {
-        res.status(404).json({ error: res.__('userNotFound') });
-        return;
-      }
-      languageMiddleware.setServerLanguage(req, existingUser)
-      const updatedUser = await itemCtrl.updateDescription({
-        id,
-        description,
-      });
-      res.status(200).json(updatedUser);
-    } catch (err) {
-      next(err);
+    if (!description) {
+      res.status(400);
+      throw res.__("missingMailDescription");
     }
+
+    const existingUser = await itemCtrl.getItemFromId(res, id);
+    if (!existingUser) {
+      res.status(404);
+      throw res.__("userNotFound");
+    }
+
+    const updatedUser = await itemCtrl.updateDescription(res, {
+      id,
+      description,
+    });
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
-);
+});
 
 module.exports = router;

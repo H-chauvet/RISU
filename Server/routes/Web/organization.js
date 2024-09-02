@@ -4,22 +4,24 @@ const router = express.Router();
 const passport = require("passport");
 const organizationCtrl = require("../../controllers/Web/organization");
 const jwtMiddleware = require("../../middleware/jwt");
-const languageMiddleware = require('../../middleware/language');
+const languageMiddleware = require("../../middleware/language");
 const userCtrl = require("../../controllers/Web/user");
 
 router.post("/create", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401);
-    throw new Error(res.__('unauthorized'));
+    res.status(401).send(res.__("unauthorized"));
   }
   try {
-    const user = userCtrl.getUserFromToken(req)
-    languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
 
     const { name, type, affiliate, containers, contactInformation } = req.body;
-    const organization = await organizationCtrl.createOrganization({
+    const organization = await organizationCtrl.createOrganization(res, {
       name,
       type,
       affiliate,
@@ -28,7 +30,10 @@ router.post("/create", async function (req, res, next) {
     });
     res.status(200).json(organization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -36,30 +41,34 @@ router.post("/update-information/:id", async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401);
-    throw new Error(res.__('unauthorized'));
+    res.status(401).send(res.__("unauthorized"));
   }
   const id = parseInt(req.params.id);
   try {
     const { contactInformation } = req.body;
 
-    const user = userCtrl.getUserFromToken(req)
-    languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
 
     if (!contactInformation) {
-      res.status(400).json({
-        error: res.__('missingMailContact')
-      });
+      res.status(400).send(res.__("missingMailContact"));
       return;
     }
 
-    const existingOrganization = await organizationCtrl.getOrganizationById(id);
+    const existingOrganization = await organizationCtrl.getOrganizationById(
+      res,
+      id
+    );
     if (!existingOrganization) {
-      res.status(404).json({ error: res.__('organizationNotFound') });
+      res.status(404).send(res.__("organizationNotFound"));
       return;
     }
 
     const updatedOrganization = await organizationCtrl.updateContactInformation(
+      res,
       {
         id,
         contactInformation,
@@ -67,7 +76,10 @@ router.post("/update-information/:id", async (req, res, next) => {
     );
     res.status(200).json(updatedOrganization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
@@ -75,36 +87,42 @@ router.post("/update-type/:id", async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401);
-    throw new Error(res.__('unauthorized'));
+    res.status(401).send(res.__("unauthorized"));
   }
   try {
-    const user = userCtrl.getUserFromToken(req)
-    languageMiddleware.setServerLanguage(req, user)
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
 
     const id = parseInt(req.params.id);
     const { type } = req.body;
 
     if (!type) {
-      res.status(400).json({
-        error: res.__('missingMailType'),
-      });
+      res.status(400).send(res.__("missingMailType"));
       return;
     }
 
-    const existingOrganization = await organizationCtrl.getOrganizationById(id);
+    const existingOrganization = await organizationCtrl.getOrganizationById(
+      res,
+      id
+    );
     if (!existingOrganization) {
-      res.status(404).json({ error: res.__('organizationNotFound') });
+      res.status(404).send(res.__("organizationNotFound"));
       return;
     }
 
-    const updatedOrganization = await organizationCtrl.updateType({
+    const updatedOrganization = await organizationCtrl.updateType(res, {
       id,
       type,
     });
     res.status(200).json(updatedOrganization);
   } catch (err) {
-    next(err);
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
   }
 });
 
