@@ -104,7 +104,7 @@
   "errorOccurredDuringUpdateUserInformation": "Une erreur est survenue lors de la mise à jour des informations de l'utilisateur.",
   "faq": "Questions",
   "faqAnswer": "FAQ",
-  "faqTitle": "Bonjour {name},\nComment pouvons-nous\nvous aider ?",
+  "faqTitle": "Bonjour {name}, Comment pouvons-nous vous aider ?",
   "favoritesListEmpty": "Aucun Favori",
   "fieldRequired": "Ce champ est requis.",
   "fieldsEmpty": "Certains champs sont vides.",
