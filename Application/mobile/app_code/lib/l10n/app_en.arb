@@ -104,7 +104,7 @@
   "errorOccurredDuringUpdateUserInformation": "An error occurred while updating user information.",
   "faq": "Questions",
   "faqAnswer": "FAQ",
-  "faqTitle": "Hi {name},\nhow can we\nhelp you?",
+  "faqTitle": "Hi {name}, how can we help you?",
   "favoritesListEmpty": "No favorites",
   "fieldRequired": "This field is required.",
   "fieldsEmpty": "Some fields are empty.",
