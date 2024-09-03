@@ -69,8 +69,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
             feedbacksData.map((data) => Feedbacks.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
