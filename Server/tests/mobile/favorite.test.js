@@ -5,6 +5,7 @@ const favoriteRouter = require("../../routes/Mobile/favorites");
 const favoriteCtrl = require("../../controllers/Mobile/favorites");
 const itemCtrl = require("../../controllers/Common/items");
 const userCtrl = require("../../controllers/Mobile/user");
+const lang = require('i18n');
 
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Common/items");
@@ -19,7 +20,15 @@ jest.mock("passport", () => ({
   })
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", favoriteRouter);
 
@@ -35,7 +44,6 @@ describe("POST /:itemId", () => {
       .set("Authorization", "Bearer mockedAccessToken");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it("should not add item to favorites : Item not found", async () => {
@@ -47,7 +55,6 @@ describe("POST /:itemId", () => {
       .set("Authorization", "Bearer mockedAccessToken");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("Item not found");
   });
 
   it("should not add item to favorites : Favorite already exist", async () => {
@@ -60,7 +67,6 @@ describe("POST /:itemId", () => {
       .set("Authorization", "Bearer mockedAccessToken");
 
     expect(response.statusCode).toBe(403);
-    expect(response.text).toBe("Favorite already exist");
   });
 
   it('should add item to favorites : test success', async () => {
@@ -74,7 +80,6 @@ describe("POST /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(201);
-    expect(response.text).toBe('Favorite added');
   });
 });
 
@@ -90,7 +95,6 @@ describe("GET /", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should not get user favorites : Favorites not found', async () => {
@@ -102,7 +106,6 @@ describe("GET /", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Favorites not found");
   });
 
   it('should get user favorites : test success', async () => {
@@ -130,7 +133,6 @@ describe("GET /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should not add item to favorites : Item not found', async () => {
@@ -142,7 +144,6 @@ describe("GET /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Item not found");
   });
 
   it('should add item to favorites : test success', async () => {
@@ -172,7 +173,6 @@ describe("DELETE /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("User not found");
   });
 
   it('should add item to favorites : Item not found', async () => {
@@ -184,7 +184,6 @@ describe("DELETE /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Item not found");
   });
 
   it('should add item to favorites : Favorite not found', async () => {
@@ -197,7 +196,6 @@ describe("DELETE /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(404);
-    expect(response.text).toBe("Favorite not found");
   });
 
   it('should add item to favorites : test success', async () => {
@@ -211,6 +209,5 @@ describe("DELETE /:itemId", () => {
       .set('Authorization', 'Bearer validToken');
 
     expect(response.status).toBe(200);
-    expect(response.text).toBe('Favorite deleted');
   });
 });

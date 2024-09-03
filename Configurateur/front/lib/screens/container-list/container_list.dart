@@ -80,8 +80,7 @@ class _ContainerPageState extends State<ContainerPage> {
             .toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -101,8 +100,7 @@ class _ContainerPageState extends State<ContainerPage> {
       showCustomToast(context, "Le conteneur a bien été supprimé !", true);
       fetchContainers();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression du conteneur", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -124,8 +122,7 @@ class _ContainerPageState extends State<ContainerPage> {
         categories.sort();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -149,8 +146,7 @@ class _ContainerPageState extends State<ContainerPage> {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -174,8 +170,7 @@ class _ContainerPageState extends State<ContainerPage> {
       showCustomToast(context, "Article supprimé avec succès", true);
       fetchItems();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression de l'article", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -219,8 +214,7 @@ class _ContainerPageState extends State<ContainerPage> {
       showCustomToast(context, "Modifications effectuées avec succès !", true);
       fetchItemsByCategory();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -421,7 +415,7 @@ class _ContainerPageState extends State<ContainerPage> {
       showCustomToast(context, "Article créé avec succès !", true);
       fetchItemsByCategory();
     } else {
-      showCustomToast(context, "Erreur durant la création de l'article", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

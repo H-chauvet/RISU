@@ -63,8 +63,7 @@ class LandingAppBarState extends State<LandingAppBar> {
               context, "L'application a bien été téléchargée !", true);
         }
       } else {
-        showCustomToast(
-            context, "Erreur lors du téléchargement de l'application.", false);
+        showCustomToast(context, response.body, false);
       }
     } catch (e) {}
   }

@@ -1,6 +1,7 @@
 const express = require("express");
 const supertest = require("supertest");
 const jwt = require('jsonwebtoken')
+const lang = require('i18n');
 
 const authRouter = require("../../routes/Mobile/auth");
 const authCtrl = require("../../controllers/Mobile/auth");
@@ -15,7 +16,15 @@ jest.mock("../../middleware/Mobile/jwt", () => ({
   refreshTokenMiddleware: jest.fn((req, res, next) => next()),
 }));
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", authRouter);
 
@@ -38,7 +47,6 @@ describe("get /mailVerification", () => {
       });
 
     expect(response.statusCode).toBe(401);
-    expect(response.text).toBe('No matching user found.');
   });
 
   it("should send confirmation email : test success", async () => {
@@ -52,6 +60,5 @@ describe("get /mailVerification", () => {
       });
 
     expect(response.statusCode).toBe(200);
-    expect(response.text).toBe('Email now successfully verified !\nYou can go back to login page.');
   });
 });

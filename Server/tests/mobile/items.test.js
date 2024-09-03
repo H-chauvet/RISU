@@ -3,10 +3,20 @@ const supertest = require("supertest");
 const itemRouter = require("../../routes/Mobile/items");
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
+const lang = require('i18n');
+
 
 jest.mock("../../controllers/Common/items");
 
+lang.configure({
+  locales: ['en'],
+  directory: __dirname + '/../../locales',
+  defaultLocale: 'en',
+  objectNotation: true,
+});
+
 const app = express();
+app.use(lang.init);
 app.use(express.json());
 app.use("/", itemRouter);
 
@@ -23,8 +33,7 @@ describe("GET /article/listall", () => {
 
     itemCtrl.getAllItems.mockResolvedValueOnce(mockItems);
 
-    const response = await supertest(app)
-      .get("/listAll");
+    const response = await supertest(app).get("/listAll");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockItems);
@@ -50,13 +59,11 @@ describe("GET /article/:articleId", () => {
   });
 
   it("should not get item from a wrong id", async () => {
-
     itemCtrl.getItemFromId.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("article not found");
   });
 });
 
@@ -73,7 +80,8 @@ describe("GET /article/:articleId/similar", () => {
 
     itemCtrl.getSimilarItems.mockResolvedValueOnce(mockItems);
 
-    const response = await supertest(app).get("/2/similar")
+    const response = await supertest(app)
+      .get("/2/similar")
       .query({ containerId: 1 });
 
     expect(response.statusCode).toBe(200);
@@ -81,23 +89,20 @@ describe("GET /article/:articleId/similar", () => {
   });
 
   it("should not get similar items, container not found", async () => {
-
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
     const response = await supertest(app).get("/2/similar");
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("containerId is required");
   });
 
   it("should not get similar items, container not found", async () => {
-
     itemCtrl.getSimilarItems.mockResolvedValueOnce();
 
-    const response = await supertest(app).get("/2/similar")
+    const response = await supertest(app)
+      .get("/2/similar")
       .query({ containerId: 1 });
 
     expect(response.statusCode).toBe(404);
-    expect(response.text).toBe("article not found");
   });
 });

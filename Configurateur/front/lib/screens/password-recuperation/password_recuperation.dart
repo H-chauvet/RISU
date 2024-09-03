@@ -176,10 +176,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           showCustomToast(context,
                               "Le mot de passe a bien été récupéré", true);
                         } else {
-                          showCustomToast(
-                              context,
-                              "Erreur durant la récupération du mot de passe",
-                              false);
+                          showCustomToast(context, response.body, false);
                         }
                         context.go("/");
                       }
