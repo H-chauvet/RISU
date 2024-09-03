@@ -128,11 +128,8 @@ class MapsState extends State<MapsScreen> {
           'container': widget.container,
         };
         context.go('/container-creation/payment', extra: jsonEncode(data));
-      } else if (response.statusCode == 400) {
-        showCustomToast(context, "Erreur durant la localisation", false);
       } else {
-        showCustomToast(
-            context, "La position n'a pas pu être enregistrée", false);
+        showCustomToast(context, response.body, false);
       }
     });
   }

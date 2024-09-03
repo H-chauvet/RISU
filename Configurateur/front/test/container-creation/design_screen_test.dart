@@ -81,7 +81,6 @@ void main() {
 
     await tester.tap(find.text("Suivant"));
     await tester.tap(find.text("Précédent"));
-    await tester.tap(find.text("Parcourir"));
 
     await tester.pumpAndSettle();
   });
@@ -100,7 +99,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));
 
@@ -124,7 +122,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
     designScreenState.face = "Derrière";
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));
@@ -149,7 +146,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
     designScreenState.face = "Gauche";
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));
@@ -173,7 +169,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
     designScreenState.face = "Droite";
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));
@@ -197,7 +192,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
     designScreenState.face = "Haut";
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));
@@ -221,7 +215,6 @@ void main() {
     List<PlatformFile> files = [];
     files.add(PlatformFile(
         path: 'test', name: 'test', size: 20, bytes: Uint8List(20)));
-    designScreenState.picked = FilePickerResult(files);
     designScreenState.face = "Bas";
 
     await designScreenState.loadImage(true, fileData: Uint8List(20));

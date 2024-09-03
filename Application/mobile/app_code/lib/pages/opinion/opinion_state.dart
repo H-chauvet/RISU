@@ -203,7 +203,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       switch (response.statusCode) {
-        case 201:
+        case 200:
           if (mounted) {
             getOpinions(itemId);
             await MyAlertDialog.showInfoAlertDialog(
