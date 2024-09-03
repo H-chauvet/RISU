@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/image_loader.dart';
-import 'package:risu/utils/time.dart';
 
 class RentalCard extends StatelessWidget {
   final dynamic rental;
@@ -76,6 +75,7 @@ class RentalCard extends StatelessWidget {
                       children: [
                         Text(
                           rental['item']['name'],
+                          key: const Key("article_name"),
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -100,6 +100,7 @@ class RentalCard extends StatelessWidget {
                         if (isRentalInProgress(rental))
                           Text(
                             "${AppLocalizations.of(context)!.timeRemaining}: ${calculateRemainingTime(rental, context)}",
+                            key: const Key("article_timeRemaining"),
                             style: const TextStyle(
                               fontSize: 14,
                             ),
@@ -108,12 +109,6 @@ class RentalCard extends StatelessWidget {
                           Text(
                             AppLocalizations.of(context)!
                                 .rentTimeOfRenting(rental['duration']),
-                            style: const TextStyle(
-                              fontSize: 14,
-                            ),
-                          ),
-                          Text(
-                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}",
                             style: const TextStyle(
                               fontSize: 14,
                             ),

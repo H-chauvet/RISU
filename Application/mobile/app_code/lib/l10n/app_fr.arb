@@ -111,7 +111,7 @@
   "goToDetails": "Aller aux détails de l'article",
   "goBackToLogin": "Retourner sur la page de connexion",
   "homeGoBack": "Retour à l'accueil",
-  "hoursAndMinutes": "{hours, plural, one{{hours} heure} other{{hours} heures}} et {minutes, plural, one{{minutes} minute} other{{minutes} minutes}}",
+  "hoursAndMinutes": "{hours} h {minutes} min",
   "hoursNumberOfHours": "{hours, plural, one{Nombre d'heure} other{Nombre d'heures}}",
   "howManyAvailableArticles": "{count, plural, one{{count} article disponible} other{{count} articles disponibles}}",
   "incorrectInputs": "Certains champs sont incorrects.",
