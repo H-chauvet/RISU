@@ -121,138 +121,144 @@ class RentalPageState extends State<RentalPage> {
         body: (_loaderManager.getIsLoading())
             ? Center(child: _loaderManager.getLoader())
             : Center(
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 30),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              getRentalsInProgress();
-                              setState(() {
-                                showRentalsInProgress = true;
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(8.0),
-                                bottomLeft: Radius.circular(8.0),
-                              ),
-                              child: Container(
-                                constraints: BoxConstraints.expand(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  height: 30, // hauteur du bouton
-                                ),
-                                decoration: BoxDecoration(
-                                  color: showRentalsInProgress
-                                      ? themeProvider.currentTheme.primaryColor
-                                      : themeProvider
-                                          .currentTheme.secondaryHeaderColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppLocalizations.of(context)!.inProgress,
-                                    style: TextStyle(
-                                      color: showRentalsInProgress
-                                          ? themeProvider
-                                              .currentTheme.secondaryHeaderColor
-                                          : themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.grey[800]
-                                              // Gris foncé pour le mode clair
-                                              : Colors.grey[400],
-                                      // Gris clair pour le mode sombre
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+          child: Container(
+            margin:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        getRentalsInProgress();
+                        setState(() {
+                          showRentalsInProgress = true;
+                        });
+                      },
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(8.0),
+                          bottomLeft: Radius.circular(8.0),
+                        ),
+                        child: Container(
+                          constraints: BoxConstraints.expand(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width / 3,
+                            height: 30, // hauteur du bouton
+                          ),
+                          decoration: BoxDecoration(
+                            color: showRentalsInProgress
+                                ? themeProvider.currentTheme.primaryColor
+                                : themeProvider
+                                .currentTheme.secondaryHeaderColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.inProgress,
+                              style: TextStyle(
+                                color: showRentalsInProgress
+                                    ? themeProvider
+                                    .currentTheme.secondaryHeaderColor
+                                    : themeProvider.currentTheme
+                                    .brightness ==
+                                    Brightness.light
+                                    ? Colors.grey[800]
+                                // Gris foncé pour le mode clair
+                                    : Colors.grey[400],
+                                // Gris clair pour le mode sombre
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              getRentalsInProgress();
-                              setState(() {
-                                showRentalsInProgress = false;
-                              });
-                            },
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(8.0),
-                                bottomRight: Radius.circular(8.0),
-                              ),
-                              child: Container(
-                                constraints: BoxConstraints.expand(
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  height: 30, // hauteur du bouton
-                                ),
-                                decoration: BoxDecoration(
-                                  color: !showRentalsInProgress
-                                      ? themeProvider.currentTheme.primaryColor
-                                      : themeProvider
-                                          .currentTheme.secondaryHeaderColor,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    AppLocalizations.of(context)!.allE,
-                                    style: TextStyle(
-                                      color: !showRentalsInProgress
-                                          ? themeProvider
-                                              .currentTheme.secondaryHeaderColor
-                                          : themeProvider.currentTheme
-                                                      .brightness ==
-                                                  Brightness.light
-                                              ? Colors.grey[
-                                                  800] // Gris foncé pour le mode clair
-                                              : Colors.grey[400],
-                                      // Gris clair pour le mode sombre
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        getRentalsInProgress();
+                        setState(() {
+                          showRentalsInProgress = false;
+                        });
+                      },
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(8.0),
+                          bottomRight: Radius.circular(8.0),
+                        ),
+                        child: Container(
+                          constraints: BoxConstraints.expand(
+                            width: MediaQuery
+                                .of(context)
+                                .size
+                                .width / 3,
+                            height: 30, // hauteur du bouton
+                          ),
+                          decoration: BoxDecoration(
+                            color: !showRentalsInProgress
+                                ? themeProvider.currentTheme.primaryColor
+                                : themeProvider
+                                .currentTheme.secondaryHeaderColor,
+                          ),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.allE,
+                              style: TextStyle(
+                                color: !showRentalsInProgress
+                                    ? themeProvider
+                                    .currentTheme.secondaryHeaderColor
+                                    : themeProvider.currentTheme
+                                    .brightness ==
+                                    Brightness.light
+                                    ? Colors.grey[
+                                800] // Gris foncé pour le mode clair
+                                    : Colors.grey[400],
+                                // Gris clair pour le mode sombre
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                      const SizedBox(height: 20),
-                      Expanded(
-                        key: const Key('rentals-list'),
-                        child: (showRentalsInProgress
-                                    ? rentalsInProgress
-                                    : rentals).isEmpty
-                            ? Center(
-                                child: Text(
-                                  AppLocalizations.of(context)!.rentsListEmpty,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: showRentalsInProgress
-                                    ? rentalsInProgress.length
-                                    : rentals.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  dynamic rental = showRentalsInProgress
-                                      ? rentalsInProgress[index]
-                                      : rentals[index];
-                                  return RentalCard(rental: rental);
-                                },
-                              ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Expanded(
+                  key: const Key('rentals-list'),
+                  child: (showRentalsInProgress
+                      ? rentalsInProgress
+                      : rentals).isEmpty
+                      ? Center(
+                    child: Text(
+                      AppLocalizations.of(context)!.rentsListEmpty,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                  )
+                      : ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: showRentalsInProgress
+                        ? rentalsInProgress.length
+                        : rentals.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      dynamic rental = showRentalsInProgress
+                          ? rentalsInProgress[index]
+                          : rentals[index];
+                      return RentalCard(rental: rental);
+                    },
                   ),
                 ),
-              ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
