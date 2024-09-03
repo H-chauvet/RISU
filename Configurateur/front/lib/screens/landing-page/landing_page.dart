@@ -54,6 +54,7 @@ class LandingPageState extends State<LandingPage> {
             child: CustomFooter(),
           ),
           children: [
+            LandingAppBar(context: context),
             Column(
               children: [
                 Text(
