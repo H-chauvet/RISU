@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -117,15 +118,20 @@ class MapsState extends State<MapsScreen> {
         'latitude': location.latitude.toString(),
         'longitude': location.longitude.toString(),
       },
-    );
-    var data = {
-      'amount': widget.amount,
-      'containerMapping': widget.containerMapping,
-      'lockers': widget.lockers,
-      'id': widget.id,
-      'container': widget.container,
-    };
-    context.go('/container-creation/payment', extra: jsonEncode(data));
+    ).then((response) {
+      if (response.statusCode == 200) {
+        var data = {
+          'amount': widget.amount,
+          'containerMapping': widget.containerMapping,
+          'lockers': widget.lockers,
+          'id': widget.id,
+          'container': widget.container,
+        };
+        context.go('/container-creation/payment', extra: jsonEncode(data));
+      } else {
+        showCustomToast(context, response.body, false);
+      }
+    });
   }
 
   /// [Function] : Go to the previous page

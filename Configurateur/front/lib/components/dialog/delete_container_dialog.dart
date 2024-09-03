@@ -221,26 +221,40 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             false);
                         if (ret == 'deleteError') {
                           await showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    content: Text(
-                                      "Vous ne pouvez pas réaliser cette action, la position est déjà vide",
-                                      style: TextStyle(
-                                        color: getTextColor(),
-                                      ),
-                                    ),
-                                  ));
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                "Vous ne pouvez pas réaliser cette action, la position est déjà vide",
+                                style: TextStyle(
+                                  color: getTextColor(),
+                                ),
+                              ),
+                            ),
+                          );
                         } else if (ret == 'wrongPositionError') {
                           await showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    content: Text(
-                                      "Vous ne pouvez pas réalisé cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
-                                      style: TextStyle(
-                                        color: getTextColor(),
-                                      ),
-                                    ),
-                                  ));
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                style: TextStyle(
+                                  color: getTextColor(),
+                                ),
+                              ),
+                            ),
+                          );
+                        } else if (ret == 'notFoundError') {
+                          await showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                style: TextStyle(
+                                  color: getTextColor(),
+                                ),
+                              ),
+                            ),
+                          );
                         } else {
                           Navigator.pop(context);
                         }

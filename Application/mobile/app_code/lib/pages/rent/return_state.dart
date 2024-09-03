@@ -10,6 +10,7 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -51,20 +52,18 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
+      switch (response.statusCode) {
+        case 201:
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
             message: AppLocalizations.of(context)!.invoiceSentMessage,
           );
-        }
-      } else {
-        if (mounted) {
+          break;
+        default:
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
-        }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -106,16 +105,21 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        setState(() {
-          rental = jsonDecode(response.body)['rental'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getRent',
-              message:
-                  AppLocalizations.of(context)!.errorOccurredDuringGettingRent);
-        }
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            rental = jsonDecode(response.body)['rental'];
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getRent',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingRent);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -147,16 +151,21 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        setState(() {
-          rental['ended'] = true;
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'returnArticle',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringRentReturning);
-        }
+      switch (response.statusCode) {
+        case 201:
+          setState(() {
+            rental['ended'] = true;
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'returnArticle',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringRentReturning);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {

@@ -8,18 +8,16 @@ router.post("/card-pay", async function (req, res, next) {
 
   try {
     res.send(
-      await paymentCtrl.makePayments({
+      await paymentCtrl.makePayments(res, {
         paymentMethodId,
         currency,
         useStripeSdk,
         amount,
         containerId,
-      }),
+      })
     );
   } catch (e) {
-    res.status(500).send({
-      error: e.message,
-    });
+    res.status(500).send(e.message);
   }
 });
 

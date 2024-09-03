@@ -8,3 +8,4 @@ services:
       - common:/apk
 volumes:
   common:
+    external: true

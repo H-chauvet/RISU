@@ -1,11 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 import 'password_change_style.dart';
@@ -118,19 +120,11 @@ class PasswordChangeState extends State<PasswordChange> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          Fluttertoast.showToast(
-                            msg: 'Mot de passe changé avec succès',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(context,
+                              "Mot de passe modifié avec succès !", true);
                         } else {
-                          Fluttertoast.showToast(
-                            msg: 'Echec lors du changement du mot de passe',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(context, response.body, false);
                         }
-                        // ignore: use_build_context_synchronously
                         context.go("/");
                       }
                     },
