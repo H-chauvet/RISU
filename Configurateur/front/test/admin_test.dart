@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/screens/admin/admin.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +9,8 @@ import 'package:sizer/sizer.dart';
 
 void main() {
   testWidgets('correct data', (WidgetTester tester) async {
-    await tester.binding.setSurfaceSize(const Size(1920, 1080));
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [

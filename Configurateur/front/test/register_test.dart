@@ -11,7 +11,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 
 import 'package:front/screens/register/register.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -22,10 +21,8 @@ import 'package:sizer/sizer.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late MockSharedPreferences sharedPreferences;
 
   setUp(() async {
-    sharedPreferences = MockSharedPreferences();
     final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
     final fontLoader = FontLoader('Roboto')..addFont(roboto);
     await fontLoader.load();

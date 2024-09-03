@@ -8,7 +8,6 @@ import 'package:front/components/tickets_page.dart';
 import 'package:front/screens/contact/contact.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +54,7 @@ void main() {
       ),
     );
 
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 
   testWidgets('Test du composant TicketPage', (WidgetTester tester) async {
@@ -87,7 +86,7 @@ void main() {
       ),
     );
 
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     expect(find.text('Contactez le support RISU !'), findsOneWidget);
     expect(find.text('Liste des tickets'), findsOneWidget);
@@ -99,7 +98,7 @@ void main() {
     expect(find.byKey(const Key("ticket-state-open")), findsOneWidget);
 
     await tester.tap(find.byKey(const Key("ticket-state-open")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     final state = tester.state(find.byType(TicketsPage)) as TicketsState;
     expect(state.showOpenedTickets, isTrue);
@@ -107,7 +106,7 @@ void main() {
     expect(find.byKey(const Key("ticket-state-closed")), findsOneWidget);
 
     await tester.tap(find.byKey(const Key("ticket-state-closed")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     final state2 = tester.state(find.byType(TicketsPage)) as TicketsState;
     expect(state2.showOpenedTickets, isFalse);
@@ -149,7 +148,7 @@ void main() {
 
     state_assign.uuid = "user2";
 
-    expect(state_assign.findAssigned(), "user1");
+    expect(state_assign.findAssigned(state_assign.conversation), "user1");
 
     state_assign.conversation = [
       {"creatorId": "", "assignedId": "user3"},
@@ -160,7 +159,7 @@ void main() {
 
     state_assign.uuid = "user2";
 
-    expect(state_assign.findAssigned(), "user3");
+    expect(state_assign.findAssigned(state_assign.conversation), "user3");
 
     state_assign.conversation = [
       {"creatorId": "", "assignedId": ""},
@@ -171,7 +170,7 @@ void main() {
 
     state_assign.uuid = "user2";
 
-    expect(state_assign.findAssigned(), "");
+    expect(state_assign.findAssigned(state_assign.conversation), "");
 
     final result = await state_assign.createTicket(
       title: 'Test ticket',
@@ -214,7 +213,7 @@ void main() {
     expect(tickets_sort['category2'][2]["createdAt"], "2024-05-16T14:00:00Z");
 
     state_tickets.isAdmin = true;
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     state_assign.conversation = [
       {
@@ -293,10 +292,10 @@ void main() {
       ]
     };
     await tester.tap(find.byKey(const Key("ticket-state-open")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
 
     await tester.tap(find.byKey(const Key("ticket-state-closed")));
-    await tester.pump();
+    await tester.pump(const Duration(seconds: 3));
   });
 }
 

@@ -1,0 +1,464 @@
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:front/components/container.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/dialog/add_design_dialog.dart';
+import 'package:front/components/footer.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/components/items-information.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
+
+class Category {
+  final int? id;
+  final dynamic? name;
+
+  Category({
+    required this.id,
+    required this.name,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) {
+    return Category(
+      id: json['id'],
+      name: json['name'],
+    );
+  }
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+    };
+  }
+}
+
+class ObjectCreation extends StatefulWidget {
+  const ObjectCreation({Key? key}) : super(key: key);
+  @override
+  ObjectCreationState createState() => ObjectCreationState();
+}
+
+class ObjectCreationState extends State<ObjectCreation> {
+  ObjectCreationState();
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers for the text fields
+  final _nameController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _priceController = TextEditingController();
+  FilePickerResult? result;
+  int containerId = 0;
+  String jwtToken = '';
+  List<Category> categories = [];
+  String? selectedCategoryName = '';
+  int selectedCategoryId = 0;
+  int _currentIndex = 0;
+
+  List<Uint8List?> _imageBytesList = [];
+  final ImagePicker _picker = ImagePicker();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+
+  @override
+  void initState() {
+    super.initState();
+    checkToken();
+    checkContainerId();
+  }
+
+  void checkContainerId() async {
+    String? ctnId = await storageService.readStorage('containerId');
+    if (ctnId != '' || ctnId != null) {
+      containerId = int.parse(ctnId!);
+    }
+  }
+
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+    if (token != null) {
+      jwtToken = token!;
+      fetchCategories();
+    } else {
+      jwtToken = "";
+    }
+  }
+
+  Future<void> fetchCategories() async {
+    final response = await http.get(
+      Uri.parse('http://${serverIp}:3000/api/itemCategory/listAll'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> containersData = responseData["itemCategories"];
+      setState(() {
+        categories =
+            containersData.map((data) => Category.fromJson(data)).toList();
+        debugPrint(categories[0].name);
+      });
+    } else {
+      Fluttertoast.showToast(
+        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
+
+  Future<void> createItems() async {
+    final String apiUrl = "http://$serverIp:3000/api/items/create";
+    var body = {
+      'name': _nameController.text,
+      'available': true,
+      'price': _priceController.text.toString(),
+      'containerId': containerId.toString(),
+      'description': _descriptionController.text,
+    };
+
+    var response = await http.post(
+      Uri.parse(apiUrl),
+      body: json.encode(body),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $jwtToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      Fluttertoast.showToast(
+        msg: 'Objet créé avec succès',
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: "Erreur lors de la création de l'objet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.CENTER,
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  void _submitForm(BuildContext context) {
+    if (_formKey.currentState!.validate() && containerId != 0) {
+      createItems().then((_) {
+        context.go('/container-profil');
+      });
+    } else {
+      Fluttertoast.showToast(msg: "L'objet n'a pas pu être créé");
+    }
+  }
+
+  Future<void> _pickFile() async {
+    // Récupération des images dans cette fonction
+    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+
+    if (pickedFiles != null && pickedFiles.length > 0) {
+      if (pickedFiles.length > 5) {
+        Fluttertoast.showToast(
+          msg: "Trop de fichiers sélectionnés",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+        );
+      } else {
+        // Liste des images récupérées
+        List<Uint8List?> images = await Future.wait(
+          pickedFiles.map((file) => file.readAsBytes()).toList(),
+        );
+
+        setState(() {
+          // Stockage des images dans la liste "_imageBytesList"
+          _imageBytesList = images;
+        });
+      }
+    }
+  }
+
+  void _removeImage(int index) {
+    // Supression d'une image
+    setState(() {
+      _imageBytesList.removeAt(index);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+    return Scaffold(
+      appBar: CustomAppBar(
+        "Création d'objet",
+        context: context,
+      ),
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(
+            maxWidth: 600,
+          ),
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 1,
+                child: GestureDetector(
+                  onTap: _pickFile,
+                  child: DottedBorder(
+                    color: Colors.grey[600]!,
+                    padding: EdgeInsets.zero,
+                    strokeWidth: 3,
+                    child: Container(
+                      alignment: Alignment.center,
+                      height: screenFormat == ScreenFormat.desktop
+                          ? desktopImportContainerHeight
+                          : tabletImportContainerHeight,
+                      width: screenFormat == ScreenFormat.desktop
+                          ? desktopImportContainerWidth
+                          : tabletImportContainerWidth,
+                      color: Colors.grey[400],
+                      child: _imageBytesList.isNotEmpty
+                          ? Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                CarouselSlider.builder(
+                                  itemCount: _imageBytesList.length,
+                                  options: CarouselOptions(
+                                    height: 200.0,
+                                    enlargeCenterPage: true,
+                                    enableInfiniteScroll: false,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex = index;
+                                      });
+                                    },
+                                  ),
+                                  itemBuilder: (context, index, realIndex) {
+                                    // Affichage des images
+                                    return Image.memory(
+                                      _imageBytesList[index]!,
+                                      fit: BoxFit.cover,
+                                      width: MediaQuery.of(context).size.width,
+                                    );
+                                  },
+                                  carouselController: _carouselController,
+                                ),
+                                Positioned(
+                                  left: 10,
+                                  child: IconButton(
+                                    icon: Icon(Icons.arrow_back,
+                                        color: Colors.black),
+                                    onPressed: () {
+                                      _carouselController.previousPage();
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 10,
+                                  child: IconButton(
+                                    icon: Icon(Icons.arrow_forward,
+                                        color: Colors.black),
+                                    onPressed: () {
+                                      _carouselController.nextPage();
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 10,
+                                  right: 10,
+                                  child: IconButton(
+                                    icon: Icon(Icons.close, color: Colors.red),
+                                    onPressed: () {
+                                      _removeImage(_currentIndex);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.cloud_upload,
+                                  size: 32.0,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Cliquez pour ajouter des images",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                  ),
+                                  onPressed: _pickFile,
+                                  child: Text(
+                                    "Parcourir",
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                flex: 1,
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextFormField(
+                        key: const Key('name'),
+                        controller: _nameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Nom',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer un nom';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('description'),
+                        controller: _descriptionController,
+                        decoration: const InputDecoration(
+                          labelText: 'Description',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer un description';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('price'),
+                        controller: _priceController,
+                        decoration: const InputDecoration(
+                          labelText: 'Prix',
+                          suffixText: '€/heure',
+                        ),
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Veuillez entrer un prix';
+                          }
+                          if (double.tryParse(value) == null) {
+                            return 'Veuillez entrer un prix valide';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      DropdownButtonFormField<String>(
+                        value: selectedCategoryId.toString(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedCategoryId = int.tryParse(newValue!) ?? 0;
+                          });
+                        },
+                        items: categories.map((Category category) {
+                          return DropdownMenuItem<String>(
+                            value: category.name,
+                            child: Text(category.name!),
+                          );
+                        }).toList(),
+                        decoration: const InputDecoration(
+                            labelText: 'Sélectionnez la catégorie'),
+                      ),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          child: Text('Soumettre',
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                              )),
+                          onPressed: () {
+                            _submitForm(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

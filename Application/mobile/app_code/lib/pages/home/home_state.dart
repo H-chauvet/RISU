@@ -9,7 +9,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
-import 'package:risu/utils/check_signin.dart';
+import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -122,14 +122,17 @@ class HomePageState extends State<HomePage> {
               (ThemeProvider themeProvider) => themeProvider.currentTheme),
           currentIndex: _currentIndex,
           onTap: (index) async {
-            if (index == 2) {
-              bool signIn = await checkSignin(context);
-              if (!signIn) {
-                return;
-              }
-            }
             setState(() {
-              _currentIndex = index;
+              if (index == 2 && userInformation == null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const SettingsPage();
+                  }),
+                );
+              } else {
+                _currentIndex = index;
+              }
             });
           },
         ),
