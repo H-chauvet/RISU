@@ -131,7 +131,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
           storageService.removeStorage('containerData');
           context.go('/container-creation/confirmation');
         } else {
-          showCustomToast(context, "Echec de la commande", false);
+          showCustomToast(context, value.body, false);
         }
       });
     } catch (e) {
@@ -278,6 +278,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'containerId': widget.id,
       }),
     );
+
+    if (response.statusCode != 200) {
+      return {'error': true};
+    }
     return json.decode(response.body);
   }
 }

@@ -3,6 +3,7 @@ const passport = require('passport');
 const auth = require('./passport/strategy_options');
 const auth_token = require('./passport/bearer_token');
 const session = require('express-session');
+const i18n = require('i18n');
 
 const app = express();
 const userRoutes = require('./routes/Web/user');
@@ -50,6 +51,15 @@ passport.deserializeUser((id, done) => {
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+i18n.configure({
+  locales: ['en', 'fr'],
+  directory: __dirname + '/locales',
+  defaultLocale: 'fr',
+  objectNotation: true,
+});
+
+app.use(i18n.init);
 
 app.use('/api/auth', userRoutes);
 app.use('/api/container', containerRoutes);

@@ -416,7 +416,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          showCustomToast(context, "Echec de la sauvegarde", false);
+          showCustomToast(context, value.body, false);
         }
       });
     } else {
@@ -437,7 +437,7 @@ class DesignScreenState extends State<DesignScreen> {
         if (value.statusCode == 200) {
           context.go("/confirmation-save");
         } else {
-          showCustomToast(context, "Echec de la sauvegarde", false);
+          showCustomToast(context, value.body, false);
         }
       });
     }
@@ -460,6 +460,7 @@ class DesignScreenState extends State<DesignScreen> {
         },
       ).then((value) {
         if (value.statusCode != 200) {
+          showCustomToast(context, value.body, false);
           return;
         }
         dynamic response = jsonDecode(value.body);
@@ -498,7 +499,7 @@ class DesignScreenState extends State<DesignScreen> {
         },
       ).then((value) {
         if (value.statusCode != 200) {
-          return;
+          showCustomToast(context, value.body, false);
         }
         dynamic response = jsonDecode(value.body);
         var data = {

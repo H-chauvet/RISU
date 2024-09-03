@@ -146,10 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     onEdit(firstNameController.text, lastNameController.text);
                     Navigator.of(context).pop();
                   } else {
-                    showCustomToast(
-                        context,
-                        "Erreur durant la modifications des informations",
-                        false);
+                    showCustomToast(context, response.body, false);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -262,10 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       "Informations de l'entreprise modifiées avec succès !",
                       true);
                 } else {
-                  showCustomToast(
-                      context,
-                      "Erreur durant la modification des informations de l'entreprise",
-                      false);
+                  showCustomToast(context, response.body, false);
                 }
                 onEdit(companyController.text);
                 Navigator.of(context).pop();
@@ -375,8 +369,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 if (response.statusCode == 200) {
                   showCustomToast(context, "Email modifié avec succès !", true);
                 } else {
-                  showCustomToast(context,
-                      "Erreur durant la modification de l'email", false);
+                  showCustomToast(context, response.body, false);
                 }
                 onEdit(mailController.text);
                 Navigator.of(context).pop();
@@ -548,10 +541,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         showCustomToast(context,
                             "Mot de passe modifié avec succès !", true);
                       } else {
-                        showCustomToast(
-                            context,
-                            "Erreur durant la modification du mot de passe",
-                            false);
+                        showCustomToast(context, response.body, false);
                       }
                       onEdit(password);
                       Navigator.of(context).pop();

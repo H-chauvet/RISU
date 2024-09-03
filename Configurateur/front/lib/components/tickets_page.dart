@@ -88,7 +88,7 @@ class TicketsState extends State<TicketsPage> {
     if (response.statusCode == 201) {
       return true;
     } else {
-      showCustomToast(context, "Erreur durant la création du ticket", false);
+      showCustomToast(context, response.body, false);
     }
     return false;
   }
@@ -111,7 +111,7 @@ class TicketsState extends State<TicketsPage> {
     );
     if (response.statusCode == 201) {
     } else {
-      showCustomToast(context, "Erreur durant la clôture du ticket", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -149,8 +149,7 @@ class TicketsState extends State<TicketsPage> {
       );
       return true;
     } else {
-      showCustomToast(
-          context, "Erreur durant l'assignement des tickets", false);
+      showCustomToast(context, response.body, false);
     }
     return false;
   }
@@ -209,10 +208,7 @@ class TicketsState extends State<TicketsPage> {
         return true;
       } else {
         if (context.mounted) {
-          showCustomToast(
-              context,
-              "Erreur durant la récupération des informations de l'interlocuteur",
-              false);
+          showCustomToast(context, response.body, false);
         }
         return false;
       }
@@ -290,8 +286,7 @@ class TicketsState extends State<TicketsPage> {
         },
       );
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des tickets", false);
+      showCustomToast(context, response.body, false);
     }
   }
 

@@ -17,6 +17,7 @@ import 'package:front/components/items-information.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -25,20 +26,16 @@ import 'package:provider/provider.dart';
 /// Container profil page of the organization
 /// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
-  final ContainerListData container;
-  const ContainerProfilPage({Key? key, required this.container})
-      : super(key: key);
+  const ContainerProfilPage({Key? key}) : super(key: key);
 
   @override
-  _ContainerProfilPageState createState() =>
-      _ContainerProfilPageState(container: container);
+  _ContainerProfilPageState createState() => _ContainerProfilPageState();
 }
 
 /// CompanyProfilPageState
 ///
 class _ContainerProfilPageState extends State<ContainerProfilPage> {
-  final ContainerListData container;
-  _ContainerProfilPageState({required this.container});
+  _ContainerProfilPageState();
   late List<ItemList> items;
   late String itemName = '';
   late String itemDesc = '';
@@ -72,8 +69,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         }
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des données", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -123,8 +119,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Modifications effectuées avec succès! ", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -232,8 +227,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -335,8 +329,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         items = itemsData.map((data) => ItemList.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -361,8 +354,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      showCustomToast(
-          context, "Erreur lors la suppression de l'article", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -406,8 +398,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       checkToken();
       // fetchItemsbyCtnId();
     } else {
-      showCustomToast(
-          context, "Erreur durant la modification des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
