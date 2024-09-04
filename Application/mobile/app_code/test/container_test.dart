@@ -113,6 +113,7 @@ void main() {
       final testpage = initPage(ContainerPage(
         onDirectionClicked: (id) {},
         testContainers: [],
+        testPosition: const LatLng(1, 1),
       ));
 
       await waitForLoader(tester: tester, testPage: testpage);
