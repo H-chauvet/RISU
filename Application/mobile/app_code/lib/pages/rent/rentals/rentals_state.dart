@@ -8,23 +8,24 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/globals.dart';
-import 'package:risu/pages/rent/return_page.dart';
+import 'package:risu/pages/rent/rentals/rentals_list_card.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/utils/time.dart';
 
-import 'rental_page.dart';
+import 'rentals_page.dart';
 
 class RentalPageState extends State<RentalPage> {
   List<dynamic> rentals = [];
   List<dynamic> rentalsInProgress = [];
-  bool showAllRentals = true;
+  List<dynamic> pastRentals = [];
+  bool showRentalsInProgress = true;
   final LoaderManager _loaderManager = LoaderManager();
 
   @override
   void initState() {
     super.initState();
+
     if (widget.testRentals.isEmpty) {
       getRentals();
     } else {
@@ -55,7 +56,8 @@ class RentalPageState extends State<RentalPage> {
           setState(() {
             rentals = jsonDecode(response.body)['rentals'];
           });
-          break;
+          getRentalsInProgress();
+          return;
         case 401:
           await tokenExpiredShowDialog(context);
           break;
@@ -76,16 +78,6 @@ class RentalPageState extends State<RentalPage> {
       }
       return;
     }
-  }
-
-  String calculateRemainingTime(dynamic rental) {
-    DateTime rentalStart = DateTime.parse(rental['createdAt']);
-    int rentalDuration = rental['duration'];
-    DateTime rentalEnd = rentalStart.add(Duration(hours: rentalDuration));
-    Duration remainingTime = rentalEnd.difference(DateTime.now());
-    int hours = remainingTime.inHours;
-    int minutes = remainingTime.inMinutes.remainder(60);
-    return AppLocalizations.of(context)!.hoursAndMinutes(hours, minutes);
   }
 
   bool isRentalInProgress(dynamic rental) {
@@ -131,7 +123,7 @@ class RentalPageState extends State<RentalPage> {
             : Center(
                 child: Container(
                   margin:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -143,7 +135,7 @@ class RentalPageState extends State<RentalPage> {
                             onTap: () {
                               getRentalsInProgress();
                               setState(() {
-                                showAllRentals = true;
+                                showRentalsInProgress = true;
                               });
                             },
                             child: ClipRRect(
@@ -157,23 +149,23 @@ class RentalPageState extends State<RentalPage> {
                                   height: 30, // hauteur du bouton
                                 ),
                                 decoration: BoxDecoration(
-                                  color: showAllRentals
+                                  color: showRentalsInProgress
                                       ? themeProvider.currentTheme.primaryColor
                                       : themeProvider
                                           .currentTheme.secondaryHeaderColor,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    AppLocalizations.of(context)!.allE,
+                                    AppLocalizations.of(context)!.inProgress,
                                     style: TextStyle(
-                                      color: showAllRentals
+                                      color: showRentalsInProgress
                                           ? themeProvider
                                               .currentTheme.secondaryHeaderColor
                                           : themeProvider.currentTheme
                                                       .brightness ==
                                                   Brightness.light
-                                              ? Colors.grey[
-                                                  800] // Gris foncé pour le mode clair
+                                              ? Colors.grey[800]
+                                              // Gris foncé pour le mode clair
                                               : Colors.grey[400],
                                       // Gris clair pour le mode sombre
                                       fontWeight: FontWeight.bold,
@@ -187,7 +179,7 @@ class RentalPageState extends State<RentalPage> {
                             onTap: () {
                               getRentalsInProgress();
                               setState(() {
-                                showAllRentals = false;
+                                showRentalsInProgress = false;
                               });
                             },
                             child: ClipRRect(
@@ -201,16 +193,16 @@ class RentalPageState extends State<RentalPage> {
                                   height: 30, // hauteur du bouton
                                 ),
                                 decoration: BoxDecoration(
-                                  color: !showAllRentals
+                                  color: !showRentalsInProgress
                                       ? themeProvider.currentTheme.primaryColor
                                       : themeProvider
                                           .currentTheme.secondaryHeaderColor,
                                 ),
                                 child: Center(
                                   child: Text(
-                                    AppLocalizations.of(context)!.inProgress,
+                                    AppLocalizations.of(context)!.allE,
                                     style: TextStyle(
-                                      color: !showAllRentals
+                                      color: !showRentalsInProgress
                                           ? themeProvider
                                               .currentTheme.secondaryHeaderColor
                                           : themeProvider.currentTheme
@@ -232,7 +224,9 @@ class RentalPageState extends State<RentalPage> {
                       const SizedBox(height: 20),
                       Expanded(
                         key: const Key('rentals-list'),
-                        child: (showAllRentals ? rentals : rentalsInProgress)
+                        child: (showRentalsInProgress
+                                    ? rentalsInProgress
+                                    : rentals)
                                 .isEmpty
                             ? Center(
                                 child: Text(
@@ -245,66 +239,14 @@ class RentalPageState extends State<RentalPage> {
                               )
                             : ListView.builder(
                                 shrinkWrap: true,
-                                itemCount: showAllRentals
-                                    ? rentals.length
-                                    : rentalsInProgress.length,
+                                itemCount: showRentalsInProgress
+                                    ? rentalsInProgress.length
+                                    : rentals.length,
                                 itemBuilder: (BuildContext context, int index) {
-                                  dynamic rental = showAllRentals
-                                      ? rentals[index]
-                                      : rentalsInProgress[index];
-                                  return Card(
-                                    elevation: 5,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 10),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    color: themeProvider.currentTheme.cardColor,
-                                    child: ListTile(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ReturnArticlePage(
-                                                    rentId: rental['id']),
-                                          ),
-                                        );
-                                      },
-                                      key: const Key('rental-list-tile'),
-                                      contentPadding:
-                                          const EdgeInsets.all(16.0),
-                                      title: Text(
-                                        '${rental['item']['name']}  |  ${rental['item']['container']['address']}',
-                                        style: TextStyle(
-                                          color: themeProvider
-                                              .currentTheme.primaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      subtitle: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(height: 10),
-                                          Text(
-                                              "${AppLocalizations.of(context)!.price}: ${rental['price']}€"),
-                                          Text(
-                                            key: const Key('rental-list-time'),
-                                            "${AppLocalizations.of(context)!.rentStart}: ${formatDateTime(dateTimeString: rental['createdAt'])}",
-                                          ),
-                                          Text(AppLocalizations.of(context)!
-                                              .rentTimeOfRenting(
-                                                  rental['duration'])),
-                                          Text(
-                                              "${AppLocalizations.of(context)!.status}: ${isRentalInProgress(rental) ? AppLocalizations.of(context)!.inProgress : AppLocalizations.of(context)!.endedE}"),
-                                          if (isRentalInProgress(rental))
-                                            Text(
-                                                "${AppLocalizations.of(context)!.timeRemaining}: ${calculateRemainingTime(rental)}")
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                  dynamic rental = showRentalsInProgress
+                                      ? rentalsInProgress[index]
+                                      : rentals[index];
+                                  return RentalCard(rental: rental);
                                 },
                               ),
                       ),
