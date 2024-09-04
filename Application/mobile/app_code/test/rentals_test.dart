@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:risu/pages/rent/rental_page.dart';
+import 'package:risu/pages/rent/rentals/rentals_page.dart';
 
 import 'globals.dart';
 
@@ -50,15 +50,31 @@ void main() {
   testWidgets('Rentals, Test if buttons are clickable',
       (WidgetTester tester) async {
     final testPage = initPage(
-      const RentalPage(
+      RentalPage(
         testRentals: [
-          {
+          const {
             "id": 1,
             "price": 100,
             "createdAt": "2024-05-23T09:18:46.814Z",
             "duration": 1,
             "ended": false,
             "item": {
+              "id": 3,
+              "name": "Ballon de football",
+              "container": {
+                "id": 1,
+                "address": "Rue d'Alger",
+                "city": "Nantes",
+              }
+            }
+          },
+          {
+            "id": 1,
+            "price": 100,
+            "createdAt": DateTime.now().toString(),
+            "duration": 1,
+            "ended": false,
+            "item": const {
               "id": 3,
               "name": "Ballon de football",
               "container": {
@@ -88,10 +104,10 @@ void main() {
 
     expect(find.text(AppLocalizations.of(context)!.allE), findsOneWidget);
     expect(find.text(AppLocalizations.of(context)!.inProgress), findsOneWidget);
-    
+
     // expect(find.byKey(const Key('rental-list-time')), findsOneWidget);
     expect(find.byKey(const Key('rentals-list')), findsOneWidget);
-    
+
     await tester.tap(find.byKey(const Key('rentals-list')));
     await tester.pump();
   });

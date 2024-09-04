@@ -1,12 +1,19 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/components/custom_toast.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/services/language_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// [StatefulWidget] : LandingAppBar
 ///
@@ -23,6 +30,7 @@ class LandingAppBar extends StatefulWidget {
 class LandingAppBarState extends State<LandingAppBar> {
   String? token = '';
   String? userRole = '';
+  String currentLanguage = language;
 
   /// [Function] : Check in storage service is the token is available
   void checkToken() async {
@@ -37,8 +45,29 @@ class LandingAppBarState extends State<LandingAppBar> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
+      await storageService.removeStorage('containerData');
       context.go("/container-creation/shape");
     }
+  }
+
+  /// [Function] : Download the mobile application from the website
+  void downloadApk() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://$serverIp:3000/api/apk/download'));
+
+      if (response.statusCode == 200) {
+        final Uri _url = Uri.parse('http://$serverIp:3000/api/apk/download');
+        if (!await launchUrl(_url)) {
+          throw Exception('Could not launch $_url');
+        } else {
+          showCustomToast(
+              context, "L'application a bien été téléchargée !", true);
+        }
+      } else {
+        showCustomToast(context, response.body, false);
+      }
+    } catch (e) {}
   }
 
   @override
@@ -50,6 +79,8 @@ class LandingAppBarState extends State<LandingAppBar> {
   /// [Widget] : Build Header Component
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Column(
       children: [
         Container(
@@ -77,9 +108,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        'Accueil',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.home,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -148,6 +179,32 @@ class LandingAppBarState extends State<LandingAppBar> {
                       ),
                     ),
                     const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () => downloadApk(),
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        "Télécharger l'application",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const SizedBox(
+                      height: 24,
+                      child: VerticalDivider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 172, 167, 167),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
                     Text(
                       "Mode sombre",
                       style: TextStyle(
@@ -172,13 +229,62 @@ class LandingAppBarState extends State<LandingAppBar> {
                 ),
               ),
               PopupMenuButton<String>(
+                tooltip: "Langue",
+                icon: CountryFlag.fromLanguageCode(
+                  language,
+                  height: 32,
+                  width: 32,
+                ),
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem<String>(
+                      value: 'fr',
+                      child: Row(
+                        children: [
+                          CountryFlag.fromLanguageCode(
+                            'fr',
+                            height: 32,
+                            width: 32,
+                          ),
+                          const SizedBox(width: 16),
+                          const Text("Français"),
+                        ],
+                      ),
+                    ),
+                    PopupMenuItem<String>(
+                      value: 'en',
+                      child: Row(
+                        children: [
+                          CountryFlag.fromLanguageCode(
+                            'en',
+                            height: 32,
+                            width: 32,
+                          ),
+                          const SizedBox(width: 16),
+                          const Text("English"),
+                        ],
+                      ),
+                    ),
+                  ];
+                },
+                onSelected: (String value) {
+                  setState(() {
+                    currentLanguage = value;
+                  });
+                  Provider.of<LanguageService>(context, listen: false)
+                      .changeLanguage(Locale(value));
+                },
+              ),
+              const SizedBox(width: 32),
+              PopupMenuButton<String>(
                 tooltip: "Authentification",
                 icon: Icon(
                   size: 35,
                   Icons.account_circle,
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
+                  color:
+                      Provider.of<ThemeService>(context, listen: false).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                 ),
                 itemBuilder: (BuildContext context) {
                   List<PopupMenuEntry<String>> items = [];
@@ -190,7 +296,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Connexion',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -201,7 +309,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Inscription',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -216,7 +326,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                         child: Text(
                           'Profil',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
                           ),
@@ -229,7 +341,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                         child: Text(
                           'Mon Entreprise',
                           style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
                           ),
@@ -243,7 +357,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           child: Text(
                             'Administration',
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -280,11 +396,8 @@ class LandingAppBarState extends State<LandingAppBar> {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');
                     token = '';
-                    Fluttertoast.showToast(
-                      msg: "Vous êtes bien déconnecté !",
-                      toastLength: Toast.LENGTH_LONG,
-                      gravity: ToastGravity.CENTER,
-                    );
+                    showCustomToast(
+                        context, "Vous êtes bien déconnecté !", true);
                     context.go("/");
                   }
                 },

@@ -1,13 +1,18 @@
 // feedbacks_page.dart
 
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
 import 'package:front/components/footer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
 import 'package:front/screens/feedbacks/feedbacks_style.dart';
 import 'package:front/services/size_service.dart';
@@ -67,11 +72,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
             feedbacksData.map((data) => Feedbacks.fromJson(data)).toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, response.body, false);
     }
   }
 

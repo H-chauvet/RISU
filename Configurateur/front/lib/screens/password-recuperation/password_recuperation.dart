@@ -1,4 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:front/components/custom_toast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -8,7 +15,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:local_captcha/local_captcha.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:convert';
 
 import 'password_recuperation_style.dart';
@@ -46,12 +52,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        'Récupération du mot de passe',
-        context: context,
-      ),
-      body: Center(
-        child: FractionallySizedBox(
+        appBar: CustomAppBar(
+          'Récupération du mot de passe',
+          context: context,
+        ),
+        body: Center(
+            child: FractionallySizedBox(
           widthFactor: screenFormat == ScreenFormat.desktop
               ? desktopWidthFactor
               : tabletWidthFactor,
@@ -171,17 +177,10 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          Fluttertoast.showToast(
-                            msg: 'Mot de passe récupéré avec succès',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(context,
+                              "Le mot de passe a bien été récupéré", true);
                         } else {
-                          Fluttertoast.showToast(
-                            msg: 'Echec de la récupération du mot de message',
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.CENTER,
-                          );
+                          showCustomToast(context, response.body, false);
                         }
                         context.go("/");
                       }
@@ -207,9 +206,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        )));
   }
 }
 
