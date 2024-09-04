@@ -41,11 +41,9 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ).then(
               (value) {
-                if (value != null && value == true) {
-                  setState(() {
-                    userInformation = userInformation;
-                  });
-                }
+                setState(() {
+                  userInformation = userInformation;
+                });
               },
             );
           },
