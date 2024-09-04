@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'rental_state.dart';
+import 'rentals_state.dart';
 
 class RentalPage extends StatefulWidget {
   final List<dynamic> testRentals;
