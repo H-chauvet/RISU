@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/company/company.dart';
 import 'package:front/screens/company/container-company.dart';
 import 'package:front/services/theme_service.dart';
@@ -110,6 +111,7 @@ void main() {
     expect(find.byKey(const Key('member_image_2')), findsOneWidget);
     expect(find.byKey(const Key('member_image_3')), findsOneWidget);
     expect(find.byKey(const Key('member_image_4')), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
   });
 
   test('ContainerTest toJson and fromJson', () {

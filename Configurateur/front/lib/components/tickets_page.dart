@@ -320,7 +320,7 @@ class TicketsState extends State<TicketsPage> {
     return Scaffold(
       body: FooterView(
         footer: Footer(
-          child: CustomFooter(context: context),
+          child: CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),

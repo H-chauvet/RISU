@@ -4,6 +4,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -172,36 +177,37 @@ class MapsState extends State<MapsScreen> {
         ],
       ),
       body: Center(
-          child: FractionallySizedBox(
-        widthFactor: screenFormat == ScreenFormat.desktop
-            ? desktopWidthFactor
-            : tabletWidthFactor,
-        heightFactor: screenFormat == ScreenFormat.desktop
-            ? desktopHeightFactor
-            : tabletHeightFactor,
-        alignment: Alignment.center,
-        child: Stack(alignment: Alignment.center, children: [
-          GoogleMap(
-              key: UniqueKey(),
-              initialCameraPosition: _kGooglePlex,
-              mapType: MapType.normal,
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              onCameraMove: (CameraPosition position) {
-                location = position.target;
-              }),
-          Positioned(
-            child: Icon(
-              size: screenFormat == ScreenFormat.desktop
-                  ? desktopIconSize
-                  : tabletIconSize,
-              Icons.room,
-              color: Colors.red,
-            ),
-          )
-        ]),
-      )),
+        child: FractionallySizedBox(
+          widthFactor: screenFormat == ScreenFormat.desktop
+              ? desktopWidthFactor
+              : tabletWidthFactor,
+          heightFactor: screenFormat == ScreenFormat.desktop
+              ? desktopHeightFactor
+              : tabletHeightFactor,
+          alignment: Alignment.center,
+          child: Stack(alignment: Alignment.center, children: [
+            GoogleMap(
+                key: UniqueKey(),
+                initialCameraPosition: _kGooglePlex,
+                mapType: MapType.normal,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
+                onCameraMove: (CameraPosition position) {
+                  location = position.target;
+                }),
+            Positioned(
+              child: Icon(
+                size: screenFormat == ScreenFormat.desktop
+                    ? desktopIconSize
+                    : tabletIconSize,
+                Icons.room,
+                color: Colors.red,
+              ),
+            )
+          ]),
+        ),
+      ),
     );
   }
 }

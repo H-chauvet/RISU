@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -50,6 +51,9 @@ void main() {
         ),
       ),
     );
+
+    expect(find.byType(CustomFooter), findsOneWidget);
+
     expect(
         find.text(
             'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !'),
