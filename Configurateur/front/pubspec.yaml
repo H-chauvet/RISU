@@ -71,6 +71,8 @@ dependencies:
   country_flags: ^3.0.0
   flutter_localizations:
     sdk: flutter
+  image_picker: ^0.8.4+8
+  carousel_slider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

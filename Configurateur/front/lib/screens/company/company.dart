@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/company/company_style.dart';
@@ -61,7 +62,7 @@ class CompanyPageState extends State<CompanyPage> {
             .toList();
       });
     } else {
-      debugPrint('error');
+      showCustomToast(context, response.body, false);
     }
   }
 

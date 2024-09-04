@@ -55,8 +55,7 @@ class _UserPageState extends State<UserPage> {
       showCustomToast(context, "Utilisateur supprimé avec succès !", true);
       fetchUser();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression de l'utilisateur", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -90,8 +89,7 @@ class _UserPageState extends State<UserPage> {
         users = usersData.map((data) => User.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context, response.body, false);
     }
   }
 
