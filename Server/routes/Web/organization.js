@@ -12,6 +12,7 @@ router.post("/create", async function (req, res, next) {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
     const token = req.headers.authorization.split(" ")[1];
@@ -42,6 +43,7 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   const id = parseInt(req.params.id);
   try {
@@ -88,6 +90,7 @@ router.post("/update-type/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
     const token = req.headers.authorization.split(" ")[1];

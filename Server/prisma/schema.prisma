@@ -62,7 +62,6 @@ model Item {
 model Organization {
     id                 Int          @id @default(autoincrement())
     name               String       @unique
-    type               String?
     affiliate          User_Web[]
     containers         Containers[]
     contactInformation String?
@@ -98,6 +97,7 @@ model User_Web {
     organizationId Int?
     confirmed      Boolean       @default(false)
     createdAt      DateTime      @default(now())
+    manager        Boolean?      @default(false)
 }
 
 model Feedbacks_Web {

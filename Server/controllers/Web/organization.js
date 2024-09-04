@@ -13,7 +13,7 @@ exports.createOrganization = async (res, organization) => {
       data: organization,
     });
   } catch (err) {
-    throw "Something happen while creation organization";
+    throw res.__("errorOccured");
   }
 };
 
@@ -29,7 +29,7 @@ exports.getAllOrganizations = async (res) => {
     return await db.Organization.findMany();
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw "Failed to retrieve containers";
+    throw res.__("errorOccured");
   }
 };
 
@@ -53,7 +53,7 @@ exports.getOrganizationById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving organization";
+    throw res.__("errorOccured");
   }
 };
 
@@ -75,7 +75,7 @@ exports.updateName = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's name";
+    throw res.__("errorOccured");
   }
 };
 
@@ -97,7 +97,7 @@ exports.updateContactInformation = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's contact information";
+    throw res.__("errorOccured");
   }
 };
 
@@ -119,6 +119,6 @@ exports.updateType = (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's type";
+    throw res.__("errorOccured");
   }
 };

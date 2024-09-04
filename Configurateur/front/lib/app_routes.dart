@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/company-creation/company-creation.dart';
 import 'package:front/screens/company-profil/object-creation.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
@@ -69,6 +70,18 @@ class AppRouter {
         pageBuilder: (context, state) => const NoTransitionPage(
           child: RegisterScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/company-register',
+        builder: (BuildContext context, GoRouterState state) {
+          var mail = '';
+          if (state.extra != null) {
+            mail = state.extra! as String;
+          }
+          return CompanyCreationPage(
+            params: mail,
+          );
+        },
       ),
       GoRoute(
         path: '/login',
