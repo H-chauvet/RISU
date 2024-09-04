@@ -71,7 +71,11 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
       "teamMember": jsonEncode(collaboratorList),
       "company": companyInfo,
     };
-    await HttpService().request('....', header, body);
+    await HttpService().request(
+      'http://$serverIp:3000/api/organization/invite-member',
+      header,
+      body,
+    );
   }
 
   void createCompany() async {
@@ -95,7 +99,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
       };
       await HttpService().putRequest(
           'http://$serverIp:3000/api/auth/update-company', header, body);
-      //inviteTeamMember(response.body);
+      inviteTeamMember(response.body);
     } else {
       showCustomToast(context, response.body, false);
     }

@@ -1,4 +1,5 @@
 const { db } = require("../../middleware/database");
+const transporter = require("../../middleware/transporter");
 
 /**
  * Created organization
@@ -121,4 +122,22 @@ exports.updateType = (res, organization) => {
   } catch (err) {
     throw res.__("errorOccured");
   }
+};
+
+exports.inviteMember = (res, memberList, company) => {
+  memberList = JSON.parse(memberList);
+
+  memberList.forEach((element) => {
+    let mail = {
+      from: "risu.epitech@gmail.com",
+      to: element,
+      subject: "Invitation",
+      html:
+        '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/register/' +
+        company.id +
+        '">Inscription</a>' +
+        "</p>",
+    };
+    transporter.sendMail(mail);
+  });
 };
