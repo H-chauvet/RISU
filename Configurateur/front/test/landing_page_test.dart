@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
@@ -42,6 +43,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const LandingPage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
