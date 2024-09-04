@@ -6,6 +6,7 @@
 // tree, read text, and verify that the values of widget properties are correct.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
@@ -19,7 +20,6 @@ import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
-
 
   setUp(() async {
     final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
@@ -46,6 +46,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const LoginScreen(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
