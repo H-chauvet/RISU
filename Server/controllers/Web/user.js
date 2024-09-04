@@ -230,7 +230,7 @@ exports.updatePassword = async (res, user) => {
 exports.forgotPassword = async (res, email) => {
   try {
     let generatedUuid = "";
-    this.findUserByEmail(email).then((user) => {
+    this.findUserByEmail(res, email).then((user) => {
       generatedUuid = user.uuid;
       let mail = {
         from: "risu.epitech@gmail.com",
