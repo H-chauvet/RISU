@@ -39,7 +39,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String firstName = '';
     String lastName = '';
-    String company = '';
     String mail = '';
     String password = '';
     String validedPassword = '';
@@ -132,26 +131,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
-                              key: const Key('company'),
-                              decoration: InputDecoration(
-                                hintText: 'Entrez le nom de votre entreprise',
-                                labelText: 'Entreprise',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                              ),
-                              onChanged: (String? value) {
-                                company = value!;
-                              },
-                              validator: (String? value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            TextFormField(
                               key: const Key('email'),
                               decoration: InputDecoration(
                                 hintText: 'Entrez votre email',
@@ -233,7 +212,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     var body = {
                                       'firstName': firstName,
                                       'lastName': lastName,
-                                      'company': company,
                                       'email': mail,
                                       'password': password,
                                     };
