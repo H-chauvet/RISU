@@ -145,7 +145,11 @@ router.post("/invite-member", async (req, res) => {
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
-    const organization = await organizationCtrl.inviteMember(res, teamMember);
+    const organization = await organizationCtrl.inviteMember(
+      res,
+      teamMember,
+      company
+    );
     res.status(200).send(organization);
   } catch (err) {
     if (res.statusCode == 200) {

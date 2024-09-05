@@ -126,6 +126,7 @@ exports.updateType = (res, organization) => {
 
 exports.inviteMember = (res, memberList, company) => {
   memberList = JSON.parse(memberList);
+  company = JSON.parse(company);
 
   memberList.forEach((element) => {
     let mail = {
