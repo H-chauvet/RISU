@@ -65,9 +65,9 @@ exports.makePayments = async (res, data) => {
       };
 
       const intent = await stripe.paymentIntents.create(params);
+      return generateResponse(res, intent, data.containerId);
     }
   } catch (err) {
     throw res.__("errorOccured");
   }
-  return generateResponse(res, intent, data.containerId);
 };
