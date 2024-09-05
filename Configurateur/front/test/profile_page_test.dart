@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -45,6 +47,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ProfilePage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
@@ -59,6 +63,7 @@ void main() {
 
     expect(find.text('Modifier'), findsNWidgets(2));
     expect(find.text('Annuler'), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
 
     await tester.enterText(
         find.byKey(const Key('password')), 'Xx_poneyLover_xX');

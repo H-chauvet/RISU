@@ -68,6 +68,9 @@ dependencies:
   sizer: ^2.0.15
   google_maps_flutter: ^2.3.0
   geolocator: ^11.0.0
+  country_flags: ^3.0.0
+  flutter_localizations:
+    sdk: flutter
   image_picker: ^0.8.4+8
   carousel_slider: ^5.0.0
 
@@ -140,3 +143,5 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  # Use localizations for internationalization
+  generate: true

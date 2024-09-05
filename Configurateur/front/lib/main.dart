@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:front/services/language_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import './app_routes.dart';
-import 'styles/themes.dart';
+
+import 'app_routes.dart';
 import 'services/theme_service.dart';
+import 'styles/themes.dart';
 
 /// [Function] : Launch the web application.
 void main() async {
@@ -16,9 +20,18 @@ void main() async {
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
 
+  language = await storageService.readStorage('language') ?? defaultLanguage;
+
   runApp(
-    ChangeNotifierProvider<ThemeService>(
-      create: (context) => ThemeService(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeService>(
+          create: (context) => ThemeService(),
+        ),
+        ChangeNotifierProvider<LanguageService>(
+          create: (context) => LanguageService(Locale(language)),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
@@ -40,6 +53,9 @@ class MyApp extends StatelessWidget {
           theme: Provider.of<ThemeService>(context).isDark
               ? darkTheme
               : lightTheme,
+          locale: Provider.of<LanguageService>(context).currentLocale,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
         );
       },
     );
