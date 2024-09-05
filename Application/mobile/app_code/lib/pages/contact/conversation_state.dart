@@ -44,6 +44,8 @@ class ConversationPageState extends State<ConversationPage> {
 
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// Function to find the assigned user.
+  /// It returns the ID of the assigned user.
   String findAssigned() {
     for (var element in tickets) {
       final creator = element["creatorId"];
@@ -60,6 +62,8 @@ class ConversationPageState extends State<ConversationPage> {
     return "";
   }
 
+  /// Function to get the assigned user information.
+  /// It sends a GET request to the server to get the assigned user information.
   void getAssignedInfo(String assignedId) async {
     late http.Response response;
 
