@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
@@ -59,7 +60,7 @@ class MyContainerState extends State<MyContainer> {
           }
         else
           {
-            debugPrint('error'),
+            showCustomToast(context, value.body, false),
           }
       },
     );
@@ -150,6 +151,16 @@ class MyContainerState extends State<MyContainer> {
                             ),
                           ),
                           onPressed: () {
+                            storageService.writeStorage(
+                              'containerData',
+                              jsonEncode(
+                                {
+                                  'id': displayedContainers[i]['id'],
+                                  'container':
+                                      jsonEncode(displayedContainers[i]),
+                                },
+                              ),
+                            );
                             context.go(
                               '/container-creation',
                               extra: jsonEncode(

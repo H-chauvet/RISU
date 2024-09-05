@@ -9,7 +9,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/article/favorite/favorite_page.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
-import 'package:risu/pages/rent/rental_page.dart';
+import 'package:risu/pages/rent/rentals/rentals_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,11 +45,9 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ).then(
               (value) {
-                if (value != null && value == true) {
-                  setState(() {
-                    userInformation = userInformation;
-                  });
-                }
+                setState(() {
+                  userInformation = userInformation;
+                });
               },
             );
           },

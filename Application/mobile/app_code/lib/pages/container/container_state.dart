@@ -25,12 +25,28 @@ class ContainerPageState extends State<ContainerPage> {
   final LoaderManager _loaderManager = LoaderManager();
   LatLng _userPosition = const LatLng(47.210546, -1.566842); // Epitech Nantes
   List<ContainerList> containers = [];
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
 
+    _updaterContainer();
     _updateLocation();
+    if (widget.testPosition == null) {
+      timer = Timer.periodic(
+          const Duration(seconds: 10), (Timer t) => _updateLocation());
+    }
+  }
+
+  void _updaterContainer() async {
+    if (widget.testContainers.isEmpty) {
+      await _getContainer();
+    } else {
+      setState(() {
+        containers = widget.testContainers;
+      });
+    }
   }
 
   /// Update the user location and the containers list
@@ -43,13 +59,6 @@ class ContainerPageState extends State<ContainerPage> {
         _userPosition = widget.testPosition!;
       });
     }
-    if (widget.testContainers.isEmpty) {
-      await _getContainer();
-    } else {
-      setState(() {
-        containers = widget.testContainers;
-      });
-    }
     await _getDistances();
   }
 
@@ -60,7 +69,7 @@ class ContainerPageState extends State<ContainerPage> {
     if (permission != PermissionStatus.granted) {
       return;
     }
-    _getUserLocation();
+    await _getUserLocation();
   }
 
   /// Get the user location
@@ -68,7 +77,7 @@ class ContainerPageState extends State<ContainerPage> {
   Future<void> _getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
+        desiredAccuracy: LocationAccuracy.best,
       );
       setState(() {
         _userPosition = LatLng(position.latitude, position.longitude);
@@ -100,18 +109,20 @@ class ContainerPageState extends State<ContainerPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = json.decode(response.body);
-        final List<dynamic> containersData = responseData;
-        setState(() {
-          containers = containersData
-              .map((data) => ContainerList.fromJson(data))
-              .toList();
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getContainer');
-        }
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = json.decode(response.body);
+          final List<dynamic> containersData = responseData;
+          setState(() {
+            containers = containersData
+                .map((data) => ContainerList.fromJson(data))
+                .toList();
+          });
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getContainer');
+          }
       }
       _getDistances();
     } catch (err, stacktrace) {

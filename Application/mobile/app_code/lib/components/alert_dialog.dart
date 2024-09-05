@@ -50,9 +50,11 @@ class MyAlertDialog {
     required BuildContext context,
     required String title,
     required String message,
+    bool barrierDismissible = true,
   }) async {
     return showDialog<void>(
       context: context,
+      barrierDismissible: barrierDismissible,
       builder: (BuildContext context) {
         return AlertDialog(
           key: key,

@@ -118,7 +118,7 @@ class LoginPageState extends State<LoginPage> {
         key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: true,
+        showBackButton: false,
         textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())

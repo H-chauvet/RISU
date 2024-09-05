@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:risu/globals.dart';
 
 /// The bottom navigation bar that appears at the bottom of the screen
 /// It contains three icons: search, map and profile
@@ -17,6 +18,16 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BottomNavigationBarItem item = BottomNavigationBarItem(
+      icon: const Icon(Icons.person),
+      label: AppLocalizations.of(context)!.profile,
+    );
+    if (userInformation == null) {
+      item = BottomNavigationBarItem(
+        icon: const Icon(Icons.settings),
+        label: AppLocalizations.of(context)!.settings,
+      );
+    }
     return BottomNavigationBar(
       key: key,
       currentIndex: currentIndex,
@@ -30,10 +41,7 @@ class BottomNavBar extends StatelessWidget {
           icon: const Icon(Icons.map),
           label: AppLocalizations.of(context)!.map,
         ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.person),
-          label: AppLocalizations.of(context)!.profile,
-        ),
+        item,
       ],
       backgroundColor: theme!.bottomNavigationBarTheme.backgroundColor,
       selectedItemColor: theme!.bottomNavigationBarTheme.selectedItemColor,
