@@ -59,6 +59,7 @@ class LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
+            padding: EdgeInsets.zero,
             child: CustomFooter(),
           ),
           children: [
@@ -137,26 +138,32 @@ class LoginScreenState extends State<LoginScreen> {
                               return null;
                             },
                           ),
-                          InkWell(
-                            onTap: () {
-                              context.go("/password-recuperation");
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
+                          MouseRegion(
+                            cursor: SystemMouseCursors
+                                .click, // Changez l'icône de la souris ici
+                            child: GestureDetector(
+                              onTap: () {
+                                context.go("/password-recuperation");
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: <Widget>[
                                     Text(
                                       'Mot de passe oublié ?',
                                       style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: screenFormat ==
-                                                  ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletFontSize),
+                                        color: Colors.blue,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
+                                      ),
                                       textAlign: TextAlign.right,
                                     ),
-                                  ]),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -230,40 +237,55 @@ class LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          InkWell(
-                            key: const Key('register'),
-                            onTap: () {
-                              context.go("/register");
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Nouveau sur la plateforme ? ",
-                                      style: TextStyle(
-                                          fontSize: screenFormat ==
-                                                  ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletFontSize),
-                                    ),
-                                    Text(
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "Nouveau sur la plateforme ? ",
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize,
+                                  ),
+                                ),
+                                MouseRegion(
+                                  cursor: SystemMouseCursors.click,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      context.go("/register");
+                                    },
+                                    child: Text(
                                       'Créer un compte.',
                                       style: TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: screenFormat ==
-                                                  ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletFontSize),
+                                        color: Colors.blue,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
+                                      ),
                                     ),
-                                  ]),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 20),
                           Text(
                             "Se connecter avec :",
                             style: TextStyle(
+                                color: Provider.of<ThemeService>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
                                     : tabletFontSize),

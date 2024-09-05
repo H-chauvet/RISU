@@ -47,6 +47,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         body: FooterView(
             footer: Footer(
+              padding: EdgeInsets.zero,
               child: CustomFooter(),
             ),
             children: [
@@ -292,43 +293,55 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            InkWell(
-                              key: const Key('login'),
-                              onTap: () {
-                                context.go("/login");
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Déja un compte ? ",
-                                      style: TextStyle(
-                                        fontSize:
-                                            screenFormat == ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletFontSize,
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Nouveau sur la plateforme ? ",
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context,
+                                                  listen: false)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                    ),
+                                  ),
+                                  MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.go("/login");
+                                      },
+                                      child: Text(
+                                        'Connectez-vous.',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                        ),
                                       ),
                                     ),
-                                    Text(
-                                      'Connectez-vous.',
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize:
-                                            screenFormat == ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletFontSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 20),
                             Text(
                               "S'inscrire avec :",
                               style: TextStyle(
+                                color: Provider.of<ThemeService>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
                                     : tabletFontSize,

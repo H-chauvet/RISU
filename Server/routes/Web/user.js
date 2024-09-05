@@ -300,7 +300,7 @@ router.post("/update-mail", async (req, res, next) => {
   try {
     const { oldMail, newMail } = req.body;
 
-    if (!oldMail && !newMail) {
+    if (!oldMail || !newMail) {
       res.status(400).send(res.__("missingMail"));
       return;
     }

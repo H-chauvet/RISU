@@ -92,12 +92,12 @@ class ContainerCard extends StatelessWidget {
           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
           decoration: BoxDecoration(
             color: Provider.of<ThemeService>(context).isDark
-                ? darkTheme.colorScheme.background.withOpacity(0.8)
-                : lightTheme.colorScheme.background.withOpacity(0.8),
+                ? lightTheme.primaryColor
+                : darkTheme.primaryColor,
             borderRadius: BorderRadius.circular(30.0),
             boxShadow: [
               BoxShadow(
-                color: Color(0xff4682B4).withOpacity(0.5),
+                color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.25),
                 spreadRadius: 5,
                 blurRadius: 7,
                 offset: Offset(0, 3),
@@ -116,6 +116,9 @@ class ContainerCard extends StatelessWidget {
                       Text(
                         "Ville : ${container.city != null ? container.city! : "Inconnue"}",
                         style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
                                 : tabletFontSize),
@@ -126,6 +129,9 @@ class ContainerCard extends StatelessWidget {
                 subtitle: Text(
                   "Prix du conteneur : ${container.price.toString()} €",
                   style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize
                           : tabletFontSize),

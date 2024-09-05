@@ -52,6 +52,7 @@ class NotFoundPageState extends State<NotFoundPage> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
+            padding: EdgeInsets.zero,
             child: CustomFooter(),
           ),
           children: [
