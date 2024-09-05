@@ -159,4 +159,40 @@ router.post("/invite-member", async (req, res) => {
   }
 });
 
+router.post("/add-member", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
+    const token = req.headers.authorization;
+    const decodedToken = jwtMiddleware.decodeToken(token);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const { companyId } = req.body;
+
+    const company = await organizationCtrl.getOrganizationById(res, companyId);
+    if (!company) {
+      throw res.__("companyNotFound");
+    }
+
+    const userUpdated = await userCtrl.addCompanyToUser(
+      res,
+      user,
+      JSON.stringify(company),
+      false
+    );
+    res.status(200).send(userUpdated);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
 module.exports = router;

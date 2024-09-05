@@ -68,15 +68,17 @@ class AppRouter {
       GoRoute(
         path: '/register/:companyId',
         pageBuilder: (context, state) {
-          final param = state.pathParameters['id'].toString();
+          final param = state.pathParameters['companyId'].toString();
           return NoTransitionPage(
-            child: RegisterScreen(), // ajout param
+            child: RegisterScreen(
+              orgId: param,
+            ),
           );
         },
       ),
       GoRoute(
         path: '/register',
-        pageBuilder: (context, state) => const NoTransitionPage(
+        pageBuilder: (context, state) => NoTransitionPage(
           child: RegisterScreen(),
         ),
       ),

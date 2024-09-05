@@ -20,8 +20,11 @@ import 'register_style.dart';
 /// RegisterScreen
 ///
 /// Page for the account creation
+// ignore: must_be_immutable
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key, this.orgId});
+
+  String? orgId = '';
 
   @override
   State<RegisterScreen> createState() => RegisterScreenState();
@@ -244,7 +247,20 @@ class RegisterScreenState extends State<RegisterScreen> {
                                       header,
                                       body);
                                   // ignore: use_build_context_synchronously
-                                  context.go("/company-register", extra: mail);
+                                  if (widget.orgId == null) {
+                                    context.go("/company-register",
+                                        extra: mail);
+                                  } else {
+                                    body = {
+                                      'companyId': widget.orgId!,
+                                    };
+                                    await HttpService().request(
+                                        'http://$serverIp:3000/api/organization/add-member',
+                                        header,
+                                        body);
+                                    context.go("/register-confirmation",
+                                        extra: mail);
+                                  }
                                 }
                               }
                             },

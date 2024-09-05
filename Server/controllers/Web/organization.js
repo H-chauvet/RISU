@@ -43,6 +43,7 @@ exports.getAllOrganizations = async (res) => {
  */
 exports.getOrganizationById = async (res, id) => {
   try {
+    id = parseInt(id);
     return await db.Organization.findUnique({
       where: { id: id },
       include: {
@@ -125,20 +126,24 @@ exports.updateType = (res, organization) => {
 };
 
 exports.inviteMember = (res, memberList, company) => {
-  memberList = JSON.parse(memberList);
-  company = JSON.parse(company);
+  try {
+    memberList = JSON.parse(memberList);
+    company = JSON.parse(company);
 
-  memberList.forEach((element) => {
-    let mail = {
-      from: "risu.epitech@gmail.com",
-      to: element,
-      subject: "Invitation",
-      html:
-        '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/register/' +
-        company.id +
-        '">Inscription</a>' +
-        "</p>",
-    };
-    transporter.sendMail(mail);
-  });
+    memberList.forEach((element) => {
+      let mail = {
+        from: "risu.epitech@gmail.com",
+        to: element,
+        subject: "Invitation",
+        html:
+          '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/register/' +
+          company.id +
+          '">Inscription</a>' +
+          "</p>",
+      };
+      transporter.sendMail(mail);
+    });
+  } catch (err) {
+    throw res.__("errorOccured");
+  }
 };
