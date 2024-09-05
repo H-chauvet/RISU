@@ -21,7 +21,6 @@ import 'package:sizer/sizer.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-
   setUp(() async {
     final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
     final fontLoader = FontLoader('Roboto')..addFont(roboto);
@@ -48,7 +47,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const RegisterScreen(),
+                child: RegisterScreen(),
               ),
             );
           },
