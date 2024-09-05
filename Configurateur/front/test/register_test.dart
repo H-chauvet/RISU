@@ -49,7 +49,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const RegisterScreen(),
+                child: RegisterScreen(),
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
