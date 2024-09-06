@@ -2,6 +2,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
@@ -128,7 +129,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                       ),
                     ),
                     child: Text(
-                      "Retour à l'accueil",
+                      AppLocalizations.of(context)!.backToHome,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor

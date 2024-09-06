@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
@@ -134,7 +135,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modification effectuée avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       checkToken();
     } else {
       showCustomToast(context, response.body, false);
@@ -152,7 +154,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(AppLocalizations.of(context)!.modify),
           content: Container(
             height: 120.0,
             child: Column(
@@ -163,8 +165,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   key: const Key('information'),
                   controller: contactInformationController,
                   decoration: InputDecoration(
-                      labelText: "Nouvelles informations",
-                      hintText: initialContactInformation),
+                    labelText: AppLocalizations.of(context)!.informationNew,
+                    hintText: initialContactInformation,
+                  ),
                 ),
               ],
             ),
@@ -182,8 +185,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                "Annuler",
+              child: Text(
+                AppLocalizations.of(context)!.cancel,
                 key: const Key('cancel-edit-information'),
               ),
             ),
@@ -201,8 +204,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                "Modifier",
+              child: Text(
+                AppLocalizations.of(context)!.modify,
               ),
             ),
           ],

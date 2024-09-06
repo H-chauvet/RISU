@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/dialog/container_dialog.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -43,9 +44,12 @@ class InteractivePanelState extends State<InteractivePanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                "Configuration du container",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              Text(
+                AppLocalizations.of(context)!.containerConfiguration,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
               const SizedBox(height: 20),
               /*SizedBox(
@@ -68,9 +72,11 @@ class InteractivePanelState extends State<InteractivePanel> {
               const SizedBox(height: 20),*/
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0))),
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
                   onPressed: () async {
                     await showDialog(
                         context: context,
@@ -83,8 +89,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                   },
                   child: Column(
                     children: [
-                      const Text("Petit casier",
-                          style: TextStyle(color: Colors.white)),
+                      Text(
+                        AppLocalizations.of(context)!.smallLocker,
+                        style: const TextStyle(color: Colors.white),
+                      ),
                       Image.asset(
                         "assets/cube.png",
                         width: 40,
@@ -111,9 +119,11 @@ class InteractivePanelState extends State<InteractivePanel> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0))),
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
                   onPressed: () async {
                     await showDialog(
                         context: context,
@@ -126,8 +136,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                   },
                   child: Column(
                     children: [
-                      const Text("Moyen casier",
-                          style: TextStyle(color: Colors.white)),
+                      Text(
+                        AppLocalizations.of(context)!.mediumLocker,
+                        style: const TextStyle(color: Colors.white),
+                      ),
                       Image.asset(
                         "assets/cube.png",
                         width: 60,
@@ -154,9 +166,11 @@ class InteractivePanelState extends State<InteractivePanel> {
               ),
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0))),
+                    backgroundColor: Colors.grey,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
                   onPressed: () async {
                     await showDialog(
                         context: context,
@@ -169,8 +183,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                   },
                   child: Column(
                     children: [
-                      const Text("Grand casier",
-                          style: TextStyle(color: Colors.white)),
+                      Text(
+                        AppLocalizations.of(context)!.bigLocker,
+                        style: const TextStyle(color: Colors.white),
+                      ),
                       Image.asset(
                         "assets/cube.png",
                         width: 80,
@@ -201,9 +217,11 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ElevatedButton(
                         key: const Key('front-view'),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0))),
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
                         onPressed: widget.rotateFrontCallback,
                         child: Column(children: [
                           SizedBox(
@@ -212,8 +230,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                               'assets/3d_logo.png',
                             ),
                           ),
-                          const Text('vue devant',
-                              style: TextStyle(color: Colors.white)),
+                          Text(
+                            AppLocalizations.of(context)!.frontView,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ]),
                       ),
                       const SizedBox(
@@ -222,9 +242,11 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ElevatedButton(
                         key: const Key('back-view'),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0))),
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
                         onPressed: widget.rotateBackCallback,
                         child: Column(children: [
                           SizedBox(
@@ -233,8 +255,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                               'assets/3d_logo.png',
                             ),
                           ),
-                          const Text('vue derrière',
-                              style: TextStyle(color: Colors.white)),
+                          Text(
+                            AppLocalizations.of(context)!.backView,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ]),
                       ),
                     ],
@@ -246,9 +270,11 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ElevatedButton(
                         key: const Key('left-view'),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0))),
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
                         onPressed: widget.rotateLeftCallback,
                         child: Column(children: [
                           SizedBox(
@@ -257,8 +283,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                               'assets/3d_logo.png',
                             ),
                           ),
-                          const Text('vue gauche',
-                              style: TextStyle(color: Colors.white)),
+                          Text(
+                            AppLocalizations.of(context)!.leftView,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ]),
                       ),
                       const SizedBox(
@@ -267,9 +295,11 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ElevatedButton(
                         key: const Key('right-view'),
                         style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.grey,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0))),
+                          backgroundColor: Colors.grey,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
                         onPressed: widget.rotateRightCallback,
                         child: Column(children: [
                           SizedBox(
@@ -278,8 +308,10 @@ class InteractivePanelState extends State<InteractivePanel> {
                               'assets/3d_logo.png',
                             ),
                           ),
-                          const Text('vue droite',
-                              style: TextStyle(color: Colors.white)),
+                          Text(
+                            AppLocalizations.of(context)!.rightView,
+                            style: const TextStyle(color: Colors.white),
+                          ),
                         ]),
                       ),
                     ],

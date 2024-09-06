@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/recap_panel/recap_panel_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -126,7 +127,7 @@ class RecapPanel extends StatelessWidget {
     if (parsedArticles.isEmpty) {
       return Center(
         child: Text(
-          "Aucun article dans le panier",
+          AppLocalizations.of(context)!.cartNoItem,
           style: TextStyle(
             color: Provider.of<ThemeService>(context).isDark
                 ? darkTheme.primaryColor
@@ -191,7 +192,9 @@ class RecapPanel extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(right: 10, bottom: 10),
                   child: Text(
-                    "${parsedArticles[i].price.toString()}€",
+                    AppLocalizations.of(context)!.priceNumberData(
+                      parsedArticles[i].price.toString(),
+                    ),
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -224,7 +227,7 @@ class RecapPanel extends StatelessWidget {
           children: [
             Center(
               child: Text(
-                'Panier',
+                AppLocalizations.of(context)!.cart,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
@@ -256,7 +259,7 @@ class RecapPanel extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: Text(
-                          'Type',
+                          AppLocalizations.of(context)!.type,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -272,7 +275,7 @@ class RecapPanel extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 35),
                       child: Text(
-                        'Quantité',
+                        AppLocalizations.of(context)!.quantity,
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
@@ -293,7 +296,7 @@ class RecapPanel extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          'Prix',
+                          AppLocalizations.of(context)!.price,
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
@@ -339,15 +342,17 @@ class RecapPanel extends StatelessWidget {
               height: 5,
             ),
             Center(
-              child: Text('Total: ${price!}€',
-                  style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                  )),
+              child: Text(
+                AppLocalizations.of(context)!.totalPriceData(price!),
+                style: TextStyle(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
             ),
             const SizedBox(
               height: 10,

@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
@@ -97,7 +98,11 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      showCustomToast(context, "Le conteneur a bien été supprimé !", true);
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.containerRemovalConfirmation,
+        true,
+      );
       fetchContainers();
     } else {
       showCustomToast(context, response.body, false);
@@ -167,7 +172,11 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      showCustomToast(context, "Article supprimé avec succès", true);
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.itemDeleteSuccess,
+        true,
+      );
       fetchItems();
     } else {
       showCustomToast(context, response.body, false);
@@ -211,7 +220,8 @@ class _ContainerPageState extends State<ContainerPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modifications effectuées avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       fetchItemsByCategory();
     } else {
       showCustomToast(context, response.body, false);
@@ -245,7 +255,7 @@ class _ContainerPageState extends State<ContainerPage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(
-                "Modifier un objet",
+                AppLocalizations.of(context)!.modifyObject,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -264,13 +274,15 @@ class _ContainerPageState extends State<ContainerPage> {
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                          labelText: "Nouveau nom", hintText: initialLastName),
+                        labelText: AppLocalizations.of(context)!.newName,
+                        hintText: initialLastName,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Text(
-                          "Disponible",
+                          AppLocalizations.of(context)!.available,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -295,15 +307,17 @@ class _ContainerPageState extends State<ContainerPage> {
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
-                      decoration:
-                          const InputDecoration(labelText: "Prix de l'objet"),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.objectPrice,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
                       controller: descController,
                       decoration: InputDecoration(
-                          labelText: "Nouvelle description",
-                          hintText: initialDesc),
+                        labelText: AppLocalizations.of(context)!.descriptionNew,
+                        hintText: initialDesc,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                   ],
@@ -322,7 +336,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Annuler",
+                    AppLocalizations.of(context)!.cancel,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -347,7 +361,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Modifier",
+                    AppLocalizations.of(context)!.modify,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -379,15 +393,21 @@ class _ContainerPageState extends State<ContainerPage> {
       double price,
       int selectedContainerId) async {
     if (nameController.text.isEmpty) {
-      showCustomToast(context, "Veuillez entrer un nom d'article", false);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.itemAskName, false);
       return;
     }
     if (price <= 0) {
-      showCustomToast(context, "Veuillez entrer un prix valide", false);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.priceAskValid, false);
       return;
     }
     if (selectedContainerId == 0) {
-      showCustomToast(context, "Veuillez sélectionner un conteneur", false);
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.itemAskContainer,
+        false,
+      );
       return;
     }
     if (descController.text.isEmpty) {
@@ -412,7 +432,8 @@ class _ContainerPageState extends State<ContainerPage> {
       },
     );
     if (response.statusCode == 200) {
-      showCustomToast(context, "Article créé avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.itemCreationSuccess, true);
       fetchItemsByCategory();
     } else {
       showCustomToast(context, response.body, false);
@@ -437,7 +458,7 @@ class _ContainerPageState extends State<ContainerPage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(
-                "Créer un nouvel objet",
+                AppLocalizations.of(context)!.itemCreate,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -455,14 +476,15 @@ class _ContainerPageState extends State<ContainerPage> {
                     const SizedBox(height: 10.0),
                     TextField(
                       controller: nameController,
-                      decoration:
-                          const InputDecoration(labelText: "Nom de l'objet"),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.itemName,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Text(
-                          "Disponible",
+                          AppLocalizations.of(context)!.available,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -487,8 +509,9 @@ class _ContainerPageState extends State<ContainerPage> {
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
-                      decoration:
-                          const InputDecoration(labelText: "Prix de l'objet"),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.objectPrice,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     DropdownButtonFormField<String>(
@@ -504,14 +527,17 @@ class _ContainerPageState extends State<ContainerPage> {
                           child: Text(container.city!),
                         );
                       }).toList(),
-                      decoration: const InputDecoration(
-                          labelText: 'Sélectionnez le conteneur'),
+                      decoration: InputDecoration(
+                        labelText:
+                            AppLocalizations.of(context)!.containerSelect,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
                       controller: description,
-                      decoration: const InputDecoration(
-                          labelText: "Description de l'objet"),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.itemDescription,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                   ],
@@ -530,7 +556,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Annuler",
+                    AppLocalizations.of(context)!.cancel,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -556,7 +582,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Créer",
+                    AppLocalizations.of(context)!.create,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -586,7 +612,7 @@ class _ContainerPageState extends State<ContainerPage> {
             Expanded(
               child: ListTile(
                 title: Text(
-                  "Nom : ${item.name}",
+                  AppLocalizations.of(context)!.nameData(item.name),
                   style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
@@ -595,7 +621,8 @@ class _ContainerPageState extends State<ContainerPage> {
                 ),
                 subtitle: item.description != null
                     ? Text(
-                        "Description : ${item.description!}",
+                        AppLocalizations.of(context)!
+                            .descriptionData(item.description!),
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -603,7 +630,7 @@ class _ContainerPageState extends State<ContainerPage> {
                         ),
                       )
                     : Text(
-                        "Description : Pas de description",
+                        AppLocalizations.of(context)!.descriptionEmpty,
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -620,15 +647,15 @@ class _ContainerPageState extends State<ContainerPage> {
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,
-                        (String newcity, String newDescription) {
+                        (String newcity, String DescriptionNew) {
                       setState(() {
                         itemName = newcity;
-                        itemDesc = newDescription;
+                        itemDesc = DescriptionNew;
                       });
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 IconButton(
@@ -650,7 +677,7 @@ class _ContainerPageState extends State<ContainerPage> {
       length: 2,
       child: Scaffold(
         appBar: CustomAppBar(
-          'Gestion des conteneurs et objets',
+          AppLocalizations.of(context)!.containerItemHandling,
           context: context,
         ),
         body: NestedScrollView(
@@ -664,7 +691,7 @@ class _ContainerPageState extends State<ContainerPage> {
                   tabs: [
                     Tab(
                       child: Text(
-                        'Liste des conteneurs',
+                        AppLocalizations.of(context)!.containerList,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -677,7 +704,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                     Tab(
                       child: Text(
-                        'Liste des objets',
+                        AppLocalizations.of(context)!.itemList,
                         style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -688,7 +715,7 @@ class _ContainerPageState extends State<ContainerPage> {
                       ),
                     ),
                   ],
-                  labelPadding: EdgeInsets.symmetric(horizontal: 10.0),
+                  labelPadding: const EdgeInsets.symmetric(horizontal: 10.0),
                   indicatorColor: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
                       : lightTheme.primaryColor,
@@ -709,7 +736,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     containers.isEmpty
                         ? Center(
                             child: Text(
-                              'Aucun conteneur trouvé.',
+                              AppLocalizations.of(context)!.containerNotFound,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -744,7 +771,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     containers.isEmpty
                         ? Center(
                             child: Text(
-                              'Aucun objet trouvé.',
+                              AppLocalizations.of(context)!.objectEmpty,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -768,13 +795,13 @@ class _ContainerPageState extends State<ContainerPage> {
                                             bool newAvailable,
                                             double newPrice,
                                             int newContainerId,
-                                            String newDescription) {
+                                            String DescriptionNew) {
                                           setState(() {
                                             name = newName;
                                             available = newAvailable;
                                             price = newPrice;
                                             containerId = newContainerId;
-                                            description = newDescription;
+                                            description = DescriptionNew;
                                             fetchItems();
                                           });
                                         },
@@ -801,7 +828,7 @@ class _ContainerPageState extends State<ContainerPage> {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          'Ajouter un article',
+                                          AppLocalizations.of(context)!.itemAdd,
                                           style: TextStyle(
                                             color: Provider.of<ThemeService>(
                                                         context)
@@ -833,7 +860,9 @@ class _ContainerPageState extends State<ContainerPage> {
                                     items: [
                                       DropdownMenuItem(
                                         value: 'Tous',
-                                        child: Text('Tous'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!.all,
+                                        ),
                                       ),
                                       for (var category in categories)
                                         if (category != 'Tous')
@@ -848,7 +877,7 @@ class _ContainerPageState extends State<ContainerPage> {
                               items.isEmpty
                                   ? Center(
                                       child: Text(
-                                        'Aucun objet trouvé.',
+                                        AppLocalizations.of(context)!.objectEmpty,
                                         style: TextStyle(
                                           fontSize: screenFormat ==
                                                   ScreenFormat.desktop

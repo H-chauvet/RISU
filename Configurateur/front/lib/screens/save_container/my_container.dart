@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
@@ -113,7 +114,7 @@ class MyContainerState extends State<MyContainer> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        "Mes conteneurs",
+        AppLocalizations.of(context)!.containerMy,
         context: context,
       ),
       body: Center(
@@ -122,7 +123,7 @@ class MyContainerState extends State<MyContainer> {
           children: [
             const SizedBox(height: 100),
             Text(
-              "Mes conteneurs sauvegardés",
+              AppLocalizations.of(context)!.containerSaved,
               style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor

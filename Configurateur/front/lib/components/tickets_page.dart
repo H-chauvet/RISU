@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_toast.dart';
@@ -216,7 +217,7 @@ class TicketsState extends State<TicketsPage> {
       if (mounted) {
         showCustomToast(
             context,
-            "Erreur durant la récupération des informations de l'interlocuteur",
+            AppLocalizations.of(context)!.errorDuringCallerInformationRetrieval,
             false);
       }
       return false;
@@ -326,8 +327,8 @@ class TicketsState extends State<TicketsPage> {
           LandingAppBar(context: context),
           Text(
             isAdmin
-                ? 'Administration des tickets'
-                : 'Contactez le support RISU !',
+                ? AppLocalizations.of(context)!.adminTicket
+                : AppLocalizations.of(context)!.contactSupport,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
@@ -361,7 +362,7 @@ class TicketsState extends State<TicketsPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          'Liste des tickets',
+                          AppLocalizations.of(context)!.ticketList,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
@@ -417,7 +418,8 @@ class TicketsState extends State<TicketsPage> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "En cours",
+                                            AppLocalizations.of(context)!
+                                                .inProgress,
                                             style: TextStyle(
                                               color: showOpenedTickets
                                                   ? getCurrentTheme()
@@ -472,7 +474,8 @@ class TicketsState extends State<TicketsPage> {
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Fermés",
+                                            AppLocalizations.of(context)!
+                                                .closed,
                                             style: TextStyle(
                                               color: !showOpenedTickets
                                                   ? getCurrentTheme()
@@ -500,7 +503,7 @@ class TicketsState extends State<TicketsPage> {
                                           : closedTickets)
                                       .isEmpty
                                   ? Text(
-                                      "Aucun Ticket",
+                                      AppLocalizations.of(context)!.ticketNo,
                                       style: TextStyle(
                                         color:
                                             Provider.of<ThemeService>(context)
@@ -592,10 +595,12 @@ class TicketsState extends State<TicketsPage> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          "Créé le : ${formatDateTime(
-                                                            firstTicket[
-                                                                "createdAt"],
-                                                          )}",
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .createdTimeData(
+                                                                  formatDateTime(
+                                                                      firstTicket[
+                                                                          "createdAt"])),
                                                           style: TextStyle(
                                                             fontSize: screenFormat ==
                                                                     ScreenFormat
@@ -608,10 +613,13 @@ class TicketsState extends State<TicketsPage> {
                                                           ),
                                                         ),
                                                         Text(
-                                                          "Dernière activité le : ${formatDateTime(
+                                                          AppLocalizations.of(
+                                                                  context)!
+                                                              .lastActivity(
+                                                                  formatDateTime(
                                                             lastTicket[
                                                                 "createdAt"],
-                                                          )}",
+                                                          )),
                                                           style: TextStyle(
                                                             fontSize: screenFormat ==
                                                                     ScreenFormat
@@ -638,7 +646,7 @@ class TicketsState extends State<TicketsPage> {
                                                                     tickets);
                                                           },
                                                           child: Text(
-                                                            "S'assigner",
+                                                            AppLocalizations.of(context)!.ticketAssign,
                                                             style: TextStyle(
                                                               fontSize: screenFormat ==
                                                                       ScreenFormat
@@ -681,7 +689,7 @@ class TicketsState extends State<TicketsPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Nouveau ticket',
+                            AppLocalizations.of(context)!.ticketNew,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: screenFormat == ScreenFormat.desktop
@@ -698,7 +706,7 @@ class TicketsState extends State<TicketsPage> {
                           TextFormField(
                             controller: _titleController,
                             decoration: InputDecoration(
-                              labelText: 'Titre',
+                              labelText: AppLocalizations.of(context)!.title,
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
@@ -713,7 +721,7 @@ class TicketsState extends State<TicketsPage> {
                             maxLines: 15,
                             keyboardType: TextInputType.multiline,
                             decoration: InputDecoration(
-                              labelText: 'Message',
+                              labelText: AppLocalizations.of(context)!.message,
                               floatingLabelBehavior:
                                   FloatingLabelBehavior.always,
                               border: OutlineInputBorder(
@@ -744,7 +752,7 @@ class TicketsState extends State<TicketsPage> {
                                   ),
                                 ),
                                 child: Text(
-                                  'Soumettre votre ticket',
+                                  AppLocalizations.of(context)!.ticketSubmit,
                                   style: TextStyle(
                                     fontSize:
                                         screenFormat == ScreenFormat.desktop
@@ -849,7 +857,7 @@ class TicketsState extends State<TicketsPage> {
                                             ),
                                             Text(
                                               (chat["creatorId"] == uuid
-                                                      ? "Vous ,"
+                                                      ? AppLocalizations.of(context)!.you
                                                       : "$firstName $lastName, ") +
                                                   formatDateTime(
                                                       chat["createdAt"]),
@@ -926,7 +934,7 @@ class TicketsState extends State<TicketsPage> {
                                       },
                                       child: const Icon(Icons.arrow_upward),
                                     ),
-                                    labelText: 'Nouveau message',
+                                    labelText: AppLocalizations.of(context)!.messageNew,
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     border: OutlineInputBorder(
@@ -964,7 +972,7 @@ class TicketsState extends State<TicketsPage> {
                                       ),
                                     ),
                                     child: Text(
-                                      'Cloturer la conversation',
+                                      AppLocalizations.of(context)!.endConversation,
                                       style: TextStyle(
                                         color:
                                             Provider.of<ThemeService>(context)
@@ -998,7 +1006,7 @@ class TicketsState extends State<TicketsPage> {
                                     ),
                                   ),
                                   child: Text(
-                                    'Fermer la conversation',
+                                    AppLocalizations.of(context)!.closeConversation,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context)
                                               .isDark

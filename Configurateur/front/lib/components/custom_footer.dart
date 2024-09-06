@@ -1,6 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -71,7 +72,7 @@ class CustomFooterState extends State<CustomFooter> {
                             25.0), // half of height and width of Image
                       ),
                       child: IconButton(
-                        tooltip: "Page de contact",
+                        tooltip: AppLocalizations.of(context)!.contactPage,
                         icon: const Icon(
                           Icons.contact_page,
                           size: 20.0,
@@ -97,7 +98,7 @@ class CustomFooterState extends State<CustomFooter> {
                             25.0), // half of height and width of Image
                       ),
                       child: IconButton(
-                        tooltip: "Développé par RISU",
+                        tooltip: AppLocalizations.of(context)!.developedByRisu,
                         icon: const Icon(
                           Icons.fingerprint,
                           size: 20.0,
@@ -121,7 +122,7 @@ class CustomFooterState extends State<CustomFooter> {
                             25.0), // half of height and width of Image
                       ),
                       child: IconButton(
-                        tooltip: "Page des avis",
+                        tooltip: AppLocalizations.of(context)!.opinionPage,
                         icon: const Icon(
                           Icons.stars,
                           size: 20.0,
@@ -140,17 +141,17 @@ class CustomFooterState extends State<CustomFooter> {
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Copyright ©2024, Tous droits réservés.',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.copyright,
+            style: const TextStyle(
                 fontWeight: FontWeight.w300,
                 fontSize: 12.0,
                 color: Color(0xff033f63)),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Développé par RISU',
-            style: TextStyle(
+          Text(
+            AppLocalizations.of(context)!.developedByRisu,
+            style: const TextStyle(
                 fontWeight: FontWeight.w300,
                 fontSize: 12.0,
                 color: Color(0xff033f63)),

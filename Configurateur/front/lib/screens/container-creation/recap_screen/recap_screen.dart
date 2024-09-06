@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel/recap_panel.dart';
@@ -119,7 +120,7 @@ class RecapScreenState extends State<RecapScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        'Récapitulatif',
+        AppLocalizations.of(context)!.summary,
         context: context,
       ),
       bottomSheet: Row(
@@ -128,8 +129,8 @@ class RecapScreenState extends State<RecapScreen> {
           ProgressBar(
             length: 6,
             progress: 3,
-            previous: 'Précédent',
-            next: 'Suivant',
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.next,
             previousFunc: previousFunc,
             nextFunc: nextFunc,
           ),

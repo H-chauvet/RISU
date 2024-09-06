@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
@@ -64,7 +65,7 @@ class LoginScreenState extends State<LoginScreen> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Connectez-vous au site RISU !',
+            AppLocalizations.of(context)!.logInRisu,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
@@ -98,8 +99,8 @@ class LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       key: const Key('email'),
                       decoration: InputDecoration(
-                        hintText: 'Entrez votre email',
-                        labelText: 'Adresse e-mail',
+                        hintText: AppLocalizations.of(context)!.emailFill,
+                        labelText: AppLocalizations.of(context)!.email,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -109,7 +110,7 @@ class LoginScreenState extends State<LoginScreen> {
                       },
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez remplir ce champ';
+                          return AppLocalizations.of(context)!.askCompleteField;
                         }
                         return null;
                       },
@@ -119,8 +120,8 @@ class LoginScreenState extends State<LoginScreen> {
                       key: const Key('password'),
                       obscureText: true,
                       decoration: InputDecoration(
-                        hintText: 'Entrez votre mot de passe',
-                        labelText: 'Mot de passe',
+                        hintText: AppLocalizations.of(context)!.passwordFill,
+                        labelText: AppLocalizations.of(context)!.password,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -130,7 +131,7 @@ class LoginScreenState extends State<LoginScreen> {
                       },
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez remplir ce champ';
+                          return AppLocalizations.of(context)!.askCompleteField;
                         }
                         return null;
                       },
@@ -145,7 +146,7 @@ class LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                'Mot de passe oublié ?',
+                                AppLocalizations.of(context)!.passwordForgot,
                                 style: TextStyle(
                                     color: Colors.blue,
                                     fontSize:
@@ -187,9 +188,11 @@ class LoginScreenState extends State<LoginScreen> {
                                       if (value.statusCode == 200)
                                         {
                                           showCustomToast(
-                                              context,
-                                              "Vous êtes désormais connecté !",
-                                              true),
+                                            context,
+                                            AppLocalizations.of(context)!
+                                                .loggedIn,
+                                            true,
+                                          ),
                                           response = jsonDecode(value.body),
                                           response['accessToken'],
                                           storageService.writeStorage(
@@ -200,8 +203,12 @@ class LoginScreenState extends State<LoginScreen> {
                                         }
                                       else
                                         {
-                                          showCustomToast(context,
-                                              "Echec de la connexion", false),
+                                          showCustomToast(
+                                            context,
+                                            AppLocalizations.of(context)!
+                                                .logInFailed,
+                                            false,
+                                          ),
                                         }
                                     });
                           }
@@ -212,7 +219,7 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         child: Text(
-                          "Se connecter",
+                          AppLocalizations.of(context)!.logIn,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -235,7 +242,7 @@ class LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Text(
-                                "Nouveau sur la plateforme ? ",
+                                AppLocalizations.of(context)!.newRisu,
                                 style: TextStyle(
                                     fontSize:
                                         screenFormat == ScreenFormat.desktop
@@ -243,7 +250,7 @@ class LoginScreenState extends State<LoginScreen> {
                                             : tabletFontSize),
                               ),
                               Text(
-                                'Créer un compte.',
+                                AppLocalizations.of(context)!.register,
                                 style: TextStyle(
                                     color: Colors.blue,
                                     fontSize:
@@ -256,7 +263,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      "Se connecter avec :",
+                      AppLocalizations.of(context)!.logInWith,
                       style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize

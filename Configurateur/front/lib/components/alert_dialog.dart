@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,12 +31,12 @@ class MyAlertTest {
 
   /// [Widget] : Add login button if you are connected
   static Widget loginButton(BuildContext context) {
-    if ('title' == 'Connexion requise') {
+    if ('title' == AppLocalizations.of(context)!.logInRequired) {
       return TextButton(
         onPressed: () {
           context.go('/login');
         },
-        child: const Text('Se connecter'),
+        child: Text(AppLocalizations.of(context)!.logInAction),
       );
     } else {
       return Container();
@@ -59,7 +60,7 @@ class MyAlertTest {
                 Navigator.pop(context);
                 context.go('/');
               },
-              child: const Text("Retour à l'accueil"),
+              child: Text(AppLocalizations.of(context)!.backToHome),
             ),
             loginButton(context),
           ],
@@ -76,8 +77,8 @@ Future<Map<String, dynamic>> checkSignin(BuildContext context) async {
   if (token == '') {
     return {
       'isSignedIn': false,
-      'title': 'Connexion requise',
-      'message': 'Vous devez être connecté à un compte pour poursuivre.'
+      'title': AppLocalizations.of(context)!.logInRequired,
+      'message': AppLocalizations.of(context)!.mustBeLoggedIn,
     };
   }
 
@@ -85,8 +86,8 @@ Future<Map<String, dynamic>> checkSignin(BuildContext context) async {
   if (!isUserVerified) {
     return {
       'isSignedIn': false,
-      'title': 'Compte non vérifié',
-      'message': 'Vous devez vérifier votre compte pour poursuivre'
+      'title': AppLocalizations.of(context)!.accountNotVerified,
+      'message': AppLocalizations.of(context)!.mustVerifyAccount,
     };
   }
   return {'isSignedIn': true, 'title': '', 'message': ''};
@@ -104,8 +105,7 @@ Future<Map<String, dynamic>> checkSignInAdmin(BuildContext context) async {
   }
   return {
     'isSignedIn': false,
-    'title': 'Connexion Administrateur requise',
-    'message':
-        "Vous devez être connecté en tant qu'Administrateur à un compte pour poursuivre."
+    'title': AppLocalizations.of(context)!.adminAccessNeeded,
+    'message': AppLocalizations.of(context)!.mustBeAdmin
   };
 }

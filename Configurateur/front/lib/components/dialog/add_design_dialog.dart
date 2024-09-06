@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
@@ -101,11 +102,14 @@ class AddDesignDialogState extends State<AddDesignDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Ajouter un conteneur',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: getTextColor())),
+          Text(
+            AppLocalizations.of(context)!.addContainer,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: getTextColor(),
+            ),
+          ),
           const SizedBox(height: 20),
           Form(
             child: Column(
@@ -126,11 +130,12 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                           Text(widget.file!.files.first.name),
                           const SizedBox(height: 20),
                           Text(
-                            "Où souhaitez-vous ajouter ce design ?",
+                            AppLocalizations.of(context)!.askDesign,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: getTextColor()),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: getTextColor(),
+                            ),
                           ),
                           const SizedBox(height: 20),
                           Row(
@@ -159,7 +164,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Devant',
+                                  AppLocalizations.of(context)!.front,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -188,7 +193,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Derrière',
+                                  AppLocalizations.of(context)!.back,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -217,7 +222,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Gauche',
+                                  AppLocalizations.of(context)!.left,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -253,7 +258,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Droite',
+                                  AppLocalizations.of(context)!.right,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -282,7 +287,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Haut',
+                                  AppLocalizations.of(context)!.up,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -311,7 +316,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                   });
                                 },
                                 child: Text(
-                                  'Bas',
+                                  AppLocalizations.of(context)!.down,
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: getTextColor(),
@@ -337,8 +342,10 @@ class AddDesignDialogState extends State<AddDesignDialog> {
                                 Navigator.pop(context);
                               }
                             },
-                            child: Text('Ajouter',
-                                style: TextStyle(color: getTextColor())),
+                            child: Text(
+                              AppLocalizations.of(context)!.add,
+                              style: TextStyle(color: getTextColor()),
+                            ),
                           ),
                         ],
                       ),

@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
@@ -61,10 +62,13 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       } else {
         debugPrint(
-            'Failed to fetch user details. Status code: ${response.statusCode}');
+          AppLocalizations.of(context)!
+              .errorDuringUserInformationRetrievalData(response.statusCode),
+        );
       }
     } catch (error) {
-      debugPrint('Error fetching user details: $error');
+      debugPrint(AppLocalizations.of(context)!
+          .errorDuringUserInformationRetrievalData(error));
     }
   }
 
@@ -93,11 +97,11 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return CustomPopup(
-          title: "Modification de votre identité",
+          title: AppLocalizations.of(context)!.userIdentityModify,
           content: Column(
             children: <Widget>[
               Text(
-                "Mettez à jour votre prénom et votre nom facilement !",
+                AppLocalizations.of(context)!.userNameModify,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -114,14 +118,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 key: const Key("first-name"),
                 controller: firstNameController,
                 decoration: InputDecoration(
-                    labelText: "Nouveau prénom", hintText: initialFirstName),
+                  labelText: AppLocalizations.of(context)!.newFirstName,
+                  hintText: initialFirstName,
+                ),
               ),
               const SizedBox(height: 10.0),
               TextField(
                 key: const Key("last-name"),
                 controller: lastNameController,
                 decoration: InputDecoration(
-                    labelText: "Nouveau nom", hintText: initialLastName),
+                  labelText: AppLocalizations.of(context)!.newLastName,
+                  hintText: initialLastName,
+                ),
               ),
               const SizedBox(
                 height: 90,
@@ -157,7 +165,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 child: Text(
-                  "Mettre à jour",
+                  AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor

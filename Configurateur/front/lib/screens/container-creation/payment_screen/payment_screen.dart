@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -132,7 +133,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
         }
       });
     } catch (e) {
-      showCustomToast(context, "Echec de la commande", false);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.orderFailed, false);
     }
   }
 
@@ -142,24 +144,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-        appBar: CustomAppBar('Paiement', context: context),
-        bottomSheet: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProgressBar(
-              length: 6,
-              progress: 5,
-              previous: 'Précédent',
-              next: 'Payer',
-              previousFunc: goPrevious,
-              nextFunc: goNext,
-            ),
-            const SizedBox(
-              height: 50,
-            )
-          ],
-        ),
-        body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      appBar:
+          CustomAppBar(AppLocalizations.of(context)!.payment, context: context),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ProgressBar(
+            length: 6,
+            progress: 5,
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.pay,
+            previousFunc: goPrevious,
+            nextFunc: goNext,
+          ),
+          const SizedBox(
+            height: 50,
+          )
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
           Center(
             child: FractionallySizedBox(
               widthFactor: screenFormat == ScreenFormat.desktop
@@ -169,15 +174,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 children: [
                   const SizedBox(height: 50),
                   Text(
-                    "Coordonnées bancaires",
+                    AppLocalizations.of(context)!.banckDetails,
                     style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                        fontWeight: FontWeight.bold),
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   CardField(
@@ -185,7 +191,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   const SizedBox(height: 100),
                   Text(
-                    "Des demandes supplémentaires à nous faire parvenir ?",
+                    AppLocalizations.of(context)!.additionalRequest,
                     style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor
@@ -213,7 +219,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),
           ),
           const SizedBox(height: 20),
-        ]));
+        ],
+      ),
+    );
   }
 
   Future<bool> makePayment() async {
@@ -221,12 +229,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
       email: 'risu.epitech@gmail.com',
       name: 'Risu Corp',
       address: Address(
-          city: 'Nantes',
-          country: 'FR',
-          line1: '1 rue de la paix',
-          line2: 'Appartement 1',
-          postalCode: '44000',
-          state: 'Loire Atlantique'), // Mocked data
+        city: 'Nantes',
+        country: 'FR',
+        line1: '1 rue de la paix',
+        line2: 'Appartement 1',
+        postalCode: '44000',
+        state: 'Loire Atlantique',
+      ), // Mocked data
     );
 
     late var paymentMethod;

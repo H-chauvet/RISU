@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
@@ -81,7 +82,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     return BlocProvider(
       create: (context) => DialogCubit(),
       child: Scaffold(
-        appBar: CustomAppBar('Les avis de RISU', context: context),
+        appBar: CustomAppBar(AppLocalizations.of(context)!.risuOpinions, context: context),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -120,7 +121,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                                   Padding(
                                     padding: const EdgeInsets.all(16.0),
                                     child: Text(
-                                      'Poster un avis',
+                                      AppLocalizations.of(context)!.opinionPost,
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize:
@@ -140,7 +141,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                     );
                   },
                   child: Text(
-                    'Poster un avis',
+                    AppLocalizations.of(context)!.opinionPost,
                     style: TextStyle(
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopFontSize

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
@@ -47,19 +48,19 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
               children: [
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Accueil'),
+                  child: Text(AppLocalizations.of(context)!.home),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Créer un conteneur'),
+                  child: Text(AppLocalizations.of(context)!.containerCreate),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Nos offres'),
+                  child: Text(AppLocalizations.of(context)!.ourOffers),
                 ),
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Nous contacter'),
+                  child: Text(AppLocalizations.of(context)!.contactUs),
                 ),
               ],
             ),
@@ -74,8 +75,8 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text(
-                    'Mon profil',
+                  child: Text(
+                    AppLocalizations.of(context)!.profileMy,
                   ),
                 ),
                 const SizedBox(width: 16.0),
@@ -84,7 +85,10 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');
                     showCustomToast(
-                        context, "Vous êtes bien déconnecté !", true);
+                      context,
+                      AppLocalizations.of(context)!.loggedOff,
+                      true,
+                    );
                     context.go("/");
                   },
                   style: ElevatedButton.styleFrom(
@@ -94,8 +98,12 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                   ),
-                  child: const Text('Déconnexion',
-                      style: TextStyle(color: Color.fromRGBO(143, 47, 47, 1))),
+                  child: Text(
+                    AppLocalizations.of(context)!.logOff,
+                    style: const TextStyle(
+                      color: Color.fromRGBO(143, 47, 47, 1),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -122,7 +130,7 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      'Récapitulatif de commande',
+                      AppLocalizations.of(context)!.orderRecap,
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -131,46 +139,46 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                     ),
                     const SizedBox(height: 50),
                     Text(
-                      'Nom du produit:',
+                      AppLocalizations.of(context)!.productName,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    const Text(
-                      'Conteneur classique',
-                      style: TextStyle(fontSize: 16),
+                    Text(
+                      AppLocalizations.of(context)!.containerClassic,
+                      style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Options:',
+                      AppLocalizations.of(context)!.settings,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    const Text(
-                      'Flocage(Oui) - Logo(Oui) - Couleur personnalisée(Non)',
-                      style: TextStyle(fontSize: 16),
+                    Text(
+                      AppLocalizations.of(context)!.containerDescription,
+                      style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Taille:',
+                      AppLocalizations.of(context)!.size,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColor,
                       ),
                     ),
-                    const Text(
-                      '8m x 4.50m x 2.50m',
-                      style: TextStyle(fontSize: 16),
+                    Text(
+                      AppLocalizations.of(context)!.containerSize,
+                      style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      'Prix:',
+                      AppLocalizations.of(context)!.price2,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -206,9 +214,9 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: const Text(
-                  'Retour',
-                  style: TextStyle(fontSize: 18),
+                child: Text(
+                  AppLocalizations.of(context)!.returnTo,
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ),
@@ -224,9 +232,9 @@ class _RecapConfigPageState extends State<RecapConfigPage> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                 ),
-                child: const Text(
-                  'Payer',
-                  style: TextStyle(fontSize: 18),
+                child: Text(
+                  AppLocalizations.of(context)!.pay,
+                  style: const TextStyle(fontSize: 18),
                 ),
               ),
             ),

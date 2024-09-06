@@ -1,15 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:go_router/go_router.dart';
-import 'dart:convert';
-
 import 'package:provider/provider.dart';
 
 import 'google_style.dart';
@@ -58,7 +59,7 @@ class GoogleLogo extends StatelessWidget {
                 width: 5.0,
               ),
               Text(
-                'Google',
+                AppLocalizations.of(context)!.google,
                 style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
@@ -106,7 +107,10 @@ class GoogleLogo extends StatelessWidget {
               if (value.statusCode == 200)
                 {
                   showCustomToast(
-                      context, "Vous êtes désormais connecté !", true),
+                    context,
+                    AppLocalizations.of(context)!.nowConnected,
+                    true,
+                  ),
                   response = jsonDecode(value.body),
                   StorageService()
                       .writeStorage('token', response['accessToken']),

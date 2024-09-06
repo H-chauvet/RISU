@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
@@ -88,28 +89,30 @@ class CompanyPageState extends State<CompanyPage> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
-        'Entreprise',
+        AppLocalizations.of(context)!.company,
         context: context,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 15,
             ),
-            Text("Notre équipe :",
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                  fontWeight: FontWeight.bold,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                )),
-            SizedBox(
+            Text(
+              AppLocalizations.of(context)!.ourTeam2,
+              style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopBigFontSize
+                    : tabletBigFontSize,
+                fontWeight: FontWeight.bold,
+                decorationThickness: 2.0,
+                decorationStyle: TextDecorationStyle.solid,
+              ),
+            ),
+            const SizedBox(
               height: 70,
             ),
             Center(
@@ -151,22 +154,24 @@ class CompanyPageState extends State<CompanyPage> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 80,
             ),
-            Text("Nos Conteneurs :",
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                  fontWeight: FontWeight.bold,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                )),
-            SizedBox(
+            Text(
+              AppLocalizations.of(context)!.ourContainers,
+              style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopBigFontSize
+                    : tabletBigFontSize,
+                fontWeight: FontWeight.bold,
+                decorationThickness: 2.0,
+                decorationStyle: TextDecorationStyle.solid,
+              ),
+            ),
+            const SizedBox(
               height: 65,
             ),
             Wrap(

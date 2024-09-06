@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -49,7 +50,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        'Récupération du mot de passe',
+        AppLocalizations.of(context)!.passwordRecovery,
         context: context,
       ),
       body: Center(
@@ -67,8 +68,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                   child: TextFormField(
                     key: const Key('email'),
                     decoration: InputDecoration(
-                      hintText: 'Entrez votre email',
-                      labelText: 'Adresse e-mail',
+                      hintText: AppLocalizations.of(context)!.emailFill,
+                      labelText: AppLocalizations.of(context)!.email,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -78,7 +79,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -173,8 +174,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          showCustomToast(context,
-                              "Le mot de passe a bien été récupéré", true);
+                          showCustomToast(
+                            context,
+                            AppLocalizations.of(context)!
+                                .passwordRecoverySuccess,
+                            true,
+                          );
                         } else {
                           showCustomToast(context, response.body, false);
                         }
@@ -187,7 +192,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       ),
                     ),
                     child: Text(
-                      "Envoyer l'email de récupération",
+                      AppLocalizations.of(context)!.emailSendRecovery,
                       style: TextStyle(
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
