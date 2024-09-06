@@ -4,6 +4,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
@@ -91,19 +92,43 @@ class CompanyPageState extends State<CompanyPage> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        'Entreprise',
-        context: context,
-      ),
       body: FooterView(
           footer: Footer(
-            child: CustomFooter(),
+            padding: EdgeInsets.zero,
+            child: const CustomFooter(),
           ),
           children: [
+            LandingAppBar(context: context),
+            Text(
+              "L'équipe de RISU",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopBigFontSize
+                    : tabletBigFontSize,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.bold,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
+                shadows: [
+                  Shadow(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    offset: const Offset(0.75, 0.75),
+                    blurRadius: 1.5,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
             SingleChildScrollView(
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Text("Notre équipe :",
@@ -118,7 +143,7 @@ class CompanyPageState extends State<CompanyPage> {
                         decorationThickness: 2.0,
                         decorationStyle: TextDecorationStyle.solid,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 70,
                   ),
                   Center(
@@ -148,7 +173,9 @@ class CompanyPageState extends State<CompanyPage> {
                                       members[index].indexOf('.'))
                                   .toUpperCase(),
                               style: TextStyle(
-                                color: const Color.fromRGBO(70, 130, 180, 1),
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
                                     : tabletFontSize,
@@ -160,7 +187,7 @@ class CompanyPageState extends State<CompanyPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 80,
                   ),
                   Text("Nos Conteneurs :",
@@ -175,7 +202,7 @@ class CompanyPageState extends State<CompanyPage> {
                         decorationThickness: 2.0,
                         decorationStyle: TextDecorationStyle.solid,
                       )),
-                  SizedBox(
+                  const SizedBox(
                     height: 65,
                   ),
                   Wrap(

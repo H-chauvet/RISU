@@ -49,7 +49,7 @@ router.post(
       const { content, title, createdAt, assignedId, chatUid } = req.body;
 
       if (!content || !title) {
-        return res.status(400).send(res.__("missingParamaters"));
+        return res.status(400).send(res.__("missingParameters"));
       }
       if (assignedId) {
         const assigned = await userCtrl.findUserById(assignedId);
@@ -101,7 +101,7 @@ router.put(
       const ticketId = req.body.ticketId;
 
       if (!assignedId || !ticketId) {
-        return res.status(400).send(res.__("missingParamaters"));
+        return res.status(400).send(res.__("missingParameters"));
       }
       const assigned = await userCtrl.findUserById(assignedId);
       if (!assigned) {
