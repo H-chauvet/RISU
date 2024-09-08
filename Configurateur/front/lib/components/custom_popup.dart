@@ -101,6 +101,7 @@ class CustomPopup extends StatelessWidget {
                   child: MouseRegion(
                     cursor: SystemMouseCursors.click,
                     child: GestureDetector(
+                      key: const Key("close-popup"),
                       onTap: () {
                         Navigator.of(context).pop();
                       },
