@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'signup_state.dart';
 
+/// Signup page.
+/// this page is used to signup the user.
+/// params:
+/// [key] - key to identify the widget.
 class SignupPage extends StatefulWidget {
   const SignupPage({
     super.key,

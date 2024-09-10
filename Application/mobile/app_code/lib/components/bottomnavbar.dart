@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/globals.dart';
 
-/// The bottom navigation bar that appears at the bottom of the screen
-/// It contains three icons: search, map and profile
+/// The bottom navigation bar that appears at the bottom of the screen.
+/// It contains three icons: search, map and profile.
+/// params:
+/// [currentIndex] - the index of the current selected item.
+/// [onTap] - the function that is called when an item is tapped.
+/// [theme] - the theme of the app.
 class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;

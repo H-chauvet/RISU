@@ -3,8 +3,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/image_loader.dart';
 
-/// ArticleData class
-/// This class is used to store the data of an article
+/// ArticleData class.
+/// This class is used to store the data of an article.
+/// params:
+/// [id] - the id of the article.
+/// [containerId] - the id of the container.
+/// [name] - the name of the article.
+/// [available] - the availability of the article.
+/// [price] - the price of the article.
+/// [categories] - the categories of the article.
+/// returns:
+/// [ArticleData] - an article data object.
 class ArticleData {
   final int id;
   final int containerId;
@@ -48,9 +57,11 @@ class ArticleData {
   }
 }
 
-/// ArticleDataCard class
-/// This class is used to display the data of an article in a card
-/// It is used in the ArticleListPage
+/// ArticleDataCard class.
+/// This class is used to display the data of an article in a card.
+/// It is used in the ArticleListPage.
+/// params:
+/// [articleData] - the data of the article to display.
 class ArticleDataCard extends StatelessWidget {
   final ArticleData articleData;
 

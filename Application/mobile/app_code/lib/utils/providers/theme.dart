@@ -57,6 +57,9 @@ class ThemeProvider extends ChangeNotifier {
   }
 
   /// Set the theme
+  /// This function is used to set the theme of the application.
+  /// params:
+  /// [theme] - theme to set.
   void setTheme(String theme) async {
     if (theme != appTheme['clair'] &&
         theme != appTheme['sombre'] &&

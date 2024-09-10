@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-/// Custom AppBar with a curve at the bottom
+/// Custom AppBar with a curve at the bottom.
+/// params:
+/// [showBackButton] - show back button on the left side of the app bar.
+/// [curveColor] - color of the curve at the bottom of the app bar.
+/// [textTitle] - title of the app bar.
+/// [action] - widget to be displayed on the right side of the app bar.
+/// [onBackButtonPressed] - function to be called when the back button is pressed.
+/// [preferredSize] - size of the app bar (height).
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showBackButton;
   final Color curveColor;
@@ -66,6 +73,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(kToolbarHeight + 16);
 }
 
+/// Custom painter for the curve at the bottom of the app bar.
+/// params:
+/// [curveColor] - color of the curve.
 class CurvePainter extends CustomPainter {
   final Color curveColor;
 

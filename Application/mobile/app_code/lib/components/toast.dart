@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// A class to show toast message
+/// A class to show toast message.
+/// params:
+/// [message] message to show.
+/// [context] context of the widget.
 class MyToastMessage {
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason> show(
       {required String message, required BuildContext context}) {

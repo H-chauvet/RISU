@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 
 /// This class is the UserData class.
 /// It contains all information about an UserData
+/// params:
+/// [token] - token of the user
+/// [refreshToken] - refresh token of the user
+/// [email] - email of the user
+/// [firstName] - first name of the user
+/// [lastName] - last name of the user
+/// [ID] - ID of the user
+/// [notifications] - notifications of the user
 class UserData {
   String? token;
   String? refreshToken;
@@ -36,6 +44,9 @@ class UserData {
   }
 
   /// Convert a json map into the class
+  /// params:
+  /// [user] - user data
+  /// [token] - token of the user
   factory UserData.fromJson(Map<String, dynamic> user, String token) {
     return UserData(
       email: user['email'],

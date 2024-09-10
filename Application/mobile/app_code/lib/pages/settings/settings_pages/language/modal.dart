@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// LanguageChangeModalContent
 /// This class is the content of the language change modal.
+/// params:
+/// [key] - key to identify the widget.
 class LanguageChangeModalContent extends StatelessWidget {
   const LanguageChangeModalContent({super.key});
 
@@ -29,6 +31,10 @@ class LanguageChangeModalContent extends StatelessWidget {
   }
 
   /// displayLanguage displays the language radio button
+  /// params:
+  /// [context] - context of the widget.
+  /// [languageCode] - language code.
+  /// [languageName] - language name.
   Widget displayLanguage(
       BuildContext context, String languageCode, String languageName) {
     return RadioListTile<String>(

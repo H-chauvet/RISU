@@ -8,6 +8,7 @@ class MyColors {
 }
 
 /// Light theme data
+/// This is the light theme data for the application.
 final lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: MyColors.primary,
@@ -68,6 +69,7 @@ final lightTheme = ThemeData(
 );
 
 /// Dark theme data
+/// This is the dark theme data for the application.
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: MyColors.secondary,

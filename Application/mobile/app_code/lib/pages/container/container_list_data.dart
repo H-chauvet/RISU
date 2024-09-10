@@ -5,6 +5,17 @@ import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 /// ContainerList class
+/// This class is a model class that contains the container information
+/// params:
+/// [id] - the container id.
+/// [address] - the container address.
+/// [city] - the container city.
+/// [longitude] - the container longitude.
+/// [latitude] - the container latitude.
+/// [itemCount] - the number of items in the container.
+/// [distance] - the distance from the current position.
+/// returns:
+/// [ContainerList] - the container information.
 class ContainerList {
   final int id;
   final String address;
@@ -25,6 +36,10 @@ class ContainerList {
   });
 
   /// Create a ContainerList object from a JSON object
+  /// params:
+  /// [json] - the JSON object.
+  /// returns:
+  /// [ContainerList] - the container information.
   factory ContainerList.fromJson(Map<String, dynamic> json) {
     return ContainerList(
         id: json['id'],
@@ -51,6 +66,11 @@ class ContainerList {
 
 /// ContainerCard class
 /// This class is a StatelessWidget that displays a card with the container information
+/// params:
+/// [container] - the container information.
+/// [onDirectionClicked] - callback function when the direction button is clicked.
+/// returns:
+/// [ContainerCard] - the container card.
 class ContainerCard extends StatelessWidget {
   final ContainerList container;
   final Function(int?) onDirectionClicked;
@@ -63,6 +83,12 @@ class ContainerCard extends StatelessWidget {
 
   /// Show the distance in the correct format
   /// If the distance is less than 10 meters, it will return a string with the distance in less than 10 meters
+  /// If the distance is more than 1000 meters, it will return a string with the distance in kilometers
+  /// params:
+  /// [context] - the context of the widget.
+  /// [distance] - the distance from the current position.
+  /// returns:
+  /// [String] - the distance in the correct format.
   String showDistance(BuildContext context, double distance) {
     if (distance < 10) {
       return AppLocalizations.of(context)!.containerDistanceLess10;
