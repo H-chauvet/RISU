@@ -348,7 +348,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                       PopupMenuItem<String>(
                         value: 'company-profil',
                         child: Text(
-                          AppLocalizations.of(context)!.myCompany,
+                          AppLocalizations.of(context)!.companyMy,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context,
                                         listen: false)
@@ -407,7 +407,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                     storageService.removeStorage('tokenExpiration');
                     token = '';
                     showCustomToast(
-                        context, "Vous êtes bien déconnecté !", true);
+                      context,
+                      AppLocalizations.of(context)!.loggedOff,
+                      true,
+                    );
                     context.go("/");
                   }
                 },

@@ -82,7 +82,7 @@ class ContainerDialogState extends State<ContainerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.addContainer,
+            AppLocalizations.of(context)!.containerAdd,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -206,7 +206,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.columnNumberAsk,
-                      labelText: 'numéro de colonne',
+                      labelText: AppLocalizations.of(context)!.columnNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -235,7 +235,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                   child: TextFormField(
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.rowNumberAsk,
-                      labelText: 'numéro de ligne',
+                      labelText: AppLocalizations.of(context)!.rowNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

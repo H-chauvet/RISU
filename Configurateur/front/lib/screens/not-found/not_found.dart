@@ -2,6 +2,7 @@
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
@@ -69,7 +70,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          "Cette page n'existe pas !",
+                          AppLocalizations.of(context)!.pageNotFound,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
@@ -88,7 +89,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                           maxLines: 3,
                           text: TextSpan(
                             text:
-                                "Nous ne parvenons pas à trouver la page que vous recherchez.\nEssayez de retourner à la page précédente ou veuillez ",
+                                AppLocalizations.of(context)!.pageNotFoundText,
                             style: TextStyle(
                               fontSize: screenFormat == ScreenFormat.desktop
                                   ? desktopFontSize
@@ -101,7 +102,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                             ),
                             children: [
                               TextSpan(
-                                text: 'Contacter le support',
+                                text: AppLocalizations.of(context)!.contactSupport,
                                 style: TextStyle(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
@@ -132,7 +133,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                             ),
                           ),
                           child: Text(
-                            "Retour à l'accueil",
+                            AppLocalizations.of(context)!.backToHome,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.primaryColor

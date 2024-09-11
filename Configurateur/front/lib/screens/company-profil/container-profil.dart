@@ -441,7 +441,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(
-                AppLocalizations.of(context)!.modifyObject,
+                AppLocalizations.of(context)!.objectEdit,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -457,7 +457,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.newName,
+                        labelText: AppLocalizations.of(context)!.nameNew,
                         hintText: initialLastName,
                       ),
                     ),
@@ -566,7 +566,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               child: ListTile(
                 title: Text(AppLocalizations.of(context)!.nameData(item.name)),
                 subtitle: item.description != null
-                    ? Text(AppLocalizations.of(context)!.descriptionData(item.description!))
+                    ? Text(AppLocalizations.of(context)!
+                        .descriptionData(item.description!))
                     : Text(AppLocalizations.of(context)!.descriptionEmpty),
               ),
             ),
@@ -627,7 +628,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Gestion des conteneurs',
+            AppLocalizations.of(context)!.containerHandling,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
@@ -660,7 +661,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -685,7 +686,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 Text(
-                                  "Nom de la ville : ${tmp.city!}",
+                                  AppLocalizations.of(context)!
+                                      .cityNameData(tmp.city!),
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -722,7 +724,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 Text(
-                                  "Adresse : ${tmp.address!}",
+                                  AppLocalizations.of(context)!
+                                      .addressData(tmp.address!),
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -761,7 +764,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     ),
                   ),
                   Text(
-                    "Nos Objets :",
+                    AppLocalizations.of(context)!.ourObjects,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -773,14 +776,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       decorationStyle: TextDecorationStyle.solid,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 65,
                   ),
                   items.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            'Aucun objet trouvé.',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.objectEmpty,
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 211, 11, 11),
                             ),

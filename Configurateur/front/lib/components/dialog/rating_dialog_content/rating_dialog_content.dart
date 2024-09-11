@@ -36,11 +36,13 @@ Future<Map<String, dynamic>> fetchUserDetails(
       return userDetails;
     } else {
       debugPrint(
-          'Failed to fetch user details. Status code: ${response.statusCode}');
+        AppLocalizations.of(context)!
+            .errorFetchingUserDetailsCodeData(response.statusCode),
+      );
       return {"error": true};
     }
   } catch (error) {
-    debugPrint('Error fetching user details: $error');
+    debugPrint(AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
     return {};
   }
 }
@@ -55,7 +57,7 @@ Future<void> sendData(BuildContext context, String rating, String message,
   final userDetails = await fetchUserDetails(context, userMail);
   if (userDetails['error'] == true) {
     if (context.mounted) {
-      showCustomToast(context, "Failed to fetch user details.", false);
+      showCustomToast(context, AppLocalizations.of(context)!.errorFetchingUserDetails, false);
     }
     return;
   }

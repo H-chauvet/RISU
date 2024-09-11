@@ -30,47 +30,48 @@ class GoogleLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          startSignIn(context);
-        },
-        child: Container(
-          height: screenFormat == ScreenFormat.desktop
-              ? desktopButtonHeight
-              : tabletButtonHeight,
-          width: screenFormat == ScreenFormat.desktop
-              ? desktopButtonWidth
-              : tabletButtonWidth,
-          decoration: BoxDecoration(
-              color: Provider.of<ThemeService>(context).isDark
-                  ? boxDecorationDarkTheme.color
-                  : boxDecorationLightTheme.color,
-              borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                  child: Image.asset(
-                    'assets/google-logo.png',
-                    height: 20,
-                  )),
-              const SizedBox(
-                width: 5.0,
-              ),
-              Text(
-                AppLocalizations.of(context)!.google,
-                style: TextStyle(
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor),
-              )
-            ],
-          ),
-        ));
+      onTap: () {
+        startSignIn(context);
+      },
+      child: Container(
+        height: screenFormat == ScreenFormat.desktop
+            ? desktopButtonHeight
+            : tabletButtonHeight,
+        width: screenFormat == ScreenFormat.desktop
+            ? desktopButtonWidth
+            : tabletButtonWidth,
+        decoration: BoxDecoration(
+            color: Provider.of<ThemeService>(context).isDark
+                ? boxDecorationDarkTheme.color
+                : boxDecorationLightTheme.color,
+            borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+                color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                child: Image.asset(
+                  'assets/google-logo.png',
+                  height: 20,
+                )),
+            const SizedBox(
+              width: 5.0,
+            ),
+            Text(
+              AppLocalizations.of(context)!.google,
+              style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void startSignIn(BuildContext context) async {
@@ -108,7 +109,7 @@ class GoogleLogo extends StatelessWidget {
                 {
                   showCustomToast(
                     context,
-                    AppLocalizations.of(context)!.nowConnected,
+                    AppLocalizations.of(context)!.loggedIn,
                     true,
                   ),
                   response = jsonDecode(value.body),

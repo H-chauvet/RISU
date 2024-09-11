@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, use_full_hex_values_for_flutter_colors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
@@ -58,7 +59,7 @@ class LandingPageState extends State<LandingPage> {
           Column(
             children: [
               Text(
-                'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !',
+                AppLocalizations.of(context)!.landingPitch1,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: screenFormat == ScreenFormat.desktop
@@ -92,7 +93,7 @@ class LandingPageState extends State<LandingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Trouvez des locations selon vos \rbesoins, où vous les souhaitez',
+                            AppLocalizations.of(context)!.landingPitch2Title,
                             style: TextStyle(
                               fontSize: screenFormat == ScreenFormat.desktop
                                   ? desktopBigFontSize
@@ -117,7 +118,7 @@ class LandingPageState extends State<LandingPage> {
                             padding: const EdgeInsets.only(
                                 top: 15), // Espacement inférieur pour le texte
                             child: Text(
-                              'Des conteneurs disponibles partout en france !',
+                             AppLocalizations.of(context)!.landingPitch2Text,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -154,7 +155,7 @@ class LandingPageState extends State<LandingPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Concevez le conteneur de vos rêves,\nselon vos envies !',
+                            AppLocalizations.of(context)!.landingPitch3Title,
                             style: TextStyle(
                               fontSize: screenFormat == ScreenFormat.desktop
                                   ? desktopBigFontSize
@@ -179,7 +180,7 @@ class LandingPageState extends State<LandingPage> {
                             padding: const EdgeInsets.only(
                                 top: 15), // Espacement inférieur pour le texte
                             child: Text(
-                              'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes',
+                              AppLocalizations.of(context)!.landingPitch3Text,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize

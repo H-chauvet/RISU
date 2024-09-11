@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
@@ -57,7 +58,7 @@ class RegisterScreenState extends State<RegisterScreen> {
             children: [
               LandingAppBar(context: context),
               Text(
-                'Inscrivez-vous sur le site RISU !',
+                AppLocalizations.of(context)!.registerRisu,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: screenFormat == ScreenFormat.desktop
@@ -94,8 +95,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('firstname'),
                               decoration: InputDecoration(
-                                hintText: 'Entrez votre prénom',
-                                labelText: 'Prénom',
+                                hintText: AppLocalizations.of(context)!.firstNameFill,
+                                labelText: AppLocalizations.of(context)!.firstName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -105,7 +106,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
+                                  return AppLocalizations.of(context)!.askCompleteField;
                                 }
                                 return null;
                               },
@@ -114,8 +115,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('lastname'),
                               decoration: InputDecoration(
-                                hintText: 'Entrez votre nom',
-                                labelText: 'Nom',
+                                hintText: AppLocalizations.of(context)!.lastNameFill,
+                                labelText: AppLocalizations.of(context)!.lastName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -125,7 +126,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
+                                  return AppLocalizations.of(context)!.askCompleteField;
                                 }
                                 return null;
                               },
@@ -134,8 +135,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('email'),
                               decoration: InputDecoration(
-                                hintText: 'Entrez votre email',
-                                labelText: 'Adresse e-mail',
+                                hintText: AppLocalizations.of(context)!.emailFill,
+                                labelText: AppLocalizations.of(context)!.emailAddress,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -145,7 +146,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
+                                  return AppLocalizations.of(context)!.askCompleteField;
                                 }
                                 return null;
                               },
@@ -155,8 +156,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               key: const Key('password'),
                               obscureText: true,
                               decoration: InputDecoration(
-                                hintText: 'Entrez votre mot de passe',
-                                labelText: 'Mot de passe',
+                                hintText: AppLocalizations.of(context)!.passwordFill,
+                                labelText: AppLocalizations.of(context)!.password,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -166,7 +167,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
+                                  return AppLocalizations.of(context)!.askCompleteField;
                                 }
                                 return null;
                               },
@@ -176,8 +177,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               key: const Key('confirm-password'),
                               obscureText: true,
                               decoration: InputDecoration(
-                                hintText: 'Validation du mot de passe',
-                                labelText: 'Valider le mot de passe',
+                                hintText: AppLocalizations.of(context)!.passwordConfirmation,
+                                labelText: AppLocalizations.of(context)!.passwordConfirm,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -187,10 +188,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
+                                  return AppLocalizations.of(context)!.askCompleteField;
                                 }
                                 if (value != password) {
-                                  return 'Les mots de passe ne correspondent pas';
+                                  return AppLocalizations.of(context)!.passwordDontMatch;
                                 }
                                 return null;
                               },
@@ -272,7 +273,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  "S'inscrire",
+                                  AppLocalizations.of(context)!.signUp,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -292,7 +293,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    "Nouveau sur la plateforme ? ",
+                                    AppLocalizations.of(context)!.newRisu,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context,
                                                   listen: false)
@@ -312,7 +313,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                         context.go("/login");
                                       },
                                       child: Text(
-                                        'Connectez-vous.',
+                                        AppLocalizations.of(context)!.logInAsk,
                                         style: TextStyle(
                                           color: Colors.blue,
                                           fontSize: screenFormat ==
@@ -328,7 +329,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                             ),
                             const SizedBox(height: 20),
                             Text(
-                              "S'inscrire avec :",
+                              AppLocalizations.of(context)!.registerWith,
                               style: TextStyle(
                                 color: Provider.of<ThemeService>(context,
                                             listen: false)

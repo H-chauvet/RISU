@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
@@ -97,7 +98,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                 LandingAppBar(context: context),
 
                 Text(
-                  'Consulter et donner votre avis sur RISU !',
+                  AppLocalizations.of(context)!.opinionConsultCreate,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
@@ -136,11 +137,11 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                           context: context,
                           builder: (BuildContext context) {
                             return CustomPopup(
-                              title: "Poster un avis",
+                              title: AppLocalizations.of(context)!.opinionPost,
                               content: Column(
                                 children: <Widget>[
                                   Text(
-                                    "Partagez votre expérience en postant un avis !",
+                                    AppLocalizations.of(context)!.opinionShare,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context)
                                               .isDark
@@ -165,7 +166,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                         );
                       },
                       child: Text(
-                        'Poster un avis',
+                        AppLocalizations.of(context)!.opinionPage,
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize

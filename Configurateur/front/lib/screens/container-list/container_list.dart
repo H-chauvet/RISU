@@ -259,7 +259,7 @@ class _ContainerPageState extends State<ContainerPage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(
-                AppLocalizations.of(context)!.modifyObject,
+                AppLocalizations.of(context)!.objectEdit,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -278,7 +278,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.newName,
+                        labelText: AppLocalizations.of(context)!.nameNew,
                         hintText: initialLastName,
                       ),
                     ),

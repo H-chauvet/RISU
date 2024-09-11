@@ -80,7 +80,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                     key: const Key('locker-column'),
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.columnNumberAsk,
-                      labelText: 'numéro de colonne',
+                      labelText: AppLocalizations.of(context)!.columnNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -110,7 +110,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                     key: const Key('locker-row'),
                     decoration: InputDecoration(
                       hintText: AppLocalizations.of(context)!.rowNumberAsk,
-                      labelText: 'numéro de ligne',
+                      labelText: AppLocalizations.of(context)!.rowNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),

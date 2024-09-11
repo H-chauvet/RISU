@@ -244,7 +244,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modifications effectuées avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       checkToken();
     } else {
       showCustomToast(context, response.body, false);
@@ -261,7 +262,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Modifier"),
+          title: Text(AppLocalizations.of(context)!.modify),
           content: Container(
             height: 120.0,
             child: Column(
@@ -272,7 +273,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   key: const Key('type'),
                   controller: typeController,
                   decoration: InputDecoration(
-                      labelText: "Nouveau type", hintText: initialType),
+                      labelText: AppLocalizations.of(context)!.typeNew,
+                      hintText: initialType),
                 ),
               ],
             ),
@@ -290,8 +292,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                "Annuler",
+              child: Text(
+                AppLocalizations.of(context)!.cancel,
                 key: const Key('cancel-edit-type'),
               ),
             ),
@@ -309,8 +311,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: const Text(
-                "Modifier",
+              child: Text(
+                AppLocalizations.of(context)!.modify,
               ),
             ),
           ],
@@ -337,7 +339,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       },
     );
     if (response.statusCode == 200) {
-      showCustomToast(context, "Conteneur supprimé avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.containerDeleted, true);
       checkToken();
     } else {
       showCustomToast(context, response.body, false);
@@ -382,11 +385,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         });
       } else {
         debugPrint(
-          'Failed to fetch user details. Status code: ${response.statusCode}',
+          AppLocalizations.of(context)!
+              .errorFetchingUserDetailsCodeData(response.statusCode),
         );
       }
     } catch (error) {
-      debugPrint('Error fetching user details: $error');
+      debugPrint(
+          AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
     }
   }
 
@@ -425,7 +430,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             children: [
           LandingAppBar(context: context),
           Text(
-            'Gestion de votre entreprise',
+            AppLocalizations.of(context)!.companyHandling,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
@@ -479,7 +484,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                 organization.name != null &&
                                         organization.name != ''
                                     ? Text(
-                                        "Nom de l'entreprise : ${organization.name!}",
+                                        AppLocalizations.of(context)!
+                                            .companyNameData(
+                                                organization.name!),
                                         style: const TextStyle(
                                           color: Color(0xff4682B4),
                                           fontSize: 15.0,
@@ -487,9 +494,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                           fontFamily: 'Verdana',
                                         ),
                                       )
-                                    : const Text(
-                                        "L'entreprise ne possède pas de nom",
-                                        style: TextStyle(
+                                    : Text(
+                                        AppLocalizations.of(context)!
+                                            .companyNameEmpty,
+                                        style: const TextStyle(
                                           color: Color(0xff4682B4),
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
@@ -503,7 +511,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                             organization.contactInformation !=
                                                 ''
                                         ? Text(
-                                            "Information : ${organization.contactInformation!}",
+                                            AppLocalizations.of(context)!
+                                                .informationData(organization
+                                                    .contactInformation!),
                                             style: const TextStyle(
                                               color: Color(0xff4682B4),
                                               fontSize: 15.0,
@@ -511,9 +521,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                               fontFamily: 'Verdana',
                                             ),
                                           )
-                                        : const Text(
-                                            "Aucune information disponible",
-                                            style: TextStyle(
+                                        : Text(
+                                            AppLocalizations.of(context)!
+                                                .informationEmpty,
+                                            style: const TextStyle(
                                               color: Color(0xff4682B4),
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
@@ -547,7 +558,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                     organization.type != null &&
                                             organization.type != ''
                                         ? Text(
-                                            "Type d'entreprise : ${organization.type!}",
+                                            AppLocalizations.of(context)!
+                                                .companyTypeData(
+                                                    organization.type!),
                                             style: const TextStyle(
                                               color: Color(0xff4682B4),
                                               fontSize: 15.0,
@@ -555,9 +568,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                               fontFamily: 'Verdana',
                                             ),
                                           )
-                                        : const Text(
-                                            "Pas de type disponible",
-                                            style: TextStyle(
+                                        : Text(
+                                            AppLocalizations.of(context)!
+                                                .typeEmpty,
+                                            style: const TextStyle(
                                               color: Color(0xff4682B4),
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
@@ -592,18 +606,18 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                         child: Container(
                           height: 250,
                           alignment: Alignment.center,
-                          child: const Text(
-                            "Pas d'entreprise associée",
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.companyNotLinked,
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 211, 11, 11),
                             ),
                           ),
                         ),
                       ),
-                const Text(
-                  "Nos Conteneurs :",
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.ourContainers,
+                  style: const TextStyle(
                     color: Color.fromRGBO(70, 130, 180, 1),
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
@@ -616,10 +630,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                   height: 65,
                 ),
                 containersList.isEmpty
-                    ? const Center(
+                    ? Center(
                         child: Text(
-                          'Aucun conteneur trouvé.',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.containerNotFound,
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Color.fromARGB(255, 211, 11, 11),
                           ),

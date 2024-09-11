@@ -406,7 +406,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Nombres de lignes',
+                  AppLocalizations.of(context)!.rowNumbers,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
@@ -484,7 +484,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                   height: 20.0,
                 ),
                 Text(
-                  'Nombres de colonnes',
+                  AppLocalizations.of(context)!.columnNumbers,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
@@ -607,7 +607,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Largeur:',
+                          AppLocalizations.of(context)!.width,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -619,7 +619,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           ),
                         ),
                         Text(
-                          width <= 1 ? '$width mètre' : '$width mètres',
+                          AppLocalizations.of(context)!.meters(width),
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -635,7 +635,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Hauteur:',
+                          AppLocalizations.of(context)!.height,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -647,7 +647,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           ),
                         ),
                         Text(
-                          height <= 1 ? '$height mètre' : '$height mètres',
+                          AppLocalizations.of(context)!.meters(height),
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -663,7 +663,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "Nombre d'emplacements:",
+                          AppLocalizations.of(context)!.locationsNumber,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor

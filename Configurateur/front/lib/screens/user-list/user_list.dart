@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
@@ -52,7 +53,8 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Utilisateur supprimé avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.userDeleteSuccess, true);
       fetchUser();
     } else {
       showCustomToast(context, response.body, false);
@@ -70,11 +72,12 @@ class _UserPageState extends State<UserPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Utilisateur supprimé avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.userDeleteSuccess, true);
       fetchUserMobile();
     } else {
-      showCustomToast(
-          context, "Erreur durant la suppression de l'utilisateur", false);
+      showCustomToast(context,
+          AppLocalizations.of(context)!.errorDuringUserDeletion, false);
     }
   }
 
@@ -105,8 +108,8 @@ class _UserPageState extends State<UserPage> {
             usersData.map((data) => UserMobile.fromJson(data)).toList();
       });
     } else {
-      showCustomToast(
-          context, "Erreur durant la récupération des informations", false);
+      showCustomToast(context,
+          AppLocalizations.of(context)!.errorDuringInformationRetrieval, false);
     }
   }
 
@@ -119,7 +122,7 @@ class _UserPageState extends State<UserPage> {
       length: 2,
       child: Scaffold(
         appBar: CustomAppBar(
-          'Gestion des utilisateurs',
+          AppLocalizations.of(context)!.userHandling,
           context: context,
         ),
         body: NestedScrollView(
@@ -132,7 +135,7 @@ class _UserPageState extends State<UserPage> {
                   tabs: [
                     Tab(
                       child: Text(
-                        'Utilisateurs Web',
+                        AppLocalizations.of(context)!.userWeb,
                         style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -144,7 +147,7 @@ class _UserPageState extends State<UserPage> {
                     ),
                     Tab(
                       child: Text(
-                        'Utilisateurs Mobile',
+                        AppLocalizations.of(context)!.userMobile,
                         style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize

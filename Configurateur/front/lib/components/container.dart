@@ -146,7 +146,7 @@ class ContainerCards extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        AppLocalizations.of(context)!.noAddress,
+                        AppLocalizations.of(context)!.addressNo,
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize

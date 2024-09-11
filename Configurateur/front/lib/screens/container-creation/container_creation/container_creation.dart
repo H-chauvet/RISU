@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
@@ -860,7 +861,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        'Configurateur',
+        AppLocalizations.of(context)!.configurator,
         context: context,
       ),
       bottomSheet: Row(
@@ -869,8 +870,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           ProgressBar(
             length: 6,
             progress: 1,
-            previous: 'Précédent',
-            next: 'Suivant',
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.next,
             previousFunc: goPrevious,
             nextFunc: goNext,
           ),
@@ -913,7 +914,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        'Ajouter un casier',
+                        AppLocalizations.of(context)!.lockerAdd,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -948,7 +949,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        'Sauvegarder',
+                        AppLocalizations.of(context)!.saveAction,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -984,7 +985,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        'Remplissage',
+                        AppLocalizations.of(context)!.filling,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -1037,7 +1038,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        'Supprimer un casier',
+                        AppLocalizations.of(context)!.deleteLocker,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -1067,7 +1068,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        'Réinitialiser le conteneur',
+                        AppLocalizations.of(context)!.containerReset,
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor

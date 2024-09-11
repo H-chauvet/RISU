@@ -103,7 +103,7 @@ class AddDesignDialogState extends State<AddDesignDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            AppLocalizations.of(context)!.addContainer,
+            AppLocalizations.of(context)!.containerAdd,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

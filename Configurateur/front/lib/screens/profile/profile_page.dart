@@ -118,8 +118,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 key: const Key("first-name"),
                 controller: firstNameController,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.newFirstName,
-                  hintText: AppLocalizations.of(context)!.nameActual(initialFirstName),
+                  labelText: AppLocalizations.of(context)!.firstNameNew,
+                  hintText: AppLocalizations.of(context)!
+                      .actualData(initialFirstName),
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -127,8 +128,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 key: const Key("last-name"),
                 controller: lastNameController,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.newLastName,
-                  hintText: AppLocalizations.of(context)!.nameActual(initialLastName),
+                  labelText: AppLocalizations.of(context)!.laststNameNew,
+                  hintText:
+                      AppLocalizations.of(context)!.actualData(initialLastName),
                 ),
               ),
               const SizedBox(
@@ -150,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   if (response.statusCode == 200) {
                     showCustomToast(context,
-                        "Modifications effectuées avec succès !", true);
+                        AppLocalizations.of(context)!.modifySuccess, true);
                     onEdit(firstNameController.text, lastNameController.text);
                     Navigator.of(context).pop();
                   } else {
@@ -196,11 +198,11 @@ class _ProfilePageState extends State<ProfilePage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return CustomPopup(
-              title: "Modification du nom de votre entreprise",
+              title: AppLocalizations.of(context)!.companyNameEdit,
               content: Column(
                 children: <Widget>[
                   Text(
-                    "Mettez à jour le nom de votre entreprise facilement !",
+                    AppLocalizations.of(context)!.companyNameUpdate,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -217,8 +219,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     key: const Key("company"),
                     controller: companyController,
                     decoration: InputDecoration(
-                      labelText: "Nouveau nom d'entreprise",
-                      hintText: "Actuel : $initialCompany",
+                      labelText: AppLocalizations.of(context)!.companyNewName,
+                      hintText: AppLocalizations.of(context)!
+                          .actualData(initialCompany),
                     ),
                   ),
                   const SizedBox(
@@ -241,7 +244,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (response.statusCode == 200) {
                         showCustomToast(
                             context,
-                            "Informations de l'entreprise modifiées avec succès !",
+                            AppLocalizations.of(context)!.companyInfoEdited,
                             true);
                         onEdit(companyController.text);
                         Navigator.of(context).pop();
@@ -257,7 +260,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     child: Text(
-                      "Mettre à jour",
+                      AppLocalizations.of(context)!.update,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor
@@ -287,11 +290,11 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return CustomPopup(
-          title: "Modification de votre adresse mail",
+          title: AppLocalizations.of(context)!.emailEdit,
           content: Column(
             children: <Widget>[
               Text(
-                "Mettez à jour votre adresse mail facilement !",
+                AppLocalizations.of(context)!.emailUpdate,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -308,8 +311,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 key: const Key("user-mail"),
                 controller: mailController,
                 decoration: InputDecoration(
-                    labelText: "Nouveau mail",
-                    hintText: "Actuel: $initialMail"),
+                    labelText: AppLocalizations.of(context)!.emailNew,
+                    hintText:
+                        AppLocalizations.of(context)!.actualData(initialMail!)),
               ),
               const SizedBox(
                 height: 90,
@@ -329,8 +333,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
 
                   if (response.statusCode == 200) {
-                    showCustomToast(
-                        context, "Email modifié avec succès !", true);
+                    showCustomToast(context,
+                        AppLocalizations.of(context)!.emailEdited, true);
                     onEdit(mailController.text);
                     Navigator.of(context).pop();
                   } else {
@@ -345,7 +349,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 child: Text(
-                  "Mettre à jour",
+                  AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
@@ -378,11 +382,11 @@ class _ProfilePageState extends State<ProfilePage> {
         return StatefulBuilder(
           builder: (BuildContext context, setState) {
             return CustomPopup(
-              title: "Modification de votre mot de passe",
+              title: AppLocalizations.of(context)!.passwordEdit,
               content: Column(
                 children: <Widget>[
                   Text(
-                    "Mettez à jour votre mot de passe facilement !",
+                    AppLocalizations.of(context)!.passwordUpdate,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -399,8 +403,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     key: const Key('password'),
                     obscureText: obscurePassword,
                     decoration: InputDecoration(
-                      hintText: 'Entrez votre mot de passe',
-                      labelText: 'Mot de passe',
+                      hintText: AppLocalizations.of(context)!.passwordFill,
+                      labelText: AppLocalizations.of(context)!.password,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -422,7 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -432,8 +436,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     key: const Key('confirm-password'),
                     obscureText: obscureConfirmPassword,
                     decoration: InputDecoration(
-                      hintText: 'Validation du mot de passe',
-                      labelText: 'Valider le mot de passe',
+                      hintText:
+                          AppLocalizations.of(context)!.passwordConfirmation,
+                      labelText: AppLocalizations.of(context)!.passwordConfirm,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -455,10 +460,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       if (value != password) {
-                        return 'Les mots de passe ne correspondent pas';
+                        return AppLocalizations.of(context)!.passwordDontMatch;
                       }
                       return null;
                     },
@@ -480,16 +485,21 @@ class _ProfilePageState extends State<ProfilePage> {
                         );
 
                         if (response.statusCode == 200) {
-                          showCustomToast(context,
-                              "Mot de passe modifié avec succès !", true);
+                          showCustomToast(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .passwordModifySuccess,
+                              true);
                           onEdit(password);
                           Navigator.of(context).pop();
                         } else {
                           showCustomToast(context, response.body, false);
                         }
                       } else {
-                        showCustomToast(context,
-                            "Les mots de passe ne correspondent pas", false);
+                        showCustomToast(
+                            context,
+                            AppLocalizations.of(context)!.passwordDontMatch,
+                            false);
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -500,7 +510,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     child: Text(
-                      "Mettre à jour",
+                      AppLocalizations.of(context)!.update,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor
@@ -534,7 +544,7 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 LandingAppBar(context: context),
                 Text(
-                  'Modifier votre profil à votre convenance !',
+                  AppLocalizations.of(context)!.profileEditText,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 35,
@@ -641,7 +651,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'E-mail',
+                                AppLocalizations.of(context)!.email,
                                 style: TextStyle(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
@@ -708,7 +718,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'Entreprise',
+                                AppLocalizations.of(context)!.company,
                                 style: TextStyle(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
@@ -776,7 +786,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 20.0),
                               child: Text(
-                                'Mot de passe',
+                                AppLocalizations.of(context)!.password,
                                 style: TextStyle(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
@@ -838,7 +848,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             context.go("/my-container");
                           },
                           child: Text(
-                            "Mes sauvegardes",
+                            AppLocalizations.of(context)!.saveMy,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.primaryColor
@@ -866,7 +876,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                   ),
                                   child: Text(
-                                    "Retour à l'accueil",
+                                    AppLocalizations.of(context)!.backToHome,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context)
                                               .isDark
@@ -878,7 +888,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             Text(
-                              'Créé le : $formattedDate',
+                              AppLocalizations.of(context)!
+                                  .createdTimeData(formattedDate),
                               style: TextStyle(
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.primaryColor
@@ -897,8 +908,10 @@ class _ProfilePageState extends State<ProfilePage> {
                                     storageService.removeStorage('token');
                                     storageService
                                         .removeStorage('tokenExpiration');
-                                    showCustomToast(context,
-                                        "Vous êtes bien déconnecté !", true);
+                                    showCustomToast(
+                                        context,
+                                        AppLocalizations.of(context)!.loggedOff,
+                                        true);
                                     context.go("/");
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -909,8 +922,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
-                                  child: const Text(
-                                    "Déconnexion",
+                                  child: Text(
+                                    AppLocalizations.of(context)!.logOff,
                                   ),
                                 ),
                               ),

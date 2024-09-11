@@ -51,8 +51,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-              AppLocalizations.of(context)!.containerSideStore,
+          Text(AppLocalizations.of(context)!.containerSideStore,
               style: TextStyle(
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
@@ -75,7 +74,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
                 ),
               ),
               hintText: AppLocalizations.of(context)!.containerSide,
-              label: const Text('Face du conteneur'),
+              label: Text(AppLocalizations.of(context)!.containerSide),
               initialSelection: faceList.first,
               onSelected: (String? value) {
                 setState(() {
