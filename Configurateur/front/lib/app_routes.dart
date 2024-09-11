@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
 import 'package:front/screens/admin/admin.dart';
+import 'package:front/screens/company-creation/company-creation.dart';
+import 'package:front/screens/company-profil/object-creation.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen.dart';
@@ -17,6 +19,7 @@ import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
 import 'package:front/screens/messages/messages.dart';
+import 'package:front/screens/not-found/not_found.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
 import 'package:front/screens/password-recuperation/password_recuperation.dart';
@@ -58,35 +61,38 @@ class AppRouter {
       ),
       GoRoute(
         path: '/container-profil',
-        builder: (BuildContext context, GoRouterState state) {
-          if (state.extra != null) {
-            final ContainerListData container =
-                state.extra as ContainerListData;
-            return ContainerProfilPage(container: container);
-          } else {
-            return ContainerProfilPage(
-              container: ContainerListData(
-                id: null,
-                createdAt: null,
-                organization: null,
-                organizationId: null,
-                containerMapping: null,
-                price: null,
-                address: null,
-                city: null,
-                design: null,
-                informations: null,
-                saveName: null,
-              ),
-            );
-          }
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: ContainerProfilPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/register/:companyId',
+        pageBuilder: (context, state) {
+          final param = state.pathParameters['companyId'].toString();
+          return NoTransitionPage(
+            child: RegisterScreen(
+              orgId: param,
+            ),
+          );
         },
       ),
       GoRoute(
         path: '/register',
-        pageBuilder: (context, state) => const NoTransitionPage(
+        pageBuilder: (context, state) => NoTransitionPage(
           child: RegisterScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/company-register',
+        builder: (BuildContext context, GoRouterState state) {
+          var mail = '';
+          if (state.extra != null) {
+            mail = state.extra! as String;
+          }
+          return CompanyCreationPage(
+            params: mail,
+          );
+        },
       ),
       GoRoute(
         path: '/login',
@@ -153,7 +159,7 @@ class AppRouter {
         path: '/container-creation',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const ContainerCreation();
+            return ContainerCreation();
           }
           final data = state.extra! as String;
           final user = jsonDecode(data) as Map<String, dynamic>;
@@ -247,7 +253,7 @@ class AppRouter {
         path: '/container-creation/design',
         builder: (BuildContext context, GoRouterState state) {
           if (state.extra == null) {
-            return const DesignScreen(
+            return DesignScreen(
               amount: null,
               containerMapping: null,
               lockers: null,
@@ -294,7 +300,7 @@ class AppRouter {
         path: '/container-creation/recap',
         builder: (context, state) {
           if (state.extra == null) {
-            return const RecapScreen(
+            return RecapScreen(
               lockers: null,
               amount: null,
               containerMapping: null,
@@ -336,7 +342,17 @@ class AppRouter {
           child: MyContainer(),
         ),
       ),
+      GoRoute(
+        path: '/object-creation',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: ObjectCreation(),
+        ),
+      ),
     ],
+    errorPageBuilder: (context, state) => MaterialPage(
+      key: state.pageKey,
+      child: const NotFoundPage(),
+    ),
   );
 
   static GoRouter get router => _router;

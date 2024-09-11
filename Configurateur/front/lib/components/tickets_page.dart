@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -44,6 +46,9 @@ class TicketsState extends State<TicketsPage> {
   String _title = "";
   String _message = "";
 
+  String firstName = "";
+  String lastName = "";
+
   bool isAdmin = false;
 
   ThemeData getCurrentTheme() {
@@ -83,12 +88,7 @@ class TicketsState extends State<TicketsPage> {
     if (response.statusCode == 201) {
       return true;
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la création du ticket",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, response.body, false);
     }
     return false;
   }
@@ -111,12 +111,7 @@ class TicketsState extends State<TicketsPage> {
     );
     if (response.statusCode == 201) {
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la cloture du ticket",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -130,7 +125,7 @@ class TicketsState extends State<TicketsPage> {
     }
 
     var header = <String, String>{
-      'Authorization': token!,
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };
@@ -154,12 +149,7 @@ class TicketsState extends State<TicketsPage> {
       );
       return true;
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant l'assignement des tickets",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, response.body, false);
     }
     return false;
   }
@@ -182,8 +172,8 @@ class TicketsState extends State<TicketsPage> {
     return false;
   }
 
-  String findAssigned() {
-    for (var element in conversation) {
+  String findAssigned(List<dynamic> conv) {
+    for (var element in conv) {
       final creator = element["creatorId"];
       final assigned = element["assignedId"];
       if (creator != null && creator != "" && creator != uuid) {
@@ -194,6 +184,40 @@ class TicketsState extends State<TicketsPage> {
       }
     }
     return "";
+  }
+
+  Future<bool> getAssignedInfo(String assignedId) async {
+    late http.Response response;
+
+    try {
+      response = await http.get(
+        Uri.parse(
+            'http://$serverIp:3000/api/tickets/assigned-info/$assignedId'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': token!,
+          'Access-Control-Allow-Origin': '*',
+        },
+      );
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          firstName = data["firstName"];
+          lastName = data["lastName"];
+        });
+        return true;
+      } else {
+        return false;
+      }
+    } catch (err, stacktrace) {
+      if (mounted) {
+        showCustomToast(
+            context,
+            "Erreur durant la récupération des informations de l'interlocuteur",
+            false);
+      }
+      return false;
+    }
   }
 
   void sortTickets(Map<String, dynamic> tickets) {
@@ -259,12 +283,7 @@ class TicketsState extends State<TicketsPage> {
         },
       );
     } else {
-      Fluttertoast.showToast(
-          msg: "Erreur durant la récupération des tickets",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.red);
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -298,7 +317,8 @@ class TicketsState extends State<TicketsPage> {
     return Scaffold(
       body: FooterView(
         footer: Footer(
-          child: CustomFooter(context: context),
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),
@@ -533,7 +553,13 @@ class TicketsState extends State<TicketsPage> {
                                               children: [
                                                 Expanded(
                                                   child: GestureDetector(
-                                                    onTap: () {
+                                                    onTap: () async {
+                                                      final assigned =
+                                                          findAssigned(tickets);
+                                                      if (assigned.isNotEmpty) {
+                                                        await getAssignedInfo(
+                                                            assigned);
+                                                      }
                                                       setState(
                                                         () {
                                                           conversation =
@@ -820,7 +846,11 @@ class TicketsState extends State<TicketsPage> {
                                               ),
                                             ),
                                             Text(
-                                              formatDateTime(chat["createdAt"]),
+                                              (chat["creatorId"] == uuid
+                                                      ? "Vous ,"
+                                                      : "$firstName $lastName, ") +
+                                                  formatDateTime(
+                                                      chat["createdAt"]),
                                               style: TextStyle(
                                                 fontStyle: FontStyle.italic,
                                                 color: (chat["creatorId"] ==
@@ -866,7 +896,8 @@ class TicketsState extends State<TicketsPage> {
                                     suffixIcon: GestureDetector(
                                       onTap: () async {
                                         final lastTicket = conversation.last;
-                                        final assignedId = findAssigned();
+                                        final assignedId =
+                                            findAssigned(conversation);
                                         bool success = await createTicket(
                                             title: lastTicket["title"],
                                             chatUid: lastTicket["chatUid"],

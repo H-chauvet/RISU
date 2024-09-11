@@ -11,6 +11,7 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -36,20 +37,21 @@ class ConfirmRentState extends State<ConfirmRentPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
+      switch (response.statusCode) {
+        case 201:
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.invoiceSent,
             message: AppLocalizations.of(context)!.invoiceSentMessage,
           );
-        }
-      } else {
-        if (mounted) {
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
           printServerResponse(context, response, 'sendInvoice',
               message: AppLocalizations.of(context)!
                   .errorOccurredDuringSendingInvoice);
-        }
       }
     } catch (err, stacktrace) {
       if (mounted) {

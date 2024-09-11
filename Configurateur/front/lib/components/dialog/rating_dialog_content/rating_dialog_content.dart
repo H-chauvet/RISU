@@ -1,13 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
@@ -20,7 +22,8 @@ import 'rating_dialog_content_style.dart';
 /// [Function] : get the user details
 /// [email] : mail save in the storage service
 /// return userDetails
-Future<Map<String, dynamic>> fetchUserDetails(String email) async {
+Future<Map<String, dynamic>> fetchUserDetails(
+    BuildContext context, String email) async {
   final String apiUrl = "http://$serverIp:3000/api/auth/user-details/$email";
 
   try {
@@ -33,7 +36,7 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
     } else {
       debugPrint(
           'Failed to fetch user details. Status code: ${response.statusCode}');
-      return {};
+      return {"error": true};
     }
   } catch (error) {
     debugPrint('Error fetching user details: $error');
@@ -45,9 +48,16 @@ Future<Map<String, dynamic>> fetchUserDetails(String email) async {
 /// [rating] : rating of Risu
 /// [message] : client's message
 ///
-void sendData(String rating, String message, Function() onSubmit) async {
+Future<void> sendData(BuildContext context, String rating, String message,
+    Function() onSubmit) async {
   String userMail = await storageService.getUserMail();
-  final userDetails = await fetchUserDetails(userMail);
+  final userDetails = await fetchUserDetails(context, userMail);
+  if (userDetails['error'] == true) {
+    if (context.mounted) {
+      showCustomToast(context, "Failed to fetch user details.", false);
+    }
+    return;
+  }
   String firstName = userDetails['firstName'];
   String lastName = userDetails['lastName'];
 
@@ -64,21 +74,12 @@ void sendData(String rating, String message, Function() onSubmit) async {
     body: body,
   );
 
+  debugPrint(response.toString());
   if (response.statusCode == 200) {
-    Fluttertoast.showToast(
-      msg: 'Avis envoyé avec succès',
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.CENTER,
-      timeInSecForIosWeb: 3,
-    );
+    showCustomToast(context, response.body, true);
     onSubmit();
   } else {
-    Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de l'avis",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red);
+    showCustomToast(context, response.body, false);
   }
 }
 
@@ -139,16 +140,19 @@ class RatingDialogContent extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 50),
             ElevatedButton(
-              onPressed: () {
-                sendData(context.read<DialogCubit>().state.rating.toString(),
-                    context.read<DialogCubit>().state.message, onSubmit);
+              onPressed: () async {
+                await sendData(
+                    context,
+                    context.read<DialogCubit>().state.rating.toString(),
+                    context.read<DialogCubit>().state.message,
+                    onSubmit);
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),

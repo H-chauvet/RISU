@@ -61,7 +61,6 @@ model Item {
 model Organization {
     id                 Int          @id @default(autoincrement())
     name               String       @unique
-    type               String?
     affiliate          User_Web[]
     containers         Containers[]
     contactInformation String?
@@ -91,11 +90,13 @@ model User_Web {
     email          String        @unique
     token          String?       @unique
     role           String        @default("user")
+    language       String        @default("fr")
     password       String
     organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
     confirmed      Boolean       @default(false)
     createdAt      DateTime      @default(now())
+    manager        Boolean?      @default(false)
 }
 
 model Feedbacks_Web {
@@ -134,6 +135,7 @@ model User_Mobile {
     refreshToken     String?               @unique
     resetToken       String?               @unique
     createdAt        DateTime              @default(now())
+    language         String                @default("fr")
     locations        Location_Mobile[]
     Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
     notificationsId  String?

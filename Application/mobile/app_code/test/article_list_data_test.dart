@@ -89,6 +89,41 @@ void main() {
           await tester.pumpAndSettle();
         },
       );
+
+      testWidgets(
+        'ArticleDataCard should show from ArticleData',
+        (WidgetTester tester) async {
+          final articleListData = ArticleData(
+            id: 0,
+            containerId: 1,
+            name: 'name',
+            available: true,
+            price: 3,
+            categories: [
+              {'id': 0, 'name': 'beach'},
+              {'id': 1, 'name': 'sports'},
+            ],
+          );
+          await tester.pumpWidget(
+              initPage(ArticleDataCard(articleData: articleListData)));
+
+          dynamic json = articleListData.toMap();
+          expect(json['id'], 0);
+          expect(json['containerId'], 1);
+          expect(json['name'], 'name');
+          expect(json['available'], true);
+          expect(json['price'], 3);
+          expect(json['categories'], [
+            {'id': 0, 'name': 'beach'},
+            {'id': 1, 'name': 'sports'},
+          ]);
+
+          Finder articleButton = find.byKey(const Key('articles-list_card'));
+          expect(articleButton, findsOneWidget);
+          await tester.tap(articleButton);
+          await tester.pumpAndSettle();
+        },
+      );
     },
   );
 }

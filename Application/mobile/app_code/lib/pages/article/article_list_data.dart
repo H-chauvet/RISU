@@ -62,6 +62,17 @@ class ArticleDataCard extends StatelessWidget {
     required this.articleData,
   });
 
+  IconData getCategoryIcon(String categoryName) {
+    switch (categoryName.toLowerCase()) {
+      case 'beach':
+        return Icons.beach_access;
+      case 'sports':
+        return Icons.sports_soccer;
+      default:
+        return Icons.category;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -84,15 +95,42 @@ class ArticleDataCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
-                width: 64,
-                height: 64,
-                child: Transform.scale(
-                  scale: 1.0,
-                  child: loadImageFromURL(articleData.imagesUrl?[0]),
-                ),
+              Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(16.0),
+                    child: SizedBox(
+                      key: const Key('article_image'),
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: loadImageFromURL(articleData.imagesUrl?[0]),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        key: const Key('article_availability-circle'),
+                        width: 10,
+                        height: 10,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color:
+                              articleData.available ? Colors.green : Colors.red,
+                        ),
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        key: const Key('article_availability-text'),
+                        articleData.available
+                            ? AppLocalizations.of(context)!.available
+                            : AppLocalizations.of(context)!.unavailable,
+                        style: const TextStyle(fontSize: 15.0),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -100,6 +138,7 @@ class ArticleDataCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      key: const Key('article_name'),
                       articleData.name,
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -109,40 +148,29 @@ class ArticleDataCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
+                      key: const Key('article_price'),
                       AppLocalizations.of(context)!
                           .priceXPerHour(articleData.price.toStringAsFixed(2)),
                       style: const TextStyle(fontSize: 15.0),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Text(
-                          "${AppLocalizations.of(context)!.status}: ",
-                          style: const TextStyle(fontSize: 15.0),
-                        ),
-                        Container(
-                          width: 10,
-                          height: 10,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: articleData.available
-                                ? Colors.green
-                                : Colors.red,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          articleData.available
-                              ? AppLocalizations.of(context)!.available
-                              : AppLocalizations.of(context)!.unavailable,
-                          style: const TextStyle(fontSize: 15.0),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 10),
                     Text(
-                      "${AppLocalizations.of(context)!.category}: ${articleData.categories.map((category) => category['name']).join(", ")}",
+                      key: const Key('article_categories-title'),
+                      '${AppLocalizations.of(context)!.categories} :',
                       style: const TextStyle(fontSize: 15.0),
+                    ),
+                    Row(
+                      key: const Key('article_categories_icons'),
+                      children: articleData.categories.map<Widget>((category) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Icon(
+                            getCategoryIcon(category['name']),
+                            size: 24.0,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),

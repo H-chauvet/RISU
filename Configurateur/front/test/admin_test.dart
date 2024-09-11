@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/admin/admin.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -11,7 +11,8 @@ import 'package:sizer/sizer.dart';
 
 void main() {
   testWidgets('correct data', (WidgetTester tester) async {
-    await tester.binding.setSurfaceSize(const Size(1920, 1080));
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -26,6 +27,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const AdminPage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
@@ -50,6 +53,7 @@ void main() {
     expect(find.byKey(const Key('btn-messages')), findsOneWidget);
     expect(find.byKey(const Key('btn-user')), findsOneWidget);
     expect(find.byKey(const Key('btn-article')), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
 
     await tester.binding.setSurfaceSize(null);
   });

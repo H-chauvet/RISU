@@ -52,15 +52,19 @@ class MapPageState extends State<MapPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        dynamic responseData = json.decode(response.body);
-        final List<dynamic> containersData = responseData;
-        containers =
-            containersData.map((data) => ContainerList.fromJson(data)).toList();
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, '_getContainersData');
-        }
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = json.decode(response.body);
+          final List<dynamic> containersData = responseData;
+          containers = containersData
+              .map((data) => ContainerList.fromJson(data))
+              .toList();
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, '_getContainersData');
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -91,16 +95,19 @@ class MapPageState extends State<MapPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
-      if (response.statusCode == 200) {
-        dynamic responseData = json.decode(response.body);
-        setState(() {
-          listItems = responseData;
-          containersData['$containerId'] = listItems;
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, '_getContainersData');
-        }
+      switch (response.statusCode) {
+        case 200:
+          dynamic responseData = json.decode(response.body);
+          setState(() {
+            listItems = responseData;
+            containersData['$containerId'] = listItems;
+          });
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, '_getContainersData');
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
