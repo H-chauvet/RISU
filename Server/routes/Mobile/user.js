@@ -58,7 +58,7 @@ router.put(
 router.post("/password/reset", async (req, res) => {
   const { email } = req.body;
   if (!email || email === "") {
-    return res.status(400).send(res.__("missingParamaters"));
+    return res.status(400).send(res.__("missingParameters"));
   }
 
   try {

@@ -34,7 +34,7 @@
     "missingRentId" : "L'identifiant de la location ne figure pas dans la requête.",
     "wrongUserRent" : "La location n'appartient pas à l'utilisateur actuel.",
     "rentReturned" : "La location a été rendu avec succès.",
-    "missingParamaters" : "Certains paramètres manquent dans la requête. Veuillez vérifier votre requête.",
+    "missingParameters" : "Certains paramètres manquent dans la requête. Veuillez vérifier votre requête.",
     "assignedUserNotFound" : "L'utilisateur assigné n'a pas été trouvé dans la base de données.",
     "chatNotFound" : "La conversation n'a pas été trouvée dans la base de données.",
     "ticketCreated" : "Le ticket a été créé avec succès.",
@@ -82,5 +82,6 @@
     "missingUuid" : "L'uuid est absent de la requête.",
     "failedRetrieveDetails" : "Échec : Les détails de l'utilisateur n'ont pas pu être récupérés.",
     "missingCompany" : "L'entreprise est absente de la requête.",
+    "companyNotFound" : "L'entreprise n'a pas été trouvée dans la base de données.",
     "cardBlocked": "Votre carte est bloquée, renseignez une carte valide"
 }

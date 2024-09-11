@@ -52,6 +52,7 @@ class NotFoundPageState extends State<NotFoundPage> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
+            padding: EdgeInsets.zero,
             child: CustomFooter(),
           ),
           children: [
@@ -83,6 +84,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                         ),
                         const SizedBox(height: 20),
                         RichText(
+                          key: const Key("not-found-text"),
                           textAlign: TextAlign.center,
                           maxLines: 3,
                           text: TextSpan(

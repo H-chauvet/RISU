@@ -7,7 +7,7 @@ router.post("/create", async function (req, res, next) {
     const { firstName, lastName, email, message, mark } = req.body;
     if (!firstName || !lastName || !email || !message || !mark) {
       res.status(400);
-      throw res.__("missingParamaters");
+      throw res.__("missingParameters");
     }
     const msg = await feedbacksCtrl.registerFeedbacks(res, {
       lastName,

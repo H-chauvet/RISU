@@ -45,7 +45,56 @@ class CustomFooterState extends State<CustomFooter> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
+      await storageService.removeStorage('containerData');
       context.go("/container-creation/");
+    }
+  }
+
+  void goToTickets() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/contact");
+    }
+  }
+
+  void goToFeedbacks() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/feedbacks");
+    }
+  }
+
+  void goToProfile() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/profil");
+    }
+  }
+
+  void goToCompanyProfile() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/company-profil");
+    }
+  }
+
+  void goToCompany() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/company");
+    }
+  }
+
+  void goToFaq() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/faq");
     }
   }
 
@@ -59,7 +108,9 @@ class CustomFooterState extends State<CustomFooter> {
   @override
   Widget build(BuildContext context) {
     return Footer(
-      backgroundColor: const Color(0xffFEDC97),
+      backgroundColor: Provider.of<ThemeService>(context, listen: false).isDark
+          ? lightTheme.primaryColor
+          : darkTheme.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -71,6 +122,7 @@ class CustomFooterState extends State<CustomFooter> {
               Expanded(
                 child: Center(
                   child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Column(
@@ -79,8 +131,13 @@ class CustomFooterState extends State<CustomFooter> {
                           Text(
                             "Communauté",
                             style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                              fontSize: 20.0,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -96,12 +153,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/contact');
-                              },
+                              onTap: () => goToTickets(),
                               child: Text(
                                 "Nous contacter",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringContact
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -121,12 +181,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/feedbacks');
-                              },
+                              onTap: () => goToFeedbacks(),
                               child: Text(
                                 "Vos avis",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringFeedback
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -146,12 +209,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/faq');
-                              },
+                              onTap: () => goToFaq(),
                               child: Text(
                                 "Questions fréquentes",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringFaq
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -171,12 +237,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/company');
-                              },
+                              onTap: () => goToCompany(),
                               child: Text(
                                 "L'entreprise Risu",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringCompany
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -198,8 +267,13 @@ class CustomFooterState extends State<CustomFooter> {
                           Text(
                             "Mon Compte",
                             style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
+                              fontSize: 20.0,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -215,12 +289,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/profil');
-                              },
+                              onTap: () => goToProfile(),
                               child: Text(
                                 "Mon Profil",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringProfil
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -240,12 +317,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/company-profil');
-                              },
+                              onTap: () => goToCompanyProfile(),
                               child: Text(
                                 "Mes conteneurs",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringContainers
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -265,12 +345,15 @@ class CustomFooterState extends State<CustomFooter> {
                               });
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                context.go('/container-creation/shape');
-                              },
+                              onTap: () => goToCreation(),
                               child: Text(
                                 "Créer un conteneur",
                                 style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                   decoration: isHoveringCreateContainers
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
@@ -287,17 +370,23 @@ class CustomFooterState extends State<CustomFooter> {
             ],
           ),
           const SizedBox(height: 15),
-          const Text(
+          Text(
             'Copyright ©2024, Tous droits réservés.',
             style: TextStyle(
+              color: Provider.of<ThemeService>(context, listen: false).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
               fontWeight: FontWeight.w300,
               fontSize: 12.0,
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
+          Text(
             'Développé par RISU',
             style: TextStyle(
+              color: Provider.of<ThemeService>(context, listen: false).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
               fontWeight: FontWeight.w300,
               fontSize: 12.0,
             ),
