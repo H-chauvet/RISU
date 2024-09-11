@@ -135,6 +135,46 @@ exports.updateContainerPosition = (id, container) => {
 };
 
 /**
+ *
+ * @param {*} position the object with position data
+ * @returns the city and adress of the position
+ */
+exports.getLocalisation = async (position) => {
+  const response = await fetch(
+    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+      position.latitude +
+      "," +
+      position.longitude +
+      "&result_type=street_address&key=" +
+      process.env.GOOGLE_API_KEY
+  );
+
+  const responseJson = await response.json();
+
+  if (responseJson.status === "OK") {
+    let address = "";
+    let city = "";
+    for (
+      let i = 0;
+      i < responseJson.results[0].address_components.length;
+      i++
+    ) {
+      if (responseJson.results[0].address_components[i].types[0] === "route") {
+        address = responseJson.results[0].address_components[i].long_name;
+      }
+      if (
+        responseJson.results[0].address_components[i].types[0] === "locality"
+      ) {
+        city = responseJson.results[0].address_components[i].long_name;
+      }
+    }
+    return { address: address, city: city };
+  } else if (responseJson.status === "ZERO_RESULTS") {
+    return "No address found";
+  }
+};
+
+/**
  * Retrieve every container
  *
  * @throws {Error} with a specific message to find the problem
@@ -281,7 +321,7 @@ exports.getItemsWithFilters = async (
       };
     }
 
-    const orderBy = isAscending ? 'asc' : 'desc';
+    const orderBy = isAscending ? "asc" : "desc";
 
     let items = await db.Item.findMany({
       where: whereCondition,
@@ -301,7 +341,7 @@ exports.getItemsWithFilters = async (
     });
 
     if (isAvailable) {
-      items = items.filter(item => item.available);
+      items = items.filter((item) => item.available);
     }
 
     items.sort((a, b) => {
