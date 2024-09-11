@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:footer/footer.dart';
@@ -14,8 +15,10 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -596,172 +599,189 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-        appBar: CustomAppBar(
-          'Gestion des conteneurs',
-          context: context,
+      body: FooterView(
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
         ),
-        body: FooterView(
-            footer: Footer(
-              child: CustomFooter(),
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            'Gestion des conteneurs',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
             ),
-            children: [
-              SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 500,
-                        height: 200,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+          ),
+          SingleChildScrollView(
+            child: Center(
+              child: Column(
+                children: [
+                  Container(
+                    width: 500,
+                    height: 200,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                width: 2.0,
+                              ),
+                            ),
+                            child: Image.asset(
+                              "assets/logo.png",
+                              width: 90.0,
+                              height: 90.0,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
+                            SizedBox(height: 5.0),
+                            Row(
+                              children: [
+                                Text(
+                                  "Nom de la ville : ${tmp.city!}",
+                                  style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
                                         ? darkTheme.primaryColor
                                         : lightTheme.primaryColor,
-                                    width: 2.0,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Verdana',
                                   ),
                                 ),
-                                child: Image.asset(
-                                  "assets/logo.png",
-                                  width: 90.0,
-                                  height: 90.0,
+                                const SizedBox(width: 5.0),
+                                InkWell(
+                                  key: const Key('edit-city'),
+                                  onTap: () async {
+                                    await showEditPopupCity(context, city,
+                                        (String newcity) {
+                                      setState(() {
+                                        city = newcity;
+                                      });
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    size: 15.0,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            const SizedBox(height: 5.0),
+                            Row(
                               children: [
-                                SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Nom de la ville : ${tmp.city!}",
-                                      style: TextStyle(
-                                        color:
-                                            Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.primaryColor
-                                                : lightTheme.primaryColor,
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Verdana',
-                                      ),
-                                    ),
-                                    const SizedBox(width: 5.0),
-                                    InkWell(
-                                      key: const Key('edit-city'),
-                                      onTap: () async {
-                                        await showEditPopupCity(context, city,
-                                            (String newcity) {
-                                          setState(() {
-                                            city = newcity;
-                                          });
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.edit,
-                                        color:
-                                            Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.primaryColor
-                                                : lightTheme.primaryColor,
-                                        size: 15.0,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  "Adresse : ${tmp.address!}",
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Verdana',
+                                  ),
                                 ),
-                                const SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      "Adresse : ${tmp.address!}",
-                                      style: TextStyle(
-                                        color:
-                                            Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.primaryColor
-                                                : lightTheme.primaryColor,
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Verdana',
-                                      ),
-                                    ),
-                                    const SizedBox(width: 5.0),
-                                    InkWell(
-                                      key: Key("edit-city"),
-                                      onTap: () async {
-                                        await showEditPopupAddress(
-                                            context, address,
-                                            (String newAddress) {
-                                          setState(() {
-                                            address = newAddress;
-                                          });
-                                        });
-                                      },
-                                      child: Icon(
-                                        Icons.edit,
-                                        color:
-                                            Provider.of<ThemeService>(context)
-                                                    .isDark
-                                                ? darkTheme.primaryColor
-                                                : lightTheme.primaryColor,
-                                        size: 15.0,
-                                      ),
-                                    ),
-                                  ],
+                                const SizedBox(width: 5.0),
+                                InkWell(
+                                  key: Key("edit-city"),
+                                  onTap: () async {
+                                    await showEditPopupAddress(context, address,
+                                        (String newAddress) {
+                                      setState(() {
+                                        address = newAddress;
+                                      });
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    size: 15.0,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                      Text(
-                        "Nos Objets :",
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline,
-                          decorationThickness: 2.0,
-                          decorationStyle: TextDecorationStyle.solid,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 65,
-                      ),
-                      items.isEmpty
-                          ? const Center(
-                              child: Text(
-                                'Aucun objet trouvé.',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color.fromARGB(255, 211, 11, 11),
-                                ),
-                              ),
-                            )
-                          : Wrap(
-                              spacing: 10.0,
-                              runSpacing: 8.0,
-                              children: List.generate(
-                                items.length,
-                                (index) =>
-                                    buildItemWidget(context, items[index]),
-                              ),
-                            ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+                  Text(
+                    "Nos Objets :",
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                      decorationThickness: 2.0,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 65,
+                  ),
+                  items.isEmpty
+                      ? const Center(
+                          child: Text(
+                            'Aucun objet trouvé.',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 211, 11, 11),
+                            ),
+                          ),
+                        )
+                      : Wrap(
+                          spacing: 10.0,
+                          runSpacing: 8.0,
+                          children: List.generate(
+                            items.length,
+                            (index) => buildItemWidget(context, items[index]),
+                          ),
+                        ),
+                ],
               ),
-            ]));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
