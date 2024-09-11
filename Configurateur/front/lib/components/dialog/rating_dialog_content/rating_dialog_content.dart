@@ -141,7 +141,7 @@ class RatingDialogContent extends StatelessWidget {
                 },
               ),
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () async {
                 await sendData(
@@ -153,7 +153,7 @@ class RatingDialogContent extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
                 ),

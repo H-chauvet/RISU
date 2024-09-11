@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -392,301 +395,304 @@ class ShapeScreenState extends State<ShapeScreen> {
           )
         ],
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                AppLocalizations.of(context)!.rowNumber,
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    key: const Key('row-remove'),
-                    onTap: () {
-                      setState(() {
-                        if (row > 1) {
-                          row--;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
-                          saveContainerToStorage(generateContainerMapping());
-                        }
-                      });
-                    },
-                    child: const Icon(Icons.remove),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? lightTheme.primaryColor
-                          : darkTheme.primaryColor,
-                    ),
-                    child: Text(
-                      row.toString(),
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  InkWell(
-                    key: const Key('row-add'),
-                    onTap: () {
-                      setState(() {
-                        if (row < 10) {
-                          row++;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
-                          saveContainerToStorage(generateContainerMapping());
-                        }
-                      });
-                    },
-                    child: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20.0,
-              ),
-              Text(
-                AppLocalizations.of(context)!.columnNumber,
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                ),
-              ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  InkWell(
-                    key: const Key('column-remove'),
-                    onTap: () {
-                      setState(() {
-                        if (column > 1) {
-                          column--;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
-                          saveContainerToStorage(generateContainerMapping());
-                        }
-                      });
-                    },
-                    child: const Icon(Icons.remove),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Container(
-                    padding: const EdgeInsets.all(10.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30.0),
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? lightTheme.primaryColor
-                          : darkTheme.primaryColor,
-                    ),
-                    child: Text(
-                      column.toString(),
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  InkWell(
-                    key: const Key('column-add'),
-                    onTap: () {
-                      setState(() {
-                        if (column < 20) {
-                          column++;
-                          colors = List.generate(
-                              column * row, (index) => Colors.grey[200]);
-                          isClicked =
-                              List.generate(column * row, (index) => false);
-                          calculateDimension();
-                          saveContainerToStorage(generateContainerMapping());
-                        }
-                      });
-                    },
-                    child: const Icon(Icons.add),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(
-            child: Column(
+      body: Form(
+        key: formKey,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: removeButtons(screenFormat),
+                Text(
+                  'Nombres de lignes',
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
-                Column(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: initContainer(),
+                  children: [
+                    InkWell(
+                      key: const Key('row-remove'),
+                      onTap: () {
+                        setState(() {
+                          if (row > 1) {
+                            row--;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.remove),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
+                      ),
+                      child: Text(
+                        row.toString(),
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    InkWell(
+                      key: const Key('row-add'),
+                      onTap: () {
+                        setState(() {
+                          if (row < 10) {
+                            row++;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Text(
+                  'Nombres de colonnes',
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopFontSize
+                        : tabletFontSize,
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      key: const Key('column-remove'),
+                      onTap: () {
+                        setState(() {
+                          if (column > 1) {
+                            column--;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.remove),
+                    ),
+                    const SizedBox(width: 10.0),
+                    Container(
+                      padding: const EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
+                      ),
+                      child: Text(
+                        column.toString(),
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10.0),
+                    InkWell(
+                      key: const Key('column-add'),
+                      onTap: () {
+                        setState(() {
+                          if (column < 20) {
+                            column++;
+                            colors = List.generate(
+                                column * row, (index) => Colors.grey[200]);
+                            isClicked =
+                                List.generate(column * row, (index) => false);
+                            calculateDimension();
+                            saveContainerToStorage(generateContainerMapping());
+                          }
+                        });
+                      },
+                      child: const Icon(Icons.add),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-          SizedBox(
-            width: screenFormat == ScreenFormat.desktop
-                ? desktopPanelWidth
-                : tabletPanelWidth,
-            height: desktopPanelHeight,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Provider.of<ThemeService>(context).isDark
-                    ? lightTheme.primaryColor
-                    : darkTheme.primaryColor,
-                borderRadius: BorderRadius.circular(30.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xff4682B4).withOpacity(0.5),
-                    spreadRadius: 5,
-                    blurRadius: 7,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
+            SizedBox(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.width,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.meters(width),
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: removeButtons(screenFormat),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.height,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!.meters(height),
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ],
+                  const SizedBox(
+                    height: 10.0,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.locationsNumber,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                      Text(
-                        '$nbLockers',
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ],
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: initContainer(),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(
+              width: screenFormat == ScreenFormat.desktop
+                  ? desktopPanelWidth
+                  : tabletPanelWidth,
+              height: desktopPanelHeight,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
+                  borderRadius: BorderRadius.circular(30.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xff4682B4).withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Largeur:',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        Text(
+                          width <= 1 ? '$width mètre' : '$width mètres',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Hauteur:',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        Text(
+                          height <= 1 ? '$height mètre' : '$height mètres',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          "Nombre d'emplacements:",
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                        Text(
+                          '$nbLockers',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

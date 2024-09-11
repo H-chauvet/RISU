@@ -1,7 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -13,7 +12,7 @@ import 'package:provider/provider.dart';
 ///
 /// Footer for the web pages
 class CustomFooter extends StatefulWidget {
-  const CustomFooter({super.key, required BuildContext context});
+  const CustomFooter({super.key});
 
   @override
   State<CustomFooter> createState() => CustomFooterState();
@@ -24,6 +23,14 @@ class CustomFooter extends StatefulWidget {
 class CustomFooterState extends State<CustomFooter> {
   String? token = '';
   String? userMail = '';
+  bool isHoveringContact = false;
+  bool isHoveringFeedback = false;
+  bool isHoveringFaq = false;
+  bool isHoveringCompany = false;
+  bool isHoveringContactUs = false;
+  bool isHoveringProfil = false;
+  bool isHoveringContainers = false;
+  bool isHoveringCreateContainers = false;
 
   /// [Function] : Check in storage service is the token is available
   void checkToken() async {
@@ -38,7 +45,56 @@ class CustomFooterState extends State<CustomFooter> {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
     } else {
+      await storageService.removeStorage('containerData');
       context.go("/container-creation/");
+    }
+  }
+
+  void goToTickets() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/contact");
+    }
+  }
+
+  void goToFeedbacks() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/feedbacks");
+    }
+  }
+
+  void goToProfile() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/profil");
+    }
+  }
+
+  void goToCompanyProfile() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/company-profil");
+    }
+  }
+
+  void goToCompany() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/company");
+    }
+  }
+
+  void goToFaq() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/faq");
     }
   }
 
@@ -52,109 +108,288 @@ class CustomFooterState extends State<CustomFooter> {
   @override
   Widget build(BuildContext context) {
     return Footer(
-      backgroundColor: const Color(0xffFEDC97),
+      backgroundColor: Provider.of<ThemeService>(context, listen: false).isDark
+          ? lightTheme.primaryColor
+          : darkTheme.primaryColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
+          const SizedBox(height: 40),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: Center(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Communauté",
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringContact = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringContact = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToTickets(),
+                              child: Text(
+                                "Nous contacter",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringContact
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringFeedback = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringFeedback = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToFeedbacks(),
+                              child: Text(
+                                "Vos avis",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringFeedback
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringFaq = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringFaq = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToFaq(),
+                              child: Text(
+                                "Questions fréquentes",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringFaq
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringCompany = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringCompany = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToCompany(),
+                              child: Text(
+                                "L'entreprise Risu",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringCompany
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      child: IconButton(
-                        tooltip: AppLocalizations.of(context)!.contactPage,
-                        icon: const Icon(
-                          Icons.contact_page,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {
-                          context.go("/contact");
-                        },
+                      const SizedBox(width: 100),
+                      Image.asset(
+                        'assets/logo.png',
+                        height: 100,
                       ),
-                    ),
+                      const SizedBox(width: 100),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Mon Compte",
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringProfil = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringProfil = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToProfile(),
+                              child: Text(
+                                "Mon Profil",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringProfil
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringContainers = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringContainers = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToCompanyProfile(),
+                              child: Text(
+                                "Mes conteneurs",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringContainers
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                          MouseRegion(
+                            onEnter: (_) {
+                              setState(() {
+                                isHoveringCreateContainers = true;
+                              });
+                            },
+                            onExit: (_) {
+                              setState(() {
+                                isHoveringCreateContainers = false;
+                              });
+                            },
+                            child: GestureDetector(
+                              onTap: () => goToCreation(),
+                              child: Text(
+                                "Créer un conteneur",
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  decoration: isHoveringCreateContainers
+                                      ? TextDecoration.underline
+                                      : TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
-                      ),
-                      child: IconButton(
-                        tooltip: AppLocalizations.of(context)!.developedByRisu,
-                        icon: const Icon(
-                          Icons.fingerprint,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {},
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 45.0,
-                  width: 45.0,
-                  child: Center(
-                    child: Card(
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            25.0), // half of height and width of Image
-                      ),
-                      child: IconButton(
-                        tooltip: AppLocalizations.of(context)!.opinionPage,
-                        icon: const Icon(
-                          Icons.stars,
-                          size: 20.0,
-                        ),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        onPressed: () {
-                          context.go("/feedbacks");
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          Text(
+            'Copyright ©2024, Tous droits réservés.',
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context, listen: false).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 12.0,
             ),
           ),
           const SizedBox(height: 10),
           Text(
-            AppLocalizations.of(context)!.copyright,
-            style: const TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 12.0,
-                color: Color(0xff033f63)),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.developedByRisu,
-            style: const TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 12.0,
-                color: Color(0xff033f63)),
+            'Développé par RISU',
+            style: TextStyle(
+              color: Provider.of<ThemeService>(context, listen: false).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.primaryColor,
+              fontWeight: FontWeight.w300,
+              fontSize: 12.0,
+            ),
           ),
         ],
       ),

@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
@@ -857,7 +860,7 @@ class ContainerCreationState extends State<ContainerCreation> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        AppLocalizations.of(context)!.configurator,
+        'Configurateur',
         context: context,
       ),
       bottomSheet: Row(
@@ -866,8 +869,8 @@ class ContainerCreationState extends State<ContainerCreation> {
           ProgressBar(
             length: 6,
             progress: 1,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
+            previous: 'Précédent',
+            next: 'Suivant',
             previousFunc: goPrevious,
             nextFunc: goNext,
           ),
@@ -910,7 +913,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        AppLocalizations.of(context)!.addLocker,
+                        'Ajouter un casier',
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -945,7 +948,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        AppLocalizations.of(context)!.saveAction,
+                        'Sauvegarder',
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -981,7 +984,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        AppLocalizations.of(context)!.filling,
+                        'Remplissage',
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -1034,7 +1037,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        AppLocalizations.of(context)!.deleteLocker,
+                        'Supprimer un casier',
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor
@@ -1064,7 +1067,7 @@ class ContainerCreationState extends State<ContainerCreation> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       label: Text(
-                        AppLocalizations.of(context)!.containerReset,
+                        'Réinitialiser le conteneur',
                         style: TextStyle(
                           color: Provider.of<ThemeService>(context).isDark
                               ? darkTheme.primaryColor

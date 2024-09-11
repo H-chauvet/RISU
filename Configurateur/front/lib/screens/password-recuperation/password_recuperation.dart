@@ -1,8 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/components/custom_toast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -49,12 +52,12 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.passwordRecovery,
-        context: context,
-      ),
-      body: Center(
-        child: FractionallySizedBox(
+        appBar: CustomAppBar(
+          'Récupération du mot de passe',
+          context: context,
+        ),
+        body: Center(
+            child: FractionallySizedBox(
           widthFactor: screenFormat == ScreenFormat.desktop
               ? desktopWidthFactor
               : tabletWidthFactor,
@@ -68,8 +71,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                   child: TextFormField(
                     key: const Key('email'),
                     decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.emailFill,
-                      labelText: AppLocalizations.of(context)!.email,
+                      hintText: 'Entrez votre email',
+                      labelText: 'Adresse e-mail',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -79,7 +82,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                     },
                     validator: (String? value) {
                       if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.askCompleteField;
+                        return 'Veuillez remplir ce champ';
                       }
                       return null;
                     },
@@ -174,12 +177,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          showCustomToast(
-                            context,
-                            AppLocalizations.of(context)!
-                                .passwordRecoverySuccess,
-                            true,
-                          );
+                          showCustomToast(context,
+                              "Le mot de passe a bien été récupéré", true);
                         } else {
                           showCustomToast(context, response.body, false);
                         }
@@ -192,7 +191,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                       ),
                     ),
                     child: Text(
-                      AppLocalizations.of(context)!.emailSendRecovery,
+                      "Envoyer l'email de récupération",
                       style: TextStyle(
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
@@ -207,9 +206,7 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        )));
   }
 }
 

@@ -20,6 +20,7 @@ exports.findUserByEmail = async (res, email) => {
       },
     });
   } catch (err) {
+    console.log("err: " + err);
     throw res.__("errorOccured");
   }
 };
@@ -39,7 +40,7 @@ exports.findUserByUuid = async (res, uuid) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -58,7 +59,7 @@ exports.findUserById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -77,7 +78,7 @@ exports.deleteUser = async (res, email) => {
       },
     });
   } catch (err) {
-    throw "Something happen while deleting user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -93,33 +94,32 @@ exports.registerByEmail = async (res, user) => {
     user.password = bcrypt.hashSync(user.password, 12);
     user.uuid = uuid.v4();
     let data;
-    await db.Organization.findUnique({
-      where: {
-        name: user.company,
-      },
-    }).then(async (org) => {
-      if (org === null) {
-        await db.Organization.create({
-          data: {
-            name: user.company,
-            containers: undefined,
-          },
-        }).then(async (org) => {
-          user.organizationId = org.id;
-          data = await db.User_Web.create({
-            data: user,
-          });
-        });
-      } else {
-        user.organizationId = org.id;
-        data = await db.User_Web.create({
-          data: user,
-        });
-      }
+    data = await db.User_Web.create({
+      data: user,
     });
+
     return data;
   } catch (err) {
-    throw "Something happen while registering user";
+    throw res.__("errorOccured");
+  }
+};
+
+exports.addCompanyToUser = async (res, user, company, manager) => {
+  try {
+    company = JSON.parse(company);
+
+    await db.User_Web.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        company: company.name,
+        organizationId: company.id,
+        manager: manager,
+      },
+    });
+  } catch (err) {
+    throw res.__("errorOccured");
   }
 };
 
@@ -132,14 +132,14 @@ exports.registerByEmail = async (res, user) => {
 exports.registerConfirmation = async (res, email) => {
   try {
     let generatedUuid = "";
-    this.findUserByEmail(email).then((user) => {
+    this.findUserByEmail(res, email).then((user) => {
       generatedUuid = user.uuid;
       let mail = {
         from: "risu.epitech@gmail.com",
         to: email,
         subject: "Confirmation d'inscription",
         html:
-          '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.77.215.103/#/confirmed-user/' +
+          '<p>Bonjour, merci de vous être inscrit sur notre site, Veuillez cliquer sur le lien suivant pour confirmer votre inscription: <a href="http://51.178.183.68/#/confirmed-user/' +
           generatedUuid +
           '">Confirmer</a>' +
           "</p>",
@@ -147,7 +147,7 @@ exports.registerConfirmation = async (res, email) => {
       transporter.sendMail(mail);
     });
   } catch (err) {
-    throw "Something happen while sending confirmation mail";
+    throw res.__("errorOccured");
   }
 };
 
@@ -169,7 +169,7 @@ exports.confirmedRegister = async (res, uuid) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -194,7 +194,7 @@ exports.loginByEmail = async (res, user) => {
       return findUser;
     });
   } catch (err) {
-    throw "Something happen while logging user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -217,7 +217,7 @@ exports.updatePassword = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating password";
+    throw res.__("errorOccured");
   }
 };
 
@@ -230,14 +230,14 @@ exports.updatePassword = async (res, user) => {
 exports.forgotPassword = async (res, email) => {
   try {
     let generatedUuid = "";
-    this.findUserByEmail(email).then((user) => {
+    this.findUserByEmail(res, email).then((user) => {
       generatedUuid = user.uuid;
       let mail = {
         from: "risu.epitech@gmail.com",
         to: email,
         subject: "Réinitialisation de mot de passe",
         html:
-          '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.77.215.103/#/password-change/' +
+          '<p>Bonjour, pour réinitialiser votre mot de passe, Veuillez cliquer sur le lien suivant: <a href="http://51.178.183.68/#/password-change/' +
           generatedUuid +
           '">Réinitialiser le mot de passe</a>' +
           "</p>",
@@ -245,7 +245,7 @@ exports.forgotPassword = async (res, email) => {
       transporter.sendMail(mail);
     });
   } catch (err) {
-    throw "Something happen while sending mail";
+    throw res.__("errorOccured");
   }
 };
 
@@ -261,7 +261,7 @@ exports.getAllUsers = async (res) => {
     return users;
   } catch (error) {
     console.error("Error retrieving users:", error);
-    throw "Failed to retrieve users";
+    throw res.__("errorOccured");
   }
 };
 
@@ -290,7 +290,7 @@ exports.findUserDetailsByEmail = async (res, email) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -313,7 +313,7 @@ exports.updateName = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -335,7 +335,7 @@ exports.updateOrganization = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -357,7 +357,7 @@ exports.updateMail = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -379,7 +379,7 @@ exports.updateCompany = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 
@@ -402,7 +402,7 @@ exports.updateUserPassword = async (res, user) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating user";
+    throw res.__("errorOccured");
   }
 };
 

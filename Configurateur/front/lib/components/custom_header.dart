@@ -50,6 +50,14 @@ class LandingAppBarState extends State<LandingAppBar> {
     }
   }
 
+  void goToCompany() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/company");
+    }
+  }
+
   /// [Function] : Download the mobile application from the website
   void downloadApk() async {
     try {
@@ -129,9 +137,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                     ),
                     const SizedBox(width: 10),
                     TextButton(
-                      onPressed: () {
-                        context.go("/company");
-                      },
+                      onPressed: () => goToCompany(),
                       style: TextButton.styleFrom(
                         foregroundColor:
                             Provider.of<ThemeService>(context).isDark
@@ -235,7 +241,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                 tooltip: AppLocalizations.of(context)!.language,
                 icon: CountryFlag.fromLanguageCode(
                   language,
-                  height: 32,
+                  height: 16,
                   width: 32,
                 ),
                 itemBuilder: (BuildContext context) {

@@ -164,6 +164,7 @@
   "mustVerifyAccount": "Vous devez vérifier votre compte pour poursuivre",
   "myCompany": "Mon Entreprise",
   "name": "Nom",
+  "nameActual": "Actuel: {actualName}",
   "nameAsk": "Veuillez entrer un nom",
   "nameData": "Nom : {name}",
   "newName": "Nouveau nom",

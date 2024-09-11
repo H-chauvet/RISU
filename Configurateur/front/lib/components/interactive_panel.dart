@@ -52,24 +52,6 @@ class InteractivePanelState extends State<InteractivePanel> {
                 ),
               ),
               const SizedBox(height: 20),
-              /*SizedBox(
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: const [
-                          Text(
-                            'Conteneurs alentours',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Icon(Icons.chevron_right, color: Colors.white),
-                        ],
-                      ))),
-              const SizedBox(height: 20),*/
               ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.grey,
@@ -100,20 +82,6 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ),
                     ],
                   )),
-              /*LongPressDraggable(
-                  feedback: Image.asset(
-                    "assets/cube.png",
-                    width: 40,
-                    height: 40,
-                  ),
-                  child: Column(children: [
-                    const Text("petit casier"),
-                    Image.asset(
-                      "assets/cube.png",
-                      width: 40,
-                      height: 40,
-                    ),
-                  ])),*/
               const SizedBox(
                 height: 5,
               ),
@@ -147,20 +115,6 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ),
                     ],
                   )),
-              /*LongPressDraggable(
-                  feedback: Image.asset(
-                    "assets/cube.png",
-                    width: 60,
-                    height: 60,
-                  ),
-                  child: Column(children: [
-                    const Text("moyen casier"),
-                    Image.asset(
-                      "assets/cube.png",
-                      width: 60,
-                      height: 60,
-                    ),
-                  ])),*/
               const SizedBox(
                 height: 5,
               ),
@@ -194,20 +148,6 @@ class InteractivePanelState extends State<InteractivePanel> {
                       ),
                     ],
                   )),
-              /*LongPressDraggable(
-                  feedback: Image.asset(
-                    "assets/cube.png",
-                    width: 80,
-                    height: 80,
-                  ),
-                  child: Column(children: [
-                    const Text("grand casier"),
-                    Image.asset(
-                      "assets/cube.png",
-                      width: 80,
-                      height: 80,
-                    ),
-                  ])),*/
               const SizedBox(height: 20),
               Column(
                 children: [

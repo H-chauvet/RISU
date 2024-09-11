@@ -465,6 +465,7 @@ class DesignScreenState extends State<DesignScreen> {
           return;
         }
         dynamic response = jsonDecode(value.body);
+        widget.id = response['id'];
         var data = {
           'id': response['id'],
           'amount': sumPrice(),

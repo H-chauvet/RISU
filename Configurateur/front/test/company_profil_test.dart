@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/company-profil/company-profil.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -106,6 +107,8 @@ void main() {
     await tester.enterText(find.byKey(const Key('information')), 'info orga');
     await tester.tap(find.byKey(const Key('button-information')));
     await tester.pump(const Duration(seconds: 3));
+
+    expect(find.byType(CustomFooter), findsOneWidget);
   });
 }
 

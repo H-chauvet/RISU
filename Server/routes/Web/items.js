@@ -217,7 +217,7 @@ router.get("/listAll", async function (req, res, next) {
     return;
   }
   try {
-    const item = await itemCtrl.getAllItem(res);
+    const item = await itemCtrl.getAllItems(res);
 
     res.status(200).json({ item });
   } catch (err) {
