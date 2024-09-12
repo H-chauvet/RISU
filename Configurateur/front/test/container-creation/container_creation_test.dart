@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/screens/container-creation/container_creation/container_creation.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -42,6 +42,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: ContainerCreation(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -87,6 +90,9 @@ void main() {
                     width: '12',
                   ),
                 ),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                locale: const Locale('fr'),
               );
             },
           ),
@@ -117,6 +123,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: ContainerCreation(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -147,6 +156,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: ContainerCreation(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -179,6 +191,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: ContainerCreation(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:front/services/theme_service.dart';
 import 'dart:ui' as ui;
 
-import 'package:front/components/custom_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mockito/mockito.dart';
 
@@ -44,6 +42,9 @@ void main() {
           home: Scaffold(
             body: CustomFooter(),
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('fr'),
         ),
       ),
     );
@@ -81,6 +82,9 @@ void main() {
           home: Scaffold(
             body: CustomFooter(),
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('fr'),
         ),
       ),
     );

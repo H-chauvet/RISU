@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
@@ -49,9 +50,14 @@ void main() {
             return MaterialApp(
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
-                  goRouter: AppRouter.router,
-                  child: createWidgetForTesting(
-                      child: const ConfirmedUser(params: 'uuid'))),
+                goRouter: AppRouter.router,
+                child: createWidgetForTesting(
+                  child: const ConfirmedUser(params: 'uuid'),
+                ),
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),

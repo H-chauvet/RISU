@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/shape_screen/shape_screen.dart';
@@ -46,6 +47,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ShapeScreen(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -59,9 +63,9 @@ void main() {
     expect(find.text("Forme"), findsOneWidget);
     expect(find.text("Nombres de lignes"), findsOneWidget);
     expect(find.text("Nombres de colonnes"), findsOneWidget);
-    expect(find.text("Largeur:"), findsOneWidget);
-    expect(find.text("Hauteur:"), findsOneWidget);
-    expect(find.text("Nombre d'emplacements:"), findsOneWidget);
+    expect(find.text("Largeur :"), findsOneWidget);
+    expect(find.text("Hauteur :"), findsOneWidget);
+    expect(find.text("Nombre d'emplacements :"), findsOneWidget);
 
     await tester.tap(find.byKey(const Key('row-add')));
     await tester.tap(find.byKey(const Key('row-remove')));

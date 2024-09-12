@@ -49,6 +49,7 @@ void main() {
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -61,7 +62,7 @@ void main() {
     expect(find.text('Adresse e-mail'), findsOneWidget);
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text("Se connecter"), findsOneWidget);
-    expect(find.text("Nouveau sur la plateforme ? "), findsOneWidget);
+    expect(find.text("Nouveau sur la plateforme ?"), findsOneWidget);
     expect(find.text("Créer un compte."), findsOneWidget);
     expect(find.text("Se connecter avec :"), findsOneWidget);
 

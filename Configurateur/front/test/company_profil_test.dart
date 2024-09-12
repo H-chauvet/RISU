@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
@@ -31,19 +32,26 @@ void main() {
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
-    await tester.pumpWidget(MultiProvider(
+    await tester.pumpWidget(
+      MultiProvider(
         providers: [
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
         ],
         child: MaterialApp(
-            home: InheritedGoRouter(
-          goRouter: AppRouter.router,
-          child: const MaterialApp(
-            home: CompanyProfilPage(),
+          home: InheritedGoRouter(
+            goRouter: AppRouter.router,
+            child: const MaterialApp(
+              home: CompanyProfilPage(),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale('fr'),
+            ),
           ),
-        ))));
+        ),
+      ),
+    );
     final state_assign =
         tester.state(find.byType(CompanyProfilPage)) as CompanyProfilPageState;
 

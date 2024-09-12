@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
@@ -48,6 +49,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ConfirmationScreen(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),

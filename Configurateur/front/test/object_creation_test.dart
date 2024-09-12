@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/company-profil/object-creation.dart';
@@ -42,6 +43,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ObjectCreation(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -52,9 +56,9 @@ void main() {
 
     expect(find.text("Création d'objet"), findsOneWidget);
 
-
     await tester.enterText(find.byKey(const Key('name')), 'volley ball');
-    await tester.enterText(find.byKey(const Key('description')), 'volley ball description');
+    await tester.enterText(
+        find.byKey(const Key('description')), 'volley ball description');
     await tester.enterText(find.byKey(const Key('price')), '10');
 
     await tester.pumpAndSettle();

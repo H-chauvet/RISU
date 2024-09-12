@@ -53,6 +53,7 @@ void main() {
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -66,7 +67,7 @@ void main() {
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text('Valider le mot de passe'), findsOneWidget);
     expect(find.text("S'inscrire"), findsOneWidget);
-    expect(find.text("Déja un compte ? "), findsOneWidget);
+    expect(find.text("Déjà un compte ? "), findsOneWidget);
     expect(find.text("Connectez-vous."), findsOneWidget);
     expect(find.text("S'inscrire avec :"), findsOneWidget);
 

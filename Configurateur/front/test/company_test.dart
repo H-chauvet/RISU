@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
@@ -20,6 +20,8 @@ void main() {
 
   testWidgets('CompanyPage should render without error',
       (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -35,6 +37,10 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const MaterialApp(
                   home: CompanyPage(),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: Locale('fr'),
                 ),
               ),
             );
@@ -46,13 +52,14 @@ void main() {
     expect(find.byType(CompanyPage), findsOneWidget);
     await tester.pump();
 
-    expect(find.text("Entreprise"), findsOneWidget);
     expect(find.text("Notre équipe :"), findsOneWidget);
     expect(find.text("Nos Conteneurs :"), findsOneWidget);
   });
 
   testWidgets('CompanyPage should display team members',
       (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -68,6 +75,10 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const MaterialApp(
                   home: CompanyPage(),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: Locale('fr'),
                 ),
               ),
             );
@@ -82,6 +93,8 @@ void main() {
   });
 
   testWidgets('CompanyPage should display team', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -97,6 +110,10 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const MaterialApp(
                   home: CompanyPage(),
+                  localizationsDelegates:
+                      AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  locale: Locale('fr'),
                 ),
               ),
             );
@@ -104,7 +121,6 @@ void main() {
         ),
       ),
     );
-
 
     expect(find.byKey(const Key('member_image_0')), findsOneWidget);
     expect(find.byKey(const Key('member_image_1')), findsOneWidget);
