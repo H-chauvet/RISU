@@ -273,8 +273,7 @@ class ConversationPageState extends State<ConversationPage> {
                             onPressed: (contentController.text.isNotEmpty)
                                 ? () async {
                                     final newContent = contentController.text;
-                                    bool success =
-                                        await postTicket(newContent!);
+                                    bool success = await postTicket(newContent);
                                     if (success) {
                                       final lastTicket = tickets.last;
                                       final newTicket = {
