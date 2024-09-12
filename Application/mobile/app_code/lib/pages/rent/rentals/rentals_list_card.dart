@@ -8,7 +8,6 @@ import 'package:risu/utils/image_loader.dart';
 /// Rental card.
 /// this card is used to display the rental informations.
 /// params:
-/// [key] - key to identify the widget.
 /// [rental] - rental data to display.
 class RentalCard extends StatelessWidget {
   final dynamic rental;

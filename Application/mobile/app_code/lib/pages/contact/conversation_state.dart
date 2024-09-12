@@ -64,6 +64,8 @@ class ConversationPageState extends State<ConversationPage> {
 
   /// Function to get the assigned user information.
   /// It sends a GET request to the server to get the assigned user information.
+  /// params:
+  /// [assignedId] - the ID of the assigned user.
   void getAssignedInfo(String assignedId) async {
     late http.Response response;
 
@@ -108,6 +110,8 @@ class ConversationPageState extends State<ConversationPage> {
   /// Function to post a ticket.
   /// It sends a POST request to the server to post a ticket.
   /// It returns a boolean value indicating if the request was successful.
+  /// params:
+  /// [content] - the content of the ticket.
   Future<bool> postTicket(String content) async {
     late http.Response response;
     dynamic previousTicket = tickets.last;

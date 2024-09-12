@@ -91,6 +91,11 @@ class NotificationsPageState extends State<NotificationsPage> {
 
   /// Create a switch.
   /// This function is used to create a switch.
+  /// params:
+  /// [key] - the key of the switch.
+  /// [text] - the text of the switch.
+  /// [value] - the value of the switch.
+  /// [onChanged] - the function to call when the switch is changed.
   static Widget createSwitch(
       Key key, String text, bool value, Function(bool) onChanged) {
     const Color activeColor = Colors.green;

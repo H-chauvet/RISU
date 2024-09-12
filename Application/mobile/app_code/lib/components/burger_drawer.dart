@@ -11,8 +11,6 @@ import 'package:risu/utils/providers/theme.dart';
 
 /// The burger drawer that appears when the user clicks on the burger icon.
 /// It contains the user's profile, notifications, settings and a log out button.
-/// params:
-/// [key] - key of the widget.
 class BurgerDrawer extends StatelessWidget {
   const BurgerDrawer({
     super.key,

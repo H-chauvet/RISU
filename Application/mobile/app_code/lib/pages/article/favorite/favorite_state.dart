@@ -82,6 +82,8 @@ class FavoriteSate extends State<FavoritePage> {
 
   /// createFavorite is a function that creates a favorite.
   /// It sends a POST request to the server to create a favorite.
+  /// params:
+  /// [articleId] - the id of the article to create a favorite.
   void createFavorite(articleId) async {
     try {
       setState(() {
@@ -132,6 +134,8 @@ class FavoriteSate extends State<FavoritePage> {
 
   /// deleteFavorite is a function that deletes a favorite.
   /// It sends a DELETE request to the server to delete a favorite.
+  /// params:
+  /// [articleId] - the id of the article to delete a favorite.
   Future<bool> deleteFavorite(articleId) async {
     try {
       if (userInformation == null) {

@@ -7,7 +7,6 @@ import 'package:risu/utils/providers/theme.dart';
 /// params:
 ///  [vertical] - The vertical padding of the divider.
 ///  [horizontal] - The horizontal padding of the divider.
-///  [key] - The key to use for the divider.
 class MyDivider extends StatelessWidget {
   final double vertical;
   final double horizontal;

@@ -30,8 +30,6 @@ class LoaderManager {
 
 /// Loader class to show the loader.
 /// This class is used to show the loader.
-/// params:
-/// [key] - is the key of the widget.
 class Loader extends StatelessWidget {
   const Loader({super.key});
 

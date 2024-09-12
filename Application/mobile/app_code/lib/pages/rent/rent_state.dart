@@ -117,6 +117,9 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   /// Create a payment intent
   /// This function sends a POST request to the server to create a payment intent.
+  /// params:
+  /// [amount] - the amount of the payment intent
+  /// [currency] - the currency of the payment intent
   Future<Map<String, dynamic>?> createPaymentIntent(
       String amount, String currency) async {
     try {
@@ -168,6 +171,8 @@ class RentArticlePageState extends State<RentArticlePage> {
 
   /// Initialize the payment sheet
   /// This function initializes the payment sheet.
+  /// params:
+  /// [clientSecret] - the client secret of the payment intent
   Future<void> initPaymentSheet(String clientSecret) async {
     try {
       dynamic currentTheme = context.read<ThemeProvider>().currentTheme;

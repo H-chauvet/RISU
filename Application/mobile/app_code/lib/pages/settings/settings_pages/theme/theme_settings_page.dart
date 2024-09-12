@@ -6,8 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// Theme settings page.
 /// This page is used to display the theme settings.
-/// params:
-/// [key] - key to identify the widget.
 class ThemeChangeModalContent extends StatefulWidget {
   const ThemeChangeModalContent({
     super.key,

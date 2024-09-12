@@ -38,6 +38,8 @@ class ContactPageState extends State<ContactPage> {
 
   /// Function to sort tickets.
   /// It sorts the tickets by the creation date.
+  /// params:
+  /// [tickets] - the tickets to sort.
   void sortTickets(Map<String, dynamic> tickets) {
     tickets.forEach((key, value) {
       if (tickets[key].length > 1) {

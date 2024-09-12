@@ -91,6 +91,10 @@ class ArticleListState extends State<ArticleListPage> {
 
   /// Function to get the items data
   /// This function is called when the page is loaded to get the items data.
+  /// params:
+  /// [context] - The context of the page.
+  /// [containerId] - The id of the container.
+  /// [categoryId] - The id of the category.
   Future<dynamic> getItemsData(
       BuildContext context, int containerId, String? categoryId) async {
     late http.Response response;
@@ -140,6 +144,8 @@ class ArticleListState extends State<ArticleListPage> {
 
   /// Function to handle the text change
   /// This function is called when the user types in the search bar.
+  /// params:
+  /// [value] - The value of the search bar.
   void _onTextChanged(String value) {
     _debounceTimer.cancel();
     _debounceTimer = Timer(const Duration(milliseconds: 500), () {

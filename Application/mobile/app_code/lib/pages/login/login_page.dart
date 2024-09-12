@@ -8,7 +8,6 @@ import 'login_state.dart';
 /// [keepPath] if true, the user will be redirected to the page he was trying to access before login.
 /// if false, the user will be redirected to the home page.
 /// if null, the user will be redirected to the page he was trying to access before login.
-/// [key] the key of the widget.
 class LoginPage extends StatefulWidget {
   final bool? keepPath;
 

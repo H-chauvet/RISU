@@ -7,7 +7,6 @@ import 'list_state.dart';
 /// params:
 /// [containerId] - container id
 /// [testItemData] - test item data
-/// [key] - key
 class ArticleListPage extends StatefulWidget {
   final int containerId;
   final List<dynamic> testItemData;

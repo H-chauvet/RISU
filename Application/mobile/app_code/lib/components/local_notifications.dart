@@ -26,8 +26,8 @@ class LocalNotificationService {
   /// showNotification method.
   /// This method is used to show notification on the device.
   /// params:
-  /// [title] - String : Title of the notification.
-  /// [value] - String : Value of the notification.
+  /// [title] - Title of the notification.
+  /// [value] - Value of the notification.
   void showNotificationAndroid(String title, String value) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('channel_id', 'Channel Name',

@@ -9,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// LanguageChangeModalContent
 /// This class is the content of the language change modal.
-/// params:
-/// [key] - key to identify the widget.
 class LanguageChangeModalContent extends StatelessWidget {
   const LanguageChangeModalContent({super.key});
 

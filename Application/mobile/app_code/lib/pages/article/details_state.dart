@@ -40,7 +40,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   /// getArticleData method
   /// This method is used to get the data of an article
-  /// It returns the data of the article
+  /// params:
+  /// [context] - the context of the application.
+  /// [articleId] - the id of the article.
   Future<dynamic> getArticleData(BuildContext context, int articleId) async {
     late http.Response response;
 
@@ -114,6 +116,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   /// createFavorite method
   /// This method is used to create a favorite article
+  /// params:
+  /// [articleId] - the id of the article.
   void getOpinions(itemId) async {
     try {
       setState(() {
@@ -155,6 +159,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     }
   }
 
+  /// createFavorite method
+  /// This method is used to create a favorite article
+  /// params:
+  /// [articleId] - the id of the article.
   void createFavorite(articleId) async {
     try {
       setState(() {
@@ -216,6 +224,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
   /// checkFavorite method
   /// This method is used to check if the article is a favorite
   /// It returns the favorite status of the article
+  /// params:
+  /// [articleId] - the id of the article.
   Future<void> checkFavorite(articleId) async {
     try {
       if (userInformation == null) return;
@@ -271,6 +281,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   /// deleteFavorite method
   /// This method is used to delete a favorite article
+  /// params:
+  /// [articleId] - the id of the article.
   void deleteFavorite(articleId) async {
     try {
       setState(() {
@@ -331,6 +343,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   /// getSimilarArticles method
   /// This method is used to get the similar articles
+  /// params:
+  /// [context] - the context of the application.
   void getSimilarArticles(BuildContext context) async {
     try {
       setState(() {

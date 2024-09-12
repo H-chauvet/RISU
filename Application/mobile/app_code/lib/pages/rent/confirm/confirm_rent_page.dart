@@ -5,7 +5,6 @@ import 'package:risu/pages/rent/confirm/confirm_rent_state.dart';
 /// Confirm rent page.
 /// this page is used to confirm the rental.
 /// params:
-/// [key] - key to identify the widget.
 /// [hours] - rental duration.
 /// [data] - article data to display.
 /// [locationId] - location id.

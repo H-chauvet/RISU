@@ -1,4 +1,4 @@
-/// This function is used to load the image of the article
+/// This function is used to load the image of the article.
 /// according to the article name.
 /// params:
 /// [articleName] - name of the article.

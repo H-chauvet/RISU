@@ -85,6 +85,8 @@ class MapPageState extends State<MapPage> {
 
   /// _getContainerItems
   /// This method is used to get the items of a container from the API
+  /// params:
+  /// [containerId] - the id of the container
   Future<void> _getContainerItems(int containerId) async {
     if (containersData.containsKey('$containerId')) {
       setState(() {
@@ -130,6 +132,8 @@ class MapPageState extends State<MapPage> {
 
   /// displayBottomSheet
   /// This method is used to display the bottom sheet of a container
+  /// params:
+  /// [container] - the container
   void displayBottomSheet(ContainerList container) {
     if (!context.mounted) return;
     _getContainerItems(container.id).then(
@@ -255,6 +259,8 @@ class MapPageState extends State<MapPage> {
   /// displayMap
   /// This method is used to display the map
   /// It returns a widget that contains the GoogleMap widget
+  /// params:
+  /// [context] - the context of the widget
   Widget displayMap(BuildContext context) {
     setState(() {
       _loaderManager.setIsLoading(true);
@@ -308,6 +314,8 @@ class MapPageState extends State<MapPage> {
   /// _onMapCreated
   /// This method is called when the map is created
   /// It sets the mapController
+  /// params:
+  /// [controller] - the GoogleMapController
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
@@ -316,6 +324,8 @@ class MapPageState extends State<MapPage> {
 
   /// testOnMapCreated
   /// This method is used to test the _onMapCreated method
+  /// params:
+  /// [controller] - the GoogleMapController
   void testOnMapCreated(GoogleMapController controller) {
     _onMapCreated(controller);
   }

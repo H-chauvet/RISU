@@ -50,6 +50,8 @@ class HomePageState extends State<HomePage> {
   /// configProfile
   /// This function checks if the user has completed his profile
   /// If not, it will ask the user to complete it
+  /// params:
+  /// [context] - the BuildContext
   void configProfile(BuildContext context) async {
     try {
       String? firstName = userInformation?.firstName;
