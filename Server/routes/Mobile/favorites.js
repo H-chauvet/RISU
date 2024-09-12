@@ -62,11 +62,6 @@ router.get(
       if (!favorites) {
         return res.status(404).send(res.__("favNotFound"));
       }
-
-			const favorites = await favoriteCtrl.getUserFavorites(user.id)
-			if (!favorites) {
-				return res.status(401).send('Favorites not found')
-			}
 			for (const favorite of favorites) {
 				const imageUrl = await imagesCtrl.getItemImagesUrl(favorite.item.id, 0);
 				favorite.imageUrl = imageUrl[0];
