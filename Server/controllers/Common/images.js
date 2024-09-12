@@ -31,11 +31,11 @@ exports.getItemImagesUrl = async (itemId, index = -1) => {
     try {
         const item = await itemsCtrl.getItemFromId(itemId);
         if (!item) {
-            return res.status(404).send('Item not found');
+            throw new Error('Item not found');
         }
         const files = await listFilesInS3Folder(`${imagesMiddleware.itemImagesFolder}${item.name}-${item.id}${index != -1 ? `/${index}` : ''}`);
         if (!files) {
-            return res.status(404).send('No images found');
+            throw new Error('No images found');
         }
         var imagesUrl = [];
 
