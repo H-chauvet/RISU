@@ -283,9 +283,9 @@ class LandingAppBarState extends State<LandingAppBar> {
               ),
               const SizedBox(width: 32),
               PopupMenuButton<String>(
-                tooltip: "Authentification",
+                tooltip: token != '' ? "Profil" : "Authentification",
                 icon: Icon(
-                  size: 35,
+                  size: 28,
                   Icons.account_circle,
                   color:
                       Provider.of<ThemeService>(context, listen: false).isDark
