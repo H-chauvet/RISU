@@ -5,11 +5,13 @@ const lang = require('i18n');
 const rentRouter = require("../../routes/Mobile/rent");
 const containerCtrl = require('../../controllers/Common/container');
 const itemCtrl = require("../../controllers/Common/items");
+const imagesCtrl = require("../../controllers/Common/images");
 const userCtrl = require("../../controllers/Mobile/user");
 const rentCtrl = require("../../controllers/Mobile/rent");
 
 jest.mock("../../controllers/Common/container");
 jest.mock("../../controllers/Common/items");
+jest.mock("../../controllers/Common/images");
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Mobile/rent");
 jest.mock("../../invoice/rentUtils");
@@ -341,7 +343,11 @@ describe("GET /:rentId", () => {
     rentCtrl.getRentFromId.mockResolvedValue({
       id: 1,
       userId: 1,
+      item: {
+        id: 1,
+      },
     });
+    imagesCtrl.getItemImagesUrl.mockResolvedValue([]);
 
     const response = await supertest(app)
       .get("/1");
