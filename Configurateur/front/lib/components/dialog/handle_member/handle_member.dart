@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:front/components/dialog/handle_member/handle_member_style.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
 
 // ignore: must_be_immutable
@@ -11,7 +16,10 @@ import 'package:front/styles/globalStyle.dart';
 class HandleMember extends StatefulWidget {
   HandleMember({
     super.key,
+    this.organization,
   });
+
+  dynamic organization;
 
   @override
   State<HandleMember> createState() => HandleMemberState();
@@ -23,8 +31,39 @@ class HandleMemberState extends State<HandleMember> {
   TextEditingController _controller = TextEditingController();
   String collaboratorContact = '';
   List<String> collaboratorList = ["test"];
+  String jwtToken = '';
 
-  void addMember() {}
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+    if (token != null) {
+      jwtToken = token;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkToken();
+  }
+
+  void addMember() async {
+    var header = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': 'Bearer $jwtToken'
+    };
+    List<String> tmp = [];
+    tmp.add(collaboratorContact);
+    var body = {
+      "teamMember": jsonEncode(tmp),
+      "company": jsonEncode(widget.organization),
+    };
+    await HttpService().request(
+      'http://$serverIp:3000/api/organization/invite-member',
+      header,
+      body,
+    );
+  }
 
   /// [Widget] : Build the AlertDialog
   @override
@@ -39,7 +78,7 @@ class HandleMemberState extends State<HandleMember> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Ajouter un membre ?',
+              'Ajouter un membre',
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
@@ -134,26 +173,13 @@ class HandleMemberState extends State<HandleMember> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(collaboratorList[i]),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                collaboratorList.removeAt(i);
-                              });
-                            },
-                            icon: Icon(Icons.edit),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                collaboratorList.removeAt(i);
-                              });
-                            },
-                            icon: Icon(Icons.delete),
-                          )
-                        ],
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            collaboratorList.removeAt(i);
+                          });
+                        },
+                        icon: Icon(Icons.delete),
                       )
                     ],
                   );

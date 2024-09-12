@@ -70,6 +70,17 @@ class OrganizationList {
       'contactInformation': contactInformation,
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type,
+      'affiliate': affiliate,
+      'containers': containers,
+      'contactInformation': contactInformation,
+    };
+  }
 }
 
 /// CompanyProfilPage
@@ -345,7 +356,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   void openTeamMemberHandling() async {
     await showDialog(
       context: context,
-      builder: (context) => HandleMember(),
+      builder: (context) => HandleMember(
+        organization: organization,
+      ),
     );
   }
 
