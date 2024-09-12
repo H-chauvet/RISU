@@ -4,6 +4,6 @@ import 'package:flutter/foundation.dart';
 
 /// [serverIp] : Define the value of the ip (localhost or VM)
 
-String? serverIp = '51.178.183.68'; // A mettre quand push github
+String? serverIp = '82.165.63.176'; // A mettre quand push github
 
 // String? serverIp = 'localhost';
