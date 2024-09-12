@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const languageMiddleware = require("../../middleware/language");
 
 const itemCtrl = require('../../controllers/Common/items')
-const imagesCtrl = require('../../controllers/Common/images')
+const imagesCtrl = require('../../controllers/Common/images');
 
 router.get("/listAll", async (req, res, next) => {
   try {
@@ -52,8 +53,8 @@ router.get("/:articleId/similar", async (req, res, next) => {
     }
     return res.status(200).json(articles);
   } catch (err) {
-    next(err);
-    return res.status(400).send(res.__("errorOccured"));
+    console.error(err.message);
+    return res.status(500).send(res.__("errorOccured"));
   }
 });
 

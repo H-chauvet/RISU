@@ -98,7 +98,6 @@ router.put("/assign/:assignedId", async (req, res, next) => {
   }
   try {
     const token = req.headers.authorization.split(" ")[1];
-    console.log(token);
     const decodedToken = jwtMiddleware.decodeToken(token);
 
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);

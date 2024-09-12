@@ -204,7 +204,7 @@ router.get(
       }
       const imageUrl = await imagesCtrl.getItemImagesUrl(rental.item.id, 0)
       rental.item.imageUrl = imageUrl[0]
-      return res.status(201).json({ rental })
+      return res.status(200).json({ rental })
     } catch (err) {
       console.error(err.message);
       return res.status(400).send(res.__("errorOccured"));
