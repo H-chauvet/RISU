@@ -111,7 +111,7 @@ router.post("/update/:itemId", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
 

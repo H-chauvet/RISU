@@ -83,5 +83,6 @@
     "failedRetrieveDetails" : "Échec : Les détails de l'utilisateur n'ont pas pu être récupérés.",
     "missingCompany" : "L'entreprise est absente de la requête.",
     "companyNotFound" : "L'entreprise n'a pas été trouvée dans la base de données.",
-    "cardBlocked": "Votre carte est bloquée, renseignez une carte valide"
+    "cardBlocked": "Votre carte est bloquée, renseignez une carte valide",
+    "imageUploaded": "L'image a été téléchargée avec succès."
 }

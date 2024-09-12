@@ -14,15 +14,15 @@ router.post('/',
     async (req, res) => {
         try {
             if (!req.user) {
-                return res.status(401).send('Invalid token')
+                return res.status(401).send(res.__('invalidToken'));
             }
             const user = await userCtrl.findUserById(req.user.id)
             if (!user) {
-                return res.status(401).send('User not found')
+                return res.status(401).send(res('userNotFound'));
             }
             const item = req.item
             if (!item.id) {
-                return res.status(400).send('Item id is required')
+                return res.status(400).send(res.__('missingItemId'));
             }
             var count = 0;
             const uploadPromises = req.files.map(file => {
@@ -38,7 +38,7 @@ router.post('/',
             });
             await Promise.all(uploadPromises);
 
-            return res.status(200).send('Image uploaded successfully');
+            return res.status(200).send(res.__('imagesUploaded'));
         }
         catch (error) {
             console.log('Error sending image:', error);
@@ -52,7 +52,7 @@ router.get('/:id', async (req, res) => {
         return res.status(200).send(files);
     } catch (error) {
         console.error('Error listing files: ', error);
-        return res.status(500).send('Error listing files');
+        return res.status(500).send(res.__('errorOccured'));
     }
 });
 
