@@ -27,15 +27,15 @@ const listFilesInS3Folder = async (folderPath) => {
     }
 }
 
-exports.getItemImagesUrl = async (itemId, index = -1) => {
+exports.getItemImagesUrl = async (res, itemId, index = -1) => {
     try {
-        const item = await itemsCtrl.getItemFromId(itemId);
+        const item = await itemsCtrl.getItemFromId(res, itemId);
         if (!item) {
             throw new Error('Item not found');
         }
         const files = await listFilesInS3Folder(`${imagesMiddleware.itemImagesFolder}${item.name}-${item.id}${index != -1 ? `/${index}` : ''}`);
         if (!files) {
-            throw new Error('No images found');
+            return [];
         }
         var imagesUrl = [];
 
