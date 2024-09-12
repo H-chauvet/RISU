@@ -64,11 +64,12 @@ router.get("/:containerId/articleslist", async (req, res) => {
       max
     );
     for (const item of items) {
-      imageUrl = await imagesCtrl.getItemImagesUrl(item.id, 0);
+      imageUrl = await imagesCtrl.getItemImagesUrl(res, item.id, 0);
       item.imageUrl = imageUrl[0];
     }
     return res.status(200).json(items);
   } catch (err) {
+    console.error(err);
     return res.status(400).send(res.__("errorRetrievingItems"));
   }
 });

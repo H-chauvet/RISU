@@ -202,7 +202,7 @@ router.get(
       if (rental.userId != req.user.id) {
         return res.status(403).send(res.__("wrongUserRent"));
       }
-      const imageUrl = await imagesCtrl.getItemImagesUrl(rental.item.id, 0)
+      const imageUrl = await imagesCtrl.getItemImagesUrl(res, rental.item.id, 0)
       rental.item.imageUrl = imageUrl[0]
       return res.status(200).json({ rental })
     } catch (err) {

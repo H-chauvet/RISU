@@ -63,7 +63,7 @@ router.get(
         return res.status(404).send(res.__("favNotFound"));
       }
 			for (const favorite of favorites) {
-				const imageUrl = await imagesCtrl.getItemImagesUrl(favorite.item.id, 0);
+				const imageUrl = await imagesCtrl.getItemImagesUrl(res, favorite.item.id, 0);
 				favorite.imageUrl = imageUrl[0];
 			}
 			return res.status(200).json({ favorites })

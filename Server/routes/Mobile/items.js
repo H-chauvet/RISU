@@ -24,7 +24,7 @@ router.get("/:articleId", async (req, res) => {
     if (!article) {
       return res.status(404).send(res.__("articleNotFound"));
     }
-    const images = await imagesCtrl.getItemImagesUrl(article.id);
+    const images = await imagesCtrl.getItemImagesUrl(res, article.id);
     article.imageUrl = images;
     return res.status(200).json(article);
   } catch (err) {
@@ -48,7 +48,7 @@ router.get("/:articleId/similar", async (req, res, next) => {
       return res.status(404).send(res.__("articleNotFound"));
     }
     for (const article of articles) {
-      const imageUrl = await imagesCtrl.getItemImagesUrl(article.id, 0);
+      const imageUrl = await imagesCtrl.getItemImagesUrl(res, article.id, 0);
       article.imageUrl = imageUrl[0];
     }
     return res.status(200).json(articles);

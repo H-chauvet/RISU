@@ -48,7 +48,7 @@ router.post('/',
 // GET /api/images/:id
 router.get('/:id', async (req, res) => {
     try {
-        const files = await imagesCtrl.getItemImagesUrl(req.params.id);
+        const files = await imagesCtrl.getItemImagesUrl(res, req.params.id);
         return res.status(200).send(files);
     } catch (error) {
         console.error('Error listing files: ', error);
