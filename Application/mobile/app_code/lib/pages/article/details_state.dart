@@ -12,7 +12,6 @@ import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
-import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
@@ -865,7 +864,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                 'article-similar_image_$index'),
                                             padding: const EdgeInsets.all(6.0),
                                             child: loadImageFromURL(
-                                                articleData.imagesUrl![0]),
+                                              article['imageUrl'],
+                                              maxHeight: 120,
+                                            ),
                                           ),
                                           Padding(
                                             key: Key(
