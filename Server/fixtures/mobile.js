@@ -137,7 +137,7 @@ exports.createFixtures = async () => {
               },
               price: 10.0,
               duration: 20,
-            }
+            },
           },
         },
         include: {
