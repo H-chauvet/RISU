@@ -287,6 +287,8 @@ describe("GET /listAll", () => {
     userCtrl.findUserById.mockResolvedValue({
       id: 1,
     });
+    imagesCtrl.getItemImagesUrl.mockResolvedValue([]);
+    rentCtrl.getUserRents.mockResolvedValue([]);
 
     const response = await supertest(app)
       .get("/listAll");
