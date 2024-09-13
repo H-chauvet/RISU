@@ -30,13 +30,14 @@ class HandleMember extends StatefulWidget {
 class HandleMemberState extends State<HandleMember> {
   TextEditingController _controller = TextEditingController();
   String collaboratorContact = '';
-  List<String> collaboratorList = ["test"];
+  List<dynamic> collaboratorList = [];
   String jwtToken = '';
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token;
+      getCompanyMember();
     }
   }
 
@@ -60,6 +61,44 @@ class HandleMemberState extends State<HandleMember> {
     };
     await HttpService().request(
       'http://$serverIp:3000/api/organization/invite-member',
+      header,
+      body,
+    );
+  }
+
+  void getCompanyMember() async {
+    var header = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': 'Bearer $jwtToken'
+    };
+    var response = await HttpService().getRequest(
+      'http://$serverIp:3000/api/organization/members/${widget.organization.id}',
+      header,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+
+      setState(() {
+        for (int i = 0; i < jsonResponse['data'].length; i++) {
+          collaboratorList.add(jsonResponse['data'][i]);
+        }
+      });
+    }
+  }
+
+  void deleteUser(int i) async {
+    var header = {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Access-Control-Allow-Origin': '*',
+      'Authorization': 'Bearer $jwtToken'
+    };
+    var body = {
+      'email': collaboratorList[i]['email'],
+    };
+    var response = await HttpService().request(
+      'http://$serverIp:3000/api/auth/delete',
       header,
       body,
     );
@@ -172,9 +211,10 @@ class HandleMemberState extends State<HandleMember> {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(collaboratorList[i]),
+                      Text(collaboratorList[i]['email']),
                       IconButton(
                         onPressed: () {
+                          deleteUser(i);
                           setState(() {
                             collaboratorList.removeAt(i);
                           });

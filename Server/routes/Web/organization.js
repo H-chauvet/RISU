@@ -195,4 +195,35 @@ router.post("/add-member", async (req, res) => {
   }
 });
 
+router.get("/members/:organizationId", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    const decodedToken = jwtMiddleware.decodeToken(token);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const organizationId = req.params.organizationId;
+
+    const users = await userCtrl.getUsersFromOrganizationId(
+      res,
+      organizationId
+    );
+
+    res.status(200).json({ data: users });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
 module.exports = router;
