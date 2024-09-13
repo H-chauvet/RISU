@@ -26,7 +26,7 @@ router.post("/delete", async function (req, res, next) {
       throw "Id is required";
     }
     await itemCtrl.deleteItem(res, id);
-    res.status(200).json(res.__("itemsDeleted"));
+    res.status(200).send(res.__("itemsDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);

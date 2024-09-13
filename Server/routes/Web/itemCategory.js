@@ -153,7 +153,7 @@ router.delete("/", async function (req, res, next) {
     }
 
     await itemCategoryCtrl.deleteItemCategory(res, id);
-    res.status(200).json(res.__("categoryDeleted"));
+    res.status(200).send(res.__("categoryDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);

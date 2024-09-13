@@ -11,7 +11,7 @@ router.get("/listAll", async (req, res, next) => {
     return res.status(200).json(articles);
   } catch (err) {
     next(err)
-    return res.status(400).json(res.__("errorOccured"))
+    return res.status(400).send(res.__("errorOccured"))
   }
 })
 
