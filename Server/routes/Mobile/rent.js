@@ -170,6 +170,10 @@ router.get(
       }
       languageMiddleware.setServerLanguage(req, user);
       const rentals = await rentCtrl.getUserRents(user.id);
+      for (const rental of rentals) {
+        const imageUrl = await imagesCtrl.getItemImagesUrl(res, rental.item.id, 0)
+        rental.item.imageUrl = imageUrl[0]
+      }
       return res.status(200).json({ rentals: rentals });
     } catch (err) {
       console.error(err.message);
