@@ -113,7 +113,11 @@ exports.createFixtures = async () => {
           lastName: "admin",
           password: bcrypt.hashSync("admin", 12),
           mailVerification: true,
-          notificationsId: notification1.id,
+          Notifications: {
+            connect: {
+              id: notification1.id,
+            },
+          },
           itemOpinions: {
             create: [
               {
@@ -123,6 +127,17 @@ exports.createFixtures = async () => {
                 comment: "Joli ballon.",
               },
             ],
+          },
+          locations: {
+            create: {
+              item: {
+                connect: {
+                  id: 1,
+                },
+              },
+              price: 10.0,
+              duration: 20,
+            }
           },
         },
         include: {
@@ -139,7 +154,11 @@ exports.createFixtures = async () => {
           lastName: "user",
           password: bcrypt.hashSync("user", 12),
           mailVerification: true,
-          notificationsId: notification2.id,
+          Notifications: {
+            connect: {
+              id: notification2.id,
+            },
+          },
           itemOpinions: {
             create: [
               {
