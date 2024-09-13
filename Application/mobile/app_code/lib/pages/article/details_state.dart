@@ -501,7 +501,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                   carouselController: _carouselController,
                                   options: CarouselOptions(
                                     initialPage: 0,
-                                    autoPlay: true, // TODO: Change to false
+                                    autoPlay: true,
                                     viewportFraction: 1.0,
                                     onPageChanged: (index, reason) {
                                       setState(() {
