@@ -12,6 +12,7 @@ import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
+import 'package:risu/pages/opinion/opinion_page.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
@@ -705,6 +706,43 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                             ),
                           ),
                         const SizedBox(height: 16),
+                        GestureDetector(
+                          key: const Key('article_details-opinion_see_all'),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OpinionPage(
+                                  itemId: articleData.id,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Colors.grey,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.opinions,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Icon(Icons.arrow_forward),
+                              ],
+                            ),
+                          ),
+                        ),
                         if (opinionsList.isNotEmpty)
                           for (var i = 0;
                               i < opinionsList.length &&
