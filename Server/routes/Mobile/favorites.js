@@ -39,7 +39,7 @@ router.post(
       return res.status(201).send(res.__("favAdded"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -69,7 +69,7 @@ router.get(
 			return res.status(200).json({ favorites })
 		} catch (err) {
 			console.error(err.message)
-			return res.status(500).send(res.__("errorOccured"))
+			return res.status(500).send(res.__("errorOccurred"))
 		}
 	}
 )
@@ -100,7 +100,7 @@ router.get(
       return res.status(200).json(favorite);
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -135,7 +135,7 @@ router.delete(
       return res.status(200).send(res.__("favDeleted"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );

@@ -23,7 +23,7 @@ exports.getContainerById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -61,7 +61,7 @@ exports.getContainerByOrganizationId = async (res, organizationId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -75,7 +75,7 @@ exports.getAllContainer = async (res, id) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -107,7 +107,7 @@ exports.listContainers = async (res) => {
     });
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -126,7 +126,7 @@ exports.deleteContainer = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -161,7 +161,7 @@ exports.createContainer = async (res, container, organizationId) => {
 
     return containerObj;
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -185,7 +185,7 @@ exports.updateContainer = async (res, id, container) => {
       data: container,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -207,7 +207,7 @@ exports.updateContainerPosition = async (res, id, container) => {
       data: container,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -302,7 +302,7 @@ exports.getAllContainers = async (res) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -333,7 +333,7 @@ exports.getItemsFromContainer = async (res, containerId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -354,7 +354,7 @@ exports.updateCity = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -375,7 +375,7 @@ exports.updateAddress = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -396,7 +396,7 @@ exports.updateSaveName = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -417,7 +417,7 @@ exports.updateInformation = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -512,6 +512,6 @@ exports.getItemsWithFilters = async (
 
     return items;
   } catch (error) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

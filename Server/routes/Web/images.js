@@ -52,7 +52,7 @@ router.get('/:id', async (req, res) => {
         return res.status(200).send(files);
     } catch (error) {
         console.error('Error listing files: ', error);
-        return res.status(500).send(res.__('errorOccured'));
+        return res.status(500).send(res.__('errorOccurred'));
     }
 });
 

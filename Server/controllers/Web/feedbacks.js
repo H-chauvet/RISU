@@ -15,7 +15,7 @@ exports.registerFeedbacks = async (res, data) => {
 
     return feedback;
   } catch (error) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -38,6 +38,6 @@ exports.getAllFeedbacks = async (res, mark) => {
     return feedbacks;
   } catch (error) {
     console.error("Error retrieving feedbacks:", error);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

@@ -1,5 +1,5 @@
 {
-	"errorOccured": "An Internal error occured. Check the logs for more details.",
+	"errorOccurred": "An Internal error occurred. Check the logs for more details.",
 	"userCreated": "The user has been created.",
 	"missingRefreshToken": "The refresh token is missing from the request.",
 	"userNotFound": "The user was not found in the database.",
@@ -7,7 +7,7 @@
 	"missingId": "The id is missing from the request.",
 	"containerNotFound": "The container was not found in the database.",
 	"missingContainerId": "The container was missing its id.",
-	"errorRetrievingItems": "An error occured while retrieving the items from the database.",
+	"errorRetrievingItems": "An error occurred while retrieving the items from the database.",
 	"invalidToken": "The token is invalid.",
 	"missingItemId": "The item id is missing from the request.",
 	"itemNotFound": "The item was not found in the database.",

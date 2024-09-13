@@ -113,7 +113,7 @@ router.post(
         .json({ rentId: location.id, message: res.__("rentSaved") });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -150,7 +150,7 @@ router.post(
       return res.status(201).send(res.__("invoiceSent"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -177,7 +177,7 @@ router.get(
       return res.status(200).json({ rentals: rentals });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -211,7 +211,7 @@ router.get(
       return res.status(200).json({ rental })
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -244,7 +244,7 @@ router.post(
       return res.status(201).send(res.__("rentReturned"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );

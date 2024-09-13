@@ -1,5 +1,5 @@
 {
-    "errorOccured" : "Une erreur interne s'est produite. Consultez les journaux pour plus de détails.",
+    "errorOccurred" : "Une erreur interne s'est produite. Consultez les journaux pour plus de détails.",
     "userCreated" : "L'utilisateur a été créé.",
     "missingRefreshToken" : "Le jeton de rafraîchissement est absent de la requête.",
     "userNotFound" : "L'utilisateur n'a pas été trouvé dans la base de données.",
