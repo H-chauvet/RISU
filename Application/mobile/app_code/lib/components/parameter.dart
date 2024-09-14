@@ -14,8 +14,9 @@ enum DIVIDERPLACE {
   bottom,
 }
 
-/// This class is used to create a divider that redirects to another page.
-/// It is used in the settings page.
+/// This widget represents a clickable divider that redirects the user to a different page or logs them out.
+/// It includes an icon, a title, and can optionally ask for logout confirmation.
+/// The divider can be placed either at the top or bottom of its content.
 /// params:
 /// [title] - is the title of the divider.
 /// [goToPage] - is the page where the user will be redirected.
@@ -138,7 +139,6 @@ class MyRedirectDivider extends StatelessWidget {
 }
 
 /// This class is used to create a parameter that redirects to another page.
-/// It is used in the settings page.
 /// params:
 /// [title] - is the title of the parameter.
 /// [goToPage] - is the page where the user will be redirected.

@@ -4,6 +4,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 /// LoaderManager class to manage the loader.
 /// This class is used to manage the loader state.
+/// The loader manager is user to show the loader when data is being fetched.
+/// When the request is completed, the loader is hidden.
 class LoaderManager {
   bool _isLoading = false;
 

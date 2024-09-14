@@ -9,7 +9,7 @@ import 'package:risu/utils/providers/theme.dart';
 /// Class to show alert dialog.
 class MyAlertDialog {
   /// Show error alert dialog.
-  /// Using default title and message.
+  /// Using custom title and message.
   /// params:
   /// [context] - context of the widget.
   /// [title] - title of the alert dialog.
@@ -54,6 +54,8 @@ class MyAlertDialog {
   /// [title] - title of the alert dialog.
   /// [message] - message of the alert dialog.
   /// [barrierDismissible] - whether the dialog is dismissible.
+  /// true - dialog can be dismissed by tapping outside the dialog.
+  /// false - dialog can only be dismissed by tapping on the buttons.
   static Future<void> showInfoAlertDialog({
     Key? key,
     required BuildContext context,
@@ -86,7 +88,7 @@ class MyAlertDialog {
     );
   }
 
-  /// Show info alert dialog.
+  /// Show choice alert dialog.
   /// Using custom title and message, with custom button.
   /// params:
   /// [context] - context of the widget.
