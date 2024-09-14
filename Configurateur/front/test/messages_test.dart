@@ -1,21 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/app_routes.dart';
-import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/custom_footer.dart';
-import 'package:front/components/custom_header.dart';
-import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
-import 'package:front/screens/feedbacks/feedbacks.dart';
-import 'package:flutter/material.dart';
+import 'package:front/components/tickets_page.dart';
+import 'package:front/screens/messages/messages.dart';
 import 'package:front/services/theme_service.dart';
-import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:go_router/go_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-class MockSharedPreferences extends Mock implements SharedPreferences {}
+import 'package:front/app_routes.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -29,8 +24,7 @@ void main() {
     await fontLoader.load();
   });
 
-  testWidgets(
-      'FeedbacksPage displays feedbacks and allows posting new feedback',
+  testWidgets('MessagePage should display correctly for admin',
       (WidgetTester tester) async {
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
@@ -38,6 +32,7 @@ void main() {
 
     await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
+    // Define the widget with providers and Sizer
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -51,7 +46,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: const FeedbacksPage(),
+                child: const MessagePage(),
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
@@ -61,14 +56,19 @@ void main() {
       ),
     );
 
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await tester.tap(find.byTooltip('Authentification'));
     await tester.pumpAndSettle();
+    expect(find.text("Connexion"), findsOneWidget);
+    expect(find.text("Inscription"), findsOneWidget);
 
-    expect(find.byType(LandingAppBar), findsOneWidget);
-    expect(find.byType(CustomFooter), findsOneWidget);
-
-    await tester.tap(find.text('Poster un avis'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(RatingDialogContent), findsOneWidget);
+    expect(find.byType(TicketsPage), findsOneWidget);
+    expect(
+        find.byWidgetPredicate(
+            (widget) => widget is TicketsPage && widget.isAdmin == true),
+        findsOneWidget);
   });
 }
+
+class MockSharedPreferences extends Mock implements SharedPreferences {}

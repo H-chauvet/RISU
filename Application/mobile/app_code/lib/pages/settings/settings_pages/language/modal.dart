@@ -7,9 +7,13 @@ import 'package:risu/globals.dart';
 import 'package:risu/utils/providers/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// LanguageChangeModalContent
+/// This class is the content of the language change modal.
 class LanguageChangeModalContent extends StatelessWidget {
   const LanguageChangeModalContent({super.key});
 
+  /// getCurrentLanguage
+  /// This function is used to get the current language.
   Future<String> getCurrentLanguage() async {
     final prefs = await SharedPreferences.getInstance();
     final List<String> items = ['fr', 'en'];
@@ -17,11 +21,18 @@ class LanguageChangeModalContent extends StatelessWidget {
     return items[items.indexOf(currentLanguage)];
   }
 
+  /// changeLanguage to the selected language
+  /// This function is used to change the language to the selected language.
   void changeLanguage(BuildContext context, String languageCode) {
     Provider.of<LanguageProvider>(context, listen: false)
         .changeLanguage(Locale(languageCode));
   }
 
+  /// displayLanguage displays the language radio button
+  /// params:
+  /// [context] - context of the widget.
+  /// [languageCode] - language code.
+  /// [languageName] - language name.
   Widget displayLanguage(
       BuildContext context, String languageCode, String languageName) {
     return RadioListTile<String>(

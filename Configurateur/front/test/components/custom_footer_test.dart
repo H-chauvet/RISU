@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:front/services/theme_service.dart';
 import 'dart:ui' as ui;
 
-import 'package:front/components/custom_popup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:mockito/mockito.dart';
 
@@ -26,12 +23,10 @@ void main() {
 
   testWidgets('CustomPopup displays title and content correctly',
       (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
     await tester.pumpWidget(
       MultiProvider(

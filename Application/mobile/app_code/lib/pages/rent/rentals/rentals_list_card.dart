@@ -5,6 +5,10 @@ import 'package:risu/pages/rent/return_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/image_loader.dart';
 
+/// Rental card.
+/// this card is used to display the rental informations.
+/// params:
+/// [rental] - rental data to display.
 class RentalCard extends StatelessWidget {
   final dynamic rental;
 
@@ -13,6 +17,10 @@ class RentalCard extends StatelessWidget {
     required this.rental,
   });
 
+  /// Calculate the remaining time of the rental.
+  /// params:
+  /// [rental] - rental data.
+  /// [context] - context of the widget.
   String calculateRemainingTime(dynamic rental, BuildContext context) {
     DateTime rentalStart = DateTime.parse(rental['createdAt']);
     int rentalDuration = rental['duration'];
@@ -23,6 +31,9 @@ class RentalCard extends StatelessWidget {
     return AppLocalizations.of(context)!.hoursAndMinutes(hours, minutes);
   }
 
+  /// Check if the rental is in progress.
+  /// params:
+  /// [rental] - rental data.
   bool isRentalInProgress(dynamic rental) {
     if (rental['createdAt'] != null &&
         rental['duration'] != null &&

@@ -39,6 +39,7 @@ class _AdminPageState extends State<AdminPage> {
     return Scaffold(
       body: FooterView(
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [

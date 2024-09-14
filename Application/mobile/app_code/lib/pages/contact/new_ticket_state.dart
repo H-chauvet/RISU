@@ -17,6 +17,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'new_ticket_page.dart';
 
+/// NewTicketPage is a StatefulWidget
+/// This class is the state of NewTicketPage
 class NewTicketState extends State<NewTicketPage> {
   String _subject = "";
   String _content = "";
@@ -27,6 +29,8 @@ class NewTicketState extends State<NewTicketPage> {
     super.initState();
   }
 
+  /// createTicket is a Future<bool> function
+  /// This function is used to create a ticket
   Future<bool> createTicket() async {
     late http.Response response;
 
