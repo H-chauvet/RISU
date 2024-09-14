@@ -644,7 +644,9 @@ class TicketsState extends State<TicketsPage> {
                                                                     tickets);
                                                           },
                                                           child: Text(
-                                                            AppLocalizations.of(context)!.ticketAssign,
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .ticketAssign,
                                                             style: TextStyle(
                                                               fontSize: screenFormat ==
                                                                       ScreenFormat
@@ -855,7 +857,9 @@ class TicketsState extends State<TicketsPage> {
                                             ),
                                             Text(
                                               (chat["creatorId"] == uuid
-                                                      ? AppLocalizations.of(context)!.you
+                                                      ? AppLocalizations.of(
+                                                              context)!
+                                                          .you
                                                       : "$firstName $lastName, ") +
                                                   formatDateTime(
                                                       chat["createdAt"]),
@@ -932,7 +936,8 @@ class TicketsState extends State<TicketsPage> {
                                       },
                                       child: const Icon(Icons.arrow_upward),
                                     ),
-                                    labelText: AppLocalizations.of(context)!.messageNew,
+                                    labelText: AppLocalizations.of(context)!
+                                        .messageNew,
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.always,
                                     border: OutlineInputBorder(
@@ -970,7 +975,8 @@ class TicketsState extends State<TicketsPage> {
                                       ),
                                     ),
                                     child: Text(
-                                      AppLocalizations.of(context)!.endConversation,
+                                      AppLocalizations.of(context)!
+                                          .endConversation,
                                       style: TextStyle(
                                         color:
                                             Provider.of<ThemeService>(context)
@@ -1004,7 +1010,8 @@ class TicketsState extends State<TicketsPage> {
                                     ),
                                   ),
                                   child: Text(
-                                    AppLocalizations.of(context)!.closeConversation,
+                                    AppLocalizations.of(context)!
+                                        .closeConversation,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context)
                                               .isDark
