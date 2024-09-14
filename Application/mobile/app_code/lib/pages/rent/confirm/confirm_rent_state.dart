@@ -14,6 +14,7 @@ import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:intl/intl.dart';
 
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
@@ -27,8 +28,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.post(
-        Uri.parse(
-            'http://$serverIp:3000/api/mobile/rent/${locationId}/invoice'),
+        Uri.parse('http://$serverIp:3000/api/mobile/rent/$locationId/invoice'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
@@ -101,11 +101,11 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline,
                         color: context.select((ThemeProvider themeProvider) =>
                             themeProvider.currentTheme.primaryColor),
                       ),
                     ),
+                    const SizedBox(height: 8),
                     Text(
                       data.name,
                       style: TextStyle(
@@ -120,45 +120,65 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                 ),
               ),
               const SizedBox(height: 32),
-              Text(
-                "${AppLocalizations.of(context)!.summary}:",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "- ${AppLocalizations.of(context)!.priceXPerHour(data.price)}",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.bottomNavigationBarTheme
-                          .selectedItemColor),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                "- ${AppLocalizations.of(context)!.hoursNumberOfHours(hours)}: $hours",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.bottomNavigationBarTheme
-                          .selectedItemColor),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "${AppLocalizations.of(context)!.total}: ${hours * data.price}€",
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: context.select((ThemeProvider themeProvider) =>
-                      themeProvider.currentTheme.primaryColor),
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.article,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                        ),
+                        title: Text(
+                          AppLocalizations.of(context)!.priceXPerHour(
+                            NumberFormat('0.00').format(data.price),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      ListTile(
+                        leading: Icon(
+                          Icons.timer,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                        ),
+                        title: Text(
+                          "${AppLocalizations.of(context)!.hoursNumberOfHours(hours)}: $hours",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      const Divider(),
+                      ListTile(
+                        leading: Icon(
+                          Icons.euro,
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                        ),
+                        title: Text(
+                          AppLocalizations.of(context)!.priceXPerHour(
+                            NumberFormat('0.00').format(data.price),
+                          ),
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 64),
@@ -176,6 +196,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                       ),
                     ),
                     const SizedBox(height: 32),
+
+                    // Receive Invoice Button
                     SizedBox(
                       width: double.infinity,
                       child: MyOutlinedButton(
@@ -187,6 +209,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                       ),
                     ),
                     const SizedBox(height: 32),
+
+                    // Back to Home Button
                     SizedBox(
                       width: double.infinity,
                       child: MyOutlinedButton(

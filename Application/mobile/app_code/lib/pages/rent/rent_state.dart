@@ -192,13 +192,13 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
         await stripe.Stripe.instance.presentPaymentSheet().then((value) async {
-          rentArticle();
           // paiement success
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.paymentDone,
             message: AppLocalizations.of(context)!.paymentSuccessful,
           );
+          rentArticle();
         });
       } else {
         if (mounted) {
