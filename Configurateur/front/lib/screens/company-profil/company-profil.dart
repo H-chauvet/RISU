@@ -418,7 +418,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
 
       isManager = decodedToken['manager'];
-      debugPrint(isManager.toString());
       storageService.getUserMail().then((value) {
         userMail = value;
         if (userMail.isNotEmpty) {
