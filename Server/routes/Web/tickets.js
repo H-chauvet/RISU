@@ -155,7 +155,7 @@ router.put("/:chatId", async (req, res, next) => {
 
 router.get("/assigned-info/:assignedId", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization);
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
     return;

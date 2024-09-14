@@ -19,7 +19,7 @@
     "invalidRating" : "La note donnée n'est pas valide.",
     "missingComment" : "Le commentaire est absent de la requête.",
     "missingRating" : "La note est absente de la requête.",
-    "reviewSaved" : "L'avis a été sauvegardée avec succès.",
+    "reviewSaved" : "L'avis a été sauvegardé avec succès.",
     "missingReviewId" : "L'identifiant de l'avis ne figure pas dans la requête.",
     "reviewNotFound" : "L'avis n'a pas été trouvée dans la base de données.",
     "unauthorized" : "Cette action n'est pas autorisée.",
