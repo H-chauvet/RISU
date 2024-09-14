@@ -3,3 +3,4 @@ deploy-risu.sh
 coverage/
 Configurateur/front/pubspec.lock
 Application/mobile/app_code/pubspec.lock
+Server/package-lock.json
