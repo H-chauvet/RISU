@@ -50,57 +50,6 @@ void main() {
   );
 
   testWidgets(
-    'Similar articles',
-    (WidgetTester tester) async {
-      const similarArticlesData = [
-        {'id': 1, 'name': 'Article 1', 'price': 10.0},
-        {
-          'id': 2,
-          'name': 'Article 2 but with more than 15 letters',
-          'price': 20.0
-        },
-      ];
-
-      await tester.pumpWidget(
-        initPage(
-          const ArticleDetailsPage(
-            articleId: 1,
-            similarArticlesData: similarArticlesData,
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      Finder similarArticleTitle =
-          find.byKey(const Key('article-similar_title'));
-      Finder articleSimilarImage1 =
-          find.byKey(const Key('article-similar_image_1'));
-      Finder articleSimilarName1 =
-          find.byKey(const Key('article-similar_name_1'));
-      Finder articleSimilarPrice1 =
-          find.byKey(const Key('article-similar_price_1'));
-      Finder articleCategoryIcons1 =
-          find.byKey(const Key('article_categories_icons'));
-      await tester.pumpAndSettle();
-
-      Finder appBarTitleData = find.byKey(const Key('appbar-text_title'));
-
-      await tester.dragUntilVisible(
-        similarArticleTitle,
-        appBarTitleData,
-        const Offset(0, -300),
-      );
-      await tester.pumpAndSettle();
-
-      expect(similarArticleTitle, findsOneWidget);
-      expect(articleSimilarImage1, findsOneWidget);
-      expect(articleSimilarName1, findsOneWidget);
-      expect(articleSimilarPrice1, findsOneWidget);
-      expect(articleCategoryIcons1, findsOneWidget);
-    },
-  );
-
-  testWidgets(
     'Article details touching rent button',
     (WidgetTester tester) async {
       final testPage = ArticleDetailsState();

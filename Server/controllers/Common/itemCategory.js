@@ -10,7 +10,7 @@ exports.getItemCategories = async (res) => {
   try {
     return await db.Item_Category.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -28,7 +28,7 @@ exports.getItemCategoryFromId = async (res, id) => {
       where: { id: intId },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -47,7 +47,7 @@ exports.createItemCategory = async (res, name) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -67,7 +67,7 @@ exports.updateItemCategory = async (res, id, name) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -84,7 +84,7 @@ exports.deleteItemCategory = async (res, id) => {
       where: { id: id },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -109,6 +109,6 @@ exports.setItemCategories = async (res, id, categories) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

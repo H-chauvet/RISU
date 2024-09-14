@@ -54,7 +54,7 @@ class OpinionPageState extends State<OpinionPage> {
         _loaderManager.setIsLoading(false);
       });
       switch (response.statusCode) {
-        case 201:
+        case 200:
           final data = json.decode(response.body);
           setState(() {
             opinionsList = data['opinions'];

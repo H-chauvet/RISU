@@ -227,7 +227,7 @@ class MapPageState extends State<MapPage> {
                             padding: const EdgeInsets.all(8),
                             child: Stack(
                               children: [
-                                Image.asset(imageLoader(item['name'])),
+                                loadImageFromURL(item['imageUrl']),
                                 Positioned(
                                   left: 0,
                                   child: Container(

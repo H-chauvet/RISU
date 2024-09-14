@@ -21,6 +21,7 @@ class ArticleData {
   final bool available;
   final double price;
   final List categories;
+  final List<dynamic>? imagesUrl;
 
   ArticleData({
     required this.id,
@@ -29,11 +30,18 @@ class ArticleData {
     required this.available,
     required this.price,
     required this.categories,
+    this.imagesUrl,
   });
 
   /// Factory method to create an ArticleData object from a JSON object
   factory ArticleData.fromJson(Map<String, dynamic> json) {
     double price = json['price'] != null ? json['price'].toDouble() : 0.0;
+    List<dynamic>? imagesUrl;
+    if (json['imageUrl'] is String) {
+      imagesUrl = [json['imageUrl']];
+    } else if (json['imageUrl'] is List) {
+      imagesUrl = json['imageUrl'];
+    }
     return ArticleData(
       id: json['id'],
       containerId: json['containerId'],
@@ -41,6 +49,7 @@ class ArticleData {
       available: json['available'],
       price: price,
       categories: json['categories'],
+      imagesUrl: imagesUrl,
     );
   }
 
@@ -53,6 +62,7 @@ class ArticleData {
       'available': available,
       'price': price,
       'categories': categories,
+      'imageUrl': imagesUrl,
     };
   }
 }
@@ -96,22 +106,22 @@ class ArticleDataCard extends StatelessWidget {
         );
       },
       child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+        margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         elevation: 7,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
             children: [
               Column(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
+                    borderRadius: BorderRadius.circular(16.0),
                     child: SizedBox(
                       key: const Key('article_image'),
                       width: MediaQuery.of(context).size.width * 0.2,
-                      child: Image.asset(imageLoader(articleData.name)),
+                      child: loadImageFromURL(articleData.imagesUrl?[0]),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -140,7 +150,7 @@ class ArticleDataCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 20),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +164,7 @@ class ArticleDataCard extends StatelessWidget {
                         fontSize: 20.0,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 8),
                     Text(
                       key: const Key('article_price'),
                       AppLocalizations.of(context)!

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -30,6 +31,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     available: false,
     price: 0,
     categories: [],
+    imagesUrl: null,
   );
   List<dynamic> similarArticles = [];
   List<dynamic> opinionsList = [];
@@ -37,6 +39,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
 
   bool isFavorite = false;
   final LoaderManager _loaderManager = LoaderManager();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+  int indexImage = 0;
+  int nbImages = 0;
 
   /// getArticleData method
   /// This method is used to get the data of an article
@@ -83,6 +89,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         'available': false,
         'price': 0,
         'categories': [],
+        'imagesUrl': null,
       };
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -102,6 +109,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           'available': false,
           'price': 0,
           'categories': [],
+          'imagesUrl': null,
         };
       }
       return {
@@ -110,6 +118,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         'name': '',
         'available': false,
         'price': 0,
+        'categories': [],
+        'imagesUrl': null,
       };
     }
   }
@@ -402,6 +412,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
       getArticleData(context, widget.articleId).then((dynamic value) {
         setState(() {
           articleData = ArticleData.fromJson(value);
+          nbImages = 0;
+          if (articleData.imagesUrl != null) {
+            nbImages = articleData.imagesUrl!.length;
+          }
         });
         if (widget.similarArticlesData.isNotEmpty) {
           setState(() {
@@ -507,17 +521,60 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                           }).toList(),
                         ),
                         const SizedBox(height: 16),
-                        Container(
-                          width: 300,
-                          height: 200,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: AssetImage(imageLoader(articleData.name)),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        Stack(
+                          children: [
+                            if (nbImages > 0) ...[
+                              if (nbImages > 1) ...[
+                                CarouselSlider(
+                                  carouselController: _carouselController,
+                                  options: CarouselOptions(
+                                    initialPage: 0,
+                                    autoPlay: true,
+                                    viewportFraction: 1.0,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        indexImage = index;
+                                      });
+                                    },
+                                  ),
+                                  items: articleData.imagesUrl!
+                                      .map<Widget>((image) {
+                                    return loadImageFromURL(image);
+                                  }).toList(),
+                                ),
+                              ] else ...[
+                                loadImageFromURL(articleData.imagesUrl![0]),
+                              ],
+                              Positioned(
+                                bottom: 0,
+                                right: 0,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  color: Colors.black54,
+                                  child: Text(
+                                    '${indexImage + 1} / $nbImages',
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ] else ...[
+                              Container(
+                                width: 200,
+                                height: 200,
+                                decoration: const BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/image_placeholder.png'),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ]
+                          ],
                         ),
                         const SizedBox(height: 16),
                         Padding(
@@ -548,7 +605,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               child: Text(
                                                 "${AppLocalizations.of(context)!.currently}: ",
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: themeProvider
                                                       .currentTheme
@@ -566,8 +623,8 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               child: Row(
                                                 children: [
                                                   Container(
-                                                    width: 10,
-                                                    height: 10,
+                                                    width: 8,
+                                                    height: 8,
                                                     decoration: BoxDecoration(
                                                       shape: BoxShape.circle,
                                                       color: articleData
@@ -588,7 +645,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                                 context)!
                                                             .unavailable,
                                                     style: TextStyle(
-                                                      fontSize: 18,
+                                                      fontSize: 16,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color: themeProvider
@@ -615,7 +672,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                 AppLocalizations.of(context)!
                                                     .pricePerHour,
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: themeProvider
                                                       .currentTheme
@@ -634,7 +691,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               child: Text(
                                                 "${articleData.price}€",
                                                 style: TextStyle(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: themeProvider
                                                       .currentTheme
@@ -680,7 +737,6 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         GestureDetector(
                           key: const Key('article_details-opinion_see_all'),
                           onTap: () {
-                            if (opinionsList.isEmpty) return;
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -710,8 +766,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                if (opinionsList.isNotEmpty)
-                                  const Icon(Icons.arrow_forward),
+                                const Icon(Icons.arrow_forward),
                               ],
                             ),
                           ),
@@ -874,18 +929,9 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             key: Key(
                                                 'article-similar_image_$index'),
                                             padding: const EdgeInsets.all(6.0),
-                                            child: Container(
-                                              width: 130,
-                                              height: 80,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    imageLoader(
-                                                        articleData.name),
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
+                                            child: loadImageFromURL(
+                                              article['imageUrl'],
+                                              maxHeight: 120,
                                             ),
                                           ),
                                           Padding(
