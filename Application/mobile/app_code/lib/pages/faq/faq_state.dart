@@ -81,7 +81,7 @@ class FaqPageState extends State<FaqPage> {
                   Text(
                     key: const Key('faq-title-text'),
                     AppLocalizations.of(context)!
-                        .faqTitle(userInformation!.firstName!),
+                        .faqTitle(userInformation?.firstName ?? ''),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,

@@ -12,6 +12,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +27,11 @@ void main() {
   });
 
   testWidgets('Test de company profil page', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
     await tester.pumpWidget(
       MultiProvider(
@@ -39,16 +40,19 @@ void main() {
             create: (_) => ThemeService(),
           ),
         ],
-        child: MaterialApp(
-          home: InheritedGoRouter(
-            goRouter: AppRouter.router,
-            child: const MaterialApp(
-              home: CompanyProfilPage(),
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const CompanyProfilPage(),
+              ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               locale: Locale('fr'),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

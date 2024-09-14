@@ -15,7 +15,7 @@ router.get("/download", async function (req, res, next) {
     });
   } catch (err) {
     console.error('Error:', err);
-    res.status(500).send(res.__('errorOccured'));
+    res.status(500).send(res.__('errorOccurred'));
   }
 });
 

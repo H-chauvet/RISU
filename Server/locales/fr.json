@@ -1,5 +1,5 @@
 {
-    "errorOccured" : "Une erreur interne s'est produite. Consultez les journaux pour plus de détails.",
+    "errorOccurred" : "Une erreur interne s'est produite. Consultez les journaux pour plus de détails.",
     "userCreated" : "L'utilisateur a été créé.",
     "missingRefreshToken" : "Le jeton de rafraîchissement est absent de la requête.",
     "userNotFound" : "L'utilisateur n'a pas été trouvé dans la base de données.",
@@ -83,5 +83,6 @@
     "failedRetrieveDetails" : "Échec : Les détails de l'utilisateur n'ont pas pu être récupérés.",
     "missingCompany" : "L'entreprise est absente de la requête.",
     "companyNotFound" : "L'entreprise n'a pas été trouvée dans la base de données.",
-    "cardBlocked": "Votre carte est bloquée, renseignez une carte valide"
+    "cardBlocked": "Votre carte est bloquée, renseignez une carte valide",
+    "imageUploaded": "L'image a été téléchargée avec succès."
 }

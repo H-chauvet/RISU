@@ -27,7 +27,7 @@ router.post('/signup', (req, res, next) => {
         authCtrl.sendAccountConfirmationEmail(decodedUser.email, token)
       } catch (err) {
         console.error(err.message)
-        return res.status(401).send(res.__('errorOccured'))
+        return res.status(401).send(res.__('errorOccurred'))
       }
       return res.status(201).send(res.__('userCreated'))
     },

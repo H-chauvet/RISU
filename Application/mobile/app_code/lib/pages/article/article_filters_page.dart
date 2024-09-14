@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 
 import 'article_filters_state.dart';
 
+/// ArticleFiltersPage.
+/// params:
+/// [isAscending] - sort order.
+/// [isAvailable] - availability of articles.
+/// [selectedCategoryId] - selected category.
+/// [sortBy] - sort by.
+/// [articleCategories] - list of article categories.
+/// [min] - minimum price.
+/// [max] - maximum price.
 class ArticleFiltersPage extends StatefulWidget {
   final bool isAscending;
   final bool isAvailable;

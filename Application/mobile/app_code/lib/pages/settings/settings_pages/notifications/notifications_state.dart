@@ -17,6 +17,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'notifications_page.dart';
 
+/// The state of the notifications page.
+/// This class is used to manage the state of the notifications page.
 class NotificationsPageState extends State<NotificationsPage> {
   static bool isFavoriteItemsAvailableChecked =
       userInformation?.notifications?[0] ?? false;
@@ -32,6 +34,8 @@ class NotificationsPageState extends State<NotificationsPage> {
     super.initState();
   }
 
+  /// Save the notifications.
+  /// This function is used to save the notifications.
   Future<http.Response?> saveNotifications() async {
     try {
       setState(() {
@@ -85,6 +89,13 @@ class NotificationsPageState extends State<NotificationsPage> {
     return null;
   }
 
+  /// Create a switch.
+  /// This function is used to create a switch.
+  /// params:
+  /// [key] - the key of the switch.
+  /// [text] - the text of the switch.
+  /// [value] - the value of the switch.
+  /// [onChanged] - the function to call when the switch is changed.
   static Widget createSwitch(
       Key key, String text, bool value, Function(bool) onChanged) {
     const Color activeColor = Colors.green;

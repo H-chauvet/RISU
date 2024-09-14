@@ -24,12 +24,10 @@ void main() {
 
   testWidgets('CustomPopup displays title and content correctly',
       (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
     await tester.pumpWidget(
       MultiProvider(

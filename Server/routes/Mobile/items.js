@@ -1,17 +1,19 @@
 const express = require("express");
 const router = express.Router();
+const languageMiddleware = require("../../middleware/language");
 
-const itemCtrl = require("../../controllers/Common/items");
+const itemCtrl = require('../../controllers/Common/items')
+const imagesCtrl = require('../../controllers/Common/images');
 
 router.get("/listAll", async (req, res, next) => {
   try {
     const articles = await itemCtrl.getAllItems(res);
     return res.status(200).json(articles);
   } catch (err) {
-    next(err);
-    return res.status(400).send(res.__("errorOccured"));
+    next(err)
+    return res.status(400).send(res.__("errorOccurred"))
   }
-});
+})
 
 router.get("/:articleId", async (req, res) => {
   try {
@@ -22,10 +24,12 @@ router.get("/:articleId", async (req, res) => {
     if (!article) {
       return res.status(404).send(res.__("articleNotFound"));
     }
+    const images = await imagesCtrl.getItemImagesUrl(res, article.id);
+    article.imageUrl = images;
     return res.status(200).json(article);
   } catch (err) {
     console.error(err.message);
-    return res.status(400).send(res.__("errorOccured"));
+    return res.status(400).send(res.__("errorOccurred"));
   }
 });
 
@@ -43,10 +47,14 @@ router.get("/:articleId/similar", async (req, res, next) => {
     if (!articles) {
       return res.status(404).send(res.__("articleNotFound"));
     }
+    for (const article of articles) {
+      const imageUrl = await imagesCtrl.getItemImagesUrl(res, article.id, 0);
+      article.imageUrl = imageUrl[0];
+    }
     return res.status(200).json(articles);
   } catch (err) {
-    next(err);
-    return res.status(400).send(res.__("errorOccured"));
+    console.error(err.message);
+    return res.status(500).send(res.__("errorOccurred"));
   }
 });
 

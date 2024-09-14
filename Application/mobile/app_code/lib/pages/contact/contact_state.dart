@@ -17,6 +17,8 @@ import 'package:risu/utils/time.dart';
 
 import 'contact_page.dart';
 
+/// State class for the [ContactPage] widget.
+/// It contains the logic for the contact page.
 class ContactPageState extends State<ContactPage> {
   Map<String, dynamic> openedTickets = {};
   Map<String, dynamic> closedTickets = {};
@@ -34,6 +36,10 @@ class ContactPageState extends State<ContactPage> {
     }
   }
 
+  /// Function to sort tickets.
+  /// It sorts the tickets by the creation date.
+  /// params:
+  /// [tickets] - the tickets to sort.
   void sortTickets(Map<String, dynamic> tickets) {
     tickets.forEach((key, value) {
       if (tickets[key].length > 1) {
@@ -46,6 +52,9 @@ class ContactPageState extends State<ContactPage> {
     });
   }
 
+  /// Function to get user tickets.
+  /// It sends a GET request to the server to get the user tickets.
+  /// It returns a list of tickets.
   void getUserTickets() async {
     late http.Response response;
 
