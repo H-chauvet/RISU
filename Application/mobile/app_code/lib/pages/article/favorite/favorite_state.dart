@@ -276,12 +276,9 @@ class FavoriteSate extends State<FavoritePage> {
                                                         width: 100,
                                                         child: Transform.scale(
                                                           scale: 0.7,
-                                                          child: Image.asset(
-                                                              imageLoader(
-                                                                  favorite[
-                                                                          'item']
-                                                                      [
-                                                                      'name'])),
+                                                          child: loadImageFromURL(
+                                                              favorite[
+                                                                  'imageUrl']),
                                                         ),
                                                       ),
                                                     ],

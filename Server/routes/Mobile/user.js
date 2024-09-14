@@ -16,7 +16,7 @@ router.get("/listAll", async (req, res, next) => {
     return res.status(200).json({ user });
   } catch (err) {
     next(err);
-    return res.status(400).send(res.__("errorOccured"));
+    return res.status(400).send(res.__("errorOccurred"));
   }
 });
 
@@ -50,7 +50,7 @@ router.put(
       return res.status(200).json({ updatedUser });
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send(res.__("errorOccured"));
+      return res.status(500).send(res.__("errorOccurred"));
     }
   }
 );
@@ -100,7 +100,7 @@ router.get(
       return res.status(200).json({ user });
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send(res.__("errorOccured"));
+      return res.status(500).send(res.__("errorOccurred"));
     }
   }
 );

@@ -1,7 +1,7 @@
 const { Strategy } = require("passport-local");
 const { hash, compare } = require("../utils");
 const passport = require("passport");
-const { db } = require("../../middleware/database");
+const { db } = require("../middleware/database");
 require("dotenv").config({ path: "../.env" });
 
 /**

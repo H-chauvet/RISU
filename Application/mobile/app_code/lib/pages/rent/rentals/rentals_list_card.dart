@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/pages/rent/return_page.dart';
-import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/image_loader.dart';
+import 'package:risu/utils/providers/theme.dart';
 
 /// Rental card.
 /// this card is used to display the rental informations.
@@ -74,7 +74,7 @@ class RentalCard extends StatelessWidget {
                     SizedBox(
                       key: const Key('article_image'),
                       width: MediaQuery.of(context).size.width * 0.25,
-                      child: Image.asset(imageLoader(rental['item']['name'])),
+                      child: loadImageFromURL(rental['item']['imageUrl']),
                     ),
                     const SizedBox(
                       width: 15,

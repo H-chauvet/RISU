@@ -27,7 +27,7 @@ router.get(
       return res.status(200).json({ tickets });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -78,7 +78,7 @@ router.post(
       return res.status(201).send(res.__("ticketCreated"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -113,7 +113,7 @@ router.put(
       return res.status(201).send(res.__("ticketAssigned"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -142,7 +142,7 @@ router.put(
       return res.status(201).send(res.__("chatClosed"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -171,7 +171,7 @@ router.delete(
       return res.status(200).send(res.__("chatDeleted"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -205,7 +205,7 @@ router.get(
         .json({ firstName: assigned.firstName, lastName: assigned.lastName });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );

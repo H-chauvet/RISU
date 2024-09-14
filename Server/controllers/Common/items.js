@@ -15,7 +15,7 @@ exports.getItemByContainerId = async (res, containerId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -34,7 +34,7 @@ exports.getItemByCategory = async (res, category) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -48,7 +48,7 @@ exports.getAllItems = async (res) => {
   try {
     return await db.Item.findMany({});
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -68,7 +68,7 @@ exports.getItemFromId = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -82,7 +82,7 @@ exports.getItems = async (res) => {
   try {
     return await db.Item.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -101,7 +101,7 @@ exports.deleteItem = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -120,7 +120,7 @@ exports.createItem = async (res, item) => {
       data: item,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -143,7 +143,7 @@ exports.updateItem = async (res, id, item) => {
       data: item,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -163,7 +163,7 @@ exports.getAvailableItemsCount = async (res, containerId) => {
       select: { available: true },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -200,7 +200,7 @@ exports.getSimilarItems = async (res, itemId, containerId) => {
 
     return similarItems;
   } catch (error) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -222,7 +222,7 @@ exports.updateName = async (res, item) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -247,7 +247,7 @@ exports.updateItemCtn = async (res, item) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -269,7 +269,7 @@ exports.updatePrice = async (res, item) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -291,6 +291,6 @@ exports.updateDescription = async (res, item) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

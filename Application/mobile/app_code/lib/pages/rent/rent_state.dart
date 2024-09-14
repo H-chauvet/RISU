@@ -210,13 +210,13 @@ class RentArticlePageState extends State<RentArticlePage> {
       if (clientSecret != null) {
         await initPaymentSheet(clientSecret);
         await stripe.Stripe.instance.presentPaymentSheet().then((value) async {
-          rentArticle();
           // paiement success
           await MyAlertDialog.showInfoAlertDialog(
             context: context,
             title: AppLocalizations.of(context)!.paymentDone,
             message: AppLocalizations.of(context)!.paymentSuccessful,
           );
+          rentArticle();
         });
       } else {
         if (mounted) {
@@ -280,17 +280,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 8),
-                        Container(
-                          width: 256,
-                          height: 192,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            image: DecorationImage(
-                              image: AssetImage(imageLoader(_articleData.name)),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
+                        loadImageFromURL(_articleData.imagesUrl?[0]),
                         const SizedBox(height: 8),
                         Padding(
                           padding: const EdgeInsets.all(8),
