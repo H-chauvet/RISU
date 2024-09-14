@@ -3,6 +3,23 @@ import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/validators.dart';
 
+/// Custom text input widget.
+/// It is used to create a custom text input.
+/// params:
+/// [labelText] - label text for the input.
+/// [keyboardType] - keyboard type for the input.
+/// [obscureText] - whether the text should be obscured or not.
+/// [icon] - icon to be displayed on the left side of the input.
+/// [rightIcon] - icon to be displayed on the right side of the input.
+/// [rightIconKey] - key for the right icon.
+/// [rightIconOnPressed] - function to be called when the right icon is pressed.
+/// [validator] - function to validate the input.
+/// [initialValue] - initial value for the input.
+/// [onChanged] - function to be called when the input value is changed.
+/// [onTap] - function to be called when the input is tapped.
+/// [controller] - controller for the input.
+/// [height] - height of the input.
+/// [maxLines] - maximum number of lines for the input.
 class MyTextInput extends StatefulWidget {
   final String? labelText;
   final TextInputType keyboardType;
@@ -41,6 +58,12 @@ class MyTextInput extends StatefulWidget {
   State<MyTextInput> createState() => _MyTextInputState();
 }
 
+/// State class for MyTextInput.
+/// It is used to manage the state of the MyTextInput widget.
+/// params:
+/// [validator] - function to validate the input.
+/// [_controller] - controller for the input.
+/// [isFocused] - whether the input is focused or not.
 class _MyTextInputState extends State<MyTextInput> {
   late Function(String?)? validator;
   late TextEditingController _controller;

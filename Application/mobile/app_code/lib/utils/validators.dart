@@ -1,7 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/// Validators class contains all the validators used in the application.
+/// It is used to validate the input fields in the application.
 class Validators {
+  /// Validates the email field.
+  /// Returns null if the email is valid, otherwise returns the error message.
+  /// params:
+  /// [context] - the context of the widget.
+  /// [value] - the email value.
   String? email(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(context)!.fieldRequired;
@@ -19,6 +26,11 @@ class Validators {
         : null;
   }
 
+  /// Validates the password field.
+  /// Returns null if the password is valid, otherwise returns the error message.
+  /// params:
+  /// [context] - the context of the widget.
+  /// [value] - the password value.
   String? notEmpty(BuildContext context, String? value) {
     if (value == null || value.isEmpty) {
       return AppLocalizations.of(context)!.fieldRequired;

@@ -21,6 +21,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'rent_page.dart';
 
+/// RentArticlePage class
+/// This class is a StatefulWidget that displays the page to rent an article.
 class RentArticlePageState extends State<RentArticlePage> {
   dynamic paymentIntent;
   int _rentalHours = 1;
@@ -33,12 +35,14 @@ class RentArticlePageState extends State<RentArticlePage> {
     _articleData = widget.articleData;
   }
 
+  /// Increment the rental hours
   void _incrementHours() {
     setState(() {
       _rentalHours++;
     });
   }
 
+  /// Decrement the rental hours
   void _decrementHours() {
     if (_rentalHours > 1) {
       setState(() {
@@ -47,6 +51,8 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
+  /// Rent an article
+  /// This function sends a POST request to the server to rent an article.
   void rentArticle() async {
     final token = userInformation?.token ?? 'defaultToken';
     late http.Response response;
@@ -109,6 +115,11 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
+  /// Create a payment intent
+  /// This function sends a POST request to the server to create a payment intent.
+  /// params:
+  /// [amount] - the amount of the payment intent
+  /// [currency] - the currency of the payment intent
   Future<Map<String, dynamic>?> createPaymentIntent(
       String amount, String currency) async {
     try {
@@ -158,6 +169,10 @@ class RentArticlePageState extends State<RentArticlePage> {
     return null;
   }
 
+  /// Initialize the payment sheet
+  /// This function initializes the payment sheet.
+  /// params:
+  /// [clientSecret] - the client secret of the payment intent
   Future<void> initPaymentSheet(String clientSecret) async {
     try {
       dynamic currentTheme = context.read<ThemeProvider>().currentTheme;
@@ -181,6 +196,9 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
+  /// Make a payment
+  /// This function makes a payment.
+  /// It creates a payment intent, initializes the payment sheet and presents the payment sheet.
   Future<void> makePayment() async {
     try {
       final amount = _articleData.price *
@@ -220,6 +238,8 @@ class RentArticlePageState extends State<RentArticlePage> {
     }
   }
 
+  /// Confirm rent
+  /// This function shows an alert dialog to confirm the rent.
   void confirmRent() async {
     await MyAlertDialog.showChoiceAlertDialog(
       context: context,

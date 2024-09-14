@@ -419,7 +419,7 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.text).toEqual("missingParameters");
+    expect(response.text).toEqual("Some parameters are missing from the request. Please verify your request.");
   });
 
   it("should handle request for non-existing user", async () => {
