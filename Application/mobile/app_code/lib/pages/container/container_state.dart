@@ -17,20 +17,40 @@ import 'package:risu/utils/providers/theme.dart';
 import 'container_list_data.dart';
 import 'container_page.dart';
 
+/// ContainerPageState class
+/// This class is the state of the ContainerPage widget
 class ContainerPageState extends State<ContainerPage> {
   final FlutterMapMath mapMath = FlutterMapMath();
   PermissionStatus? permission;
   final LoaderManager _loaderManager = LoaderManager();
   LatLng _userPosition = const LatLng(47.210546, -1.566842); // Epitech Nantes
   List<ContainerList> containers = [];
+  late Timer timer;
 
   @override
   void initState() {
     super.initState();
 
+    _updaterContainer();
     _updateLocation();
+    if (widget.testPosition == null) {
+      timer = Timer.periodic(
+          const Duration(seconds: 10), (Timer t) => _updateLocation());
+    }
   }
 
+  void _updaterContainer() async {
+    if (widget.testContainers.isEmpty) {
+      await _getContainer();
+    } else {
+      setState(() {
+        containers = widget.testContainers;
+      });
+    }
+  }
+
+  /// Update the user location and the containers list
+  /// If the testPosition is not null, the user position is set to the testPosition
   void _updateLocation() async {
     if (widget.testPosition == null) {
       await _requestLocationPermission();
@@ -39,28 +59,25 @@ class ContainerPageState extends State<ContainerPage> {
         _userPosition = widget.testPosition!;
       });
     }
-    if (widget.testContainers.isEmpty) {
-      await _getContainer();
-    } else {
-      setState(() {
-        containers = widget.testContainers;
-      });
-    }
     await _getDistances();
   }
 
+  /// Request the location permission
+  /// If the permission is granted, get the user location
   Future<void> _requestLocationPermission() async {
     permission = await Permission.locationWhenInUse.status;
     if (permission != PermissionStatus.granted) {
       return;
     }
-    _getUserLocation();
+    await _getUserLocation();
   }
 
+  /// Get the user location
+  /// If the location is not available, the user position is set to Epitech Nantes
   Future<void> _getUserLocation() async {
     try {
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
+        desiredAccuracy: LocationAccuracy.best,
       );
       setState(() {
         _userPosition = LatLng(position.latitude, position.longitude);
@@ -76,6 +93,8 @@ class ContainerPageState extends State<ContainerPage> {
     }
   }
 
+  /// Get the containers list
+  /// The containers list is set to the containers list from the API
   Future<void> _getContainer() async {
     try {
       setState(() {
@@ -118,6 +137,8 @@ class ContainerPageState extends State<ContainerPage> {
     }
   }
 
+  /// Get the distances between the user position and the containers
+  /// The distance is set to the distance between the user position and the container
   Future<void> _getDistances() async {
     if (!mounted) return;
     containers.forEach((container) {

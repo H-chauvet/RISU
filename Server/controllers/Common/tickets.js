@@ -15,7 +15,7 @@ exports.createTicket = async (res, ticketInfo) => {
       data: ticketInfo,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -39,7 +39,7 @@ exports.assignTicket = async (res, id, assignedId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -61,7 +61,7 @@ exports.closeConversation = async (res, chatUid) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -80,7 +80,7 @@ exports.deleteConversation = async (res, chatUid) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -99,7 +99,7 @@ exports.getAllUserTickets = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -118,7 +118,7 @@ exports.getConversation = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -132,7 +132,7 @@ exports.getAllTickets = async (res) => {
   try {
     return await db.Tickets.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -151,6 +151,6 @@ exports.cleanMobileUserTickets = async (res, userId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

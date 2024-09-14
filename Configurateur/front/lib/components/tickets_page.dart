@@ -125,7 +125,7 @@ class TicketsState extends State<TicketsPage> {
     }
 
     var header = <String, String>{
-      'Authorization': token!,
+      'Authorization': 'Bearer $token',
       'Content-Type': 'application/json; charset=UTF-8',
       'Access-Control-Allow-Origin': '*',
     };
@@ -207,9 +207,6 @@ class TicketsState extends State<TicketsPage> {
         });
         return true;
       } else {
-        if (context.mounted) {
-          showCustomToast(context, response.body, false);
-        }
         return false;
       }
     } catch (err, stacktrace) {
@@ -320,7 +317,8 @@ class TicketsState extends State<TicketsPage> {
     return Scaffold(
       body: FooterView(
         footer: Footer(
-          child: CustomFooter(context: context),
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),

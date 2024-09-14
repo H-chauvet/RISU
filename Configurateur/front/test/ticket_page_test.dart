@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
@@ -27,12 +28,11 @@ void main() {
   });
 
   testWidgets('Test de Contact page', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
     when(sharedPreferences.getString('token')).thenReturn('test-token');
     when(sharedPreferences.getString('tokenExpiration')).thenReturn(
         DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -48,6 +48,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ContactPage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
@@ -80,6 +82,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ContactPage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),

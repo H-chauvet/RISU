@@ -1,4 +1,5 @@
 const { db } = require("../../middleware/database");
+const transporter = require("../../middleware/transporter");
 
 /**
  * Created organization
@@ -13,7 +14,7 @@ exports.createOrganization = async (res, organization) => {
       data: organization,
     });
   } catch (err) {
-    throw "Something happen while creation organization";
+    throw res.__("errorOccurred");
   }
 };
 
@@ -29,7 +30,7 @@ exports.getAllOrganizations = async (res) => {
     return await db.Organization.findMany();
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw "Failed to retrieve containers";
+    throw res.__("errorOccurred");
   }
 };
 
@@ -42,6 +43,7 @@ exports.getAllOrganizations = async (res) => {
  */
 exports.getOrganizationById = async (res, id) => {
   try {
+    id = parseInt(id);
     return await db.Organization.findUnique({
       where: { id: id },
       include: {
@@ -53,7 +55,7 @@ exports.getOrganizationById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw "Something happen while retrieving organization";
+    throw res.__("errorOccurred");
   }
 };
 
@@ -75,7 +77,7 @@ exports.updateName = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's name";
+    throw res.__("errorOccurred");
   }
 };
 
@@ -97,7 +99,7 @@ exports.updateContactInformation = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's contact information";
+    throw res.__("errorOccurred");
   }
 };
 
@@ -119,6 +121,29 @@ exports.updateType = (res, organization) => {
       },
     });
   } catch (err) {
-    throw "Something happen while updating organization's type";
+    throw res.__("errorOccurred");
+  }
+};
+
+exports.inviteMember = (res, memberList, company) => {
+  try {
+    memberList = JSON.parse(memberList);
+    company = JSON.parse(company);
+
+    memberList.forEach((element) => {
+      let mail = {
+        from: "risu.epitech@gmail.com",
+        to: element,
+        subject: "Invitation",
+        html:
+          '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://82.165.63.176/#/register/' +
+          company.id +
+          '">Inscription</a>' +
+          "</p>",
+      };
+      transporter.sendMail(mail);
+    });
+  } catch (err) {
+    throw res.__("errorOccurred");
   }
 };

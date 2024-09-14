@@ -4,11 +4,13 @@ const supertest = require("supertest");
 const favoriteRouter = require("../../routes/Mobile/favorites");
 const favoriteCtrl = require("../../controllers/Mobile/favorites");
 const itemCtrl = require("../../controllers/Common/items");
+const imagesCtrl = require("../../controllers/Common/images");
 const userCtrl = require("../../controllers/Mobile/user");
 const lang = require('i18n');
 
 jest.mock("../../controllers/Mobile/user");
 jest.mock("../../controllers/Common/items");
+jest.mock("../../controllers/Common/images");
 jest.mock("../../controllers/Mobile/favorites");
 jest.mock("../../middleware/Mobile/jwt", () => ({
   refreshTokenMiddleware: jest.fn((req, res, next) => next())
@@ -110,7 +112,11 @@ describe("GET /", () => {
 
   it('should get user favorites : test success', async () => {
     userCtrl.findUserById.mockResolvedValue({ id: 1 });
-    favoriteCtrl.getUserFavorites.mockResolvedValue({ id: 1 });
+    imagesCtrl.getItemImagesUrl.mockResolvedValue([]);
+    favoriteCtrl.getUserFavorites.mockResolvedValue([
+      { id: 1, item: { id: 1 }, user: { id: 1 } },
+      { id: 2, item: { id: 1 }, user: { id: 1 } }
+    ]);
 
     const response = await supertest(app)
       .get('/')

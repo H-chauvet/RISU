@@ -1,11 +1,12 @@
 const express = require("express");
 
-const router = express.Router();
-const passport = require("passport");
-const userCtrl = require("../../controllers/Mobile/user");
-const itemCtrl = require("../../controllers/Common/items");
-const favoriteCtrl = require("../../controllers/Mobile/favorites");
-const jwtMiddleware = require("../../middleware/Mobile/jwt");
+const router = express.Router()
+const passport = require('passport')
+const userCtrl = require("../../controllers/Mobile/user")
+const itemCtrl = require("../../controllers/Common/items")
+const favoriteCtrl = require("../../controllers/Mobile/favorites")
+const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const imagesCtrl = require('../../controllers/Common/images')
 const languageMiddleware = require("../../middleware/language");
 
 router.post(
@@ -38,7 +39,7 @@ router.post(
       return res.status(201).send(res.__("favAdded"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -61,14 +62,17 @@ router.get(
       if (!favorites) {
         return res.status(404).send(res.__("favNotFound"));
       }
-
-      return res.status(200).json({ favorites });
-    } catch (err) {
-      console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
-    }
-  }
-);
+			for (const favorite of favorites) {
+				const imageUrl = await imagesCtrl.getItemImagesUrl(res, favorite.item.id, 0);
+				favorite.imageUrl = imageUrl[0];
+			}
+			return res.status(200).json({ favorites })
+		} catch (err) {
+			console.error(err.message)
+			return res.status(500).send(res.__("errorOccurred"))
+		}
+	}
+)
 
 router.get(
   "/:itemId",
@@ -96,7 +100,7 @@ router.get(
       return res.status(200).json(favorite);
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -131,7 +135,7 @@ router.delete(
       return res.status(200).send(res.__("favDeleted"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );

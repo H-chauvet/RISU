@@ -2,13 +2,15 @@ const express = require("express");
 const PDFDocument = require("pdfkit");
 const { createInvoice } = require("../../invoice/createInvoice");
 
-const router = express.Router();
-const passport = require("passport");
-const rentCtrl = require("../../controllers/Mobile/rent");
-const userCtrl = require("../../controllers/Mobile/user");
-const itemCtrl = require("../../controllers/Common/items");
-const containerCtrl = require("../../controllers/Common/container");
-const { formatDate, drawTable } = require("../../invoice/invoiceUtils");
+const router = express.Router()
+const passport = require('passport')
+const rentCtrl = require("../../controllers/Mobile/rent")
+const userCtrl = require("../../controllers/Mobile/user")
+const itemCtrl = require("../../controllers/Common/items")
+const imagesCtrl = require('../../controllers/Common/images')
+const transporter = require('../../middleware/transporter')
+const containerCtrl = require('../../controllers/Common/container')
+const { formatDate, drawTable } = require('../../invoice/invoiceUtils');
 const {
   sendEmailConfirmationLocation,
   sendInvoice,
@@ -111,7 +113,7 @@ router.post(
         .json({ rentId: location.id, message: res.__("rentSaved") });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -148,7 +150,7 @@ router.post(
       return res.status(201).send(res.__("invoiceSent"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -168,10 +170,14 @@ router.get(
       }
       languageMiddleware.setServerLanguage(req, user);
       const rentals = await rentCtrl.getUserRents(user.id);
+      for (const rental of rentals) {
+        const imageUrl = await imagesCtrl.getItemImagesUrl(res, rental.item.id, 0)
+        rental.item.imageUrl = imageUrl[0]
+      }
       return res.status(200).json({ rentals: rentals });
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -200,10 +206,12 @@ router.get(
       if (rental.userId != req.user.id) {
         return res.status(403).send(res.__("wrongUserRent"));
       }
-      return res.status(200).json({ rental: rental });
+      const imageUrl = await imagesCtrl.getItemImagesUrl(res, rental.item.id, 0)
+      rental.item.imageUrl = imageUrl[0]
+      return res.status(200).json({ rental })
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );
@@ -236,7 +244,7 @@ router.post(
       return res.status(201).send(res.__("rentReturned"));
     } catch (err) {
       console.error(err.message);
-      return res.status(400).send(res.__("errorOccured"));
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
 );

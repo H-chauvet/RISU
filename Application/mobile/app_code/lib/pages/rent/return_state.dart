@@ -17,6 +17,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'return_page.dart';
 
+/// Return article page
+/// This page is used to return an article
 class ReturnArticleState extends State<ReturnArticlePage> {
   final LoaderManager _loaderManager = LoaderManager();
   dynamic rental = {
@@ -36,6 +38,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     },
   };
 
+  /// Send invoice
+  /// This function is used to send an invoice
   void sendInvoice() async {
     try {
       setState(() {
@@ -90,6 +94,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     }
   }
 
+  /// Get rent information
+  /// Get rent information from the server
   void getRent() async {
     try {
       setState(() {
@@ -135,6 +141,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     }
   }
 
+  /// Return article
+  /// This function is used to return an article
   void returnArticle() async {
     try {
       setState(() {
@@ -195,238 +203,234 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : Center(
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      key: const Key('rent_return-title'),
-                      AppLocalizations.of(context)!.article,
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: themeProvider.currentTheme.primaryColor,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    // image
-                    Container(
-                      width: 256,
-                      height: 192,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                          image:
-                              AssetImage(imageLoader(rental['item']['name'])),
-                          fit: BoxFit.cover,
+              child: SingleChildScrollView(
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        key: const Key('rent_return-title'),
+                        AppLocalizations.of(context)!.article,
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: themeProvider.currentTheme.primaryColor,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.all(8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                color: themeProvider
-                                    .currentTheme.colorScheme.surface,
+                      const SizedBox(height: 8),
+                      loadImageFromURL(rental['item']['imageUrl']),
+                      const SizedBox(height: 8),
+                      Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.all(8),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: themeProvider
+                                      .currentTheme.colorScheme.surface,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                padding: const EdgeInsets.all(8.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  '${rental['item']['name']} | ${rental['item']['container']['address']}',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: themeProvider.currentTheme
+                                        .inputDecorationTheme.labelStyle!.color,
+                                  ),
+                                ),
+                              ),
+                              ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              padding: const EdgeInsets.all(8.0),
-                              alignment: Alignment.center,
-                              child: Text(
-                                '${rental['item']['name']} | ${rental['item']['container']['address']}',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: themeProvider.currentTheme
-                                      .inputDecorationTheme.labelStyle!.color,
-                                ),
-                              ),
-                            ),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Container(
-                                color: themeProvider
-                                    .currentTheme.colorScheme.surface,
-                                child: Table(
-                                  columnWidths: const {
-                                    0: FlexColumnWidth(1.0),
-                                    1: FlexColumnWidth(1.0),
-                                  },
-                                  children: [
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider.currentTheme
-                                                .secondaryHeaderColor,
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .price,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: themeProvider
-                                                    .currentTheme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider.currentTheme
-                                                .secondaryHeaderColor,
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .duration,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: themeProvider
-                                                    .currentTheme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        TableCell(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider
-                                                .currentTheme.primaryColor
-                                                .withOpacity(0.8),
-                                            child: Text(
-                                              "${rental['price']}€",
-                                              style: TextStyle(
-                                                  fontSize: 18,
+                                child: Container(
+                                  color: themeProvider
+                                      .currentTheme.colorScheme.surface,
+                                  child: Table(
+                                    columnWidths: const {
+                                      0: FlexColumnWidth(1.0),
+                                      1: FlexColumnWidth(1.0),
+                                    },
+                                    children: [
+                                      TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider.currentTheme
+                                                  .secondaryHeaderColor,
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .price,
+                                                style: TextStyle(
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: themeProvider
                                                       .currentTheme
-                                                      .secondaryHeaderColor),
+                                                      .primaryColor,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        TableCell(
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8.0),
-                                            color: themeProvider
-                                                .currentTheme.primaryColor
-                                                .withOpacity(0.8),
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .rentHours(
-                                                      rental['duration']),
-                                              style: TextStyle(
-                                                  fontSize: 18,
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider.currentTheme
+                                                  .secondaryHeaderColor,
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .duration,
+                                                style: TextStyle(
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: themeProvider
                                                       .currentTheme
-                                                      .secondaryHeaderColor),
+                                                      .primaryColor,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
+                                                  .withOpacity(0.8),
+                                              child: Text(
+                                                "${rental['price']}€",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: themeProvider
+                                                        .currentTheme
+                                                        .secondaryHeaderColor),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
+                                                  .withOpacity(0.8),
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .rentHours(
+                                                        rental['duration']),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: themeProvider
+                                                        .currentTheme
+                                                        .secondaryHeaderColor),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MyOutlinedButton(
-                        text: AppLocalizations.of(context)!.receiveInvoice,
-                        key: const Key('return_rent-button-receive_invoice'),
-                        onPressed: () async {
-                          sendInvoice();
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    SizedBox(
-                      width: double.infinity,
-                      child: MyOutlinedButton(
-                        text: AppLocalizations.of(context)!.goToDetails,
-                        key: const Key('return_rent-button-go-to-details'),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ArticleDetailsPage(
-                                articleId: rental['item']['id'],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    if (rental['ended'] == false) ...[
+                      const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
                         child: MyOutlinedButton(
-                          text: AppLocalizations.of(context)!.rentReturn,
-                          key: const Key('rent_return-button-return_article'),
+                          text: AppLocalizations.of(context)!.receiveInvoice,
+                          key: const Key('return_rent-button-receive_invoice'),
                           onPressed: () async {
-                            bool returnRent =
-                                await MyAlertDialog.showChoiceAlertDialog(
-                              context: context,
-                              title: AppLocalizations.of(context)!
-                                  .rentReturnAskConfirmation,
-                              message: AppLocalizations.of(context)!
-                                  .rentReturnAskConfirmationMessage,
-                              onOkName: AppLocalizations.of(context)!.accept,
-                              onCancelName:
-                                  AppLocalizations.of(context)!.cancel,
-                            );
-                            if (returnRent == true) {
-                              returnArticle();
-                            }
+                            sendInvoice();
                           },
                         ),
                       ),
-                    ] else ...[
+                      const SizedBox(height: 8),
                       SizedBox(
                         width: double.infinity,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color:
-                                themeProvider.currentTheme.colorScheme.surface,
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.all(8.0),
-                          alignment: Alignment.center,
-                          child: Text(
-                            AppLocalizations.of(context)!
-                                .articleAlreadyReturned,
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: themeProvider.currentTheme
-                                  .inputDecorationTheme.labelStyle!.color,
-                            ),
+                        child: MyOutlinedButton(
+                          text: AppLocalizations.of(context)!.goToDetails,
+                          key: const Key('return_rent-button-go-to-details'),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArticleDetailsPage(
+                                  articleId: rental['item']['id'],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      if (rental['ended'] == false) ...[
+                        SizedBox(
+                          width: double.infinity,
+                          child: MyOutlinedButton(
+                            text: AppLocalizations.of(context)!.rentReturn,
+                            key: const Key('rent_return-button-return_article'),
+                            onPressed: () async {
+                              bool returnRent =
+                                  await MyAlertDialog.showChoiceAlertDialog(
+                                context: context,
+                                title: AppLocalizations.of(context)!
+                                    .rentReturnAskConfirmation,
+                                message: AppLocalizations.of(context)!
+                                    .rentReturnAskConfirmationMessage,
+                                onOkName: AppLocalizations.of(context)!.accept,
+                                onCancelName:
+                                    AppLocalizations.of(context)!.cancel,
+                              );
+                              if (returnRent == true) {
+                                returnArticle();
+                              }
+                            },
                           ),
                         ),
-                      )
-                    ]
-                  ],
+                      ] else ...[
+                        SizedBox(
+                          width: double.infinity,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: themeProvider
+                                  .currentTheme.colorScheme.surface,
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            padding: const EdgeInsets.all(8.0),
+                            alignment: Alignment.center,
+                            child: Text(
+                              AppLocalizations.of(context)!
+                                  .articleAlreadyReturned,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: themeProvider.currentTheme
+                                    .inputDecorationTheme.labelStyle!.color,
+                              ),
+                            ),
+                          ),
+                        )
+                      ]
+                    ],
+                  ),
                 ),
               ),
             ),

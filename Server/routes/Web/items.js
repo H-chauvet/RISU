@@ -26,7 +26,7 @@ router.post("/delete", async function (req, res, next) {
       throw "Id is required";
     }
     await itemCtrl.deleteItem(res, id);
-    res.status(200).json(res.__("itemsDeleted"));
+    res.status(200).send(res.__("itemsDeleted"));
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);
@@ -49,7 +49,7 @@ router.post("/create", async (req, res, next) => {
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
-    const { id, name, available, price, containerId, description, image } =
+    const { id, name, available, price, containerId, description } =
       req.body;
     const item = await itemCtrl.createItem(res, {
       id,
@@ -58,9 +58,8 @@ router.post("/create", async (req, res, next) => {
       price,
       containerId,
       description,
-      image,
     });
-    res.status(200).json(item);
+    return res.status(200).json(item);
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);
@@ -83,7 +82,7 @@ router.put("/update", async function (req, res, next) {
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
     languageMiddleware.setServerLanguage(req, user);
 
-    const { id, name, available, containerId, price, image, description } =
+    const { id, name, available, containerId, price, description } =
       req.body;
 
     if (!id) {
@@ -91,12 +90,11 @@ router.put("/update", async function (req, res, next) {
       throw res.__("missingId");
     }
 
-    const item = await containerCtrl.updateItem(res, id, {
+    const item = await itemCtrl.updateItem(res, id, {
       name,
       available,
       containerId,
       price,
-      image,
       description,
     });
 
@@ -113,7 +111,7 @@ router.post("/update/:itemId", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
-    res.status(401).send("Unauthorized");
+    res.status(401).send(res.__("unauthorized"));
     return;
   }
 
@@ -217,7 +215,7 @@ router.get("/listAll", async function (req, res, next) {
     return;
   }
   try {
-    const item = await itemCtrl.getAllItem(res);
+    const item = await itemCtrl.getAllItems(res);
 
     res.status(200).json({ item });
   } catch (err) {

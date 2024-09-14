@@ -60,7 +60,7 @@ router.post("/create", async (req, res, next) => {
     }
     languageMiddleware.setServerLanguage(req, user);
     if (!content || !title) {
-      return res.status(400).send(res.__("missingParamaters"));
+      return res.status(400).send(res.__("missingParameters"));
     }
 
     if (chatUid) {
@@ -91,7 +91,7 @@ router.post("/create", async (req, res, next) => {
 
 router.put("/assign/:assignedId", async (req, res, next) => {
   try {
-    jwtMiddleware.verifyToken(req.headers.authorization);
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
     return;
@@ -106,7 +106,7 @@ router.put("/assign/:assignedId", async (req, res, next) => {
     const assignedId = req.params.assignedId;
     const { ticketIds } = req.body;
     if (!assignedId || !ticketIds) {
-      return res.status(400).json(res.__("missingParamaters"));
+      return res.status(400).send(res.__("missingParameters"));
     }
     const assigned = await userCtrl.findUserByUuid(res, assignedId);
     if (!assigned) {
@@ -119,7 +119,6 @@ router.put("/assign/:assignedId", async (req, res, next) => {
     return res.status(201).send(res.__("ticketAssigned"));
   } catch (err) {
     if (res.statusCode == 200) {
-      res.status(500);
     }
     res.send(err);
   }
@@ -140,7 +139,7 @@ router.put("/:chatId", async (req, res, next) => {
     languageMiddleware.setServerLanguage(req, user);
     const chatId = req.params.chatId;
     if (!chatId) {
-      return res.status(400).json(res.__("missingChatId"));
+      return res.status(400).send(res.__("missingChatId"));
     }
     await ticketCtrl.closeConversation(res, chatId);
 
@@ -169,7 +168,7 @@ router.get("/assigned-info/:assignedId", async (req, res, next) => {
 
     const assignedId = req.params.assignedId;
     if (!assignedId) {
-      return res.status(400).json(res.__("missingAssignedId"));
+      return res.status(400).send(res.__("missingAssignedId"));
     }
     const webUser = await userCtrl.findUserByUuid(res, assignedId);
     if (webUser) {

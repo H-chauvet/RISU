@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/admin/admin.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/services/theme_service.dart';
@@ -25,6 +27,8 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const AdminPage(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
             );
           },
         ),
@@ -49,6 +53,7 @@ void main() {
     expect(find.byKey(const Key('btn-messages')), findsOneWidget);
     expect(find.byKey(const Key('btn-user')), findsOneWidget);
     expect(find.byKey(const Key('btn-article')), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
 
     await tester.binding.setSurfaceSize(null);
   });
