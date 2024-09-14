@@ -4,6 +4,10 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/login/login_page.dart';
 
+/// Check if user is signed in.
+/// If not, show an alert dialog and navigate to the sign in page.
+/// params:
+/// [context] - the context of the widget.
 Function checkSignin = (BuildContext context) async {
   if (userInformation == null) {
     bool dialogConfirm = await MyAlertDialog.showChoiceAlertDialog(
@@ -32,6 +36,9 @@ Function checkSignin = (BuildContext context) async {
   return true;
 };
 
+/// Check if the token is expired.
+/// params:
+/// [context] - the context of the widget.
 Function tokenExpiredShowDialog = (BuildContext context) async {
   userInformation = null;
   await MyAlertDialog.showInfoAlertDialog(

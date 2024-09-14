@@ -15,12 +15,16 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// ConfirmRentPage class
+/// This class is the stateful widget for the ConfirmRentPage
 class ConfirmRentState extends State<ConfirmRentPage> {
   late int hours;
   late ArticleData data;
   late int locationId;
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// sendInvoice function
+  /// This function sends an invoice to the user
   void sendInvoice() async {
     try {
       setState(() {

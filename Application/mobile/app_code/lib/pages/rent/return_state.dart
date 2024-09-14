@@ -17,6 +17,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'return_page.dart';
 
+/// Return article page
+/// This page is used to return an article
 class ReturnArticleState extends State<ReturnArticlePage> {
   final LoaderManager _loaderManager = LoaderManager();
   dynamic rental = {
@@ -36,6 +38,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     },
   };
 
+  /// Send invoice
+  /// This function is used to send an invoice
   void sendInvoice() async {
     try {
       setState(() {
@@ -90,6 +94,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     }
   }
 
+  /// Get rent information
+  /// Get rent information from the server
   void getRent() async {
     try {
       setState(() {
@@ -135,6 +141,8 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     }
   }
 
+  /// Return article
+  /// This function is used to return an article
   void returnArticle() async {
     try {
       setState(() {

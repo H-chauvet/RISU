@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// A custom divider that can be used to separate widgets.
+/// It uses the current theme's divider color.
+/// params:
+///  [vertical] - The vertical padding of the divider.
+///  [horizontal] - The horizontal padding of the divider.
 class MyDivider extends StatelessWidget {
   final double vertical;
   final double horizontal;
