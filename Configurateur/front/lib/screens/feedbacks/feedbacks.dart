@@ -125,6 +125,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: ElevatedButton(
+                      key: const Key('feedbacks-post_opinion'),
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 25, vertical: 15),

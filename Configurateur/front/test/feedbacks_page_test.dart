@@ -2,7 +2,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
@@ -14,7 +13,6 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
 
@@ -67,6 +65,9 @@ void main() {
 
     expect(find.byType(LandingAppBar), findsOneWidget);
     expect(find.byType(CustomFooter), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('feedbacks-post_opinion')));
+    await tester.pumpAndSettle();
 
     await tester.tap(find.text('Poster un avis'));
     await tester.pumpAndSettle();
