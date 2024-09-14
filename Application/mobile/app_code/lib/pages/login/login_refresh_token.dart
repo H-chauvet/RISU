@@ -22,6 +22,8 @@ void loginRefreshToken(refreshToken) async {
     final jsonData = jsonDecode(response.body);
     if (response.statusCode == 201) {
       userInformation = UserData.fromJson(jsonData['user'], jsonData['token']);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString('refreshToken', jsonData['user']['refreshToken']);
     }
   } catch (err) {
     final prefs = await SharedPreferences.getInstance();
