@@ -78,7 +78,7 @@ class HandleMemberState extends State<HandleMember> {
       'Authorization': 'Bearer $jwtToken'
     };
     var response = await HttpService().getRequest(
-      'http://$serverIp:3000/api/organization/members/${widget.organization.id}',
+      'http://$serverIp:3000/api/organization/${widget.organization.id}/members',
       header,
     );
 
