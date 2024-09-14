@@ -22,6 +22,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 
 /// OrganizationList
@@ -116,6 +117,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late String company;
   int organizationId = 0;
   String jwtToken = '';
+  bool isManager = false;
 
   /// [Function] : get all the containers created by the organization
   Future<void> fetchContainersById() async {
@@ -413,6 +415,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token!;
+      dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
+
+      isManager = decodedToken['manager'];
+      debugPrint(isManager.toString());
       storageService.getUserMail().then((value) {
         userMail = value;
         if (userMail.isNotEmpty) {
@@ -602,28 +608,33 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                               ),
                             ),
                           ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      onPressed: () {
-                        openTeamMemberHandling();
-                      },
-                      child: Text(
-                        "Gérer les membres",
-                        style: TextStyle(
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                        ),
-                      ),
+                    isManager
+                        ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                            ),
+                            onPressed: () {
+                              openTeamMemberHandling();
+                            },
+                            child: Text(
+                              "Gérer les membres",
+                              style: TextStyle(
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                              ),
+                            ),
+                          )
+                        : Container(),
+                    const SizedBox(
+                      height: 20,
                     ),
                     const Text(
                       "Nos Conteneurs :",

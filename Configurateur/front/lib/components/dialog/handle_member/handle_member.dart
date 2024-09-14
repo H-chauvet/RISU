@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/components/dialog/handle_member/handle_member_style.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 // ignore: must_be_immutable
 
@@ -32,11 +34,14 @@ class HandleMemberState extends State<HandleMember> {
   String collaboratorContact = '';
   List<dynamic> collaboratorList = [];
   String jwtToken = '';
+  String currentMail = '';
 
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token;
+      dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
+      currentMail = decodedToken['userMail'];
       getCompanyMember();
     }
   }
@@ -97,7 +102,7 @@ class HandleMemberState extends State<HandleMember> {
     var body = {
       'email': collaboratorList[i]['email'],
     };
-    var response = await HttpService().request(
+    await HttpService().request(
       'http://$serverIp:3000/api/auth/delete',
       header,
       body,
@@ -212,15 +217,24 @@ class HandleMemberState extends State<HandleMember> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(collaboratorList[i]['email']),
-                      IconButton(
-                        onPressed: () {
-                          deleteUser(i);
-                          setState(() {
-                            collaboratorList.removeAt(i);
-                          });
-                        },
-                        icon: Icon(Icons.delete),
-                      )
+                      currentMail == collaboratorList[i]['email']
+                          ? Container()
+                          : IconButton(
+                              onPressed: () async {
+                                var confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (context) => ConfirmationDialog(),
+                                );
+
+                                if (confirm == true) {
+                                  deleteUser(i);
+                                  setState(() {
+                                    collaboratorList.removeAt(i);
+                                  });
+                                }
+                              },
+                              icon: Icon(Icons.delete),
+                            )
                     ],
                   );
                 },
