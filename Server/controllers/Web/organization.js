@@ -136,7 +136,7 @@ exports.inviteMember = (res, memberList, company) => {
         to: element,
         subject: "Invitation",
         html:
-          '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://51.178.183.68/#/register/' +
+          '<p>Bonjour, vous avez été invité à rejoindre une entreprise sur le site RISU. Afin de créer votre compte, veuillez cliquer sur le lien suivant: <a href="http://82.165.63.176/#/register/' +
           company.id +
           '">Inscription</a>' +
           "</p>",
