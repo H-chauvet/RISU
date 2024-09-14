@@ -28,7 +28,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
         _loaderManager.setIsLoading(true);
       });
       final response = await http.post(
-        Uri.parse('http://$serverIp:3000/api/mobile/rent/$locationId/invoice'),
+        Uri.parse('$baseUrl/api/mobile/rent/$locationId/invoice'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer ${userInformation?.token}',
