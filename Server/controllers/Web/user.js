@@ -418,3 +418,15 @@ exports.getUserFromToken = (res, req) => {
   const decodedToken = jwtMiddleware.decodeToken(token);
   return userCtrl.findUserByEmail(res, decodedToken.userMail);
 };
+
+exports.getUsersFromOrganizationId = async (res, organizationId) => {
+  try {
+    return await db.User_Web.findMany({
+      where: {
+        organizationId: parseInt(organizationId),
+      },
+    });
+  } catch (err) {
+    throw res.__("errorOccured");
+  }
+};

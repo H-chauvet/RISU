@@ -13,6 +13,7 @@ exports.createFixtures = async () => {
         password: bcrypt.hashSync("louis", 12),
         confirmed: true,
         role: "user",
+        manager: true,
       },
     });
 
