@@ -168,9 +168,7 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                               themeProvider.currentTheme.primaryColor),
                         ),
                         title: Text(
-                          AppLocalizations.of(context)!.priceXPerHour(
-                            NumberFormat('0.00').format(data.price),
-                          ),
+                          "${AppLocalizations.of(context)!.total}: ${NumberFormat('0.00').format(hours * data.price)} €", // Formattage ici
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
