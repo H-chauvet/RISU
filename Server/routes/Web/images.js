@@ -42,6 +42,7 @@ router.post('/',
         }
         catch (error) {
             console.log('Error sending image:', error);
+            return res.status(500).send(res.__('errorOccurred'));
         }
 });
 
