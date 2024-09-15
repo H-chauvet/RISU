@@ -15,6 +15,7 @@ const organizationRoutes = require("./routes/Web/organization");
 const itemCategoryRoutes = require('./routes/Web/itemCategory');
 const ticketsRoutes = require('./routes/Web/tickets');
 const downloadRoutes = require('./routes/Web/download');
+const assetlinksRoutes = require('./routes/Web/assetlinks');
 
 const userMobileRoutes = require("./routes/Mobile/user");
 const authMobileRoutes = require("./routes/Mobile/auth");
@@ -70,6 +71,7 @@ app.use("/api/organization", organizationRoutes);
 app.use('/api/itemCategory', itemCategoryRoutes);
 app.use('/api/tickets', ticketsRoutes);
 app.use("/api/apk", downloadRoutes);
+app.use('/.well-known', assetlinksRoutes);
 
 app.use("/api/mobile/user", userMobileRoutes);
 app.use("/api/mobile/auth", authMobileRoutes);

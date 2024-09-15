@@ -33,6 +33,7 @@ import 'package:front/screens/company/company.dart';
 import 'package:front/screens/save_container/confirmation_save.dart';
 import 'package:front/screens/save_container/my_container.dart';
 import 'package:front/screens/user-list/user_list.dart';
+import 'package:front/screens/well-known/well-known.dart';
 import 'package:go_router/go_router.dart';
 
 /// AppRouter
@@ -344,8 +345,14 @@ class AppRouter {
       ),
       GoRoute(
         path: '/object-creation',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: ObjectCreation(),
+        ),
+      ),
+      GoRoute(
+        path: '/.well-known/assetlinks.json',
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: WellKnownPage(),
         ),
       ),
     ],
