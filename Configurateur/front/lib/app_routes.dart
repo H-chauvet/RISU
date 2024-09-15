@@ -344,7 +344,7 @@ class AppRouter {
       ),
       GoRoute(
         path: '/object-creation',
-        pageBuilder: (context, state) => NoTransitionPage(
+        pageBuilder: (context, state) => const NoTransitionPage(
           child: ObjectCreation(),
         ),
       ),
