@@ -737,7 +737,38 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         ),
                       ),
                       SizedBox(
-                        height: 65,
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          storageService.writeStorage(
+                            'containerId',
+                            containerId.toString(),
+                          );
+                          context.go("/object-creation");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        child: Text(
+                          "Créer un objet",
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.appBarTheme.backgroundColor
+                                : lightTheme.appBarTheme.backgroundColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 30,
                       ),
                       items.isEmpty
                           ? const Center(
