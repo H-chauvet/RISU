@@ -20,8 +20,11 @@ import 'register_style.dart';
 /// RegisterScreen
 ///
 /// Page for the account creation
+// ignore: must_be_immutable
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  RegisterScreen({super.key, this.orgId});
+
+  String? orgId = '';
 
   @override
   State<RegisterScreen> createState() => RegisterScreenState();
@@ -36,7 +39,6 @@ class RegisterScreenState extends State<RegisterScreen> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String firstName = '';
     String lastName = '';
-    String company = '';
     String mail = '';
     String password = '';
     String validedPassword = '';
@@ -47,6 +49,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
         body: FooterView(
             footer: Footer(
+              padding: EdgeInsets.zero,
               child: CustomFooter(),
             ),
             children: [
@@ -119,26 +122,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                               ),
                               onChanged: (String? value) {
                                 lastName = value!;
-                              },
-                              validator: (String? value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Veuillez remplir ce champ';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            TextFormField(
-                              key: const Key('company'),
-                              decoration: InputDecoration(
-                                hintText: 'Entrez le nom de votre entreprise',
-                                labelText: 'Entreprise',
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                              ),
-                              onChanged: (String? value) {
-                                company = value!;
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
@@ -230,7 +213,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                                     var body = {
                                       'firstName': firstName,
                                       'lastName': lastName,
-                                      'company': company,
                                       'email': mail,
                                       'password': password,
                                     };
@@ -262,14 +244,26 @@ class RegisterScreenState extends State<RegisterScreen> {
                                               '${response['accessToken']}'),
                                         ],
                                       );
+                                      await HttpService().request(
+                                          'http://$serverIp:3000/api/auth/register-confirmation',
+                                          header,
+                                          body);
+                                      // ignore: use_build_context_synchronously
+                                      if (widget.orgId == null) {
+                                        context.go("/company-register",
+                                            extra: mail);
+                                      } else {
+                                        body = {
+                                          'companyId': widget.orgId!,
+                                        };
+                                        await HttpService().request(
+                                            'http://$serverIp:3000/api/organization/add-member',
+                                            header,
+                                            body);
+                                        context.go("/register-confirmation",
+                                            extra: mail);
+                                      }
                                     }
-                                    await HttpService().request(
-                                        'http://$serverIp:3000/api/auth/register-confirmation',
-                                        header,
-                                        body);
-                                    // ignore: use_build_context_synchronously
-                                    context.go("/register-confirmation",
-                                        extra: mail);
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -292,43 +286,55 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            InkWell(
-                              key: const Key('login'),
-                              onTap: () {
-                                context.go("/login");
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    Text(
-                                      "Déja un compte ? ",
-                                      style: TextStyle(
-                                        fontSize:
-                                            screenFormat == ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletFontSize,
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Nouveau sur la plateforme ? ",
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context,
+                                                  listen: false)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                    ),
+                                  ),
+                                  MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        context.go("/login");
+                                      },
+                                      child: Text(
+                                        'Connectez-vous.',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                        ),
                                       ),
                                     ),
-                                    Text(
-                                      'Connectez-vous.',
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize:
-                                            screenFormat == ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletFontSize,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
                             const SizedBox(height: 20),
                             Text(
                               "S'inscrire avec :",
                               style: TextStyle(
+                                color: Provider.of<ThemeService>(context,
+                                            listen: false)
+                                        .isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
                                     : tabletFontSize,

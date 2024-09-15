@@ -3,6 +3,7 @@ const router = express.Router();
 
 const containerCtrl = require("../../controllers/Common/container");
 const itemCtrl = require("../../controllers/Common/items");
+const imagesCtrl = require("../../controllers/Common/images");
 
 router.get("/listAll", async function (req, res, next) {
   try {
@@ -62,8 +63,13 @@ router.get("/:containerId/articleslist", async (req, res) => {
       min,
       max
     );
+    for (const item of items) {
+      imageUrl = await imagesCtrl.getItemImagesUrl(res, item.id, 0);
+      item.imageUrl = imageUrl[0];
+    }
     return res.status(200).json(items);
   } catch (err) {
+    console.error(err);
     return res.status(400).send(res.__("errorRetrievingItems"));
   }
 });

@@ -7,11 +7,47 @@ const jwtMiddleware = require("../../middleware/jwt");
 const languageMiddleware = require("../../middleware/language");
 const userCtrl = require("../../controllers/Web/user");
 
+router.get("/:organizationId/members", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    const decodedToken = jwtMiddleware.decodeToken(token);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const organizationId = req.params.organizationId;
+
+    if (user.organizationId != organizationId) {
+      throw res.__("organizationNotAuthorized");
+    }
+
+    const users = await userCtrl.getUsersFromOrganizationId(
+      res,
+      organizationId
+    );
+
+    res.status(200).json({ data: users });
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
 router.post("/create", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
     const token = req.headers.authorization.split(" ")[1];
@@ -42,6 +78,7 @@ router.post("/update-information/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   const id = parseInt(req.params.id);
   try {
@@ -88,6 +125,7 @@ router.post("/update-type/:id", async (req, res, next) => {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
     res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
     const token = req.headers.authorization.split(" ")[1];
@@ -118,6 +156,72 @@ router.post("/update-type/:id", async (req, res, next) => {
       type,
     });
     res.status(200).json(updatedOrganization);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
+router.post("/invite-member", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
+    const { teamMember, company } = req.body;
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = jwtMiddleware.decodeToken(token);
+
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const organization = await organizationCtrl.inviteMember(
+      res,
+      teamMember,
+      company
+    );
+    res.status(200).send(organization);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.status(500);
+    }
+    res.send(err);
+  }
+});
+
+router.post("/add-member", async (req, res) => {
+  try {
+    jwtMiddleware.verifyToken(req.headers.authorization);
+  } catch (err) {
+    res.status(401).send(res.__("unauthorized"));
+    return;
+  }
+
+  try {
+    const token = req.headers.authorization;
+    const decodedToken = jwtMiddleware.decodeToken(token);
+    const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    languageMiddleware.setServerLanguage(req, user);
+
+    const { companyId } = req.body;
+
+    const company = await organizationCtrl.getOrganizationById(res, companyId);
+    if (!company) {
+      throw res.__("companyNotFound");
+    }
+
+    const userUpdated = await userCtrl.addCompanyToUser(
+      res,
+      user,
+      JSON.stringify(company),
+      false
+    );
+    res.status(200).send(userUpdated);
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);

@@ -10,7 +10,6 @@ import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 /// LandingPage
@@ -51,6 +50,7 @@ class LandingPageState extends State<LandingPage> {
     return Scaffold(
       body: FooterView(
           footer: Footer(
+            padding: EdgeInsets.zero,
             child: CustomFooter(),
           ),
           children: [

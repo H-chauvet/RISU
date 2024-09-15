@@ -9,6 +9,8 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_popup.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/dialog_cubit.dart';
 import 'package:front/components/dialog/rating_dialog_content/rating_dialog_content.dart';
@@ -84,93 +86,117 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
     return BlocProvider(
       create: (context) => DialogCubit(),
       child: Scaffold(
-        appBar: CustomAppBar('Les avis de RISU', context: context),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        body: FooterView(
+          footer: Footer(
+            padding: EdgeInsets.zero,
+            child: const CustomFooter(),
+          ),
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, right: 20.0),
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 15),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
+            Column(
+              children: [
+                LandingAppBar(context: context),
+
+                Text(
+                  'Consulter et donner votre avis sur RISU !',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 35,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.bold,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    shadows: [
+                      Shadow(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.secondaryHeaderColor
+                            : lightTheme.secondaryHeaderColor,
+                        offset: const Offset(0.75, 0.75),
+                        blurRadius: 1.5,
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return BlocProvider(
-                          create: (context) => DialogCubit(),
-                          child: Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16.0),
-                            ),
-                            elevation: 0,
-                            child: Container(
-                              width: screenFormat == ScreenFormat.desktop
-                                  ? desktopContainerWidth
-                                  : tabletContainerWidth,
-                              height: screenFormat == ScreenFormat.desktop
-                                  ? desktopContainerHeight
-                                  : tabletContainerHeight,
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Text(
-                                      'Poster un avis',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize:
-                                            screenFormat == ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletFontSize,
-                                      ),
+                ),
+                const SizedBox(height: 30),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0, right: 20.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomPopup(
+                              title: "Poster un avis",
+                              content: Column(
+                                children: <Widget>[
+                                  Text(
+                                    "Partagez votre expérience en postant un avis !",
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
                                     ),
                                   ),
-                                  RatingDialogContent(onSubmit: fetchFeedbacks),
+                                  BlocProvider(
+                                    create: (context) => DialogCubit(),
+                                    child: RatingDialogContent(
+                                      onSubmit: fetchFeedbacks,
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                          ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                  child: Text(
-                    'Poster un avis',
-                    style: TextStyle(
-                      fontSize: screenFormat == ScreenFormat.desktop
-                          ? desktopFontSize
-                          : tabletFontSize,
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
+                      child: Text(
+                        'Poster un avis',
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: feedbacks.length,
-                itemBuilder: (context, index) {
-                  final product = feedbacks[index];
-                  return FeedbacksCard(
-                    fb: product,
-                  );
-                },
-              ),
+                const SizedBox(height: 20),
+
+                // Liste des feedbacks
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: ListView.builder(
+                    itemCount: feedbacks.length,
+                    itemBuilder: (context, index) {
+                      final product = feedbacks[index];
+                      return FeedbacksCard(
+                        fb: product,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-        bottomNavigationBar: const CustomBottomNavigationBar(),
       ),
     );
   }

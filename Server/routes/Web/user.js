@@ -72,12 +72,11 @@ router.post("/google-login", async function (req, res, next) {
 
 router.post("/register", async function (req, res, next) {
   try {
-    const { firstName, lastName, company, email, password } = req.body;
+    const { firstName, lastName, email, password } = req.body;
     if (!email || !password) {
       res.status(400);
       throw res.__("missingMailPwd");
     }
-
     const existingUser = await userCtrl.findUserByEmail(res, email);
     if (existingUser) {
       res.status(400);
@@ -87,7 +86,6 @@ router.post("/register", async function (req, res, next) {
     const user = await userCtrl.registerByEmail(res, {
       firstName,
       lastName,
-      company,
       email,
       password,
     });
@@ -159,8 +157,8 @@ router.post("/register-confirmation", async function (req, res, next) {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization);
   } catch (err) {
-    res.status(401);
-    throw res.__("unauthorized");
+    res.status(401).send(res.__("unauthorized"));
+    return;
   }
   try {
     const { email } = req.body;
@@ -169,12 +167,12 @@ router.post("/register-confirmation", async function (req, res, next) {
       res.status(400);
       throw res.__("missingMail");
     }
-
     const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
       res.status(400);
       throw res.__("wrongMail");
     }
+
     languageMiddleware.setServerLanguage(req, existingUser);
     userCtrl.registerConfirmation(res, email);
     res.json(res.__("Success"));
@@ -300,7 +298,7 @@ router.post("/update-mail", async (req, res, next) => {
   try {
     const { oldMail, newMail } = req.body;
 
-    if (!oldMail && !newMail) {
+    if (!oldMail || !newMail) {
       res.status(400).send(res.__("missingMail"));
       return;
     }
@@ -340,6 +338,32 @@ router.post("/update-company/:email", async (req, res, next) => {
     languageMiddleware.setServerLanguage(req, existingUser);
     const updatedUser = await userCtrl.updateCompany(res, { email, company });
     res.status(200).json(updatedUser);
+  } catch (err) {
+    if (res.statusCode == 200) {
+      res.statusCode = 500;
+    }
+    res.send(err);
+  }
+});
+
+router.put("/update-company", async (req, res) => {
+  try {
+    const { email, company, manager } = req.body;
+
+    const user = await userCtrl.findUserByEmail(res, email);
+    if (!user) {
+      res.status(404);
+      throw res.__("userNotFound");
+    }
+
+    languageMiddleware.setServerLanguage(req, user);
+    const userUpdated = await userCtrl.addCompanyToUser(
+      res,
+      user,
+      company,
+      manager === "true"
+    );
+    res.status(200).send(userUpdated);
   } catch (err) {
     if (res.statusCode == 200) {
       res.statusCode = 500;

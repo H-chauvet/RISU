@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// MyButton class to create a button.
+/// This class is used to create a button.
+/// params:
+/// [text] - Text to be displayed on the button.
+/// [onPressed] - Function to be called when the button is pressed.
+/// [sizeCoefficient] - Size of the button.
 class MyButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

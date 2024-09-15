@@ -26,7 +26,7 @@ router.get('/', async (req, res) => {
     return res.status(200).json({ opinions })
   } catch (err) {
     console.error(err.message)
-    return res.status(400).send(res.__('errorOccured'))
+    return res.status(400).send(res.__('errorOccurred'))
   }
 })
 
@@ -60,7 +60,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       return res.status(201).send(res.__('reviewSaved'))
     } catch (err) {
       console.error(err.message)
-      return res.status(400).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccurred'))
     }
   }
 )
@@ -92,7 +92,7 @@ router.delete('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       return res.status(200).send(res.__('reviewDeleted'))
     } catch (err) {
       console.error(err.message)
-      return res.status(400).ssend(res.__('errorOccured'))
+      return res.status(400).ssend(res.__('errorOccurred'))
     }
   }
 )
@@ -130,7 +130,7 @@ router.put('/:opinionId', jwtMiddleware.refreshTokenMiddleware,
       return res.status(201).send(res.__('reviewUpdated'))
     } catch (err) {
       console.error(err.message)
-      return res.status(400).send(res.__('errorOccured'))
+      return res.status(400).send(res.__('errorOccurred'))
     }
   }
 )

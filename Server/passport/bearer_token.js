@@ -1,6 +1,6 @@
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const passport = require("passport");
-const { db } = require("../../middleware/database");
+const { db } = require("../middleware/database");
 require("dotenv").config({ path: "../.env" });
 
 /**

@@ -16,11 +16,15 @@ let transporter = nodemailer.createTransport({
  * @param {*} mail mail object
  */
 function sendMail(mail) {
-  transporter.sendMail(mail, (error, info, next) => {
-    if (error) {
-      next(error);
-    }
-  });
+  try {
+    transporter.sendMail(mail, (error, info, next) => {
+      if (error) {
+        console.log(error);
+      }
+    });
+  } catch (err) {
+    throw err;
+  }
 }
 
 module.exports = { sendMail };
