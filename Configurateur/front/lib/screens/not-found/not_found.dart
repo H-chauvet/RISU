@@ -51,106 +51,106 @@ class NotFoundPageState extends State<NotFoundPage> {
 
     return Scaffold(
       body: FooterView(
-          footer: Footer(
-            padding: EdgeInsets.zero,
-            child: CustomFooter(),
-          ),
-          children: [
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  LandingAppBar(context: context),
-                  const SizedBox(height: 200),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Cette page n'existe pas !",
-                          textAlign: TextAlign.center,
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
+        ),
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                LandingAppBar(context: context),
+                const SizedBox(height: 200),
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Cette page n'existe pas !",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopBigFontSize
+                              : tabletBigFontSize,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.bold,
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.secondaryHeaderColor
+                              : lightTheme.secondaryHeaderColor,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      RichText(
+                        key: const Key("not-found-text"),
+                        textAlign: TextAlign.center,
+                        maxLines: 3,
+                        text: TextSpan(
+                          text:
+                              "Nous ne parvenons pas à trouver la page que vous recherchez.\nEssayez de retourner à la page précédente ou veuillez ",
                           style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopBigFontSize
-                                : tabletBigFontSize,
+                                ? desktopFontSize
+                                : tabletFontSize,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.bold,
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.secondaryHeaderColor
                                 : lightTheme.secondaryHeaderColor,
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        RichText(
-                          key: const Key("not-found-text"),
-                          textAlign: TextAlign.center,
-                          maxLines: 3,
-                          text: TextSpan(
-                            text:
-                                "Nous ne parvenons pas à trouver la page que vous recherchez.\nEssayez de retourner à la page précédente ou veuillez ",
-                            style: TextStyle(
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletFontSize,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.bold,
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.secondaryHeaderColor
-                                  : lightTheme.secondaryHeaderColor,
-                            ),
-                            children: [
-                              TextSpan(
-                                text: 'Contacter le support',
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? Colors.blue[300]
-                                          : Colors.blue,
-                                  decoration: TextDecoration.underline,
-                                ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    context.go('/contact');
-                                  },
+                          children: [
+                            TextSpan(
+                              text: 'Contacter le support',
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? Colors.blue[300]
+                                    : Colors.blue,
+                                decoration: TextDecoration.underline,
                               ),
-                              const TextSpan(
-                                text: '.',
-                              ),
-                            ],
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  context.go('/contact');
+                                },
+                            ),
+                            const TextSpan(
+                              text: '.',
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      ElevatedButton(
+                        key: const Key('back-home'),
+                        onPressed: () {
+                          context.go("/");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        const SizedBox(height: 50),
-                        ElevatedButton(
-                          key: const Key('back-home'),
-                          onPressed: () {
-                            context.go("/");
-                          },
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          child: Text(
-                            "Retour à l'accueil",
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                              fontSize: screenFormat == ScreenFormat.desktop
-                                  ? desktopFontSize
-                                  : tabletFontSize,
-                            ),
+                        child: Text(
+                          "Retour à l'accueil",
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -162,7 +162,15 @@ class ContainerCards extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.chevron_right),
-                  onPressed: () => context.go(page),
+                  onPressed: () {
+                    if (container.id != null) {
+                      storageService.writeStorage(
+                        'containerId',
+                        container.id.toString(),
+                      );
+                    }
+                    context.go(page);
+                  },
                 ),
               ],
             ),
