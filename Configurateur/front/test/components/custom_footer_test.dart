@@ -51,7 +51,7 @@ void main() {
     expect(find.text("Nous contacter"), findsOneWidget);
     expect(find.text("Vos avis"), findsOneWidget);
     expect(find.text("Questions fréquentes"), findsOneWidget);
-    expect(find.text("L'entreprise Risu"), findsOneWidget);
+    expect(find.text("L'entreprise RISU"), findsOneWidget);
     expect(find.text("Mon Compte"), findsOneWidget);
     expect(find.text("Mon Profil"), findsOneWidget);
     expect(find.text("Mes conteneurs"), findsOneWidget);
@@ -91,7 +91,7 @@ void main() {
       "Nous contacter",
       "Vos avis",
       "Questions fréquentes",
-      "L'entreprise Risu",
+      "L'entreprise RISU",
       "Mon Profil",
       "Mes conteneurs",
       "Créer un conteneur",

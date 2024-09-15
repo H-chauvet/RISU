@@ -63,7 +63,7 @@ void main() {
     expect(find.text("Confirmation de commande"), findsOneWidget);
     expect(
         find.text(
-            "Votre commande a bien été confirmée, vous pouvez maintenant retournez à l'accueil et nous vous contacterons dès que votre commande sera prête"),
+            "Votre commande a bien été confirmée, vous pouvez maintenant retourner à l'accueil et nous vous contacterons dès que votre commande sera prête"),
         findsOneWidget);
 
     await tester.tap(find.byKey(const Key('go-home')));
