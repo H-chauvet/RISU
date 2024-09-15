@@ -16,6 +16,8 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// ResetPasswordPageState
+/// This class is the stateful widget for the ResetPasswordPage
 class ResetPasswordPageState extends State<ResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
   bool _isPasswordVisible = false;
@@ -23,6 +25,8 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
   String _password = '';
   String _passwordConfirmation = '';
 
+  /// resetPassword
+  /// This function is used to reset the password
   Future<void> resetPassword() async {
     try {
       if (_password == '' || _passwordConfirmation == '') {

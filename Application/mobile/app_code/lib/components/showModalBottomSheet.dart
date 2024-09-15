@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// Show a modal bottom sheet with a title and content.
+/// It is used when displaying the map.
+/// params:
+/// [context] - context of the widget.
+/// [title] - title of the bottom sheet.
+/// [content] - content of the bottom sheet.
+/// [showCloseButton] - show close button or not.
+/// [color] - color of the bottom sheet.
+/// [subtitle] - subtitle of the bottom sheet.
 void myShowModalBottomSheet(BuildContext context, String title, Widget content,
     {bool showCloseButton = true,
     Color color = Colors.white,

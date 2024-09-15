@@ -15,6 +15,9 @@ import 'package:risu/utils/time.dart';
 
 import 'conversation_page.dart';
 
+/// State class for the [ConversationPage] widget.
+/// It contains the logic for the conversation page.
+/// It is used to manage the state of the conversation page.
 class ConversationPageState extends State<ConversationPage> {
   List<dynamic> tickets = [];
   bool isOpen = false;
@@ -41,6 +44,8 @@ class ConversationPageState extends State<ConversationPage> {
 
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// Function to find the assigned user.
+  /// It returns the ID of the assigned user.
   String findAssigned() {
     for (var element in tickets) {
       final creator = element["creatorId"];
@@ -57,6 +62,10 @@ class ConversationPageState extends State<ConversationPage> {
     return "";
   }
 
+  /// Function to get the assigned user information.
+  /// It sends a GET request to the server to get the assigned user information.
+  /// params:
+  /// [assignedId] - the ID of the assigned user.
   void getAssignedInfo(String assignedId) async {
     late http.Response response;
 
@@ -98,6 +107,11 @@ class ConversationPageState extends State<ConversationPage> {
     }
   }
 
+  /// Function to post a ticket.
+  /// It sends a POST request to the server to post a ticket.
+  /// It returns a boolean value indicating if the request was successful.
+  /// params:
+  /// [content] - the content of the ticket.
   Future<bool> postTicket(String content) async {
     late http.Response response;
     dynamic previousTicket = tickets.last;
@@ -273,8 +287,7 @@ class ConversationPageState extends State<ConversationPage> {
                             onPressed: (contentController.text.isNotEmpty)
                                 ? () async {
                                     final newContent = contentController.text;
-                                    bool success =
-                                        await postTicket(newContent!);
+                                    bool success = await postTicket(newContent);
                                     if (success) {
                                       final lastTicket = tickets.last;
                                       final newTicket = {

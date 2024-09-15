@@ -49,7 +49,6 @@ model Item {
     createdAt       DateTime          @default(now())
     containerId     Int?
     price           Float
-    image           String?
     description     String?
     rating          Float?            @default(0)
     Location_Mobile Location_Mobile[]

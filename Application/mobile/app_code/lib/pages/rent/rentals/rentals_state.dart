@@ -80,6 +80,9 @@ class RentalPageState extends State<RentalPage> {
     }
   }
 
+  /// isRentalInProgress is a function that returns true if the rental is in progress
+  /// params:
+  /// [rental] - the rental
   bool isRentalInProgress(dynamic rental) {
     if (rental['createdAt'] != null &&
         rental['duration'] != null &&

@@ -29,7 +29,7 @@ const generateResponse = async (res, intent, id) => {
         });
       } catch (error) {
         console.error("Error retrieving users:", error);
-        throw res.__("errorOccured");
+        throw res.__("errorOccurred");
       }
       return { clientSecret: intent.client_secret, status: intent.status };
   }
@@ -68,6 +68,6 @@ exports.makePayments = async (res, data) => {
       return generateResponse(res, intent, data.containerId);
     }
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

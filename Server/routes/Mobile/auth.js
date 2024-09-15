@@ -27,7 +27,7 @@ router.post('/signup', (req, res, next) => {
         authCtrl.sendAccountConfirmationEmail(decodedUser.email, token)
       } catch (err) {
         console.error(err.message)
-        return res.status(401).send(res.__('errorOccured'))
+        return res.status(401).send(res.__('errorOccurred'))
       }
       return res.status(201).send(res.__('userCreated'))
     },
@@ -71,9 +71,15 @@ router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (
     return res.status(404).send(res.__('userNotFound'))
   }
   languageMiddleware.setServerLanguage(req, user)
-  const token = jwtMiddleware.generateToken(user.id)
-  return res.status(201).json({ user: user, token: token })
-})
+  const token = jwtMiddleware.generateToken(user.id, true);
+  const newRefreshToken = jwtMiddleware.generateRefreshToken(user.id);
+  await userCtrl.updateUserRefreshToken(user.id, newRefreshToken);
+
+  return res.status(201).json({
+    user: user,
+    token: token,
+  });
+});
 
 router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
   const token = req.query.token

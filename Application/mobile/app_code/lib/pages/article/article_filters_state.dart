@@ -10,6 +10,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'article_filters_page.dart';
 
+/// State class for the ArticleFiltersPage
+/// Contains the state of the filters
 class ArticleFiltersState extends State<ArticleFiltersPage> {
   late String? sortBy;
   late bool isAscending;
