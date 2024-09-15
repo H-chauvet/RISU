@@ -230,6 +230,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                           ),
                         ),
                         IconButton(
+                          key: const Key('send-button'),
                           onPressed: () => {
                             if (collaboratorContact != '')
                               {

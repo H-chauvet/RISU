@@ -84,5 +84,6 @@
 	"missingCompany": "The company is missing from the request.",
 	"companyNotFound": "The company was not found in the database.",
 	"cardBlocked": "Your card was denied, please provide a new payment method",
+	"organizationNotAuthorized": "Retrieve members list of another companies than yours isn't allowed.",
 	"imageUploaded": "The image was successfully uploaded."
 }
