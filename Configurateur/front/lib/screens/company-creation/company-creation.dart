@@ -95,7 +95,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
       body = {
         "email": widget.params,
         "company": response.body,
-        "manager": false.toString(),
+        "manager": true.toString(),
       };
       await HttpService().putRequest(
           'http://$serverIp:3000/api/auth/update-company', header, body);
