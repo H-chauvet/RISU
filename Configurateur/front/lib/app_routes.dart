@@ -14,6 +14,7 @@ import 'package:front/screens/container-creation/shape_screen/shape_screen.dart'
 import 'package:front/screens/company-profil/company-profil.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/screens/container-list/container_list.dart';
+import 'package:front/screens/faq/faq.dart';
 import 'package:front/screens/feedbacks/feedbacks.dart';
 import 'package:front/screens/landing-page/landing_page.dart';
 import 'package:front/screens/login/login.dart';
@@ -322,6 +323,12 @@ class AppRouter {
         path: '/object-creation',
         pageBuilder: (context, state) => NoTransitionPage(
           child: ObjectCreation(),
+        ),
+      ),
+      GoRoute(
+        path: '/faq',
+        pageBuilder: (context, state) => NoTransitionPage(
+          child: FaqPage(),
         ),
       ),
     ],
