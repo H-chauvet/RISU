@@ -11,6 +11,8 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/dialog/handle_member/handle_member.dart';
+import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/size_service.dart';
@@ -22,6 +24,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 
 /// OrganizationList
@@ -70,6 +73,17 @@ class OrganizationList {
       'contactInformation': contactInformation,
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type,
+      'affiliate': affiliate,
+      'containers': containers,
+      'contactInformation': contactInformation,
+    };
+  }
 }
 
 /// CompanyProfilPage
@@ -105,6 +119,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late String company;
   int organizationId = 0;
   String jwtToken = '';
+  bool isManager = false;
 
   /// [Function] : get all the containers created by the organization
   Future<void> fetchContainersById() async {
@@ -347,6 +362,15 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     }
   }
 
+  void openTeamMemberHandling() async {
+    await showDialog(
+      context: context,
+      builder: (context) => HandleMember(
+        organization: organization,
+      ),
+    );
+  }
+
   /// [Function] : Get the organization details
   /// [email] : User's mail
   Future<void> fetchOrganizationDetails(String email) async {
@@ -400,6 +424,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token!;
+      dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
+
+      isManager = decodedToken['manager'];
       storageService.getUserMail().then((value) {
         userMail = value;
         if (userMail.isNotEmpty) {
@@ -615,6 +642,34 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                           ),
                         ),
                       ),
+                isManager
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          openTeamMemberHandling();
+                        },
+                        child: Text(
+                          "Gérer les membres",
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
+                        ),
+                      )
+                    : Container(),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   AppLocalizations.of(context)!.ourContainers,
                   style: const TextStyle(
