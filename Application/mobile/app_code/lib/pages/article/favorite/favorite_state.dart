@@ -17,6 +17,9 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'favorite_page.dart';
 
+/// FavoritePageState is a StatefulWidget that creates the FavoritePage.
+/// It contains the logic for getting, creating and deleting favorites.
+/// It also contains the logic for displaying the favorites.
 class FavoriteSate extends State<FavoritePage> {
   final LoaderManager _loaderManager = LoaderManager();
   List<dynamic> favorites = [];
@@ -32,6 +35,8 @@ class FavoriteSate extends State<FavoritePage> {
     }
   }
 
+  /// getFavorites is a function that gets the favorites of the user.
+  /// It sends a GET request to the server to get the favorites.
   void getFavorites() async {
     try {
       if (userInformation == null) return;
@@ -75,6 +80,10 @@ class FavoriteSate extends State<FavoritePage> {
     }
   }
 
+  /// createFavorite is a function that creates a favorite.
+  /// It sends a POST request to the server to create a favorite.
+  /// params:
+  /// [articleId] - the id of the article to create a favorite.
   void createFavorite(articleId) async {
     try {
       setState(() {
@@ -123,6 +132,10 @@ class FavoriteSate extends State<FavoritePage> {
     }
   }
 
+  /// deleteFavorite is a function that deletes a favorite.
+  /// It sends a DELETE request to the server to delete a favorite.
+  /// params:
+  /// [articleId] - the id of the article to delete a favorite.
   Future<bool> deleteFavorite(articleId) async {
     try {
       if (userInformation == null) {
@@ -263,12 +276,9 @@ class FavoriteSate extends State<FavoritePage> {
                                                         width: 100,
                                                         child: Transform.scale(
                                                           scale: 0.7,
-                                                          child: Image.asset(
-                                                              imageLoader(
-                                                                  favorite[
-                                                                          'item']
-                                                                      [
-                                                                      'name'])),
+                                                          child: loadImageFromURL(
+                                                              favorite[
+                                                                  'imageUrl']),
                                                         ),
                                                       ),
                                                     ],

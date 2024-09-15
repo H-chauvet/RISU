@@ -1,5 +1,5 @@
 {
-	"errorOccured": "An Internal error occured. Check the logs for more details.",
+	"errorOccurred": "An Internal error occurred. Check the logs for more details.",
 	"userCreated": "The user has been created.",
 	"missingRefreshToken": "The refresh token is missing from the request.",
 	"userNotFound": "The user was not found in the database.",
@@ -7,7 +7,7 @@
 	"missingId": "The id is missing from the request.",
 	"containerNotFound": "The container was not found in the database.",
 	"missingContainerId": "The container was missing its id.",
-	"errorRetrievingItems": "An error occured while retrieving the items from the database.",
+	"errorRetrievingItems": "An error occurred while retrieving the items from the database.",
 	"invalidToken": "The token is invalid.",
 	"missingItemId": "The item id is missing from the request.",
 	"itemNotFound": "The item was not found in the database.",
@@ -59,7 +59,7 @@
 	"missingMailCity": "The email or / and the city are missing from the request.",
 	"missingMailAddress": "The email or / and the address are missing from the request.",
 	"missingMailName": "The email or / and the name are missing from the request.",
-	"missingNameInfo": "The email or / and the informations are missing from the request.",
+	"missingNameInfo": "The email or / and the information are missing from the request.",
 	"failedDownload": "Download Failure. Please check the log for more details.",
 	"missingCategoryId": "The category id is missing from the request.",
 	"invalidCategoryId": "The category id is invalid.",
@@ -83,5 +83,7 @@
 	"failedRetrieveDetails": "Failure: The user detail could not been retrieved.",
 	"missingCompany": "The company is missing from the request.",
 	"companyNotFound": "The company was not found in the database.",
-	"cardBlocked": "Your card was denied, please provide a new payment method"
+	"cardBlocked": "Your card was denied, please provide a new payment method",
+	"organizationNotAuthorized": "Retrieve members list of another companies than yours isn't allowed.",
+	"imageUploaded": "The image was successfully uploaded."
 }

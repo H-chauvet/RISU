@@ -81,7 +81,7 @@ class ContainerDialogState extends State<ContainerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Ajouter un conteneur',
+            'Ajouter un casier',
             style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class ContainerDialogState extends State<ContainerDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text("Quelle taille de casier voulez-vous ajouter ?",
+                Text("Quelle type de casier voulez-vous ajouter ?",
                     style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
@@ -259,7 +259,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("Sur quelle face du casier voulez-vous l'ajouter ?",
+                Text("Sur quelle face du conteneur voulez-vous l'ajouter ?",
                     style: TextStyle(color: getTextColor())),
                 const SizedBox(
                   height: 10,
@@ -359,7 +359,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                               context: context,
                               builder: (context) => const AlertDialog(
                                     content: Text(
-                                        "Vous ne pouvez pas réalisé cette action, la position est déjà occupée"),
+                                        "Vous ne pouvez pas réaliser cette action, la position est déjà occupée"),
                                   ));
                         } else {
                           Navigator.pop(context);

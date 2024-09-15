@@ -23,7 +23,7 @@ exports.getContainerById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -61,7 +61,7 @@ exports.getContainerByOrganizationId = async (res, organizationId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -75,7 +75,7 @@ exports.getAllContainer = async (res, id) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -107,7 +107,7 @@ exports.listContainers = async (res) => {
     });
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -126,7 +126,7 @@ exports.deleteContainer = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -161,7 +161,7 @@ exports.createContainer = async (res, container, organizationId) => {
 
     return containerObj;
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -185,7 +185,7 @@ exports.updateContainer = async (res, id, container) => {
       data: container,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -207,7 +207,7 @@ exports.updateContainerPosition = async (res, id, container) => {
       data: container,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -253,6 +253,46 @@ exports.getLocalisation = async (res, position) => {
 };
 
 /**
+ *
+ * @param {*} position the object with position data
+ * @returns the city and adress of the position
+ */
+exports.getLocalisation = async (position) => {
+  const response = await fetch(
+    "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+      position.latitude +
+      "," +
+      position.longitude +
+      "&result_type=street_address&key=" +
+      process.env.GOOGLE_API_KEY
+  );
+
+  const responseJson = await response.json();
+
+  if (responseJson.status === "OK") {
+    let address = "";
+    let city = "";
+    for (
+      let i = 0;
+      i < responseJson.results[0].address_components.length;
+      i++
+    ) {
+      if (responseJson.results[0].address_components[i].types[0] === "route") {
+        address = responseJson.results[0].address_components[i].long_name;
+      }
+      if (
+        responseJson.results[0].address_components[i].types[0] === "locality"
+      ) {
+        city = responseJson.results[0].address_components[i].long_name;
+      }
+    }
+    return { address: address, city: city };
+  } else if (responseJson.status === "ZERO_RESULTS") {
+    return "No address found";
+  }
+};
+
+/**
  * Retrieve every container
  *
  * @throws {Error} with a specific message to find the problem
@@ -262,7 +302,7 @@ exports.getAllContainers = async (res) => {
   try {
     return await db.Containers.findMany();
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -286,7 +326,6 @@ exports.getItemsFromContainer = async (res, containerId) => {
             createdAt: true,
             containerId: true,
             price: true,
-            image: true,
             description: true,
             categories: true,
           },
@@ -294,7 +333,7 @@ exports.getItemsFromContainer = async (res, containerId) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -315,7 +354,7 @@ exports.updateCity = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -336,7 +375,7 @@ exports.updateAddress = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -357,7 +396,7 @@ exports.updateSaveName = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -378,7 +417,7 @@ exports.updateInformation = async (res, container) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -455,7 +494,6 @@ exports.getItemsWithFilters = async (
         createdAt: true,
         containerId: true,
         price: true,
-        image: true,
         description: true,
         categories: true,
       },
@@ -474,6 +512,6 @@ exports.getItemsWithFilters = async (
 
     return items;
   } catch (error) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

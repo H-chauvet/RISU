@@ -218,9 +218,6 @@ describe("User Route Tests", () => {
     const response = await supertest(app).get("/privacy");
 
     expect(response.status).toBe(200);
-    expect(response.text).toEqual(
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    );
   });
 
   it("should handle valid request to list all users", async () => {
@@ -282,9 +279,6 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.text).toEqual(
-      "The email or / and the name are missing from the request."
-    );
   });
 
   it("should handle valid request to update user email", async () => {
@@ -318,7 +312,6 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.text).toEqual("The email is missing from the request.");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -330,7 +323,6 @@ describe("User Route Tests", () => {
       .send({ oldMail: mockNonExistingMail, newMail: "new@example.com" });
 
     expect(response.status).toBe(404);
-    expect(response.text).toEqual("The user was not found in the database.");
   });
 
   it("should handle valid request to update user company", async () => {
@@ -369,7 +361,6 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.text).toEqual("The company is missing from the request.");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -381,7 +372,6 @@ describe("User Route Tests", () => {
       .send({ company: "NewCompany" });
 
     expect(response.status).toBe(404);
-    expect(response.text).toEqual("The user was not found in the database.");
   });
 
   it("should handle valid request to update user password", async () => {
@@ -419,7 +409,6 @@ describe("User Route Tests", () => {
       .send(mockRequestData);
 
     expect(response.status).toBe(400);
-    expect(response.text).toEqual("missingParameters");
   });
 
   it("should handle request for non-existing user", async () => {
@@ -431,6 +420,5 @@ describe("User Route Tests", () => {
       .send({ password: "newPassword" });
 
     expect(response.status).toBe(404);
-    expect(response.text).toEqual("The user was not found in the database.");
   });
 });

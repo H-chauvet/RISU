@@ -84,6 +84,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                         ),
                         const SizedBox(height: 20),
                         RichText(
+                          key: const Key("not-found-text"),
                           textAlign: TextAlign.center,
                           maxLines: 3,
                           text: TextSpan(

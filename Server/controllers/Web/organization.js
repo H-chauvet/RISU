@@ -14,7 +14,7 @@ exports.createOrganization = async (res, organization) => {
       data: organization,
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -30,7 +30,7 @@ exports.getAllOrganizations = async (res) => {
     return await db.Organization.findMany();
   } catch (error) {
     console.error("Error retrieving containers:", error);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -55,7 +55,7 @@ exports.getOrganizationById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -77,7 +77,7 @@ exports.updateName = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -99,7 +99,7 @@ exports.updateContactInformation = async (res, organization) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -121,7 +121,7 @@ exports.updateType = (res, organization) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -144,6 +144,6 @@ exports.inviteMember = (res, memberList, company) => {
       transporter.sendMail(mail);
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };

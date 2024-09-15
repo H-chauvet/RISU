@@ -95,7 +95,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
             Column(
               children: [
                 LandingAppBar(context: context),
-
                 Text(
                   'Consulter et donner votre avis sur RISU !',
                   textAlign: TextAlign.center,
@@ -118,7 +117,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0, right: 20.0),
                   child: Align(
@@ -179,8 +177,6 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Liste des feedbacks
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.6,
                   child: ListView.builder(

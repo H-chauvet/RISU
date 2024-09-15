@@ -21,7 +21,7 @@ exports.findUserByEmail = async (res, email) => {
     });
   } catch (err) {
     console.log("err: " + err);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -40,7 +40,7 @@ exports.findUserByUuid = async (res, uuid) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -59,7 +59,7 @@ exports.findUserById = async (res, id) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -78,7 +78,7 @@ exports.deleteUser = async (res, email) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -100,7 +100,7 @@ exports.registerByEmail = async (res, user) => {
 
     return data;
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -119,7 +119,7 @@ exports.addCompanyToUser = async (res, user, company, manager) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -147,7 +147,7 @@ exports.registerConfirmation = async (res, email) => {
       transporter.sendMail(mail);
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -169,7 +169,7 @@ exports.confirmedRegister = async (res, uuid) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -194,7 +194,7 @@ exports.loginByEmail = async (res, user) => {
       return findUser;
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -217,7 +217,7 @@ exports.updatePassword = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -245,7 +245,7 @@ exports.forgotPassword = async (res, email) => {
       transporter.sendMail(mail);
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -261,7 +261,7 @@ exports.getAllUsers = async (res) => {
     return users;
   } catch (error) {
     console.error("Error retrieving users:", error);
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -290,7 +290,7 @@ exports.findUserDetailsByEmail = async (res, email) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -313,7 +313,7 @@ exports.updateName = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -335,7 +335,7 @@ exports.updateOrganization = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -357,7 +357,7 @@ exports.updateMail = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -379,7 +379,7 @@ exports.updateCompany = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -402,7 +402,7 @@ exports.updateUserPassword = async (res, user) => {
       },
     });
   } catch (err) {
-    throw res.__("errorOccured");
+    throw res.__("errorOccurred");
   }
 };
 
@@ -417,4 +417,16 @@ exports.getUserFromToken = (res, req) => {
   const token = req.headers.authorization.split(" ")[1];
   const decodedToken = jwtMiddleware.decodeToken(token);
   return userCtrl.findUserByEmail(res, decodedToken.userMail);
+};
+
+exports.getUsersFromOrganizationId = async (res, organizationId) => {
+  try {
+    return await db.User_Web.findMany({
+      where: {
+        organizationId: parseInt(organizationId),
+      },
+    });
+  } catch (err) {
+    throw res.__("errorOccured");
+  }
 };
