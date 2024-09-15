@@ -75,74 +75,75 @@ class FaqPageState extends State<FaqPage> {
 
     return Scaffold(
       body: FooterView(
-          footer: Footer(
-            child: CustomFooter(),
-          ),
-          children: [
-            LandingAppBar(context: context),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'assets/Help.png',
-                            height: 100,
-                            width: 100,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
+        children: [
+          LandingAppBar(context: context),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/Help.png',
+                          height: 100,
+                          width: 100,
+                        ),
+                        const SizedBox(width: 30.0),
+                        Flexible(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'FAQ',
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                ),
+                              ),
+                              SizedBox(height: 16.0),
+                              Text(
+                                'Vous avez des questions ?',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? Colors.white
+                                          : lightTheme.primaryColor,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                              SizedBox(height: 8.0),
+                              Text(
+                                'Vous pourrez trouver vos réponses ici.',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? Colors.white
+                                          : lightTheme.primaryColor,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ],
                           ),
-                          const SizedBox(width: 30.0),
-                          Flexible(
-                            flex: 2,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'FAQ',
-                                  style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                  ),
-                                ),
-                                SizedBox(height: 16.0),
-                                Text(
-                                  'Vous avez des questions ?',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? Colors.white
-                                        : lightTheme.primaryColor,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(height: 8.0),
-                                Text(
-                                  'Vous pourrez trouver vos réponses ici.',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? Colors.white
-                                        : lightTheme.primaryColor,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 32.0),
-                      ...faqData.asMap().entries.map((entry) {
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 32.0),
+                    ...faqData.asMap().entries.map(
+                      (entry) {
                         int index = entry.key + 1;
                         Map<String, String> faq = entry.value;
 
@@ -154,19 +155,23 @@ class FaqPageState extends State<FaqPage> {
                           isOpen: openedQuestionIndex == index,
                           questionNumber: index,
                           onToggle: () {
-                            setState(() {
-                              openedQuestionIndex =
-                                  openedQuestionIndex == index ? null : index;
-                            });
+                            setState(
+                              () {
+                                openedQuestionIndex =
+                                    openedQuestionIndex == index ? null : index;
+                              },
+                            );
                           },
                         );
-                      }).toList(),
-                    ],
-                  ),
+                      },
+                    ).toList(),
+                  ],
                 ),
               ),
             ),
-          ]),
+          ),
+        ],
+      ),
     );
   }
 }

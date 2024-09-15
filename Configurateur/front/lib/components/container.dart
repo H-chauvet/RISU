@@ -161,16 +161,17 @@ class ContainerCards extends StatelessWidget {
                   onPressed: () => onDelete(container),
                 ),
                 IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: () {
-                      if (container.id != null) {
-                        storageService.writeStorage(
-                          'containerId',
-                          container.id.toString(),
-                        );
-                      }
-                      context.go(page);
-                    }),
+                  icon: const Icon(Icons.chevron_right),
+                  onPressed: () {
+                    if (container.id != null) {
+                      storageService.writeStorage(
+                        'containerId',
+                        container.id.toString(),
+                      );
+                    }
+                    context.go(page);
+                  },
+                ),
               ],
             ),
           ],
