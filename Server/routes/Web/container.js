@@ -176,7 +176,7 @@ router.put("/update-position", async function (req, res, next) {
       throw res.__("missingIdPos");
     }
 
-    const position = await containerCtrl.getLocalisation(res, {
+    const position = await containerCtrl.getLocalisation({
       latitude,
       longitude,
     });
@@ -192,6 +192,7 @@ router.put("/update-position", async function (req, res, next) {
       city: position.city,
       address: position.address,
     });
+
     res.status(200).json(container);
   } catch (err) {
     if (res.statusCode == 200) {
