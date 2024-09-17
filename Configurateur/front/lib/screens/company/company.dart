@@ -319,7 +319,7 @@ class CompanyPageState extends State<CompanyPage> {
     },
     {
       "name": "Nathan",
-      "companyPosition": "Développeuse mobile",
+      "companyPosition": "Développeur mobile",
       "image": 'assets/Nathan.png',
       "description":
           "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
