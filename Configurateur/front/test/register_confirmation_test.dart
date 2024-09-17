@@ -22,6 +22,9 @@ void main() {
   Widget createWidgetForTesting({required Widget child}) {
     return MaterialApp(
       home: child,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('fr'),
     );
   }
 
@@ -59,9 +62,6 @@ void main() {
                 ),
               ),
             ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('fr'),
           );
         },
       ),
