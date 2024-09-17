@@ -29,7 +29,7 @@ import 'package:provider/provider.dart';
 /// Container profil page of the organization
 /// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
-  const ContainerProfilPage({Key? key}) : super(key: key);
+  const ContainerProfilPage({super.key});
 
   @override
   _ContainerProfilPageState createState() => _ContainerProfilPageState();
@@ -54,7 +54,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [id] : Container's id
   Future<void> fetchContainer(String id) async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'),
+      Uri.parse('http://$serverIp:3000/api/container/listByContainer/$id'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -90,7 +90,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       checkContainerId();
     } else {}
   }
@@ -143,7 +143,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   : lightTheme.primaryColor,
             ),
           ),
-          content: Container(
+          content: SizedBox(
             height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -250,7 +250,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   : lightTheme.primaryColor,
             ),
           ),
-          content: Container(
+          content: SizedBox(
             height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +320,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   Future<void> fetchItemsbyCtnId() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=${containerId}'),
+          'http://$serverIp:3000/api/items/listAllByContainerId?containerId=$containerId'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -340,7 +340,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [item] : The item who will be deleted
   Future<void> deleteItem(ItemList item) async {
     late int id;
-    final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
+    final Uri url = Uri.parse("http://$serverIp:3000/api/items/delete");
     if (item.id != null) {
       id = item.id!;
     }
@@ -379,7 +379,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
-    final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
+    final String apiUrl = "http://$serverIp:3000/api/items/update/$itemId";
     var body = {
       'name': nameController.text != '' ? nameController.text : item.name,
       'description':
@@ -437,7 +437,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       : lightTheme.primaryColor,
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 height: 250.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -549,7 +549,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 title: Text("Nom : ${item.name}"),
                 subtitle: item.description != null
                     ? Text("Description : ${item.description!}")
-                    : Text("Description : Pas de description"),
+                    : const Text("Description : Pas de description"),
               ),
             ),
             Row(
@@ -573,7 +573,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 IconButton(
@@ -585,7 +585,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   ),
                   onPressed: () => deleteItem(item),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
               ],
@@ -604,7 +604,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       body: FooterView(
         footer: Footer(
           padding: EdgeInsets.zero,
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),
@@ -635,14 +635,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
             child: Center(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: 200,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.all(10.0),
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -663,7 +663,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
                                 Text(
@@ -717,7 +717,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                 ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
-                                  key: Key("edit-city"),
+                                  key: const Key("edit-city"),
                                   onTap: () async {
                                     await showEditPopupAddress(context, address,
                                         (String newAddress) {
@@ -755,8 +755,38 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       decorationStyle: TextDecorationStyle.solid,
                     ),
                   ),
-                  SizedBox(
-                    height: 65,
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      storageService.writeStorage(
+                        'containerId',
+                        containerId.toString(),
+                      );
+                      context.go("/object-creation");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text(
+                      "Créer un objet",
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.appBarTheme.backgroundColor
+                            : lightTheme.appBarTheme.backgroundColor,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
                   ),
                   items.isEmpty
                       ? const Center(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -21,13 +22,14 @@ import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class Category {
   final int? id;
-  final dynamic? name;
+  final dynamic name;
 
   Category({
     required this.id,
@@ -49,7 +51,7 @@ class Category {
 }
 
 class ObjectCreation extends StatefulWidget {
-  const ObjectCreation({Key? key}) : super(key: key);
+  const ObjectCreation({super.key});
   @override
   ObjectCreationState createState() => ObjectCreationState();
 }
@@ -92,7 +94,7 @@ class ObjectCreationState extends State<ObjectCreation> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       fetchCategories();
     } else {
       jwtToken = "";
@@ -101,7 +103,7 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> fetchCategories() async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/itemCategory/listAll'),
+      Uri.parse('http://$serverIp:3000/api/itemCategory/listAll'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -133,31 +135,50 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> createItems() async {
     final String apiUrl = "http://$serverIp:3000/api/items/create";
-    var body = {
-      'name': _nameController.text,
-      'available': true,
-      'price': _priceController.text.toString(),
-      'containerId': containerId.toString(),
-      'description': _descriptionController.text,
-    };
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
 
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      body: json.encode(body),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $jwtToken',
-      },
-    );
-    if (response.statusCode == 200) {
+    request.fields['name'] = _nameController.text;
+    request.fields['available'] = 'true';
+    request.fields['price'] = _priceController.text.toString();
+    request.fields['containerId'] = containerId.toString();
+    request.fields['description'] = _descriptionController.text;
+
+    for (int i = 0; i < _imageBytesList.length; i++) {
+      if (_imageBytesList[i] != null) {
+        request.files.add(http.MultipartFile.fromBytes(
+          'images',
+          _imageBytesList[i]!,
+          filename: 'image_$i.jpg',
+          contentType: MediaType('image', 'jpeg'),
+        ));
+      }
+    }
+    request.headers['Authorization'] = 'Bearer $jwtToken';
+    log(request.toString());
+
+    try {
+      var response = await request.send();
+      print(response);
+      print(response.statusCode);
+      print(response.reasonPhrase);
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: 'Objet créé avec succès',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Erreur lors de la création de l'objet",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.CENTER,
+          backgroundColor: Colors.red,
+        );
+      }
+    } catch (e) {
+      print(e);
       Fluttertoast.showToast(
-        msg: 'Objet créé avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
-    } else {
-      Fluttertoast.showToast(
-        msg: "Erreur lors de la création de l'objet",
+        msg: "Erreur lors de la création de l'objet: $e",
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
         backgroundColor: Colors.red,
@@ -168,7 +189,7 @@ class ObjectCreationState extends State<ObjectCreation> {
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate() && containerId != 0) {
       createItems().then((_) {
-        context.go('/container-profil');
+        // context.go('/container-profil');
       });
     } else {
       Fluttertoast.showToast(msg: "L'objet n'a pas pu être créé");
@@ -177,9 +198,9 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> _pickFile() async {
     // Récupération des images dans cette fonction
-    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+    final List<XFile> pickedFiles = await _picker.pickMultiImage();
 
-    if (pickedFiles != null && pickedFiles.length > 0) {
+    if (pickedFiles.isNotEmpty) {
       if (pickedFiles.length > 5) {
         Fluttertoast.showToast(
           msg: "Trop de fichiers sélectionnés",
@@ -218,7 +239,7 @@ class ObjectCreationState extends State<ObjectCreation> {
       ),
       body: Center(
         child: Container(
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             maxWidth: 600,
           ),
           padding: const EdgeInsets.all(16.0),
@@ -272,7 +293,7 @@ class ObjectCreationState extends State<ObjectCreation> {
                                 Positioned(
                                   left: 10,
                                   child: IconButton(
-                                    icon: Icon(Icons.arrow_back,
+                                    icon: const Icon(Icons.arrow_back,
                                         color: Colors.black),
                                     onPressed: () {
                                       _carouselController.previousPage();
@@ -282,7 +303,7 @@ class ObjectCreationState extends State<ObjectCreation> {
                                 Positioned(
                                   right: 10,
                                   child: IconButton(
-                                    icon: Icon(Icons.arrow_forward,
+                                    icon: const Icon(Icons.arrow_forward,
                                         color: Colors.black),
                                     onPressed: () {
                                       _carouselController.nextPage();
@@ -293,7 +314,8 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   top: 10,
                                   right: 10,
                                   child: IconButton(
-                                    icon: Icon(Icons.close, color: Colors.red),
+                                    icon: const Icon(Icons.close,
+                                        color: Colors.red),
                                     onPressed: () {
                                       _removeImage(_currentIndex);
                                     },
