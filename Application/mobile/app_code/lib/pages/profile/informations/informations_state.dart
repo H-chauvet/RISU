@@ -10,6 +10,7 @@ import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
@@ -17,6 +18,8 @@ import 'package:risu/utils/validators.dart';
 
 import 'informations_page.dart';
 
+/// ProfileInformationsPage class
+/// This class is responsible for the state of the ProfileInformationsPage
 class ProfileInformationsPageState extends State<ProfileInformationsPage> {
   String newFirstName = '';
   String newLastName = '';
@@ -43,6 +46,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     newPasswordConfirmationController.dispose();
   }
 
+  /// Fetch user data
+  /// This function fetches the user data from the server
   Future<void> fetchUserData(BuildContext context) async {
     try {
       setState(() {
@@ -58,16 +63,21 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        final userData = json.decode(response.body)['user'];
-        final String? userToken = userInformation!.token;
-        userInformation = UserData.fromJson(userData, userToken!);
-        newFirstName = '';
-        newLastName = '';
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'fetchUserData');
-        }
+      switch (response.statusCode) {
+        case 200:
+          final userData = json.decode(response.body)['user'];
+          final String? userToken = userInformation!.token;
+          userInformation = UserData.fromJson(userData, userToken!);
+          newFirstName = '';
+          newLastName = '';
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'fetchUserData');
+          }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {
@@ -81,6 +91,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update email
+  /// This function updates the email of the user
   Future<void> updateEmail() async {
     try {
       final token = userInformation!.token;
@@ -121,22 +133,28 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        json.decode(response.body);
-        if (mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.newEmailVerify,
-            message: AppLocalizations.of(context)!
-                .accountEmailConfirmationSent(newEmail),
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'updateUser',
+      switch (response.statusCode) {
+        case 200:
+          json.decode(response.body);
+          if (mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.newEmailVerify,
               message: AppLocalizations.of(context)!
-                  .errorOccurredDuringUpdateUserInformation);
-        }
+                  .accountEmailConfirmationSent(newEmail),
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'updateEmail',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringUpdateUserInformation);
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -152,6 +170,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update user
+  /// This function updates the user information
   Future<void> updateUser() async {
     try {
       final token = userInformation!.token;
@@ -189,23 +209,29 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        json.decode(response.body);
-        if (mounted) {
-          await fetchUserData(context);
-        }
-        if (mounted) {
-          MyToastMessage.show(
-            context: context,
-            message: AppLocalizations.of(context)!.profileUpdated,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'updateUser',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringUpdateUserInformation);
-        }
+      switch (response.statusCode) {
+        case 200:
+          json.decode(response.body);
+          if (mounted) {
+            await fetchUserData(context);
+          }
+          if (mounted) {
+            MyToastMessage.show(
+              context: context,
+              message: AppLocalizations.of(context)!.profileUpdated,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'updateUser',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringUpdateUserInformation);
+          }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -221,6 +247,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Update password
+  /// This function updates the password of the user
   Future<void> updatePassword(
       String currentPassword, String newPassword) async {
     try {
@@ -266,31 +294,29 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        json.decode(response.body);
-        currentPasswordController.clear();
-        newPasswordController.clear();
-        newPasswordConfirmationController.clear();
-        if (mounted) {
-          MyToastMessage.show(
-            context: context,
-            message: AppLocalizations.of(context)!.passwordUpdated,
-          );
-        }
-      } else {
-        if (response.statusCode == 401) {
+      switch (response.statusCode) {
+        case 200:
+          json.decode(response.body);
+          currentPasswordController.clear();
+          newPasswordController.clear();
+          newPasswordConfirmationController.clear();
           if (mounted) {
-            printServerResponse(context, response, 'updatePassword',
-                message:
-                    AppLocalizations.of(context)!.passwordCurrentIncorrect);
+            MyToastMessage.show(
+              context: context,
+              message: AppLocalizations.of(context)!.passwordUpdated,
+            );
           }
-        } else {
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
           if (mounted) {
             printServerResponse(context, response, 'updatePassword',
                 message: AppLocalizations.of(context)!
                     .errorOccurredDuringPasswordUpdate);
           }
-        }
+          break;
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -306,6 +332,8 @@ class ProfileInformationsPageState extends State<ProfileInformationsPage> {
     }
   }
 
+  /// Build field
+  /// This function builds the text form field
   Widget buildField(String label,
       {Key? key,
       String? initialValue,

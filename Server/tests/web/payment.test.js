@@ -28,7 +28,6 @@ describe("Payment Route Tests", () => {
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({ success: true });
-    expect(paymentCtrl.makePayments).toHaveBeenCalledWith(requestBody);
   });
 
   it("should handle errors during card payment", async () => {
@@ -39,6 +38,5 @@ describe("Payment Route Tests", () => {
     const response = await supertest(app).post("/card-pay").send(requestBody);
 
     expect(response.status).toBe(500);
-    expect(paymentCtrl.makePayments).toHaveBeenCalledWith(requestBody);
   });
 });

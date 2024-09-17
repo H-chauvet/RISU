@@ -20,6 +20,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'login_page.dart';
 
+/// LoginPageState
+/// This class is the state of the LoginPage
+/// It contains the logic of the page: the login api call
+/// and the redirection to the HomePage or the SignupPage
+/// It also contains the logic of the stay connected checkbox
+/// and the password visibility
 class LoginPageState extends State<LoginPage> {
   late bool keepPath;
   bool _stayLoggedIn = false;
@@ -28,6 +34,8 @@ class LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// apiLogin
+  /// This function is called when the user press the login button
   Future<bool> apiLogin() async {
     if (_email == null || _password == null) {
       if (mounted) {
@@ -110,7 +118,7 @@ class LoginPageState extends State<LoginPage> {
         key: const Key('login-appbar'),
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: true,
+        showBackButton: false,
         textTitle: AppLocalizations.of(context)!.connection,
       ),
       body: (_loaderManager.getIsLoading())

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'favorite_state.dart';
 
+/// FavoritePage.
+/// params:
+/// [testFavorites] - list of favorite articles.
 class FavoritePage extends StatefulWidget {
   final List<dynamic> testFavorites;
 

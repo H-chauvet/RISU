@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/utils/providers/theme.dart';
 
+/// Custom OutlinedButton with custom styling.
+/// params:
+/// [text] - is the text to be displayed on the button.
+/// [onPressed] - is the function to be called when the button is pressed.
+/// [sizeCoefficient] - is the size of the button.
 class MyOutlinedButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;

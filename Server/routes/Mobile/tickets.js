@@ -1,161 +1,213 @@
-const express = require('express')
+const express = require("express");
 
-const router = express.Router()
-const passport = require('passport')
-const userCtrl = require("../../controllers/Mobile/user")
-const ticketCtrl = require("../../controllers/Common/tickets")
-const jwtMiddleware = require('../../middleware/Mobile/jwt')
+const router = express.Router();
+const passport = require("passport");
+const userCtrl = require("../../controllers/Mobile/user");
+const ticketCtrl = require("../../controllers/Common/tickets");
+const jwtMiddleware = require("../../middleware/Mobile/jwt");
+const webUserCtrl = require("../../controllers/Web/user");
+const languageMiddleware = require("../../middleware/language");
 
-router.get('/', jwtMiddleware.refreshTokenMiddleware,
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get(
+  "/",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__("invalidToken"));
       }
-      const user = await userCtrl.findUserById(req.user.id)
+      const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send(res.__("userNotFound"));
       }
-      const tickets = await ticketCtrl.getAllUserTickets(user.id);
+      languageMiddleware.setServerLanguage(req, user);
+      const tickets = await ticketCtrl.getAllUserTickets(res, user.id);
 
-      return res.status(200).json({ tickets })
+      return res.status(200).json({ tickets });
     } catch (err) {
-      console.error(err.message)
-      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
-)
+);
 
-router.post('/', jwtMiddleware.refreshTokenMiddleware,
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.post(
+  "/",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__("invalidToken"));
       }
-      const user = await userCtrl.findUserById(req.user.id)
+      const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send(res.__("userNotFound"));
       }
-
-      const { content, title, createdAt, assignedId, chatUid } = req.body
+      languageMiddleware.setServerLanguage(req, user);
+      const { content, title, createdAt, assignedId, chatUid } = req.body;
 
       if (!content || !title) {
-        return res.status(400).send("Bad Request : Missing required parameters")
+        return res.status(400).send(res.__("missingParameters"));
       }
       if (assignedId) {
-        const assigned = await userCtrl.findUserById(assignedId)
+        const assigned = await userCtrl.findUserById(assignedId);
         if (!assigned) {
-          return res.status(404).send('Bad Request : Assigned User not found');
+          return res.status(404).send(res.__("assignedUserNotFound"));
         }
       }
       if (chatUid) {
-        const conversation = await ticketCtrl.getConversation(chatUid)
+        const conversation = await ticketCtrl.getConversation(res, chatUid);
         if (!conversation) {
-          return res.status(404).send('Bad Request : Conversation not found');
+          return res.status(404).send(res.__("chatNotFound"));
         }
       }
 
       const creatorId = user.id;
 
-      const ticket = await ticketCtrl.createTicket({
+      const ticket = await ticketCtrl.createTicket(res, {
         content,
         title,
         creatorId,
-        createdAt : new Date(createdAt),
-        assignedId : assignedId ?? "",
-        chatUid : chatUid
-      })
+        createdAt: new Date(createdAt),
+        assignedId: assignedId ?? "",
+        chatUid: chatUid,
+      });
 
-      return res.status(201).send("Success: Ticket Created.")
+      return res.status(201).send(res.__("ticketCreated"));
     } catch (err) {
-      console.error(err.message)
-      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
-)
+);
 
-router.put('/assign/:assignedId', jwtMiddleware.refreshTokenMiddleware,
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put(
+  "/assign/:assignedId",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__("invalidToken"));
       }
-      const user = await userCtrl.findUserById(req.user.id)
+      const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send(res.__("userNotFound"));
       }
-
-      const assignedId = req.params.assignedId
-      const ticketId = req.body.ticketId
+      languageMiddleware.setServerLanguage(req, user);
+      const assignedId = req.params.assignedId;
+      const ticketId = req.body.ticketId;
 
       if (!assignedId || !ticketId) {
-        return res.status(400).json("Bad Request : Missing required parameters")
+        return res.status(400).send(res.__("missingParameters"));
       }
-      const assigned = await userCtrl.findUserById(assignedId)
-        if (!assigned) {
-          return res.status(404).send('Bad Request : Assigned User not found');
-        }
+      const assigned = await userCtrl.findUserById(assignedId);
+      if (!assigned) {
+        return res.status(404).send(res.__("assignedUserNotFound"));
+      }
 
-      await ticketCtrl.assignTicket(ticketId, assignedId)
+      await ticketCtrl.assignTicket(res, ticketId, assignedId);
 
-      return res.status(201).send("Success : Ticket assigned")
+      return res.status(201).send(res.__("ticketAssigned"));
     } catch (err) {
-      console.error(err.message)
-      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
-)
+);
 
-router.put('/:chatId', jwtMiddleware.refreshTokenMiddleware,
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put(
+  "/:chatId",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__("invalidToken"));
       }
-      const user = await userCtrl.findUserById(req.user.id)
+      const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send(res.__("userNotFound"));
       }
-
-      const chatId = req.params.chatId
+      languageMiddleware.setServerLanguage(req, user);
+      const chatId = req.params.chatId;
       if (!chatId) {
-        return res.status(400).json("Bad Request : Missing conversation id")
+        return res.status(400).send(res.__("missingChatId"));
       }
 
-      await ticketCtrl.closeConversation(chatId)
+      await ticketCtrl.closeConversation(res, chatId);
 
-      return res.status(201).send("Success : Conversation closed")
+      return res.status(201).send(res.__("chatClosed"));
     } catch (err) {
-      console.error(err.message)
-      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
-)
+);
 
-router.delete('/:chatId', jwtMiddleware.refreshTokenMiddleware,
-  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.delete(
+  "/:chatId",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
     try {
       if (!req.user) {
-        return res.status(401).send('Invalid token');
+        return res.status(401).send(res.__("invalidToken"));
       }
-      const user = await userCtrl.findUserById(req.user.id)
+      const user = await userCtrl.findUserById(req.user.id);
       if (!user) {
-        return res.status(404).send('User not found');
+        return res.status(404).send(res.__("userNotFound"));
       }
-
-      const chatId = req.params.chatId
+      languageMiddleware.setServerLanguage(req, user);
+      const chatId = req.params.chatId;
       if (!chatId) {
-        return res.status(400).json("Bad Request : Missing conversation id")
+        return res.status(400).send(res.__("missingChatId"));
       }
 
-      await ticketCtrl.deleteConversation(chatId)
+      await ticketCtrl.deleteConversation(res, chatId);
 
-      return res.status(200).send("Success : Conversation deleted")
+      return res.status(200).send(res.__("chatDeleted"));
     } catch (err) {
-      console.error(err.message)
-      return res.status(400).send('Unexpected behavior happened, please check the log for more details.')
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
     }
   }
-)
+);
 
-module.exports = router
+router.get(
+  "/assigned-info/:assignedId",
+  jwtMiddleware.refreshTokenMiddleware,
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      if (!req.user) {
+        return res.status(401).send(res.__("invalidToken"));
+      }
+      const user = await userCtrl.findUserById(req.user.id);
+      if (!user) {
+        return res.status(404).send(res.__("userNotFound"));
+      }
+      languageMiddleware.setServerLanguage(req, user);
+      const assignedId = req.params.assignedId;
+      if (!assignedId) {
+        return res.status(400).send(res.__("missingAssignedId"));
+      }
+
+      const assigned = await webUserCtrl.findUserByUuid(res, assignedId);
+      if (!assigned) {
+        return res.status(404).send(res.__("assignedUserNotFound"));
+      }
+
+      return res
+        .status(200)
+        .json({ firstName: assigned.firstName, lastName: assigned.lastName });
+    } catch (err) {
+      console.error(err.message);
+      return res.status(400).send(res.__("errorOccurred"));
+    }
+  }
+);
+
+module.exports = router;

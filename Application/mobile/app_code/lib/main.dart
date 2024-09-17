@@ -13,11 +13,22 @@ import 'globals.dart';
 
 String theme = appTheme['clair'];
 
+/// Main function.
+/// This function is the entry point of the application.
+/// It loads the .env file and the Stripe publishable key.
+/// It initializes the Stripe settings.
+/// It gets the theme and the language from the shared preferences.
+/// It gets the refresh token from the shared preferences.
 void main() async {
   try {
     await dotenv.load(fileName: 'lib/.env');
   } catch (e) {
     print('Error .env: $e');
+  }
+
+  if (dotenv.env['STRIPE_PUBLISHABLE_KEY'] == null) {
+    print('Error: STRIPE_PUBLISHABLE_KEY is not defined in .env');
+    return;
   }
 
   WidgetsFlutterBinding.ensureInitialized();

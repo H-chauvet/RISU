@@ -8,17 +8,22 @@ const crypto = require("crypto");
  * @returns generated token
  */
 function generateAccessToken(user) {
-  return jwt.sign(
-    {
-      userId: user.id,
-      userMail: user.email,
-      confirmed: user.confirmed,
-      userUuid: user.uuid,
-      role: user.role,
-    },
-    process.env.JWT_ACCESS_SECRET,
-    { expiresIn: "1h" },
-  );
+  try {
+    return jwt.sign(
+      {
+        userId: user.id,
+        userMail: user.email,
+        confirmed: user.confirmed,
+        userUuid: user.uuid,
+        role: user.role,
+        manager: user.manager,
+      },
+      process.env.JWT_ACCESS_SECRET,
+      { expiresIn: "1h" },
+    );
+  } catch (err) {
+    throw "Something happen while generate access token";
+  }
 }
 
 /**

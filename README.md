@@ -11,7 +11,6 @@
 ![CODE_OF_CONDUCT](https://img.shields.io/badge/Code%20of%20Conduct-up%20to%20date-brightgreen.svg)
 ![CONTRIBUTING](https://img.shields.io/badge/Contributing-up%20to%20date-brightgreen.svg)
 
-
 </div>
 
 ## RISU

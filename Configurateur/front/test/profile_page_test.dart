@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
-import 'package:front/components/custom_header.dart';
-import 'package:front/components/tickets_page.dart';
-import 'package:front/screens/contact/contact.dart';
 import 'package:front/screens/profile/profile_page.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,88 +24,81 @@ void main() {
     await fontLoader.load();
   });
 
-  testWidgets('Test de profile page', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
+  testWidgets(
+    'Profile page test',
+    (WidgetTester tester) async {
+      when(sharedPreferences.getString('token')).thenReturn('test-token');
+      when(sharedPreferences.getString('tokenExpiration')).thenReturn(
+          DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
-        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+      await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeService>(
-            create: (_) => ThemeService(),
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<ThemeService>(
+              create: (_) => ThemeService(),
+            ),
+          ],
+          child: Sizer(
+            builder: (context, orientation, deviceType) {
+              return MaterialApp(
+                theme: ThemeData(fontFamily: 'Roboto'),
+                home: InheritedGoRouter(
+                  goRouter: AppRouter.router,
+                  child: const ProfilePage(),
+                ),
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+              );
+            },
           ),
-        ],
-        child: Sizer(
-          builder: (context, orientation, deviceType) {
-            return MaterialApp(
-              theme: ThemeData(fontFamily: 'Roboto'),
-              home: InheritedGoRouter(
-                goRouter: AppRouter.router,
-                child: const ProfilePage(),
-              ),
-            );
-          },
         ),
-      ),
-    );
+      );
 
-    await tester.pump();
+      await tester.pumpAndSettle();
 
-    // Modification mot de passe
-    await tester.tap(find.byKey(const Key('edit-password')));
-    await tester.pump();
+      // Check if footer is displayed
+      expect(find.byType(CustomFooter), findsOneWidget);
 
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
+      // Email modification
+      await tester.ensureVisible(find.byKey(const Key('edit-mail')));
+      await tester.tap(find.byKey(const Key('edit-mail')));
+      await tester.pumpAndSettle();
 
-    await tester.enterText(
-        find.byKey(const Key('password')), 'Xx_poneyLover_xX');
-    await tester.enterText(
-        find.byKey(const Key('confirm-password')), 'Xx_poneyLover_xX');
+      expect(find.byKey(const Key('user-mail')), findsOneWidget);
+      await tester.enterText(
+          find.byKey(const Key('user-mail')), 'henri@risu.fr');
+      await tester.tap(find.byKey(const Key('close-popup')));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('cancel-edit-password')));
-    await tester.pump();
+      // Password modification
+      await tester.ensureVisible(find.byKey(const Key('edit-password')));
+      await tester.tap(find.byKey(const Key('edit-password')));
+      await tester.pumpAndSettle();
 
-    // Modification nom
-    await tester.tap(find.byKey(const Key('edit-name')));
-    await tester.pump();
+      expect(find.byKey(const Key('password')), findsOneWidget);
+      expect(find.byKey(const Key('confirm-password')), findsOneWidget);
+      await tester.enterText(
+          find.byKey(const Key('password')), 'Xx_poneyLover_xX');
+      await tester.enterText(
+          find.byKey(const Key('confirm-password')), 'Xx_poneyLover_xX');
+      await tester.tap(find.byKey(const Key('close-popup')));
+      await tester.pumpAndSettle();
 
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
+      // Name modification
+      await tester.ensureVisible(find.byKey(const Key('edit-name')));
+      await tester.tap(find.byKey(const Key('edit-name')));
+      await tester.pumpAndSettle();
 
-    await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
-    await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
+      expect(find.text('Mettre à jour'), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('cancel-edit-name')));
-    await tester.pump();
-
-    // Modification entreprise
-    await tester.tap(find.byKey(const Key('edit-company')));
-    await tester.pump();
-
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('company')), 'Risu');
-
-    await tester.tap(find.byKey(const Key('cancel-edit-company')));
-    await tester.pump();
-
-    // Modification mail
-    await tester.tap(find.byKey(const Key('edit-mail')));
-    await tester.pump();
-
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('user-mail')), 'henri@risu.fr');
-    await tester.tap(find.byKey(const Key('cancel-edit-mail')));
-    await tester.pump();
-  });
+      await tester.enterText(find.byKey(const Key('first-name')), 'Whaouh');
+      await tester.enterText(find.byKey(const Key('last-name')), 'MinouMinou');
+      await tester.tap(find.byKey(const Key('close-popup')));
+      await tester.pumpAndSettle();
+    },
+  );
 }
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}

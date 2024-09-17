@@ -1,18 +1,29 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+import 'package:front/components/container.dart';
+import 'package:front/components/custom_header.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/dialog/handle_member/handle_member.dart';
+import 'package:front/components/dialog/save_dialog.dart';
 import 'package:front/components/footer.dart';
-import 'package:front/screens/company-profil/container-profil.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/services/http_service.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:front/network/informations.dart';
-import 'package:intl/intl.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 
 /// OrganizationList
@@ -61,6 +72,17 @@ class OrganizationList {
       'contactInformation': contactInformation,
     };
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': type,
+      'affiliate': affiliate,
+      'containers': containers,
+      'contactInformation': contactInformation,
+    };
+  }
 }
 
 /// CompanyProfilPage
@@ -96,6 +118,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   late String company;
   int organizationId = 0;
   String jwtToken = '';
+  bool isManager = false;
 
   /// [Function] : get all the containers created by the organization
   Future<void> fetchContainersById() async {
@@ -115,11 +138,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
             .toList();
       });
     } else {
-      Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -142,21 +161,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modification effectuée avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -248,21 +256,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Modification effectuée avec succès',
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-      );
+      showCustomToast(context, "Modifications effectuées avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg: "Erreur durant l'envoi de modification des informations",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.red,
-      );
+      showCustomToast(context, response.body, false);
     }
   }
 
@@ -352,20 +349,20 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
       },
     );
     if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: 'Conteneur supprimé avec succès',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, "Conteneur supprimé avec succès !", true);
       checkToken();
     } else {
-      Fluttertoast.showToast(
-        msg:
-            'Erreur lors de la suppression du container: ${response.statusCode}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-      );
+      showCustomToast(context, response.body, false);
     }
+  }
+
+  void openTeamMemberHandling() async {
+    await showDialog(
+      context: context,
+      builder: (context) => HandleMember(
+        organization: organization,
+      ),
+    );
   }
 
   /// [Function] : Get the organization details
@@ -419,6 +416,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
     String? token = await storageService.readStorage('token');
     if (token != null) {
       jwtToken = token!;
+      dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
+
+      isManager = decodedToken['manager'];
       storageService.getUserMail().then((value) {
         userMail = value;
         if (userMail.isNotEmpty) {
@@ -439,209 +439,264 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   /// [Widget] : Build the company profil page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        'Entreprise',
-        context: context,
-      ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
+        body: FooterView(
+            footer: Footer(
+              padding: EdgeInsets.zero,
+              child: const CustomFooter(),
+            ),
             children: [
-              organization.id != null
-                  ? Container(
-                      // width: 500,
-                      height: 200,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2.0,
+          LandingAppBar(context: context),
+          Text(
+            'Gestion de votre entreprise',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: Column(
+              children: [
+                organization.id != null
+                    ? Container(
+                        height: 200,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Colors.black,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                child: Image.asset(
+                                  "assets/logo.png",
+                                  width: 90.0,
+                                  height: 90.0,
                                 ),
                               ),
-                              child: Image.asset(
-                                "assets/logo.png",
-                                width: 90.0,
-                                height: 90.0,
-                              ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                organization.name != null &&
+                                        organization.name != ''
+                                    ? Text(
+                                        "Nom de l'entreprise : ${organization.name!}",
+                                        style: const TextStyle(
+                                          color: Color(0xff4682B4),
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      )
+                                    : const Text(
+                                        "L'entreprise ne possède pas de nom",
+                                        style: TextStyle(
+                                          color: Color(0xff4682B4),
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    organization.contactInformation != null &&
+                                            organization.contactInformation !=
+                                                ''
+                                        ? Text(
+                                            "Information : ${organization.contactInformation!}",
+                                            style: const TextStyle(
+                                              color: Color(0xff4682B4),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Aucune information disponible",
+                                            style: TextStyle(
+                                              color: Color(0xff4682B4),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          ),
+                                    const SizedBox(width: 5.0),
+                                    InkWell(
+                                      key: const Key('edit-information'),
+                                      onTap: () async {
+                                        await showEditPopupContactInformation(
+                                            context, contactInformation,
+                                            (String newContactInformation) {
+                                          setState(() {
+                                            contactInformation =
+                                                newContactInformation;
+                                          });
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.grey,
+                                        size: 15.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    organization.type != null &&
+                                            organization.type != ''
+                                        ? Text(
+                                            "Type d'entreprise : ${organization.type!}",
+                                            style: const TextStyle(
+                                              color: Color(0xff4682B4),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          )
+                                        : const Text(
+                                            "Pas de type disponible",
+                                            style: TextStyle(
+                                              color: Color(0xff4682B4),
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          ),
+                                    const SizedBox(width: 5.0),
+                                    InkWell(
+                                      key: const Key('edit-type'),
+                                      onTap: () async {
+                                        await showEditPopupType(context, type,
+                                            (String newtype) {
+                                          setState(() {
+                                            type = newtype;
+                                          });
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.grey,
+                                        size: 15.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : Center(
+                        child: Container(
+                          height: 250,
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "Pas d'entreprise associée",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color.fromARGB(255, 211, 11, 11),
                             ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              organization.name != null &&
-                                      organization.name != ''
-                                  ? Text(
-                                      "Nom de l'entreprise : ${organization.name!}",
-                                      style: const TextStyle(
-                                        color: Color(0xff4682B4),
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Verdana',
-                                      ),
-                                    )
-                                  : Text(
-                                      "L'entreprise n'a pas de nom",
-                                      style: const TextStyle(
-                                        color: Color(0xff4682B4),
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Verdana',
-                                      ),
-                                    ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  organization.contactInformation != null &&
-                                          organization.contactInformation != ''
-                                      ? Text(
-                                          "Information : ${organization.contactInformation!}",
-                                          style: const TextStyle(
-                                            color: Color(0xff4682B4),
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Verdana',
-                                          ),
-                                        )
-                                      : Text(
-                                          "Aucune information disponible",
-                                          style: const TextStyle(
-                                            color: Color(0xff4682B4),
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Verdana',
-                                          ),
-                                        ),
-                                  const SizedBox(width: 5.0),
-                                  InkWell(
-                                    key: Key('edit-information'),
-                                    onTap: () async {
-                                      await showEditPopupContactInformation(
-                                          context, contactInformation,
-                                          (String newContactInformation) {
-                                        setState(() {
-                                          contactInformation =
-                                              newContactInformation;
-                                        });
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.grey,
-                                      size: 15.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 5.0),
-                              Row(
-                                children: [
-                                  organization.type != null &&
-                                          organization.type != ''
-                                      ? Text(
-                                          "Type d'entreprise : ${organization.type!}",
-                                          style: const TextStyle(
-                                            color: Color(0xff4682B4),
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Verdana',
-                                          ),
-                                        )
-                                      : Text(
-                                          "Pas de type disponible",
-                                          style: const TextStyle(
-                                            color: Color(0xff4682B4),
-                                            fontSize: 15.0,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Verdana',
-                                          ),
-                                        ),
-                                  const SizedBox(width: 5.0),
-                                  InkWell(
-                                    key: const Key('edit-type'),
-                                    onTap: () async {
-                                      await showEditPopupType(context, type,
-                                          (String newtype) {
-                                        setState(() {
-                                          type = newtype;
-                                        });
-                                      });
-                                    },
-                                    child: const Icon(
-                                      Icons.edit,
-                                      color: Colors.grey,
-                                      size: 15.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
                       ),
-                    )
-                  : Center(
-                      child: Container(
-                        height: 250,
-                        alignment: Alignment.center,
+                isManager
+                    ? ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 25, vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          openTeamMemberHandling();
+                        },
                         child: Text(
-                          "Pas d'entreprise associée",
+                          "Gérer les membres",
+                          style: TextStyle(
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
+                        ),
+                      )
+                    : Container(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Nos Conteneurs :",
+                  style: TextStyle(
+                    color: Color.fromRGBO(70, 130, 180, 1),
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                    decorationThickness: 2.0,
+                    decorationStyle: TextDecorationStyle.solid,
+                  ),
+                ),
+                const SizedBox(
+                  height: 65,
+                ),
+                containersList.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Aucun conteneur trouvé.',
                           style: TextStyle(
                             fontSize: 18,
                             color: Color.fromARGB(255, 211, 11, 11),
                           ),
                         ),
-                      ),
-                    ),
-              const Text(
-                "Nos Conteneurs :",
-                style: TextStyle(
-                  color: Color.fromRGBO(70, 130, 180, 1),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  decoration: TextDecoration.underline,
-                  decorationThickness: 2.0,
-                  decorationStyle: TextDecorationStyle.solid,
-                ),
-              ),
-              SizedBox(
-                height: 65,
-              ),
-              containersList.isEmpty
-                  ? Center(
-                      child: Text(
-                        'Aucun conteneur trouvé.',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromARGB(255, 211, 11, 11),
+                      )
+                    : Wrap(
+                        spacing: 10.0,
+                        runSpacing: 8.0,
+                        children: List.generate(
+                          containersList.length,
+                          (index) => ContainerCards(
+                            container: containersList[index],
+                            onDelete: deleteContainer,
+                            page: "/container-profil",
+                            key: ValueKey<String>(
+                                'delete_${containersList[index].id}'),
+                          ),
                         ),
                       ),
-                    )
-                  : Wrap(
-                      spacing: 10.0,
-                      runSpacing: 8.0,
-                      children: List.generate(
-                        containersList.length,
-                        (index) => ContainerCards(
-                          container: containersList[index],
-                          onDelete: deleteContainer,
-                          page: "/container-profil",
-                          key: ValueKey<String>(
-                              'delete_${containersList[index].id}'),
-                        ),
-                      ),
-                    ),
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: const CustomBottomNavigationBar(),
-    );
+              ],
+            ),
+          )
+        ])
+
+        // bottomNavigationBar: const CustomBottomNavigationBar(),
+        );
   }
 }

@@ -15,6 +15,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'ask_reset_password_page.dart';
 
+/// State class for [AskResetPasswordPage]
+/// it is used to handle the state of the page
 class AskResetPasswordPageState extends State<AskResetPasswordPage> {
   final LoaderManager _loaderManager = LoaderManager();
   String? _email;
@@ -25,6 +27,8 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
     _email = widget.email;
   }
 
+  /// Function to call the API to reset the password
+  /// it will show an error dialog if the email is not filled
   Future<bool> apiResetPassword(BuildContext context) async {
     try {
       if (_email == null) {
@@ -58,23 +62,25 @@ class AskResetPasswordPageState extends State<AskResetPasswordPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        if (context.mounted) {
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.email,
-            message:
-                AppLocalizations.of(context)!.passwordTemporarySent(_email!),
-          );
-          return true;
-        }
-      } else {
-        if (context.mounted) {
-          printServerResponse(context, response, 'apiResetPassword',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringPasswordReset);
+      switch (response.statusCode) {
+        case 200:
+          if (context.mounted) {
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.email,
+              message:
+                  AppLocalizations.of(context)!.passwordTemporarySent(_email!),
+            );
+            return true;
+          }
+          break;
+        default:
+          if (context.mounted) {
+            printServerResponse(context, response, 'apiResetPassword',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringPasswordReset);
+          }
           return false;
-        }
       }
     } catch (err, stacktrace) {
       if (context.mounted) {

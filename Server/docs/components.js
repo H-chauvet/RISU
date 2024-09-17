@@ -13,9 +13,6 @@ module.exports = {
           price: {
             type: "float",
           },
-          image: {
-            type: "string",
-          },
           description: {
             type: "string",
           },

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/recap-config/recap_config.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';

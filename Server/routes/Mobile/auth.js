@@ -8,7 +8,7 @@ const userCtrl = require('../../controllers/Mobile/user')
 const authCtrl = require('../../controllers/Mobile/auth')
 const jwtMiddleware = require('../../middleware/Mobile/jwt')
 const crypto = require('../../crypto/crypto')
-
+const languageMiddleware = require('../../middleware/language')
 
 router.post('/signup', (req, res, next) => {
   passport.authenticate(
@@ -27,9 +27,9 @@ router.post('/signup', (req, res, next) => {
         authCtrl.sendAccountConfirmationEmail(decodedUser.email, token)
       } catch (err) {
         console.error(err.message)
-        return res.status(401).send('An error occurred.')
+        return res.status(401).send(res.__('errorOccurred'))
       }
-      return res.status(201).send('User created')
+      return res.status(201).send(res.__('userCreated'))
     },
   )(req, res, next)
 })
@@ -38,7 +38,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
   passport.authenticate(
     'login',
     { session: false },
-    async (err, user, info) =>  {
+    async (err, user, info) => {
       if (err)
         throw new Error(err)
       if (user == false)
@@ -56,7 +56,7 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
         user = await userCtrl.removeUserRefreshToken(user.id)
       }
 
-      return res.status(201).json({ user : user, token : token })
+      return res.status(201).json({ user: user, token: token })
     }
   )(req, res, next)
 })
@@ -64,27 +64,33 @@ router.post('/login', jwtMiddleware.refreshTokenMiddleware, async (req, res, nex
 router.post('/login/refreshToken', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
   const refreshToken = req.body.refreshToken;
   if (!refreshToken || refreshToken == '') {
-    return res.status(401).send('No refresh token provided.')
+    return res.status(401).send(res.__('missingRefreshToken'))
   }
   const user = await userCtrl.findUserByRefreshToken(refreshToken)
   if (!user) {
-    return res.status(401).send('No matching user found.')
+    return res.status(404).send(res.__('userNotFound'))
   }
-  const token = jwtMiddleware.generateToken(user.id)
-  return res.status(201).json({ user : user, token : token })
-})
+  languageMiddleware.setServerLanguage(req, user)
+  const token = jwtMiddleware.generateToken(user.id, true);
+  const newRefreshToken = jwtMiddleware.generateRefreshToken(user.id);
+  await userCtrl.updateUserRefreshToken(user.id, newRefreshToken);
+
+  return res.status(201).json({
+    user: user,
+    token: token,
+  });
+});
 
 router.get('/mailVerification', jwtMiddleware.refreshTokenMiddleware, async (req, res) => {
   const token = req.query.token
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     const user = await userCtrl.findUserById(decoded.id)
+    languageMiddleware.setServerLanguage(req, user)
     await authCtrl.verifyEmail(user.id)
-    return res.status(200).send(
-      'Email now successfully verified !\nYou can go back to login page.'
-      )
+    return res.status(200).send(res.__('emailVerified'))
   } catch (err) {
-    return res.status(401).send('No matching user found.')
+    return res.status(401).send(res.__('userNotFound'))
   }
 })
 
@@ -95,12 +101,11 @@ router.get('/:email/newEmailVerification', jwtMiddleware.refreshTokenMiddleware,
   try {
     const decoded = jwt.decode(token, process.env.JWT_ACCESS_SECRET)
     var user = await userCtrl.findUserById(decoded.id)
+    languageMiddleware.setServerLanguage(req, user)
     user = await userCtrl.updateEmail(decoded.id, decryptedEmail);
-    return res.status(200).send(
-      'New email now successfully verified !\nYou can go back to login page.'
-      )
+    return res.status(200).send(res.__('emailVerified'))
   } catch (err) {
-    return res.status(401).send('No matching user found.')
+    return res.status(401).send(res.__('userNotFound'))
   }
 })
 

@@ -8,13 +8,17 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/divider.dart';
 import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
 import 'notifications_page.dart';
 
+/// The state of the notifications page.
+/// This class is used to manage the state of the notifications page.
 class NotificationsPageState extends State<NotificationsPage> {
   static bool isFavoriteItemsAvailableChecked =
       userInformation?.notifications?[0] ?? false;
@@ -30,6 +34,8 @@ class NotificationsPageState extends State<NotificationsPage> {
     super.initState();
   }
 
+  /// Save the notifications.
+  /// This function is used to save the notifications.
   Future<http.Response?> saveNotifications() async {
     try {
       setState(() {
@@ -50,21 +56,23 @@ class NotificationsPageState extends State<NotificationsPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 200) {
-        setState(() {
-          userInformation!.notifications = [
-            isFavoriteItemsAvailableChecked,
-            isEndOfRentingChecked,
-            isNewsOffersChecked
-          ];
-        });
-        return response;
-      } else {
-        if (mounted) {
+      switch (response.statusCode) {
+        case 200:
+          setState(() {
+            userInformation!.notifications = [
+              isFavoriteItemsAvailableChecked,
+              isEndOfRentingChecked,
+              isNewsOffersChecked
+            ];
+          });
+          return response;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
           printServerResponse(context, response, 'saveNotifications',
               message:
                   AppLocalizations.of(context)!.errorOccurredDuringSavingData);
-        }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -81,6 +89,13 @@ class NotificationsPageState extends State<NotificationsPage> {
     return null;
   }
 
+  /// Create a switch.
+  /// This function is used to create a switch.
+  /// params:
+  /// [key] - the key of the switch.
+  /// [text] - the text of the switch.
+  /// [value] - the value of the switch.
+  /// [onChanged] - the function to call when the switch is changed.
   static Widget createSwitch(
       Key key, String text, bool value, Function(bool) onChanged) {
     const Color activeColor = Colors.green;
@@ -135,98 +150,101 @@ class NotificationsPageState extends State<NotificationsPage> {
     } else {
       isAllChecked = isNewsOffersChecked;
     }
-    return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select(
-          (ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor,
+    return MyPopScope(
+      child: Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select(
+            (ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.secondaryHeaderColor,
+          ),
+          showBackButton: true,
         ),
-        showBackButton: true,
-      ),
-      resizeToAvoidBottomInset: true,
-      backgroundColor: context.select(
-        (ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.colorScheme.surface,
-      ),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 16),
-                  Text(
-                    AppLocalizations.of(context)!
-                        .notificationsPreferencesManagement,
-                    style: TextStyle(
-                      fontSize: 32, // Taille de la police
-                      fontWeight: FontWeight.bold, // Gras
-                      color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.primaryColor),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  if (userInformation != null) ...[
-                    createSwitch(
-                      const Key('notifications-switch_disponibility_favorite'),
+        resizeToAvoidBottomInset: true,
+        backgroundColor: context.select(
+          (ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.colorScheme.surface,
+        ),
+        body: (_loaderManager.getIsLoading())
+            ? Center(child: _loaderManager.getLoader())
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 16),
+                    Text(
                       AppLocalizations.of(context)!
-                          .availabilityOfAFavoriteArticle,
-                      isFavoriteItemsAvailableChecked,
-                      (newValue) => setState(
-                          () => isFavoriteItemsAvailableChecked = newValue),
+                          .notificationsPreferencesManagement,
+                      style: TextStyle(
+                        fontSize: 32, // Taille de la police
+                        fontWeight: FontWeight.bold, // Gras
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.primaryColor),
+                      ),
                     ),
+                    const SizedBox(height: 20),
+                    if (userInformation != null) ...[
+                      createSwitch(
+                        const Key(
+                            'notifications-switch_disponibility_favorite'),
+                        AppLocalizations.of(context)!
+                            .availabilityOfAFavoriteArticle,
+                        isFavoriteItemsAvailableChecked,
+                        (newValue) => setState(
+                            () => isFavoriteItemsAvailableChecked = newValue),
+                      ),
+                      createSwitch(
+                        const Key('notifications-switch_end_renting'),
+                        AppLocalizations.of(context)!.endOfRenting,
+                        isEndOfRentingChecked,
+                        (newValue) =>
+                            setState(() => isEndOfRentingChecked = newValue),
+                      ),
+                      const MyDivider(),
+                    ],
                     createSwitch(
-                      const Key('notifications-switch_end_renting'),
-                      AppLocalizations.of(context)!.endOfRenting,
-                      isEndOfRentingChecked,
+                      const Key('notifications-switch_news_offers_risu'),
+                      AppLocalizations.of(context)!.newsOffersTipsRisu,
+                      isNewsOffersChecked,
                       (newValue) =>
-                          setState(() => isEndOfRentingChecked = newValue),
+                          setState(() => isNewsOffersChecked = newValue),
                     ),
                     const MyDivider(),
-                  ],
-                  createSwitch(
-                    const Key('notifications-switch_news_offers_risu'),
-                    AppLocalizations.of(context)!.newsOffersTipsRisu,
-                    isNewsOffersChecked,
-                    (newValue) =>
-                        setState(() => isNewsOffersChecked = newValue),
-                  ),
-                  const MyDivider(),
-                  createSwitch(
-                    const Key('notifications-switch_all'),
-                    AppLocalizations.of(context)!.all,
-                    isAllChecked,
-                    (newValue) => {
-                      setState(() {
-                        isAllChecked = newValue;
-                        isFavoriteItemsAvailableChecked = newValue;
-                        isEndOfRentingChecked = newValue;
-                        isNewsOffersChecked = newValue;
-                      })
-                    },
-                  ),
-                  // Put the button at the bottom of the screen
-                  const Expanded(child: SizedBox()),
-                  MyButton(
-                    key: const Key('notifications-button_save'),
-                    text: AppLocalizations.of(context)!.save,
-                    onPressed: () => saveNotifications().then(
-                      (response) => {
-                        if (response != null && response.statusCode == 200)
-                          {
-                            MyToastMessage.show(
-                              context: context,
-                              message: AppLocalizations.of(context)!
-                                  .notificationsSaved,
-                            ),
-                          },
+                    createSwitch(
+                      const Key('notifications-switch_all'),
+                      AppLocalizations.of(context)!.all,
+                      isAllChecked,
+                      (newValue) => {
+                        setState(() {
+                          isAllChecked = newValue;
+                          isFavoriteItemsAvailableChecked = newValue;
+                          isEndOfRentingChecked = newValue;
+                          isNewsOffersChecked = newValue;
+                        })
                       },
                     ),
-                  ),
-                ],
+                    // Put the button at the bottom of the screen
+                    const Expanded(child: SizedBox()),
+                    MyButton(
+                      key: const Key('notifications-button_save'),
+                      text: AppLocalizations.of(context)!.save,
+                      onPressed: () => saveNotifications().then(
+                        (response) => {
+                          if (response != null && response.statusCode == 200)
+                            {
+                              MyToastMessage.show(
+                                context: context,
+                                message: AppLocalizations.of(context)!
+                                    .notificationsSaved,
+                              ),
+                            },
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }

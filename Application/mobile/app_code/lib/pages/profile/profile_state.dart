@@ -9,19 +9,23 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/article/favorite/favorite_page.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
-import 'package:risu/pages/rent/rental_page.dart';
+import 'package:risu/pages/rent/rentals/rentals_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'profile_page.dart';
 
+/// ProfilePageState is the stateful widget that is responsible for the profile page
+/// It displays the user's information and allows him to access his settings, his rentals and his favorites
 class ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
   }
 
+  /// toComplete is a function that returns a button to complete the user's informations if they are not complete
+  /// It returns a container if the user's information is complete
   Widget toComplete() {
     if (userInformation!.lastName == null ||
         userInformation!.firstName == null) {
@@ -41,11 +45,9 @@ class ProfilePageState extends State<ProfilePage> {
               ),
             ).then(
               (value) {
-                if (value != null && value == true) {
-                  setState(() {
-                    userInformation = userInformation;
-                  });
-                }
+                setState(() {
+                  userInformation = userInformation;
+                });
               },
             );
           },

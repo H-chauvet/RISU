@@ -19,12 +19,12 @@ exports.createFixtures = async () => {
     });
     const itemCategory1 = await db.Item_Category.create({
       data: {
-        name: "Sport",
+        name: "sports",
       },
     });
     const itemCategory2 = await db.Item_Category.create({
       data: {
-        name: "Plage",
+        name: "beach",
       },
     });
     const container = await db.Containers.create({
@@ -113,7 +113,11 @@ exports.createFixtures = async () => {
           lastName: "admin",
           password: bcrypt.hashSync("admin", 12),
           mailVerification: true,
-          notificationsId: notification1.id,
+          Notifications: {
+            connect: {
+              id: notification1.id,
+            },
+          },
           itemOpinions: {
             create: [
               {
@@ -123,6 +127,17 @@ exports.createFixtures = async () => {
                 comment: "Joli ballon.",
               },
             ],
+          },
+          locations: {
+            create: {
+              item: {
+                connect: {
+                  id: 1,
+                },
+              },
+              price: 10.0,
+              duration: 20,
+            },
           },
         },
         include: {
@@ -139,7 +154,11 @@ exports.createFixtures = async () => {
           lastName: "user",
           password: bcrypt.hashSync("user", 12),
           mailVerification: true,
-          notificationsId: notification2.id,
+          Notifications: {
+            connect: {
+              id: notification2.id,
+            },
+          },
           itemOpinions: {
             create: [
               {
@@ -147,34 +166,6 @@ exports.createFixtures = async () => {
                 date: new Date(),
                 note: "4",
                 comment: "Ballon de qualité.",
-              },
-            ],
-          },
-        },
-        include: {
-          Notifications: true,
-        },
-      });
-    if (
-      !(await db.User_Mobile.findUnique({
-        where: { email: "tanguybell@gmail.com" },
-      }))
-    )
-      await db.User_Mobile.create({
-        data: {
-          id: "42",
-          email: "tanguybell@gmail.com",
-          firstName: "Armand",
-          lastName: "Lartam",
-          password: bcrypt.hashSync("12345678", 12),
-          mailVerification: true,
-          notificationsId: notification2.id,
-          locations: {
-            create: [
-              {
-                itemId: 3,
-                duration: 48,
-                price: 100,
               },
             ],
           },

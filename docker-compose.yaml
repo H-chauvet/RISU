@@ -34,6 +34,22 @@ services:
     stdin_open: true
     tty: true
     restart: always
+    volumes:
+      - common:/apk
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      UPLOAD_LIMIT: 500M
+    ports:
+      - 8001:80
+    depends_on:
+      - database
 
 volumes:
   mysql-data:
+  common:
+    external: true

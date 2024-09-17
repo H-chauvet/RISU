@@ -8,6 +8,7 @@ import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
+import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
@@ -16,6 +17,8 @@ import 'package:risu/utils/providers/theme.dart';
 
 import 'opinion_page.dart';
 
+/// Manages the state of the OpinionPage.
+/// Handles fetching, posting, updating, and deleting opinions.
 class OpinionPageState extends State<OpinionPage> {
   int itemId;
 
@@ -25,6 +28,9 @@ class OpinionPageState extends State<OpinionPage> {
   int selectedStarFilter = 6;
   final LoaderManager _loaderManager = LoaderManager();
 
+  /// Fetches opinions for the given item based on the selected star filter.
+  /// params:
+  /// [itemId] - the item id.
   void getOpinions(itemId) async {
     try {
       setState(() {
@@ -47,17 +53,22 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        final data = json.decode(response.body);
-        setState(() {
-          opinionsList = data['opinions'];
-        });
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'getOpinions',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringGettingReviews);
-        }
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          setState(() {
+            opinionsList = data['opinions'];
+          });
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'getOpinions',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringGettingReviews);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -73,6 +84,14 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Posts a new opinion for the given item.
+  /// This function sends a POST request with the note (rating) and comment
+  /// to the server to add a new review for the item specified by itemId.
+  /// It handles the loading state and displays a success or error message
+  /// based on the response from the server.
+  /// params:
+  /// [note] - the rating of the review.
+  /// [comment] - the comment of the review.
   void postOpinion(note, comment) async {
     late http.Response response;
     try {
@@ -93,21 +112,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewAdded,
-            message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'postOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringSavingReview);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewAdded,
+              message: AppLocalizations.of(context)!.reviewAddedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'postOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringSavingReview);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -122,6 +146,11 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Updates an existing opinion by sending a PUT request with the given note and comment.
+  /// params:
+  /// [opinionId] - the id of the opinion to update.
+  /// [note] - the new rating of the review.
+  /// [comment] - the new comment of the review.
   void updateOpinion(opinionId, note, comment) async {
     late http.Response response;
     try {
@@ -142,21 +171,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewUpdated,
-            message: AppLocalizations.of(context)!.reviewUpdatedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'updateOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringReviewUpdate);
-        }
+      switch (response.statusCode) {
+        case 201:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewUpdated,
+              message: AppLocalizations.of(context)!.reviewUpdatedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'updateOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringReviewUpdate);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -170,6 +204,9 @@ class OpinionPageState extends State<OpinionPage> {
     }
   }
 
+  /// Deletes an opinion by sending a DELETE request using the given opinionId.
+  /// params:
+  /// [opinionId] - the id of the opinion to delete.
   void deleteOpinion(opinionId) async {
     late http.Response response;
     try {
@@ -186,21 +223,26 @@ class OpinionPageState extends State<OpinionPage> {
       setState(() {
         _loaderManager.setIsLoading(false);
       });
-      if (response.statusCode == 201) {
-        if (mounted) {
-          getOpinions(itemId);
-          await MyAlertDialog.showInfoAlertDialog(
-            context: context,
-            title: AppLocalizations.of(context)!.reviewDeleted,
-            message: AppLocalizations.of(context)!.reviewDeletedSuccessfully,
-          );
-        }
-      } else {
-        if (mounted) {
-          printServerResponse(context, response, 'deleteOpinion',
-              message: AppLocalizations.of(context)!
-                  .errorOccurredDuringReviewDeletion);
-        }
+      switch (response.statusCode) {
+        case 200:
+          if (mounted) {
+            getOpinions(itemId);
+            await MyAlertDialog.showInfoAlertDialog(
+              context: context,
+              title: AppLocalizations.of(context)!.reviewDeleted,
+              message: AppLocalizations.of(context)!.reviewDeletedSuccessfully,
+            );
+          }
+          break;
+        case 401:
+          await tokenExpiredShowDialog(context);
+          break;
+        default:
+          if (mounted) {
+            printServerResponse(context, response, 'deleteOpinion',
+                message: AppLocalizations.of(context)!
+                    .errorOccurredDuringReviewDeletion);
+          }
       }
     } catch (err, stacktrace) {
       if (mounted) {
@@ -293,6 +335,11 @@ class OpinionPageState extends State<OpinionPage> {
     );
   }
 
+  /// Displays a dialog to add a new opinion with a star rating and comment input.
+  /// params:
+  /// [opinionId] - the id of the opinion to update.
+  /// [currentNote] - the current rating of the opinion.
+  /// [currentComment] - the current comment of the opinion.
   void _showUpdateOpinionDialog(opinionId, currentNote, currentComment) {
     String comment = currentComment;
     int selectedStar = int.parse(currentNote);
@@ -365,6 +412,11 @@ class OpinionPageState extends State<OpinionPage> {
     );
   }
 
+  /// Shows a dialog for opinion settings, allowing the user to delete or update an opinion.
+  /// params:
+  /// [opinionId] - the id of the opinion.
+  /// [note] - the rating of the opinion.
+  /// [comment] - the comment of the opinion.
   void _showParameterDialog(opinionId, note, comment) {
     showDialog(
       context: context,
@@ -428,245 +480,265 @@ class OpinionPageState extends State<OpinionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: MyAppBar(
-        curveColor: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.secondaryHeaderColor),
-        showBackButton: false,
-        textTitle: AppLocalizations.of(context)!.reviewsList,
-      ),
-      resizeToAvoidBottomInset: false,
-      backgroundColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.colorScheme.surface),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : SingleChildScrollView(
-              child: Center(
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Center(
-                            child: Column(
-                              children: [
-                                DropdownButton<int>(
-                                  key: const Key('opinion-filter_dropdown'),
-                                  value: selectedStarFilter,
-                                  items: [
-                                    DropdownMenuItem<int>(
-                                      value: 0,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_0'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(0),
+    return MyPopScope(
+      child: Scaffold(
+        appBar: MyAppBar(
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          textTitle: AppLocalizations.of(context)!.reviewsList,
+        ),
+        resizeToAvoidBottomInset: false,
+        backgroundColor: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.colorScheme.surface),
+        body: (_loaderManager.getIsLoading())
+            ? Center(child: _loaderManager.getLoader())
+            : SingleChildScrollView(
+                child: Center(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Column(
+                                children: [
+                                  DropdownButton<int>(
+                                    key: const Key('opinion-filter_dropdown'),
+                                    value: selectedStarFilter,
+                                    items: [
+                                      DropdownMenuItem<int>(
+                                        value: 0,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_0'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(0),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 1,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_1'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(1),
+                                      DropdownMenuItem<int>(
+                                        value: 1,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_1'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(1),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 2,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_2'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(2),
+                                      DropdownMenuItem<int>(
+                                        value: 2,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_2'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(2),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 3,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_3'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(3),
+                                      DropdownMenuItem<int>(
+                                        value: 3,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_3'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(3),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 4,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_4'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(4),
+                                      DropdownMenuItem<int>(
+                                        value: 4,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_4'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(4),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 5,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_5'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!.starsX(5),
+                                      DropdownMenuItem<int>(
+                                        value: 5,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_5'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .starsX(5),
+                                        ),
                                       ),
-                                    ),
-                                    DropdownMenuItem<int>(
-                                      value: 6,
-                                      key: const Key(
-                                          'opinion-filter_dropdown_all'),
-                                      child: Text(
-                                        AppLocalizations.of(context)!
-                                            .reviewsAll,
+                                      DropdownMenuItem<int>(
+                                        value: 6,
+                                        key: const Key(
+                                            'opinion-filter_dropdown_all'),
+                                        child: Text(
+                                          AppLocalizations.of(context)!
+                                              .reviewsAll,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                  onChanged: (value) {
-                                    setState(() {
-                                      selectedStarFilter = value ?? 0;
-                                    });
-                                    getOpinions(itemId);
-                                  },
-                                ),
-                                if (opinionsList.isNotEmpty)
-                                  for (var i = 0; i < opinionsList.length; i++)
-                                    Card(
-                                      key: Key('opinion-card_$i'),
-                                      elevation: 5,
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 20),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 15, 15, 0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Expanded(
-                                                  key: Key('opinion-user_$i'),
-                                                  child: Text(
-                                                    (opinionsList[i]['user'] !=
-                                                                null &&
-                                                            opinionsList[i]
-                                                                        ['user']
-                                                                    [
-                                                                    'firstName'] !=
-                                                                null &&
-                                                            opinionsList[i]
-                                                                        ['user']
-                                                                    [
-                                                                    'lastName'] !=
-                                                                null)
-                                                        ? '${opinionsList[i]['user']['firstName']} ${opinionsList[i]['user']['lastName']}'
-                                                        : AppLocalizations.of(
-                                                                context)!
-                                                            .anonymous,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedStarFilter = value ?? 0;
+                                      });
+                                      getOpinions(itemId);
+                                    },
+                                  ),
+                                  if (opinionsList.isNotEmpty)
+                                    for (var i = 0;
+                                        i < opinionsList.length;
+                                        i++)
+                                      Card(
+                                        key: Key('opinion-card_$i'),
+                                        elevation: 5,
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 15, 15, 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    key: Key('opinion-user_$i'),
+                                                    child: Text(
+                                                      (opinionsList[i][
+                                                                      'user'] !=
+                                                                  null &&
+                                                              opinionsList[i][
+                                                                          'user']
+                                                                      [
+                                                                      'firstName'] !=
+                                                                  null &&
+                                                              opinionsList[i][
+                                                                          'user']
+                                                                      [
+                                                                      'lastName'] !=
+                                                                  null)
+                                                          ? '${opinionsList[i]['user']['firstName']} ${opinionsList[i]['user']['lastName']}'
+                                                          : AppLocalizations.of(
+                                                                  context)!
+                                                              .anonymous,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
                                                   ),
-                                                ),
-                                                if (opinionsList[i]['userId'] ==
-                                                    userInformation?.ID)
-                                                  IconButton(
-                                                    key: Key(
-                                                        'opinion-settings_button_$i'),
-                                                    icon: const Icon(
-                                                        Icons.more_vert),
-                                                    onPressed: () {
-                                                      _showParameterDialog(
-                                                          opinionsList[i]['id'],
-                                                          opinionsList[i]
-                                                              ['note'],
-                                                          opinionsList[i]
-                                                              ['comment']);
-                                                    },
-                                                  ),
-                                              ],
+                                                  if (opinionsList[i]
+                                                          ['userId'] ==
+                                                      userInformation?.ID)
+                                                    IconButton(
+                                                      key: Key(
+                                                          'opinion-settings_button_$i'),
+                                                      icon: const Icon(
+                                                          Icons.more_vert),
+                                                      onPressed: () {
+                                                        _showParameterDialog(
+                                                            opinionsList[i]
+                                                                ['id'],
+                                                            opinionsList[i]
+                                                                ['note'],
+                                                            opinionsList[i]
+                                                                ['comment']);
+                                                      },
+                                                    ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          ListTile(
-                                            contentPadding:
-                                                const EdgeInsets.all(20)
-                                                    .copyWith(top: 0),
-                                            title: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: List.generate(
-                                                    5,
-                                                    (index) => Padding(
-                                                      padding: const EdgeInsets
-                                                          .symmetric(
-                                                          horizontal: 2),
-                                                      child: Icon(
-                                                        key: Key(
-                                                            'opinion-star_$i-$index'),
-                                                        index <
-                                                                int.parse(
-                                                                    opinionsList[
-                                                                            i][
-                                                                        'note'])
-                                                            ? Icons.star
-                                                            : Icons.star_border,
-                                                        color: index <
-                                                                int.parse(
-                                                                    opinionsList[
-                                                                            i][
-                                                                        'note'])
-                                                            ? Colors.yellow
-                                                            : Colors.grey,
+                                            ListTile(
+                                              contentPadding:
+                                                  const EdgeInsets.all(20)
+                                                      .copyWith(top: 0),
+                                              title: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: List.generate(
+                                                      5,
+                                                      (index) => Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                horizontal: 2),
+                                                        child: Icon(
+                                                          key: Key(
+                                                              'opinion-star_$i-$index'),
+                                                          index <
+                                                                  int.parse(
+                                                                      opinionsList[
+                                                                              i]
+                                                                          [
+                                                                          'note'])
+                                                              ? Icons.star
+                                                              : Icons
+                                                                  .star_border,
+                                                          color: index <
+                                                                  int.parse(
+                                                                      opinionsList[
+                                                                              i]
+                                                                          [
+                                                                          'note'])
+                                                              ? Colors.yellow
+                                                              : Colors.grey,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  key:
-                                                      Key('opinion-comment_$i'),
-                                                  opinionsList[i]['comment'],
-                                                  style: const TextStyle(
-                                                      fontSize: 16),
-                                                ),
-                                              ],
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    key: Key(
+                                                        'opinion-comment_$i'),
+                                                    opinionsList[i]['comment'],
+                                                    style: const TextStyle(
+                                                        fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
+                                  if (opinionsList.isEmpty)
+                                    Text(
+                                      key: const Key('opinion-empty_text'),
+                                      AppLocalizations.of(context)!
+                                          .reviewsEmpty,
+                                      style: const TextStyle(fontSize: 16),
                                     ),
-                                if (opinionsList.isEmpty)
-                                  Text(
-                                    key: const Key('opinion-empty_text'),
-                                    AppLocalizations.of(context)!.reviewsEmpty,
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-      floatingActionButton: FloatingActionButton(
-        key: const Key('add_opinion-button'),
-        onPressed: () async {
-          bool signIn = await checkSignin(context);
-          if (!signIn) {
-            return;
-          }
-          _showAddOpinionDialog();
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add),
+        floatingActionButton: FloatingActionButton(
+          key: const Key('add_opinion-button'),
+          onPressed: () async {
+            bool signIn = await checkSignin(context);
+            if (!signIn) {
+              return;
+            }
+            _showAddOpinionDialog();
+          },
+          backgroundColor: Colors.green,
+          child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
