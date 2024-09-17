@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 
@@ -68,7 +69,7 @@ class FeedbacksCard extends StatelessWidget {
           ListTile(
             leading: CircleAvatar(
               child: Text(
-                "${fb.mark} / 5",
+                AppLocalizations.of(context)!.markData(fb.mark),
                 style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
@@ -76,7 +77,7 @@ class FeedbacksCard extends StatelessWidget {
               ),
             ),
             title: Text(
-              "Avis posté par ${fb.firstName} ${fb.lastName}",
+              AppLocalizations.of(context)!.opinionPostedBy(fb.firstName, fb.lastName),
               style: TextStyle(
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize

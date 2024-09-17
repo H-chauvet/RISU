@@ -1,15 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
-import 'package:go_router/go_router.dart';
-import 'dart:convert';
-
 import 'package:provider/provider.dart';
 
 import 'google_style.dart';
@@ -29,47 +30,48 @@ class GoogleLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          startSignIn(context);
-        },
-        child: Container(
-          height: screenFormat == ScreenFormat.desktop
-              ? desktopButtonHeight
-              : tabletButtonHeight,
-          width: screenFormat == ScreenFormat.desktop
-              ? desktopButtonWidth
-              : tabletButtonWidth,
-          decoration: BoxDecoration(
-              color: Provider.of<ThemeService>(context).isDark
-                  ? boxDecorationDarkTheme.color
-                  : boxDecorationLightTheme.color,
-              borderRadius: const BorderRadius.all(Radius.circular(30.0))),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                  child: Image.asset(
-                    'assets/google-logo.png',
-                    height: 20,
-                  )),
-              const SizedBox(
-                width: 5.0,
-              ),
-              Text(
-                'Google',
-                style: TextStyle(
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor),
-              )
-            ],
-          ),
-        ));
+      onTap: () {
+        startSignIn(context);
+      },
+      child: Container(
+        height: screenFormat == ScreenFormat.desktop
+            ? desktopButtonHeight
+            : tabletButtonHeight,
+        width: screenFormat == ScreenFormat.desktop
+            ? desktopButtonWidth
+            : tabletButtonWidth,
+        decoration: BoxDecoration(
+            color: Provider.of<ThemeService>(context).isDark
+                ? boxDecorationDarkTheme.color
+                : boxDecorationLightTheme.color,
+            borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Container(
+                color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                child: Image.asset(
+                  'assets/google-logo.png',
+                  height: 20,
+                )),
+            const SizedBox(
+              width: 5.0,
+            ),
+            Text(
+              AppLocalizations.of(context)!.google,
+              style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void startSignIn(BuildContext context) async {
@@ -106,7 +108,10 @@ class GoogleLogo extends StatelessWidget {
               if (value.statusCode == 200)
                 {
                   showCustomToast(
-                      context, "Vous êtes désormais connecté !", true),
+                    context,
+                    AppLocalizations.of(context)!.loggedIn,
+                    true,
+                  ),
                   response = jsonDecode(value.body),
                   StorageService()
                       .writeStorage('token', response['accessToken']),

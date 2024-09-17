@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/recap_panel/recap_panel.dart';
 import 'package:front/services/size_service.dart';
@@ -32,6 +33,9 @@ void main() {
                   fullscreen: false,
                 ),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -64,6 +68,9 @@ void main() {
                   fullscreen: true,
                 ),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),

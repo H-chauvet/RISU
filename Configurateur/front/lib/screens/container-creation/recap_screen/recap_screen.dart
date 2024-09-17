@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -121,36 +122,37 @@ class RecapScreenState extends State<RecapScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-        appBar: CustomAppBar(
-          'Récapitulatif',
-          context: context,
-        ),
-        bottomSheet: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProgressBar(
-              length: 6,
-              progress: 3,
-              previous: 'Précédent',
-              next: 'Suivant',
-              previousFunc: previousFunc,
-              nextFunc: nextFunc,
-            ),
-            const SizedBox(
-              height: 50,
-            )
-          ],
-        ),
-        body: Center(
-          child: FractionallySizedBox(
-            widthFactor: 0.5,
-            heightFactor: 0.5,
-            child: RecapPanel(
-              fullscreen: true,
-              screenFormat: screenFormat,
-              articles: lockerss,
-            ),
+      appBar: CustomAppBar(
+        AppLocalizations.of(context)!.summary,
+        context: context,
+      ),
+      bottomSheet: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ProgressBar(
+            length: 6,
+            progress: 3,
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.next,
+            previousFunc: previousFunc,
+            nextFunc: nextFunc,
           ),
-        ));
+          const SizedBox(
+            height: 50,
+          )
+        ],
+      ),
+      body: Center(
+        child: FractionallySizedBox(
+          widthFactor: 0.5,
+          heightFactor: 0.5,
+          child: RecapPanel(
+            fullscreen: true,
+            screenFormat: screenFormat,
+            articles: lockerss,
+          ),
+        ),
+      ),
+    );
   }
 }

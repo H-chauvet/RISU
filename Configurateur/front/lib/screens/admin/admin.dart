@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
@@ -45,7 +46,7 @@ class _AdminPageState extends State<AdminPage> {
         children: [
           LandingAppBar(context: context),
           Text(
-            'Administration de RISU',
+            AppLocalizations.of(context)!.adminRisu,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: screenFormat == ScreenFormat.desktop
@@ -93,7 +94,7 @@ class _AdminPageState extends State<AdminPage> {
                               context.go("/admin/messages");
                             },
                             child: Text(
-                              'Gestion des messages',
+                              AppLocalizations.of(context)!.messageHandling,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -106,7 +107,7 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                           const SizedBox(height: 30),
                           Text(
-                            "Cet onglet permet d'accéder à la liste\ndes messages envoyés par les utilisateurs",
+                            AppLocalizations.of(context)!.messageListAccess,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
@@ -143,7 +144,7 @@ class _AdminPageState extends State<AdminPage> {
                               context.go("/userList");
                             },
                             child: Text(
-                              'Gestion des utilisateurs',
+                              AppLocalizations.of(context)!.userHandling,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -156,7 +157,7 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                           const SizedBox(height: 30),
                           Text(
-                            "Cet onglet permet d'accéder à la liste\ndes utilisateurs.",
+                            AppLocalizations.of(context)!.userListAccess,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor
@@ -193,7 +194,7 @@ class _AdminPageState extends State<AdminPage> {
                               context.go("/containerList");
                             },
                             child: Text(
-                              'Gestion des conteneurs',
+                              AppLocalizations.of(context)!.containerHandling,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize
@@ -206,7 +207,7 @@ class _AdminPageState extends State<AdminPage> {
                           ),
                           const SizedBox(height: 30),
                           Text(
-                            "Cet onglet permet d'accéder à la liste\ndes articles en service.",
+                            AppLocalizations.of(context)!.itemListAccess,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.secondaryHeaderColor

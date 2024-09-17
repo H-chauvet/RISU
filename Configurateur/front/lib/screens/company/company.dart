@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -286,42 +287,42 @@ class CompanyPageState extends State<CompanyPage> {
       "companyPosition": "Développeur mobile",
       "image": 'assets/Hugo.png',
       "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints"
+          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
     },
     {
       "name": "Cédric",
       "companyPosition": "Responsable Web",
       "image": 'assets/Cédric.png',
       "description":
-          "Responsable et développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints",
+          "Responsable et développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints",
     },
     {
       "name": "Louis",
       "companyPosition": "Développeur web",
       "image": 'assets/Louis.png',
       "description":
-          "Développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints"
+          "Développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
     },
     {
       "name": "Quentin",
       "companyPosition": "Développeur mobile",
       "image": 'assets/Quentin.png',
       "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints"
+          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
     },
     {
       "name": "Tanguy",
       "companyPosition": "Responsable mobile",
       "image": 'assets/Tanguy.png',
       "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints"
+          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
     },
     {
       "name": "Nathan",
       "companyPosition": "Développeuse mobile",
       "image": 'assets/Nathan.png',
       "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisés pour les prochains sprints"
+          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
     },
   ];
 

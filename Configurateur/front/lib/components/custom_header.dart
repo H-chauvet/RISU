@@ -78,7 +78,10 @@ class LandingAppBarState extends State<LandingAppBar> {
           throw Exception('Could not launch $_url');
         } else {
           showCustomToast(
-              context, "L'application a bien été téléchargée !", true);
+            context,
+            AppLocalizations.of(context)!.applicationDownloaded,
+            true,
+          );
         }
       } else {
         showCustomToast(context, response.body, false);
@@ -150,9 +153,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        'Notre équipe',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.ourTeam,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -176,9 +179,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        'Créer un conteneur',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.containerCreate,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -202,9 +205,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        "Télécharger l'application",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.downloadApplication,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -246,7 +249,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                     ),
                     const SizedBox(width: 10),
                     Text(
-                      "Mode sombre",
+                      AppLocalizations.of(context)!.darkTheme,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 20,
@@ -269,7 +272,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                 ),
               ),
               PopupMenuButton<String>(
-                tooltip: "Langue",
+                tooltip: AppLocalizations.of(context)!.language,
                 icon: CountryFlag.fromLanguageCode(
                   language,
                   height: 16,
@@ -287,7 +290,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          const Text("Français"),
+                          Text(AppLocalizations.of(context)!.french),
                         ],
                       ),
                     ),
@@ -301,7 +304,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          const Text("English"),
+                          Text(AppLocalizations.of(context)!.english),
                         ],
                       ),
                     ),
@@ -317,7 +320,9 @@ class LandingAppBarState extends State<LandingAppBar> {
               ),
               const SizedBox(width: 32),
               PopupMenuButton<String>(
-                tooltip: token != '' ? "Profil" : "Authentification",
+                tooltip: token != ''
+                    ? AppLocalizations.of(context)!.profile
+                    : AppLocalizations.of(context)!.authentification,
                 icon: Icon(
                   size: 28,
                   Icons.account_circle,
@@ -334,7 +339,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                         PopupMenuItem<String>(
                           value: 'connexion',
                           child: Text(
-                            'Connexion',
+                            AppLocalizations.of(context)!.logIn,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context,
                                           listen: false)
@@ -347,7 +352,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                         PopupMenuItem<String>(
                           value: 'inscription',
                           child: Text(
-                            'Inscription',
+                            AppLocalizations.of(context)!.registration,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context,
                                           listen: false)
@@ -364,7 +369,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                       PopupMenuItem<String>(
                         value: 'profil',
                         child: Text(
-                          'Profil',
+                          AppLocalizations.of(context)!.profile,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context,
                                         listen: false)
@@ -379,7 +384,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                       PopupMenuItem<String>(
                         value: 'company-profil',
                         child: Text(
-                          'Mon Entreprise',
+                          AppLocalizations.of(context)!.companyMy,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context,
                                         listen: false)
@@ -410,11 +415,12 @@ class LandingAppBarState extends State<LandingAppBar> {
                         PopupMenuItem<String>(
                           value: 'admin',
                           child: Text(
-                            'Administration',
+                            AppLocalizations.of(context)!.administration,
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context,
-                                          listen: false)
-                                      .isDark
+                              color: Provider.of<ThemeService>(
+                                context,
+                                listen: false,
+                              ).isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
@@ -423,11 +429,11 @@ class LandingAppBarState extends State<LandingAppBar> {
                       );
                     }
                     items.add(
-                      const PopupMenuItem<String>(
+                      PopupMenuItem<String>(
                         value: 'disconnect',
                         child: Text(
-                          'Déconnexion',
-                          style: TextStyle(
+                          AppLocalizations.of(context)!.logOff,
+                          style: const TextStyle(
                             color: Colors.red,
                           ),
                         ),
@@ -454,7 +460,10 @@ class LandingAppBarState extends State<LandingAppBar> {
                     storageService.removeStorage('tokenExpiration');
                     token = '';
                     showCustomToast(
-                        context, "Vous êtes bien déconnecté !", true);
+                      context,
+                      AppLocalizations.of(context)!.loggedOff,
+                      true,
+                    );
                     context.go("/");
                   }
                 },
