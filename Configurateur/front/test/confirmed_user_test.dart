@@ -12,6 +12,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/register-confirmation/confirmed_user.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/language_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -44,6 +45,9 @@ void main() {
           ChangeNotifierProvider<ThemeService>(
             create: (_) => ThemeService(),
           ),
+          ChangeNotifierProvider(
+            create: (context) => LanguageService(const Locale('fr')),
+          ),
         ],
         child: Sizer(
           builder: (context, orientation, deviceType) {
@@ -57,7 +61,6 @@ void main() {
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
-              locale: const Locale('fr'),
             );
           },
         ),
