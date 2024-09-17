@@ -76,7 +76,7 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                   return _buildMemberCard(index);
                 }),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Wrap(
@@ -99,13 +99,13 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
               child: Container(
                 width: 300,
                 height: 200,
-                padding: EdgeInsets.all(8),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
-                    BoxShadow(
+                    const BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
                       offset: Offset(2, 2),
@@ -113,7 +113,7 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -121,13 +121,13 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                       Text(
                         widget.teamMembers[_expandedIndex]['name'] ??
                             'Nom du Membre',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Center(
@@ -136,7 +136,7 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                                       ['description'] ??
                                   'companyPosition longue du poste et des responsabilités...',
                               style:
-                                  TextStyle(fontSize: 14, color: Colors.black),
+                                  const TextStyle(fontSize: 14, color: Colors.black),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -171,13 +171,13 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
       child: Container(
         key: ValueKey(index),
         child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           width: 150,
-          constraints: BoxConstraints(
+          constraints: const BoxConstraints(
             minHeight: 200,
           ),
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(8),
@@ -202,22 +202,22 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Flexible(
                 child: Text(
                   member['name']!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Flexible(
                 child: Text(
                   member['companyPosition']!,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 15,
                     color: Colors.grey,
                   ),
@@ -358,7 +358,7 @@ class CompanyPageState extends State<CompanyPage> {
                       ),
                       Center(
                         child: ConstrainedBox(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 600,
                           ),
                           child: Text(
@@ -373,12 +373,12 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      const SizedBox(height: 30),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30),
                   child: Text(
                     "Membres de l’équipe RISU",
                     style: TextStyle(
@@ -393,9 +393,9 @@ class CompanyPageState extends State<CompanyPage> {
                 TeamMembersGrid(
                   teamMembers: teamMembers,
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Container(
-                  padding: EdgeInsets.all(30),
+                  padding: const EdgeInsets.all(30),
                   width: double.infinity,
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.appBarTheme.backgroundColor
@@ -412,9 +412,9 @@ class CompanyPageState extends State<CompanyPage> {
                               : lightTheme.primaryColor,
                         ),
                       ),
-                      SizedBox(height: 35),
+                      const SizedBox(height: 35),
                       ConstrainedBox(
-                        constraints: BoxConstraints(
+                        constraints: const BoxConstraints(
                           maxWidth: 600,
                         ),
                         child: Text(
@@ -431,7 +431,7 @@ class CompanyPageState extends State<CompanyPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 35),
+                const SizedBox(height: 35),
                 Center(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -454,7 +454,7 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 80),
+                      const SizedBox(width: 80),
                       Text(
                         "Conteneurs et Casiers Connectés",
                         style: TextStyle(
@@ -469,13 +469,13 @@ class CompanyPageState extends State<CompanyPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 80),
+                const SizedBox(height: 80),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         maxWidth: 700,
                       ),
                       child: Text(
@@ -489,9 +489,9 @@ class CompanyPageState extends State<CompanyPage> {
                         textAlign: TextAlign.justify,
                       ),
                     ),
-                    SizedBox(width: 150),
+                    const SizedBox(width: 150),
                     Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       width: 200,
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -509,7 +509,7 @@ class CompanyPageState extends State<CompanyPage> {
                             ),
                             textAlign: TextAlign.justify,
                           ),
-                          SizedBox(height: 15),
+                          const SizedBox(height: 15),
                           Text(
                             "La Personnalisation:",
                             style: TextStyle(
@@ -521,7 +521,7 @@ class CompanyPageState extends State<CompanyPage> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             "Modéliser votre conteneur à votre guise",
                             style: TextStyle(
@@ -532,7 +532,7 @@ class CompanyPageState extends State<CompanyPage> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 20),
                           Text(
                             "Facilité d'installation :",
                             style: TextStyle(
@@ -544,7 +544,7 @@ class CompanyPageState extends State<CompanyPage> {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             "Disposez vos conteneurs où vous le souhaitez grâce à une conception modulable.",
                             style: TextStyle(
@@ -560,7 +560,7 @@ class CompanyPageState extends State<CompanyPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 60),
+                const SizedBox(height: 60),
                 Center(
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -583,7 +583,7 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 80),
+                      const SizedBox(width: 80),
                       Text(
                         "Application Mobile Risu",
                         style: TextStyle(
@@ -598,7 +598,7 @@ class CompanyPageState extends State<CompanyPage> {
                     ],
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -608,7 +608,7 @@ class CompanyPageState extends State<CompanyPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         ConstrainedBox(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 600,
                           ),
                           child: Text(
@@ -622,7 +622,7 @@ class CompanyPageState extends State<CompanyPage> {
                             textAlign: TextAlign.justify,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Text(
                           "Fonctionnalité",
                           style: TextStyle(
@@ -634,7 +634,7 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           textAlign: TextAlign.left,
                         ),
-                        SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         RichText(
                           textAlign: TextAlign.left,
                           text: TextSpan(
@@ -664,9 +664,9 @@ class CompanyPageState extends State<CompanyPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         ConstrainedBox(
-                          constraints: BoxConstraints(
+                          constraints: const BoxConstraints(
                             maxWidth: 600,
                           ),
                           child: RichText(
@@ -708,7 +708,7 @@ class CompanyPageState extends State<CompanyPage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 60),
+                const SizedBox(height: 60),
                 Text(
                   "Impact Environnemental et Social",
                   style: TextStyle(
@@ -719,9 +719,9 @@ class CompanyPageState extends State<CompanyPage> {
                         : lightTheme.primaryColor,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 ConstrainedBox(
-                  constraints: BoxConstraints(
+                  constraints: const BoxConstraints(
                     maxWidth: 600,
                   ),
                   child: Text(
@@ -735,7 +735,7 @@ class CompanyPageState extends State<CompanyPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 80),
+                const SizedBox(height: 80),
                 Center(
                   child: Container(
                       width: 800,
@@ -762,7 +762,7 @@ class CompanyPageState extends State<CompanyPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 30),
+                              const SizedBox(width: 30),
                               Text(
                                 "Réduction des Déplacements",
                                 style: TextStyle(
@@ -776,9 +776,9 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           ConstrainedBox(
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 450,
                             ),
                             child: Text(
@@ -792,7 +792,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Row(
                             children: [
                               CircleAvatar(
@@ -813,7 +813,7 @@ class CompanyPageState extends State<CompanyPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 30),
+                              const SizedBox(width: 30),
                               Text(
                                 "Partage d'Objets",
                                 style: TextStyle(
@@ -827,9 +827,9 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           ConstrainedBox(
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 450,
                             ),
                             child: Text(
@@ -843,7 +843,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Row(
                             children: [
                               CircleAvatar(
@@ -864,7 +864,7 @@ class CompanyPageState extends State<CompanyPage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 30),
+                              const SizedBox(width: 30),
                               Text(
                                 "Accessibilité",
                                 style: TextStyle(
@@ -878,9 +878,9 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           ConstrainedBox(
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                               maxWidth: 450,
                             ),
                             child: Text(
@@ -894,7 +894,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                         ],
                       )),
                 ),
