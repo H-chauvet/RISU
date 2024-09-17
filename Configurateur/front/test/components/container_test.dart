@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/container.dart';
-import 'package:front/app_routes.dart';
-import 'package:front/screens/company/container-company.dart';
-import 'package:mockito/mockito.dart';
-import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
 
 Future<void> deleteContainer(ContainerListData container) async {}
@@ -30,7 +27,13 @@ void main() {
         builder: (context, orientation, deviceType) {
           return MaterialApp(
             home: ContainerCards(
-                container: mockItem, onDelete: deleteContainer, page: 'page'),
+              container: mockItem,
+              onDelete: deleteContainer,
+              page: 'page',
+            ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
           );
         },
       ),
@@ -52,6 +55,9 @@ void main() {
               onDelete: deleteContainer,
               page: 'page',
             ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
           );
         },
       ),
@@ -91,6 +97,9 @@ void main() {
               onDelete: deleteContainer,
               page: "page",
             ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
           );
         },
       ),
@@ -115,6 +124,9 @@ void main() {
               onDelete: deleteContainer,
               page: "page",
             ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
           );
         },
       ),

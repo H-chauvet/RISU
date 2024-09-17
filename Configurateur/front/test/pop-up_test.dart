@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:mockito/mockito.dart';
@@ -15,6 +16,15 @@ class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 void main() {
   late MockSharedPreferences sharedPreferences;
 
+  Widget createLocalizedWidgetForTesting({required Widget child}) {
+    return MaterialApp(
+      home: child,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('fr'),
+    );
+  }
+
   setUp(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -25,10 +35,30 @@ void main() {
   });
   final mockContext = MockBuildContext();
 
-  test('checkSignin - token vide', () async {
+  testWidgets('checkSignin - token vide', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    dynamic object = await checkSignin(mockContext);
+    dynamic object;
+
+    await tester.pumpWidget(
+      createLocalizedWidgetForTesting(
+        child: Builder(
+          builder: (context) {
+            return FutureBuilder(
+              future: checkSignin(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  object = snapshot.data;
+                }
+                return const SizedBox();
+              },
+            );
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
 
     expect(object['isSignedIn'], false);
   });
@@ -51,10 +81,30 @@ void main() {
     expect(object['isSignedIn'], true);
   });
 
-  test('checkSignInAdmin - token vide ou utilisateur non admin', () async {
+  testWidgets('checkSignInAdmin - token vide ou utilisateur non admin', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({});
 
-    dynamic object = await checkSignInAdmin(mockContext);
+    dynamic object;
+
+    await tester.pumpWidget(
+      createLocalizedWidgetForTesting(
+        child: Builder(
+          builder: (context) {
+            return FutureBuilder(
+              future: checkSignInAdmin(context),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  object = snapshot.data;
+                }
+                return const SizedBox();
+              },
+            );
+          },
+        ),
+      ),
+    );
+
+    await tester.pumpAndSettle();
 
     expect(object['isSignedIn'], false);
   });

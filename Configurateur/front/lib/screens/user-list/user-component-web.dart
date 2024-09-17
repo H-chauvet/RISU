@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/styles/globalStyle.dart';
 
@@ -66,7 +67,7 @@ class UserCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-              "Prénom : " + user.firstName,
+              AppLocalizations.of(context)!.firstNameData(user.firstName),
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
@@ -74,7 +75,7 @@ class UserCard extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              "Nom : " + user.lastName,
+              AppLocalizations.of(context)!.lastNameData(user.lastName),
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
@@ -89,7 +90,7 @@ class UserCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "Email : " + user.email,
+                      AppLocalizations.of(context)!.emailData(user.email),
                       style: TextStyle(
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
@@ -98,7 +99,7 @@ class UserCard extends StatelessWidget {
                     ),
                     if (user.company != null)
                       Text(
-                        "Entreprise : " + user.company,
+                        AppLocalizations.of(context)!.companyData(user.company),
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize

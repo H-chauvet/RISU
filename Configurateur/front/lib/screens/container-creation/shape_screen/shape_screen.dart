@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
@@ -127,14 +128,15 @@ class ShapeScreenState extends State<ShapeScreen> {
             });
           },
           child: Text(
-            "Retirer un casier",
+            AppLocalizations.of(context)!.removeLocker,
             style: TextStyle(
-                fontSize: screenFormat == ScreenFormat.desktop
-                    ? desktopFontSize
-                    : tabletFontSize,
-                color: Provider.of<ThemeService>(context).isDark
-                    ? darkTheme.primaryColor
-                    : lightTheme.colorScheme.background),
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopFontSize
+                  : tabletFontSize,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.primaryColor
+                  : lightTheme.colorScheme.background,
+            ),
           ),
         ),
       );
@@ -157,7 +159,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               });
             },
             child: Text(
-              "Supprimer",
+              AppLocalizations.of(context)!.delete,
               style: TextStyle(
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
@@ -185,7 +187,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               });
             },
             child: Text(
-              'Annuler',
+              AppLocalizations.of(context)!.cancel,
               style: TextStyle(
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
@@ -374,7 +376,7 @@ class ShapeScreenState extends State<ShapeScreen> {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
       appBar: CustomAppBar(
-        "Forme",
+        AppLocalizations.of(context)!.shape,
         context: context,
       ),
       bottomSheet: Row(
@@ -383,8 +385,8 @@ class ShapeScreenState extends State<ShapeScreen> {
           ProgressBar(
             length: 6,
             progress: 0,
-            previous: 'Précédent',
-            next: 'Suivant',
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.next,
             previousFunc: goPrevious,
             nextFunc: goNext,
           ),
@@ -404,7 +406,7 @@ class ShapeScreenState extends State<ShapeScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Nombres de lignes',
+                  AppLocalizations.of(context)!.rowNumbers,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
@@ -482,7 +484,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                   height: 20.0,
                 ),
                 Text(
-                  'Nombres de colonnes',
+                  AppLocalizations.of(context)!.columnNumbers,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
@@ -605,7 +607,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Largeur:',
+                          AppLocalizations.of(context)!.width,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -617,7 +619,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           ),
                         ),
                         Text(
-                          width <= 1 ? '$width mètre' : '$width mètres',
+                          AppLocalizations.of(context)!.meters(width),
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -633,7 +635,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          'Hauteur:',
+                          AppLocalizations.of(context)!.height,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -645,7 +647,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                           ),
                         ),
                         Text(
-                          height <= 1 ? '$height mètre' : '$height mètres',
+                          AppLocalizations.of(context)!.meters(height),
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -661,7 +663,7 @@ class ShapeScreenState extends State<ShapeScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
-                          "Nombre d'emplacements:",
+                          AppLocalizations.of(context)!.locationsNumber,
                           style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor

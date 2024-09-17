@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/user-list/user-component.dart';
 import 'package:front/screens/user-list/user-component-web.dart';
@@ -44,6 +45,9 @@ void main() {
                 ),
                 onDelete: deleteUserMobile,
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -78,6 +82,9 @@ void main() {
             ),
             onDelete: deleteUserWeb,
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
         ),
       ),
     );
@@ -102,7 +109,12 @@ void main() {
         ],
         child: Sizer(
           builder: (context, orientation, deviceType) {
-            return MaterialApp(home: UserPage());
+            return const MaterialApp(
+              home: UserPage(),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale('fr'),
+            );
           },
         ),
       ),

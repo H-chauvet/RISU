@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -26,7 +27,7 @@ class ConfirmationSaveState extends State<ConfirmationSave> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
-        "Confirmation de sauvegarde",
+        AppLocalizations.of(context)!.saveConfirm,
         context: context,
       ),
       body: Center(
@@ -34,7 +35,7 @@ class ConfirmationSaveState extends State<ConfirmationSave> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Votre conteneur a bien été sauvegardé",
+              AppLocalizations.of(context)!.saveConfirmed,
               style: TextStyle(
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
@@ -58,7 +59,7 @@ class ConfirmationSaveState extends State<ConfirmationSave> {
                 context.go('/');
               },
               child: Text(
-                "Retour à l'accueil",
+                AppLocalizations.of(context)!.backToHome,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor

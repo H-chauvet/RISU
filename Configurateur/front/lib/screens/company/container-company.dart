@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -114,7 +115,10 @@ class ContainerCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Text(
-                        "Ville : ${container.city != null ? container.city! : "Inconnue"}",
+                        (container.city != null)
+                            ? AppLocalizations.of(context)!
+                                .cityData(container.city!)
+                            : AppLocalizations.of(context)!.cityUnknown,
                         style: TextStyle(
                             color: Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
@@ -127,7 +131,8 @@ class ContainerCard extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  "Prix du conteneur : ${container.price.toString()} €",
+                  AppLocalizations.of(context)!
+                      .containerPriceData(container.price.toString()),
                   style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
