@@ -5,7 +5,6 @@ import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/screens/company/company.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -28,9 +27,6 @@ void main() {
 
   testWidgets('CompanyPage should render without error',
       (WidgetTester tester) async {
-    // when(sharedPreferences.getString('token')).thenReturn('test-token');
-    // when(sharedPreferences.getString('tokenExpiration')).thenReturn(
-    //     DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
     await tester.binding.setSurfaceSize(const Size(5000, 5000));
     await tester.pumpWidget(
@@ -92,7 +88,6 @@ void main() {
             "Notre application mobile, fournie avec chaque conteneur, révolutionne la manière de louer et de partager des objets. Elle permet de localiser et de louer des objets en quelques clics grâce à une carte interactive des conteneurs Risu disponibles à proximité."),
         findsOneWidget);
     expect(find.text("Fonctionnalité"), findsOneWidget);
-    // Faire les textspan
     expect(find.text("Impact Environnemental et Social"), findsOneWidget);
     expect(
         find.text(
