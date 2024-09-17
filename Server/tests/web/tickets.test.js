@@ -326,7 +326,7 @@ describe("Ticket Routes Tests", () => {
       .set("Authorization", "Bearer mockedAccessToken");
 
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "mockedAccessToken"
     );
     expect(response.status).toBe(200);
   });
@@ -345,7 +345,7 @@ describe("Ticket Routes Tests", () => {
       .set("Authorization", "Bearer mockedAccessToken");
 
     expect(jwtMiddleware.verifyToken).toHaveBeenCalledWith(
-      "Bearer mockedAccessToken"
+      "mockedAccessToken"
     );
     expect(response.status).toBe(200);
   });

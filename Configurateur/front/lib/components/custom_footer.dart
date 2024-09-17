@@ -58,14 +58,6 @@ class CustomFooterState extends State<CustomFooter> {
     }
   }
 
-  void goToFeedbacks() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/feedbacks");
-    }
-  }
-
   void goToProfile() async {
     if (await storageService.readStorage('token') == '') {
       context.go("/login");
@@ -163,34 +155,6 @@ class CustomFooterState extends State<CustomFooter> {
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
                                   decoration: isHoveringContact
-                                      ? TextDecoration.underline
-                                      : TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          MouseRegion(
-                            onEnter: (_) {
-                              setState(() {
-                                isHoveringFeedback = true;
-                              });
-                            },
-                            onExit: (_) {
-                              setState(() {
-                                isHoveringFeedback = false;
-                              });
-                            },
-                            child: GestureDetector(
-                              onTap: () => goToFeedbacks(),
-                              child: Text(
-                                "Vos avis",
-                                style: TextStyle(
-                                  color: Provider.of<ThemeService>(context,
-                                              listen: false)
-                                          .isDark
-                                      ? darkTheme.primaryColor
-                                      : lightTheme.primaryColor,
-                                  decoration: isHoveringFeedback
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
                                 ),
