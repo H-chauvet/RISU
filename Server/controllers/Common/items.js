@@ -114,12 +114,14 @@ exports.deleteItem = async (res, id) => {
  */
 exports.createItem = async (res, item) => {
   try {
+    item.available = item.available == "true";
     item.price = parseFloat(item.price);
     item.containerId = parseInt(item.containerId);
     return await db.Item.create({
       data: item,
     });
   } catch (err) {
+    console.error(err);
     throw res.__("errorOccurred");
   }
 };
