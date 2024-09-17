@@ -4,6 +4,7 @@ const router = express.Router();
 const itemCtrl = require("../../controllers/Common/items");
 const jwtMiddleware = require("../../middleware/jwt");
 const languageMiddleware = require("../../middleware/language");
+const imagesMiddleware = require("../../middleware/images");
 const userCtrl = require("../../controllers/Web/user");
 
 router.post("/delete", async function (req, res, next) {
@@ -35,7 +36,9 @@ router.post("/delete", async function (req, res, next) {
   }
 });
 
-router.post("/create", async (req, res, next) => {
+router.post("/create",
+  imagesMiddleware.upload.array('images', 5),
+  async (req, res, next) => {
   try {
     jwtMiddleware.verifyToken(req.headers.authorization.split(" ")[1]);
   } catch (err) {
@@ -45,26 +48,43 @@ router.post("/create", async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwtMiddleware.decodeToken(token);
+    console.log(decodedToken);
 
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
+    console.log(user)
     languageMiddleware.setServerLanguage(req, user);
 
-    const { id, name, available, price, containerId, description } =
+    const { name, available, price, containerId, description } =
       req.body;
+      console.log(req.body);
     const item = await itemCtrl.createItem(res, {
-      id,
       name,
       available,
       price,
       containerId,
       description,
     });
+    console.log(req.files);
+    console.log(item);
+    var count = 0;
+    for (const file of req.files) {
+      const params = {
+          Bucket: imagesMiddleware.awsBucketName,
+          Key: `${imagesMiddleware.itemImagesFolder}${item.name}-${item.id}/${count}`,
+          Body: file.buffer,
+          ContentType: file.mimetype
+      };
+      const command = new imagesMiddleware.PutObjectCommand(params);
+      count++;
+      await imagesMiddleware.s3Client.send(command);
+    }
     return res.status(200).json(item);
   } catch (err) {
     if (res.statusCode == 200) {
       res.status(500);
     }
-    res.send(err);
+    console.error(err);
+    return res.send(err);
   }
 });
 
