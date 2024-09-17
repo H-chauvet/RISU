@@ -173,9 +173,8 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
           duration: Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           width: 150,
-          // Utilisez 'constraints' pour permettre à la hauteur de s'ajuster dynamiquement
           constraints: BoxConstraints(
-            minHeight: 200, // Ajustez si nécessaire
+            minHeight: 200,
           ),
           padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
@@ -183,8 +182,7 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(
-            mainAxisSize:
-                MainAxisSize.min, // Assurez-vous que la hauteur ne dépasse pas
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Flexible(
@@ -702,10 +700,6 @@ class CompanyPageState extends State<CompanyPage> {
                         ),
                       ],
                     ),
-
-                    // SizedBox(width: 50),
-
-                    // ici
                     Image.asset(
                       'assets/iphone.png',
                       height: 450,
