@@ -217,7 +217,7 @@ exports.updateContainerPosition = async (res, id, container) => {
  * @throws {Error} with a specific message to find the problem
  * @returns the city and adress of the position
  */
-exports.getLocalisation = async (res, position) => {
+exports.getLocalisation = async (position) => {
   const response = await fetch(
     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
       position.latitude +

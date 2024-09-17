@@ -133,62 +133,72 @@ class MyContainerState extends State<MyContainer> {
                       : tabletFontSize,
                   fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 100),
             Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: displayedContainers.length,
-                itemBuilder: (_, i) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: ElevatedButton(
-                          key: Key('container_button_$i'),
-                          style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                          ),
-                          onPressed: () {
-                            storageService.writeStorage(
-                              'containerData',
-                              jsonEncode(
-                                {
-                                  'id': displayedContainers[i]['id'],
-                                  'container':
-                                      jsonEncode(displayedContainers[i]),
-                                },
-                              ),
-                            );
-                            context.go(
-                              '/container-creation',
-                              extra: jsonEncode(
-                                {
-                                  'id': displayedContainers[i]['id'],
-                                  'container':
-                                      jsonEncode(displayedContainers[i]),
-                                },
-                              ),
-                            );
-                          },
-                          child: Text(
-                            displayedContainers[i]['saveName'],
-                            style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletFontSize),
-                          ),
-                        ),
+              child: displayedContainers.isEmpty
+                  ? const Text(
+                      "Aucune sauvegarde trouvée",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromARGB(255, 211, 11, 11),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    )
+                  : ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: displayedContainers.length,
+                      itemBuilder: (_, i) {
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: ElevatedButton(
+                                key: Key('container_button_$i'),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  storageService.writeStorage(
+                                    'containerData',
+                                    jsonEncode(
+                                      {
+                                        'id': displayedContainers[i]['id'],
+                                        'container':
+                                            jsonEncode(displayedContainers[i]),
+                                      },
+                                    ),
+                                  );
+                                  context.go(
+                                    '/container-creation',
+                                    extra: jsonEncode(
+                                      {
+                                        'id': displayedContainers[i]['id'],
+                                        'container':
+                                            jsonEncode(displayedContainers[i]),
+                                      },
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  displayedContainers[i]['saveName'],
+                                  style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
             ),
           ],
         ),

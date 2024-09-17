@@ -203,6 +203,7 @@
 	"nameNew": "new Name",
 	"newRisu": "New on RISU ?",
 	"next": "Next",
+	"objectCreate": "Create object",
 	"objectCreation": "Object creation",
 	"objectCreationFailed": "Object creation failure",
 	"objectCreationSuccess": "Object creation success",

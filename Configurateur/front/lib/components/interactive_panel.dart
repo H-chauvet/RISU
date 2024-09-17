@@ -46,8 +46,10 @@ class InteractivePanelState extends State<InteractivePanel> {
             children: [
               Text(
                 AppLocalizations.of(context)!.containerConfiguration,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(

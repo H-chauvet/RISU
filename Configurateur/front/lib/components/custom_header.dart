@@ -58,6 +58,14 @@ class LandingAppBarState extends State<LandingAppBar> {
     }
   }
 
+  void goToFeedbacks() async {
+    if (await storageService.readStorage('token') == '') {
+      context.go("/login");
+    } else {
+      context.go("/feedbacks");
+    }
+  }
+
   /// [Function] : Download the mobile application from the website
   void downloadApk() async {
     try {
@@ -214,6 +222,32 @@ class LandingAppBarState extends State<LandingAppBar> {
                       ),
                     ),
                     const SizedBox(width: 10),
+                    TextButton(
+                      onPressed: () => goToFeedbacks(),
+                      style: TextButton.styleFrom(
+                        foregroundColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: const Text(
+                        "Laisser un avis",
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    const SizedBox(
+                      height: 24,
+                      child: VerticalDivider(
+                        thickness: 2,
+                        color: Color.fromARGB(255, 172, 167, 167),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
                     Text(
                       AppLocalizations.of(context)!.darkTheme,
                       style: TextStyle(
@@ -286,9 +320,11 @@ class LandingAppBarState extends State<LandingAppBar> {
               ),
               const SizedBox(width: 32),
               PopupMenuButton<String>(
-                tooltip: AppLocalizations.of(context)!.authentification,
+                tooltip: token != ''
+                    ? AppLocalizations.of(context)!.profile
+                    : AppLocalizations.of(context)!.authentification,
                 icon: Icon(
-                  size: 35,
+                  size: 28,
                   Icons.account_circle,
                   color:
                       Provider.of<ThemeService>(context, listen: false).isDark
@@ -359,6 +395,21 @@ class LandingAppBarState extends State<LandingAppBar> {
                         ),
                       ),
                     );
+                    items.add(
+                      PopupMenuItem<String>(
+                        value: 'my-save',
+                        child: Text(
+                          'Mes sauvegardes',
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
+                        ),
+                      ),
+                    );
                     if (userRole == "admin") {
                       items.add(
                         PopupMenuItem<String>(
@@ -402,6 +453,8 @@ class LandingAppBarState extends State<LandingAppBar> {
                     context.go("/profil");
                   } else if (value == 'company-profil') {
                     context.go("/company-profil");
+                  } else if (value == 'my-save') {
+                    context.go("/my-container");
                   } else if (value == "disconnect") {
                     storageService.removeStorage('token');
                     storageService.removeStorage('tokenExpiration');

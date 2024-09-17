@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:footer/footer.dart';
@@ -16,10 +15,8 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
-import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
-import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -618,38 +615,16 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
-    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
+      appBar: CustomAppBar(
+        AppLocalizations.of(context)!.containerHandling,
+        context: context,
+      ),
       body: FooterView(
         footer: Footer(
-          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [
-          LandingAppBar(context: context),
-          Text(
-            AppLocalizations.of(context)!.containerHandling,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: screenFormat == ScreenFormat.desktop
-                  ? desktopBigFontSize
-                  : tabletBigFontSize,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.bold,
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.secondaryHeaderColor
-                  : lightTheme.secondaryHeaderColor,
-              shadows: [
-                Shadow(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  offset: const Offset(0.75, 0.75),
-                  blurRadius: 1.5,
-                ),
-              ],
-            ),
-          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
@@ -777,7 +752,37 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 65,
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      storageService.writeStorage(
+                        'containerId',
+                        containerId.toString(),
+                      );
+                      context.go("/object-creation");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.objectCreate,
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.appBarTheme.backgroundColor
+                            : lightTheme.appBarTheme.backgroundColor,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
                   ),
                   items.isEmpty
                       ? Center(

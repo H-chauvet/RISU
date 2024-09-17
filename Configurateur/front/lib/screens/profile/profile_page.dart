@@ -836,27 +836,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           ],
                         ),
                         const Spacer(),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                          ),
-                          onPressed: () {
-                            context.go("/my-container");
-                          },
-                          child: Text(
-                            AppLocalizations.of(context)!.saveMy,
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
