@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/container.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 import 'package:sizer/sizer.dart';
