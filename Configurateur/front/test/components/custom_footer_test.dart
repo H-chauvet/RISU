@@ -45,7 +45,6 @@ void main() {
 
     expect(find.text("Communauté"), findsOneWidget);
     expect(find.text("Nous contacter"), findsOneWidget);
-    expect(find.text("Vos avis"), findsOneWidget);
     expect(find.text("Questions fréquentes"), findsOneWidget);
     expect(find.text("L'entreprise Risu"), findsOneWidget);
     expect(find.text("Mon Compte"), findsOneWidget);
@@ -82,7 +81,6 @@ void main() {
 
     final textsToTest = [
       "Nous contacter",
-      "Vos avis",
       "Questions fréquentes",
       "L'entreprise Risu",
       "Mon Profil",

@@ -195,7 +195,7 @@ class TicketsState extends State<TicketsPage> {
             'http://$serverIp:3000/api/tickets/assigned-info/$assignedId'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': token!,
+          'Authorization': 'Bearer $token',
           'Access-Control-Allow-Origin': '*',
         },
       );
@@ -318,7 +318,7 @@ class TicketsState extends State<TicketsPage> {
       body: FooterView(
         footer: Footer(
           padding: EdgeInsets.zero,
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),

@@ -44,7 +44,7 @@ class InteractivePanelState extends State<InteractivePanel> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Configuration du container",
+                "Configuration du conteneur",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
               const SizedBox(height: 20),
