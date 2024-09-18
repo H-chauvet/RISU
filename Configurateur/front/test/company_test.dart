@@ -6,7 +6,6 @@ import 'package:front/app_routes.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/screens/company/company.dart';
-import 'package:front/screens/company/container-company.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -29,9 +28,6 @@ void main() {
 
   testWidgets('CompanyPage should render without error',
       (WidgetTester tester) async {
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
-        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
     await tester.binding.setSurfaceSize(const Size(5000, 5000));
     await tester.pumpWidget(
@@ -63,124 +59,57 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(LandingAppBar), findsOneWidget);
-    expect(find.byType(CustomFooter), findsOneWidget);
 
-    expect(find.text("L'équipe de RISU"), findsOneWidget);
-    expect(find.text("Notre équipe :"), findsOneWidget);
-    expect(find.text("Nos Conteneurs :"), findsOneWidget);
-  });
-
-  testWidgets('CompanyPage should display team members',
-      (WidgetTester tester) async {
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
-        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
-
-    await tester.binding.setSurfaceSize(const Size(5000, 5000));
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeService>(
-            create: (_) => ThemeService(),
-          ),
-        ],
-        child: Sizer(
-          builder: (context, orientation, deviceType) {
-            return MaterialApp(
-              theme: ThemeData(fontFamily: 'Roboto'),
-              home: InheritedGoRouter(
-                goRouter: AppRouter.router,
-                child: const CompanyPage(),
-              ),
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: Locale('fr'),
-            );
-          },
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.byType(LandingAppBar), findsOneWidget);
-    expect(find.byType(CustomFooter), findsOneWidget);
-
-    expect(find.text("HENRI"), findsOneWidget);
-    expect(find.text("LOUIS"), findsOneWidget);
-    expect(find.text("HUGO"), findsOneWidget);
-  });
-
-  testWidgets('CompanyPage should display team', (WidgetTester tester) async {
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
-        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
-
-    await tester.binding.setSurfaceSize(const Size(5000, 5000));
-    await tester.pumpWidget(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ThemeService>(
-            create: (_) => ThemeService(),
-          ),
-        ],
-        child: Sizer(
-          builder: (context, orientation, deviceType) {
-            return MaterialApp(
-              theme: ThemeData(fontFamily: 'Roboto'),
-              home: InheritedGoRouter(
-                goRouter: AppRouter.router,
-                child: const CompanyPage(),
-              ),
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              locale: Locale('fr'),
-            );
-          },
-        ),
-      ),
-    );
-
-    await tester.pumpAndSettle();
-
-    expect(find.byType(LandingAppBar), findsOneWidget);
-    expect(find.byType(CustomFooter), findsOneWidget);
-
-    expect(find.byKey(const Key('member_image_0')), findsOneWidget);
-    expect(find.byKey(const Key('member_image_1')), findsOneWidget);
-    expect(find.byKey(const Key('member_image_2')), findsOneWidget);
-    expect(find.byKey(const Key('member_image_3')), findsOneWidget);
-    expect(find.byKey(const Key('member_image_4')), findsOneWidget);
-    expect(find.byType(CustomFooter), findsOneWidget);
-  });
-
-  test('ContainerTest toJson and fromJson', () {
-    final container = MyContainerList(
-      id: 1,
-      createdAt: '2022-01-01',
-      organization: 'Test Organization',
-      organizationId: 123,
-      containerMapping: {},
-      price: 29.99,
-      address: "blabla",
-      city: null,
-      design: null,
-      informations: "c'est un conteneur",
-    );
-
-    final Map<String, dynamic> containerJson = container.toMap();
-    final MyContainerList parsedContainer =
-        MyContainerList.fromJson(containerJson);
-
-    expect(parsedContainer.id, container.id);
-    expect(parsedContainer.createdAt, container.createdAt);
-    expect(parsedContainer.organization, container.organization);
-    expect(parsedContainer.organizationId, container.organizationId);
-    expect(parsedContainer.containerMapping, container.containerMapping);
-    expect(parsedContainer.price, container.price);
-    expect(parsedContainer.address, container.address);
-    expect(parsedContainer.city, container.city);
-    expect(parsedContainer.design, container.design);
-    expect(parsedContainer.informations, container.informations);
+    expect(
+        find.text(
+            "Risu révolutionne l'accès aux objets du quotidien grâce à ses conteneurs et casiers connectés..."),
+        findsOneWidget);
+    expect(find.text("Membres de l’équipe RISU"), findsOneWidget);
+    expect(find.text("Notre Solution"), findsOneWidget);
+    expect(
+        find.text(
+            "Chez Risu, nous croyons en des solutions durables qui répondent à des besoins environnementaux et sociaux. Notre solution se divise en deux parties innovantes"),
+        findsOneWidget);
+    expect(find.text("Conteneurs et Casiers Connectés"), findsOneWidget);
+    expect(
+        find.text(
+            "Nous créons des conteneurs et des casiers connectés grâce à un configurateur 3D avancé. Ce configurateur permet aux particuliers de personnaliser la taille et le design de leurs casiers, facilitant ainsi l'intégration dans divers environnements."),
+        findsOneWidget);
+    expect(find.text("Avantages"), findsOneWidget);
+    expect(find.text("La Personnalisation:"), findsOneWidget);
+    expect(
+        find.text("Modéliser votre conteneur à votre guise"), findsOneWidget);
+    expect(find.text("Facilité d'installation :"), findsOneWidget);
+    expect(
+        find.text(
+            "Disposez vos conteneurs où vous le souhaitez grâce à une conception modulable."),
+        findsOneWidget);
+    expect(find.text("Application Mobile Risu"), findsOneWidget);
+    expect(
+        find.text(
+            "Notre application mobile, fournie avec chaque conteneur, révolutionne la manière de louer et de partager des objets. Elle permet de localiser et de louer des objets en quelques clics grâce à une carte interactive des conteneurs Risu disponibles à proximité."),
+        findsOneWidget);
+    expect(find.text("Fonctionnalité"), findsOneWidget);
+    expect(find.text("Impact Environnemental et Social"), findsOneWidget);
+    expect(
+        find.text(
+            "Notre solution Risu a été conçue pour avoir un impact positif sur l'environnement et la société"),
+        findsOneWidget);
+    expect(find.text("Réduction des Déplacements"), findsOneWidget);
+    expect(
+        find.text(
+            "En facilitant l'accès aux objets nécessaires, nous contribuons à réduire l'empreinte carbone liée aux déplacements."),
+        findsOneWidget);
+    expect(find.text("Partage d'Objets"), findsOneWidget);
+    expect(
+        find.text(
+            "Favoriser la location et le partage réduit la production excessive d'objets et encourage une consommation plus responsable."),
+        findsOneWidget);
+    expect(find.text("Accessibilité"), findsOneWidget);
+    expect(
+        find.text(
+            "Nos conteneurs et l'application rendent les objets accessibles à tous, renforçant la communauté et soutenant l'économie circulaire."),
+        findsOneWidget);
   });
 }
 
