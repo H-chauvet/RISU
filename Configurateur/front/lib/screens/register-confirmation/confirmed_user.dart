@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:footer/footer.dart';
-import 'package:footer/footer_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -64,7 +62,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        "Confirmation d'inscription",
+        AppLocalizations.of(context)!.registerComfirmed,
         context: context,
       ),
       body: Column(
@@ -77,7 +75,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    "Votre inscription a bien été confirmée, vous pouvez maintenant vous connecter et profiter de notre application",
+                    AppLocalizations.of(context)!.registerComfirmedMessage,
                     style: TextStyle(
                       fontSize: screenFormat == ScreenFormat.desktop
                           ? desktopBigFontSize
@@ -99,7 +97,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Retour à l'accueil",
+                              AppLocalizations.of(context)!.backToHome,
                               style: TextStyle(
                                 color: Colors.blue,
                                 fontSize: screenFormat == ScreenFormat.desktop

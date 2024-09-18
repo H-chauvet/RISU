@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
@@ -96,7 +97,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Retirer une image',
+            AppLocalizations.of(context)!.imageRemoval,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -113,7 +114,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                 child: Column(
                   children: <Widget>[
                     Text(
-                      "Quelle image souhaitez-vous retirer ?",
+                      AppLocalizations.of(context)!.askImageRemoval,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
@@ -146,7 +147,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Devant',
+                            AppLocalizations.of(context)!.front,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -174,7 +175,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Derrière',
+                            AppLocalizations.of(context)!.back,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -202,7 +203,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Gauche',
+                            AppLocalizations.of(context)!.left,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -237,7 +238,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Droite',
+                            AppLocalizations.of(context)!.right,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -265,7 +266,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Haut',
+                            AppLocalizations.of(context)!.up,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -293,7 +294,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                             });
                           },
                           child: Text(
-                            'Bas',
+                            AppLocalizations.of(context)!.down,
                             style: TextStyle(
                               fontSize: 12,
                               color: getTextColor(),
@@ -305,8 +306,10 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                      ),
                       onPressed: () {
                         for (int i = 0; i < clicked.length; i++) {
                           if (clicked[i].clicked) {
@@ -323,7 +326,7 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
                         }
                       },
                       child: Text(
-                        'Retirer',
+                        AppLocalizations.of(context)!.remove,
                         style: TextStyle(
                           color: getTextColor(),
                         ),

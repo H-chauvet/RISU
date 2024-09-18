@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
 import 'package:front/services/theme_service.dart';
@@ -35,6 +36,9 @@ void main() {
               callback: blankFunction,
             ),
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
         ),
       ),
     );

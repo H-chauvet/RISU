@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -81,11 +82,12 @@ class ContainerDialogState extends State<ContainerDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            'Ajouter un casier',
+            AppLocalizations.of(context)!.containerAdd,
             style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: getTextColor()),
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: getTextColor(),
+            ),
           ),
           const SizedBox(height: 20),
           Form(
@@ -93,8 +95,10 @@ class ContainerDialogState extends State<ContainerDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text("Quelle type de casier voulez-vous ajouter ?",
-                    style: TextStyle(color: getTextColor())),
+                Text(
+                  AppLocalizations.of(context)!.askLockerSize,
+                  style: TextStyle(color: getTextColor()),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -128,7 +132,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                         }
                       },
                       child: Text(
-                        'Petit',
+                        AppLocalizations.of(context)!.small,
                         style: TextStyle(color: getTextColor()),
                       ),
                     ),
@@ -157,8 +161,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                           });
                         }
                       },
-                      child: Text('Moyen',
-                          style: TextStyle(color: getTextColor())),
+                      child: Text(
+                        AppLocalizations.of(context)!.medium,
+                        style: TextStyle(color: getTextColor()),
+                      ),
                     ),
                     CheckboxMenuButton(
                       style: ButtonStyle(
@@ -185,8 +191,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                           });
                         }
                       },
-                      child: Text('Grand',
-                          style: TextStyle(color: getTextColor())),
+                      child: Text(
+                        AppLocalizations.of(context)!.big,
+                        style: TextStyle(color: getTextColor()),
+                      ),
                     ),
                   ],
                 ),
@@ -197,8 +205,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Entrez la colonne du casier',
-                      labelText: 'numéro de colonne',
+                      hintText: AppLocalizations.of(context)!.columnNumberAsk,
+                      labelText: AppLocalizations.of(context)!.columnNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -209,14 +217,14 @@ class ContainerDialogState extends State<ContainerDialog> {
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
                         if (int.parse(value) <= 0) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                         if (int.parse(value) > widget.width) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                       }
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -226,8 +234,8 @@ class ContainerDialogState extends State<ContainerDialog> {
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      hintText: 'Entrez la ligne du casier',
-                      labelText: 'numéro de ligne',
+                      hintText: AppLocalizations.of(context)!.rowNumberAsk,
+                      labelText: AppLocalizations.of(context)!.rowNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -238,19 +246,19 @@ class ContainerDialogState extends State<ContainerDialog> {
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
                         if (int.parse(value) < 0) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                         if (direction == 'Haut' &&
                             int.parse(value) + lockerSize - 1 > widget.height) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                         if (direction == 'Bas' &&
                             int.parse(value) - lockerSize - 1 < 0) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                       }
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -259,8 +267,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("Sur quelle face du conteneur voulez-vous l'ajouter ?",
-                    style: TextStyle(color: getTextColor())),
+                Text(
+                  AppLocalizations.of(context)!.askAddContainerSide,
+                  style: TextStyle(color: getTextColor()),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -291,7 +301,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                         }
                       },
                       child: Text(
-                        'Devant',
+                        AppLocalizations.of(context)!.front,
                         style: TextStyle(color: getTextColor()),
                       ),
                     ),
@@ -318,8 +328,10 @@ class ContainerDialogState extends State<ContainerDialog> {
                           });
                         }
                       },
-                      child: Text('Derrière',
-                          style: TextStyle(color: getTextColor())),
+                      child: Text(
+                        AppLocalizations.of(context)!.back,
+                        style: TextStyle(color: getTextColor()),
+                      ),
                     ),
                   ],
                 ),
@@ -333,7 +345,7 @@ class ContainerDialogState extends State<ContainerDialog> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
                     child: Text(
-                      'Ajouter',
+                      AppLocalizations.of(context)!.add,
                       style: TextStyle(
                         color: getTextColor(),
                       ),
@@ -343,11 +355,14 @@ class ContainerDialogState extends State<ContainerDialog> {
                         _formKey.currentState!.save();
                         if (face == '' || size == '') {
                           await showDialog(
-                              context: context,
-                              builder: (context) => const AlertDialog(
-                                    content: Text(
-                                        "Veuillez remplir tous les champs"),
-                                  ));
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .askCompleteAllField,
+                              ),
+                            ),
+                          );
                           return;
                         }
                         if (widget.callback(
@@ -356,11 +371,14 @@ class ContainerDialogState extends State<ContainerDialog> {
                                 false) ==
                             'overwriteError') {
                           await showDialog(
-                              context: context,
-                              builder: (context) => const AlertDialog(
-                                    content: Text(
-                                        "Vous ne pouvez pas réaliser cette action, la position est déjà occupée"),
-                                  ));
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              content: Text(
+                                AppLocalizations.of(context)!
+                                    .spaceAllreadyTaken,
+                              ),
+                            ),
+                          );
                         } else {
                           Navigator.pop(context);
                         }

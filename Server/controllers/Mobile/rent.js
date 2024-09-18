@@ -84,6 +84,8 @@ exports.getRentFromId = (rentId) => {
               id: true,
               address: true,
               city:true,
+              longitude: true,
+              latitude: true,
             }
           }
         }

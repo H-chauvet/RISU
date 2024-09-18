@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void showCustomToast(BuildContext context, String message, bool isSuccessful) {
   final overlay = Overlay.of(context);
@@ -106,7 +107,9 @@ class CustomToastState extends State<CustomToast>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      widget.isSuccessful ? "Succès !" : "Erreur !",
+                      widget.isSuccessful
+                          ? AppLocalizations.of(context)!.success
+                          : AppLocalizations.of(context)!.error,
                       style: const TextStyle(
                         color: Colors.black,
                         fontSize: 14.0,
