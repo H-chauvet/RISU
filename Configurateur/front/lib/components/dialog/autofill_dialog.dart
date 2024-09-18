@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
@@ -50,8 +51,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-              'Quelle(s) face(s) du conteneur voulez-vous ranger automatiquement ?',
+          Text(AppLocalizations.of(context)!.containerSideStore,
               style: TextStyle(
                 color: Provider.of<ThemeService>(context).isDark
                     ? darkTheme.primaryColor
@@ -73,8 +73,8 @@ class AutoFillDialogState extends State<AutoFillDialog> {
                       : darkTheme.primaryColor,
                 ),
               ),
-              hintText: 'Face du conteneur',
-              label: const Text('Face du conteneur'),
+              hintText: AppLocalizations.of(context)!.containerSide,
+              label: Text(AppLocalizations.of(context)!.containerSide),
               initialSelection: faceList.first,
               onSelected: (String? value) {
                 setState(() {
@@ -106,7 +106,7 @@ class AutoFillDialogState extends State<AutoFillDialog> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30.0))),
               child: Text(
-                'Trier',
+                AppLocalizations.of(context)!.sort,
                 style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor

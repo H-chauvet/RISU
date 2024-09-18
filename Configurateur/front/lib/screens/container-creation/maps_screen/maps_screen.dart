@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -157,7 +158,7 @@ class MapsState extends State<MapsScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
-        'Localisation',
+        AppLocalizations.of(context)!.location,
         context: context,
       ),
       bottomSheet: Row(
@@ -166,8 +167,8 @@ class MapsState extends State<MapsScreen> {
           ProgressBar(
             length: 6,
             progress: 4,
-            previous: 'Précédent',
-            next: 'Suivant',
+            previous: AppLocalizations.of(context)!.previous,
+            next: AppLocalizations.of(context)!.next,
             previousFunc: goPrevious,
             nextFunc: goNext,
           ),
@@ -185,8 +186,10 @@ class MapsState extends State<MapsScreen> {
               ? desktopHeightFactor
               : tabletHeightFactor,
           alignment: Alignment.center,
-          child: Stack(alignment: Alignment.center, children: [
-            GoogleMap(
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              GoogleMap(
                 key: UniqueKey(),
                 initialCameraPosition: _kGooglePlex,
                 mapType: MapType.normal,
@@ -195,17 +198,19 @@ class MapsState extends State<MapsScreen> {
                 },
                 onCameraMove: (CameraPosition position) {
                   location = position.target;
-                }),
-            Positioned(
-              child: Icon(
-                size: screenFormat == ScreenFormat.desktop
-                    ? desktopIconSize
-                    : tabletIconSize,
-                Icons.room,
-                color: Colors.red,
+                },
               ),
-            )
-          ]),
+              Positioned(
+                child: Icon(
+                  size: screenFormat == ScreenFormat.desktop
+                      ? desktopIconSize
+                      : tabletIconSize,
+                  Icons.room,
+                  color: Colors.red,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

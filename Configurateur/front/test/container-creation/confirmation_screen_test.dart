@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
 import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
@@ -48,6 +49,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const ConfirmationScreen(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),
@@ -59,7 +63,7 @@ void main() {
     expect(find.text("Confirmation de commande"), findsOneWidget);
     expect(
         find.text(
-            "Votre commande a bien été confirmée, vous pouvez maintenant retournez à l'accueil et nous vous contacterons dès que votre commande sera prête"),
+            "Votre commande a bien été confirmée, vous pouvez maintenant retourner à l'accueil et nous vous contacterons dès que votre commande sera prête"),
         findsOneWidget);
 
     await tester.tap(find.byKey(const Key('go-home')));

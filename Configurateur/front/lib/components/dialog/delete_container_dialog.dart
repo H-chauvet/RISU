@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -59,11 +60,14 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('Supprimer un conteneur',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: getTextColor())),
+          Text(
+            AppLocalizations.of(context)!.deleteContainer,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: getTextColor(),
+            ),
+          ),
           const SizedBox(height: 20),
           Form(
             key: _formKey,
@@ -75,8 +79,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                   child: TextFormField(
                     key: const Key('locker-column'),
                     decoration: InputDecoration(
-                      hintText: 'Entrez la colonne du casier',
-                      labelText: 'numéro de colonne',
+                      hintText: AppLocalizations.of(context)!.columnNumberAsk,
+                      labelText: AppLocalizations.of(context)!.columnNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -87,14 +91,14 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
                         if (int.parse(value) <= 0) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                         if (int.parse(value) > 12) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                       }
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -105,8 +109,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                   child: TextFormField(
                     key: const Key('locker-row'),
                     decoration: InputDecoration(
-                      hintText: 'Entrez la ligne du casier',
-                      labelText: 'numéro de ligne',
+                      hintText: AppLocalizations.of(context)!.rowNumberAsk,
+                      labelText: AppLocalizations.of(context)!.rowNumber,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                       ),
@@ -117,14 +121,14 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                     validator: (String? value) {
                       if (value != null && value.isNotEmpty) {
                         if (int.parse(value) <= 0) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                         if (int.parse(value) > 12) {
-                          return 'Position invalide';
+                          return AppLocalizations.of(context)!.invalidPosition;
                         }
                       }
                       if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
+                        return AppLocalizations.of(context)!.askCompleteField;
                       }
                       return null;
                     },
@@ -133,8 +137,10 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                 const SizedBox(
                   height: 20,
                 ),
-                Text("Sur quelle face du casier voulez-vous le supprimer ?",
-                    style: TextStyle(color: getTextColor())),
+                Text(
+                  AppLocalizations.of(context)!.askRemoveContainerSide,
+                  style: TextStyle(color: getTextColor()),
+                ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -165,7 +171,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                         }
                       },
                       child: Text(
-                        'Devant',
+                        AppLocalizations.of(context)!.front,
                         style: TextStyle(color: getTextColor()),
                       ),
                     ),
@@ -192,8 +198,10 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                           });
                         }
                       },
-                      child: Text('Derrière',
-                          style: TextStyle(color: getTextColor())),
+                      child: Text(
+                        AppLocalizations.of(context)!.back,
+                        style: TextStyle(color: getTextColor()),
+                      ),
                     ),
                   ],
                 ),
@@ -207,7 +215,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0))),
                     child: Text(
-                      'Supprimer',
+                      AppLocalizations.of(context)!.delete,
                       style: TextStyle(
                         color: getTextColor(),
                       ),
@@ -224,7 +232,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                "Vous ne pouvez pas réaliser cette action, la position est déjà vide",
+                                AppLocalizations.of(context)!.spaceAllreadyEmpty,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -236,7 +244,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -248,7 +256,7 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                "Vous ne pouvez pas réaliser cette action, la position est invalide. Veuillez indiquer la position à la base du casier.",
+                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),

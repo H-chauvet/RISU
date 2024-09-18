@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:front/components/custom_toast.dart';
@@ -35,11 +36,13 @@ Future<Map<String, dynamic>> fetchUserDetails(
       return userDetails;
     } else {
       debugPrint(
-          'Failed to fetch user details. Status code: ${response.statusCode}');
+        AppLocalizations.of(context)!
+            .errorFetchingUserDetailsCodeData(response.statusCode),
+      );
       return {"error": true};
     }
   } catch (error) {
-    debugPrint('Error fetching user details: $error');
+    debugPrint(AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
     return {};
   }
 }
@@ -54,7 +57,7 @@ Future<void> sendData(BuildContext context, String rating, String message,
   final userDetails = await fetchUserDetails(context, userMail);
   if (userDetails['error'] == true) {
     if (context.mounted) {
-      showCustomToast(context, "Failed to fetch user details.", false);
+      showCustomToast(context, AppLocalizations.of(context)!.errorFetchingUserDetails, false);
     }
     return;
   }
@@ -128,13 +131,13 @@ class RatingDialogContent extends StatelessWidget {
                 onChanged: (value) {
                   context.read<DialogCubit>().updateMessage(value);
                 },
-                decoration: const InputDecoration(
-                  hintText: 'Entrez votre message...',
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.yourMessage,
                 ),
                 maxLines: 5,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Veuillez remplir ce champ';
+                    return AppLocalizations.of(context)!.askCompleteField;
                   }
                   return null;
                 },
@@ -157,15 +160,17 @@ class RatingDialogContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
-              child: Text('Soumettre',
-                  style: TextStyle(
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
-                  )),
+              child: Text(
+                AppLocalizations.of(context)!.submit,
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
+                ),
+              ),
             ),
           ],
         );

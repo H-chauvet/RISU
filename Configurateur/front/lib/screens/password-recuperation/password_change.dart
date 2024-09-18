@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -41,7 +42,7 @@ class PasswordChangeState extends State<PasswordChange> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        'Nouveau mot de passe',
+        AppLocalizations.of(context)!.passwordNew,
         context: context,
       ),
       body: Center(
@@ -59,8 +60,8 @@ class PasswordChangeState extends State<PasswordChange> {
                   key: const Key('password'),
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Entrez votre mot de passe',
-                    labelText: 'Mot de passe',
+                    hintText: AppLocalizations.of(context)!.passwordFill,
+                    labelText: AppLocalizations.of(context)!.password,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
@@ -70,7 +71,7 @@ class PasswordChangeState extends State<PasswordChange> {
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Veuillez remplir ce champ';
+                      return AppLocalizations.of(context)!.askCompleteField;
                     }
                     return null;
                   },
@@ -80,8 +81,9 @@ class PasswordChangeState extends State<PasswordChange> {
                   key: const Key('confirm-password'),
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Validation du mot de passe',
-                    labelText: 'Valider le mot de passe',
+                    hintText:
+                        AppLocalizations.of(context)!.passwordConfirmation,
+                    labelText: AppLocalizations.of(context)!.passwordConfirm,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
                     ),
@@ -91,10 +93,10 @@ class PasswordChangeState extends State<PasswordChange> {
                   },
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
-                      return 'Veuillez remplir ce champ';
+                      return AppLocalizations.of(context)!.askCompleteField;
                     }
                     if (value != password) {
-                      return 'Les mots de passe ne correspondent pas';
+                      return AppLocalizations.of(context)!.passwordDontMatch;
                     }
                     return null;
                   },
@@ -123,8 +125,11 @@ class PasswordChangeState extends State<PasswordChange> {
                           }),
                         );
                         if (response.statusCode == 200) {
-                          showCustomToast(context,
-                              "Mot de passe modifié avec succès !", true);
+                          showCustomToast(
+                              context,
+                              AppLocalizations.of(context)!
+                                  .passwordModifySuccess,
+                              true);
                         } else {
                           showCustomToast(context, response.body, false);
                         }
@@ -137,11 +142,12 @@ class PasswordChangeState extends State<PasswordChange> {
                       ),
                     ),
                     child: Text(
-                      "Changer le mot de passe",
+                      AppLocalizations.of(context)!.passwordModify,
                       style: TextStyle(
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize),
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                      ),
                     ),
                   ),
                 ),

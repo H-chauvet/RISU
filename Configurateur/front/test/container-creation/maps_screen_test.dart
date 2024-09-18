@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
-import 'package:front/screens/container-creation/confirmation_screen/confirmation_screen.dart';
 import 'package:front/screens/container-creation/maps_screen/maps_screen.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mockito/mockito.dart';
@@ -40,6 +39,9 @@ void main() {
                 goRouter: AppRouter.router,
                 child: const MapsScreen(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
             );
           },
         ),

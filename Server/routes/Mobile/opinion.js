@@ -50,7 +50,7 @@ router.post('/', jwtMiddleware.refreshTokenMiddleware,
       if (req.query.itemId == null) {
         return res.status(400).send(res.__('missingItemId'))
       }
-      const item = await itemsCtrl.getItemFromId(parseInt(req.query.itemId))
+      const item = await itemsCtrl.getItemFromId(res, parseInt(req.query.itemId))
       if (item == null) {
         return res.status(404).send(res.__('itemNotFound'))
       }
