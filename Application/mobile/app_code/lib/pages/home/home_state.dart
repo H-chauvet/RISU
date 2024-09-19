@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -6,12 +8,16 @@ import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
 import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
+import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:uni_links/uni_links.dart';
 
 import '../profile/informations/informations_page.dart';
 import 'home_page.dart';
@@ -20,6 +26,7 @@ import 'home_page.dart';
 /// This class is the state of the HomePage class
 /// It contains the logic of the HomePage class
 class HomePageState extends State<HomePage> {
+  late StreamSubscription _sub;
   int _currentIndex = 1;
   late List<Widget> _pages;
   bool didAskForProfile = false;
@@ -28,6 +35,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _handleUri();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
         configProfile(context);
@@ -45,6 +53,60 @@ class HomePageState extends State<HomePage> {
       const MapPage(),
       const ProfilePage(),
     ];
+  }
+
+  void redirectFromUri(Uri uri, String link) {
+    if (link.contains('signup')) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignupPage(),
+        ),
+      );
+    }
+    if (link.contains('article')) {
+      final articleId = uri.queryParameters["id"]!;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticleDetailsPage(
+            articleId: int.parse(articleId),
+          ),
+        ),
+      );
+    }
+    if (link.contains('container')) {
+      final containerId = uri.queryParameters["id"]!;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ArticleListPage(
+            containerId: int.parse(containerId),
+          ),
+        ),
+      );
+    }
+  }
+
+  void _handleUri() async {
+    final Uri? uri = await getInitialUri();
+    if (uri != null) {
+      final link = uri.toString();
+      redirectFromUri(uri, link);
+    }
+
+    uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        final link = uri.toString();
+        redirectFromUri(uri, link);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _sub.cancel();
+    super.dispose();
   }
 
   /// configProfile
