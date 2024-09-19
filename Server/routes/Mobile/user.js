@@ -60,20 +60,40 @@ router.post("/password/reset", async (req, res) => {
   if (!email || email === "") {
     return res.status(400).send(res.__("missingParameters"));
   }
-
   try {
-    user = await userCtrl.findUserByEmail(res, email);
+    user = await userCtrl.findUserByEmail(email);
     if (!user) {
       return res.status(404).send(res.__("userNotFound"));
     }
     languageMiddleware.setServerLanguage(req, user);
+
     resetToken = jwtMiddleware.generateResetToken(user);
     resetToken = resetToken.substring(0, 64);
+
     user = await userCtrl.updateUserResetToken(user.id, resetToken);
     await userCtrl.sendResetPasswordEmail(user.email, resetToken);
-    user = await userCtrl.removeUserResetToken(user.id);
 
     return res.status(200).send(res.__("mailResetPwdsent"));
+  } catch (error) {
+    console.error("Failed to reset password:", error);
+    return res.status(500).send(res.__("failResetPwd"));
+  }
+});
+
+router.put("/password/change", async (req, res) => {
+  const { token, newPassword } = req.body;
+  try {
+    user = await userCtrl.findUserByResetToken(token);
+    if (!user) {
+      return res.status(404).send(res.__("userNotFound"));
+    }
+    languageMiddleware.setServerLanguage(req, user);
+
+    await userCtrl.setNewUserPassword(user, newPassword);
+
+    user = await userCtrl.removeUserResetToken(user.id);
+
+    return res.status(200).send(res.__("pwdReset"));
   } catch (error) {
     console.error("Failed to reset password:", error);
     return res.status(500).send(res.__("failResetPwd"));

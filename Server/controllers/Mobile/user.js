@@ -66,7 +66,7 @@ exports.sendResetPasswordEmail = async(email, resetToken) => {
     to: email,
     subject: 'Reset Your Password',
     text: "",
-    html: '<p>Please follow the link to reset your password: <a href="http://82.165.63.176/resetToken?token=' +
+    html: '<p>Please follow the link to reset your password: <a href="https://deeplink-risu.web.app/reset/?token=' +
       resetToken + '">here</a></p>',
   }
 
@@ -215,6 +215,24 @@ exports.updateUserResetToken = async (userId, resetToken) => {
     throw new Error('Failed to update user reset token: ' + error);
   }
 }
+
+/**
+  * Find a user by his reset token
+  *
+  * @param {string} resetToken of the user
+  * @returns the user
+  */
+exports.findUserByResetToken = (resetToken) => {
+  return db.User_Mobile.findUnique({
+    where: {
+      resetToken: resetToken
+    },
+    include: {
+      Notifications: true,
+    }
+  })
+}
+
 
 /**
  * Update the email of the user
