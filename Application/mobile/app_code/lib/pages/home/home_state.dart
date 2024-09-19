@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
 import 'package:risu/components/burger_drawer.dart';
+import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/pages/article/list_page.dart';
@@ -31,6 +33,7 @@ class HomePageState extends State<HomePage> {
   late List<Widget> _pages;
   bool didAskForProfile = false;
   int? containerId;
+  final LoaderManager _loaderManager = LoaderManager();
 
   @override
   void initState() {
@@ -55,7 +58,7 @@ class HomePageState extends State<HomePage> {
     ];
   }
 
-  void redirectFromUri(Uri uri, String link) {
+  Future<void> redirectFromUri(Uri uri, String link) async {
     if (link.contains('signup')) {
       Navigator.push(
         context,
@@ -85,6 +88,51 @@ class HomePageState extends State<HomePage> {
           ),
         ),
       );
+    }
+    if (link.contains('confirm')) {
+      final token = uri.queryParameters["token"]!;
+      late http.Response response;
+
+      try {
+        setState(() {
+          _loaderManager.setIsLoading(true);
+        });
+        response = await http.get(
+          Uri.parse('$baseUrl/api/mobile/auth/mailVerification/?token=$token'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+        );
+        setState(() {
+          _loaderManager.setIsLoading(false);
+        });
+        switch (response.statusCode) {
+          case 200:
+            if (context.mounted) {
+              MyAlertDialog.showInfoAlertDialog(
+                  context: context,
+                  title: AppLocalizations.of(context)!.confirmation,
+                  message: AppLocalizations.of(context)!.accountConfirmed);
+            }
+            break;
+          default:
+            if (context.mounted) {
+              printServerResponse(context, response, 'mailVerificatiob',
+                  message: AppLocalizations.of(context)!
+                      .errorOccuredDuringMailVerification);
+            }
+        }
+      } catch (err, stacktrace) {
+        if (mounted) {
+          setState(() {
+            _loaderManager.setIsLoading(false);
+          });
+          printCatchError(context, err, stacktrace,
+              message: AppLocalizations.of(context)!
+                  .errorOccuredDuringMailVerification);
+          return;
+        }
+      }
     }
   }
 
