@@ -29,7 +29,6 @@ import 'home_page.dart';
 /// This class is the state of the HomePage class
 /// It contains the logic of the HomePage class
 class HomePageState extends State<HomePage> {
-  late StreamSubscription _sub;
   int _currentIndex = 1;
   late List<Widget> _pages;
   bool didAskForProfile = false;
@@ -73,10 +72,9 @@ class HomePageState extends State<HomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ArticleDetailsPage(
-                articleId: int.parse(articleId),
-              ),
+          builder: (context) => ArticleDetailsPage(
+            articleId: int.parse(articleId),
+          ),
         ),
       );
     }
@@ -85,10 +83,9 @@ class HomePageState extends State<HomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              ArticleListPage(
-                containerId: int.parse(containerId),
-              ),
+          builder: (context) => ArticleListPage(
+            containerId: int.parse(containerId),
+          ),
         ),
       );
     }
@@ -97,7 +94,9 @@ class HomePageState extends State<HomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ResetPasswordPage(token: token,),
+          builder: (context) => ResetPasswordPage(
+            token: token,
+          ),
         ),
       );
     }
@@ -166,7 +165,6 @@ class HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _sub.cancel();
     super.dispose();
   }
 
@@ -188,8 +186,7 @@ class HomePageState extends State<HomePage> {
           onOkName: AppLocalizations.of(context)!.profileGoComplete,
           onCancelName: AppLocalizations.of(context)!.cancel,
         ).then(
-              (value) =>
-          {
+          (value) => {
             if (value)
               {
                 setState(() {
@@ -203,7 +200,7 @@ class HomePageState extends State<HomePage> {
                     },
                   ),
                 ).then(
-                      (value) {
+                  (value) {
                     if (value != null && value == true) {
                       setState(() {
                         userInformation = userInformation;
@@ -244,14 +241,14 @@ class HomePageState extends State<HomePage> {
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
           curveColor: context.select((ThemeProvider themeProvider) =>
-          themeProvider.currentTheme.secondaryHeaderColor),
+              themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(
-                  (ThemeProvider themeProvider) => themeProvider.currentTheme),
+              (ThemeProvider themeProvider) => themeProvider.currentTheme),
           currentIndex: _currentIndex,
           onTap: (index) async {
             setState(() {
