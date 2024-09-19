@@ -24,6 +24,13 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
   bool _isPasswordConfirmationVisible = false;
   String _password = '';
   String _passwordConfirmation = '';
+  String? _token;
+
+  @override
+  void initState() {
+    super.initState();
+    _token = widget.token;
+  }
 
   /// resetPassword
   /// This function is used to reset the password
@@ -58,10 +65,10 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
         Uri.parse('$baseUrl/api/mobile/user/password/change'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
           'newPassword': _password,
+          'token': _token,
         }),
       );
       setState(() {
@@ -69,7 +76,6 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
       });
       switch (response.statusCode) {
         case 200:
-          json.decode(response.body);
           if (mounted) {
             MyToastMessage.show(
               context: context,

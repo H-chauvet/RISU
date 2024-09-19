@@ -15,6 +15,7 @@ import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
+import 'package:risu/pages/reset_password/reset_password_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
@@ -72,9 +73,10 @@ class HomePageState extends State<HomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ArticleDetailsPage(
-            articleId: int.parse(articleId),
-          ),
+          builder: (context) =>
+              ArticleDetailsPage(
+                articleId: int.parse(articleId),
+              ),
         ),
       );
     }
@@ -83,12 +85,23 @@ class HomePageState extends State<HomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ArticleListPage(
-            containerId: int.parse(containerId),
-          ),
+          builder: (context) =>
+              ArticleListPage(
+                containerId: int.parse(containerId),
+              ),
         ),
       );
     }
+    if (link.contains('reset')) {
+      final token = uri.queryParameters["token"]!;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResetPasswordPage(token: token,),
+        ),
+      );
+    }
+
     if (link.contains('confirm')) {
       final token = uri.queryParameters["token"]!;
       late http.Response response;
@@ -175,7 +188,8 @@ class HomePageState extends State<HomePage> {
           onOkName: AppLocalizations.of(context)!.profileGoComplete,
           onCancelName: AppLocalizations.of(context)!.cancel,
         ).then(
-          (value) => {
+              (value) =>
+          {
             if (value)
               {
                 setState(() {
@@ -189,7 +203,7 @@ class HomePageState extends State<HomePage> {
                     },
                   ),
                 ).then(
-                  (value) {
+                      (value) {
                     if (value != null && value == true) {
                       setState(() {
                         userInformation = userInformation;
@@ -230,14 +244,14 @@ class HomePageState extends State<HomePage> {
         resizeToAvoidBottomInset: true,
         appBar: MyAppBar(
           curveColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.secondaryHeaderColor),
+          themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
         ),
         endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(
-              (ThemeProvider themeProvider) => themeProvider.currentTheme),
+                  (ThemeProvider themeProvider) => themeProvider.currentTheme),
           currentIndex: _currentIndex,
           onTap: (index) async {
             setState(() {
