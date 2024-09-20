@@ -111,6 +111,7 @@ exports.createFixtures = async () => {
           email: "admin@gmail.com",
           firstName: "admin",
           lastName: "admin",
+          language: "en",
           password: bcrypt.hashSync("admin", 12),
           mailVerification: true,
           Notifications: {
