@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,6 @@ import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:uni_links/uni_links.dart';
 
 import '../profile/informations/informations_page.dart';
 import 'home_page.dart';
@@ -33,6 +33,7 @@ class HomePageState extends State<HomePage> {
   late List<Widget> _pages;
   bool didAskForProfile = false;
   int? containerId;
+  late AppLinks _appLinks;
   final LoaderManager _loaderManager = LoaderManager();
 
   @override
@@ -149,13 +150,9 @@ class HomePageState extends State<HomePage> {
   }
 
   void _handleUri() async {
-    final Uri? uri = await getInitialUri();
-    if (uri != null) {
-      final link = uri.toString();
-      redirectFromUri(uri, link);
-    }
+    _appLinks = AppLinks();
 
-    uriLinkStream.listen((Uri? uri) {
+    _appLinks.uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
         final link = uri.toString();
         redirectFromUri(uri, link);

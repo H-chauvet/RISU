@@ -49,7 +49,7 @@ dependencies:
   flutter_map_math: ^0.1.7
   country_flags: ^3.0.0
   carousel_slider: ^5.0.0
-  uni_links: ^0.5.1
+  app_links:
 
 
 dev_dependencies:
