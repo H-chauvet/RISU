@@ -62,7 +62,7 @@ class UserMobileCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-             AppLocalizations.of(context)!.firstNameData(user.firstName),
+              AppLocalizations.of(context)!.firstNameData(user.firstName),
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize

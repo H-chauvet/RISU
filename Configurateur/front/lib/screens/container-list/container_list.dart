@@ -540,7 +540,8 @@ class _ContainerPageState extends State<ContainerPage> {
                     TextField(
                       controller: description,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.itemDescription,
+                        labelText:
+                            AppLocalizations.of(context)!.itemDescription,
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -881,7 +882,8 @@ class _ContainerPageState extends State<ContainerPage> {
                               items.isEmpty
                                   ? Center(
                                       child: Text(
-                                        AppLocalizations.of(context)!.objectEmpty,
+                                        AppLocalizations.of(context)!
+                                            .objectEmpty,
                                         style: TextStyle(
                                           fontSize: screenFormat ==
                                                   ScreenFormat.desktop

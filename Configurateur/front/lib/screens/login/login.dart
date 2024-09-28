@@ -103,7 +103,8 @@ class LoginScreenState extends State<LoginScreen> {
                             key: const Key('email'),
                             decoration: InputDecoration(
                               hintText: AppLocalizations.of(context)!.emailFill,
-                              labelText: AppLocalizations.of(context)!.emailAddress,
+                              labelText:
+                                  AppLocalizations.of(context)!.emailAddress,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),

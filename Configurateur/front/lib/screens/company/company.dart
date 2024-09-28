@@ -135,8 +135,8 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                               widget.teamMembers[_expandedIndex]
                                       ['description'] ??
                                   'companyPosition longue du poste et des responsabilités...',
-                              style:
-                                  const TextStyle(fontSize: 14, color: Colors.black),
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
                               textAlign: TextAlign.center,
                             ),
                           ),

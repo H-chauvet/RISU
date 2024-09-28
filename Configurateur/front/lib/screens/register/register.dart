@@ -34,6 +34,15 @@ class RegisterScreen extends StatefulWidget {
 ///
 class RegisterScreenState extends State<RegisterScreen> {
   /// [Widget] : Build of the register page
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController mailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscurePasswordConfirm = true;
+
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -50,7 +59,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         body: FooterView(
             footer: Footer(
               padding: EdgeInsets.zero,
-              child: CustomFooter(),
+              child: const CustomFooter(),
             ),
             children: [
           Column(
@@ -92,10 +101,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                         child: Column(
                           children: <Widget>[
                             TextFormField(
+                              controller: firstNameController,
                               key: const Key('firstname'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.firstNameFill,
-                                labelText: AppLocalizations.of(context)!.firstName,
+                                hintText:
+                                    AppLocalizations.of(context)!.firstNameFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.firstName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -105,17 +117,21 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
+                              controller: lastNameController,
                               key: const Key('lastname'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.lastNameFill,
-                                labelText: AppLocalizations.of(context)!.lastName,
+                                hintText:
+                                    AppLocalizations.of(context)!.lastNameFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.lastName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -125,17 +141,21 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
                             ),
                             const SizedBox(height: 20),
                             TextFormField(
+                              controller: mailController,
                               key: const Key('email'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.emailFill,
-                                labelText: AppLocalizations.of(context)!.emailAddress,
+                                hintText:
+                                    AppLocalizations.of(context)!.emailFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.emailAddress,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -145,7 +165,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -153,12 +174,27 @@ class RegisterScreenState extends State<RegisterScreen> {
                             const SizedBox(height: 20),
                             TextFormField(
                               key: const Key('password'),
-                              obscureText: true,
+                              controller: passwordController,
+                              obscureText: _obscurePassword,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.passwordFill,
-                                labelText: AppLocalizations.of(context)!.password,
+                                hintText:
+                                    AppLocalizations.of(context)!.passwordFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.password,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePassword
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    });
+                                  },
                                 ),
                               ),
                               onChanged: (String? value) {
@@ -166,7 +202,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -174,12 +211,28 @@ class RegisterScreenState extends State<RegisterScreen> {
                             const SizedBox(height: 20),
                             TextFormField(
                               key: const Key('confirm-password'),
-                              obscureText: true,
+                              controller: confirmPasswordController,
+                              obscureText: _obscurePasswordConfirm,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.passwordConfirmation,
-                                labelText: AppLocalizations.of(context)!.passwordConfirm,
+                                hintText: AppLocalizations.of(context)!
+                                    .passwordConfirmation,
+                                labelText: AppLocalizations.of(context)!
+                                    .passwordConfirm,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _obscurePasswordConfirm
+                                        ? Icons.visibility_off
+                                        : Icons.visibility,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscurePasswordConfirm =
+                                          !_obscurePasswordConfirm;
+                                    });
+                                  },
                                 ),
                               ),
                               onChanged: (String? value) {
@@ -187,10 +240,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
-                                if (value != password) {
-                                  return AppLocalizations.of(context)!.passwordDontMatch;
+                                if (value != passwordController.text) {
+                                  return AppLocalizations.of(context)!
+                                      .passwordDontMatch;
                                 }
                                 return null;
                               },
@@ -209,12 +264,13 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                                 onPressed: () async {
                                   if (formKey.currentState!.validate() &&
-                                      password == validedPassword) {
+                                      passwordController.text ==
+                                          confirmPasswordController.text) {
                                     var body = {
-                                      'firstName': firstName,
-                                      'lastName': lastName,
-                                      'email': mail,
-                                      'password': password,
+                                      'firstName': firstNameController.text,
+                                      'lastName': lastNameController.text,
+                                      'email': mailController.text,
+                                      'password': passwordController.text,
                                     };
                                     var header = <String, String>{
                                       'Content-Type':
@@ -292,7 +348,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    AppLocalizations.of(context)!.allreadyGotAccount,
+                                    AppLocalizations.of(context)!
+                                        .allreadyGotAccount,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context,
                                                   listen: false)
