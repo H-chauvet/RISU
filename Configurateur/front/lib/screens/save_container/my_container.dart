@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
+import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
@@ -67,6 +68,30 @@ class MyContainerState extends State<MyContainer> {
     );
   }
 
+  void deleteSave(int i) {
+    var headers = <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $token',
+    };
+
+    HttpService().request(
+      "http://$serverIp:3000/api/container/delete",
+      headers,
+      {
+        "id": displayedContainers[i]['id'],
+      },
+    ).then((value) {
+      if (value.statusCode != 200) {
+        showCustomToast(context, value.body, false);
+      } else {
+        setState(() {
+          displayedContainers.removeAt(i);
+          debugPrint(displayedContainers.toString());
+        });
+      }
+    });
+  }
+
   Future<void> checkToken() async {
     token = await storageService.readStorage('token');
     if (token == "") {
@@ -109,8 +134,6 @@ class MyContainerState extends State<MyContainer> {
   @override
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
-
-    //debugPrint(displayedContainers[0]['name'].toString());
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -181,17 +204,39 @@ class MyContainerState extends State<MyContainer> {
                                     ),
                                   );
                                 },
-                                child: Text(
-                                  displayedContainers[i]['saveName'],
-                                  style: TextStyle(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                      fontSize:
-                                          screenFormat == ScreenFormat.desktop
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      displayedContainers[i]['saveName'],
+                                      style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
                                               ? desktopFontSize
                                               : tabletFontSize),
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        var confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) =>
+                                              ConfirmationDialog(),
+                                        );
+
+                                        if (confirm == true) {
+                                          setState(() {
+                                            deleteSave(i);
+                                          });
+                                        }
+                                      },
+                                      icon: Icon(Icons.delete),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
