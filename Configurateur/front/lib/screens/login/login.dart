@@ -60,6 +60,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: FooterView(
+          flex: 10,
           footer: Footer(
             padding: EdgeInsets.zero,
             child: const CustomFooter(),

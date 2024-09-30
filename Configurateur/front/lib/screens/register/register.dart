@@ -54,12 +54,13 @@ class RegisterScreenState extends State<RegisterScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      body: FooterView(
-        footer: Footer(
-          padding: EdgeInsets.zero,
-          child: const CustomFooter(),
-        ),
-        children: [
+        body: FooterView(
+            flex: 10,
+            footer: Footer(
+              padding: EdgeInsets.zero,
+              child: CustomFooter(),
+            ),
+            children: [
           Column(
             children: [
               LandingAppBar(context: context),
