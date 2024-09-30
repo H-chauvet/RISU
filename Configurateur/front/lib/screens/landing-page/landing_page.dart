@@ -50,6 +50,7 @@ class LandingPageState extends State<LandingPage> {
 
     return Scaffold(
       body: FooterView(
+        flex: 10,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: CustomFooter(),
