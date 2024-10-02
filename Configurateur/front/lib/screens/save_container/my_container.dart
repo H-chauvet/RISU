@@ -221,6 +221,10 @@ class MyContainerState extends State<MyContainer> {
                                               : tabletFontSize),
                                     ),
                                     IconButton(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                       onPressed: () async {
                                         var confirm = await showDialog<bool>(
                                           context: context,
