@@ -228,7 +228,7 @@
 	"ourTeam": "Notre équipe",
 	"ourTeam2": "Notre équipe :",
 	"pageNotFound": "Cette page n'existe pas !",
-	"pageNotFoundText": "Nous ne parvenons pas à trouver la page que vous recherchez.\nEssayez de retourner à la page précédente ou veuillez retourner à l'accueil",
+	"pageNotFoundText": "Nous ne parvenons pas à trouver la page que vous recherchez.\nEssayez de retourner à la page précédente ou veuillez retourner à l'accueil. ",
 	"password": "Mot de passe",
 	"passwordConfirm": "Valider le mot de passe",
 	"passwordConfirmation": "Validation du mot de passe",
@@ -238,7 +238,7 @@
 	"passwordForgot": "Mot de passe oublié ?",
 	"passwordModify": "Changer le mot de passe",
 	"passwordModifySuccess": "Mot de passe modifié avec succès !",
-	"passwordNew": "Nouveau mot de passe",
+	"passwordNew": "Créez un nouveau mot de passe !",
 	"passwordRecovery": "Récupération du mot de passe",
 	"passwordRecoverySuccess": "Le mot de passe a bien été récupéré",
 	"passwordUpdate": "Mettez à jour votre mot de passe facilement !",
@@ -320,5 +320,12 @@
 	"userWeb": "Utilisateurs Web",
 	"width": "Largeur :",
 	"you": "Vous, ",
-	"yourMessage": "Entrez votre message..."
+	"yourMessage": "Entrez votre message...",
+	"emailNotValid": "Veuillez entrer un mail valide.",
+	"atLeast": "Au moins - caractères",
+	"uppercaseLetters": "- Lettres majuscules",
+	"numericCharacters": "- Chiffres",
+	"specialCharacters": "- Caractères spéciaux",
+	"lowercaseLetters": "- Lettres minuscules",
+	"normalLetters": "- Lettres classiques"
 }

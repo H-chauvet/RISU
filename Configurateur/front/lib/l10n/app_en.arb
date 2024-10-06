@@ -228,7 +228,7 @@
 	"ourTeam": "Our team",
 	"ourTeam2": "Our team:",
 	"pageNotFound": "Page not found !",
-	"pageNotFoundText": "We are unable to find the page you are looking for. \nPlease try to return to the previous page or return to the home page.",
+	"pageNotFoundText": "We are unable to find the page you are looking for. \nPlease try to return to the previous page or return to the home page. ",
 	"password": "Password",
 	"passwordConfirm": "Confirm password",
 	"passwordConfirmation": "Password confirmation",
@@ -238,7 +238,7 @@
 	"passwordForgot": "Forgot your password ?",
 	"passwordModify": "Modify password",
 	"passwordModifySuccess": "Password successfully modified!",
-	"passwordNew": "new password",
+	"passwordNew": "Create a new password!",
 	"passwordRecovery": "Passowrd recovery",
 	"passwordRecoverySuccess": "Passowrd recovery success",
 	"passwordUpdate": "Update your password address easily!",
@@ -321,5 +321,12 @@
 	"userWeb": "Web user",
 	"width": "Width: ",
 	"you": "You, ",
-	"yourMessage": "Enter your message..."
+	"yourMessage": "Enter your message...",
+	"emailNotValid": "Enter a valid mail address.",
+	"atLeast": "At least - character",
+	"uppercaseLetters": "- Uppercase letter",
+	"numericCharacters": "- Numeric character",
+	"specialCharacters": "- Special character",
+	"lowercaseLetters": "- Lowercase letter",
+	"normalLetters": "- Classic letter"
 }
