@@ -84,8 +84,8 @@ class PasswordChangeState extends State<PasswordChange> {
           ),
           Center(
             child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.5,
-              height: MediaQuery.of(context).size.height * 0.7,
+              width: MediaQuery.of(context).size.width * 0.65,
+              height: MediaQuery.of(context).size.height * 0.85,
               child: Form(
                 key: formKey,
                 child: Column(
@@ -131,7 +131,7 @@ class PasswordChangeState extends State<PasswordChange> {
                       failureColor: const Color(0xFF990000),
                       successColor: const Color(0xFF009900),
                       width: 320,
-                      height: 100,
+                      height: 120,
                       strings: PasswordStrings(context),
                       onSuccess: () {
                         setState(

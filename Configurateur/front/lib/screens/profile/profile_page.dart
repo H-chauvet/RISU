@@ -445,7 +445,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       failureColor: const Color(0xFF990000),
                       successColor: const Color(0xFF009900),
                       width: 320,
-                      height: 100,
+                      height: 120,
                       strings: PasswordStrings(context),
                       onSuccess: () {
                         setState(

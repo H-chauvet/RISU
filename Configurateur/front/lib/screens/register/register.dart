@@ -90,10 +90,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    const SizedBox(height: 75),
+                    const SizedBox(height: 150),
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      height: MediaQuery.of(context).size.height * 0.7,
+                      width: MediaQuery.of(context).size.width * 0.65,
+                      height: MediaQuery.of(context).size.height * 0.85,
                       child: Form(
                         key: formKey,
                         child: Column(
@@ -209,7 +209,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                               failureColor: const Color(0xFF990000),
                               successColor: const Color(0xFF009900),
                               width: 320,
-                              height: 100,
+                              height: 120,
                               strings: PasswordStrings(context),
                               onSuccess: () {
                                 setState(
@@ -356,33 +356,34 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .allreadyGotAccount,
-                                    style: TextStyle(
-                                      color: Provider.of<ThemeService>(context,
-                                                  listen: false)
-                                              .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                      fontSize:
-                                          screenFormat == ScreenFormat.desktop
+                            MouseRegion(
+                              cursor: SystemMouseCursors.click,
+                              child: GestureDetector(
+                                onTap: () {
+                                  context.go("/login");
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .allreadyGotAccount,
+                                        style: TextStyle(
+                                          color: Provider.of<ThemeService>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? darkTheme.primaryColor
+                                              : lightTheme.primaryColor,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
                                               ? desktopFontSize
                                               : tabletFontSize,
-                                    ),
-                                  ),
-                                  MouseRegion(
-                                    cursor: SystemMouseCursors.click,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        context.go("/login");
-                                      },
-                                      child: Text(
+                                        ),
+                                      ),
+                                      Text(
                                         AppLocalizations.of(context)!.logInAsk,
                                         style: TextStyle(
                                           color: Colors.blue,
@@ -392,9 +393,9 @@ class RegisterScreenState extends State<RegisterScreen> {
                                               : tabletFontSize,
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                             const SizedBox(height: 20),
@@ -421,7 +422,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ],
