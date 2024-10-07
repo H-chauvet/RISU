@@ -6,7 +6,7 @@
   "accountCreate": "Create an account",
   "accountCreatedSuccessfully": "Account created successfully.",
   "accountCreation": "Account creation",
-  "accountConfirmed" : "You account is confirmed ! You can now login.",
+  "accountConfirmed" : "Your account is confirmed ! You can now login.",
   "accountDelete": "Delete my account",
   "accountDeleted": "Account deleted",
   "accountEmailConfirmationSent": "An email has been sent to {email} to confirm your account.",
