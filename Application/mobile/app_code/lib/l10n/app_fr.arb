@@ -131,6 +131,7 @@
   "lastActivity": "Dernière activité: {time}",
   "lastName": "Nom",
   "light": "Clair",
+  "linkCopied" : "Lien copié dans le presse-papier !",
   "logOut": "Déconnexion",
   "map": "Carte",
   "mapNoDisplayedByRisu": "Risu a choisi de ne pas afficher la carte.",
