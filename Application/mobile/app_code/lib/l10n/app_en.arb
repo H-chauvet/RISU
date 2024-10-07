@@ -131,6 +131,7 @@
   "lastActivity": "Last activity: {time}",
   "lastName": "Name",
   "light": "Light",
+  "linkCopied" : "Link copied in the clipboard!",
   "logOut": "Logout",
   "map": "Map",
   "mapNoDisplayedByRisu": "Risu has chosen not to display the map.",

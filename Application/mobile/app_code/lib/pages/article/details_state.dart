@@ -452,46 +452,46 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     return MyPopScope(
       child: Scaffold(
         appBar: MyAppBar(
-            curveColor: context.select((ThemeProvider themeProvider) =>
-                themeProvider.currentTheme.secondaryHeaderColor),
-            showBackButton: false,
-            textTitle: AppLocalizations.of(context)!.articleDetails,
-            action: Row(
-              children: [
-                IconButton(
-                  onPressed: () {
-                    createDeeplink(
-                        path: 'article/?id=${articleData.id}',
-                        context: context);
-                  },
-                  icon: const Icon(Icons.share),
-                ),
-                IconButton(
-                  key: const Key('article-button_add-favorite'),
-                  onPressed: () async {
-                    bool signIn = await checkSignin(context);
-                    if (!signIn) {
-                      return;
-                    }
+          curveColor: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.secondaryHeaderColor),
+          showBackButton: false,
+          textTitle: AppLocalizations.of(context)!.articleDetails,
+          action: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  createDeeplink(
+                      path: 'article/?id=${articleData.id}', context: context);
+                },
+                icon: const Icon(Icons.share),
+              ),
+              IconButton(
+                key: const Key('article-button_add-favorite'),
+                onPressed: () async {
+                  bool signIn = await checkSignin(context);
+                  if (!signIn) {
+                    return;
+                  }
 
-                    bool backupFavorite = isFavorite;
-                    await checkFavorite(articleData.id);
-                    if (backupFavorite != isFavorite) return;
-                    (isFavorite)
-                        ? deleteFavorite(articleData.id)
-                        : createFavorite(articleData.id);
-                  },
-                  icon: Icon(
-                    (isFavorite)
-                        ? Icons.favorite_rounded
-                        : Icons.favorite_border_rounded,
-                    size: 28,
-                    color: themeProvider.currentTheme.bottomNavigationBarTheme
-                        .selectedItemColor,
-                  ),
+                  bool backupFavorite = isFavorite;
+                  await checkFavorite(articleData.id);
+                  if (backupFavorite != isFavorite) return;
+                  (isFavorite)
+                      ? deleteFavorite(articleData.id)
+                      : createFavorite(articleData.id);
+                },
+                icon: Icon(
+                  (isFavorite)
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
+                  size: 28,
+                  color: themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor,
                 ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.colorScheme.surface),
