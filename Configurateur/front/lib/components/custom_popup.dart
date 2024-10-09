@@ -29,7 +29,9 @@ class CustomPopup extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? Color(0xFF162A49)
+                        : Colors.white,
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: const [

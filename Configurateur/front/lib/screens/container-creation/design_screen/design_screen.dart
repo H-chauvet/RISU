@@ -610,7 +610,9 @@ class DesignScreenState extends State<DesignScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     DottedBorder(
-                      color: Colors.grey[600]!,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       padding: EdgeInsets.zero,
                       strokeWidth: 3,
                       child: Container(
@@ -621,7 +623,9 @@ class DesignScreenState extends State<DesignScreen> {
                         width: screenFormat == ScreenFormat.desktop
                             ? desktopImportContainerWidth
                             : tabletImportContainerWidth,
-                        color: Colors.grey[400],
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -653,6 +657,10 @@ class DesignScreenState extends State<DesignScreen> {
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
                                   shape: RoundedRectangleBorder(
                                       borderRadius:
                                           BorderRadius.circular(30.0))),
@@ -684,8 +692,8 @@ class DesignScreenState extends State<DesignScreen> {
                                 style: TextStyle(
                                   color:
                                       Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
+                                          ? lightTheme.primaryColor
+                                          : darkTheme.primaryColor,
                                   fontSize: screenFormat == ScreenFormat.desktop
                                       ? desktopFontSize
                                       : tabletFontSize,

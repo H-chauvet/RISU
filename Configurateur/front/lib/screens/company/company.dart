@@ -135,8 +135,8 @@ class _TeamMembersGridState extends State<TeamMembersGrid>
                               widget.teamMembers[_expandedIndex]
                                       ['description'] ??
                                   'companyPosition longue du poste et des responsabilités...',
-                              style:
-                                  const TextStyle(fontSize: 14, color: Colors.black),
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.black),
                               textAlign: TextAlign.center,
                             ),
                           ),
@@ -366,8 +366,8 @@ class CompanyPageState extends State<CompanyPage> {
                             style: TextStyle(
                               fontSize: 18,
                               color: Provider.of<ThemeService>(context).isDark
-                                  ? Colors.white
-                                  : lightTheme.primaryColor,
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
                             ),
                             textAlign: TextAlign.center,
                           ),

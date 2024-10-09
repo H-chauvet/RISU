@@ -540,7 +540,8 @@ class _ContainerPageState extends State<ContainerPage> {
                     TextField(
                       controller: description,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.itemDescription,
+                        labelText:
+                            AppLocalizations.of(context)!.itemDescription,
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -618,6 +619,9 @@ class _ContainerPageState extends State<ContainerPage> {
                 title: Text(
                   AppLocalizations.of(context)!.nameData(item.name),
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletBigFontSize,
@@ -628,6 +632,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         AppLocalizations.of(context)!
                             .descriptionData(item.description!),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -636,6 +643,9 @@ class _ContainerPageState extends State<ContainerPage> {
                     : Text(
                         AppLocalizations.of(context)!.descriptionEmpty,
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -647,7 +657,10 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.mode_outlined),
+                  icon: Icon(Icons.mode_outlined,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,
@@ -663,7 +676,10 @@ class _ContainerPageState extends State<ContainerPage> {
                   width: 10,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(Icons.delete,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () => deleteItem(item),
                 ),
               ],
@@ -866,13 +882,31 @@ class _ContainerPageState extends State<ContainerPage> {
                                         value: 'Tous',
                                         child: Text(
                                           AppLocalizations.of(context)!.all,
+                                          style: TextStyle(
+                                            color: Provider.of<ThemeService>(
+                                                        context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                          ),
                                         ),
                                       ),
                                       for (var category in categories)
                                         if (category != 'Tous')
                                           DropdownMenuItem(
                                             value: category,
-                                            child: Text(category),
+                                            child: Text(
+                                              category,
+                                              style: TextStyle(
+                                                color:
+                                                    Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? darkTheme.primaryColor
+                                                        : lightTheme
+                                                            .primaryColor,
+                                              ),
+                                            ),
                                           ),
                                     ],
                                   ),
@@ -881,7 +915,8 @@ class _ContainerPageState extends State<ContainerPage> {
                               items.isEmpty
                                   ? Center(
                                       child: Text(
-                                        AppLocalizations.of(context)!.objectEmpty,
+                                        AppLocalizations.of(context)!
+                                            .objectEmpty,
                                         style: TextStyle(
                                           fontSize: screenFormat ==
                                                   ScreenFormat.desktop
