@@ -580,50 +580,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                   ],
                                 ),
                                 const SizedBox(height: 5.0),
-                                Row(
-                                  children: [
-                                    organization.type != null &&
-                                            organization.type != ''
-                                        ? Text(
-                                            AppLocalizations.of(context)!
-                                                .companyTypeData(
-                                                    organization.type!),
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Verdana',
-                                            ),
-                                          )
-                                        : Text(
-                                            AppLocalizations.of(context)!
-                                                .typeEmpty,
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
-                                              fontSize: 15.0,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: 'Verdana',
-                                            ),
-                                          ),
-                                    const SizedBox(width: 5.0),
-                                    InkWell(
-                                      key: const Key('edit-type'),
-                                      onTap: () async {
-                                        await showEditPopupType(context, type,
-                                            (String newtype) {
-                                          setState(() {
-                                            type = newtype;
-                                          });
-                                        });
-                                      },
-                                      child: const Icon(
-                                        Icons.edit,
-                                        color: Colors.grey,
-                                        size: 15.0,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ],
                             ),
                           ],

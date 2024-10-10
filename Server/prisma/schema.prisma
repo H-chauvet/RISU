@@ -20,7 +20,7 @@ model Containers {
     createdAt        DateTime      @default(now())
     organization     Organization? @relation(fields: [organizationId], references: [id])
     organizationId   Int?
-    containerMapping String?
+    containerMapping String?       @db.LongText
     address          String?
     city             String?
     latitude         Float?
