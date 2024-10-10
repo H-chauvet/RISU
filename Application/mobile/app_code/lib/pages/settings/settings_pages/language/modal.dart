@@ -16,7 +16,7 @@ class LanguageChangeModalContent extends StatelessWidget {
   /// This function is used to get the current language.
   Future<String> getCurrentLanguage() async {
     final prefs = await SharedPreferences.getInstance();
-    final List<String> items = ['fr', 'en'];
+    final List<String> items = ['fr', 'en', 'es'];
     final currentLanguage = prefs.getString('language') ?? defaultLanguage;
     return items[items.indexOf(currentLanguage)];
   }
@@ -87,6 +87,7 @@ class LanguageChangeModalContent extends StatelessWidget {
                 children: [
                   displayLanguage(context, 'fr', 'Français'),
                   displayLanguage(context, 'en', 'English'),
+                  displayLanguage(context, 'es', 'Español')
                 ],
               );
             } else {
