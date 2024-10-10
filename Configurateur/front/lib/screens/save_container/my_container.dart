@@ -147,10 +147,13 @@ class MyContainerState extends State<MyContainer> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 100),
-                Container(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.65,
+                  height: MediaQuery.of(context).size.height * 0.85,
                   child: displayedContainers.isEmpty
                       ? const Text(
                           "Aucune sauvegarde trouvée",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
                             color: Color.fromARGB(255, 211, 11, 11),
