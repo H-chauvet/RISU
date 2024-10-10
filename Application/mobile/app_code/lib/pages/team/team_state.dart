@@ -6,11 +6,35 @@ import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 import 'team_page.dart';
 
 class TeamPageState extends State<TeamPage> {
-  final LoaderManager _loaderManager = LoaderManager();
+  final CarouselSliderController _carouselController =
+      CarouselSliderController();
+
+  final List<String> imagesPath = [
+    'assets/Cédric.png',
+    'assets/Henri.png',
+    'assets/Hugo.png',
+    'assets/Louis.png',
+    'assets/Quentin.png',
+    'assets/Nathan.png',
+    'assets/Tanguy.png'
+  ];
+
+  final List<String> names = [
+    'Cédric',
+    'Henri',
+    'Hugo',
+    'Louis',
+    'Quentin',
+    'Nathan',
+    'Tanguy'
+  ];
+
+  int indexName = 0;
 
   @override
   void initState() {
@@ -26,40 +50,86 @@ class TeamPageState extends State<TeamPage> {
         curveColor: context.select((ThemeProvider themeProvider) =>
             themeProvider.currentTheme.secondaryHeaderColor),
         showBackButton: false,
-        textTitle: AppLocalizations.of(context)!.faq,
+        textTitle: AppLocalizations.of(context)!.team,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.surface),
-      body: (_loaderManager.getIsLoading())
-          ? Center(child: _loaderManager.getLoader())
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    key: const Key('need-to-join-us-text'),
-                    AppLocalizations.of(context)!.needToJoinUs,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.currentTheme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    key: const Key('some-questions-faq-text'),
-                    AppLocalizations.of(context)!.someQuestionsFaq,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: themeProvider.currentTheme.primaryColor,
-                    ),
-                  ),
-                ],
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(height: 30),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                AppLocalizations.of(context)!.teamRentText,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: themeProvider.currentTheme.primaryColor,
+                ),
               ),
             ),
+            const SizedBox(height: 20),
+            Text(
+              AppLocalizations.of(context)!.teamMembers,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: themeProvider.currentTheme.primaryColor,
+              ),
+            ),
+            const SizedBox(height: 20),
+            CarouselSlider(
+              carouselController: _carouselController,
+              options: CarouselOptions(
+                initialPage: 0,
+                autoPlay: true,
+                viewportFraction: 1.0,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    indexName = index;
+                  });
+                },
+              ),
+              items: imagesPath.map<Widget>((imagePath) {
+                return CircleAvatar(
+                  radius: 96,
+                  backgroundImage: AssetImage(imagePath),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              names[indexName],
+              style: TextStyle(
+                fontSize: 24,
+                color: themeProvider.currentTheme.primaryColor,
+              ),
+            ),
+            SizedBox(
+              width: 200,
+              height: 200,
+              child: Image.asset('assets/logo.png'),
+            ),
+            Text(
+              AppLocalizations.of(context)!.teamFindRentText,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: themeProvider.currentTheme.primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
