@@ -89,8 +89,7 @@ class NotFoundPageState extends State<NotFoundPage> {
                         textAlign: TextAlign.center,
                         maxLines: 3,
                         text: TextSpan(
-                          text:
-                              AppLocalizations.of(context)!.pageNotFoundText,
+                          text: AppLocalizations.of(context)!.pageNotFoundText,
                           style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
@@ -103,7 +102,8 @@ class NotFoundPageState extends State<NotFoundPage> {
                           ),
                           children: [
                             TextSpan(
-                              text: AppLocalizations.of(context)!.contactSupport,
+                              text:
+                                  AppLocalizations.of(context)!.contactSupport,
                               style: TextStyle(
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? Colors.blue[300]

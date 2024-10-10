@@ -321,7 +321,8 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   height: 20,
                                 ),
                                 Text(
-                                  AppLocalizations.of(context)!.imagesClickToAdd,
+                                  AppLocalizations.of(context)!
+                                      .imagesClickToAdd,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)

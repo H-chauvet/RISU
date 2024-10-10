@@ -52,7 +52,7 @@ class LandingPageState extends State<LandingPage> {
       body: FooterView(
         footer: Footer(
           padding: EdgeInsets.zero,
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),
@@ -118,7 +118,7 @@ class LandingPageState extends State<LandingPage> {
                             padding: const EdgeInsets.only(
                                 top: 15), // Espacement inférieur pour le texte
                             child: Text(
-                             AppLocalizations.of(context)!.landingPitch2Text,
+                              AppLocalizations.of(context)!.landingPitch2Text,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize

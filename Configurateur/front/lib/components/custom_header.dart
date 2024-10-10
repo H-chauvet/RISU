@@ -231,9 +231,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                                 : lightTheme.secondaryHeaderColor,
                         padding: EdgeInsets.zero,
                       ),
-                      child: const Text(
-                        "Laisser un avis",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.giveFeedback,
+                        style: const TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 20,
                         ),
@@ -456,15 +456,17 @@ class LandingAppBarState extends State<LandingAppBar> {
                   } else if (value == 'my-save') {
                     context.go("/my-container");
                   } else if (value == "disconnect") {
-                    storageService.removeStorage('token');
-                    storageService.removeStorage('tokenExpiration');
-                    token = '';
-                    showCustomToast(
-                      context,
-                      AppLocalizations.of(context)!.loggedOff,
-                      true,
-                    );
-                    context.go("/");
+                    setState(() {
+                      storageService.removeStorage('token');
+                      storageService.removeStorage('tokenExpiration');
+                      token = '';
+                      showCustomToast(
+                        context,
+                        AppLocalizations.of(context)!.loggedOff,
+                        true,
+                      );
+                      context.go("/");
+                    });
                   }
                 },
               ),
