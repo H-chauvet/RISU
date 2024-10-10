@@ -2,7 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -110,98 +114,111 @@ class MyContainerState extends State<MyContainer> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
-    //debugPrint(displayedContainers[0]['name'].toString());
-
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.containerMy,
-        context: context,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 100),
-            Text(
-              AppLocalizations.of(context)!.containerSaved,
-              style: TextStyle(
+      body: FooterView(
+        footer: Footer(child: const CustomFooter()),
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.containerSaved,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
                   color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopFontSize
-                      : tabletFontSize,
-                  fontWeight: FontWeight.bold),
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
             ),
-            const SizedBox(height: 100),
-            Expanded(
-              child: displayedContainers.isEmpty
-                  ? const Text(
-                      "Aucune sauvegarde trouvée",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color.fromARGB(255, 211, 11, 11),
-                      ),
-                    )
-                  : ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: displayedContainers.length,
-                      itemBuilder: (_, i) {
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: ElevatedButton(
-                                key: Key('container_button_$i'),
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  storageService.writeStorage(
-                                    'containerData',
-                                    jsonEncode(
-                                      {
-                                        'id': displayedContainers[i]['id'],
-                                        'container':
-                                            jsonEncode(displayedContainers[i]),
-                                      },
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 100),
+                Container(
+                  child: displayedContainers.isEmpty
+                      ? const Text(
+                          "Aucune sauvegarde trouvée",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 211, 11, 11),
+                          ),
+                        )
+                      : ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: displayedContainers.length,
+                          itemBuilder: (_, i) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: ElevatedButton(
+                                    key: Key('container_button_$i'),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0),
+                                      ),
                                     ),
-                                  );
-                                  context.go(
-                                    '/container-creation',
-                                    extra: jsonEncode(
-                                      {
-                                        'id': displayedContainers[i]['id'],
-                                        'container':
-                                            jsonEncode(displayedContainers[i]),
-                                      },
-                                    ),
-                                  );
-                                },
-                                child: Text(
-                                  displayedContainers[i]['saveName'],
-                                  style: TextStyle(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                      fontSize:
-                                          screenFormat == ScreenFormat.desktop
+                                    onPressed: () {
+                                      storageService.writeStorage(
+                                        'containerData',
+                                        jsonEncode(
+                                          {
+                                            'id': displayedContainers[i]['id'],
+                                            'container': jsonEncode(
+                                                displayedContainers[i]),
+                                          },
+                                        ),
+                                      );
+                                      context.go(
+                                        '/container-creation',
+                                        extra: jsonEncode(
+                                          {
+                                            'id': displayedContainers[i]['id'],
+                                            'container': jsonEncode(
+                                                displayedContainers[i]),
+                                          },
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      displayedContainers[i]['saveName'],
+                                      style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
                                               ? desktopFontSize
                                               : tabletFontSize),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                              ],
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
