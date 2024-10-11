@@ -379,320 +379,345 @@ class ShapeScreenState extends State<ShapeScreen> {
         AppLocalizations.of(context)!.shape,
         context: context,
       ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
         children: [
-          ProgressBar(
-            length: 6,
-            progress: 0,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
-            previousFunc: goPrevious,
-            nextFunc: goNext,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Form(
-        key: formKey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.rowNumbers,
-                  style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      key: const Key('row-remove'),
-                      onTap: () {
-                        setState(() {
-                          if (row > 1) {
-                            row--;
-                            colors = List.generate(
-                                column * row, (index) => Colors.grey[200]);
-                            isClicked =
-                                List.generate(column * row, (index) => false);
-                            calculateDimension();
-                            saveContainerToStorage(generateContainerMapping());
-                          }
-                        });
-                      },
-                      child: const Icon(Icons.remove),
-                    ),
-                    const SizedBox(width: 10.0),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? lightTheme.primaryColor
-                            : darkTheme.primaryColor,
-                      ),
-                      child: Text(
-                        row.toString(),
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10.0),
-                    InkWell(
-                      key: const Key('row-add'),
-                      onTap: () {
-                        setState(() {
-                          if (row < 10) {
-                            row++;
-                            colors = List.generate(
-                                column * row, (index) => Colors.grey[200]);
-                            isClicked =
-                                List.generate(column * row, (index) => false);
-                            calculateDimension();
-                            saveContainerToStorage(generateContainerMapping());
-                          }
-                        });
-                      },
-                      child: const Icon(Icons.add),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20.0,
-                ),
-                Text(
-                  AppLocalizations.of(context)!.columnNumbers,
-                  style: TextStyle(
-                    color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
-                    fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopFontSize
-                        : tabletFontSize,
-                  ),
-                ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      key: const Key('column-remove'),
-                      onTap: () {
-                        setState(() {
-                          if (column > 1) {
-                            column--;
-                            colors = List.generate(
-                                column * row, (index) => Colors.grey[200]);
-                            isClicked =
-                                List.generate(column * row, (index) => false);
-                            calculateDimension();
-                            saveContainerToStorage(generateContainerMapping());
-                          }
-                        });
-                      },
-                      child: const Icon(Icons.remove),
-                    ),
-                    const SizedBox(width: 10.0),
-                    Container(
-                      padding: const EdgeInsets.all(10.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30.0),
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? lightTheme.primaryColor
-                            : darkTheme.primaryColor,
-                      ),
-                      child: Text(
-                        column.toString(),
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10.0),
-                    InkWell(
-                      key: const Key('column-add'),
-                      onTap: () {
-                        setState(() {
-                          if (column < 20) {
-                            column++;
-                            colors = List.generate(
-                                column * row, (index) => Colors.grey[200]);
-                            isClicked =
-                                List.generate(column * row, (index) => false);
-                            calculateDimension();
-                            saveContainerToStorage(generateContainerMapping());
-                          }
-                        });
-                      },
-                      child: const Icon(Icons.add),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              child: Column(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Form(
+              key: formKey,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: removeButtons(screenFormat),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: initContainer(),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.rowNumbers,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            key: const Key('row-remove'),
+                            onTap: () {
+                              setState(() {
+                                if (row > 1) {
+                                  row--;
+                                  colors = List.generate(column * row,
+                                      (index) => Colors.grey[200]);
+                                  isClicked = List.generate(
+                                      column * row, (index) => false);
+                                  calculateDimension();
+                                  saveContainerToStorage(
+                                      generateContainerMapping());
+                                }
+                              });
+                            },
+                            child: const Icon(Icons.remove),
+                          ),
+                          const SizedBox(width: 10.0),
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? lightTheme.primaryColor
+                                  : darkTheme.primaryColor,
+                            ),
+                            child: Text(
+                              row.toString(),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10.0),
+                          InkWell(
+                            key: const Key('row-add'),
+                            onTap: () {
+                              setState(() {
+                                if (row < 10) {
+                                  row++;
+                                  colors = List.generate(column * row,
+                                      (index) => Colors.grey[200]);
+                                  isClicked = List.generate(
+                                      column * row, (index) => false);
+                                  calculateDimension();
+                                  saveContainerToStorage(
+                                      generateContainerMapping());
+                                }
+                              });
+                            },
+                            child: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.columnNumbers,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            key: const Key('column-remove'),
+                            onTap: () {
+                              setState(() {
+                                if (column > 1) {
+                                  column--;
+                                  colors = List.generate(column * row,
+                                      (index) => Colors.grey[200]);
+                                  isClicked = List.generate(
+                                      column * row, (index) => false);
+                                  calculateDimension();
+                                  saveContainerToStorage(
+                                      generateContainerMapping());
+                                }
+                              });
+                            },
+                            child: const Icon(Icons.remove),
+                          ),
+                          const SizedBox(width: 10.0),
+                          Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30.0),
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? lightTheme.primaryColor
+                                  : darkTheme.primaryColor,
+                            ),
+                            child: Text(
+                              column.toString(),
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10.0),
+                          InkWell(
+                            key: const Key('column-add'),
+                            onTap: () {
+                              setState(() {
+                                if (column < 20) {
+                                  column++;
+                                  colors = List.generate(column * row,
+                                      (index) => Colors.grey[200]);
+                                  isClicked = List.generate(
+                                      column * row, (index) => false);
+                                  calculateDimension();
+                                  saveContainerToStorage(
+                                      generateContainerMapping());
+                                }
+                              });
+                            },
+                            child: const Icon(Icons.add),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: removeButtons(screenFormat),
+                        ),
+                        const SizedBox(
+                          height: 10.0,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: initContainer(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: screenFormat == ScreenFormat.desktop
+                        ? desktopPanelWidth
+                        : tabletPanelWidth,
+                    height: desktopPanelHeight,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
+                        borderRadius: BorderRadius.circular(30.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xff4682B4).withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.width,
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.meters(width),
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.height,
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!.meters(height),
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.locationsNumber,
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                              Text(
+                                '$nbLockers',
+                                style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              width: screenFormat == ScreenFormat.desktop
-                  ? desktopPanelWidth
-                  : tabletPanelWidth,
-              height: desktopPanelHeight,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? lightTheme.primaryColor
-                      : darkTheme.primaryColor,
-                  borderRadius: BorderRadius.circular(30.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xff4682B4).withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.width,
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.meters(width),
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.height,
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.meters(height),
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          AppLocalizations.of(context)!.locationsNumber,
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                        Text(
-                          '$nbLockers',
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+          ),
+          const SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 0,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
               ),
-            ),
-          ],
-        ),
+              const SizedBox(
+                height: 20,
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

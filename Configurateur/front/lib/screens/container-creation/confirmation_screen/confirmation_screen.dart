@@ -35,51 +35,59 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
         AppLocalizations.of(context)!.orderConfirmation,
         context: context,
       ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: screenFormat == ScreenFormat.desktop
-              ? desktopWidthFactor
-              : tabletWidthFactor,
-          heightFactor: heightFactor,
-          child: Column(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.orderConfirmationReturnHome,
-                style: TextStyle(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                  fontSize: screenFormat == ScreenFormat.desktop
-                      ? desktopBigFontSize
-                      : tabletBigFontSize,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(
-                height: 80.0,
-              ),
-              InkWell(
-                key: const Key('go-home'),
-                onTap: () {
-                  context.go("/");
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        AppLocalizations.of(context)!.backToHome,
-                        style:
-                            const TextStyle(color: Colors.blue, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+      body: FooterView(
+        flex: 10,
+        footer: Footer(
+          child: CustomFooter(),
         ),
+        children: [
+          Center(
+            child: FractionallySizedBox(
+              widthFactor: screenFormat == ScreenFormat.desktop
+                  ? desktopWidthFactor
+                  : tabletWidthFactor,
+              heightFactor: heightFactor,
+              child: Column(
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.orderConfirmationReturnHome,
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopBigFontSize
+                          : tabletBigFontSize,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 80.0,
+                  ),
+                  InkWell(
+                    key: const Key('go-home'),
+                    onTap: () {
+                      context.go("/");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            AppLocalizations.of(context)!.backToHome,
+                            style: const TextStyle(
+                                color: Colors.blue, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
