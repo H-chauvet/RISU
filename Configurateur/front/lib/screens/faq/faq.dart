@@ -75,7 +75,7 @@ class FaqPageState extends State<FaqPage> {
 
     return Scaffold(
       body: FooterView(
-        flex: 10,
+        flex: 8,
         footer: Footer(
           child: CustomFooter(),
         ),
