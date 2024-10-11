@@ -39,7 +39,7 @@ class _AdminPageState extends State<AdminPage> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       body: FooterView(
-        flex: 10,
+        flex: 6,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: CustomFooter(),
