@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -65,52 +68,61 @@ class ConfirmedUserState extends State<ConfirmedUser> {
         AppLocalizations.of(context)!.registerComfirmed,
         context: context,
       ),
-      body: Column(
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
         children: [
-          Center(
-            child: SizedBox(
-              width: 60.0.w,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.registerComfirmedMessage,
-                    style: TextStyle(
-                      fontSize: screenFormat == ScreenFormat.desktop
-                          ? desktopBigFontSize
-                          : tabletBigFontSize,
-                    ),
-                    textAlign: TextAlign.center,
+          Column(
+            children: [
+              Center(
+                child: SizedBox(
+                  width: 60.0.w,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.registerComfirmedMessage,
+                        style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopBigFontSize
+                              : tabletBigFontSize,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 20.0.h,
+                      ),
+                      InkWell(
+                        key: const Key('go-home'),
+                        onTap: () {
+                          context.go("/");
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  AppLocalizations.of(context)!.backToHome,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize:
+                                        screenFormat == ScreenFormat.desktop
+                                            ? desktopFontSize
+                                            : tabletFontSize,
+                                  ),
+                                ),
+                              ]),
+                        ),
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20.0.h,
-                  ),
-                  InkWell(
-                    key: const Key('go-home'),
-                    onTap: () {
-                      context.go("/");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              AppLocalizations.of(context)!.backToHome,
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletFontSize,
-                              ),
-                            ),
-                          ]),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+            ],
           ),
         ],
       ),
