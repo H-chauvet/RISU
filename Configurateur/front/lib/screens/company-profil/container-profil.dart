@@ -2,9 +2,9 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:footer/footer.dart';
@@ -15,10 +15,8 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
-import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
-import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -119,7 +117,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modifications effectuées avec succès! ", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       checkToken();
     } else {
       showCustomToast(context, response.body, false);
@@ -136,7 +135,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Modifier",
+            AppLocalizations.of(context)!.modify,
             style: TextStyle(
               color: Provider.of<ThemeService>(context).isDark
                   ? darkTheme.primaryColor
@@ -153,7 +152,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   key: const Key("city"),
                   controller: nameController,
                   decoration: InputDecoration(
-                      labelText: "Nouvelle ville", hintText: initialLastName),
+                      labelText: AppLocalizations.of(context)!.cityNew,
+                      hintText: initialLastName),
                 ),
               ],
             ),
@@ -172,7 +172,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 ),
               ),
               child: Text(
-                "Annuler",
+                AppLocalizations.of(context)!.cancel,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -195,7 +195,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 Navigator.of(context).pop();
               },
               child: Text(
-                "Modifier",
+                AppLocalizations.of(context)!.modify,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -227,7 +227,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modifications effectuées avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       checkToken();
     } else {
       showCustomToast(context, response.body, false);
@@ -243,7 +244,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            "Modifier",
+            AppLocalizations.of(context)!.modify,
             style: TextStyle(
               color: Provider.of<ThemeService>(context).isDark
                   ? darkTheme.primaryColor
@@ -260,7 +261,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   key: const Key("address"),
                   controller: addressController,
                   decoration: InputDecoration(
-                      labelText: "Adresse postale", hintText: initialAddress),
+                    labelText: AppLocalizations.of(context)!.addressPostal,
+                    hintText: initialAddress,
+                  ),
                 ),
               ],
             ),
@@ -279,7 +282,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 ),
               ),
               child: Text(
-                "Annuler",
+                AppLocalizations.of(context)!.cancel,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -302,7 +305,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                 ),
               ),
               child: Text(
-                "Modifier",
+                AppLocalizations.of(context)!.modify,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -353,7 +356,11 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       },
     );
     if (response.statusCode == 200) {
-      showCustomToast(context, "Article supprimé avec succès !", true);
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.itemDeleteSuccess,
+        true,
+      );
       checkToken();
       // fetchItemsbyCtnId();
     } else {
@@ -397,7 +404,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
     );
 
     if (response.statusCode == 200) {
-      showCustomToast(context, "Modifications effectuées avec succès !", true);
+      showCustomToast(
+          context, AppLocalizations.of(context)!.modifySuccess, true);
       checkToken();
       // fetchItemsbyCtnId();
     } else {
@@ -430,7 +438,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
               title: Text(
-                "Modifier un objet",
+                AppLocalizations.of(context)!.objectEdit,
                 style: TextStyle(
                   color: Provider.of<ThemeService>(context).isDark
                       ? darkTheme.primaryColor
@@ -446,17 +454,21 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     TextField(
                       controller: nameController,
                       decoration: InputDecoration(
-                          labelText: "Nouveau nom", hintText: initialLastName),
+                        labelText: AppLocalizations.of(context)!.nameNew,
+                        hintText: initialLastName,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Row(
                       children: [
-                        Text("Disponible",
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            )),
+                        Text(
+                          AppLocalizations.of(context)!.available,
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
+                        ),
                         Switch(
                           value: isAvailable,
                           onChanged: (bool newValue) {
@@ -472,15 +484,16 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
-                      decoration:
-                          const InputDecoration(labelText: "Prix de l'objet"),
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.objectPrice),
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
                       controller: descController,
                       decoration: InputDecoration(
-                          labelText: "Nouvelle description",
-                          hintText: initialDesc),
+                        labelText: AppLocalizations.of(context)!.descriptionNew,
+                        hintText: initialDesc,
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                   ],
@@ -499,7 +512,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     Navigator.of(context).pop();
                   },
                   child: Text(
-                    "Annuler",
+                    AppLocalizations.of(context)!.cancel,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -521,12 +534,14 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         nameController, descController, price, item, itemId);
                     Navigator.of(context).pop();
                   },
-                  child: Text("Modifier",
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                      )),
+                  child: Text(
+                    AppLocalizations.of(context)!.modify,
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
+                  ),
                 ),
               ],
             );
@@ -546,10 +561,11 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
           children: [
             Expanded(
               child: ListTile(
-                title: Text("Nom : ${item.name}"),
+                title: Text(AppLocalizations.of(context)!.nameData(item.name)),
                 subtitle: item.description != null
-                    ? Text("Description : ${item.description!}")
-                    : const Text("Description : Pas de description"),
+                    ? Text(AppLocalizations.of(context)!
+                        .descriptionData(item.description!))
+                    : Text(AppLocalizations.of(context)!.descriptionEmpty),
               ),
             ),
             Row(
@@ -565,10 +581,10 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   onPressed: () async {
                     await showUpdateItem(
                         context, itemName, itemDesc, item.id!, item,
-                        (String newcity, String newDescription) {
+                        (String newcity, String DescriptionNew) {
                       setState(() {
                         itemName = newcity;
-                        itemDesc = newDescription;
+                        itemDesc = DescriptionNew;
                       });
                     });
                   },
@@ -599,38 +615,16 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
-    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
+      appBar: CustomAppBar(
+        AppLocalizations.of(context)!.containerHandling,
+        context: context,
+      ),
       body: FooterView(
         footer: Footer(
-          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [
-          LandingAppBar(context: context),
-          Text(
-            'Gestion des conteneurs',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: screenFormat == ScreenFormat.desktop
-                  ? desktopBigFontSize
-                  : tabletBigFontSize,
-              fontFamily: 'Inter',
-              fontWeight: FontWeight.bold,
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.secondaryHeaderColor
-                  : lightTheme.secondaryHeaderColor,
-              shadows: [
-                Shadow(
-                  color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                  offset: const Offset(0.75, 0.75),
-                  blurRadius: 1.5,
-                ),
-              ],
-            ),
-          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
@@ -667,7 +661,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 Text(
-                                  "Nom de la ville : ${tmp.city!}",
+                                  AppLocalizations.of(context)!
+                                      .cityNameData(tmp.city!),
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -704,7 +699,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 Text(
-                                  "Adresse : ${tmp.address!}",
+                                  AppLocalizations.of(context)!
+                                      .addressData(tmp.address!),
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -743,7 +739,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     ),
                   ),
                   Text(
-                    "Nos Objets :",
+                    AppLocalizations.of(context)!.ourObjects,
                     style: TextStyle(
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -777,7 +773,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       ),
                     ),
                     child: Text(
-                      "Créer un objet",
+                      AppLocalizations.of(context)!.objectCreate,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.appBarTheme.backgroundColor
@@ -785,14 +781,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   items.isEmpty
-                      ? const Center(
+                      ? Center(
                           child: Text(
-                            'Aucun objet trouvé.',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.objectEmpty,
+                            style: const TextStyle(
                               fontSize: 18,
                               color: Color.fromARGB(255, 211, 11, 11),
                             ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -23,7 +24,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               context.go("/");
             },
             child: Text(
-              'Accueil',
+              AppLocalizations.of(context)!.home,
               style: TextStyle(
                 fontSize: 16,
                 color: Provider.of<ThemeService>(context).isDark
@@ -38,7 +39,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               context.go("/confidentiality");
             },
             child: Text(
-              'Politique de confidentialité',
+              AppLocalizations.of(context)!.confidentalityPolicy,
               style: TextStyle(
                 fontSize: 16,
                 color: Provider.of<ThemeService>(context).isDark
@@ -53,7 +54,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               context.go("/contact");
             },
             child: Text(
-              'Contact',
+              AppLocalizations.of(context)!.contact,
               style: TextStyle(
                 fontSize: 16,
                 color: Provider.of<ThemeService>(context).isDark
@@ -72,7 +73,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               }
             },
             child: Text(
-              'Avis',
+              AppLocalizations.of(context)!.opinion,
               style: TextStyle(
                 fontSize: 16,
                 color: Provider.of<ThemeService>(context).isDark

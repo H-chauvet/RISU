@@ -19,7 +19,7 @@
     "invalidRating" : "La note donnée n'est pas valide.",
     "missingComment" : "Le commentaire est absent de la requête.",
     "missingRating" : "La note est absente de la requête.",
-    "reviewSaved" : "L'avis a été sauvegardée avec succès.",
+    "reviewSaved" : "L'avis a été sauvegardé avec succès.",
     "missingReviewId" : "L'identifiant de l'avis ne figure pas dans la requête.",
     "reviewNotFound" : "L'avis n'a pas été trouvée dans la base de données.",
     "unauthorized" : "Cette action n'est pas autorisée.",
@@ -84,5 +84,7 @@
     "missingCompany" : "L'entreprise est absente de la requête.",
     "companyNotFound" : "L'entreprise n'a pas été trouvée dans la base de données.",
     "cardBlocked": "Votre carte est bloquée, renseignez une carte valide",
-    "imageUploaded": "L'image a été téléchargée avec succès."
+    "organizationNotAuthorized": "Récupérer la liste des membres d'une entreprise autres que la votre n'est pas autorisé.",
+    "imageUploaded": "L'image a été téléchargée avec succès.",
+    "pwdReset" : "Le mot de passe a été modifié avec succès."
 }

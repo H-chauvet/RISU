@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -119,7 +120,7 @@ class ContainerCards extends StatelessWidget {
               child: ListTile(
                 title: container.city != null
                     ? Text(
-                        "Ville : ${container.city!}",
+                        AppLocalizations.of(context)!.cityData(container.city!),
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -127,7 +128,7 @@ class ContainerCards extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "Ville : Pas de ville associée",
+                        AppLocalizations.of(context)!.cityNotLinked,
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -136,7 +137,8 @@ class ContainerCards extends StatelessWidget {
                       ),
                 subtitle: container.address != null
                     ? Text(
-                        "Adresse : ${container.address!}",
+                        AppLocalizations.of(context)!
+                            .addressData(container.address!),
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -144,7 +146,7 @@ class ContainerCards extends StatelessWidget {
                         ),
                       )
                     : Text(
-                        "Adresse : Aucune adresse",
+                        AppLocalizations.of(context)!.addressNo,
                         style: TextStyle(
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
@@ -162,7 +164,15 @@ class ContainerCards extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.chevron_right),
-                  onPressed: () => context.go(page),
+                  onPressed: () {
+                    if (container.id != null) {
+                      storageService.writeStorage(
+                        'containerId',
+                        container.id.toString(),
+                      );
+                    }
+                    context.go(page);
+                  },
                 ),
               ],
             ),

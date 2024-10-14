@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/feedbacks/feedbacks_card.dart';
 import 'package:mockito/mockito.dart';
@@ -71,6 +72,9 @@ void main() {
                 mark: '5',
               ),
             ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('fr'),
           );
         },
       ),

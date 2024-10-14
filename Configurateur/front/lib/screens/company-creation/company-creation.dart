@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
@@ -95,7 +96,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
       body = {
         "email": widget.params,
         "company": response.body,
-        "manager": false.toString(),
+        "manager": true.toString(),
       };
       await HttpService().putRequest(
           'http://$serverIp:3000/api/auth/update-company', header, body);
@@ -125,7 +126,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Création d'entreprise",
+                AppLocalizations.of(context)!.companyCreation,
                 style: TextStyle(
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopBigFontSize
@@ -148,8 +149,8 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                     TextFormField(
                       key: const Key('name'),
                       decoration: InputDecoration(
-                        hintText: "Entrez le nom de l'entreprise",
-                        labelText: 'Nom',
+                        hintText: AppLocalizations.of(context)!.companyAskName,
+                        labelText: AppLocalizations.of(context)!.name,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -159,7 +160,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                       },
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez remplir ce champ';
+                          return AppLocalizations.of(context)!.askCompleteField;
                         }
                         return null;
                       },
@@ -170,8 +171,8 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                     TextFormField(
                       key: const Key('contact'),
                       decoration: InputDecoration(
-                        hintText: "Entrez un mail pour contacter l'entreprise",
-                        labelText: 'Contact',
+                        hintText: AppLocalizations.of(context)!.companySendMail,
+                        labelText: AppLocalizations.of(context)!.contact,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),
                         ),
@@ -181,7 +182,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                       },
                       validator: (String? value) {
                         if (value == null || value.isEmpty) {
-                          return 'Veuillez remplir ce champ';
+                          return AppLocalizations.of(context)!.askCompleteField;
                         }
                         return null;
                       },
@@ -190,7 +191,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                       height: 40,
                     ),
                     Text(
-                      "Souhaitez-vous inviter des collaborateurs ?",
+                      AppLocalizations.of(context)!.companyAskColleagues,
                       style: TextStyle(
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
@@ -211,9 +212,9 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                             key: const Key('collaboratorContact'),
                             controller: _controller,
                             decoration: InputDecoration(
-                              hintText:
-                                  "Entrez un mail pour inviter le collaborateur",
-                              labelText: 'Mail',
+                              hintText: AppLocalizations.of(context)!
+                                  .companySendMailColleagues,
+                              labelText: AppLocalizations.of(context)!.mail,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
@@ -223,13 +224,15 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                             },
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
-                                return 'Veuillez remplir ce champ';
+                                return AppLocalizations.of(context)!
+                                    .askCompleteField;
                               }
                               return null;
                             },
                           ),
                         ),
                         IconButton(
+                          key: const Key('send-button'),
                           onPressed: () => {
                             if (collaboratorContact != '')
                               {
@@ -240,7 +243,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                                 })
                               }
                           },
-                          icon: Icon(Icons.send),
+                          icon: const Icon(Icons.send),
                         )
                       ],
                     ),
@@ -262,7 +265,7 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                                   collaboratorList.removeAt(i);
                                 });
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             )
                           ],
                         );
@@ -279,12 +282,14 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
-                      child: Text("Créer",
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.colorScheme.background,
-                          )),
+                      child: Text(
+                        AppLocalizations.of(context)!.create,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.colorScheme.background,
+                        ),
+                      ),
                     ),
                   ],
                 ),

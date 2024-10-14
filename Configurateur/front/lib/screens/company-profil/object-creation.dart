@@ -6,13 +6,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:front/components/container.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/dialog/add_design_dialog.dart';
-import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/components/items-information.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
 import 'package:front/services/size_service.dart';
@@ -24,7 +20,6 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
 class Category {
@@ -118,7 +113,8 @@ class ObjectCreationState extends State<ObjectCreation> {
       });
     } else {
       Fluttertoast.showToast(
-        msg: 'Erreur lors de la récupération: ${response.statusCode}',
+        msg: AppLocalizations.of(context)!
+            .errorDuringInformationRetrievalData(response.statusCode),
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
       );
@@ -169,7 +165,7 @@ class ObjectCreationState extends State<ObjectCreation> {
         );
       } else {
         Fluttertoast.showToast(
-          msg: "Erreur lors de la création de l'objet",
+          msg: AppLocalizations.of(context)!.errorObjectCreationFailed,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
@@ -178,10 +174,9 @@ class ObjectCreationState extends State<ObjectCreation> {
     } catch (e) {
       print(e);
       Fluttertoast.showToast(
-        msg: "Erreur lors de la création de l'objet: $e",
+        msg: AppLocalizations.of(context)!.errorObjectCreationFailed,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
       );
     }
   }
@@ -192,7 +187,9 @@ class ObjectCreationState extends State<ObjectCreation> {
         // context.go('/container-profil');
       });
     } else {
-      Fluttertoast.showToast(msg: "L'objet n'a pas pu être créé");
+      Fluttertoast.showToast(
+        msg: AppLocalizations.of(context)!.objectCreationFailed,
+      );
     }
   }
 
@@ -203,7 +200,7 @@ class ObjectCreationState extends State<ObjectCreation> {
     if (pickedFiles.isNotEmpty) {
       if (pickedFiles.length > 5) {
         Fluttertoast.showToast(
-          msg: "Trop de fichiers sélectionnés",
+          msg: AppLocalizations.of(context)!.tooManyFilesSelected,
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.CENTER,
           backgroundColor: Colors.red,
@@ -234,7 +231,7 @@ class ObjectCreationState extends State<ObjectCreation> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       appBar: CustomAppBar(
-        "Création d'objet",
+        AppLocalizations.of(context)!.objectCreation,
         context: context,
       ),
       body: Center(
@@ -293,8 +290,10 @@ class ObjectCreationState extends State<ObjectCreation> {
                                 Positioned(
                                   left: 10,
                                   child: IconButton(
-                                    icon: const Icon(Icons.arrow_back,
-                                        color: Colors.black),
+                                    icon: const Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.black,
+                                    ),
                                     onPressed: () {
                                       _carouselController.previousPage();
                                     },
@@ -303,8 +302,10 @@ class ObjectCreationState extends State<ObjectCreation> {
                                 Positioned(
                                   right: 10,
                                   child: IconButton(
-                                    icon: const Icon(Icons.arrow_forward,
-                                        color: Colors.black),
+                                    icon: const Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.black,
+                                    ),
                                     onPressed: () {
                                       _carouselController.nextPage();
                                     },
@@ -314,8 +315,10 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   top: 10,
                                   right: 10,
                                   child: IconButton(
-                                    icon: const Icon(Icons.close,
-                                        color: Colors.red),
+                                    icon: const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
+                                    ),
                                     onPressed: () {
                                       _removeImage(_currentIndex);
                                     },
@@ -339,7 +342,8 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   height: 20,
                                 ),
                                 Text(
-                                  "Cliquez pour ajouter des images",
+                                  AppLocalizations.of(context)!
+                                      .imagesClickToAdd,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
@@ -363,7 +367,7 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   ),
                                   onPressed: _pickFile,
                                   child: Text(
-                                    "Parcourir",
+                                    AppLocalizations.of(context)!.browse,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context)
                                               .isDark
@@ -394,12 +398,12 @@ class ObjectCreationState extends State<ObjectCreation> {
                       TextFormField(
                         key: const Key('name'),
                         controller: _nameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Nom',
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.name,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer un nom';
+                            return AppLocalizations.of(context)!.nameAsk;
                           }
                           return null;
                         },
@@ -408,12 +412,12 @@ class ObjectCreationState extends State<ObjectCreation> {
                       TextFormField(
                         key: const Key('description'),
                         controller: _descriptionController,
-                        decoration: const InputDecoration(
-                          labelText: 'Description',
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.description,
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer un description';
+                            return AppLocalizations.of(context)!.descriptionAsk;
                           }
                           return null;
                         },
@@ -422,17 +426,18 @@ class ObjectCreationState extends State<ObjectCreation> {
                       TextFormField(
                         key: const Key('price'),
                         controller: _priceController,
-                        decoration: const InputDecoration(
-                          labelText: 'Prix',
-                          suffixText: '€/heure',
+                        decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.price,
+                          suffixText:
+                              AppLocalizations.of(context)!.pricePerHour,
                         ),
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Veuillez entrer un prix';
+                            return AppLocalizations.of(context)!.priceAsk;
                           }
                           if (double.tryParse(value) == null) {
-                            return 'Veuillez entrer un prix valide';
+                            return AppLocalizations.of(context)!.priceAskValid;
                           }
                           return null;
                         },
@@ -453,8 +458,10 @@ class ObjectCreationState extends State<ObjectCreation> {
                             child: Text(category.name!),
                           );
                         }).toList(),
-                        decoration: const InputDecoration(
-                            labelText: 'Sélectionnez la catégorie'),
+                        decoration: InputDecoration(
+                          labelText:
+                              AppLocalizations.of(context)!.categorySelect,
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Center(
@@ -462,12 +469,14 @@ class ObjectCreationState extends State<ObjectCreation> {
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0))),
-                          child: Text('Soumettre',
-                              style: TextStyle(
-                                color: Provider.of<ThemeService>(context).isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                              )),
+                          child: Text(
+                            AppLocalizations.of(context)!.submit,
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                          ),
                           onPressed: () {
                             _submitForm(context);
                           },

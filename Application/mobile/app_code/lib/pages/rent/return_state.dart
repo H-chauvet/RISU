@@ -14,6 +14,7 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'return_page.dart';
 
@@ -189,6 +190,17 @@ class ReturnArticleState extends State<ReturnArticlePage> {
     }
   }
 
+  void _launchURL() async {
+    dynamic container = rental["item"]["container"];
+    Uri url = Uri.parse(
+        'https://www.google.com/maps/search/?api=1&query=${container["latitude"]},${container["longitude"]}');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
@@ -197,6 +209,18 @@ class ReturnArticleState extends State<ReturnArticlePage> {
       appBar: MyAppBar(
         curveColor: themeProvider.currentTheme.secondaryHeaderColor,
         showBackButton: false,
+        action: rental["ended"] == false
+            ? IconButton(
+                key: const Key('return_article-button_get_directions'),
+                onPressed: _launchURL,
+                icon: Icon(
+                  Icons.directions,
+                  size: 28,
+                  color: themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor,
+                ),
+              )
+            : null,
       ),
       resizeToAvoidBottomInset: false,
       backgroundColor: themeProvider.currentTheme.colorScheme.surface,

@@ -1,6 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -55,14 +56,6 @@ class CustomFooterState extends State<CustomFooter> {
       context.go("/login");
     } else {
       context.go("/contact");
-    }
-  }
-
-  void goToFeedbacks() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/feedbacks");
     }
   }
 
@@ -129,7 +122,7 @@ class CustomFooterState extends State<CustomFooter> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Communauté",
+                            AppLocalizations.of(context)!.community,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context,
                                           listen: false)
@@ -155,7 +148,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToTickets(),
                               child: Text(
-                                "Nous contacter",
+                                AppLocalizations.of(context)!.contactUs,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -163,34 +156,6 @@ class CustomFooterState extends State<CustomFooter> {
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
                                   decoration: isHoveringContact
-                                      ? TextDecoration.underline
-                                      : TextDecoration.none,
-                                ),
-                              ),
-                            ),
-                          ),
-                          MouseRegion(
-                            onEnter: (_) {
-                              setState(() {
-                                isHoveringFeedback = true;
-                              });
-                            },
-                            onExit: (_) {
-                              setState(() {
-                                isHoveringFeedback = false;
-                              });
-                            },
-                            child: GestureDetector(
-                              onTap: () => goToFeedbacks(),
-                              child: Text(
-                                "Vos avis",
-                                style: TextStyle(
-                                  color: Provider.of<ThemeService>(context,
-                                              listen: false)
-                                          .isDark
-                                      ? darkTheme.primaryColor
-                                      : lightTheme.primaryColor,
-                                  decoration: isHoveringFeedback
                                       ? TextDecoration.underline
                                       : TextDecoration.none,
                                 ),
@@ -211,7 +176,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToFaq(),
                               child: Text(
-                                "Questions fréquentes",
+                                AppLocalizations.of(context)!.questions,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -239,7 +204,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToCompany(),
                               child: Text(
-                                "L'entreprise Risu",
+                                AppLocalizations.of(context)!.risuCompany,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -265,7 +230,7 @@ class CustomFooterState extends State<CustomFooter> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Mon Compte",
+                            AppLocalizations.of(context)!.accountMy,
                             style: TextStyle(
                               color: Provider.of<ThemeService>(context,
                                           listen: false)
@@ -291,7 +256,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToProfile(),
                               child: Text(
-                                "Mon Profil",
+                                AppLocalizations.of(context)!.profileMy,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -319,7 +284,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToCompanyProfile(),
                               child: Text(
-                                "Mes conteneurs",
+                                AppLocalizations.of(context)!.containerMy,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -347,7 +312,7 @@ class CustomFooterState extends State<CustomFooter> {
                             child: GestureDetector(
                               onTap: () => goToCreation(),
                               child: Text(
-                                "Créer un conteneur",
+                                AppLocalizations.of(context)!.containerCreate,
                                 style: TextStyle(
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
@@ -371,7 +336,7 @@ class CustomFooterState extends State<CustomFooter> {
           ),
           const SizedBox(height: 15),
           Text(
-            'Copyright ©2024, Tous droits réservés.',
+            AppLocalizations.of(context)!.copyright,
             style: TextStyle(
               color: Provider.of<ThemeService>(context, listen: false).isDark
                   ? darkTheme.primaryColor
@@ -382,7 +347,7 @@ class CustomFooterState extends State<CustomFooter> {
           ),
           const SizedBox(height: 10),
           Text(
-            'Développé par RISU',
+            AppLocalizations.of(context)!.developedByRisu,
             style: TextStyle(
               color: Provider.of<ThemeService>(context, listen: false).isDark
                   ? darkTheme.primaryColor

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:provider/provider.dart';
@@ -39,15 +40,17 @@ void main() {
           home: Scaffold(
             body: CustomFooter(),
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('fr'),
         ),
       ),
     );
 
     expect(find.text("Communauté"), findsOneWidget);
     expect(find.text("Nous contacter"), findsOneWidget);
-    expect(find.text("Vos avis"), findsOneWidget);
     expect(find.text("Questions fréquentes"), findsOneWidget);
-    expect(find.text("L'entreprise Risu"), findsOneWidget);
+    expect(find.text("L'entreprise RISU"), findsOneWidget);
     expect(find.text("Mon Compte"), findsOneWidget);
     expect(find.text("Mon Profil"), findsOneWidget);
     expect(find.text("Mes conteneurs"), findsOneWidget);
@@ -76,15 +79,17 @@ void main() {
           home: Scaffold(
             body: CustomFooter(),
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('fr'),
         ),
       ),
     );
 
     final textsToTest = [
       "Nous contacter",
-      "Vos avis",
       "Questions fréquentes",
-      "L'entreprise Risu",
+      "L'entreprise RISU",
       "Mon Profil",
       "Mes conteneurs",
       "Créer un conteneur",

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
@@ -55,116 +56,116 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     DateTime lastClicked = DateTime.parse("1969-07-20 20:18:04Z");
     DateTime now = DateTime.now();
     return Scaffold(
-        appBar: CustomAppBar(
-          "Confirmation d'inscription",
-          context: context,
-        ),
-        body: Center(
-            child: FractionallySizedBox(
-                widthFactor: screenFormat == ScreenFormat.desktop
-                    ? desktopWidthFactor
-                    : tabletWidthFactor,
-                heightFactor: 0.7,
-                child: Column(
-                  children: [
-                    Text(
-                      "Afin de finaliser l'inscription de votre compte, merci de confirmer cette dernière grâce au lien que vous avez reçu par mail.",
-                      style: TextStyle(
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopBigFontSize
-                              : tabletBigFontSize),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(
-                      height: 80.0,
-                    ),
-                    Text(
-                      "Vous n'avez pas reçu le mail de confirmation ?",
-                      style: TextStyle(
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 35.0,
-                    ),
-                    SizedBox(
-                      height: 40,
-                      width: screenFormat == ScreenFormat.desktop
-                          ? desktopSendButtonWidth
-                          : tabletSendButtonWidth,
-                      child: ElevatedButton(
-                        key: const Key('send-mail'),
-                        onPressed: () async {
-                          showCustomToast(
-                              context,
-                              "Le mail de confirmation a bien été renvoyé !",
-                              true);
-                          now = DateTime.now();
-                          final difference =
-                              now.difference(lastClicked).inMinutes;
-                          if (difference >= 1) {
-                            lastClicked = DateTime.now();
-                            await http.post(
-                              Uri.parse(
-                                  'http://$serverIp:3000/api/auth/register-confirmation'),
-                              headers: <String, String>{
-                                'Authorization': jwtToken,
-                                'Content-Type':
-                                    'application/json; charset=UTF-8',
-                                'Access-Control-Allow-Origin': '*',
-                              },
-                              body: jsonEncode(<String, String>{
-                                'email': widget.params,
-                              }),
-                            );
-                          }
+      appBar: CustomAppBar(
+        AppLocalizations.of(context)!.registerComfirmed,
+        context: context,
+      ),
+      body: Center(
+        child: FractionallySizedBox(
+          widthFactor: screenFormat == ScreenFormat.desktop
+              ? desktopWidthFactor
+              : tabletWidthFactor,
+          heightFactor: 0.7,
+          child: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.registerMessage,
+                style: TextStyle(
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopBigFontSize
+                        : tabletBigFontSize),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 80.0,
+              ),
+              Text(
+                AppLocalizations.of(context)!.registerAskEmail,
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                ),
+              ),
+              const SizedBox(
+                height: 35.0,
+              ),
+              SizedBox(
+                height: 40,
+                width: screenFormat == ScreenFormat.desktop
+                    ? desktopSendButtonWidth
+                    : tabletSendButtonWidth,
+                child: ElevatedButton(
+                  key: const Key('send-mail'),
+                  onPressed: () async {
+                    showCustomToast(context,
+                        AppLocalizations.of(context)!.registerEmail, true);
+                    now = DateTime.now();
+                    final difference = now.difference(lastClicked).inMinutes;
+                    if (difference >= 1) {
+                      lastClicked = DateTime.now();
+                      await http.post(
+                        Uri.parse(
+                            'http://$serverIp:3000/api/auth/register-confirmation'),
+                        headers: <String, String>{
+                          'Authorization': jwtToken,
+                          'Content-Type': 'application/json; charset=UTF-8',
+                          'Access-Control-Allow-Origin': '*',
                         },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Renvoyer le mail de confirmation",
-                          style: TextStyle(
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                          ),
+                        body: jsonEncode(<String, String>{
+                          'email': widget.params,
+                        }),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.registerResendEmail,
+                    style: TextStyle(
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopFontSize
+                          : tabletFontSize,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 20.0,
+              ),
+              InkWell(
+                key: const Key('go-home'),
+                onTap: () {
+                  context.go("/");
+                },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        AppLocalizations.of(context)!.backToHome,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-                    InkWell(
-                      key: const Key('go-home'),
-                      onTap: () {
-                        context.go("/");
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                "Retour à l'accueil",
-                                style: TextStyle(
-                                    color: Colors.blue,
-                                    fontSize:
-                                        screenFormat == ScreenFormat.desktop
-                                            ? desktopFontSize
-                                            : tabletFontSize),
-                              ),
-                            ]),
-                      ),
-                    ),
-                  ],
-                ))));
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
