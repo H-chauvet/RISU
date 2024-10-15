@@ -56,7 +56,6 @@ router.post("/create",
 
     const { name, available, price, containerId, description } =
       req.body;
-      console.log(req.body);
     const item = await itemCtrl.createItem(res, {
       name,
       available,
@@ -65,7 +64,6 @@ router.post("/create",
       description,
     });
     console.log(req.files);
-    console.log(item);
     var count = 0;
     for (const file of req.files) {
       const params = {
