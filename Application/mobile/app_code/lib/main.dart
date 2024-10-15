@@ -26,15 +26,16 @@ void main() async {
     print('Error .env: $e');
   }
 
-  if (dotenv.env['STRIPE_PUBLISHABLE_KEY'] != null) {
-    Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
-    Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
-    Stripe.urlScheme = 'flutterstripe';
-    await Stripe.instance.applySettings();
+  if (dotenv.env['STRIPE_PUBLISHABLE_KEY'] == null) {
+    print('Error: STRIPE_PUBLISHABLE_KEY is not defined in .env');
     return;
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
 
   final prefs = await SharedPreferences.getInstance();
   theme = prefs.getString('appTheme') ?? appTheme['clair'];
