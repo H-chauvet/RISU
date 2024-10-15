@@ -293,7 +293,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           Text(
                             AppLocalizations.of(context)!.french,
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.colorScheme.background,
                             ),
@@ -314,7 +316,9 @@ class LandingAppBarState extends State<LandingAppBar> {
                           Text(
                             AppLocalizations.of(context)!.english,
                             style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.colorScheme.background,
                             ),
