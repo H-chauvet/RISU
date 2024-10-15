@@ -57,7 +57,6 @@ dependencies:
   tuple: ^2.0.2
   provider: ^6.1.1
   jwt_decoder: ^2.0.1
-  fluttertoast: ^8.2.4
   flutter_stripe: ^10.1.1
   flutter_stripe_web: ^5.1.0
   file_picker: ^8.0.3
