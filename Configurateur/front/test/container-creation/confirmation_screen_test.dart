@@ -104,7 +104,6 @@ import 'package:sizer/sizer.dart';
 
 //     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-
 //     await tester.pumpAndSettle();
 //   });
 // }
