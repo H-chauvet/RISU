@@ -68,7 +68,7 @@ class MyContainerState extends State<MyContainer> {
     );
   }
 
-  void deleteSave(int i) {
+  void deleteSave(int listIndex) {
     var headers = <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',
@@ -78,14 +78,14 @@ class MyContainerState extends State<MyContainer> {
       "http://$serverIp:3000/api/container/delete",
       headers,
       {
-        "id": displayedContainers[i]['id'],
+        "id": displayedContainers[listIndex]['id'],
       },
     ).then((value) {
       if (value.statusCode != 200) {
         showCustomToast(context, value.body, false);
       } else {
         setState(() {
-          displayedContainers.removeAt(i);
+          displayedContainers.removeAt(listIndex);
           debugPrint(displayedContainers.toString());
         });
       }
