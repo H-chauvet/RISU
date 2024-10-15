@@ -137,7 +137,7 @@ final boxDecorationDarkTheme = BoxDecoration(
 );
 
 const progressBarCheckedLightTheme = Color(0xFF28666E);
-const progressBarCheckedDarkTheme = Color(0xFF033F63);
+const progressBarCheckedDarkTheme = Color(0xFFFEDC97);
 
 final progressBarUncheckedLightTheme = Colors.grey[300];
 final progressBarUncheckedDarkTheme = Colors.grey[600];

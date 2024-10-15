@@ -60,32 +60,39 @@ void main() {
     );
 
     await tester.pumpWidget(
-      Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            home: Scaffold(
-              body: Column(
-                children: [
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: containers.length,
-                    itemBuilder: (context, index) {
-                      final product = containers[index];
-                      return ContainerCards(
-                        container: product,
-                        onDelete: deleteContainer,
-                        page: "page",
-                      );
-                    },
-                  ),
-                ],
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: Scaffold(
+                body: Column(
+                  children: [
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: containers.length,
+                      itemBuilder: (context, index) {
+                        final product = containers[index];
+                        return ContainerCards(
+                          container: product,
+                          onDelete: deleteContainer,
+                          page: "page",
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            localizationsDelegates: AppLocalizations.localizationsDelegates,
-            supportedLocales: AppLocalizations.supportedLocales,
-            locale: const Locale('fr'),
-          );
-        },
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
       ),
     );
 

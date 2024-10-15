@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/services/size_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 /// Mobile user class
 ///
@@ -62,8 +65,11 @@ class UserMobileCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(
-             AppLocalizations.of(context)!.firstNameData(user.firstName),
+              AppLocalizations.of(context)!.firstNameData(user.firstName),
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -72,6 +78,9 @@ class UserMobileCard extends StatelessWidget {
             subtitle: Text(
               AppLocalizations.of(context)!.lastNameData(user.lastName),
               style: TextStyle(
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
                     : tabletFontSize,
@@ -87,6 +96,9 @@ class UserMobileCard extends StatelessWidget {
                     Text(
                       AppLocalizations.of(context)!.emailData(user.email),
                       style: TextStyle(
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
                             : tabletFontSize,
@@ -95,7 +107,10 @@ class UserMobileCard extends StatelessWidget {
                   ],
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(Icons.delete,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () => onDelete(user),
                 ),
               ],
