@@ -50,6 +50,7 @@ class LandingPageState extends State<LandingPage> {
 
     return Scaffold(
       body: FooterView(
+        flex: 10,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: CustomFooter(),
@@ -118,7 +119,7 @@ class LandingPageState extends State<LandingPage> {
                             padding: const EdgeInsets.only(
                                 top: 15), // Espacement inférieur pour le texte
                             child: Text(
-                             AppLocalizations.of(context)!.landingPitch2Text,
+                              AppLocalizations.of(context)!.landingPitch2Text,
                               style: TextStyle(
                                 fontSize: screenFormat == ScreenFormat.desktop
                                     ? desktopFontSize

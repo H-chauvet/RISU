@@ -126,32 +126,44 @@ class RecapScreenState extends State<RecapScreen> {
         AppLocalizations.of(context)!.summary,
         context: context,
       ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ProgressBar(
-            length: 6,
-            progress: 3,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
-            previousFunc: previousFunc,
-            nextFunc: nextFunc,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: 0.5,
-          heightFactor: 0.5,
-          child: RecapPanel(
-            fullscreen: true,
-            screenFormat: screenFormat,
-            articles: lockerss,
-          ),
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: const CustomFooter(),
         ),
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Center(
+              child: FractionallySizedBox(
+                widthFactor: 0.5,
+                heightFactor: 0.5,
+                child: RecapPanel(
+                  fullscreen: true,
+                  screenFormat: screenFormat,
+                  articles: lockerss,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 3,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: previousFunc,
+                nextFunc: nextFunc,
+              ),
+              const SizedBox(
+                height: 50,
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

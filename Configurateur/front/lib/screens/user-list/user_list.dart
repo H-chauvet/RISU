@@ -3,8 +3,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
@@ -125,89 +128,103 @@ class _UserPageState extends State<UserPage> {
           AppLocalizations.of(context)!.userHandling,
           context: context,
         ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                backgroundColor: Colors.transparent,
-                floating: true,
-                bottom: TabBar(
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        AppLocalizations.of(context)!.userWeb,
-                        style: TextStyle(
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        AppLocalizations.of(context)!.userMobile,
-                        style: TextStyle(
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletFontSize,
-                            color: Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor),
-                      ),
-                    ),
-                  ],
-                  indicatorColor: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.secondaryHeaderColor
-                      : lightTheme.secondaryHeaderColor,
-                ),
-                pinned: true,
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: users.length,
-                      itemBuilder: (context, index) {
-                        final product = users[index];
-                        return UserCard(
-                          user: product,
-                          onDelete: deleteUserWeb,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: users_mobile.length,
-                      itemBuilder: (context, index) {
-                        final product = users_mobile[index];
-                        return UserMobileCard(
-                          user: product,
-                          onDelete: deleteUserMobile,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
+        body: FooterView(
+          flex: 8,
+          footer: Footer(
+            child: const CustomFooter(),
           ),
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              height: MediaQuery.of(context).size.height * 0.85,
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      backgroundColor: Colors.transparent,
+                      floating: true,
+                      bottom: TabBar(
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              AppLocalizations.of(context)!.userWeb,
+                              style: TextStyle(
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              AppLocalizations.of(context)!.userMobile,
+                              style: TextStyle(
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletFontSize,
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.secondaryHeaderColor
+                                          : lightTheme.secondaryHeaderColor),
+                            ),
+                          ),
+                        ],
+                        indicatorColor:
+                            Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.secondaryHeaderColor
+                                : lightTheme.secondaryHeaderColor,
+                      ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: users.length,
+                            itemBuilder: (context, index) {
+                              final product = users[index];
+                              return UserCard(
+                                user: product,
+                                onDelete: deleteUserWeb,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: users_mobile.length,
+                            itemBuilder: (context, index) {
+                              final product = users_mobile[index];
+                              return UserMobileCard(
+                                user: product,
+                                onDelete: deleteUserMobile,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
-        bottomNavigationBar: const CustomBottomNavigationBar(),
       ),
     );
   }

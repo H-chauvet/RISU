@@ -161,57 +161,69 @@ class MapsState extends State<MapsScreen> {
         AppLocalizations.of(context)!.location,
         context: context,
       ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
         children: [
-          ProgressBar(
-            length: 6,
-            progress: 4,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
-            previousFunc: goPrevious,
-            nextFunc: goNext,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: screenFormat == ScreenFormat.desktop
-              ? desktopWidthFactor
-              : tabletWidthFactor,
-          heightFactor: screenFormat == ScreenFormat.desktop
-              ? desktopHeightFactor
-              : tabletHeightFactor,
-          alignment: Alignment.center,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              GoogleMap(
-                key: UniqueKey(),
-                initialCameraPosition: _kGooglePlex,
-                mapType: MapType.normal,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                onCameraMove: (CameraPosition position) {
-                  location = position.target;
-                },
-              ),
-              Positioned(
-                child: Icon(
-                  size: screenFormat == ScreenFormat.desktop
-                      ? desktopIconSize
-                      : tabletIconSize,
-                  Icons.room,
-                  color: Colors.red,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Center(
+              child: FractionallySizedBox(
+                widthFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopWidthFactor
+                    : tabletWidthFactor,
+                heightFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopHeightFactor
+                    : tabletHeightFactor,
+                alignment: Alignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    GoogleMap(
+                      key: UniqueKey(),
+                      initialCameraPosition: _kGooglePlex,
+                      mapType: MapType.normal,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      onCameraMove: (CameraPosition position) {
+                        location = position.target;
+                      },
+                    ),
+                    Positioned(
+                      child: Icon(
+                        size: screenFormat == ScreenFormat.desktop
+                            ? desktopIconSize
+                            : tabletIconSize,
+                        Icons.room,
+                        color: Colors.red,
+                      ),
+                    )
+                  ],
                 ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 4,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+              const SizedBox(
+                height: 50,
               )
             ],
           ),
-        ),
+        ],
       ),
     );
   }
