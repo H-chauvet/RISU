@@ -20,58 +20,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  // Widget createWidgetForTesting({required Widget child}) {
-  //   return MaterialApp(
-  //     home: child,
-  //     localizationsDelegates: AppLocalizations.localizationsDelegates,
-  //     supportedLocales: AppLocalizations.supportedLocales,
-  //     locale: const Locale('fr'),
-  //   );
-  // }
-
-  // setUp(() async {
-  //   final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
-  //   final fontLoader = FontLoader('Roboto')..addFont(roboto);
-  //   await fontLoader.load();
-  // });
-
-  // testWidgets('Confirmed user screen', (WidgetTester tester) async {
-  //   TestWidgetsFlutterBinding.ensureInitialized();
-
-  //   SharedPreferences.setMockInitialValues({});
-
-  //   storageService.writeStorage('token', 'test-token');
-  //   await tester.binding.setSurfaceSize(const Size(6000, 5000));
-
-
-  //   await tester.pumpWidget(
-  //     MultiProvider(
-  //       providers: [
-  //         ChangeNotifierProvider<ThemeService>(
-  //           create: (_) => ThemeService(),
-  //         ),
-  //       ],
-  //       child: Sizer(
-  //         builder: (context, orientation, deviceType) {
-  //           return MaterialApp(
-  //             theme: ThemeData(fontFamily: 'Roboto'),
-  //             home: InheritedGoRouter(
-  //               goRouter: AppRouter.router,
-  //               child: createWidgetForTesting(
-  //                 child: const ConfirmedUser(params: 'uuid'),
-  //               ),
-  //             ),
-  //           );
-  //         },
-  //       ),
-  //     ),
-  //   );
-
-  //   await tester.pumpAndSettle(const Duration(seconds: 2));
-
-  //   await tester.pumpAndSettle();
-  // });
-
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {

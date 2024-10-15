@@ -12,37 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:sizer/sizer.dart';
 
-// void main() {
-//   testWidgets('ConfidentialityPage widget test', (WidgetTester tester) async {
-//      await tester.pumpWidget(
-//       MultiProvider(
-//         providers: [
-//           ChangeNotifierProvider<ThemeService>(
-//             create: (_) => ThemeService(),
-//           ),
-//         ],
-//         child: Sizer(
-//           builder: (context, orientation, deviceType) {
-//             return MaterialApp(
-//               theme: ThemeData(fontFamily: 'Roboto'),
-//               home: InheritedGoRouter(
-//                 goRouter: AppRouter.router,
-//                 child: const ConfidentialityPage(),
-//               ),
-//               // localizationsDelegates: AppLocalizations.localizationsDelegates,
-//               // supportedLocales: AppLocalizations.supportedLocales,
-//               locale: Locale('fr'),
-//             );
-//           },
-//         ),
-//       ),
-//     );
-
-//     await tester.pump();
-    
-//   });
-// }
-
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
