@@ -1,5 +1,5 @@
+import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -8,8 +8,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -109,14 +109,13 @@ class ObjectCreationState extends State<ObjectCreation> {
       setState(() {
         categories =
             containersData.map((data) => Category.fromJson(data)).toList();
-        debugPrint(categories[0].name);
       });
     } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!
             .errorDuringInformationRetrievalData(response.statusCode),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        false,
       );
     }
   }
@@ -131,52 +130,44 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> createItems() async {
     final String apiUrl = "http://$serverIp:3000/api/items/create";
-    var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-
-    request.fields['name'] = _nameController.text;
-    request.fields['available'] = 'true';
-    request.fields['price'] = _priceController.text.toString();
-    request.fields['containerId'] = containerId.toString();
-    request.fields['description'] = _descriptionController.text;
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..fields['name'] = _nameController.text
+      ..fields['available'] = 'true'
+      ..fields['price'] = _priceController.text.toString()
+      ..fields['containerId'] = containerId.toString()
+      ..fields['description'] = _descriptionController.text
+      ..headers['Authorization'] = 'Bearer $jwtToken';
 
     for (int i = 0; i < _imageBytesList.length; i++) {
-      if (_imageBytesList[i] != null) {
-        request.files.add(http.MultipartFile.fromBytes(
-          'images',
-          _imageBytesList[i]!,
-          filename: 'image_$i.jpg',
-          contentType: MediaType('image', 'jpeg'),
-        ));
-      }
+      request.files.add(http.MultipartFile.fromBytes(
+        'images',
+        _imageBytesList[i]!,
+        filename: 'image_$i.jpg',
+        contentType: MediaType('image', 'jpeg'),
+      ));
     }
-    request.headers['Authorization'] = 'Bearer $jwtToken';
-    log(request.toString());
 
     try {
       var response = await request.send();
-      print(response);
-      print(response.statusCode);
-      print(response.reasonPhrase);
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: 'Objet créé avec succès',
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.objectCreationSuccess,
+          true,
         );
       } else {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.errorObjectCreationFailed,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.errorObjectCreationFailed,
+          false,
         );
       }
     } catch (e) {
       print(e);
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.errorObjectCreationFailed,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.errorObjectCreationFailed,
+        false,
       );
     }
   }
@@ -184,11 +175,13 @@ class ObjectCreationState extends State<ObjectCreation> {
   void _submitForm(BuildContext context) {
     if (_formKey.currentState!.validate() && containerId != 0) {
       createItems().then((_) {
-        // context.go('/container-profil');
+        context.go('/container-profil');
       });
     } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.objectCreationFailed,
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.objectCreationFailed,
+        false,
       );
     }
   }
@@ -199,11 +192,10 @@ class ObjectCreationState extends State<ObjectCreation> {
 
     if (pickedFiles.isNotEmpty) {
       if (pickedFiles.length > 5) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.tooManyFilesSelected,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.tooManyFilesSelected,
+          false,
         );
       } else {
         // Liste des images récupérées
@@ -446,7 +438,9 @@ class ObjectCreationState extends State<ObjectCreation> {
                         height: 20,
                       ),
                       DropdownButtonFormField<String>(
-                        value: selectedCategoryId.toString(),
+                        value: selectedCategoryId != 0
+                            ? selectedCategoryId.toString()
+                            : null,
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedCategoryId = int.tryParse(newValue!) ?? 0;
@@ -454,7 +448,7 @@ class ObjectCreationState extends State<ObjectCreation> {
                         },
                         items: categories.map((Category category) {
                           return DropdownMenuItem<String>(
-                            value: category.name,
+                            value: category.id.toString(),
                             child: Text(category.name!),
                           );
                         }).toList(),
