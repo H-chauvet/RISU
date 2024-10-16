@@ -621,6 +621,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         context: context,
       ),
       body: FooterView(
+        flex: 6,
         footer: Footer(
           child: const CustomFooter(),
         ),

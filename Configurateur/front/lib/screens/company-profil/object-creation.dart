@@ -7,8 +7,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
 import 'package:front/services/size_service.dart';
@@ -226,263 +229,287 @@ class ObjectCreationState extends State<ObjectCreation> {
         AppLocalizations.of(context)!.objectCreation,
         context: context,
       ),
-      body: Center(
-        child: Container(
-          constraints: const BoxConstraints(
-            maxWidth: 600,
-          ),
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 1,
-                child: GestureDetector(
-                  onTap: _pickFile,
-                  child: DottedBorder(
-                    color: Colors.grey[600]!,
-                    padding: EdgeInsets.zero,
-                    strokeWidth: 3,
-                    child: Container(
-                      alignment: Alignment.center,
-                      height: screenFormat == ScreenFormat.desktop
-                          ? desktopImportContainerHeight
-                          : tabletImportContainerHeight,
-                      width: screenFormat == ScreenFormat.desktop
-                          ? desktopImportContainerWidth
-                          : tabletImportContainerWidth,
-                      color: Colors.grey[400],
-                      child: _imageBytesList.isNotEmpty
-                          ? Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                CarouselSlider.builder(
-                                  itemCount: _imageBytesList.length,
-                                  options: CarouselOptions(
-                                    height: 200.0,
-                                    enlargeCenterPage: true,
-                                    enableInfiniteScroll: false,
-                                    onPageChanged: (index, reason) {
-                                      setState(() {
-                                        _currentIndex = index;
-                                      });
-                                    },
+      body: FooterView(
+        flex: 6,
+        footer: Footer(
+          child: const CustomFooter(),
+        ),
+        children: [
+          SingleChildScrollView(
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(
+                  maxWidth: 600,
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: _pickFile,
+                        child: DottedBorder(
+                          color: Colors.grey[600]!,
+                          padding: EdgeInsets.zero,
+                          strokeWidth: 3,
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: screenFormat == ScreenFormat.desktop
+                                ? desktopImportContainerHeight
+                                : tabletImportContainerHeight,
+                            width: screenFormat == ScreenFormat.desktop
+                                ? desktopImportContainerWidth
+                                : tabletImportContainerWidth,
+                            color: Colors.grey[400],
+                            child: _imageBytesList.isNotEmpty
+                                ? Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      CarouselSlider.builder(
+                                        itemCount: _imageBytesList.length,
+                                        options: CarouselOptions(
+                                          height: 200.0,
+                                          enlargeCenterPage: true,
+                                          enableInfiniteScroll: false,
+                                          onPageChanged: (index, reason) {
+                                            setState(() {
+                                              _currentIndex = index;
+                                            });
+                                          },
+                                        ),
+                                        itemBuilder:
+                                            (context, index, realIndex) {
+                                          // Affichage des images
+                                          return Image.memory(
+                                            _imageBytesList[index]!,
+                                            fit: BoxFit.cover,
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                          );
+                                        },
+                                        carouselController: _carouselController,
+                                      ),
+                                      Positioned(
+                                        left: 10,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.arrow_back,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            _carouselController.previousPage();
+                                          },
+                                        ),
+                                      ),
+                                      Positioned(
+                                        right: 10,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.arrow_forward,
+                                            color: Colors.black,
+                                          ),
+                                          onPressed: () {
+                                            _carouselController.nextPage();
+                                          },
+                                        ),
+                                      ),
+                                      Positioned(
+                                        top: 10,
+                                        right: 10,
+                                        child: IconButton(
+                                          icon: const Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                          ),
+                                          onPressed: () {
+                                            _removeImage(_currentIndex);
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.cloud_upload,
+                                        size: 32.0,
+                                        color:
+                                            Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .imagesClickToAdd,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: screenFormat ==
+                                                  ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0),
+                                          ),
+                                        ),
+                                        onPressed: _pickFile,
+                                        child: Text(
+                                          AppLocalizations.of(context)!.browse,
+                                          style: TextStyle(
+                                            color: Provider.of<ThemeService>(
+                                                        context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                            fontSize: screenFormat ==
+                                                    ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  itemBuilder: (context, index, realIndex) {
-                                    // Affichage des images
-                                    return Image.memory(
-                                      _imageBytesList[index]!,
-                                      fit: BoxFit.cover,
-                                      width: MediaQuery.of(context).size.width,
-                                    );
-                                  },
-                                  carouselController: _carouselController,
-                                ),
-                                Positioned(
-                                  left: 10,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.arrow_back,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      _carouselController.previousPage();
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 10,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.black,
-                                    ),
-                                    onPressed: () {
-                                      _carouselController.nextPage();
-                                    },
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 10,
-                                  right: 10,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.close,
-                                      color: Colors.red,
-                                    ),
-                                    onPressed: () {
-                                      _removeImage(_currentIndex);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.cloud_upload,
-                                  size: 32.0,
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .imagesClickToAdd,
-                                  textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 20),
+                    Expanded(
+                      flex: 1,
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextFormField(
+                              key: const Key('name'),
+                              controller: _nameController,
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.name,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return AppLocalizations.of(context)!.nameAsk;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            TextFormField(
+                              key: const Key('description'),
+                              controller: _descriptionController,
+                              decoration: InputDecoration(
+                                labelText:
+                                    AppLocalizations.of(context)!.description,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return AppLocalizations.of(context)!
+                                      .descriptionAsk;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            TextFormField(
+                              key: const Key('price'),
+                              controller: _priceController,
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.price,
+                                suffixText:
+                                    AppLocalizations.of(context)!.pricePerHour,
+                              ),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return AppLocalizations.of(context)!.priceAsk;
+                                }
+                                if (double.tryParse(value) == null) {
+                                  return AppLocalizations.of(context)!
+                                      .priceAskValid;
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            DropdownButtonFormField<String>(
+                              value: selectedCategoryId != 0
+                                  ? selectedCategoryId.toString()
+                                  : null,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedCategoryId =
+                                      int.tryParse(newValue!) ?? 0;
+                                });
+                              },
+                              items: categories.map((Category category) {
+                                return DropdownMenuItem<String>(
+                                  value: category.name,
+                                  child: Text(category.name!),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!
+                                    .categorySelect,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Center(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0))),
+                                child: Text(
+                                  AppLocalizations.of(context)!.submit,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
                                         ? darkTheme.primaryColor
                                         : lightTheme.primaryColor,
-                                    fontSize:
-                                        screenFormat == ScreenFormat.desktop
-                                            ? desktopFontSize
-                                            : tabletFontSize,
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                  ),
-                                  onPressed: _pickFile,
-                                  child: Text(
-                                    AppLocalizations.of(context)!.browse,
-                                    style: TextStyle(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                      fontSize:
-                                          screenFormat == ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletFontSize,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                onPressed: () {
+                                  _submitForm(context);
+                                },
+                              ),
                             ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-              const SizedBox(width: 20),
-              Expanded(
-                flex: 1,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        key: const Key('name'),
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.name,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!.nameAsk;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: const Key('description'),
-                        controller: _descriptionController,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.description,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!.descriptionAsk;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: const Key('price'),
-                        controller: _priceController,
-                        decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.price,
-                          suffixText:
-                              AppLocalizations.of(context)!.pricePerHour,
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return AppLocalizations.of(context)!.priceAsk;
-                          }
-                          if (double.tryParse(value) == null) {
-                            return AppLocalizations.of(context)!.priceAskValid;
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      DropdownButtonFormField<String>(
-                        value: selectedCategoryId != 0
-                            ? selectedCategoryId.toString()
-                            : null,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedCategoryId = int.tryParse(newValue!) ?? 0;
-                          });
-                        },
-                        items: categories.map((Category category) {
-                          return DropdownMenuItem<String>(
-                            value: category.id.toString(),
-                            child: Text(category.name!),
-                          );
-                        }).toList(),
-                        decoration: InputDecoration(
-                          labelText:
-                              AppLocalizations.of(context)!.categorySelect,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          child: Text(
-                            AppLocalizations.of(context)!.submit,
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                          onPressed: () {
-                            _submitForm(context);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
