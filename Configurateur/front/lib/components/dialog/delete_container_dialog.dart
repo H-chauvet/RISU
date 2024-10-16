@@ -232,7 +232,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.spaceAllreadyEmpty,
+                                AppLocalizations.of(context)!
+                                    .spaceAllreadyEmpty,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -244,7 +245,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
+                                AppLocalizations.of(context)!
+                                    .invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -256,7 +258,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
+                                AppLocalizations.of(context)!
+                                    .invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),

@@ -33,6 +33,9 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   String? token = '';
   String? userMail = '';
+  bool _obscurePassword = true;
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController mailController = TextEditingController();
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
@@ -51,8 +54,6 @@ class LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String mail = '';
-    String password = '';
     dynamic response;
 
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
@@ -62,7 +63,7 @@ class LoginScreenState extends State<LoginScreen> {
           flex: 10,
           footer: Footer(
             padding: EdgeInsets.zero,
-            child: CustomFooter(),
+            child: const CustomFooter(),
           ),
           children: [
             Column(
@@ -102,6 +103,7 @@ class LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 150),
                           TextFormField(
                             key: const Key('email'),
+                            controller: mailController,
                             decoration: InputDecoration(
                               hintText: AppLocalizations.of(context)!.emailFill,
                               labelText:
@@ -110,9 +112,6 @@ class LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
                             ),
-                            onChanged: (String? value) {
-                              mail = value!;
-                            },
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return AppLocalizations.of(context)!
@@ -124,7 +123,8 @@ class LoginScreenState extends State<LoginScreen> {
                           const SizedBox(height: 20),
                           TextFormField(
                             key: const Key('password'),
-                            obscureText: true,
+                            controller: passwordController,
+                            obscureText: _obscurePassword,
                             decoration: InputDecoration(
                               hintText:
                                   AppLocalizations.of(context)!.passwordFill,
@@ -132,10 +132,19 @@ class LoginScreenState extends State<LoginScreen> {
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30.0),
                               ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
                             ),
-                            onChanged: (String? value) {
-                              password = value!;
-                            },
                             validator: (String? value) {
                               if (value == null || value.isEmpty) {
                                 return AppLocalizations.of(context)!
@@ -145,8 +154,7 @@ class LoginScreenState extends State<LoginScreen> {
                             },
                           ),
                           MouseRegion(
-                            cursor: SystemMouseCursors
-                                .click, // Changez l'icône de la souris ici
+                            cursor: SystemMouseCursors.click,
                             child: GestureDetector(
                               onTap: () {
                                 context.go("/password-recuperation");
@@ -195,8 +203,8 @@ class LoginScreenState extends State<LoginScreen> {
                                           'Access-Control-Allow-Origin': '*',
                                         },
                                         body: jsonEncode(<String, String>{
-                                          'email': mail,
-                                          'password': password,
+                                          'email': mailController.text,
+                                          'password': passwordController.text,
                                         }),
                                       )
                                       .then((value) => {

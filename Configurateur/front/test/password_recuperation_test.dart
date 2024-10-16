@@ -16,13 +16,10 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-  Widget createWidgetForTesting({required Widget child}) {
-    return MaterialApp(
-      home: child,
-    );
-  }
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockSharedPreferences sharedPreferences;
 
@@ -35,7 +32,10 @@ void main() {
 
   testWidgets('Password recuperation screen', (WidgetTester tester) async {
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
+        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
 
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -48,9 +48,11 @@ void main() {
             theme: ThemeData(fontFamily: 'Roboto'),
             home: InheritedGoRouter(
               goRouter: AppRouter.router,
-              child:
-                  createWidgetForTesting(child: const PasswordRecuperation()),
+              child: const PasswordRecuperation(),
             ),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            locale: const Locale('fr'),
           );
         }),
       ),
@@ -60,7 +62,7 @@ void main() {
 
     expect(find.text('Enter code'), findsWidgets);
     expect(find.text('Adresse e-mail'), findsOneWidget);
-    expect(find.text("Récupération du mot de passe"), findsOneWidget);
+    expect(find.text("Récupération de mot de passe"), findsOneWidget);
     expect(find.text("Envoyer l'email de récupération"), findsOneWidget);
 
     await tester.enterText(find.byKey(const Key('email')), 'test@gmail.com');
