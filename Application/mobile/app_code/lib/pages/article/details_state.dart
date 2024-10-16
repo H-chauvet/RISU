@@ -18,6 +18,7 @@ import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/image_loader.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/share_deeplink.dart';
 
 import 'details_page.dart';
 
@@ -455,29 +456,40 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           textTitle: AppLocalizations.of(context)!.articleDetails,
-          action: IconButton(
-            key: const Key('article-button_add-favorite'),
-            onPressed: () async {
-              bool signIn = await checkSignin(context);
-              if (!signIn) {
-                return;
-              }
+          action: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  createDeeplink(
+                      path: 'article/?id=${articleData.id}', context: context);
+                },
+                icon: const Icon(Icons.share),
+              ),
+              IconButton(
+                key: const Key('article-button_add-favorite'),
+                onPressed: () async {
+                  bool signIn = await checkSignin(context);
+                  if (!signIn) {
+                    return;
+                  }
 
-              bool backupFavorite = isFavorite;
-              await checkFavorite(articleData.id);
-              if (backupFavorite != isFavorite) return;
-              (isFavorite)
-                  ? deleteFavorite(articleData.id)
-                  : createFavorite(articleData.id);
-            },
-            icon: Icon(
-              (isFavorite)
-                  ? Icons.favorite_rounded
-                  : Icons.favorite_border_rounded,
-              size: 28,
-              color: themeProvider
-                  .currentTheme.bottomNavigationBarTheme.selectedItemColor,
-            ),
+                  bool backupFavorite = isFavorite;
+                  await checkFavorite(articleData.id);
+                  if (backupFavorite != isFavorite) return;
+                  (isFavorite)
+                      ? deleteFavorite(articleData.id)
+                      : createFavorite(articleData.id);
+                },
+                icon: Icon(
+                  (isFavorite)
+                      ? Icons.favorite_rounded
+                      : Icons.favorite_border_rounded,
+                  size: 28,
+                  color: themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor,
+                ),
+              ),
+            ],
           ),
         ),
         resizeToAvoidBottomInset: false,

@@ -54,7 +54,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text("Création d'objet"), findsOneWidget);
+    expect(find.text("Nouvel objet"), findsOneWidget);
 
     await tester.enterText(find.byKey(const Key('name')), 'volley ball');
     await tester.enterText(

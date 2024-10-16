@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
@@ -449,12 +448,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-        body: FooterView(
-            footer: Footer(
-              padding: EdgeInsets.zero,
-              child: const CustomFooter(),
-            ),
-            children: [
+      body: FooterView(
+        flex: 6,
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: const CustomFooter(),
+        ),
+        children: [
           LandingAppBar(context: context),
           Text(
             AppLocalizations.of(context)!.companyHandling,
@@ -514,8 +514,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         AppLocalizations.of(context)!
                                             .companyNameData(
                                                 organization.name!),
-                                        style: const TextStyle(
-                                          color: Color(0xff4682B4),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Verdana',
@@ -524,8 +528,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                     : Text(
                                         AppLocalizations.of(context)!
                                             .companyNameEmpty,
-                                        style: const TextStyle(
-                                          color: Color(0xff4682B4),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Verdana',
@@ -541,8 +549,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                             AppLocalizations.of(context)!
                                                 .informationData(organization
                                                     .contactInformation!),
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -551,8 +563,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         : Text(
                                             AppLocalizations.of(context)!
                                                 .informationEmpty,
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -580,6 +596,58 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                   ],
                                 ),
                                 const SizedBox(height: 5.0),
+                                Row(
+                                  children: [
+                                    organization.type != null &&
+                                            organization.type != ''
+                                        ? Text(
+                                            AppLocalizations.of(context)!
+                                                .companyTypeData(
+                                                    organization.type!),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          )
+                                        : Text(
+                                            AppLocalizations.of(context)!
+                                                .typeEmpty,
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                              fontSize: 15.0,
+                                              fontWeight: FontWeight.bold,
+                                              fontFamily: 'Verdana',
+                                            ),
+                                          ),
+                                    const SizedBox(width: 5.0),
+                                    InkWell(
+                                      key: const Key('edit-type'),
+                                      onTap: () async {
+                                        await showEditPopupType(context, type,
+                                            (String newtype) {
+                                          setState(() {
+                                            type = newtype;
+                                          });
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Icons.edit,
+                                        color: Colors.grey,
+                                        size: 15.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                           ],
@@ -628,9 +696,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                 ),
                 Text(
                   AppLocalizations.of(context)!.ourContainers,
-                  style: const TextStyle(
-                    color: Color.fromRGBO(70, 130, 180, 1),
-                    fontSize: 30,
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopMediumFontSize
+                        : tabletMediumFontSize,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                     decorationThickness: 2.0,
@@ -667,9 +739,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ],
             ),
           )
-        ])
-
-        // bottomNavigationBar: const CustomBottomNavigationBar(),
-        );
+        ],
+      ),
+    );
   }
 }

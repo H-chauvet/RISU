@@ -60,7 +60,7 @@ void main() {
 
     expect(find.text("Précédent"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
-    expect(find.text("Forme"), findsOneWidget);
+    expect(find.text("Choix de la forme du conteneur"), findsOneWidget);
     expect(find.text("Nombre de lignes"), findsOneWidget);
     expect(find.text("Nombre de colonnes"), findsOneWidget);
     expect(find.text("Largeur :"), findsOneWidget);

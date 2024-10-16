@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
@@ -540,7 +541,8 @@ class _ContainerPageState extends State<ContainerPage> {
                     TextField(
                       controller: description,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.itemDescription,
+                        labelText:
+                            AppLocalizations.of(context)!.itemDescription,
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -680,234 +682,279 @@ class _ContainerPageState extends State<ContainerPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: CustomAppBar(
-          AppLocalizations.of(context)!.containerItemHandling,
-          context: context,
-        ),
-        body: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxIsScrolled) {
-            return [
-              SliverAppBar(
-                floating: true,
-                elevation: 4,
-                backgroundColor: Colors.transparent,
-                bottom: TabBar(
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        AppLocalizations.of(context)!.containerList,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletBigFontSize,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        AppLocalizations.of(context)!.itemList,
-                        style: TextStyle(
-                            color: Provider.of<ThemeService>(context).isDark
+        body: FooterView(
+          flex: 8,
+          footer: Footer(
+            child: const CustomFooter(),
+          ),
+          children: [
+            LandingAppBar(context: context),
+            Text(
+              AppLocalizations.of(context)!.containerItemHandling,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopBigFontSize
+                    : tabletBigFontSize,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.bold,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
+                shadows: [
+                  Shadow(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    offset: const Offset(0.75, 0.75),
+                    blurRadius: 1.5,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.65,
+              height: MediaQuery.of(context).size.height * 0.85,
+              child: NestedScrollView(
+                headerSliverBuilder: (context, innerBoxIsScrolled) {
+                  return [
+                    SliverAppBar(
+                      floating: true,
+                      elevation: 4,
+                      backgroundColor: Colors.transparent,
+                      bottom: TabBar(
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              AppLocalizations.of(context)!.containerList,
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletBigFontSize,
+                              ),
+                            ),
+                          ),
+                          Tab(
+                            child: Text(
+                              AppLocalizations.of(context)!.itemList,
+                              style: TextStyle(
+                                  color:
+                                      Provider.of<ThemeService>(context).isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                  fontSize: screenFormat == ScreenFormat.desktop
+                                      ? desktopFontSize
+                                      : tabletBigFontSize),
+                            ),
+                          ),
+                        ],
+                        labelPadding:
+                            const EdgeInsets.symmetric(horizontal: 10.0),
+                        indicatorColor:
+                            Provider.of<ThemeService>(context).isDark
                                 ? darkTheme.primaryColor
                                 : lightTheme.primaryColor,
-                            fontSize: screenFormat == ScreenFormat.desktop
-                                ? desktopFontSize
-                                : tabletBigFontSize),
+                      ),
+                      pinned: true,
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                  children: [
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          containers.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .containerNotFound,
+                                    style: TextStyle(
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletBigFontSize,
+                                      color: Color.fromARGB(255, 211, 11, 11),
+                                    ),
+                                  ),
+                                )
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: containers.length,
+                                  itemBuilder: (context, index) {
+                                    final product = containers[index];
+                                    return ContainerCards(
+                                      container: product,
+                                      onDelete: deleteContainer,
+                                      page: "/container-profil",
+                                      key: ValueKey<String>(
+                                          'delete_${product.id}'),
+                                    );
+                                  },
+                                ),
+                        ],
                       ),
                     ),
-                  ],
-                  labelPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  indicatorColor: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
-                ),
-                pinned: true,
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: [
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    containers.isEmpty
-                        ? Center(
-                            child: Text(
-                              AppLocalizations.of(context)!.containerNotFound,
-                              style: TextStyle(
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletBigFontSize,
-                                color: Color.fromARGB(255, 211, 11, 11),
-                              ),
-                            ),
-                          )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: containers.length,
-                            itemBuilder: (context, index) {
-                              final product = containers[index];
-                              return ContainerCards(
-                                container: product,
-                                onDelete: deleteContainer,
-                                page: "/container-profil",
-                                key: ValueKey<String>('delete_${product.id}'),
-                              );
-                            },
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 30,
                           ),
-                  ],
-                ),
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    containers.isEmpty
-                        ? Center(
-                            child: Text(
-                              AppLocalizations.of(context)!.objectEmpty,
-                              style: TextStyle(
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletBigFontSize,
-                                color: Color.fromARGB(255, 211, 11, 11),
-                              ),
-                            ),
-                          )
-                        : Column(
-                            children: [
-                              Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 30,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      await showCreateItems(
-                                        context,
-                                        (String newName,
-                                            bool newAvailable,
-                                            double newPrice,
-                                            int newContainerId,
-                                            String DescriptionNew) {
-                                          setState(() {
-                                            name = newName;
-                                            available = newAvailable;
-                                            price = newPrice;
-                                            containerId = newContainerId;
-                                            description = DescriptionNew;
-                                            fetchItems();
-                                          });
-                                        },
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0),
-                                      ),
+                          containers.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    AppLocalizations.of(context)!.objectEmpty,
+                                    style: TextStyle(
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletBigFontSize,
+                                      color: Color.fromARGB(255, 211, 11, 11),
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
+                                  ),
+                                )
+                              : Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        Icon(
-                                          Icons.add,
-                                          color:
-                                              Provider.of<ThemeService>(context)
-                                                      .isDark
-                                                  ? darkTheme.primaryColor
-                                                  : lightTheme.primaryColor,
+                                        const SizedBox(
+                                          width: 30,
                                         ),
-                                        const SizedBox(width: 8),
-                                        Text(
-                                          AppLocalizations.of(context)!.itemAdd,
-                                          style: TextStyle(
-                                            color: Provider.of<ThemeService>(
-                                                        context)
-                                                    .isDark
-                                                ? darkTheme.primaryColor
-                                                : lightTheme.primaryColor,
-                                            fontSize: screenFormat ==
-                                                    ScreenFormat.desktop
-                                                ? desktopFontSize
-                                                : tabletBigFontSize,
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            await showCreateItems(
+                                              context,
+                                              (String newName,
+                                                  bool newAvailable,
+                                                  double newPrice,
+                                                  int newContainerId,
+                                                  String DescriptionNew) {
+                                                setState(() {
+                                                  name = newName;
+                                                  available = newAvailable;
+                                                  price = newPrice;
+                                                  containerId = newContainerId;
+                                                  description = DescriptionNew;
+                                                  fetchItems();
+                                                });
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.0),
+                                            ),
                                           ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Icon(
+                                                Icons.add,
+                                                color:
+                                                    Provider.of<ThemeService>(
+                                                                context)
+                                                            .isDark
+                                                        ? darkTheme.primaryColor
+                                                        : lightTheme
+                                                            .primaryColor,
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                AppLocalizations.of(context)!
+                                                    .itemAdd,
+                                                style: TextStyle(
+                                                  color: Provider.of<
+                                                                  ThemeService>(
+                                                              context)
+                                                          .isDark
+                                                      ? darkTheme.primaryColor
+                                                      : lightTheme.primaryColor,
+                                                  fontSize: screenFormat ==
+                                                          ScreenFormat.desktop
+                                                      ? desktopFontSize
+                                                      : tabletBigFontSize,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 30,
+                                        ),
+                                        DropdownButton<String>(
+                                          value: selectedCategory,
+                                          onChanged: (String? newValue) {
+                                            if (newValue != null) {
+                                              setState(() {
+                                                selectedCategory = newValue;
+                                                fetchItemsByCategory();
+                                              });
+                                            }
+                                          },
+                                          items: [
+                                            DropdownMenuItem(
+                                              value: 'Tous',
+                                              child: Text(
+                                                AppLocalizations.of(context)!
+                                                    .all,
+                                              ),
+                                            ),
+                                            for (var category in categories)
+                                              if (category != 'Tous')
+                                                DropdownMenuItem(
+                                                  value: category,
+                                                  child: Text(category),
+                                                ),
+                                          ],
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 30,
-                                  ),
-                                  DropdownButton<String>(
-                                    value: selectedCategory,
-                                    onChanged: (String? newValue) {
-                                      if (newValue != null) {
-                                        setState(() {
-                                          selectedCategory = newValue;
-                                          fetchItemsByCategory();
-                                        });
-                                      }
-                                    },
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'Tous',
-                                        child: Text(
-                                          AppLocalizations.of(context)!.all,
-                                        ),
-                                      ),
-                                      for (var category in categories)
-                                        if (category != 'Tous')
-                                          DropdownMenuItem(
-                                            value: category,
-                                            child: Text(category),
+                                    items.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .objectEmpty,
+                                              style: TextStyle(
+                                                fontSize: screenFormat ==
+                                                        ScreenFormat.desktop
+                                                    ? desktopFontSize
+                                                    : tabletBigFontSize,
+                                                color: Color.fromARGB(
+                                                    255, 211, 11, 11),
+                                              ),
+                                            ),
+                                          )
+                                        : Wrap(
+                                            spacing: 10.0,
+                                            runSpacing: 8.0,
+                                            children: List.generate(
+                                              items.length,
+                                              (index) => buildItemWidget(
+                                                  context, items[index]),
+                                            ),
                                           ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              items.isEmpty
-                                  ? Center(
-                                      child: Text(
-                                        AppLocalizations.of(context)!.objectEmpty,
-                                        style: TextStyle(
-                                          fontSize: screenFormat ==
-                                                  ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletBigFontSize,
-                                          color:
-                                              Color.fromARGB(255, 211, 11, 11),
-                                        ),
-                                      ),
-                                    )
-                                  : Wrap(
-                                      spacing: 10.0,
-                                      runSpacing: 8.0,
-                                      children: List.generate(
-                                        items.length,
-                                        (index) => buildItemWidget(
-                                            context, items[index]),
-                                      ),
-                                    ),
-                            ],
-                          ),
+                                  ],
+                                ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
