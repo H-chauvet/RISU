@@ -11,6 +11,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
 import 'package:front/services/size_service.dart';
@@ -225,16 +226,37 @@ class ObjectCreationState extends State<ObjectCreation> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.objectCreation,
-        context: context,
-      ),
+      // appBar:
       body: FooterView(
         flex: 6,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.objectNew,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SingleChildScrollView(
             child: Center(
               child: Container(

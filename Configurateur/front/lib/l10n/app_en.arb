@@ -79,6 +79,7 @@
 	"containerItemHandling": "Container and object handling",
 	"containerList": "Container List",
 	"containerMy": "My containers",
+	"container": "My container",
 	"containerNotFound": "Container not found.",
 	"containerPriceData": "Container price: {price} €",
 	"containerRemovalConfirmation": "The container was deleted!",

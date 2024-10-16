@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
@@ -683,16 +684,36 @@ class _ContainerPageState extends State<ContainerPage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: CustomAppBar(
-          AppLocalizations.of(context)!.containerItemHandling,
-          context: context,
-        ),
         body: FooterView(
           flex: 8,
           footer: Footer(
             child: const CustomFooter(),
           ),
           children: [
+            LandingAppBar(context: context),
+            Text(
+              AppLocalizations.of(context)!.containerItemHandling,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: screenFormat == ScreenFormat.desktop
+                    ? desktopBigFontSize
+                    : tabletBigFontSize,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.bold,
+                color: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.secondaryHeaderColor
+                    : lightTheme.secondaryHeaderColor,
+                shadows: [
+                  Shadow(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.secondaryHeaderColor
+                        : lightTheme.secondaryHeaderColor,
+                    offset: const Offset(0.75, 0.75),
+                    blurRadius: 1.5,
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.65,
               height: MediaQuery.of(context).size.height * 0.85,

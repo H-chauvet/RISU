@@ -7,6 +7,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/autofill_dialog.dart';
 import 'package:front/components/dialog/container_dialog.dart';
@@ -859,16 +860,36 @@ class ContainerCreationState extends State<ContainerCreation> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.configurator,
-        context: context,
-      ),
       body: FooterView(
         flex: 8,
         footer: Footer(
           child: const CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.configurator,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,

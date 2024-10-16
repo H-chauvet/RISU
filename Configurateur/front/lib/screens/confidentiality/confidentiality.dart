@@ -3,7 +3,14 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/footer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/services/size_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
+import 'package:provider/provider.dart';
 
 /// ConfidentialityPage
 ///
@@ -15,16 +22,36 @@ class ConfidentialityPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Politique de confidentialité',
-        context: context,
-      ),
       body: FooterView(
         flex: 10,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.confidentalityPolicy,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: ScreenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
