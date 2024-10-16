@@ -618,6 +618,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       body: FooterView(
         flex: 6,
@@ -799,7 +800,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
-                      fontSize: 30,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopMediumFontSize
+                          : tabletMediumFontSize,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationThickness: 2.0,
@@ -818,11 +821,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       context.go("/object-creation");
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 25, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -830,9 +830,12 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     child: Text(
                       AppLocalizations.of(context)!.objectCreate,
                       style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.appBarTheme.backgroundColor
-                            : lightTheme.appBarTheme.backgroundColor,
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                       ),
                     ),
                   ),

@@ -701,7 +701,9 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                     color: Provider.of<ThemeService>(context).isDark
                         ? darkTheme.primaryColor
                         : lightTheme.primaryColor,
-                    fontSize: 30,
+                    fontSize: screenFormat == ScreenFormat.desktop
+                        ? desktopMediumFontSize
+                        : tabletMediumFontSize,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                     decorationThickness: 2.0,
