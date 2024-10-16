@@ -611,7 +611,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         borderRadius: BorderRadius.circular(30.0),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xff4682B4).withOpacity(0.5),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor.withOpacity(0.3)
+                                : lightTheme.primaryColor.withOpacity(0.3),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: const Offset(0, 3),
