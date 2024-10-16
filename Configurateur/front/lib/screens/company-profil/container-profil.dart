@@ -685,32 +685,34 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 tmp.city != null
-                                ?Text(
-                                  AppLocalizations.of(context)!
-                                      .cityNameData(tmp.city!),
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                )
-                                : Text(
-                                  AppLocalizations.of(context)!
-                                      .cityNotLinked,
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                ),
+                                    ? Text(
+                                        AppLocalizations.of(context)!
+                                            .cityNameData(tmp.city!),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      )
+                                    : Text(
+                                        AppLocalizations.of(context)!
+                                            .cityNotLinked,
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
                                   key: const Key('edit-city'),
@@ -737,31 +739,33 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             Row(
                               children: [
                                 tmp.address != null
-                                ? Text(
-                                  AppLocalizations.of(context)!
-                                      .addressData(tmp.address!),
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                ): Text(
-                                  AppLocalizations.of(context)!
-                                      .addressNo,
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                ),
+                                    ? Text(
+                                        AppLocalizations.of(context)!
+                                            .addressData(tmp.address!),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      )
+                                    : Text(
+                                        AppLocalizations.of(context)!.addressNo,
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
                                   key: const Key("edit-city"),
