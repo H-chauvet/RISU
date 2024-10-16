@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/components/custom_footer.dart';
 import 'package:front/screens/container-creation/recap_screen/recap_screen.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:go_router/go_router.dart';
@@ -19,21 +20,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  late MockSharedPreferences sharedPreferences;
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   setUp(() async {
-    sharedPreferences = MockSharedPreferences();
     final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
     final fontLoader = FontLoader('Roboto')..addFont(roboto);
     await fontLoader.load();
   });
 
-  testWidgets('Recap screen', (WidgetTester tester) async {
-    tester.binding.window.physicalSizeTestValue = const Size(1920, 1080);
+  testWidgets('Register screen', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    tester.binding.window.physicalSizeTestValue = const Size(5000, 5000);
     tester.binding.window.devicePixelRatioTestValue = 1.0;
 
-    when(sharedPreferences.getString('token')).thenReturn('test-token');
-    when(sharedPreferences.getString('containerData')).thenReturn('');
+    TestWidgetsFlutterBinding.ensureInitialized();
 
     await tester.pumpWidget(
       MultiProvider(
@@ -48,13 +48,7 @@ void main() {
               theme: ThemeData(fontFamily: 'Roboto'),
               home: InheritedGoRouter(
                 goRouter: AppRouter.router,
-                child: RecapScreen(
-                  lockers:
-                      '[{"type":"Petit casier","price":10},{"type":"Moyen casier","price":20},{"type":"Grand casier","price":30}]',
-                  amount: 60,
-                  containerMapping: '1',
-                  id: '1',
-                ),
+                child: RecapScreen(),
               ),
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
@@ -67,13 +61,16 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text("Récapitulatif"), findsOneWidget);
+    expect(find.byType(CustomFooter), findsOneWidget);
+
+    expect(find.text("Récapitulatif de la commande"), findsOneWidget);
     expect(find.text("Précédent"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
     expect(find.text("Panier"), findsOneWidget);
 
     await tester.tap(find.text("Précédent"));
     await tester.tap(find.text("Suivant"));
+
     await tester.pumpAndSettle();
   });
 }

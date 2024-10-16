@@ -72,7 +72,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text("Design"), findsOneWidget);
+    expect(find.text("Choix du design du conteneur"), findsOneWidget);
     expect(find.text("Suivant"), findsOneWidget);
     expect(find.text("Précédent"), findsOneWidget);
     expect(find.text("Retirer une image"), findsOneWidget);

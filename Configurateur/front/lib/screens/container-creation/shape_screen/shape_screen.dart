@@ -7,6 +7,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -375,16 +376,36 @@ class ShapeScreenState extends State<ShapeScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.shape,
-        context: context,
-      ),
       body: FooterView(
         flex: 8,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.shape,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -590,7 +611,9 @@ class ShapeScreenState extends State<ShapeScreen> {
                         borderRadius: BorderRadius.circular(30.0),
                         boxShadow: [
                           BoxShadow(
-                            color: const Color(0xff4682B4).withOpacity(0.5),
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor.withOpacity(0.3)
+                                : lightTheme.primaryColor.withOpacity(0.3),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: const Offset(0, 3),
