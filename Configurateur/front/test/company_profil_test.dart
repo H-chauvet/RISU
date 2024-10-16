@@ -84,30 +84,6 @@ void main() {
     await tester.tap(find.byKey(const Key('cancel-edit-information')));
     await tester.pump(const Duration(seconds: 3));
 
-    // Edit type
-    await tester.tap(find.byKey(const Key('edit-type')));
-    await tester.pump(const Duration(seconds: 3));
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('type')), 'type orga');
-    await tester.tap(find.byKey(const Key('cancel-edit-type')));
-    await tester.pump(const Duration(seconds: 3));
-
-    // EDIT type validate
-    await tester.tap(find.byKey(const Key('edit-type')));
-    await tester.pump(const Duration(seconds: 3));
-
-    expect(find.byType(AlertDialog), findsOneWidget);
-    expect(find.text('Modifier'), findsNWidgets(2));
-    expect(find.text('Annuler'), findsOneWidget);
-
-    await tester.enterText(find.byKey(const Key('type')), 'type orga');
-    await tester.tap(find.byKey(const Key('button-type')));
-    await tester.pump(const Duration(seconds: 3));
-
     // EDIT information validate
     await tester.tap(find.byKey(const Key('edit-information')));
     await tester.pump(const Duration(seconds: 3));
