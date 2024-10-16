@@ -219,9 +219,6 @@ class RecapPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     parseArticles();
     return Container(
-        // decoration: Provider.of<ThemeService>(context).isDark
-        //     ? boxDecorationDarkTheme
-        //     : boxDecorationLightTheme,
         decoration: BoxDecoration(
           color: Provider.of<ThemeService>(context).isDark
               ? lightTheme.primaryColor
