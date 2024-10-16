@@ -173,15 +173,18 @@ class ContainerCard extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.directions),
-                        key: Key(
-                            'container-list_icon-localization-${container.id}'),
-                        color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.primaryColor),
-                        onPressed: () {
-                          onDirectionClicked(container.id);
-                        },
+                      IgnorePointer(
+                        ignoring: false,
+                        child: IconButton(
+                          icon: const Icon(Icons.directions),
+                          key: Key(
+                              'container-list_icon-localization-${container.id}'),
+                          color: context.select((ThemeProvider themeProvider) =>
+                              themeProvider.currentTheme.primaryColor),
+                          onPressed: () {
+                            onDirectionClicked(container.id);
+                          },
+                        ),
                       ),
                       const Icon(Icons.chevron_right),
                       const SizedBox(width: 8),

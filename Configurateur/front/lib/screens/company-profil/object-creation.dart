@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,9 +10,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/network/informations.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:front/screens/container-creation/design_screen/design_screen_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -19,12 +21,13 @@ import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class Category {
   final int? id;
-  final dynamic? name;
+  final dynamic name;
 
   Category({
     required this.id,
@@ -46,7 +49,7 @@ class Category {
 }
 
 class ObjectCreation extends StatefulWidget {
-  const ObjectCreation({Key? key}) : super(key: key);
+  const ObjectCreation({super.key});
   @override
   ObjectCreationState createState() => ObjectCreationState();
 }
@@ -89,7 +92,7 @@ class ObjectCreationState extends State<ObjectCreation> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       fetchCategories();
     } else {
       jwtToken = "";
@@ -98,7 +101,7 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> fetchCategories() async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/itemCategory/listAll'),
+      Uri.parse('http://$serverIp:3000/api/itemCategory/listAll'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -109,14 +112,13 @@ class ObjectCreationState extends State<ObjectCreation> {
       setState(() {
         categories =
             containersData.map((data) => Category.fromJson(data)).toList();
-        debugPrint(categories[0].name);
       });
     } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!
             .errorDuringInformationRetrievalData(response.statusCode),
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
+        false,
       );
     }
   }
@@ -131,34 +133,44 @@ class ObjectCreationState extends State<ObjectCreation> {
 
   Future<void> createItems() async {
     final String apiUrl = "http://$serverIp:3000/api/items/create";
-    var body = {
-      'name': _nameController.text,
-      'available': true,
-      'price': _priceController.text.toString(),
-      'containerId': containerId.toString(),
-      'description': _descriptionController.text,
-    };
+    var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
+      ..fields['name'] = _nameController.text
+      ..fields['available'] = 'true'
+      ..fields['price'] = _priceController.text.toString()
+      ..fields['containerId'] = containerId.toString()
+      ..fields['description'] = _descriptionController.text
+      ..headers['Authorization'] = 'Bearer $jwtToken';
 
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      body: json.encode(body),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $jwtToken',
-      },
-    );
-    if (response.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.objectCreationSuccess,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-      );
-    } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.errorObjectCreationFailed,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.CENTER,
-        backgroundColor: Colors.red,
+    for (int i = 0; i < _imageBytesList.length; i++) {
+      request.files.add(http.MultipartFile.fromBytes(
+        'images',
+        _imageBytesList[i]!,
+        filename: 'image_$i.jpg',
+        contentType: MediaType('image', 'jpeg'),
+      ));
+    }
+
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.objectCreationSuccess,
+          true,
+        );
+      } else {
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.errorObjectCreationFailed,
+          false,
+        );
+      }
+    } catch (e) {
+      print(e);
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.errorObjectCreationFailed,
+        false,
       );
     }
   }
@@ -169,23 +181,24 @@ class ObjectCreationState extends State<ObjectCreation> {
         context.go('/container-profil');
       });
     } else {
-      Fluttertoast.showToast(
-        msg: AppLocalizations.of(context)!.objectCreationFailed,
+      showCustomToast(
+        context,
+        AppLocalizations.of(context)!.objectCreationFailed,
+        false,
       );
     }
   }
 
   Future<void> _pickFile() async {
     // Récupération des images dans cette fonction
-    final List<XFile>? pickedFiles = await _picker.pickMultiImage();
+    final List<XFile> pickedFiles = await _picker.pickMultiImage();
 
-    if (pickedFiles != null && pickedFiles.length > 0) {
+    if (pickedFiles.isNotEmpty) {
       if (pickedFiles.length > 5) {
-        Fluttertoast.showToast(
-          msg: AppLocalizations.of(context)!.tooManyFilesSelected,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.CENTER,
-          backgroundColor: Colors.red,
+        showCustomToast(
+          context,
+          AppLocalizations.of(context)!.tooManyFilesSelected,
+          false,
         );
       } else {
         // Liste des images récupérées
@@ -219,7 +232,7 @@ class ObjectCreationState extends State<ObjectCreation> {
       body: FooterView(
         flex: 6,
         footer: Footer(
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           SingleChildScrollView(
@@ -446,7 +459,9 @@ class ObjectCreationState extends State<ObjectCreation> {
                               height: 20,
                             ),
                             DropdownButtonFormField<String>(
-                              value: selectedCategoryId.toString(),
+                              value: selectedCategoryId != 0
+                                  ? selectedCategoryId.toString()
+                                  : null,
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedCategoryId =
