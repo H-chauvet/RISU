@@ -618,6 +618,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
       body: FooterView(
         flex: 6,
@@ -800,11 +801,43 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
-                      fontSize: 30,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopMediumFontSize
+                          : tabletMediumFontSize,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationThickness: 2.0,
                       decorationStyle: TextDecorationStyle.solid,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      storageService.writeStorage(
+                        'containerId',
+                        containerId.toString(),
+                      );
+                      context.go("/object-creation");
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 15),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.objectCreate,
+                      style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
                     ),
                   ),
                   SizedBox(
