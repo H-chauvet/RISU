@@ -213,11 +213,10 @@ class ObjectCreationState extends State<ObjectCreation> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      // appBar:
       body: FooterView(
         flex: 6,
         footer: Footer(
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),

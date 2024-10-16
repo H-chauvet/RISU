@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/app_routes.dart';
@@ -12,8 +13,18 @@ import 'package:sizer/sizer.dart';
 Future<void> deleteContainer(ContainerListData container) async {}
 
 void main() {
+
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
+    await fontLoader.load();
+  });
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     await tester.pumpWidget(
       MultiProvider(
         providers: [
@@ -37,6 +48,7 @@ void main() {
       ),
     );
 
+    await tester.pumpAndSettle(const Duration(seconds: 2));
     expect(find.text("Gestion des conteneurs et objets"), findsOneWidget);
   });
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/screens/user-list/user-component.dart';
@@ -16,8 +17,13 @@ Future<void> deleteUserWeb(User container) async {}
 void main() {
   late MockSharedPreferences sharedPreferences;
 
-  setUp(() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() async {
+    final roboto = rootBundle.load('assets/roboto/Roboto-Medium.ttf');
+    final fontLoader = FontLoader('Roboto')..addFont(roboto);
     sharedPreferences = MockSharedPreferences();
+    await fontLoader.load();
   });
 
   testWidgets('UserMobileCard displays message details',
@@ -99,6 +105,8 @@ void main() {
 
   testWidgets('ContainerPage should render without error',
       (WidgetTester tester) async {
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       MultiProvider(
@@ -121,6 +129,7 @@ void main() {
     );
 
     // Verify that the ContainerPage is rendered.
+    await tester.pumpAndSettle(const Duration(seconds: 2));
     expect(find.byType(UserPage), findsOneWidget);
     await tester.pump(const Duration(seconds: 3));
     expect(find.text("Gestion des utilisateurs"), findsOneWidget);
