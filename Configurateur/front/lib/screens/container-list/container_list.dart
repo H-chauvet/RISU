@@ -543,8 +543,6 @@ class _ContainerPageState extends State<ContainerPage> {
                       decoration: InputDecoration(
                         labelText:
                             AppLocalizations.of(context)!.itemDescription,
-                        labelText:
-                            AppLocalizations.of(context)!.itemDescription,
                       ),
                     ),
                     const SizedBox(height: 10.0),
