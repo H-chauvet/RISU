@@ -624,7 +624,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
         flex: 6,
         footer: Footer(
           padding: EdgeInsets.zero,
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),
@@ -840,9 +840,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 65,
-                  ),
+                  const SizedBox(height: 30),
                   items.isEmpty
                       ? Center(
                           child: Text(

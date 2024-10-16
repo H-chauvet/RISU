@@ -10,6 +10,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/network/informations.dart';
@@ -480,7 +481,9 @@ class ObjectCreationState extends State<ObjectCreation> {
                               height: 20,
                             ),
                             DropdownButtonFormField<String>(
-                              value: selectedCategoryId.toString(),
+                              value: selectedCategoryId != 0
+                                  ? selectedCategoryId.toString()
+                                  : null,
                               onChanged: (String? newValue) {
                                 setState(() {
                                   selectedCategoryId =
