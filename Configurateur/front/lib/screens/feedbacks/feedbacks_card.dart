@@ -77,7 +77,8 @@ class FeedbacksCard extends StatelessWidget {
               ),
             ),
             title: Text(
-              AppLocalizations.of(context)!.opinionPostedBy(fb.firstName, fb.lastName),
+              AppLocalizations.of(context)!
+                  .opinionPostedBy(fb.firstName, fb.lastName),
               style: TextStyle(
                   fontSize: screenFormat == ScreenFormat.desktop
                       ? desktopFontSize

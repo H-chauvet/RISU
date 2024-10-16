@@ -4,6 +4,7 @@ import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -31,18 +32,37 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.orderConfirmation,
-        context: context,
-      ),
       body: FooterView(
         flex: 8,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.orderConfirmation,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           Center(
-            // constraints: BoxConstraints(maxHeight: 600),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxHeight: 600),
               child: FractionallySizedBox(
@@ -53,7 +73,9 @@ class ConfirmationScreenState extends State<ConfirmationScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 50,),
+                      SizedBox(
+                        height: 50,
+                      ),
                       Text(
                         AppLocalizations.of(context)!
                             .orderConfirmationReturnHome,

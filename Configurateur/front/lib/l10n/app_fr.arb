@@ -79,6 +79,7 @@
 	"containerItemHandling": "Gestion des conteneurs et objets",
 	"containerList": "Liste des conteneurs",
 	"containerMy": "Mes conteneurs",
+	"container": "Mon conteneur",
 	"containerNotFound": "Aucun conteneur trouvé.",
 	"containerPriceData": "Prix du conteneur : {price} €",
 	"containerRemovalConfirmation": "Le conteneur a bien été supprimé !",

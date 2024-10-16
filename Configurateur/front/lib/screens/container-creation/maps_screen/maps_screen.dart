@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
@@ -15,9 +16,13 @@ import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 import 'maps_screen_style.dart';
 
@@ -157,16 +162,36 @@ class MapsState extends State<MapsScreen> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.location,
-        context: context,
-      ),
       body: FooterView(
         flex: 8,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.location,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,

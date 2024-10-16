@@ -449,13 +449,13 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-        body: FooterView(
-            flex: 6,
-            footer: Footer(
-              padding: EdgeInsets.zero,
-              child: const CustomFooter(),
-            ),
-            children: [
+      body: FooterView(
+        flex: 6,
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: const CustomFooter(),
+        ),
+        children: [
           LandingAppBar(context: context),
           Text(
             AppLocalizations.of(context)!.companyHandling,
@@ -515,8 +515,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         AppLocalizations.of(context)!
                                             .companyNameData(
                                                 organization.name!),
-                                        style: const TextStyle(
-                                          color: Color(0xff4682B4),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Verdana',
@@ -525,8 +529,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                     : Text(
                                         AppLocalizations.of(context)!
                                             .companyNameEmpty,
-                                        style: const TextStyle(
-                                          color: Color(0xff4682B4),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Verdana',
@@ -542,8 +550,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                             AppLocalizations.of(context)!
                                                 .informationData(organization
                                                     .contactInformation!),
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -552,8 +564,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         : Text(
                                             AppLocalizations.of(context)!
                                                 .informationEmpty,
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -589,8 +605,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                             AppLocalizations.of(context)!
                                                 .companyTypeData(
                                                     organization.type!),
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -599,8 +619,12 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                                         : Text(
                                             AppLocalizations.of(context)!
                                                 .typeEmpty,
-                                            style: const TextStyle(
-                                              color: Color(0xff4682B4),
+                                            style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
                                               fontSize: 15.0,
                                               fontWeight: FontWeight.bold,
                                               fontFamily: 'Verdana',
@@ -673,8 +697,10 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                 ),
                 Text(
                   AppLocalizations.of(context)!.ourContainers,
-                  style: const TextStyle(
-                    color: Color.fromRGBO(70, 130, 180, 1),
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
@@ -712,9 +738,8 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
               ],
             ),
           )
-        ])
-
-        // bottomNavigationBar: const CustomBottomNavigationBar(),
-        );
+        ],
+      ),
+    );
   }
 }

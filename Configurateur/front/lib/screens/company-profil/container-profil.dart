@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:footer/footer.dart';
@@ -15,8 +16,10 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -616,16 +619,36 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.containerHandling,
-        context: context,
-      ),
       body: FooterView(
         flex: 6,
         footer: Footer(
           child: CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.container,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: ScreenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
@@ -661,9 +684,23 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Text(
+                                tmp.city != null
+                                ?Text(
                                   AppLocalizations.of(context)!
                                       .cityNameData(tmp.city!),
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Verdana',
+                                  ),
+                                )
+                                : Text(
+                                  AppLocalizations.of(context)!
+                                      .cityNotLinked,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
@@ -699,9 +736,22 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Text(
+                                tmp.address != null
+                                ? Text(
                                   AppLocalizations.of(context)!
                                       .addressData(tmp.address!),
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Verdana',
+                                  ),
+                                ): Text(
+                                  AppLocalizations.of(context)!
+                                      .addressNo,
                                   style: TextStyle(
                                     color: Provider.of<ThemeService>(context)
                                             .isDark
