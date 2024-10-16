@@ -217,49 +217,54 @@ class MyContainerState extends State<MyContainer> {
                                         extra: jsonEncode(
                                           {
                                             'id': displayedContainers[i]['id'],
-                                            'container':
-                                                jsonEncode(displayedContainers[i]),
+                                            'container': jsonEncode(
+                                                displayedContainers[i]),
                                           },
                                         ),
                                       );
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      displayedContainers[i]['saveName'],
-                                      style: TextStyle(
+                                    },
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          displayedContainers[i]['saveName'],
+                                          style: TextStyle(
+                                              color: Provider.of<ThemeService>(
+                                                          context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                              fontSize: screenFormat ==
+                                                      ScreenFormat.desktop
+                                                  ? desktopFontSize
+                                                  : tabletFontSize),
+                                        ),
+                                        IconButton(
                                           color:
                                               Provider.of<ThemeService>(context)
                                                       .isDark
                                                   ? darkTheme.primaryColor
                                                   : lightTheme.primaryColor,
-                                          fontSize: screenFormat ==
-                                                  ScreenFormat.desktop
-                                              ? desktopFontSize
-                                              : tabletFontSize),
+                                          onPressed: () async {
+                                            var confirm =
+                                                await showDialog<bool>(
+                                              context: context,
+                                              builder: (context) =>
+                                                  ConfirmationDialog(),
+                                            );
+                                            if (confirm == true) {
+                                              setState(
+                                                () {
+                                                  deleteSave(i);
+                                                },
+                                              );
+                                            }
+                                          },
+                                          icon: const Icon(Icons.delete),
+                                        )
+                                      ],
                                     ),
-                                    IconButton(
-                                      color: Provider.of<ThemeService>(context)
-                                              .isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                      onPressed: () async {
-                                        var confirm = await showDialog<bool>(
-                                          context: context,
-                                          builder: (context) =>
-                                              ConfirmationDialog(),
-                                        );
-
-                                        if (confirm == true) {
-                                          setState(() {
-                                            deleteSave(i);
-                                          });
-                                        }
-                                      },
-                                      icon: Icon(Icons.delete),
-                                    )
-                                  ],
+                                  ),
                                 ),
                               ],
                             );
