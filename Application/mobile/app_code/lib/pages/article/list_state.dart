@@ -12,6 +12,7 @@ import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
+import 'package:risu/utils/share_deeplink.dart';
 
 import 'article_filters_page.dart';
 import 'article_list_data.dart';
@@ -193,6 +194,13 @@ class ArticleListState extends State<ArticleListPage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
           textTitle: AppLocalizations.of(context)!.articlesList,
+          action: IconButton(
+            onPressed: () {
+              createDeeplink(
+                  path: 'container/?id=$_containerId', context: context);
+            },
+            icon: const Icon(Icons.share),
+          ),
         ),
         resizeToAvoidBottomInset: false,
         backgroundColor: context.select((ThemeProvider themeProvider) =>

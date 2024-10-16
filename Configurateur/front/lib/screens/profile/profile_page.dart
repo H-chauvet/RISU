@@ -535,6 +535,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FooterView(
+          flex: 8,
           footer: Footer(
             padding: EdgeInsets.zero,
             child: const CustomFooter(),

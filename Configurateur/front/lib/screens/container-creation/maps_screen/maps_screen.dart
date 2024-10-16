@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
@@ -15,9 +15,13 @@ import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 import 'maps_screen_style.dart';
 
@@ -157,61 +161,93 @@ class MapsState extends State<MapsScreen> {
   Widget build(BuildContext context) {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.location,
-        context: context,
-      ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
         children: [
-          ProgressBar(
-            length: 6,
-            progress: 4,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
-            previousFunc: goPrevious,
-            nextFunc: goNext,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: screenFormat == ScreenFormat.desktop
-              ? desktopWidthFactor
-              : tabletWidthFactor,
-          heightFactor: screenFormat == ScreenFormat.desktop
-              ? desktopHeightFactor
-              : tabletHeightFactor,
-          alignment: Alignment.center,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              GoogleMap(
-                key: UniqueKey(),
-                initialCameraPosition: _kGooglePlex,
-                mapType: MapType.normal,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-                onCameraMove: (CameraPosition position) {
-                  location = position.target;
-                },
-              ),
-              Positioned(
-                child: Icon(
-                  size: screenFormat == ScreenFormat.desktop
-                      ? desktopIconSize
-                      : tabletIconSize,
-                  Icons.room,
-                  color: Colors.red,
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.location,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
                 ),
+              ],
+            ),
+          ),
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Center(
+              child: FractionallySizedBox(
+                widthFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopWidthFactor
+                    : tabletWidthFactor,
+                heightFactor: screenFormat == ScreenFormat.desktop
+                    ? desktopHeightFactor
+                    : tabletHeightFactor,
+                alignment: Alignment.center,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    GoogleMap(
+                      key: UniqueKey(),
+                      initialCameraPosition: _kGooglePlex,
+                      mapType: MapType.normal,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controller.complete(controller);
+                      },
+                      onCameraMove: (CameraPosition position) {
+                        location = position.target;
+                      },
+                    ),
+                    Positioned(
+                      child: Icon(
+                        size: screenFormat == ScreenFormat.desktop
+                            ? desktopIconSize
+                            : tabletIconSize,
+                        Icons.room,
+                        color: Colors.red,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 4,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+              const SizedBox(
+                height: 50,
               )
             ],
           ),
-        ),
+        ],
       ),
     );
   }
