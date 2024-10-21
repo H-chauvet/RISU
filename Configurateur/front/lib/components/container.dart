@@ -5,8 +5,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
+import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 /// ContainerListData
 ///
@@ -122,6 +125,9 @@ class ContainerCards extends StatelessWidget {
                     ? Text(
                         AppLocalizations.of(context)!.cityData(container.city!),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -130,6 +136,9 @@ class ContainerCards extends StatelessWidget {
                     : Text(
                         AppLocalizations.of(context)!.cityNotLinked,
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -140,6 +149,9 @@ class ContainerCards extends StatelessWidget {
                         AppLocalizations.of(context)!
                             .addressData(container.address!),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -148,6 +160,9 @@ class ContainerCards extends StatelessWidget {
                     : Text(
                         AppLocalizations.of(context)!.addressNo,
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletFontSize,
@@ -159,11 +174,17 @@ class ContainerCards extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(Icons.delete,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () => onDelete(container),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.chevron_right),
+                  icon: Icon(Icons.chevron_right,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () {
                     if (container.id != null) {
                       storageService.writeStorage(

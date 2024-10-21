@@ -366,8 +366,8 @@ class CompanyPageState extends State<CompanyPage> {
                             style: TextStyle(
                               fontSize: 18,
                               color: Provider.of<ThemeService>(context).isDark
-                                  ? Colors.white
-                                  : lightTheme.primaryColor,
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
                             ),
                             textAlign: TextAlign.center,
                           ),

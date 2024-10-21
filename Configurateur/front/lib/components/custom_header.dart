@@ -290,7 +290,16 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.french),
+                          Text(
+                            AppLocalizations.of(context)!.french,
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -304,7 +313,16 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.english),
+                          Text(
+                            AppLocalizations.of(context)!.english,
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
+                            ),
+                          ),
                         ],
                       ),
                     ),
