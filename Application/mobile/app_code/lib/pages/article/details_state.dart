@@ -579,8 +579,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                 height: 200,
                                 decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/image_placeholder.png'),
+                                    image: AssetImage('assets/no_image.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
