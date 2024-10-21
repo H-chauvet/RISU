@@ -34,6 +34,8 @@ void main() {
 
   testWidgets('my container', (WidgetTester tester) async {
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
 
     await tester.pumpWidget(
       MultiProvider(

@@ -42,7 +42,8 @@ Future<Map<String, dynamic>> fetchUserDetails(
       return {"error": true};
     }
   } catch (error) {
-    debugPrint(AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
+    debugPrint(
+        AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
     return {};
   }
 }
@@ -57,7 +58,8 @@ Future<void> sendData(BuildContext context, String rating, String message,
   final userDetails = await fetchUserDetails(context, userMail);
   if (userDetails['error'] == true) {
     if (context.mounted) {
-      showCustomToast(context, AppLocalizations.of(context)!.errorFetchingUserDetails, false);
+      showCustomToast(context,
+          AppLocalizations.of(context)!.errorFetchingUserDetails, false);
     }
     return;
   }

@@ -40,8 +40,8 @@ class CustomPopup extends StatelessWidget {
                       ),
                     ],
                   ),
-                  width: constraints.maxWidth * 0.5,
-                  height: constraints.maxHeight * 0.5,
+                  width: constraints.maxWidth * 0.55,
+                  height: constraints.maxHeight * 0.55,
                   child: Row(
                     children: [
                       Expanded(

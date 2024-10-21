@@ -19,11 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 void main() {
-  Widget createWidgetForTesting({required Widget child}) {
-    return MaterialApp(
-      home: child,
-    );
-  }
+  TestWidgetsFlutterBinding.ensureInitialized();
 
   late MockSharedPreferences sharedPreferences;
 
@@ -35,12 +31,11 @@ void main() {
   });
 
   testWidgets('Password change screen', (WidgetTester tester) async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-
-    tester.binding.window.physicalSizeTestValue = const Size(1920, 1080);
-    tester.binding.window.devicePixelRatioTestValue = 1.0;
-
     when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
+        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
 
     await tester.pumpWidget(
       MultiProvider(
@@ -68,7 +63,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text('Nouveau mot de passe'), findsOneWidget);
+    expect(find.text('Créez un nouveau mot de passe !'), findsOneWidget);
     expect(find.text('Mot de passe'), findsOneWidget);
     expect(find.text("Valider le mot de passe"), findsOneWidget);
     expect(find.text("Changer le mot de passe"), findsOneWidget);
