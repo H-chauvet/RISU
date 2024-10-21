@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
@@ -335,6 +334,7 @@ class CompanyPageState extends State<CompanyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: FooterView(
+        flex: 10,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: const CustomFooter(),

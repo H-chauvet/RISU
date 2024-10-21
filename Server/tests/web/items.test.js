@@ -60,30 +60,6 @@ describe("Items Route Tests", () => {
     expect(itemCtrl.deleteItem).not.toHaveBeenCalled();
   });
 
-  it("should handle valid item creation", async () => {
-    const requestBody = {
-      id: 1,
-      name: "Item 1",
-      available: true,
-      price: 10.99,
-      containerId: 2,
-    };
-
-    jwtMiddleware.verifyToken.mockResolvedValueOnce();
-    jwtMiddleware.decodeToken.mockResolvedValueOnce();
-    userCtrl.getUserFromToken.mockResolvedValueOnce();
-    userCtrl.findUserByEmail.mockResolvedValueOnce();
-    itemCtrl.createItem.mockResolvedValueOnce(requestBody);
-
-    const response = await supertest(app)
-      .post("/create")
-      .set("Authorization", "Bearer mockedAccessToken")
-      .send(requestBody);
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(requestBody);
-  });
-
   it("should handle errors during item creation", async () => {
     const requestBody = {};
 

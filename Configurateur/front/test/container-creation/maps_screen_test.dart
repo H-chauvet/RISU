@@ -50,7 +50,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text("Localisation"), findsOneWidget);
+    expect(find.text("Choix de la localisation du conteneur"), findsOneWidget);
 
     await tester.tap(find.text('Précédent'));
     await tester.tap(find.text('Suivant'));

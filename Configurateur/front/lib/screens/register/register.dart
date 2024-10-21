@@ -48,6 +48,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
         body: FooterView(
+            flex: 8,
             footer: Footer(
               padding: EdgeInsets.zero,
               child: CustomFooter(),
@@ -94,8 +95,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('firstname'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.firstNameFill,
-                                labelText: AppLocalizations.of(context)!.firstName,
+                                hintText:
+                                    AppLocalizations.of(context)!.firstNameFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.firstName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -105,7 +108,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -114,8 +118,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('lastname'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.lastNameFill,
-                                labelText: AppLocalizations.of(context)!.lastName,
+                                hintText:
+                                    AppLocalizations.of(context)!.lastNameFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.lastName,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -125,7 +131,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -134,8 +141,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                             TextFormField(
                               key: const Key('email'),
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.emailFill,
-                                labelText: AppLocalizations.of(context)!.emailAddress,
+                                hintText:
+                                    AppLocalizations.of(context)!.emailFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.emailAddress,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -145,7 +154,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -155,8 +165,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                               key: const Key('password'),
                               obscureText: true,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.passwordFill,
-                                labelText: AppLocalizations.of(context)!.password,
+                                hintText:
+                                    AppLocalizations.of(context)!.passwordFill,
+                                labelText:
+                                    AppLocalizations.of(context)!.password,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -166,7 +178,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 return null;
                               },
@@ -176,8 +189,10 @@ class RegisterScreenState extends State<RegisterScreen> {
                               key: const Key('confirm-password'),
                               obscureText: true,
                               decoration: InputDecoration(
-                                hintText: AppLocalizations.of(context)!.passwordConfirmation,
-                                labelText: AppLocalizations.of(context)!.passwordConfirm,
+                                hintText: AppLocalizations.of(context)!
+                                    .passwordConfirmation,
+                                labelText: AppLocalizations.of(context)!
+                                    .passwordConfirm,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
                                 ),
@@ -187,10 +202,12 @@ class RegisterScreenState extends State<RegisterScreen> {
                               },
                               validator: (String? value) {
                                 if (value == null || value.isEmpty) {
-                                  return AppLocalizations.of(context)!.askCompleteField;
+                                  return AppLocalizations.of(context)!
+                                      .askCompleteField;
                                 }
                                 if (value != password) {
-                                  return AppLocalizations.of(context)!.passwordDontMatch;
+                                  return AppLocalizations.of(context)!
+                                      .passwordDontMatch;
                                 }
                                 return null;
                               },
@@ -292,7 +309,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Text(
-                                    AppLocalizations.of(context)!.allreadyGotAccount,
+                                    AppLocalizations.of(context)!
+                                        .allreadyGotAccount,
                                     style: TextStyle(
                                       color: Provider.of<ThemeService>(context,
                                                   listen: false)

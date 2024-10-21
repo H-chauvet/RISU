@@ -6,6 +6,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/add_design_dialog.dart';
 import 'package:front/components/dialog/remove_design_dialog.dart';
@@ -579,70 +583,182 @@ class DesignScreenState extends State<DesignScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.design,
-        context: context,
-      ),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: const CustomFooter(),
+        ),
         children: [
-          ProgressBar(
-            length: 6,
-            progress: 2,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.next,
-            previousFunc: goPrevious,
-            nextFunc: goNext,
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.design,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
           ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            child: Stack(
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.65,
+            height: MediaQuery.of(context).size.height * 0.85,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    DottedBorder(
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                      padding: EdgeInsets.zero,
-                      strokeWidth: 3,
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: screenFormat == ScreenFormat.desktop
-                            ? desktopImportContainerHeight
-                            : tabletImportContainerHeight,
-                        width: screenFormat == ScreenFormat.desktop
-                            ? desktopImportContainerWidth
-                            : tabletImportContainerWidth,
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? lightTheme.primaryColor
-                            : darkTheme.primaryColor,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.cloud_upload,
-                              size: 32.0,
+                Flexible(
+                  child: Stack(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          DottedBorder(
+                            color: Colors.grey[600]!,
+                            padding: EdgeInsets.zero,
+                            strokeWidth: 3,
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: screenFormat == ScreenFormat.desktop
+                                  ? desktopImportContainerHeight
+                                  : tabletImportContainerHeight,
+                              width: screenFormat == ScreenFormat.desktop
+                                  ? desktopImportContainerWidth
+                                  : tabletImportContainerWidth,
+                              color: Colors.grey[400],
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.cloud_upload,
+                                    size: 32.0,
+                                    color: Provider.of<ThemeService>(context)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    AppLocalizations.of(context)!
+                                        .imageClickToAdd,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Provider.of<ThemeService>(context)
+                                              .isDark
+                                          ? darkTheme.primaryColor
+                                          : lightTheme.primaryColor,
+                                      fontSize:
+                                          screenFormat == ScreenFormat.desktop
+                                              ? desktopFontSize
+                                              : tabletFontSize,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0))),
+                                    onPressed: () async {
+                                      picked =
+                                          await FilePicker.platform.pickFiles(
+                                        type: FileType.image,
+                                      );
+
+                                      if (!mounted) {
+                                        return;
+                                      }
+                                      if (picked != null) {
+                                        if (picked!.files.single.bytes!.length >
+                                            1000000) {
+                                          showCustomToast(
+                                            context,
+                                            AppLocalizations.of(context)!
+                                                .imageSizeMax,
+                                            false,
+                                          );
+                                        } else {
+                                          openAddDialog(context);
+                                        }
+                                      }
+                                      setState(() {});
+                                    },
+                                    child: Text(
+                                      AppLocalizations.of(context)!.browse,
+                                      style: TextStyle(
+                                        color:
+                                            Provider.of<ThemeService>(context)
+                                                    .isDark
+                                                ? darkTheme.primaryColor
+                                                : lightTheme.primaryColor,
+                                        fontSize:
+                                            screenFormat == ScreenFormat.desktop
+                                                ? desktopFontSize
+                                                : tabletFontSize,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: sizedBoxWidth,
+                            child: const Divider(
+                              color: Colors.grey,
+                              height: 20,
+                              thickness: 1,
+                              indent: 30,
+                              endIndent: 30,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                                fixedSize: Size.fromWidth(
+                                    screenFormat == ScreenFormat.desktop
+                                        ? desktopButtonWidth
+                                        : tabletButtonWidth),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0))),
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (context) =>
+                                    RemoveDesignDialog(callback: removeImage),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.delete,
                               color: Provider.of<ThemeService>(context).isDark
                                   ? darkTheme.primaryColor
                                   : lightTheme.primaryColor,
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Text(
-                              AppLocalizations.of(context)!.imageClickToAdd,
-                              textAlign: TextAlign.center,
+                            label: Text(
+                              AppLocalizations.of(context)!.imageRemoval,
                               style: TextStyle(
                                 color: Provider.of<ThemeService>(context).isDark
                                     ? darkTheme.primaryColor
@@ -652,162 +768,81 @@ class DesignScreenState extends State<DesignScreen> {
                                     : tabletFontSize,
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? darkTheme.primaryColor
-                                          : lightTheme.primaryColor,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0))),
-                              onPressed: () async {
-                                picked = await FilePicker.platform.pickFiles(
-                                  type: FileType.image,
-                                );
-
-                                if (!mounted) {
-                                  return;
-                                }
-                                if (picked != null) {
-                                  if (picked!.files.single.bytes!.length >
-                                      1000000) {
-                                    showCustomToast(
-                                      context,
-                                      AppLocalizations.of(context)!
-                                          .imageSizeMax,
-                                      false,
-                                    );
-                                  } else {
-                                    openAddDialog(context);
-                                  }
-                                }
-                                setState(() {});
-                              },
-                              child: Text(
-                                AppLocalizations.of(context)!.browse,
-                                style: TextStyle(
-                                  color:
-                                      Provider.of<ThemeService>(context).isDark
-                                          ? lightTheme.primaryColor
-                                          : darkTheme.primaryColor,
-                                  fontSize: screenFormat == ScreenFormat.desktop
-                                      ? desktopFontSize
-                                      : tabletFontSize,
-                                ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              fixedSize: Size.fromWidth(
+                                  screenFormat == ScreenFormat.desktop
+                                      ? desktopButtonWidth
+                                      : tabletButtonWidth),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0),
                               ),
-                            )
-                          ],
-                        ),
+                            ),
+                            onPressed: () async {
+                              String name = await showDialog(
+                                  context: context,
+                                  builder: (context) => openDialog());
+                              saveContainer(name);
+                            },
+                            icon: Icon(
+                              Icons.save,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
+                            label: Text(
+                              AppLocalizations.of(context)!.saveAction,
+                              style: TextStyle(
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor,
+                                fontSize: screenFormat == ScreenFormat.desktop
+                                    ? desktopFontSize
+                                    : tabletFontSize,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+                    ],
+                  ),
+                ),
+                loadCube(),
+                Flexible(
+                  child: FractionallySizedBox(
+                    widthFactor: screenFormat == ScreenFormat.desktop
+                        ? desktopRecapPanelWidth
+                        : tabletRecapPanelWidth,
+                    heightFactor: 0.7,
+                    child: RecapPanel(
+                      articles: lockerss,
+                      screenFormat: screenFormat,
+                      fullscreen: false,
                     ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      width: sizedBoxWidth,
-                      child: const Divider(
-                        color: Colors.grey,
-                        height: 20,
-                        thickness: 1,
-                        indent: 30,
-                        endIndent: 30,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                          fixedSize: Size.fromWidth(
-                              screenFormat == ScreenFormat.desktop
-                                  ? desktopButtonWidth
-                                  : tabletButtonWidth),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      onPressed: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (context) =>
-                              RemoveDesignDialog(callback: removeImage),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.delete,
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                      ),
-                      label: Text(
-                        AppLocalizations.of(context)!.imageRemoval,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize: Size.fromWidth(
-                            screenFormat == ScreenFormat.desktop
-                                ? desktopButtonWidth
-                                : tabletButtonWidth),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      onPressed: () async {
-                        String name = await showDialog(
-                            context: context,
-                            builder: (context) => openDialog());
-                        saveContainer(name);
-                      },
-                      icon: Icon(
-                        Icons.save,
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                      ),
-                      label: Text(
-                        AppLocalizations.of(context)!.saveAction,
-                        style: TextStyle(
-                          color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.primaryColor,
-                          fontSize: screenFormat == ScreenFormat.desktop
-                              ? desktopFontSize
-                              : tabletFontSize,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ],
             ),
           ),
-          loadCube(),
-          Flexible(
-            child: FractionallySizedBox(
-              widthFactor: screenFormat == ScreenFormat.desktop
-                  ? desktopRecapPanelWidth
-                  : tabletRecapPanelWidth,
-              heightFactor: 0.7,
-              child: RecapPanel(
-                articles: lockerss,
-                screenFormat: screenFormat,
-                fullscreen: false,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 2,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
               ),
-            ),
+              const SizedBox(
+                height: 50,
+              )
+            ],
           ),
         ],
       ),
