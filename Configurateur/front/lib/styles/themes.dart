@@ -146,3 +146,6 @@ const checkBoxMenuButtonColorLightTheme = Color(0xff7C9885);
 const checkBoxMenuButtonColorDarkTheme = Color(0xFFFEDC97);
 
 const containerDialogTextColorDarkTheme = Color(0xFF033F63);
+
+const customPopupBackgroundLightTheme = Colors.white;
+const customPopupBackgroundDarkTheme = Color(0xFF162A49);
