@@ -26,6 +26,7 @@
     "reviewDeleted" : "L'avis a été supprimé.",
     "reviewUpdated" : "L'avis a été mise à jour avec succès.",
     "missingTime" : "L'heure / la durée ne figure pas dans la requête.",
+    "incorrectTime": "Durée de location incorrecte (max: 24h, minimum: 1h)",
     "itemUnavailable" : "L'article est actuellement indisponible.",
     "rentSaved" : "La location est enregistré dans la base de données.",
     "rentNotFound" : "La location n'a pas été trouvé dans la base de données.",
