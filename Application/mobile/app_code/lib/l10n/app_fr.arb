@@ -107,6 +107,7 @@
   "faq": "Questions",
   "faqAnswer": "FAQ",
   "faqTitle": "Bonjour {name}, Comment pouvons-nous vous aider ?",
+  "favorites": "Favoris",
   "favoritesListEmpty": "Aucun Favori",
   "fieldRequired": "Ce champ est requis.",
   "fieldsEmpty": "Certains champs sont vides.",
