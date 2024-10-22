@@ -9,6 +9,7 @@ import 'package:risu/components/parameter.dart';
 import 'package:risu/components/pop_scope_parent.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
+import 'package:risu/pages/faq/faq_page.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/login/login_page.dart';
 import 'package:risu/pages/profile/informations/informations_page.dart';
@@ -18,7 +19,7 @@ import 'package:risu/pages/settings/settings_pages/theme/theme_settings_page.dar
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:risu/pages/faq/faq_page.dart';
+import 'package:risu/pages/team/team_page.dart';
 
 import 'settings_page.dart';
 
@@ -135,13 +136,6 @@ class SettingsPageState extends State<SettingsPage> {
                         ),
                       const SizedBox(height: 8),
                       MyParameter(
-                        goToPage: const LoginPage(),
-                        title: AppLocalizations.of(context)!.paymentMethods,
-                        paramIcon: Icons.payments_outlined,
-                        locked: true,
-                      ),
-                      const SizedBox(height: 8),
-                      MyParameter(
                         goToPage: const NotificationsPage(),
                         title: AppLocalizations.of(context)!.notifications,
                         paramIcon: Icons.notifications,
@@ -187,10 +181,9 @@ class SettingsPageState extends State<SettingsPage> {
                       ),
                       const SizedBox(height: 8),
                       MyParameter(
-                        goToPage: const LoginPage(),
+                        goToPage: const TeamPage(),
                         title: AppLocalizations.of(context)!.aboutUs,
                         paramIcon: Icons.question_mark,
-                        locked: true,
                       ),
                       const SizedBox(
                           height: 16, key: Key('settings-sized_box-bottom')),
