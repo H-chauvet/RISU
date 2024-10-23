@@ -17,9 +17,10 @@ function generateAccessToken(user) {
         userUuid: user.uuid,
         role: user.role,
         manager: user.manager,
+        isNew: user.isNew,
       },
       process.env.JWT_ACCESS_SECRET,
-      { expiresIn: "1h" },
+      { expiresIn: "1h" }
     );
   } catch (err) {
     throw "Something happen while generate access token";

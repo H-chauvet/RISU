@@ -430,3 +430,18 @@ exports.getUsersFromOrganizationId = async (res, organizationId) => {
     throw res.__("errorOccured");
   }
 };
+
+exports.updateIsNew = async (res, email) => {
+  try {
+    return await db.User_Web.update({
+      where: {
+        email: email,
+      },
+      data: {
+        isNew: false,
+      },
+    });
+  } catch (err) {
+    throw res.__("errorOccured");
+  }
+};

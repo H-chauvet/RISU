@@ -8,12 +8,15 @@ import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/progress_bar.dart';
+import 'package:front/network/informations.dart';
+import 'package:front/services/http_service.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:provider/provider.dart';
 
 import 'shape_screen_style.dart';
@@ -63,9 +66,35 @@ class ShapeScreenState extends State<ShapeScreen> {
     }
   }
 
+  /// [Function] : Check the token in the storage service
+  void checkToken() async {
+    String? token = await storageService.readStorage('token');
+
+    dynamic decodedToken = JwtDecoder.decode(token!);
+
+    if (await StorageService().readStorage('isNew') == "false") {
+      return;
+    }
+    if (decodedToken['isNew'] == true) {
+      debugPrint('launch tutorial');
+      var header = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+        'Authorization': 'Bearer $token'
+      };
+      HttpService().putRequest(
+          "http://$serverIp:3000/api/auth/update-isnew/${decodedToken['userMail']}",
+          header, {});
+      StorageService().writeStorage('isNew', "false");
+    } else {
+      debugPrint('tutorial not necessary');
+    }
+  }
+
   @override
   void initState() {
     MyAlertTest.checkSignInStatus(context);
+    checkToken();
     checkContainer().then((result) {
       setState(() {
         calculateDimension();

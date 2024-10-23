@@ -91,6 +91,7 @@ model User_Web {
     token          String?       @unique
     role           String        @default("user")
     language       String        @default("fr")
+    isNew          Boolean       @default(true)
     password       String
     organization   Organization? @relation(fields: [organizationId], references: [id])
     organizationId Int?
