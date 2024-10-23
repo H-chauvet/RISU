@@ -42,7 +42,8 @@ Future<Map<String, dynamic>> fetchUserDetails(
       return {"error": true};
     }
   } catch (error) {
-    debugPrint(AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
+    debugPrint(
+        AppLocalizations.of(context)!.errorFetchingUserDetailsData(error));
     return {};
   }
 }
@@ -57,7 +58,8 @@ Future<void> sendData(BuildContext context, String rating, String message,
   final userDetails = await fetchUserDetails(context, userMail);
   if (userDetails['error'] == true) {
     if (context.mounted) {
-      showCustomToast(context, AppLocalizations.of(context)!.errorFetchingUserDetails, false);
+      showCustomToast(context,
+          AppLocalizations.of(context)!.errorFetchingUserDetails, false);
     }
     return;
   }
@@ -154,6 +156,9 @@ class RatingDialogContent extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
+                backgroundColor: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 shape: RoundedRectangleBorder(
@@ -167,8 +172,8 @@ class RatingDialogContent extends StatelessWidget {
                       ? desktopFontSize
                       : tabletFontSize,
                   color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
                 ),
               ),
             ),

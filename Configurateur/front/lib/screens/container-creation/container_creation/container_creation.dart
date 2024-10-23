@@ -950,9 +950,12 @@ class ContainerCreationState extends State<ContainerCreation> {
                           ElevatedButton.icon(
                             onPressed: () async {
                               String name = await showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => openDialog());
-                              saveContainer(name);
+                              if (name != '') {
+                                saveContainer(name);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 fixedSize: Size.fromWidth(
