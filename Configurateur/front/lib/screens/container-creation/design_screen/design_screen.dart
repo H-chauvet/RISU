@@ -784,9 +784,12 @@ class DesignScreenState extends State<DesignScreen> {
                             ),
                             onPressed: () async {
                               String name = await showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => openDialog());
-                              saveContainer(name);
+                              if (name != '') {
+                                saveContainer(name);
+                              }
                             },
                             icon: Icon(
                               Icons.save,
