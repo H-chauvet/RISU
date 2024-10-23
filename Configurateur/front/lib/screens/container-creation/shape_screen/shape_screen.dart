@@ -452,7 +452,12 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.remove),
+                            child: Icon(
+                              Icons.remove,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
                           ),
                           const SizedBox(width: 10.0),
                           Container(
@@ -492,7 +497,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.add),
+                            child: Icon(Icons.add,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                         ],
                       ),
@@ -532,7 +540,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.remove),
+                            child: Icon(Icons.remove,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                           const SizedBox(width: 10.0),
                           Container(
@@ -572,7 +583,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.add),
+                            child: Icon(Icons.add,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                         ],
                       ),
