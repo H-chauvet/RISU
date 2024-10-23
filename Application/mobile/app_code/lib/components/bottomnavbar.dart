@@ -69,10 +69,10 @@ class BottomNavBar extends StatelessWidget {
       backgroundColor: theme!.bottomNavigationBarTheme.backgroundColor,
       selectedItemColor: theme!.bottomNavigationBarTheme.selectedItemColor,
       unselectedItemColor: theme!.bottomNavigationBarTheme.unselectedItemColor,
-      unselectedIconTheme: const IconThemeData(size: 24),
-      selectedIconTheme: const IconThemeData(size: 24),
-      unselectedFontSize: 12,
-      selectedFontSize: 12,
+      unselectedIconTheme: const IconThemeData(size: 28),
+      selectedIconTheme: const IconThemeData(size: 28),
+      unselectedFontSize: 10,
+      selectedFontSize: 10,
       type: BottomNavigationBarType.fixed,
     );
   }
