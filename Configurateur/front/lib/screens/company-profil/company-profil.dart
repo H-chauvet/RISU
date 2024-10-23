@@ -7,13 +7,8 @@ import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/container.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/dialog/handle_member/handle_member.dart';
-import 'package:front/components/dialog/save_dialog.dart';
-import 'package:front/components/footer.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -39,8 +34,8 @@ class OrganizationList {
   final int? id;
   final String? name;
   final String? type;
-  final dynamic? affiliate;
-  final dynamic? containers;
+  final dynamic affiliate;
+  final dynamic containers;
   final String? contactInformation;
 
   OrganizationList({
@@ -422,7 +417,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       dynamic decodedToken = JwtDecoder.tryDecode(jwtToken);
 
       isManager = decodedToken['manager'];

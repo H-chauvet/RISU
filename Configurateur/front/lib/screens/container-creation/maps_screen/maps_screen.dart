@@ -3,12 +3,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';

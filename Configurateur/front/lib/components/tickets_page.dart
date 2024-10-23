@@ -210,7 +210,7 @@ class TicketsState extends State<TicketsPage> {
       } else {
         return false;
       }
-    } catch (err, stacktrace) {
+    } catch (err) {
       if (mounted) {
         showCustomToast(
             context,
