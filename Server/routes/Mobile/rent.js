@@ -40,8 +40,11 @@ router.post(
       if (!item) {
         return res.status(404).send(res.__("itemNotFound"));
       }
-      if (!req.body.duration || req.body.duration < 0) {
+      if (!req.body.duration) {
         return res.status(400).send(res.__("missingTime"));
+      }
+      if (req.body.duration < 0 || req.body.duration > 24) {
+        return res.status(400).send(res.__("incorrectTime"));
       }
       if (!item.available) {
         return res.status(400).send(res.__("itemUnavailable"));
