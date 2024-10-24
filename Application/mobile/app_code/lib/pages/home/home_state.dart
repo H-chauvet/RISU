@@ -12,10 +12,12 @@ import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
+import 'package:risu/pages/article/favorite/favorite_page.dart';
 import 'package:risu/pages/article/list_page.dart';
 import 'package:risu/pages/container/container_page.dart';
 import 'package:risu/pages/map/map_page.dart';
 import 'package:risu/pages/profile/profile_page.dart';
+import 'package:risu/pages/rent/rentals/rentals_page.dart';
 import 'package:risu/pages/reset_password/reset_password_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
@@ -45,18 +47,38 @@ class HomePageState extends State<HomePage> {
         configProfile(context);
       }
     });
-    _pages = [
-      ContainerPage(
-        onDirectionClicked: (id) {
-          setState(() {
-            _currentIndex = 1;
-            containerId = id;
-          });
-        },
-      ),
-      const MapPage(),
-      const ProfilePage(),
-    ];
+    if (userInformation == null) {
+      _pages = [
+        ContainerPage(
+          onDirectionClicked: (id) {
+            setState(() {
+              _currentIndex = 1;
+              containerId = id;
+            });
+          },
+        ),
+        const MapPage(),
+        const ProfilePage(),
+      ];
+    } else {
+      setState(() {
+        _currentIndex = 2;
+      });
+      _pages = [
+        ContainerPage(
+          onDirectionClicked: (id) {
+            setState(() {
+              _currentIndex = 1;
+              containerId = id;
+            });
+          },
+        ),
+        const RentalPage(appbar: false),
+        const MapPage(),
+        const FavoritePage(appbar: false),
+        const ProfilePage(),
+      ];
+    }
   }
 
   Future<void> redirectFromUri(Uri uri, String link) async {

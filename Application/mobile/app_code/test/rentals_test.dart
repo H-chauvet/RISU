@@ -28,6 +28,7 @@ void main() {
               }
             },
           ],
+          appbar: true,
         ),
       );
       await waitForLoader(tester: tester, testPage: testPage);
@@ -85,6 +86,7 @@ void main() {
             }
           },
         ],
+        appbar: false,
       ),
     );
     await waitForLoader(tester: tester, testPage: testPage);
@@ -113,26 +115,31 @@ void main() {
   });
 
   testWidgets('Rental 1', (WidgetTester tester) async {
-    await tester.pumpWidget(initPage(const RentalPage(
-      testRentals: [
-        {
-          "id": 1,
-          "price": 100,
-          "createdAt": "2024-05-23T09:18:46.814Z",
-          "duration": 1,
-          "ended": false,
-          "item": {
-            "id": 3,
-            "name": "Ballon de football",
-            "container": {
+    await tester.pumpWidget(
+      initPage(
+        const RentalPage(
+          testRentals: [
+            {
               "id": 1,
-              "address": "Rue d'Alger",
-              "city": "Nantes",
-            }
-          }
-        },
-      ],
-    )));
+              "price": 100,
+              "createdAt": "2024-05-23T09:18:46.814Z",
+              "duration": 1,
+              "ended": false,
+              "item": {
+                "id": 3,
+                "name": "Ballon de football",
+                "container": {
+                  "id": 1,
+                  "address": "Rue d'Alger",
+                  "city": "Nantes",
+                }
+              }
+            },
+          ],
+          appbar: false,
+        ),
+      ),
+    );
 
     await tester.pump();
   });
