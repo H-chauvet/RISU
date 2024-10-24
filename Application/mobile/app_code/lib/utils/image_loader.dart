@@ -28,13 +28,13 @@ Widget putImage(String? imageURL) {
           fadeOutDuration: const Duration(milliseconds: 50),
           imageErrorBuilder: (context, error, stackTrace) {
             return Image.asset(
-              'assets/image_placeholder.png',
+              'assets/no_image.png',
               fit: BoxFit.cover,
             );
           },
         )
       : Image.asset(
-          'assets/image_placeholder.png',
+          'assets/no_image.png',
           fit: BoxFit.cover,
         );
 }
