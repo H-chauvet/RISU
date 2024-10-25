@@ -26,7 +26,7 @@
 	"reviewDeleted": "The review was deleted.",
 	"reviewUpdated": "The review was successfully updated.",
 	"missingTime": "The time / duration is missing from the request.",
-	"incorrectTime" : "The rental duration is incorrect (max: 24h, minimum: 1h)",
+	"incorrectTime" : "The rental duration is incorrect (max: 24h, mini: 1h)",
 	"itemUnavailable": "The item is currently unavailable.",
 	"rentSaved": "The rent is registered in the database.",
 	"rentNotFound": "The rent was not found in the database.",
