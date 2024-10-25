@@ -73,9 +73,9 @@ class LandingAppBarState extends State<LandingAppBar> {
           await http.get(Uri.parse('http://$serverIp:3000/api/apk/download'));
 
       if (response.statusCode == 200) {
-        final Uri _url = Uri.parse('http://$serverIp:3000/api/apk/download');
-        if (!await launchUrl(_url)) {
-          throw Exception('Could not launch $_url');
+        final Uri url = Uri.parse('http://$serverIp:3000/api/apk/download');
+        if (!await launchUrl(url)) {
+          throw Exception('Could not launch $url');
         } else {
           showCustomToast(
             context,
@@ -86,7 +86,9 @@ class LandingAppBarState extends State<LandingAppBar> {
       } else {
         showCustomToast(context, response.body, false);
       }
-    } catch (e) {}
+    } catch (e) {
+      showCustomToast(context, e.toString(), false);
+    }
   }
 
   @override
@@ -95,392 +97,551 @@ class LandingAppBarState extends State<LandingAppBar> {
     checkToken();
   }
 
-  /// [Widget] : Build Header Component
+  /// [Widget] : Build the widget
   @override
   Widget build(BuildContext context) {
-    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        bool isNarrowScreen = constraints.maxWidth < 1480;
 
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.only(left: 100, right: 100),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Image.asset(
-                'assets/logonew.png',
-                width: 100,
-                height: 100,
+        return Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.only(left: 100, right: 100),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    'assets/logonew.png',
+                    width: 100,
+                    height: 100,
+                  ),
+                  isNarrowScreen
+                      ? PopupMenuButton<String>(
+                          icon: Icon(
+                            Icons.menu,
+                            color: Provider.of<ThemeService>(context,
+                                        listen: false)
+                                    .isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                          ),
+                          onSelected: (value) {
+                            _handleMenuSelection(value, context);
+                          },
+                          itemBuilder: (context) => [
+                            PopupMenuItem(
+                              value: 'home',
+                              child: Text(
+                                AppLocalizations.of(context)!.home,
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'team',
+                              child: Text(
+                                AppLocalizations.of(context)!.ourTeam,
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'create',
+                              child: Text(
+                                AppLocalizations.of(context)!.containerCreate,
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'download',
+                              child: Text(
+                                AppLocalizations.of(context)!
+                                    .downloadApplication,
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: 'feedback',
+                              child: Text(
+                                AppLocalizations.of(context)!.giveFeedback,
+                                style: TextStyle(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            const PopupMenuDivider(),
+                            PopupMenuItem(
+                              value: "connexion",
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.login,
+                                ),
+                                title: Text(
+                                  AppLocalizations.of(context)!.logIn,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            PopupMenuItem(
+                              value: "inscription",
+                              child: ListTile(
+                                leading: const Icon(
+                                  Icons.app_registration,
+                                ),
+                                title:
+                                    Text(AppLocalizations.of(context)!.register,
+                                        style: TextStyle(
+                                          color: Provider.of<ThemeService>(
+                                                      context,
+                                                      listen: false)
+                                                  .isDark
+                                              ? darkTheme.primaryColor
+                                              : lightTheme.primaryColor,
+                                        )),
+                              ),
+                            ),
+                          ],
+                        )
+                      : Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: _buildMenuItems(context),
+                          ),
+                        ),
+                  if (!isNarrowScreen) _buildLanguageAndProfile(context),
+                ],
               ),
-              Expanded(
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 100, right: 100),
+              height: 1,
+              color: Theme.of(context).primaryColor,
+            ),
+            const SizedBox(height: 50),
+          ],
+        );
+      },
+    );
+  }
+
+  void _handleMenuSelection(String value, BuildContext context) {
+    switch (value) {
+      case 'home':
+        context.go("/");
+        break;
+      case 'team':
+        goToCompany();
+        break;
+      case 'create':
+        goToCreation();
+        break;
+      case 'download':
+        downloadApk();
+        break;
+      case 'feedback':
+        goToFeedbacks();
+        break;
+      case 'connexion':
+        context.go("/login");
+        break;
+      case 'inscription':
+        context.go("/register");
+        break;
+    }
+  }
+
+  List<Widget> _buildMenuItems(BuildContext context) {
+    return [
+      TextButton(
+        onPressed: () {
+          context.go("/");
+        },
+        style: TextButton.styleFrom(
+          foregroundColor: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.home,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+          ),
+        ),
+      ),
+      const SizedBox(width: 10),
+      const SizedBox(
+        height: 24,
+        child: VerticalDivider(
+          thickness: 2,
+          color: Color.fromARGB(255, 172, 167, 167),
+        ),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () => goToCompany(),
+        style: TextButton.styleFrom(
+          foregroundColor: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.ourTeam,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+          ),
+        ),
+      ),
+      const SizedBox(width: 10),
+      const SizedBox(
+        height: 24,
+        child: VerticalDivider(
+          thickness: 2,
+          color: Color.fromARGB(255, 172, 167, 167),
+        ),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () => goToCreation(),
+        style: TextButton.styleFrom(
+          foregroundColor: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.containerCreate,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+          ),
+        ),
+      ),
+      const SizedBox(width: 10),
+      const SizedBox(
+        height: 24,
+        child: VerticalDivider(
+          thickness: 2,
+          color: Color.fromARGB(255, 172, 167, 167),
+        ),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () => downloadApk(),
+        style: TextButton.styleFrom(
+          foregroundColor: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.downloadApplication,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+          ),
+        ),
+      ),
+      const SizedBox(width: 10),
+      const SizedBox(
+        height: 24,
+        child: VerticalDivider(
+          thickness: 2,
+          color: Color.fromARGB(255, 172, 167, 167),
+        ),
+      ),
+      const SizedBox(width: 10),
+      TextButton(
+        onPressed: () => goToFeedbacks(),
+        style: TextButton.styleFrom(
+          foregroundColor: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+          padding: EdgeInsets.zero,
+        ),
+        child: Text(
+          AppLocalizations.of(context)!.giveFeedback,
+          style: const TextStyle(
+            fontFamily: 'Inter',
+            fontSize: 20,
+          ),
+        ),
+      ),
+      const SizedBox(width: 10),
+      const SizedBox(
+        height: 24,
+        child: VerticalDivider(
+          thickness: 2,
+          color: Color.fromARGB(255, 172, 167, 167),
+        ),
+      ),
+      const SizedBox(width: 10),
+      Text(
+        AppLocalizations.of(context)!.darkTheme,
+        style: TextStyle(
+          fontFamily: 'Inter',
+          fontSize: 20,
+          color: Provider.of<ThemeService>(context).isDark
+              ? darkTheme.secondaryHeaderColor
+              : lightTheme.secondaryHeaderColor,
+        ),
+      ),
+      Switch(
+        value: Provider.of<ThemeService>(context).isDark,
+        onChanged: (bool value) {
+          Provider.of<ThemeService>(context, listen: false).switchTheme();
+          setState(() {});
+        },
+        activeColor: darkTheme.primaryColor,
+        inactiveTrackColor: lightTheme.primaryColor,
+      ),
+    ];
+  }
+
+  Widget _buildLanguageAndProfile(BuildContext context) {
+    return Row(
+      children: [
+        PopupMenuButton<String>(
+          tooltip: AppLocalizations.of(context)!.language,
+          icon: CountryFlag.fromLanguageCode(
+            language,
+            height: 16,
+            width: 32,
+          ),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<String>(
+                value: 'fr',
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    TextButton(
-                      onPressed: () {
-                        context.go("/");
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                            Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.home,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                        ),
-                      ),
+                    CountryFlag.fromLanguageCode(
+                      'fr',
+                      height: 32,
+                      width: 32,
                     ),
-                    const SizedBox(width: 10),
-                    const SizedBox(
-                      height: 24,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 172, 167, 167),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () => goToCompany(),
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                            Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.ourTeam,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const SizedBox(
-                      height: 24,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 172, 167, 167),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () => goToCreation(),
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                            Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.containerCreate,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const SizedBox(
-                      height: 24,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 172, 167, 167),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () => downloadApk(),
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                            Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.downloadApplication,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const SizedBox(
-                      height: 24,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 172, 167, 167),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () => goToFeedbacks(),
-                      style: TextButton.styleFrom(
-                        foregroundColor:
-                            Provider.of<ThemeService>(context).isDark
-                                ? darkTheme.secondaryHeaderColor
-                                : lightTheme.secondaryHeaderColor,
-                        padding: EdgeInsets.zero,
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.giveFeedback,
-                        style: const TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    const SizedBox(
-                      height: 24,
-                      child: VerticalDivider(
-                        thickness: 2,
-                        color: Color.fromARGB(255, 172, 167, 167),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      AppLocalizations.of(context)!.darkTheme,
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 20,
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.secondaryHeaderColor
-                            : lightTheme.secondaryHeaderColor,
-                      ),
-                    ),
-                    Switch(
-                      value: Provider.of<ThemeService>(context).isDark,
-                      onChanged: (bool value) {
-                        Provider.of<ThemeService>(context, listen: false)
-                            .switchTheme();
-                        setState(() {});
-                      },
-                      activeColor: darkTheme.primaryColor,
-                      inactiveTrackColor: lightTheme.primaryColor,
-                    ),
+                    const SizedBox(width: 16),
+                    Text(AppLocalizations.of(context)!.french),
                   ],
                 ),
               ),
-              PopupMenuButton<String>(
-                tooltip: AppLocalizations.of(context)!.language,
-                icon: CountryFlag.fromLanguageCode(
-                  language,
-                  height: 16,
-                  width: 32,
+              PopupMenuItem<String>(
+                value: 'en',
+                child: Row(
+                  children: [
+                    CountryFlag.fromLanguageCode(
+                      'en',
+                      height: 32,
+                      width: 32,
+                    ),
+                    const SizedBox(width: 16),
+                    Text(AppLocalizations.of(context)!.english),
+                  ],
                 ),
-                itemBuilder: (BuildContext context) {
-                  return [
-                    PopupMenuItem<String>(
-                      value: 'fr',
-                      child: Row(
-                        children: [
-                          CountryFlag.fromLanguageCode(
-                            'fr',
-                            height: 32,
-                            width: 32,
-                          ),
-                          const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.french),
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem<String>(
-                      value: 'en',
-                      child: Row(
-                        children: [
-                          CountryFlag.fromLanguageCode(
-                            'en',
-                            height: 32,
-                            width: 32,
-                          ),
-                          const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.english),
-                        ],
-                      ),
-                    ),
-                  ];
-                },
-                onSelected: (String value) {
-                  setState(() {
-                    currentLanguage = value;
-                  });
-                  Provider.of<LanguageService>(context, listen: false)
-                      .changeLanguage(Locale(value));
-                },
               ),
-              const SizedBox(width: 32),
-              PopupMenuButton<String>(
-                tooltip: token != ''
-                    ? AppLocalizations.of(context)!.profile
-                    : AppLocalizations.of(context)!.authentification,
-                icon: Icon(
-                  size: 28,
-                  Icons.account_circle,
-                  color:
-                      Provider.of<ThemeService>(context, listen: false).isDark
+            ];
+          },
+          onSelected: (String value) {
+            setState(() {
+              currentLanguage = value;
+            });
+            Provider.of<LanguageService>(context, listen: false)
+                .changeLanguage(Locale(value));
+          },
+        ),
+        const SizedBox(width: 32),
+        PopupMenuButton<String>(
+          tooltip: token != ''
+              ? AppLocalizations.of(context)!.profile
+              : AppLocalizations.of(context)!.authentification,
+          icon: Icon(
+            size: 28,
+            Icons.account_circle,
+            color: Provider.of<ThemeService>(context, listen: false).isDark
+                ? darkTheme.primaryColor
+                : lightTheme.primaryColor,
+          ),
+          itemBuilder: (BuildContext context) {
+            List<PopupMenuEntry<String>> items = [];
+            if (token == '') {
+              items.addAll(
+                [
+                  PopupMenuItem(
+                    value: "connexion",
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.login,
+                      ),
+                      title: Text(
+                        AppLocalizations.of(context)!.logIn,
+                        style: TextStyle(
+                          color:
+                              Provider.of<ThemeService>(context, listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: "inscription",
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.login,
+                      ),
+                      title: Text(
+                        AppLocalizations.of(context)!.register,
+                        style: TextStyle(
+                          color:
+                              Provider.of<ThemeService>(context, listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              items.add(
+                PopupMenuItem<String>(
+                  value: 'profil',
+                  child: Text(
+                    AppLocalizations.of(context)!.profile,
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context, listen: false)
+                              .isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
+                    ),
+                  ),
                 ),
-                itemBuilder: (BuildContext context) {
-                  List<PopupMenuEntry<String>> items = [];
-                  if (token == '') {
-                    items.addAll(
-                      [
-                        PopupMenuItem<String>(
-                          value: 'connexion',
-                          child: Text(
-                            AppLocalizations.of(context)!.logIn,
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem<String>(
-                          value: 'inscription',
-                          child: Text(
-                            AppLocalizations.of(context)!.registration,
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(context,
-                                          listen: false)
-                                      .isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    items.add(
-                      PopupMenuItem<String>(
-                        value: 'profil',
-                        child: Text(
-                          AppLocalizations.of(context)!.profile,
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context,
-                                        listen: false)
-                                    .isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                          ),
-                        ),
+              );
+              items.add(
+                PopupMenuItem<String>(
+                  value: 'company-profil',
+                  child: Text(
+                    AppLocalizations.of(context)!.companyMy,
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context, listen: false)
+                              .isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
+                  ),
+                ),
+              );
+              items.add(
+                PopupMenuItem<String>(
+                  value: 'my-save',
+                  child: Text(
+                    'Mes sauvegardes',
+                    style: TextStyle(
+                      color: Provider.of<ThemeService>(context, listen: false)
+                              .isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
+                    ),
+                  ),
+                ),
+              );
+              if (userRole == "admin") {
+                items.add(
+                  PopupMenuItem<String>(
+                    value: 'admin',
+                    child: Text(
+                      AppLocalizations.of(context)!.administration,
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(
+                          context,
+                          listen: false,
+                        ).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                       ),
-                    );
-                    items.add(
-                      PopupMenuItem<String>(
-                        value: 'company-profil',
-                        child: Text(
-                          AppLocalizations.of(context)!.companyMy,
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context,
-                                        listen: false)
-                                    .isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                          ),
-                        ),
-                      ),
-                    );
-                    items.add(
-                      PopupMenuItem<String>(
-                        value: 'my-save',
-                        child: Text(
-                          'Mes sauvegardes',
-                          style: TextStyle(
-                            color: Provider.of<ThemeService>(context,
-                                        listen: false)
-                                    .isDark
-                                ? darkTheme.primaryColor
-                                : lightTheme.primaryColor,
-                          ),
-                        ),
-                      ),
-                    );
-                    if (userRole == "admin") {
-                      items.add(
-                        PopupMenuItem<String>(
-                          value: 'admin',
-                          child: Text(
-                            AppLocalizations.of(context)!.administration,
-                            style: TextStyle(
-                              color: Provider.of<ThemeService>(
-                                context,
-                                listen: false,
-                              ).isDark
-                                  ? darkTheme.primaryColor
-                                  : lightTheme.primaryColor,
-                            ),
-                          ),
-                        ),
-                      );
-                    }
-                    items.add(
-                      PopupMenuItem<String>(
-                        value: 'disconnect',
-                        child: Text(
-                          AppLocalizations.of(context)!.logOff,
-                          style: const TextStyle(
-                            color: Colors.red,
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                  return items;
-                },
-                onSelected: (String value) {
-                  if (value == 'connexion') {
-                    context.go("/login");
-                  } else if (value == 'inscription') {
-                    context.go("/register");
-                  } else if (value == 'admin') {
-                    context.go("/admin");
-                  } else if (value == 'profil') {
-                    context.go("/profil");
-                  } else if (value == 'company-profil') {
-                    context.go("/company-profil");
-                  } else if (value == 'my-save') {
-                    context.go("/my-container");
-                  } else if (value == "disconnect") {
-                    setState(() {
-                      storageService.removeStorage('token');
-                      storageService.removeStorage('tokenExpiration');
-                      token = '';
-                      showCustomToast(
-                        context,
-                        AppLocalizations.of(context)!.loggedOff,
-                        true,
-                      );
-                      context.go("/");
-                    });
-                  }
-                },
-              ),
-            ],
-          ),
+                    ),
+                  ),
+                );
+              }
+              items.add(
+                PopupMenuItem<String>(
+                  value: 'disconnect',
+                  child: Text(
+                    AppLocalizations.of(context)!.logOff,
+                    style: const TextStyle(
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              );
+            }
+            return items;
+          },
+          onSelected: (String value) {
+            if (value == 'connexion') {
+              context.go("/login");
+            } else if (value == 'inscription') {
+              context.go("/register");
+            } else if (value == 'admin') {
+              context.go("/admin");
+            } else if (value == 'profil') {
+              context.go("/profil");
+            } else if (value == 'company-profil') {
+              context.go("/company-profil");
+            } else if (value == 'my-save') {
+              context.go("/my-container");
+            } else if (value == "disconnect") {
+              setState(() {
+                storageService.removeStorage('token');
+                storageService.removeStorage('tokenExpiration');
+                token = '';
+                showCustomToast(
+                  context,
+                  AppLocalizations.of(context)!.loggedOff,
+                  true,
+                );
+                context.go("/");
+              });
+            }
+          },
         ),
-        Container(
-          margin: const EdgeInsets.only(left: 100, right: 100),
-          height: 1,
-          color: Provider.of<ThemeService>(context).isDark
-              ? darkTheme.primaryColor
-              : lightTheme.primaryColor,
-        ),
-        const SizedBox(height: 50),
       ],
     );
   }
