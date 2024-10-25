@@ -162,6 +162,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   shape: RoundedRectangleBorder(
@@ -172,8 +175,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
+                        ? lightTheme.primaryColor
+                        : darkTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -255,6 +258,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 20),
                       shape: RoundedRectangleBorder(
@@ -265,8 +271,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       AppLocalizations.of(context)!.update,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
                             : tabletFontSize,
@@ -344,6 +350,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   shape: RoundedRectangleBorder(
@@ -354,8 +363,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
+                        ? lightTheme.primaryColor
+                        : darkTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,

@@ -156,6 +156,9 @@ class RatingDialogContent extends StatelessWidget {
                 Navigator.of(context).pop();
               },
               style: ElevatedButton.styleFrom(
+                backgroundColor: Provider.of<ThemeService>(context).isDark
+                    ? darkTheme.primaryColor
+                    : lightTheme.primaryColor,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                 shape: RoundedRectangleBorder(
@@ -169,8 +172,8 @@ class RatingDialogContent extends StatelessWidget {
                       ? desktopFontSize
                       : tabletFontSize,
                   color: Provider.of<ThemeService>(context).isDark
-                      ? darkTheme.primaryColor
-                      : lightTheme.primaryColor,
+                      ? lightTheme.primaryColor
+                      : darkTheme.primaryColor,
                 ),
               ),
             ),
