@@ -177,6 +177,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 1,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -239,22 +255,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 5,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.pay,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 50,
-              )
             ],
           ),
         ],

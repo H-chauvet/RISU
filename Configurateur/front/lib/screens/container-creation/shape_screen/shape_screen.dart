@@ -115,29 +115,46 @@ class ShapeScreenState extends State<ShapeScreen> {
 
     if (isRemoveClicked == false) {
       buttons.add(
-        ElevatedButton(
-          key: const Key('remove-lockers'),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              key: const Key('remove-lockers'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  isRemoveClicked = true;
+                });
+              },
+              child: Text(
+                AppLocalizations.of(context)!.removeLocker,
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.colorScheme.background,
+                ),
+              ),
             ),
-          ),
-          onPressed: () {
-            setState(() {
-              isRemoveClicked = true;
-            });
-          },
-          child: Text(
-            AppLocalizations.of(context)!.removeLocker,
-            style: TextStyle(
-              fontSize: screenFormat == ScreenFormat.desktop
-                  ? desktopFontSize
-                  : tabletFontSize,
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.primaryColor
-                  : lightTheme.colorScheme.background,
+            const SizedBox(
+              width: 10.0,
             ),
-          ),
+            IconButton(
+              hoverColor: Colors.transparent,
+              iconSize: 30.0,
+              onPressed: () {},
+              icon: Icon(
+                Icons.help_outline,
+                color: darkTheme.primaryColor,
+              ),
+            ),
+          ],
         ),
       );
     } else {
@@ -196,6 +213,18 @@ class ShapeScreenState extends State<ShapeScreen> {
                     ? desktopFontSize
                     : tabletFontSize,
               ),
+            ),
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          IconButton(
+            hoverColor: Colors.transparent,
+            iconSize: 30.0,
+            onPressed: () {},
+            icon: Icon(
+              Icons.help_outline,
+              color: darkTheme.primaryColor,
             ),
           ),
         ],
@@ -404,6 +433,22 @@ class ShapeScreenState extends State<ShapeScreen> {
                 ),
               ],
             ),
+          ),
+          const SizedBox(
+            height: 50.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 0,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
@@ -736,22 +781,6 @@ class ShapeScreenState extends State<ShapeScreen> {
           ),
           const SizedBox(
             height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 0,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 20,
-              )
-            ],
           ),
         ],
       ),

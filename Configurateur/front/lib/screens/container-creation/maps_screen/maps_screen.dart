@@ -189,6 +189,22 @@ class MapsState extends State<MapsScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 1,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -228,22 +244,6 @@ class MapsState extends State<MapsScreen> {
                 ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 4,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
           ),
         ],
       ),
