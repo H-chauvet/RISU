@@ -402,24 +402,4 @@ router.post("/update-password/:email", async (req, res, next) => {
   }
 });
 
-router.put("/update-isnew/:email", async (req, res) => {
-  const email = req.params.email;
-
-  try {
-    const existingUser = await userCtrl.findUserByEmail(res, email);
-    if (!existingUser) {
-      res.status(404).send(res.__("userNotFound"));
-      return;
-    }
-    languageMiddleware.setServerLanguage(req, existingUser);
-    const updatedUser = await userCtrl.updateIsNew(res, email);
-    res.status(200).json(updatedUser);
-  } catch (err) {
-    if (res.statusCode == 200) {
-      res.statusCode = 500;
-    }
-    res.send(err);
-  }
-});
-
 module.exports = router;
