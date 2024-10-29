@@ -620,7 +620,7 @@ class DesignScreenState extends State<DesignScreen> {
             children: [
               ProgressBar(
                 length: 6,
-                progress: 1,
+                progress: 2,
                 previous: AppLocalizations.of(context)!.previous,
                 next: AppLocalizations.of(context)!.next,
                 previousFunc: goPrevious,

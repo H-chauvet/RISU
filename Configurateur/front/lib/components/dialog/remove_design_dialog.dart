@@ -92,6 +92,19 @@ class RemoveDesignDialogState extends State<RemoveDesignDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      iconPadding: const EdgeInsets.all(0),
+      icon: Align(
+        alignment: Alignment.topRight,
+        child: IconButton(
+          hoverColor: Colors.transparent,
+          iconSize: 30.0,
+          onPressed: () {},
+          icon: Icon(
+            Icons.help_outline,
+            color: darkTheme.primaryColor,
+          ),
+        ),
+      ),
       scrollable: true,
       content: Column(
         mainAxisSize: MainAxisSize.min,

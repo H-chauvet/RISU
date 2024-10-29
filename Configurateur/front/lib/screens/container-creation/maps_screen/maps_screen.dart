@@ -197,13 +197,24 @@ class MapsState extends State<MapsScreen> {
             children: [
               ProgressBar(
                 length: 6,
-                progress: 1,
+                progress: 4,
                 previous: AppLocalizations.of(context)!.previous,
                 next: AppLocalizations.of(context)!.next,
                 previousFunc: goPrevious,
                 nextFunc: goNext,
               ),
             ],
+          ),
+          Center(
+            child: IconButton(
+              hoverColor: Colors.transparent,
+              iconSize: 30.0,
+              onPressed: () {},
+              icon: Icon(
+                Icons.help_outline,
+                color: darkTheme.primaryColor,
+              ),
+            ),
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,

@@ -57,6 +57,19 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      iconPadding: const EdgeInsets.all(0),
+      icon: Align(
+        alignment: Alignment.topRight,
+        child: IconButton(
+          hoverColor: Colors.transparent,
+          iconSize: 30.0,
+          onPressed: () {},
+          icon: Icon(
+            Icons.help_outline,
+            color: darkTheme.primaryColor,
+          ),
+        ),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -232,7 +245,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.spaceAllreadyEmpty,
+                                AppLocalizations.of(context)!
+                                    .spaceAllreadyEmpty,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -244,7 +258,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
+                                AppLocalizations.of(context)!
+                                    .invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),
@@ -256,7 +271,8 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
                             context: context,
                             builder: (context) => AlertDialog(
                               content: Text(
-                                AppLocalizations.of(context)!.invalidPositionAskAnotherPosition,
+                                AppLocalizations.of(context)!
+                                    .invalidPositionAskAnotherPosition,
                                 style: TextStyle(
                                   color: getTextColor(),
                                 ),

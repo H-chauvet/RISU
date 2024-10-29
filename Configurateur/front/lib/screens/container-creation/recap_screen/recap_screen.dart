@@ -159,7 +159,7 @@ class RecapScreenState extends State<RecapScreen> {
             children: [
               ProgressBar(
                 length: 6,
-                progress: 1,
+                progress: 3,
                 previous: AppLocalizations.of(context)!.previous,
                 next: AppLocalizations.of(context)!.next,
                 previousFunc: previousFunc,
