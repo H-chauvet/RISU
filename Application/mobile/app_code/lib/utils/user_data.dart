@@ -17,6 +17,7 @@ class UserData {
   String? firstName;
   String? lastName;
   String? ID;
+  String? language;
   List<bool>? notifications = [
     true,
     true,
@@ -32,6 +33,7 @@ class UserData {
     required this.lastName,
     this.ID,
     this.notifications,
+    this.language,
   });
 
   /// Function to display user email.
@@ -49,17 +51,18 @@ class UserData {
   /// [token] - token of the user.
   factory UserData.fromJson(Map<String, dynamic> user, String token) {
     return UserData(
-      email: user['email'],
-      token: token,
-      refreshToken: user['refreshToken'],
-      firstName: user['firstName'],
-      lastName: user['lastName'],
-      ID: user['id'],
-      notifications: [
-        user['Notifications']['favoriteItemsAvailable'],
-        user['Notifications']['endOfRenting'],
-        user['Notifications']['newsOffersRisu'],
-      ],
+        email: user['email'],
+        token: token,
+        refreshToken: user['refreshToken'],
+        firstName: user['firstName'],
+        lastName: user['lastName'],
+        ID: user['id'],
+        notifications: [
+          user['Notifications']['favoriteItemsAvailable'],
+          user['Notifications']['endOfRenting'],
+          user['Notifications']['newsOffersRisu'],
+        ],
+        language: user['language'],
     );
   }
 }
