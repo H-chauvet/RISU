@@ -51,18 +51,18 @@ class UserData {
   /// [token] - token of the user.
   factory UserData.fromJson(Map<String, dynamic> user, String token) {
     return UserData(
-        email: user['email'],
-        token: token,
-        refreshToken: user['refreshToken'],
-        firstName: user['firstName'],
-        lastName: user['lastName'],
-        ID: user['id'],
-        notifications: [
-          user['Notifications']['favoriteItemsAvailable'],
-          user['Notifications']['endOfRenting'],
-          user['Notifications']['newsOffersRisu'],
-        ],
-        language: user['language'],
+      email: user['email'],
+      token: token,
+      refreshToken: user['refreshToken'],
+      firstName: user['firstName'],
+      lastName: user['lastName'],
+      ID: user['id'],
+      notifications: [
+        user['Notifications']['favoriteItemsAvailable'],
+        user['Notifications']['endOfRenting'],
+        user['Notifications']['newsOffersRisu'],
+      ],
+      language: user['language'],
     );
   }
 }

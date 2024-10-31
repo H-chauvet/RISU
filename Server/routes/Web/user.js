@@ -25,7 +25,8 @@ router.post("/login", async function (req, res, next) {
     const accessToken = jwtMiddleware.generateAccessToken(user);
 
     res.json({
-      accessToken,
+      accessToken : accessToken,
+      language : user.language
     });
   } catch (err) {
     if (res.statusCode == 200) {
@@ -265,28 +266,26 @@ router.get("/user-details/:email", async (req, res) => {
 
 router.post("/update-details/:email", async (req, res, next) => {
   const email = req.params.email;
-
+  console.log(email)
   try {
-    const { firstName, lastName } = req.body;
-
-    if (!firstName && !lastName) {
-      res.status(400).send(res.__("missingMailName"));
-      return;
-    }
-
+    const { firstName, lastName, language } = req.body;
+    console.log(language)
     const existingUser = await userCtrl.findUserByEmail(res, email);
     if (!existingUser) {
+      console.log("???")
       res.status(404).send(res.__("userNotFound"));
       return;
     }
-
-    const updatedUser = await userCtrl.updateName(res, {
-      email,
+    console.log(language)
+    const updatedUser = await userCtrl.updateName(res, existingUser, {
       firstName,
       lastName,
+      language
     });
+    console.log(updatedUser.language)
     res.status(200).json(updatedUser);
   } catch (err) {
+    console.log("WAIT")
     if (res.statusCode == 200) {
       res.statusCode = 500;
     }
