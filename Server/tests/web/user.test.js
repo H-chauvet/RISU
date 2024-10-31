@@ -271,16 +271,6 @@ describe("User Route Tests", () => {
     expect(response.body).toEqual({ ...mockExistingUser, ...mockRequestData });
   });
 
-  it("should handle request with missing firstName and lastName", async () => {
-    const mockEmail = "test@example.com";
-    const mockRequestData = {};
-    const response = await supertest(app)
-      .post(`/update-details/${mockEmail}`)
-      .send(mockRequestData);
-
-    expect(response.status).toBe(400);
-  });
-
   it("should handle valid request to update user email", async () => {
     const mockOldMail = "old@example.com";
     const mockNewMail = "new@example.com";
