@@ -348,7 +348,15 @@ class ContactPageState extends State<ContactPage> {
                                                           dateTimeString:
                                                               lastTicket[
                                                                   "createdAt"])),
-                                                )
+                                                ),
+                                                Text(lastTicket["creatorId"] ==
+                                                        userInformation?.ID
+                                                    ? AppLocalizations.of(
+                                                            context)!
+                                                        .ticketSend
+                                                    : AppLocalizations.of(
+                                                            context)!
+                                                        .ticketAwaiting)
                                               ],
                                             ),
                                           ),
