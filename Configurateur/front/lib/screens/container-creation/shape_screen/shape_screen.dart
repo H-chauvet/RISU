@@ -7,6 +7,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/dialog/help_dialog/help_dialog.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -148,7 +149,10 @@ class ShapeScreenState extends State<ShapeScreen> {
             IconButton(
               hoverColor: Colors.transparent,
               iconSize: 30.0,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context, builder: (context) => HelpDialog());
+              },
               icon: Icon(
                 Icons.help_outline,
                 color: darkTheme.primaryColor,
