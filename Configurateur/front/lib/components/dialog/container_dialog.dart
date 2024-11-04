@@ -87,9 +87,8 @@ class ContainerDialogState extends State<ContainerDialog> {
           iconSize: 30.0,
           onPressed: () {
             showDialog(
-                barrierDismissible: false,
                 context: context,
-                builder: (context) => HelpDialog());
+                builder: (context) => HelpDialog(content: 'container_dialog'));
           },
           icon: Icon(
             Icons.help_outline,

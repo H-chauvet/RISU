@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/dialog/help_dialog/help_content.dart';
-import 'package:front/services/locker_service.dart';
-import 'package:front/styles/themes.dart';
 
 /// [StatefulWidget] : HelpDialog
 ///
 class HelpDialog extends StatefulWidget {
-  const HelpDialog({super.key});
+  const HelpDialog({super.key, required this.content});
 
-  final String content = 'add_dialog';
+  final String content;
 
   @override
   State<HelpDialog> createState() => HelpDialogState();

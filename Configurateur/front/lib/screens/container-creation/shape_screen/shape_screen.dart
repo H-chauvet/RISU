@@ -151,7 +151,8 @@ class ShapeScreenState extends State<ShapeScreen> {
               iconSize: 30.0,
               onPressed: () {
                 showDialog(
-                    context: context, builder: (context) => HelpDialog());
+                    context: context,
+                    builder: (context) => HelpDialog(content: 'shape_screen'));
               },
               icon: Icon(
                 Icons.help_outline,

@@ -8,6 +8,7 @@ import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/dialog/help_dialog/help_dialog.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -209,7 +210,11 @@ class MapsState extends State<MapsScreen> {
             child: IconButton(
               hoverColor: Colors.transparent,
               iconSize: 30.0,
-              onPressed: () {},
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => HelpDialog(content: 'maps_screen'));
+              },
               icon: Icon(
                 Icons.help_outline,
                 color: darkTheme.primaryColor,

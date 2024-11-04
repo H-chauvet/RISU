@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/components/dialog/help_dialog/help_dialog.dart';
 import 'package:front/services/locker_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
@@ -63,7 +64,12 @@ class DeleteContainerDialogState extends State<DeleteContainerDialog> {
         child: IconButton(
           hoverColor: Colors.transparent,
           iconSize: 30.0,
-          onPressed: () {},
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (context) =>
+                    HelpDialog(content: 'delete_container_dialog'));
+          },
           icon: Icon(
             Icons.help_outline,
             color: darkTheme.primaryColor,
