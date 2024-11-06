@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/dialog/help_dialog/help_content.dart';
+import 'package:front/services/language_service.dart';
+import 'package:provider/provider.dart';
 
 /// [StatefulWidget] : HelpDialog
 ///
@@ -16,19 +18,32 @@ class HelpDialog extends StatefulWidget {
 /// HelpDialog
 ///
 class HelpDialogState extends State<HelpDialog> {
+  @override
+  void initState() {
+    debugPrint(language);
+    super.initState();
+  }
+
   /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(help_content[widget.content]?['title'] ?? ""),
+      title: language == 'fr'
+          ? Text(french_help_content[widget.content]?['title'] ?? "")
+          : Text(english_help_content[widget.content]?['title'] ?? ""),
       content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          ElevatedButton(
-            onPressed: () {
-              debugPrint(help_content[widget.content]?['title']);
-            },
-            child: Text("test"),
-          )
+          language == 'fr'
+              ? Text(
+                  french_help_content[widget.content]?['content'] ?? "",
+                  textAlign: TextAlign.justify,
+                )
+              : Text(
+                  english_help_content[widget.content]?['content'] ?? "",
+                  textAlign: TextAlign.justify,
+                ),
         ],
       ),
     );
