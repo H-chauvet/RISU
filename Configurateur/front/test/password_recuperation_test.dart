@@ -60,7 +60,7 @@ void main() {
 
     await tester.pumpAndSettle(const Duration(seconds: 2));
 
-    expect(find.text('Enter code'), findsWidgets);
+    expect(find.text('Entrer le code'), findsWidgets);
     expect(find.text('Adresse e-mail'), findsOneWidget);
     expect(find.text("Récupération de mot de passe"), findsOneWidget);
     expect(find.text("Envoyer l'email de récupération"), findsOneWidget);
