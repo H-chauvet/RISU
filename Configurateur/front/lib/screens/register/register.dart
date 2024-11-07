@@ -54,13 +54,13 @@ class RegisterScreenState extends State<RegisterScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-        body: FooterView(
-            flex: 8,
-            footer: Footer(
-              padding: EdgeInsets.zero,
-              child: CustomFooter(),
-            ),
-            children: [
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
+        ),
+        children: [
           Column(
             children: [
               LandingAppBar(context: context),
@@ -232,6 +232,65 @@ class RegisterScreenState extends State<RegisterScreen> {
                               key: const Key('confirm-password'),
                               controller: confirmPasswordController,
                               obscureText: _obscurePasswordConfirm,
+                              onFieldSubmitted: (value) {
+                                if (formKey.currentState!.validate() &&
+                                    isPasswordValid) {
+                                  var body = {
+                                    'firstName': firstNameController.text,
+                                    'lastName': lastNameController.text,
+                                    'email': mailController.text,
+                                    'password': passwordController.text,
+                                  };
+                                  var header = <String, String>{
+                                    'Content-Type':
+                                        'application/json; charset=UTF-8',
+                                    'Access-Control-Allow-Origin': '*',
+                                  };
+                                  HttpService()
+                                      .request(
+                                          'http://$serverIp:3000/api/auth/register',
+                                          header,
+                                          body)
+                                      .then((value) => {
+                                            if (value.statusCode == 200)
+                                              {
+                                                response =
+                                                    jsonDecode(value.body),
+                                                storageService.writeStorage(
+                                                  'token',
+                                                  response['accessToken'],
+                                                ),
+                                              }
+                                          });
+                                  if (response != null) {
+                                    header.addEntries(
+                                      [
+                                        MapEntry('Authorization',
+                                            '${response['accessToken']}'),
+                                      ],
+                                    );
+                                    HttpService().request(
+                                        'http://$serverIp:3000/api/auth/register-confirmation',
+                                        header,
+                                        body);
+                                    // ignore: use_build_context_synchronously
+                                    if (widget.orgId == null) {
+                                      context.go("/company-register",
+                                          extra: mailController.text);
+                                    } else {
+                                      body = {
+                                        'companyId': widget.orgId!,
+                                      };
+                                      HttpService().request(
+                                          'http://$serverIp:3000/api/organization/add-member',
+                                          header,
+                                          body);
+                                      context.go("/register-confirmation",
+                                          extra: mailController.text);
+                                    }
+                                  }
+                                }
+                              },
                               decoration: InputDecoration(
                                 hintText: AppLocalizations.of(context)!
                                     .passwordConfirmation,

@@ -124,6 +124,52 @@ class LoginScreenState extends State<LoginScreen> {
                           TextFormField(
                             key: const Key('password'),
                             controller: passwordController,
+                            onFieldSubmitted: (value) {
+                              if (formKey.currentState!.validate()) {
+                                http
+                                    .post(
+                                      Uri.parse(
+                                          'http://$serverIp:3000/api/auth/login'),
+                                      headers: <String, String>{
+                                        'Content-Type':
+                                            'application/json; charset=UTF-8',
+                                        'Access-Control-Allow-Origin': '*',
+                                      },
+                                      body: jsonEncode(
+                                        <String, String>{
+                                          'email': mailController.text,
+                                          'password': passwordController.text,
+                                        },
+                                      ),
+                                    )
+                                    .then(
+                                      (value) => {
+                                        if (value.statusCode == 200)
+                                          {
+                                            showCustomToast(
+                                                context,
+                                                "Vous êtes désormais connecté !",
+                                                true),
+                                            response = jsonDecode(value.body),
+                                            response['accessToken'],
+                                            storageService.writeStorage(
+                                              'token',
+                                              response['accessToken'],
+                                            ),
+                                            context.go("/")
+                                          }
+                                        else
+                                          {
+                                            showCustomToast(
+                                                context,
+                                                AppLocalizations.of(context)!
+                                                    .logInFailed,
+                                                false),
+                                          },
+                                      },
+                                    );
+                              }
+                            },
                             obscureText: _obscurePassword,
                             decoration: InputDecoration(
                               hintText:
@@ -202,37 +248,39 @@ class LoginScreenState extends State<LoginScreen> {
                                               'application/json; charset=UTF-8',
                                           'Access-Control-Allow-Origin': '*',
                                         },
-                                        body: jsonEncode(<String, String>{
-                                          'email': mailController.text,
-                                          'password': passwordController.text,
-                                        }),
+                                        body: jsonEncode(
+                                          <String, String>{
+                                            'email': mailController.text,
+                                            'password': passwordController.text,
+                                          },
+                                        ),
                                       )
-                                      .then((value) => {
-                                            if (value.statusCode == 200)
-                                              {
-                                                showCustomToast(
-                                                    context,
-                                                    "Vous êtes désormais connecté !",
-                                                    true),
-                                                response =
-                                                    jsonDecode(value.body),
+                                      .then(
+                                        (value) => {
+                                          if (value.statusCode == 200)
+                                            {
+                                              showCustomToast(
+                                                  context,
+                                                  "Vous êtes désormais connecté !",
+                                                  true),
+                                              response = jsonDecode(value.body),
+                                              response['accessToken'],
+                                              storageService.writeStorage(
+                                                'token',
                                                 response['accessToken'],
-                                                storageService.writeStorage(
-                                                  'token',
-                                                  response['accessToken'],
-                                                ),
-                                                context.go("/")
-                                              }
-                                            else
-                                              {
-                                                showCustomToast(
-                                                    context,
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .logInFailed,
-                                                    false),
-                                              }
-                                          });
+                                              ),
+                                              context.go("/")
+                                            }
+                                          else
+                                            {
+                                              showCustomToast(
+                                                  context,
+                                                  AppLocalizations.of(context)!
+                                                      .logInFailed,
+                                                  false),
+                                            },
+                                        },
+                                      );
                                 }
                               },
                               style: ElevatedButton.styleFrom(

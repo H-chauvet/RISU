@@ -143,8 +143,8 @@ class PasswordRecuperationState extends State<PasswordRecuperation> {
                         const SizedBox(height: 20.0),
                         TextFormField(
                           decoration: InputDecoration(
-                            labelText: 'Enter code',
-                            hintText: 'Enter code',
+                            labelText: 'Code',
+                            hintText: 'Entrer le code',
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),

@@ -132,67 +132,117 @@ class LandingAppBarState extends State<LandingAppBar> {
                           itemBuilder: (context) => [
                             PopupMenuItem(
                               value: 'home',
-                              child: Text(
-                                AppLocalizations.of(context)!.home,
-                                style: TextStyle(
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.home,
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
                                           .isDark
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
+                                ),
+                                title: Text(
+                                  AppLocalizations.of(context)!.home,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
                             PopupMenuItem(
                               value: 'team',
-                              child: Text(
-                                AppLocalizations.of(context)!.ourTeam,
-                                style: TextStyle(
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.group,
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
                                           .isDark
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
+                                ),
+                                title: Text(
+                                  AppLocalizations.of(context)!.ourTeam,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
                             PopupMenuItem(
                               value: 'create',
-                              child: Text(
-                                AppLocalizations.of(context)!.containerCreate,
-                                style: TextStyle(
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.create_new_folder,
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
                                           .isDark
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
+                                ),
+                                title: Text(
+                                  AppLocalizations.of(context)!.containerCreate,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
                             PopupMenuItem(
                               value: 'download',
-                              child: Text(
-                                AppLocalizations.of(context)!
-                                    .downloadApplication,
-                                style: TextStyle(
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.download,
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
                                           .isDark
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
                                 ),
+                                title: Text(
+                                  AppLocalizations.of(context)!
+                                      .downloadApplication,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
+                                ),
                               ),
                             ),
                             PopupMenuItem(
                               value: 'feedback',
-                              child: Text(
-                                AppLocalizations.of(context)!.giveFeedback,
-                                style: TextStyle(
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.feedback,
                                   color: Provider.of<ThemeService>(context,
                                               listen: false)
                                           .isDark
                                       ? darkTheme.primaryColor
                                       : lightTheme.primaryColor,
+                                ),
+                                title: Text(
+                                  AppLocalizations.of(context)!.giveFeedback,
+                                  style: TextStyle(
+                                    color: Provider.of<ThemeService>(context,
+                                                listen: false)
+                                            .isDark
+                                        ? darkTheme.primaryColor
+                                        : lightTheme.primaryColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -200,8 +250,13 @@ class LandingAppBarState extends State<LandingAppBar> {
                             PopupMenuItem(
                               value: "connexion",
                               child: ListTile(
-                                leading: const Icon(
+                                leading: Icon(
                                   Icons.login,
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
                                 ),
                                 title: Text(
                                   AppLocalizations.of(context)!.logIn,
@@ -218,8 +273,13 @@ class LandingAppBarState extends State<LandingAppBar> {
                             PopupMenuItem(
                               value: "inscription",
                               child: ListTile(
-                                leading: const Icon(
-                                  Icons.app_registration,
+                                leading: Icon(
+                                  color: Provider.of<ThemeService>(context,
+                                              listen: false)
+                                          .isDark
+                                      ? darkTheme.primaryColor
+                                      : lightTheme.primaryColor,
+                                  Icons.add,
                                 ),
                                 title:
                                     Text(AppLocalizations.of(context)!.register,
@@ -504,8 +564,12 @@ class LandingAppBarState extends State<LandingAppBar> {
                   PopupMenuItem(
                     value: "connexion",
                     child: ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.login,
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                       ),
                       title: Text(
                         AppLocalizations.of(context)!.logIn,
@@ -522,8 +586,12 @@ class LandingAppBarState extends State<LandingAppBar> {
                   PopupMenuItem(
                     value: "inscription",
                     child: ListTile(
-                      leading: const Icon(
+                      leading: Icon(
                         Icons.login,
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                       ),
                       title: Text(
                         AppLocalizations.of(context)!.register,
@@ -543,13 +611,22 @@ class LandingAppBarState extends State<LandingAppBar> {
               items.add(
                 PopupMenuItem<String>(
                   value: 'profil',
-                  child: Text(
-                    AppLocalizations.of(context)!.profile,
-                    style: TextStyle(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.account_box,
                       color: Provider.of<ThemeService>(context, listen: false)
                               .isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context)!.profile,
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -557,13 +634,22 @@ class LandingAppBarState extends State<LandingAppBar> {
               items.add(
                 PopupMenuItem<String>(
                   value: 'company-profil',
-                  child: Text(
-                    AppLocalizations.of(context)!.companyMy,
-                    style: TextStyle(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.business,
                       color: Provider.of<ThemeService>(context, listen: false)
                               .isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context)!.companyMy,
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -571,13 +657,22 @@ class LandingAppBarState extends State<LandingAppBar> {
               items.add(
                 PopupMenuItem<String>(
                   value: 'my-save',
-                  child: Text(
-                    'Mes sauvegardes',
-                    style: TextStyle(
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.save,
                       color: Provider.of<ThemeService>(context, listen: false)
                               .isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
+                    ),
+                    title: Text(
+                      'Mes sauvegardes',
+                      style: TextStyle(
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -586,15 +681,24 @@ class LandingAppBarState extends State<LandingAppBar> {
                 items.add(
                   PopupMenuItem<String>(
                     value: 'admin',
-                    child: Text(
-                      AppLocalizations.of(context)!.administration,
-                      style: TextStyle(
-                        color: Provider.of<ThemeService>(
-                          context,
-                          listen: false,
-                        ).isDark
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.admin_panel_settings,
+                        color: Provider.of<ThemeService>(context, listen: false)
+                                .isDark
                             ? darkTheme.primaryColor
                             : lightTheme.primaryColor,
+                      ),
+                      title: Text(
+                        AppLocalizations.of(context)!.administration,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(
+                            context,
+                            listen: false,
+                          ).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                       ),
                     ),
                   ),
@@ -603,10 +707,16 @@ class LandingAppBarState extends State<LandingAppBar> {
               items.add(
                 PopupMenuItem<String>(
                   value: 'disconnect',
-                  child: Text(
-                    AppLocalizations.of(context)!.logOff,
-                    style: const TextStyle(
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.logout,
                       color: Colors.red,
+                    ),
+                    title: Text(
+                      AppLocalizations.of(context)!.logOff,
+                      style: const TextStyle(
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),
