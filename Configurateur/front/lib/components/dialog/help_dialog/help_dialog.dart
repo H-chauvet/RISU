@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:front/components/dialog/help_dialog/help_content.dart';
 import 'package:front/services/language_service.dart';
-import 'package:provider/provider.dart';
 
 /// [StatefulWidget] : HelpDialog
 ///
@@ -18,12 +17,6 @@ class HelpDialog extends StatefulWidget {
 /// HelpDialog
 ///
 class HelpDialogState extends State<HelpDialog> {
-  @override
-  void initState() {
-    debugPrint(language);
-    super.initState();
-  }
-
   /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
