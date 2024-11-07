@@ -120,7 +120,7 @@ flutter:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/logo_noir.png"
+  image_path: "assets/logo.png"
 
 flutter_native_splash:
   color: "#ffffff" # Couleur de fond de l'écran de démarrage
