@@ -20,7 +20,7 @@ model Containers {
     createdAt        DateTime      @default(now())
     organization     Organization? @relation(fields: [organizationId], references: [id])
     organizationId   Int?
-    containerMapping String?
+    containerMapping String?       @db.LongText
     address          String?
     city             String?
     latitude         Float?
@@ -42,15 +42,15 @@ model Item_Category {
 }
 
 model Item {
-    id              Int               @id @default(autoincrement())
+    id              Int                       @id @default(autoincrement())
     name            String
     available       Boolean
-    container       Containers?       @relation(fields: [containerId], references: [id])
-    createdAt       DateTime          @default(now())
+    container       Containers?               @relation(fields: [containerId], references: [id])
+    createdAt       DateTime                  @default(now())
     containerId     Int?
     price           Float
     description     String?
-    rating          Float?            @default(0)
+    rating          Float?                    @default(0)
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     category        String?
@@ -125,19 +125,19 @@ model Opinions_Mobile {
 }
 
 model User_Mobile {
-    id               String                @id @unique @default(cuid())
-    email            String                @unique
+    id               String                    @id @unique @default(cuid())
+    email            String                    @unique
     firstName        String?
     lastName         String?
     password         String
-    mailVerification Boolean               @default(false)
-    confirmProcess   String                @default("")
-    refreshToken     String?               @unique
-    resetToken       String?               @unique
-    createdAt        DateTime              @default(now())
-    language         String                @default("fr")
+    mailVerification Boolean                   @default(false)
+    confirmProcess   String                    @default("")
+    refreshToken     String?                   @unique
+    resetToken       String?                   @unique
+    createdAt        DateTime                  @default(now())
+    language         String                    @default("fr")
     locations        Location_Mobile[]
-    Notifications    Notifications_Mobile? @relation(fields: [notificationsId], references: [id])
+    Notifications    Notifications_Mobile?     @relation(fields: [notificationsId], references: [id])
     notificationsId  String?
     itemOpinions     Opinions_Mobile[]
     favoriteArticles Favorite_Article_Mobile[]
@@ -166,9 +166,9 @@ model Location_Mobile {
 }
 
 model Favorite_Article_Mobile {
-    id        Int         @id @default(autoincrement())
-    item      Item        @relation(fields: [itemId], references: [id])
-    itemId    Int
-    user      User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String
+    id     Int         @id @default(autoincrement())
+    item   Item        @relation(fields: [itemId], references: [id])
+    itemId Int
+    user   User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 }

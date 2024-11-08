@@ -317,6 +317,7 @@ class TicketsState extends State<TicketsPage> {
 
     return Scaffold(
       body: FooterView(
+        flex: 8,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: const CustomFooter(),
@@ -629,6 +630,27 @@ class TicketsState extends State<TicketsPage> {
                                                                     .primaryColor,
                                                           ),
                                                         ),
+                                                        Text(
+                                                          lastTicket["creatorId"] ==
+                                                                  uuid
+                                                              ? AppLocalizations
+                                                                      .of(
+                                                                          context)!
+                                                                  .ticketSend
+                                                              : AppLocalizations
+                                                                      .of(context)!
+                                                                  .ticketAwaiting,
+                                                          style: TextStyle(
+                                                            fontSize: screenFormat ==
+                                                                    ScreenFormat
+                                                                        .desktop
+                                                                ? desktopFontSize
+                                                                : tabletFontSize,
+                                                            color:
+                                                                getCurrentTheme()
+                                                                    .primaryColor,
+                                                          ),
+                                                        )
                                                       ],
                                                     ),
                                                   ),

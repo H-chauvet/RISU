@@ -60,30 +60,55 @@ class SaveDialogState extends State<SaveDialog> {
             },
           ),
           const SizedBox(height: 20),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0))),
-            child: Text(
-              AppLocalizations.of(context)!.saveAction,
-              style: TextStyle(
-                color: Provider.of<ThemeService>(context).isDark
-                    ? darkTheme.primaryColor
-                    : lightTheme.primaryColor,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                child: Text(
+                  AppLocalizations.of(context)!.cancel,
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.pop(
+                    context,
+                    '',
+                  );
+                },
               ),
-            ),
-            onPressed: () {
-              if (widget.name == '' || widget.name == null) {
-                widget.name = AppLocalizations.of(context)!.saveData(
-                    DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()));
-              }
-              storageService.removeStorage('containerData');
-              Navigator.pop(
-                context,
-                widget.name,
-              );
-            },
-          ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0))),
+                child: Text(
+                  AppLocalizations.of(context)!.saveAction,
+                  style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
+                  ),
+                ),
+                onPressed: () {
+                  if (widget.name == '' || widget.name == null) {
+                    widget.name = AppLocalizations.of(context)!.saveData(
+                        DateFormat('yyyy-MM-dd HH:mm:ss')
+                            .format(DateTime.now()));
+                  }
+                  storageService.removeStorage('containerData');
+                  Navigator.pop(
+                    context,
+                    widget.name,
+                  );
+                },
+              ),
+            ],
+          )
         ],
       ),
     );

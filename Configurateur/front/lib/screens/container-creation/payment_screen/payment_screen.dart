@@ -10,6 +10,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
@@ -147,81 +148,116 @@ class _PaymentScreenState extends State<PaymentScreen> {
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
-      appBar:
-          CustomAppBar(AppLocalizations.of(context)!.payment, context: context),
-      bottomSheet: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: FooterView(
+        flex: 8,
+        footer: Footer(
+          child: CustomFooter(),
+        ),
         children: [
-          ProgressBar(
-            length: 6,
-            progress: 5,
-            previous: AppLocalizations.of(context)!.previous,
-            next: AppLocalizations.of(context)!.pay,
-            previousFunc: goPrevious,
-            nextFunc: goNext,
-          ),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(
-            child: FractionallySizedBox(
-              widthFactor: screenFormat == ScreenFormat.desktop
-                  ? desktopWidthFactor
-                  : tabletWidthFactor,
-              child: Column(
-                children: [
-                  const SizedBox(height: 50),
-                  Text(
-                    AppLocalizations.of(context)!.banckDetails,
-                    style: TextStyle(
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                      fontSize: screenFormat == ScreenFormat.desktop
-                          ? desktopFontSize
-                          : tabletFontSize,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  CardField(
-                    controller: controller,
-                  ),
-                  const SizedBox(height: 100),
-                  Text(
-                    AppLocalizations.of(context)!.additionalRequest,
-                    style: TextStyle(
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20),
-                  TextFormField(
-                    key: const Key('informations'),
-                    maxLines: 5,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      informations = value!;
-                    },
-                  ),
-                ],
-              ),
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.payment,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: FractionallySizedBox(
+                  widthFactor: screenFormat == ScreenFormat.desktop
+                      ? desktopWidthFactor
+                      : tabletWidthFactor,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      Text(
+                        AppLocalizations.of(context)!.banckDetails,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      CardField(
+                        controller: controller,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                      Text(
+                        AppLocalizations.of(context)!.additionalRequest,
+                        style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.primaryColor,
+                            fontSize: screenFormat == ScreenFormat.desktop
+                                ? desktopFontSize
+                                : tabletFontSize,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        key: const Key('informations'),
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          informations = value!;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 5,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.pay,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+              const SizedBox(
+                height: 50,
+              )
+            ],
+          ),
         ],
       ),
     );

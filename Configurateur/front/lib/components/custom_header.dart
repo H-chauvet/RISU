@@ -290,7 +290,16 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.french),
+                          Text(
+                            AppLocalizations.of(context)!.french,
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -304,18 +313,39 @@ class LandingAppBarState extends State<LandingAppBar> {
                             width: 32,
                           ),
                           const SizedBox(width: 16),
-                          Text(AppLocalizations.of(context)!.english),
+                          Text(
+                            AppLocalizations.of(context)!.english,
+                            style: TextStyle(
+                              color: Provider.of<ThemeService>(context,
+                                          listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.colorScheme.background,
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ];
                 },
                 onSelected: (String value) {
-                  setState(() {
-                    currentLanguage = value;
+                  setState(() async {
+                    final email = await storageService.getUserMail();
+                    if (email.isNotEmpty) {
+                      final String apiUrl =
+                          "http://$serverIp:3000/api/auth/update-details/$email";
+                      var body = {
+                        'language': value,
+                      };
+                      await http.post(
+                        Uri.parse(apiUrl),
+                        body: body,
+                      );
+                      Provider.of<LanguageService>(context, listen: false)
+                          .changeLanguage(Locale(value));
+                      currentLanguage = value;
+                    }
                   });
-                  Provider.of<LanguageService>(context, listen: false)
-                      .changeLanguage(Locale(value));
                 },
               ),
               const SizedBox(width: 32),

@@ -88,6 +88,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
       create: (context) => DialogCubit(),
       child: Scaffold(
         body: FooterView(
+          flex: 10,
           footer: Footer(
             padding: EdgeInsets.zero,
             child: const CustomFooter(),

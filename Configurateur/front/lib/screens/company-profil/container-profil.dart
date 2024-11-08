@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/container.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:flutter/widgets.dart';
 import 'package:footer/footer.dart';
@@ -15,8 +16,10 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/footer.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
+import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +30,7 @@ import 'package:provider/provider.dart';
 /// Container profil page of the organization
 /// [container] : Container selected in company profil page
 class ContainerProfilPage extends StatefulWidget {
-  const ContainerProfilPage({Key? key}) : super(key: key);
+  const ContainerProfilPage({super.key});
 
   @override
   _ContainerProfilPageState createState() => _ContainerProfilPageState();
@@ -52,7 +55,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [id] : Container's id
   Future<void> fetchContainer(String id) async {
     final response = await http.get(
-      Uri.parse('http://${serverIp}:3000/api/container/listByContainer/$id'),
+      Uri.parse('http://$serverIp:3000/api/container/listByContainer/$id'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -88,7 +91,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       checkContainerId();
     } else {}
   }
@@ -142,7 +145,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   : lightTheme.primaryColor,
             ),
           ),
-          content: Container(
+          content: SizedBox(
             height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,7 +254,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                   : lightTheme.primaryColor,
             ),
           ),
-          content: Container(
+          content: SizedBox(
             height: 120.0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,7 +326,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   Future<void> fetchItemsbyCtnId() async {
     final response = await http.get(
       Uri.parse(
-          'http://${serverIp}:3000/api/items/listAllByContainerId?containerId=${containerId}'),
+          'http://$serverIp:3000/api/items/listAllByContainerId?containerId=$containerId'),
       headers: <String, String>{
         'Authorization': 'Bearer $jwtToken',
       },
@@ -343,7 +346,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [item] : The item who will be deleted
   Future<void> deleteItem(ItemList item) async {
     late int id;
-    final Uri url = Uri.parse("http://${serverIp}:3000/api/items/delete");
+    final Uri url = Uri.parse("http://$serverIp:3000/api/items/delete");
     if (item.id != null) {
       id = item.id!;
     }
@@ -386,7 +389,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       showCustomToast(context, "Veuillez entrer un prix valide", false);
       return;
     }
-    final String apiUrl = "http://$serverIp:3000/api/items/update/${itemId}";
+    final String apiUrl = "http://$serverIp:3000/api/items/update/$itemId";
     var body = {
       'name': nameController.text != '' ? nameController.text : item.name,
       'description':
@@ -445,7 +448,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       : lightTheme.primaryColor,
                 ),
               ),
-              content: Container(
+              content: SizedBox(
                 height: 250.0,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -615,21 +618,43 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
   /// [Widget] : build the containers profil page
   @override
   Widget build(BuildContext context) {
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.containerHandling,
-        context: context,
-      ),
       body: FooterView(
+        flex: 6,
         footer: Footer(
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.container,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: ScreenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
           SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 500,
                     height: 200,
                     child: Row(
@@ -657,22 +682,38 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .cityNameData(tmp.city!),
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                ),
+                                tmp.city != null
+                                    ? Text(
+                                        AppLocalizations.of(context)!
+                                            .cityNameData(tmp.city!),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      )
+                                    : Text(
+                                        AppLocalizations.of(context)!
+                                            .cityNotLinked,
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
                                   key: const Key('edit-city'),
@@ -698,19 +739,34 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                             const SizedBox(height: 5.0),
                             Row(
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!
-                                      .addressData(tmp.address!),
-                                  style: TextStyle(
-                                    color: Provider.of<ThemeService>(context)
-                                            .isDark
-                                        ? darkTheme.primaryColor
-                                        : lightTheme.primaryColor,
-                                    fontSize: 15.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Verdana',
-                                  ),
-                                ),
+                                tmp.address != null
+                                    ? Text(
+                                        AppLocalizations.of(context)!
+                                            .addressData(tmp.address!),
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      )
+                                    : Text(
+                                        AppLocalizations.of(context)!.addressNo,
+                                        style: TextStyle(
+                                          color:
+                                              Provider.of<ThemeService>(context)
+                                                      .isDark
+                                                  ? darkTheme.primaryColor
+                                                  : lightTheme.primaryColor,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Verdana',
+                                        ),
+                                      ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
                                   key: const Key("edit-city"),
@@ -744,7 +800,9 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor,
-                      fontSize: 30,
+                      fontSize: screenFormat == ScreenFormat.desktop
+                          ? desktopMediumFontSize
+                          : tabletMediumFontSize,
                       fontWeight: FontWeight.bold,
                       decoration: TextDecoration.underline,
                       decorationThickness: 2.0,
@@ -763,11 +821,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                       context.go("/object-creation");
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                          horizontal: 25, vertical: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0),
                       ),
@@ -775,15 +830,16 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     child: Text(
                       AppLocalizations.of(context)!.objectCreate,
                       style: TextStyle(
+                        fontSize: screenFormat == ScreenFormat.desktop
+                            ? desktopFontSize
+                            : tabletFontSize,
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.appBarTheme.backgroundColor
-                            : lightTheme.appBarTheme.backgroundColor,
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   items.isEmpty
                       ? Center(
                           child: Text(
