@@ -50,6 +50,7 @@ dependencies:
   country_flags: ^3.0.0
   carousel_slider: ^5.0.0
   app_links:
+  google_sign_in: ^6.2.1
 
 
 dev_dependencies:
