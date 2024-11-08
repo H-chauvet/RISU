@@ -3,6 +3,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+// Custom staggered list widget that animates the displaying of items
+// params:
+// [itemCount] - is the number of items in the list.
+// [itemBuilder] - is the function to build the item at the given index.
+// [reverse] - is a boolean to reverse the list.
+// [staggeredDelay] - is the delay between each item animation.
 class StaggeredList extends StatefulWidget {
   final int itemCount;
   final IndexedWidgetBuilder itemBuilder;
@@ -80,11 +86,19 @@ class StaggeredListState extends State<StaggeredList>
   }
 }
 
+// Custom card widget with blur effect
+// params:
+// [blurValue] - is the value of the blur effect.
+// [child] - is the child widget to be displayed.
 class BlurredCard extends StatelessWidget {
   final double blurValue;
   final Widget child;
 
-  const BlurredCard({super.key, required this.blurValue, required this.child});
+  const BlurredCard({
+    super.key,
+    required this.blurValue,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
