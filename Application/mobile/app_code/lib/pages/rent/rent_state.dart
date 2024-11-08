@@ -38,17 +38,23 @@ class RentArticlePageState extends State<RentArticlePage> {
   /// Increment the rental hours
   void _incrementHours() {
     setState(() {
-      _rentalHours++;
+      if (_rentalHours == 24) {
+        _rentalHours = 1;
+      } else {
+        _rentalHours++;
+      }
     });
   }
 
   /// Decrement the rental hours
   void _decrementHours() {
-    if (_rentalHours > 1) {
-      setState(() {
+    setState(() {
+      if (_rentalHours == 1) {
+        _rentalHours = 24;
+      } else {
         _rentalHours--;
-      });
-    }
+      }
+    });
   }
 
   /// Rent an article

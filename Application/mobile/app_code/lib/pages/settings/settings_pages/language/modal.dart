@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
+import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/language.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,9 +27,26 @@ class LanguageChangeModalContent extends StatelessWidget {
 
   /// changeLanguage to the selected language
   /// This function is used to change the language to the selected language.
-  void changeLanguage(BuildContext context, String languageCode) {
+  Future<void> changeLanguage(BuildContext context, String languageCode) async {
     Provider.of<LanguageProvider>(context, listen: false)
         .changeLanguage(Locale(languageCode));
+
+    if (userInformation != null) {
+      try {
+        await http.put(
+          Uri.parse('$baseUrl/api/mobile/user'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': 'Bearer ${userInformation!.token}',
+          },
+          body: jsonEncode({
+            'language': languageCode,
+          }),
+        );
+      } catch (err, stacktrace) {
+        printCatchError(context, err, stacktrace);
+      }
+    }
   }
 
   /// displayLanguage displays the language radio button
