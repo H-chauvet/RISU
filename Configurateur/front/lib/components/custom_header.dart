@@ -329,11 +329,23 @@ class LandingAppBarState extends State<LandingAppBar> {
                   ];
                 },
                 onSelected: (String value) {
-                  setState(() {
-                    currentLanguage = value;
+                  setState(() async {
+                    final email = await storageService.getUserMail();
+                    if (email.isNotEmpty) {
+                      final String apiUrl =
+                          "http://$serverIp:3000/api/auth/update-details/$email";
+                      var body = {
+                        'language': value,
+                      };
+                      await http.post(
+                        Uri.parse(apiUrl),
+                        body: body,
+                      );
+                      Provider.of<LanguageService>(context, listen: false)
+                          .changeLanguage(Locale(value));
+                      currentLanguage = value;
+                    }
                   });
-                  Provider.of<LanguageService>(context, listen: false)
-                      .changeLanguage(Locale(value));
                 },
               ),
               const SizedBox(width: 32),

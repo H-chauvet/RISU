@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/rentals/rentals_list_card.dart';
 import 'package:risu/utils/check_signin.dart';
@@ -257,8 +258,7 @@ class RentalPageState extends State<RentalPage> {
                                   ),
                                 ),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
+                            : StaggeredList(
                                 itemCount: showRentalsInProgress
                                     ? rentalsInProgress.length
                                     : rentals.length,

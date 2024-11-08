@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
@@ -182,8 +183,7 @@ class ConversationPageState extends State<ConversationPage> {
           child: Column(
             children: [
               Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
+                child: StaggeredList(
                   reverse: true,
                   itemCount: tickets.length,
                   itemBuilder: (BuildContext context, int index) {
