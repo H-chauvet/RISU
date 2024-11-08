@@ -282,6 +282,7 @@ exports.findUserDetailsByEmail = async (res, email) => {
         id: true,
         firstName: true,
         lastName: true,
+        language : true,
         createdAt: true,
         company: true,
         email: true,
@@ -301,15 +302,16 @@ exports.findUserDetailsByEmail = async (res, email) => {
  * @throws {Error} with a specific message to find the problem
  * @returns user object with updated firstName and lastName
  */
-exports.updateName = async (res, user) => {
+exports.updateName = async (res, currUser, newUser) => {
   try {
     return await db.User_Web.update({
       where: {
-        email: user.email,
+        email: currUser.email,
       },
       data: {
-        firstName: user.firstName,
-        lastName: user.lastName,
+        firstName: newUser.firstName ?? currUser.firstName,
+        lastName: newUser.lastName ?? currUser.lastName,
+        language: newUser.language ?? currUser.language
       },
     });
   } catch (err) {
