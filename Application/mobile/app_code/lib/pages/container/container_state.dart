@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/loader.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
@@ -195,8 +196,7 @@ class ContainerPageState extends State<ContainerPage> {
                               ),
                             )
                           else ...[
-                            ListView.builder(
-                              shrinkWrap: true,
+                            StaggeredList(
                               itemCount: containers.length,
                               itemBuilder: (context, index) {
                                 final product = containers.elementAt(index);
