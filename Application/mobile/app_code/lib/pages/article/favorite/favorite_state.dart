@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
@@ -237,8 +238,7 @@ class FavoriteSate extends State<FavoritePage> {
                                   ),
                                 ),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
+                            : StaggeredList(
                                 itemCount: favorites.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   dynamic favorite = favorites[index];
