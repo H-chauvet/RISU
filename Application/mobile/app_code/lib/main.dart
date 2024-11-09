@@ -45,6 +45,7 @@ void main() async {
     loginRefreshToken(refreshToken);
   }
 
+  await Future.delayed(const Duration(seconds: 2));
   runApp(
     MultiProvider(
       providers: [
