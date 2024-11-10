@@ -77,7 +77,7 @@
 	"mailNotExist": "This email does not exist.",
 	"mailAlreadyExist": "This email already exist in the database.",
 	"missingMail": "The email is missing from the request.",
-	"wrongMail": "The email sent is not linked to this account.",
+	"wrongMail": "This email is not linked to any account.",
 	"accountNotExist": "This account does not exist.",
 	"Success": "Success",
 	"missingUuid": "The uuid is missing from the request.",
