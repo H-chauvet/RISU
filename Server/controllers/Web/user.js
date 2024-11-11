@@ -282,7 +282,7 @@ exports.findUserDetailsByEmail = async (res, email) => {
         id: true,
         firstName: true,
         lastName: true,
-        language : true,
+        language: true,
         createdAt: true,
         company: true,
         email: true,
@@ -311,7 +311,7 @@ exports.updateName = async (res, currUser, newUser) => {
       data: {
         firstName: newUser.firstName ?? currUser.firstName,
         lastName: newUser.lastName ?? currUser.lastName,
-        language: newUser.language ?? currUser.language
+        language: newUser.language ?? currUser.language,
       },
     });
   } catch (err) {
@@ -426,21 +426,6 @@ exports.getUsersFromOrganizationId = async (res, organizationId) => {
     return await db.User_Web.findMany({
       where: {
         organizationId: parseInt(organizationId),
-      },
-    });
-  } catch (err) {
-    throw res.__("errorOccured");
-  }
-};
-
-exports.updateIsNew = async (res, email) => {
-  try {
-    return await db.User_Web.update({
-      where: {
-        email: email,
-      },
-      data: {
-        isNew: false,
       },
     });
   } catch (err) {

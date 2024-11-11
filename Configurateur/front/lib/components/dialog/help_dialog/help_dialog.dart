@@ -5,6 +5,7 @@ import 'package:front/services/language_service.dart';
 
 /// [StatefulWidget] : HelpDialog
 ///
+/// Create a new dialog with a specific content to help user
 class HelpDialog extends StatefulWidget {
   const HelpDialog({super.key, required this.content});
 
