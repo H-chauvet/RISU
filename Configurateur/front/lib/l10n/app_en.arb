@@ -343,7 +343,7 @@
 	"containerLinkText": "Create your custom container",
 	"containerPage": "/container-creation/shape",
 	"faqText": "Have questions?",
-	"faqTextFindAnswer": "You can find your answers here."
+	"faqTextFindAnswer": "You can find your answers here.",
 	"emailNotValid": "Enter a valid mail address.",
 	"atLeast": "At least - character",
 	"uppercaseLetters": "- Uppercase letter",

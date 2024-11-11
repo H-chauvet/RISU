@@ -342,7 +342,7 @@
 	"containerLinkText": "Créer son conteneur personnalisé",
 	"containerPage": "/container-creation/shape",
 	"faqText": "Vous avez des questions ?",
-	"faqTextFindAnswer": "Vous pourrez trouver vos réponses ici."
+	"faqTextFindAnswer": "Vous pourrez trouver vos réponses ici.",
 	"emailNotValid": "Veuillez entrer un mail valide.",
 	"atLeast": "Au moins - caractères",
 	"uppercaseLetters": "- Lettres majuscules",
