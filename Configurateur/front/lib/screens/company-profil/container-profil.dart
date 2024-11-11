@@ -618,6 +618,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
       body: FooterView(
         flex: 6,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

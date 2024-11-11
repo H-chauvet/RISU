@@ -14,6 +14,7 @@ import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/login/ask_reset_password/ask_reset_password_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
 import 'package:risu/utils/errors.dart';
+import 'package:risu/utils/providers/language.dart';
 import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/utils/user_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,6 +73,8 @@ class LoginPageState extends State<LoginPage> {
         setState(() {
           userInformation =
               UserData.fromJson(jsonData['user'], jsonData['token']);
+          Provider.of<LanguageProvider>(context, listen: false)
+              .changeLanguage(Locale(userInformation!.language!));
           final refreshToken = jsonData['user']['refreshToken'];
           if (refreshToken != null && refreshToken != '') {
             SharedPreferences.getInstance().then((prefs) {

@@ -53,7 +53,7 @@ class LandingPageState extends State<LandingPage> {
         flex: 10,
         footer: Footer(
           padding: EdgeInsets.zero,
-          child: CustomFooter(),
+          child: const CustomFooter(),
         ),
         children: [
           LandingAppBar(context: context),

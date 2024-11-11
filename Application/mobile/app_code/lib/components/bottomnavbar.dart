@@ -22,38 +22,57 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BottomNavigationBarItem item = BottomNavigationBarItem(
-      icon: const Icon(Icons.person),
-      label: AppLocalizations.of(context)!.profile,
+    List<BottomNavigationBarItem> items = [
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.search),
+        label: AppLocalizations.of(context)!.search,
+      ),
+    ];
+    if (userInformation != null) {
+      items.add(
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.shopping_basket),
+          label: AppLocalizations.of(context)!.myRents,
+        ),
+      );
+    }
+    items.add(
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.map),
+        label: AppLocalizations.of(context)!.map,
+      ),
     );
+    if (userInformation != null) {
+      items.add(
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.favorite),
+          label: AppLocalizations.of(context)!.favorites,
+        ),
+      );
+    }
     if (userInformation == null) {
-      item = BottomNavigationBarItem(
+      items.add(BottomNavigationBarItem(
         icon: const Icon(Icons.settings),
         label: AppLocalizations.of(context)!.settings,
-      );
+      ));
+    } else {
+      items.add(BottomNavigationBarItem(
+        icon: const Icon(Icons.person),
+        label: AppLocalizations.of(context)!.profile,
+      ));
     }
     return BottomNavigationBar(
       key: key,
       currentIndex: currentIndex,
       onTap: onTap,
-      items: [
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.search),
-          label: AppLocalizations.of(context)!.search,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.map),
-          label: AppLocalizations.of(context)!.map,
-        ),
-        item,
-      ],
+      items: items,
       backgroundColor: theme!.bottomNavigationBarTheme.backgroundColor,
       selectedItemColor: theme!.bottomNavigationBarTheme.selectedItemColor,
       unselectedItemColor: theme!.bottomNavigationBarTheme.unselectedItemColor,
       unselectedIconTheme: const IconThemeData(size: 28),
       selectedIconTheme: const IconThemeData(size: 28),
-      unselectedFontSize: 14,
-      selectedFontSize: 14,
+      unselectedFontSize: 10,
+      selectedFontSize: 10,
       type: BottomNavigationBarType.fixed,
     );
   }

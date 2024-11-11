@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:risu/utils/user_data.dart';
 
-// Variable globale pour stocker l'adresse IP du serveur
+/// Variable globale pour stocker l'adresse IP du serveur
 
 String protocol = kDebugMode ? 'http://' : 'http://';
 String serverIp = kDebugMode ? '10.0.2.2' : 'risu-app.fr';

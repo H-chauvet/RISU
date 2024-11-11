@@ -17,6 +17,7 @@ class UserData {
   String? firstName;
   String? lastName;
   String? ID;
+  String? language;
   List<bool>? notifications = [
     true,
     true,
@@ -32,6 +33,7 @@ class UserData {
     required this.lastName,
     this.ID,
     this.notifications,
+    this.language,
   });
 
   /// Function to display user email.
@@ -60,6 +62,7 @@ class UserData {
         user['Notifications']['endOfRenting'],
         user['Notifications']['newsOffersRisu'],
       ],
+      language: user['language'],
     );
   }
 }
