@@ -282,7 +282,7 @@ exports.findUserDetailsByEmail = async (res, email) => {
         id: true,
         firstName: true,
         lastName: true,
-        language : true,
+        language: true,
         createdAt: true,
         company: true,
         email: true,
@@ -311,7 +311,7 @@ exports.updateName = async (res, currUser, newUser) => {
       data: {
         firstName: newUser.firstName ?? currUser.firstName,
         lastName: newUser.lastName ?? currUser.lastName,
-        language: newUser.language ?? currUser.language
+        language: newUser.language ?? currUser.language,
       },
     });
   } catch (err) {

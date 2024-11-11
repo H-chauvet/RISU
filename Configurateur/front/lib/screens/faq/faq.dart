@@ -4,10 +4,7 @@ import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
-import 'package:front/services/size_service.dart';
-import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
-import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -71,8 +68,6 @@ class FaqPageState extends State<FaqPage> {
   /// [Function] : Build the landing page
   @override
   Widget build(BuildContext context) {
-    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
-
     return Scaffold(
       body: FooterView(
         flex: 8,

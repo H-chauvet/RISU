@@ -6,7 +6,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/language_service.dart';
-import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
