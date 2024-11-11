@@ -630,6 +630,27 @@ class TicketsState extends State<TicketsPage> {
                                                                     .primaryColor,
                                                           ),
                                                         ),
+                                                        Text(
+                                                          lastTicket["creatorId"] ==
+                                                                  uuid
+                                                              ? AppLocalizations
+                                                                      .of(
+                                                                          context)!
+                                                                  .ticketSend
+                                                              : AppLocalizations
+                                                                      .of(context)!
+                                                                  .ticketAwaiting,
+                                                          style: TextStyle(
+                                                            fontSize: screenFormat ==
+                                                                    ScreenFormat
+                                                                        .desktop
+                                                                ? desktopFontSize
+                                                                : tabletFontSize,
+                                                            color:
+                                                                getCurrentTheme()
+                                                                    .primaryColor,
+                                                          ),
+                                                        )
                                                       ],
                                                     ),
                                                   ),

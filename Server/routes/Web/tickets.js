@@ -176,7 +176,7 @@ router.get("/assigned-info/:assignedId", async (req, res, next) => {
         .status(200)
         .json({ firstName: webUser.firstName, lastName: webUser.lastName });
     }
-    const mobileUser = await mobileUserCtrl.findUserById(res, assignedId);
+    const mobileUser = await mobileUserCtrl.findUserById(assignedId);
     if (mobileUser) {
       return res.status(200).json({
         firstName: mobileUser.firstName,

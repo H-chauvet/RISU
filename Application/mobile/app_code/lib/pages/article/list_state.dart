@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/utils/errors.dart';
@@ -294,9 +295,7 @@ class ArticleListState extends State<ArticleListPage> {
                             ),
                           )
                         ] else ...[
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
+                          StaggeredList(
                             itemCount: _itemsDatas.length,
                             itemBuilder: (context, index) {
                               final item = _itemsDatas.elementAt(index);
@@ -304,7 +303,7 @@ class ArticleListState extends State<ArticleListPage> {
                                 articleData: ArticleData.fromJson(item),
                               );
                             },
-                          ),
+                          )
                         ]
                       ],
                     ),

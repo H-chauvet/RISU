@@ -47,7 +47,7 @@ class CustomFooterState extends State<CustomFooter> {
       context.go("/login");
     } else {
       await storageService.removeStorage('containerData');
-      context.go("/container-creation/");
+      context.go("/container-creation/shape");
     }
   }
 

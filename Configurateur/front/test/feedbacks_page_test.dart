@@ -69,9 +69,6 @@ void main() {
     await tester.tap(find.byKey(const Key('feedbacks-post_opinion')));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Poster un avis'));
-    await tester.pumpAndSettle();
-
     expect(find.byType(RatingDialogContent), findsOneWidget);
   });
 }
