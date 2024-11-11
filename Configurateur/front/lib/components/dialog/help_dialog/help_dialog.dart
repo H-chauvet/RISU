@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:front/components/custom_popup.dart';
 import 'package:front/components/dialog/help_dialog/help_content.dart';
 import 'package:front/services/language_service.dart';
 
@@ -20,10 +21,10 @@ class HelpDialogState extends State<HelpDialog> {
   /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
+    return CustomPopup(
       title: language == 'fr'
-          ? Text(french_help_content[widget.content]?['title'] ?? "")
-          : Text(english_help_content[widget.content]?['title'] ?? ""),
+          ? '${french_help_content[widget.content]?['title']}'
+          : '${english_help_content[widget.content]?['title']}',
       content: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
