@@ -1,10 +1,33 @@
 {
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
-  }
+    "hosting": {
+        "public":"public",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ]
+    },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId":"deeplink-risu",
+                    "appId":"1:832804007349:android:a7f7abfdcec62ff126bdfc",
+                    "fileOutput":"android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId":"deeplink-risu",
+                    "configurations": {
+                        "android":"1:832804007349:android:a7f7abfdcec62ff126bdfc",
+                        "ios":"1:832804007349:ios:330e6e370c5d47cd26bdfc",
+                        "macos":"1:832804007349:ios:330e6e370c5d47cd26bdfc",
+                        "web":"1:832804007349:web:6ab2c181fd8f25a526bdfc",
+                        "windows":"1:832804007349:web:6274c781f934e40526bdfc"
+                    }
+                }
+            }
+        }
+    }
 }

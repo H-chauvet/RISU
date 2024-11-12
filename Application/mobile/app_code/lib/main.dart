@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import 'package:risu/utils/providers/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'globals.dart';
+import 'utils/firebase_options.dart';
 
 String theme = appTheme['clair'];
 
@@ -32,6 +34,9 @@ void main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
@@ -45,7 +50,7 @@ void main() async {
     loginRefreshToken(refreshToken);
   }
 
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 1));
   runApp(
     MultiProvider(
       providers: [
