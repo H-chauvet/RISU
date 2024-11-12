@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:front/screens/company-profil/container-profil.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -25,10 +22,10 @@ import 'package:provider/provider.dart';
 /// [saveName] : Name given during the creation of the container
 class ContainerListData {
   final int? id;
-  final dynamic? createdAt;
-  final dynamic? organization;
+  final dynamic createdAt;
+  final dynamic organization;
   final int? organizationId;
-  final dynamic? containerMapping;
+  final dynamic containerMapping;
   final double? price;
   final String? address;
   final String? city;

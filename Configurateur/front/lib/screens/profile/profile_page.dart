@@ -14,7 +14,6 @@ import 'package:front/components/custom_popup.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/pw_validator_strings.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';

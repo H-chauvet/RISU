@@ -3,13 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/dialog/help_dialog/help_dialog.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/http_service.dart';
@@ -191,6 +190,37 @@ class MapsState extends State<MapsScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 4,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
+          Center(
+            child: IconButton(
+              hoverColor: Colors.transparent,
+              iconSize: 30.0,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => HelpDialog(content: 'maps_screen'));
+              },
+              icon: Icon(
+                Icons.help_outline,
+                color: darkTheme.primaryColor,
+              ),
+            ),
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -230,22 +260,6 @@ class MapsState extends State<MapsScreen> {
                 ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 4,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
           ),
         ],
       ),

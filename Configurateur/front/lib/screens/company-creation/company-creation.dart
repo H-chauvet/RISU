@@ -33,6 +33,8 @@ class CompanyCreationPage extends StatefulWidget {
 /// CompanyCreationPageState
 ///
 class CompanyCreationPageState extends State<CompanyCreationPage> {
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   String companyName = '';
   String companyContact = '';
   String collaboratorContact = '';
@@ -142,157 +144,157 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
                 width: screenFormat == ScreenFormat.desktop
                     ? desktopCompanyWidthFactor
                     : tabletCompanyWidthFactor,
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    TextFormField(
-                      key: const Key('name'),
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.companyAskName,
-                        labelText: AppLocalizations.of(context)!.name,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 50,
                       ),
-                      onChanged: (String? value) {
-                        companyName = value!;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.askCompleteField;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    TextFormField(
-                      key: const Key('contact'),
-                      decoration: InputDecoration(
-                        hintText: AppLocalizations.of(context)!.companySendMail,
-                        labelText: AppLocalizations.of(context)!.contact,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                        ),
-                      ),
-                      onChanged: (String? value) {
-                        companyContact = value!;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return AppLocalizations.of(context)!.askCompleteField;
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.companyAskColleagues,
-                      style: TextStyle(
-                        fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
-                        fontWeight: FontWeight.bold,
-                        color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.secondaryHeaderColor
-                            : lightTheme.secondaryHeaderColor,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            key: const Key('collaboratorContact'),
-                            controller: _controller,
-                            decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!
-                                  .companySendMailColleagues,
-                              labelText: AppLocalizations.of(context)!.mail,
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30.0),
-                              ),
-                            ),
-                            onChanged: (String? value) {
-                              collaboratorContact = value!;
-                            },
-                            validator: (String? value) {
-                              if (value == null || value.isEmpty) {
-                                return AppLocalizations.of(context)!
-                                    .askCompleteField;
-                              }
-                              return null;
-                            },
+                      TextFormField(
+                        key: const Key('name'),
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context)!.companyAskName,
+                          labelText: AppLocalizations.of(context)!.name,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
                           ),
                         ),
-                        IconButton(
-                          key: const Key('send-button'),
-                          onPressed: () => {
-                            if (collaboratorContact != '')
-                              {
-                                setState(() {
-                                  collaboratorList.add(collaboratorContact);
-                                  collaboratorContact = '';
-                                  _controller.text = '';
-                                })
-                              }
-                          },
-                          icon: const Icon(Icons.send),
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: collaboratorList.length,
-                      itemBuilder: (_, i) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(collaboratorList[i]),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  collaboratorList.removeAt(i);
-                                });
-                              },
-                              icon: const Icon(Icons.delete),
-                            )
-                          ],
-                        );
-                      },
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      key: const Key('terminate'),
-                      onPressed: () {
-                        createCompany();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      child: Text(
-                        AppLocalizations.of(context)!.create,
+                        onChanged: (String? value) {
+                          companyName = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .askCompleteField;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextFormField(
+                        key: const Key('contact'),
+                        decoration: InputDecoration(
+                          hintText:
+                              AppLocalizations.of(context)!.companySendMail,
+                          labelText: AppLocalizations.of(context)!.contact,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                          ),
+                        ),
+                        onChanged: (String? value) {
+                          companyContact = value!;
+                        },
+                        validator: (String? value) {
+                          if (value == null || value.isEmpty) {
+                            return AppLocalizations.of(context)!
+                                .askCompleteField;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 40,
+                      ),
+                      Text(
+                        AppLocalizations.of(context)!.companyAskColleagues,
                         style: TextStyle(
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                          fontWeight: FontWeight.bold,
                           color: Provider.of<ThemeService>(context).isDark
-                              ? darkTheme.primaryColor
-                              : lightTheme.colorScheme.background,
+                              ? darkTheme.secondaryHeaderColor
+                              : lightTheme.secondaryHeaderColor,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              key: const Key('collaboratorContact'),
+                              controller: _controller,
+                              decoration: InputDecoration(
+                                hintText: AppLocalizations.of(context)!
+                                    .companySendMailColleagues,
+                                labelText: AppLocalizations.of(context)!.mail,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                ),
+                              ),
+                              onChanged: (String? value) {
+                                collaboratorContact = value!;
+                              },
+                            ),
+                          ),
+                          IconButton(
+                            key: const Key('send-button'),
+                            onPressed: () => {
+                              if (collaboratorContact != '')
+                                {
+                                  setState(() {
+                                    collaboratorList.add(collaboratorContact);
+                                    collaboratorContact = '';
+                                    _controller.text = '';
+                                  })
+                                }
+                            },
+                            icon: const Icon(Icons.send),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: collaboratorList.length,
+                        itemBuilder: (_, i) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(collaboratorList[i]),
+                              IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    collaboratorList.removeAt(i);
+                                  });
+                                },
+                                icon: const Icon(Icons.delete),
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        key: const Key('terminate'),
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) createCompany();
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        child: Text(
+                          AppLocalizations.of(context)!.create,
+                          style: TextStyle(
+                            color: Provider.of<ThemeService>(context).isDark
+                                ? darkTheme.primaryColor
+                                : lightTheme.colorScheme.background,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
