@@ -114,7 +114,6 @@ class FaqPageState extends State<FaqPage> {
                               SizedBox(height: 16.0),
                               Text(
                                 AppLocalizations.of(context)!.faqText,
-                                // '',
                                 style: TextStyle(
                                   fontSize: 18,
                                   color:
