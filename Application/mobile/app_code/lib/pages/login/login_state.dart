@@ -3,10 +3,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/filled_button.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/text_input.dart';
 import 'package:risu/globals.dart';
@@ -34,6 +36,13 @@ class LoginPageState extends State<LoginPage> {
   String? _password;
   bool _isPasswordVisible = false;
   final LoaderManager _loaderManager = LoaderManager();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+    ],
+    serverClientId:
+        '832804007349-hm0tcqmknj45bhgei3g46ecm23m65d8a.apps.googleusercontent.com',
+  );
 
   /// apiLogin
   /// This function is called when the user press the login button
@@ -278,6 +287,23 @@ class LoginPageState extends State<LoginPage> {
                         fontSize: 16.0,
                       ),
                     ),
+                  ),
+                  MyButton(
+                    text: "Se connecter avec Google",
+                    onPressed: () async {
+                      try {
+                        var account = await _googleSignIn.signIn();
+                        var authentication = await account?.authentication;
+                        print(authentication);
+                        print(authentication?.idToken);
+                        print(account?.email);
+                        print(account);
+                      } catch (err, stacktrace) {
+                        printCatchError(context, err, stacktrace,
+                            message: AppLocalizations.of(context)!
+                                .connectionRefused);
+                      }
+                    },
                   ),
                   TextButton(
                     key: const Key('login-textbutton_gotosignup'),
