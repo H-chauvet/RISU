@@ -60,7 +60,8 @@ router.post(
         locationPrice,
         item.id,
         user.id,
-        parseInt(req.body.duration)
+        parseInt(req.body.duration),
+        req.body.startDate
       );
 
       const container = await containerCtrl.getContainerById(
