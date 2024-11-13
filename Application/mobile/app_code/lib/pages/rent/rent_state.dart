@@ -80,6 +80,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         body: jsonEncode(<String, dynamic>{
           'itemId': _articleData.id,
           'duration': _rentalHours.toString(),
+          if (_startDate != null) 'startDate': _startDate!.toIso8601String(),
         }),
       );
       setState(() {
@@ -481,7 +482,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                                   : 'Now',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
-                                                fontSize: 18,
+                                                fontSize: 16,
                                                 color: themeProvider
                                                     .currentTheme.primaryColor,
                                               ),
@@ -537,6 +538,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                         style: TextStyle(
                                           color: themeProvider
                                               .currentTheme.primaryColor,
+                                          fontSize: 16,
                                         ),
                                       ),
                                       IconButton(
