@@ -50,6 +50,7 @@ dependencies:
   country_flags: ^3.0.0
   carousel_slider: ^5.0.0
   app_links:
+  flutter_datetime_picker_plus: ^2.2.0
 
 
 dev_dependencies:
