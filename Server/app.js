@@ -26,6 +26,7 @@ const rentMobileRoutes = require("./routes/Mobile/rent")
 const opinionMobileRoutes = require("./routes/Mobile/opinion")
 const ticketsMobileRoutes = require("./routes/Mobile/tickets")
 const favoriteMobileRoutes = require("./routes/Mobile/favorites")
+const notificationMobileRoutes = require("./routes/Mobile/notifications")
 
 var cors = require("cors");
 var bodyParser = require("body-parser");
@@ -83,5 +84,6 @@ app.use("/api/mobile/rent", rentMobileRoutes);
 app.use("/api/mobile/opinion", opinionMobileRoutes);
 app.use("/api/mobile/ticket", ticketsMobileRoutes);
 app.use("/api/mobile/favorite", favoriteMobileRoutes);
+app.use("/api/mobile/notification", notificationMobileRoutes);
 
 module.exports = app;
