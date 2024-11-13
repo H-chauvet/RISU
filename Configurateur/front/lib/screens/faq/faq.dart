@@ -4,10 +4,12 @@ import 'package:footer/footer_view.dart';
 import 'package:footer/footer.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/services/size_service.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// FaqPage
 ///
@@ -24,50 +26,51 @@ class FaqPage extends StatefulWidget {
 class FaqPageState extends State<FaqPage> {
   int? openedQuestionIndex;
 
-  /// [faqData] représente les différentes informations affiché dans la page FAQ
-  /// question: Questions souvent posé et permet de faciliter la prise en main de l'application
-  /// answer: Réponse à la question posé au dessus
-  /// linkText: Affiche un texte cliquable permettant d'aller à la page concerné
-  /// page: nom de la page vers laquelle le linkText redirige l'utilisateur
-  final List<Map<String, String>> faqData = [
-    {
-      "question": "Comment créer un compte ?",
-      "answer":
-          "Pour créer un compte c'est très simple. Cliquez sur le lien en dessous pour rejoindre la page création de compte. Une fois sur cette page, renseignez les différents champs proposés. Une fois que ce sera fait, vous devez cliquer sur s'inscrire et un mail vous sera envoyez. Une fois la validation du compte fait vous pourrez utilisez votre compte sur notre application",
-      "linkText": "Créer son compte Risu !",
-      "page": "/register",
-    },
-    {
-      "question": "Comment réinitialiser mon mot de passe ?",
-      "answer":
-          "Vous avez oubliez votre mot de passe ? Cliquez sur le lien en dessous pour pouvoir le réinitialiser facilement !",
-      "linkText": "Réinitialiser son mot de passe",
-      "page": "/password-recuperation",
-    },
-    {
-      "question": "Comment contacter le support ?",
-      "answer":
-          "Vous avez une question et la réponse n'est pas sur cette page ? Contactez le support pour être directement en relation avec un employé de Risu",
-      "linkText": "Contacter le support",
-      "page": "/contact",
-    },
-    {
-      "question": "Comment créer un conteneur ?",
-      "answer":
-          "Vous venez d'arriver sur l'application et ne savez pas comment créer votre conteneur ? Cliquez sur le lien en dessous et vous serez rediriger vers la page création de conteneur. Faites les différentes étapes en choissisant la taille, la forme, le nombre de casiers ou encore le design de conteneur. Une fois toutes les étapes de création finis, vous n'avez plus qu'à payer et le tour est joué !",
-      "linkText": "Créer son conteneur personnalisé",
-      "page": "/container-creation/shape",
-    },
-  ];
-
   @override
   void initState() {
     super.initState();
   }
 
+  /// [faqData] représente les différentes informations affiché dans la page FAQ
+  /// question: Questions souvent posé et permet de faciliter la prise en main de l'application
+  /// answer: Réponse à la question posé au dessus
+  /// linkText: Affiche un texte cliquable permettant d'aller à la page concerné
+  /// page: nom de la page vers laquelle le linkText redirige l'utilisateur
+  List<Map<String, String>> getFaqData(BuildContext context) {
+    return [
+      {
+        "question": AppLocalizations.of(context)!.accountQuestion,
+        "answer": AppLocalizations.of(context)!.accountAnswer,
+        "linkText": AppLocalizations.of(context)!.accountLinkText,
+        "page": AppLocalizations.of(context)!.accountPage,
+      },
+      {
+        "question": AppLocalizations.of(context)!.passwordQuestion,
+        "answer": AppLocalizations.of(context)!.passwordAnswer,
+        "linkText": AppLocalizations.of(context)!.passwordLinkText,
+        "page": AppLocalizations.of(context)!.passwordPage,
+      },
+      {
+        "question": AppLocalizations.of(context)!.supportQuestion,
+        "answer": AppLocalizations.of(context)!.supportAnswer,
+        "linkText": AppLocalizations.of(context)!.supportLinkText,
+        "page": AppLocalizations.of(context)!.supportPage,
+      },
+      {
+        "question": AppLocalizations.of(context)!.containerQuestion,
+        "answer": AppLocalizations.of(context)!.containerAnswer,
+        "linkText": AppLocalizations.of(context)!.containerLinkText,
+        "page": AppLocalizations.of(context)!.containerPage,
+      },
+    ];
+  }
+
   /// [Function] : Build the landing page
   @override
   Widget build(BuildContext context) {
+    final faqData = getFaqData(context);
+    ScreenFormat screenFormat = SizeService().getScreenFormat(context);
+
     return Scaffold(
       body: FooterView(
         flex: 8,
@@ -110,7 +113,7 @@ class FaqPageState extends State<FaqPage> {
                               ),
                               SizedBox(height: 16.0),
                               Text(
-                                'Vous avez des questions ?',
+                                AppLocalizations.of(context)!.faqText,
                                 style: TextStyle(
                                   fontSize: 18,
                                   color:
@@ -122,7 +125,7 @@ class FaqPageState extends State<FaqPage> {
                               ),
                               SizedBox(height: 8.0),
                               Text(
-                                'Vous pourrez trouver vos réponses ici.',
+                                AppLocalizations.of(context)!.faqTextFindAnswer,
                                 style: TextStyle(
                                   fontSize: 18,
                                   color:
