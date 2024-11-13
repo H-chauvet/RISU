@@ -403,7 +403,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 16),
                             Container(
                               decoration: BoxDecoration(
                                 color: themeProvider
@@ -446,10 +446,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                       );
                                     },
                                     child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: _startDate != null ? 8 : 18,
-                                        horizontal: 8,
-                                      ),
+                                      padding: const EdgeInsets.all(8.0),
                                       decoration: BoxDecoration(
                                         borderRadius:
                                             BorderRadius.circular(8.0),
@@ -493,12 +490,12 @@ class RentArticlePageState extends State<RentArticlePage> {
                                           if (_startDate != null)
                                             IgnorePointer(
                                               ignoring: false,
-                                              child: IconButton(
-                                                icon: const Icon(
+                                              child: GestureDetector(
+                                                child: const Icon(
                                                   Icons.close,
                                                   color: Colors.red,
                                                 ),
-                                                onPressed: () {
+                                                onTap: () {
                                                   setState(() {
                                                     _startDate = null;
                                                   });
@@ -514,7 +511,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                                     child: Text(
                                       "for",
                                       style: TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: themeProvider
                                             .currentTheme.primaryColor,
