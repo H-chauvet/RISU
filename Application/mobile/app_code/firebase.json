@@ -1,10 +1,19 @@
 {
-  "hosting": {
-    "public": "public",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ]
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId":"deeplink-risu",
+          "appId":"1:832804007349:android:a7f7abfdcec62ff126bdfc",
+          "fileOutput":"android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId":"deeplink-risu","configurations": {
+            "android":"1:832804007349:android:a7f7abfdcec62ff126bdfc"}
+        }
+      }
+    }
   }
 }

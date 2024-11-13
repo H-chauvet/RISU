@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "832804007349",
+    "project_id": "deeplink-risu",
+    "storage_bucket": "deeplink-risu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832804007349:android:a7f7abfdcec62ff126bdfc",
+        "android_client_info": {
+          "package_name": "com.example.risu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832804007349-5u808nqq1k1fc4dtq8067fc1gn780lve.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.risu",
+            "certificate_hash": "66e20144af6f64734006a95d446a9b277e5181ec"
+          }
+        },
+        {
+          "client_id": "832804007349-hm0tcqmknj45bhgei3g46ecm23m65d8a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ2hvpa0o6mCLOXfjuU8L2TZ72zyEDQgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832804007349-hm0tcqmknj45bhgei3g46ecm23m65d8a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "832804007349-mvrpqijg8cf1lnc1obvtsvf20k746k33.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.risu"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
