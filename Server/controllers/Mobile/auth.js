@@ -14,7 +14,7 @@ exports.sendAccountConfirmationEmail = (email, token) => {
     to: email,
     subject: 'Confirm your account',
     text: "",
-    html: '<p>Please follow the link to confirm your account: <a href="http://82.165.63.176:3000/api/mobile/auth/mailVerification?token=' +
+    html: '<p>Please follow the link to confirm your account: <a href="https://deeplink-risu.firebaseapp.com/confirm/?token=' +
       token + '">here</a></p>',
   }
   try {
