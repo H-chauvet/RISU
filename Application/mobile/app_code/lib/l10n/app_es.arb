@@ -208,6 +208,7 @@
   "rentTimeOfRenting": "{hours, plural, one{Duración del alquiler: {hours} hora} other{Duración del alquiler: {hours} horas}}",
   "rentsListEmpty": "No hay alquileres",
   "rentsThanking": "{hours, plural, one{Gracias por tu alquiler. No olvides devolver el artículo en {hours} hora.} other{Gracias por tu alquiler. No olvides devolver el artículo en {hours} horas.}}",
+  "rentsThankingWithDate": "{hours, plural, one{Thank you for your rental. It will start on the {date}. Don't forget it to return it {hours} hour later.} other{Thank you for your rental. It will start on the {date}. Don't forget it to return it {hours} hours later.}}",
   "resetPasswordDescription": "Ingresa tu nueva contraseña.",
   "reviewAdd": "Agregar una reseña",
   "reviewAdded": "Reseña agregada",

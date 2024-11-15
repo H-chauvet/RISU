@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
@@ -14,7 +15,6 @@ import 'package:risu/pages/rent/confirm/confirm_rent_page.dart';
 import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
-import 'package:intl/intl.dart';
 
 /// ConfirmRentPage class
 /// This class is the stateful widget for the ConfirmRentPage
@@ -187,16 +187,33 @@ class ConfirmRentState extends State<ConfirmRentPage> {
               Center(
                 child: Column(
                   children: [
-                    Text(
-                      AppLocalizations.of(context)!.rentsThanking(hours),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: context.select((ThemeProvider themeProvider) =>
-                            themeProvider.currentTheme.primaryColor),
-                      ),
-                    ),
+                    widget.startDate == null
+                        ? Text(
+                            AppLocalizations.of(context)!.rentsThanking(hours),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
+                            ),
+                          )
+                        : Text(
+                            AppLocalizations.of(context)!.rentsThankingWithDate(
+                              hours,
+                              DateFormat('dd/MM/yyyy HH:mm')
+                                  .format(widget.startDate!) as num,
+                            ),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: context.select(
+                                  (ThemeProvider themeProvider) =>
+                                      themeProvider.currentTheme.primaryColor),
+                            ),
+                          ),
                     const SizedBox(height: 32),
 
                     // Receive Invoice Button
