@@ -21,6 +21,7 @@ void main() {
       id: 0,
       containerId: 1,
       name: 'Ballon',
+      status: Status.GOOD,
       available: true,
       price: 8,
       categories: [],
@@ -49,6 +50,7 @@ void main() {
       containerId: 1,
       name: 'Ballon',
       available: true,
+      status: Status.GOOD,
       price: 8,
       categories: [],
     );
