@@ -866,6 +866,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme
+                                      .inputDecorationTheme
+                                      .fillColor),
                               child: Column(
                                 children: [
                                   Padding(

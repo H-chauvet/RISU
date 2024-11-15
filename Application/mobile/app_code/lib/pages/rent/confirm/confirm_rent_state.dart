@@ -129,6 +129,8 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
+                color: context.select((ThemeProvider themeProvider) =>
+                    themeProvider.currentTheme.inputDecorationTheme.fillColor),
                 child: Padding(
                   padding: const EdgeInsets.all(16),
                   child: Column(

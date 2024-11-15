@@ -589,6 +589,12 @@ class OpinionPageState extends State<OpinionPage> {
                                       Card(
                                         key: Key('opinion-card_$i'),
                                         elevation: 5,
+                                        color: context.select(
+                                            (ThemeProvider themeProvider) =>
+                                                themeProvider
+                                                    .currentTheme
+                                                    .inputDecorationTheme
+                                                    .fillColor),
                                         margin: const EdgeInsets.symmetric(
                                             vertical: 10, horizontal: 20),
                                         shape: RoundedRectangleBorder(
