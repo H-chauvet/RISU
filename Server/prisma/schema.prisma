@@ -160,6 +160,7 @@ model Location_Mobile {
     user      User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
     createdAt DateTime    @default(now())
+    startDate DateTime    @default(now())
     duration  Int
     ended     Boolean     @default(false)
     invoice   Bytes?
