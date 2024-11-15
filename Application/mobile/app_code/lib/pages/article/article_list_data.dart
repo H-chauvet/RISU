@@ -189,7 +189,6 @@ class ArticleDataCard extends StatelessWidget {
                           child: Icon(
                             getCategoryIcon(category['name']),
                             size: 24.0,
-                            color: Theme.of(context).primaryColor,
                           ),
                         );
                       }).toList(),

@@ -146,8 +146,7 @@ class MyAlertDialog {
                   key: const Key('alertdialog-button_ok'),
                   style: TextStyle(
                       color: context.select((ThemeProvider themeProvider) =>
-                          themeProvider.currentTheme.dialogTheme.titleTextStyle
-                              ?.color))),
+                          themeProvider.currentTheme.primaryColor))),
               onPressed: () {
                 Navigator.pop(context, true);
                 completer.complete(true);
