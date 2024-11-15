@@ -536,9 +536,6 @@ class ObjectCreationState extends State<ObjectCreation> {
                                   _selectedStatus = newValue!;
                                 });
                               },
-                              decoration: InputDecoration(
-                                labelText: 'Select Status',
-                              ),
                             ),
                             const SizedBox(height: 20),
                             Center(
