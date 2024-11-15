@@ -41,6 +41,12 @@ model Item_Category {
     items Item[]
 }
 
+enum Status {
+    GOOD
+    WORN
+    VERYWORN
+}
+
 model Item {
     id              Int                       @id @default(autoincrement())
     name            String
@@ -56,6 +62,7 @@ model Item {
     category        String?
     categories      Item_Category[]
     favorite        Favorite_Article_Mobile[]
+    status          Status
 }
 
 model Organization {

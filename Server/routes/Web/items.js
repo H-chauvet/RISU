@@ -54,14 +54,16 @@ router.post("/create",
     console.log(user)
     languageMiddleware.setServerLanguage(req, user);
 
-    const { name, available, price, containerId, description } =
+    const { name, available, price, containerId, description, status } =
       req.body;
+    console.log(req.body.status);
     const item = await itemCtrl.createItem(res, {
       name,
       available,
       price,
       containerId,
       description,
+      status,
     });
     console.log(req.files);
     var count = 0;

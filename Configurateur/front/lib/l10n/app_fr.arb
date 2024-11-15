@@ -351,5 +351,8 @@
 	"numericCharacters": "- Chiffres",
 	"specialCharacters": "- Caractères spéciaux",
 	"lowercaseLetters": "- Lettres minuscules",
-	"normalLetters": "- Lettres classiques"
+	"normalLetters": "- Lettres classiques",
+	"goodStatus": "Bon",
+	"wornStatus": "Usé",
+	"veryWornStatus": "Très usé"
 }

@@ -24,6 +24,7 @@ class ItemList {
   final String? image;
   final String? description;
   final String? category;
+  final Enum? status;
 
   ItemList({
     required this.id,
@@ -36,6 +37,8 @@ class ItemList {
     required this.image,
     required this.description,
     required this.category,
+    required this.status,
+    // required this.enum,
   });
 
   factory ItemList.fromJson(Map<String, dynamic> json) {
@@ -50,6 +53,7 @@ class ItemList {
       image: json['image'],
       description: json['description'],
       category: json['category'],
+      status: json['status'],
     );
   }
 
@@ -65,6 +69,7 @@ class ItemList {
       'image': image,
       'description': description,
       'category': category,
+      'status': status,
     };
   }
 }
