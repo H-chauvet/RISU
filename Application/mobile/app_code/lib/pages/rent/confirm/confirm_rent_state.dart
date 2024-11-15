@@ -200,11 +200,9 @@ class ConfirmRentState extends State<ConfirmRentPage> {
                             ),
                           )
                         : Text(
-                            AppLocalizations.of(context)!.rentsThankingWithDate(
-                              hours,
-                              DateFormat('dd/MM/yyyy HH:mm')
-                                  .format(widget.startDate!) as num,
-                            ),
+                            "${AppLocalizations.of(context)!.rentsThankingWithDate1} "
+                            "${AppLocalizations.of(context)!.rentsThankingWithDate2(DateFormat('dd/MM/yyyy HH:mm').format(widget.startDate!))} "
+                            "${AppLocalizations.of(context)!.rentsThankingWithDate3(hours)}",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 22,
