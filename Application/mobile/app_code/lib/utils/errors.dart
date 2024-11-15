@@ -44,7 +44,7 @@ void printServerResponse(
     MyAlertDialog.showErrorAlertDialog(
       context: context,
       title: AppLocalizations.of(context)!.error,
-      message: message,
+      message: "$message: [${response.statusCode}] ${response.body}",
     );
   }
 }

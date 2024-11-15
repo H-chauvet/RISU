@@ -48,10 +48,8 @@ router.post("/create",
   try {
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = jwtMiddleware.decodeToken(token);
-    console.log(decodedToken);
 
     const user = await userCtrl.findUserByEmail(res, decodedToken.userMail);
-    console.log(user)
     languageMiddleware.setServerLanguage(req, user);
 
     const { name, available, price, containerId, description, status } =
@@ -65,7 +63,6 @@ router.post("/create",
       description,
       status,
     });
-    console.log(req.files);
     var count = 0;
     for (const file of req.files) {
       const params = {
