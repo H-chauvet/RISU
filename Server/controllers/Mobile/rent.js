@@ -23,6 +23,15 @@ exports.rentItem = (price, itemId, userId, duration, startDate) => {
     })
 }
 
+exports.getAllRentalsForItem = (itemId) => {
+  return db.Location_Mobile.findMany({
+    where: {
+      itemId: itemId
+    },
+  });
+}
+
+
 /**
  * Get rents of the user
  *
