@@ -3,6 +3,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/image_loader.dart';
 
+enum Status {
+  GOOD,
+  WORN,
+  VERYWORN,
+}
+
 /// ArticleData class.
 /// This class is used to store the data of an article.
 /// params:
@@ -21,6 +27,8 @@ class ArticleData {
   final bool available;
   final double price;
   final List categories;
+  final Status status;
+  final String? description;
   final List<dynamic>? imagesUrl;
 
   ArticleData({
@@ -30,6 +38,8 @@ class ArticleData {
     required this.available,
     required this.price,
     required this.categories,
+    required this.status,
+    this.description,
     this.imagesUrl,
   });
 
@@ -49,6 +59,8 @@ class ArticleData {
       available: json['available'],
       price: price,
       categories: json['categories'],
+      status: Status.values.byName(json['status'] ?? 'VERYWORN'),
+      description: json['description'] ?? "",
       imagesUrl: imagesUrl,
     );
   }
@@ -62,6 +74,8 @@ class ArticleData {
       'available': available,
       'price': price,
       'categories': categories,
+      'status': status,
+      'description': description,
       'imageUrl': imagesUrl,
     };
   }
