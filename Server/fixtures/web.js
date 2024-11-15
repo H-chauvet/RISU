@@ -51,7 +51,7 @@ exports.createFixtures = async () => {
               price: 0.5,
               available: true,
               category: "Plage",
-              status: 'GOOD',
+              status: "GOOD",
             },
             {
               id: 6,
@@ -59,7 +59,7 @@ exports.createFixtures = async () => {
               price: 1.0,
               available: true,
               category: "Tennis",
-              status: 'WORN',
+              status: "WORN",
             },
             {
               id: 7,
@@ -67,7 +67,7 @@ exports.createFixtures = async () => {
               price: 0.75,
               available: false,
               category: "Foot",
-              status: 'WORN',
+              status: "WORN",
             },
           ],
         },
