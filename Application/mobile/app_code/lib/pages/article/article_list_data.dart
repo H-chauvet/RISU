@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/image_loader.dart';
 
@@ -110,6 +112,8 @@ class ArticleDataCard extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         elevation: 7,
+        color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.inputDecorationTheme.fillColor),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(

@@ -158,6 +158,8 @@ class ContainerPageState extends State<ContainerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.select((ThemeProvider themeProvider) =>
+          themeProvider.currentTheme.colorScheme.surface),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
           : SingleChildScrollView(

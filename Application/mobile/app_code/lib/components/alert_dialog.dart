@@ -71,10 +71,14 @@ class MyAlertDialog {
           key: key,
           title: Text(title),
           titlePadding: const EdgeInsets.all(16.0),
-          titleTextStyle: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.dialogTheme.titleTextStyle),
+          titleTextStyle: TextStyle(
+            color: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.primaryColor),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
           backgroundColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.dialogTheme.backgroundColor),
+              themeProvider.currentTheme.inputDecorationTheme.fillColor),
           content: Text(message),
           actions: [
             TextButton(
@@ -114,10 +118,14 @@ class MyAlertDialog {
           key: key,
           title: Text(title),
           titlePadding: const EdgeInsets.all(16.0),
-          titleTextStyle: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.dialogTheme.titleTextStyle),
+          titleTextStyle: TextStyle(
+            color: context.select((ThemeProvider themeProvider) =>
+                themeProvider.currentTheme.primaryColor),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
           backgroundColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.dialogTheme.backgroundColor),
+              themeProvider.currentTheme.inputDecorationTheme.fillColor),
           content: Text(message),
           actions: [
             TextButton(
