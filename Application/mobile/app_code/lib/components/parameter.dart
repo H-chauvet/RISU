@@ -249,9 +249,7 @@ class MyParameterModal extends StatelessWidget {
             themeProvider.currentTheme.primaryColor),
       );
     }
-    return Icon(Icons.chevron_right,
-        color: context.select((ThemeProvider themeProvider) =>
-            themeProvider.currentTheme.primaryColor));
+    return const Icon(Icons.chevron_right);
   }
 
   /// This function is called when the user clicks on the parameter.

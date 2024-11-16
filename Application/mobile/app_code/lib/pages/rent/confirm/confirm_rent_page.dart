@@ -12,11 +12,13 @@ class ConfirmRentPage extends StatefulWidget {
   final int hours;
   final ArticleData data;
   final int locationId;
+  final DateTime? startDate;
 
   const ConfirmRentPage({
     super.key,
     required this.hours,
     required this.data,
+    required this.startDate,
     required this.locationId,
   });
 

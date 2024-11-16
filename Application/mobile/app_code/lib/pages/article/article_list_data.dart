@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:risu/utils/providers/theme.dart';
 import 'package:risu/pages/article/details_page.dart';
 import 'package:risu/utils/image_loader.dart';
+
+enum Status {
+  GOOD,
+  WORN,
+  VERYWORN,
+}
 
 /// ArticleData class.
 /// This class is used to store the data of an article.
@@ -21,6 +29,8 @@ class ArticleData {
   final bool available;
   final double price;
   final List categories;
+  final Status status;
+  final String? description;
   final List<dynamic>? imagesUrl;
 
   ArticleData({
@@ -30,6 +40,8 @@ class ArticleData {
     required this.available,
     required this.price,
     required this.categories,
+    required this.status,
+    this.description,
     this.imagesUrl,
   });
 
@@ -49,6 +61,8 @@ class ArticleData {
       available: json['available'],
       price: price,
       categories: json['categories'],
+      status: Status.values.byName(json['status'] ?? 'VERYWORN'),
+      description: json['description'] ?? "",
       imagesUrl: imagesUrl,
     );
   }
@@ -62,6 +76,8 @@ class ArticleData {
       'available': available,
       'price': price,
       'categories': categories,
+      'status': status,
+      'description': description,
       'imageUrl': imagesUrl,
     };
   }
@@ -110,6 +126,8 @@ class ArticleDataCard extends StatelessWidget {
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         elevation: 7,
+        color: context.select((ThemeProvider themeProvider) =>
+            themeProvider.currentTheme.inputDecorationTheme.fillColor),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Row(
@@ -185,7 +203,6 @@ class ArticleDataCard extends StatelessWidget {
                           child: Icon(
                             getCategoryIcon(category['name']),
                             size: 24.0,
-                            color: Theme.of(context).primaryColor,
                           ),
                         );
                       }).toList(),

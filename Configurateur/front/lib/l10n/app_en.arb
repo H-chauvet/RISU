@@ -352,5 +352,8 @@
 	"numericCharacters": "- Numeric character",
 	"specialCharacters": "- Special character",
 	"lowercaseLetters": "- Lowercase letter",
-	"normalLetters": "- Classic letter"
+	"normalLetters": "- Classic letter",
+	"goodStatus": "Good",
+	"wornStatus": "Worn",
+	"veryWornStatus": "Very Worn"
 }

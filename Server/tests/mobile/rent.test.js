@@ -172,6 +172,13 @@ describe("POST /article", () => {
       city: "Nantes",
       address: "Rue d'Alger"
     });
+    rentCtrl.getAllRentalsForItem.mockResolvedValue([{
+      id: 1,
+      available: true,
+      containerId: 2,
+      price: 3,
+    }]);
+
     rentCtrl.rentItem.mockResolvedValue({ id: 1 });
 
     const response = await supertest(app)
