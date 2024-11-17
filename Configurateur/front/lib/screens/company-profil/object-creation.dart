@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:file_picker/file_picker.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
@@ -25,6 +23,7 @@ import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:front/components/custom_toast.dart';
 
 class Category {
   final int? id;
@@ -49,6 +48,12 @@ class Category {
   }
 }
 
+enum Status {
+  GOOD,
+  WORN,
+  VERYWORN,
+}
+
 class ObjectCreation extends StatefulWidget {
   const ObjectCreation({super.key});
   @override
@@ -70,6 +75,7 @@ class ObjectCreationState extends State<ObjectCreation> {
   String? selectedCategoryName = '';
   int selectedCategoryId = 0;
   int _currentIndex = 0;
+  Status _selectedStatus = Status.GOOD;
 
   List<Uint8List?> _imageBytesList = [];
   final ImagePicker _picker = ImagePicker();
@@ -133,6 +139,7 @@ class ObjectCreationState extends State<ObjectCreation> {
   }
 
   Future<void> createItems() async {
+    debugPrint('${_selectedStatus.toString().split('.').last}');
     final String apiUrl = "http://$serverIp:3000/api/items/create";
     var request = http.MultipartRequest('POST', Uri.parse(apiUrl))
       ..fields['name'] = _nameController.text
@@ -140,6 +147,7 @@ class ObjectCreationState extends State<ObjectCreation> {
       ..fields['price'] = _priceController.text.toString()
       ..fields['containerId'] = containerId.toString()
       ..fields['description'] = _descriptionController.text
+      ..fields['status'] = _selectedStatus.toString().split('.').last
       ..headers['Authorization'] = 'Bearer $jwtToken';
 
     for (int i = 0; i < _imageBytesList.length; i++) {
@@ -220,6 +228,17 @@ class ObjectCreationState extends State<ObjectCreation> {
     setState(() {
       _imageBytesList.removeAt(index);
     });
+  }
+
+  String _getStatusTranslation(Status status, BuildContext context) {
+    switch (status) {
+      case Status.GOOD:
+        return AppLocalizations.of(context)!.goodStatus;
+      case Status.WORN:
+        return AppLocalizations.of(context)!.wornStatus;
+      case Status.VERYWORN:
+        return AppLocalizations.of(context)!.veryWornStatus;
+    }
   }
 
   @override
@@ -499,6 +518,24 @@ class ObjectCreationState extends State<ObjectCreation> {
                                 labelText: AppLocalizations.of(context)!
                                     .categorySelect,
                               ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            DropdownButtonFormField<Status>(
+                              value: _selectedStatus,
+                              items: Status.values.map((Status status) {
+                                return DropdownMenuItem<Status>(
+                                  value: status,
+                                  child: Text(
+                                      _getStatusTranslation(status, context)),
+                                );
+                              }).toList(),
+                              onChanged: (Status? newValue) {
+                                setState(() {
+                                  _selectedStatus = newValue!;
+                                });
+                              },
                             ),
                             const SizedBox(height: 20),
                             Center(

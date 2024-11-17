@@ -24,6 +24,7 @@ void main() {
           containerId: 0,
           name: 'name',
           available: true,
+          status: Status.GOOD,
           price: 3,
           categories: [],
         );
@@ -56,6 +57,7 @@ void main() {
         final articleListData = ArticleData(
           id: 0,
           containerId: 1,
+          status: Status.GOOD,
           name: 'name',
           available: true,
           price: 3,
@@ -75,6 +77,7 @@ void main() {
           final articleListData = ArticleData(
             id: 0,
             containerId: 1,
+            status: Status.GOOD,
             name: 'name',
             available: true,
             price: 3,
@@ -97,6 +100,7 @@ void main() {
             id: 0,
             containerId: 1,
             name: 'name',
+            status: Status.GOOD,
             available: true,
             price: 3,
             categories: [

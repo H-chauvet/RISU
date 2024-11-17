@@ -5,6 +5,12 @@ import 'package:front/app_routes.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
 
+enum Status {
+  GOOD,
+  WORN,
+  VERYWORN,
+}
+
 void main() {
   final ItemList mockItem = ItemList(
     id: 1,
@@ -17,6 +23,7 @@ void main() {
     image: 'item_image.png',
     description: "description",
     category: "sport",
+    status: Status.GOOD,
   );
 
   testWidgets('ItemList should render without error',

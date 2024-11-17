@@ -115,8 +115,8 @@ class ContainerCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 10.0, left: 10.0, top: 10.0),
         child: Card(
           elevation: 5,
-          shadowColor: context.select((ThemeProvider themeProvider) =>
-              themeProvider.currentTheme.primaryColor),
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.inputDecorationTheme.fillColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -186,7 +186,11 @@ class ContainerCard extends StatelessWidget {
                           },
                         ),
                       ),
-                      const Icon(Icons.chevron_right),
+                      Icon(
+                        Icons.chevron_right,
+                        color: context.select((ThemeProvider themeProvider) =>
+                            themeProvider.currentTheme.primaryColor),
+                      ),
                       const SizedBox(width: 8),
                     ],
                   ),

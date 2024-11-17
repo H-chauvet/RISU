@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/components/recap_panel/recap_panel.dart';
-import 'package:front/screens/container-creation/recap_screen/recap_screen_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -153,6 +151,22 @@ class RecapScreenState extends State<RecapScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 3,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: previousFunc,
+                nextFunc: nextFunc,
+              ),
+            ],
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -167,22 +181,6 @@ class RecapScreenState extends State<RecapScreen> {
                 ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 3,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: previousFunc,
-                nextFunc: nextFunc,
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
           ),
         ],
       ),

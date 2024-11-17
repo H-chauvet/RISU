@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
@@ -11,8 +12,8 @@ import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_popup.dart';
 import 'package:front/components/custom_toast.dart';
+import 'package:front/components/pw_validator_strings.dart';
 import 'package:front/network/informations.dart';
-import 'package:front/screens/profile/profile_page_style.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
@@ -112,7 +113,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 90,
               ),
               TextField(
                 key: const Key("first-name"),
@@ -134,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(
-                height: 90,
+                height: 10,
               ),
               ElevatedButton(
                 key: const Key("button-name"),
@@ -160,6 +161,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   shape: RoundedRectangleBorder(
@@ -170,8 +174,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
+                        ? lightTheme.primaryColor
+                        : darkTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -213,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 50,
+                    height: 90,
                   ),
                   TextField(
                     key: const Key("company"),
@@ -225,7 +229,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(
-                    height: 90,
+                    height: 10,
                   ),
                   ElevatedButton(
                     key: const Key("button-company"),
@@ -253,6 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 20),
                       shape: RoundedRectangleBorder(
@@ -263,8 +270,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       AppLocalizations.of(context)!.update,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
-                            ? darkTheme.primaryColor
-                            : lightTheme.primaryColor,
+                            ? lightTheme.primaryColor
+                            : darkTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
                             ? desktopFontSize
                             : tabletFontSize,
@@ -305,7 +312,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               const SizedBox(
-                height: 50,
+                height: 90,
               ),
               TextField(
                 key: const Key("user-mail"),
@@ -316,7 +323,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         AppLocalizations.of(context)!.actualData(initialMail!)),
               ),
               const SizedBox(
-                height: 90,
+                height: 10,
               ),
               ElevatedButton(
                 onPressed: () async {
@@ -342,6 +349,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.primaryColor,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                   shape: RoundedRectangleBorder(
@@ -352,8 +362,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   AppLocalizations.of(context)!.update,
                   style: TextStyle(
                     color: Provider.of<ThemeService>(context).isDark
-                        ? darkTheme.primaryColor
-                        : lightTheme.primaryColor,
+                        ? lightTheme.primaryColor
+                        : darkTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletFontSize,
@@ -370,10 +380,13 @@ class _ProfilePageState extends State<ProfilePage> {
   /// [Function] : Show pop up to modify the user's password
   Future<void> showEditPopupPassword(BuildContext context,
       String initialPassword, Function(String) onEdit) async {
-    String password = '';
-    String validedPassword = '';
     bool obscurePassword = true;
     bool obscureConfirmPassword = true;
+    bool isPasswordValid = false;
+    final TextEditingController passwordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
+        TextEditingController();
+
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return showDialog(
@@ -383,145 +396,177 @@ class _ProfilePageState extends State<ProfilePage> {
           builder: (BuildContext context, setState) {
             return CustomPopup(
               title: AppLocalizations.of(context)!.passwordEdit,
-              content: Column(
-                children: <Widget>[
-                  Text(
-                    AppLocalizations.of(context)!.passwordUpdate,
-                    style: TextStyle(
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                      fontSize: screenFormat == ScreenFormat.desktop
-                          ? desktopFontSize - 5
-                          : tabletFontSize - 5,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  TextFormField(
-                    key: const Key('password'),
-                    obscureText: obscurePassword,
-                    decoration: InputDecoration(
-                      hintText: AppLocalizations.of(context)!.passwordFill,
-                      labelText: AppLocalizations.of(context)!.password,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            obscurePassword = !obscurePassword;
-                          });
-                        },
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      password = value!;
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.askCompleteField;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextFormField(
-                    key: const Key('confirm-password'),
-                    obscureText: obscureConfirmPassword,
-                    decoration: InputDecoration(
-                      hintText:
-                          AppLocalizations.of(context)!.passwordConfirmation,
-                      labelText: AppLocalizations.of(context)!.passwordConfirm,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          obscureConfirmPassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            obscureConfirmPassword = !obscureConfirmPassword;
-                          });
-                        },
-                      ),
-                    ),
-                    onChanged: (String? value) {
-                      validedPassword = value!;
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return AppLocalizations.of(context)!.askCompleteField;
-                      }
-                      if (value != password) {
-                        return AppLocalizations.of(context)!.passwordDontMatch;
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 90,
-                  ),
-                  ElevatedButton(
-                    key: const Key("button-password"),
-                    onPressed: () async {
-                      if (password == validedPassword) {
-                        final String apiUrl =
-                            "http://$serverIp:3000/api/auth/update-password/$userMail";
-                        var body = {'password': password};
-
-                        var response = await http.post(
-                          Uri.parse(apiUrl),
-                          body: body,
-                        );
-
-                        if (response.statusCode == 200) {
-                          showCustomToast(
-                              context,
-                              AppLocalizations.of(context)!
-                                  .passwordModifySuccess,
-                              true);
-                          onEdit(password);
-                          Navigator.of(context).pop();
-                        } else {
-                          showCustomToast(context, response.body, false);
-                        }
-                      } else {
-                        showCustomToast(
-                            context,
-                            AppLocalizations.of(context)!.passwordDontMatch,
-                            false);
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                      ),
-                    ),
-                    child: Text(
-                      AppLocalizations.of(context)!.update,
+              content: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      AppLocalizations.of(context)!.passwordUpdate,
                       style: TextStyle(
                         color: Provider.of<ThemeService>(context).isDark
                             ? darkTheme.primaryColor
                             : lightTheme.primaryColor,
                         fontSize: screenFormat == ScreenFormat.desktop
-                            ? desktopFontSize
-                            : tabletFontSize,
+                            ? desktopFontSize - 5
+                            : tabletFontSize - 5,
                       ),
                     ),
-                  ),
-                ],
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    TextFormField(
+                      key: const Key('password'),
+                      controller: passwordController,
+                      obscureText: obscurePassword,
+                      decoration: InputDecoration(
+                        hintText: AppLocalizations.of(context)!.passwordFill,
+                        labelText: AppLocalizations.of(context)!.password,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              obscurePassword = !obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!.askCompleteField;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    FlutterPwValidator(
+                      controller: passwordController,
+                      minLength: 8,
+                      uppercaseCharCount: 1,
+                      numericCharCount: 1,
+                      specialCharCount: 1,
+                      failureColor: const Color(0xFF990000),
+                      successColor: const Color(0xFF009900),
+                      width: 320,
+                      height: 120,
+                      strings: PasswordStrings(context),
+                      onSuccess: () {
+                        setState(
+                          () {
+                            isPasswordValid = true;
+                          },
+                        );
+                      },
+                      onFail: () {
+                        setState(
+                          () {
+                            isPasswordValid = false;
+                          },
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      key: const Key('confirm-password'),
+                      controller: confirmPasswordController,
+                      obscureText: obscureConfirmPassword,
+                      decoration: InputDecoration(
+                        hintText:
+                            AppLocalizations.of(context)!.passwordConfirmation,
+                        labelText:
+                            AppLocalizations.of(context)!.passwordConfirm,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureConfirmPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              obscureConfirmPassword = !obscureConfirmPassword;
+                            });
+                          },
+                        ),
+                      ),
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!.askCompleteField;
+                        }
+                        if (value != passwordController.text) {
+                          return AppLocalizations.of(context)!
+                              .passwordDontMatch;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    ElevatedButton(
+                      key: const Key("button-password"),
+                      onPressed: () async {
+                        if (passwordController.text ==
+                                confirmPasswordController.text &&
+                            isPasswordValid) {
+                          final String apiUrl =
+                              "http://$serverIp:3000/api/auth/update-password/$userMail";
+                          var body = {'password': passwordController.text};
+
+                          var response = await http.post(
+                            Uri.parse(apiUrl),
+                            body: body,
+                          );
+
+                          if (response.statusCode == 200) {
+                            showCustomToast(
+                                context,
+                                AppLocalizations.of(context)!
+                                    .passwordModifySuccess,
+                                true);
+                            onEdit(passwordController.text);
+                            Navigator.of(context).pop();
+                          } else {
+                            showCustomToast(context, response.body, false);
+                          }
+                        } else {
+                          showCustomToast(
+                              context,
+                              AppLocalizations.of(context)!.passwordDontMatch,
+                              false);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 30, vertical: 20),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)!.update,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                          fontSize: screenFormat == ScreenFormat.desktop
+                              ? desktopFontSize
+                              : tabletFontSize,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                ),
               ),
             );
           },

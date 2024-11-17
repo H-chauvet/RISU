@@ -32,6 +32,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
     available: false,
     price: 0,
     categories: [],
+    status: Status.VERYWORN,
     imagesUrl: null,
   );
   List<dynamic> similarArticles = [];
@@ -229,6 +230,22 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           message: AppLocalizations.of(context)!.connectionRefused,
         );
       }
+    }
+  }
+
+  /// _getStatusTranslation
+  /// This method is used to get the good translation
+  /// params:
+  /// [status] - the status enum
+  /// [context] - the application context
+  String _getStatusTranslation(Status status, BuildContext context) {
+    switch (status) {
+      case Status.GOOD:
+        return AppLocalizations.of(context)!.goodStatus;
+      case Status.WORN:
+        return AppLocalizations.of(context)!.wornStatus;
+      case Status.VERYWORN:
+        return AppLocalizations.of(context)!.veryWornStatus;
     }
   }
 
@@ -579,8 +596,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                 height: 200,
                                 decoration: const BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/image_placeholder.png'),
+                                    image: AssetImage('assets/no_image.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -590,7 +606,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         ),
                         const SizedBox(height: 16),
                         Padding(
-                          padding: const EdgeInsets.all(32),
+                          padding: const EdgeInsets.only(top: 32, bottom: 8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -606,6 +622,50 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                       1: FlexColumnWidth(1.0),
                                     },
                                     children: [
+                                      TableRow(
+                                        children: [
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
+                                                  .withOpacity(0.8),
+                                              child: Text(
+                                                "${AppLocalizations.of(context)!.condition} : ",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .secondaryHeaderColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor
+                                                  .withOpacity(0.8),
+                                              child: Text(
+                                                _getStatusTranslation(
+                                                    articleData.status,
+                                                    context),
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .secondaryHeaderColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                       TableRow(
                                         children: [
                                           TableCell(
@@ -713,7 +773,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                             ),
                                           ),
                                         ],
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -721,6 +781,16 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 12),
+                        articleData.description != ""
+                            ? Text(
+                                '${AppLocalizations.of(context)!.description} : ${articleData.description}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : Container(),
                         const SizedBox(height: 24),
                         if (articleData.available)
                           SizedBox(
@@ -796,6 +866,11 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
+                              color: context.select(
+                                  (ThemeProvider themeProvider) => themeProvider
+                                      .currentTheme
+                                      .inputDecorationTheme
+                                      .fillColor),
                               child: Column(
                                 children: [
                                   Padding(

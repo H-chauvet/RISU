@@ -8,7 +8,6 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
@@ -178,6 +177,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 5,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.pay,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -204,6 +219,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       const SizedBox(height: 20),
                       CardField(
                         controller: controller,
+                        style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
+                        ),
                       ),
                       const SizedBox(height: 100),
                       Text(
@@ -235,22 +255,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 5,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.pay,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 50,
-              )
             ],
           ),
         ],

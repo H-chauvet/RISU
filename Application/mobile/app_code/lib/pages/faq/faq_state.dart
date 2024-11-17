@@ -127,7 +127,6 @@ class FaqPageState extends State<FaqPage> {
                           ),
                           const Divider(
                             thickness: 1.5,
-                            color: Colors.black,
                           ),
                           const SizedBox(height: 30),
                         ],

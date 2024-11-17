@@ -3,8 +3,10 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:front/components/container.dart';
 import 'package:front/app_routes.dart';
+import 'package:front/services/theme_service.dart';
 import 'package:mockito/mockito.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
 Future<void> deleteContainer(ContainerListData container) async {}
@@ -26,19 +28,26 @@ void main() {
   testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            home: ContainerCards(
-              container: mockItem,
-              onDelete: deleteContainer,
-              page: 'page',
-            ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('fr'),
-          );
-        },
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: ContainerCards(
+                container: mockItem,
+                onDelete: deleteContainer,
+                page: 'page',
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
       ),
     );
 
@@ -50,19 +59,26 @@ void main() {
 
   testWidgets('Show Edit Popup for Name', (WidgetTester tester) async {
     await tester.pumpWidget(
-      Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            home: ContainerCards(
-              container: mockItem,
-              onDelete: deleteContainer,
-              page: 'page',
-            ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('fr'),
-          );
-        },
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: ContainerCards(
+                container: mockItem,
+                onDelete: deleteContainer,
+                page: 'page',
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
       ),
     );
 
@@ -92,19 +108,26 @@ void main() {
   testWidgets('ContainerListData should render without error',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            home: ContainerCards(
-              container: mockItem,
-              onDelete: deleteContainer,
-              page: "page",
-            ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('fr'),
-          );
-        },
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: ContainerCards(
+                container: mockItem,
+                onDelete: deleteContainer,
+                page: "page",
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
       ),
     );
 
@@ -119,19 +142,26 @@ void main() {
   testWidgets('ContainerListData test Icon arrow_forward',
       (WidgetTester tester) async {
     await tester.pumpWidget(
-      Sizer(
-        builder: (context, orientation, deviceType) {
-          return MaterialApp(
-            home: ContainerCards(
-              container: mockItem,
-              onDelete: deleteContainer,
-              page: "page",
-            ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          locale: const Locale('fr'),
-          );
-        },
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              home: ContainerCards(
+                container: mockItem,
+                onDelete: deleteContainer,
+                page: "page",
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
       ),
     );
 

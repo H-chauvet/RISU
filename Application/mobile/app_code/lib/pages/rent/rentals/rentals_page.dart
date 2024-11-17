@@ -8,10 +8,12 @@ import 'rentals_state.dart';
 /// [testRentals] - rental data to display.
 class RentalPage extends StatefulWidget {
   final List<dynamic> testRentals;
+  final bool appbar;
 
   const RentalPage({
     super.key,
     this.testRentals = const [],
+    required this.appbar,
   });
 
   @override

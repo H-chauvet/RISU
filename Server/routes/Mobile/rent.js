@@ -40,24 +40,45 @@ router.post(
       if (!item) {
         return res.status(404).send(res.__("itemNotFound"));
       }
-      if (!req.body.duration || req.body.duration < 0) {
+      if (!req.body.duration) {
         return res.status(400).send(res.__("missingTime"));
       }
-      if (!item.available) {
+      if (req.body.duration < 0 || req.body.duration > 24) {
+        return res.status(400).send(res.__("incorrectTime"));
+      }
+      if (!item.available && req.body.startDate == null) {
         return res.status(400).send(res.__("itemUnavailable"));
       }
       const locationPrice = item.price * req.body.duration;
 
       await itemCtrl.updateItem(res, item.id, {
         price: item.price,
-        available: false,
+        available: req.body.startDate == null ? false : true,
       });
+
+      const rentals = await rentCtrl.getAllRentalsForItem(item.id);
+
+      newStartDate = req.body.startDate ? new Date(req.body.startDate) : new Date();
+      newEndDate = new Date(newStartDate.getTime() + (req.body.duration * 60 * 60 * 1000))
+      now = new Date().getTime()
+
+      for (const rental of rentals) {
+        currStartDate = new Date(rental.startDate)
+        currEndDate = new Date(currStartDate.getTime() + (rental.duration * 60 * 60 * 1000))
+        if (
+          (currStartDate <= newStartDate && currEndDate >= newStartDate) ||
+          (newEndDate >= currStartDate && newStartDate <= currEndDate)
+        ) {
+          return res.status(400).send(res.__("itemUnavailable"));
+        }
+      }
 
       const location = await rentCtrl.rentItem(
         locationPrice,
         item.id,
         user.id,
-        parseInt(req.body.duration)
+        parseInt(req.body.duration),
+        newStartDate
       );
 
       const container = await containerCtrl.getContainerById(
@@ -67,7 +88,7 @@ router.post(
 
       sendEmailConfirmationLocation(
         user.email,
-        new Date(),
+        newStartDate,
         req.body.duration,
         container.address,
         container.city,

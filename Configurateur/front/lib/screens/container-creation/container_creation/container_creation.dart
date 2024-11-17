@@ -5,7 +5,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
@@ -890,6 +889,22 @@ class ContainerCreationState extends State<ContainerCreation> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 1,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -950,9 +965,12 @@ class ContainerCreationState extends State<ContainerCreation> {
                           ElevatedButton.icon(
                             onPressed: () async {
                               String name = await showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (context) => openDialog());
-                              saveContainer(name);
+                              if (name != '') {
+                                saveContainer(name);
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                                 fixedSize: Size.fromWidth(
@@ -1142,22 +1160,6 @@ class ContainerCreationState extends State<ContainerCreation> {
                 )
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 1,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 50,
-              )
-            ],
           ),
         ],
       ),

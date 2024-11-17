@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/conversation_page.dart';
 import 'package:risu/pages/contact/new_ticket_page.dart';
@@ -268,8 +269,7 @@ class ContactPageState extends State<ContactPage> {
                                 ),
                               ),
                             )
-                          : ListView.builder(
-                              shrinkWrap: true,
+                          : StaggeredList(
                               itemCount: showOpenedTickets
                                   ? openedTickets.length
                                   : closedTickets.length,
@@ -348,7 +348,15 @@ class ContactPageState extends State<ContactPage> {
                                                           dateTimeString:
                                                               lastTicket[
                                                                   "createdAt"])),
-                                                )
+                                                ),
+                                                Text(lastTicket["creatorId"] ==
+                                                        userInformation?.ID
+                                                    ? AppLocalizations.of(
+                                                            context)!
+                                                        .ticketSend
+                                                    : AppLocalizations.of(
+                                                            context)!
+                                                        .ticketAwaiting)
                                               ],
                                             ),
                                           ),

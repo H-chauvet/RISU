@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/services.dart';
@@ -71,6 +73,52 @@ void main() {
         find.text(
             'Grâce à notre configurateur innovant,\nvotre conteneur sera à la hauteur de vos attentes'),
         findsOneWidget);
+
+    await tester.pump();
+  });
+
+  testWidgets('Test de LandingPage', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = const Size(600, 900);
+    tester.binding.window.devicePixelRatioTestValue = 1.0;
+
+    when(sharedPreferences.getString('token')).thenReturn('test-token');
+    when(sharedPreferences.getString('tokenExpiration')).thenReturn(
+        DateTime.now().add(const Duration(minutes: 30)).toIso8601String());
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const LandingPage(),
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: const Locale('fr'),
+            );
+          },
+        ),
+      ),
+    );
+    expect(
+        find.text(
+            'Louer du matériel quand vous en avez envie\n en toute simplicité grâce à RISU !'),
+        findsOneWidget);
+    expect(find.text('Des conteneurs disponibles partout en france !'),
+        findsOneWidget);
+    expect(find.text('Disponible sur Android'), findsOneWidget);
+    expect(find.text("N'attendez plus, téléchargez notre application !"),
+        findsOneWidget);
+    expect(find.byKey(const Key("logo-risu")), findsOneWidget);
+
+    expect(find.byKey(const Key('btn-download')), findsOneWidget);
 
     await tester.pump();
   });

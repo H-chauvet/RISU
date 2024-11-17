@@ -9,7 +9,7 @@ Future<void> createDeeplink({
 }) async {
   await Clipboard.setData(
     ClipboardData(
-      text: 'https://deeplink-risu.web.app/$path',
+      text: 'https://deeplink-risu.firebaseapp.com/$path',
     ),
   );
   if (context.mounted) {

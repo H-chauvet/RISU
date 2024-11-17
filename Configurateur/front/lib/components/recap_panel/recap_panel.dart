@@ -6,7 +6,6 @@ import 'package:front/services/theme_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 
 ///
 /// Locker

@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="deeplink-risu.web.app"
+                    android:host="deeplink-risu.firebaseapp.com"
                     android:scheme="https" />
             </intent-filter>
         </activity>

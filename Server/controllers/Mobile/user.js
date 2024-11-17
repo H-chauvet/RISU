@@ -125,6 +125,7 @@ exports.updateUserInfo = (user, body) => {
     data: {
       firstName: body.firstName ?? user.firstName,
       lastName: body.lastName ?? user.lastName,
+      language : body.language ?? user.language,
       Notifications: {
         update: {
           favoriteItemsAvailable: body.favoriteItemsAvailable ?? user.Notifications.favoriteItemsAvailable,

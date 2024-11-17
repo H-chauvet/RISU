@@ -156,7 +156,7 @@ class ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return const RentalPage();
+                            return const RentalPage(appbar: true);
                           },
                         ),
                       );
@@ -177,7 +177,7 @@ class ProfilePageState extends State<ProfilePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return const FavoritePage();
+                            return const FavoritePage(appbar: true);
                           },
                         ),
                       );

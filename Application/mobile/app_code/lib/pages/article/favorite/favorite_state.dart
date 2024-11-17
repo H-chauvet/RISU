@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/components/toast.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
@@ -22,12 +23,14 @@ import 'favorite_page.dart';
 /// It also contains the logic for displaying the favorites.
 class FavoriteSate extends State<FavoritePage> {
   final LoaderManager _loaderManager = LoaderManager();
+  late bool appbar;
   List<dynamic> favorites = [];
   List<dynamic> deletedFavorites = [];
 
   @override
   void initState() {
     super.initState();
+    appbar = widget.appbar;
     if (widget.testFavorites.isNotEmpty) {
       favorites = widget.testFavorites;
     } else {
@@ -189,10 +192,13 @@ class FavoriteSate extends State<FavoritePage> {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return MyPopScope(
       child: Scaffold(
-        appBar: MyAppBar(
-          curveColor: themeProvider.currentTheme.secondaryHeaderColor,
-          showBackButton: false,
-        ),
+        appBar: (appbar)
+            ? MyAppBar(
+                curveColor: themeProvider.currentTheme.secondaryHeaderColor,
+                showBackButton: false,
+                textTitle: AppLocalizations.of(context)!.myFavorites,
+              )
+            : null,
         resizeToAvoidBottomInset: false,
         backgroundColor: themeProvider.currentTheme.colorScheme.surface,
         body: (_loaderManager.getIsLoading())
@@ -204,17 +210,19 @@ class FavoriteSate extends State<FavoritePage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 30),
-                      Text(
-                        AppLocalizations.of(context)!.myFavorites,
-                        key: const Key('my-favorites-titles'),
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 32,
-                          color: themeProvider.currentTheme.primaryColor,
+                      if (appbar == false) ...[
+                        const SizedBox(height: 30),
+                        Text(
+                          AppLocalizations.of(context)!.myFavorites,
+                          key: const Key('my-favorites-titles'),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                            color: themeProvider.currentTheme.primaryColor,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
-                      ),
+                      ],
                       const SizedBox(height: 30),
                       Expanded(
                         key: const Key('favorite-list'),
@@ -230,8 +238,7 @@ class FavoriteSate extends State<FavoritePage> {
                                   ),
                                 ),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
+                            : StaggeredList(
                                 itemCount: favorites.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   dynamic favorite = favorites[index];

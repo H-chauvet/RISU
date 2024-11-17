@@ -1,13 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart'
+    as datePicker;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart' as stripe;
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
+import 'package:risu/components/divider.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/pop_scope_parent.dart';
@@ -28,6 +32,7 @@ class RentArticlePageState extends State<RentArticlePage> {
   int _rentalHours = 1;
   late ArticleData _articleData;
   final LoaderManager _loaderManager = LoaderManager();
+  DateTime? _startDate;
 
   @override
   void initState() {
@@ -38,17 +43,23 @@ class RentArticlePageState extends State<RentArticlePage> {
   /// Increment the rental hours
   void _incrementHours() {
     setState(() {
-      _rentalHours++;
+      if (_rentalHours == 24) {
+        _rentalHours = 1;
+      } else {
+        _rentalHours++;
+      }
     });
   }
 
   /// Decrement the rental hours
   void _decrementHours() {
-    if (_rentalHours > 1) {
-      setState(() {
+    setState(() {
+      if (_rentalHours == 1) {
+        _rentalHours = 24;
+      } else {
         _rentalHours--;
-      });
-    }
+      }
+    });
   }
 
   /// Rent an article
@@ -69,6 +80,7 @@ class RentArticlePageState extends State<RentArticlePage> {
         body: jsonEncode(<String, dynamic>{
           'itemId': _articleData.id,
           'duration': _rentalHours.toString(),
+          if (_startDate != null) 'startDate': _startDate!.toIso8601String(),
         }),
       );
       setState(() {
@@ -84,6 +96,7 @@ class RentArticlePageState extends State<RentArticlePage> {
                   return ConfirmRentPage(
                     hours: _rentalHours,
                     data: _articleData,
+                    startDate: _startDate,
                     locationId: jsonDecode(response.body)['rentId'],
                   );
                 },
@@ -282,185 +295,271 @@ class RentArticlePageState extends State<RentArticlePage> {
                         const SizedBox(height: 8),
                         loadImageFromURL(_articleData.imagesUrl?[0]),
                         const SizedBox(height: 8),
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: themeProvider
-                                      .currentTheme
-                                      .inputDecorationTheme
-                                      .floatingLabelStyle!
-                                      .color,
-                                ),
-                                padding: const EdgeInsets.all(8.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  _articleData.name,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color:
-                                        themeProvider.currentTheme.primaryColor,
-                                  ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                _articleData.name,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      themeProvider.currentTheme.primaryColor,
                                 ),
                               ),
-                              ClipRRect(
-                                child: Container(
-                                  color: themeProvider
-                                      .currentTheme
-                                      .inputDecorationTheme
-                                      .floatingLabelStyle!
-                                      .color,
-                                  child: Table(
-                                    columnWidths: const {
-                                      0: FlexColumnWidth(1.0),
-                                      1: FlexColumnWidth(1.0),
-                                    },
-                                    children: [
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider.currentTheme
-                                                  .secondaryHeaderColor,
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .pricePerHour,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider.currentTheme
-                                                  .secondaryHeaderColor,
-                                              child: Text(
-                                                AppLocalizations.of(context)!
-                                                    .priceTotal,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      TableRow(
-                                        children: [
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor
-                                                  .withOpacity(0.8),
-                                              child: Text(
-                                                "${_articleData.price}€",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .secondaryHeaderColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          TableCell(
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              color: themeProvider
-                                                  .currentTheme.primaryColor
-                                                  .withOpacity(0.8),
-                                              child: Text(
-                                                "${_articleData.price * _rentalHours}€",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: themeProvider
-                                                      .currentTheme
-                                                      .secondaryHeaderColor,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: themeProvider
-                                      .currentTheme
-                                      .inputDecorationTheme
-                                      .floatingLabelStyle!
-                                      .color,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            ),
+                            const SizedBox(height: 16),
+                            ClipRRect(
+                              child: Container(
+                                color: themeProvider
+                                    .currentTheme
+                                    .inputDecorationTheme
+                                    .floatingLabelStyle!
+                                    .color,
+                                child: Table(
+                                  columnWidths: const {
+                                    0: FlexColumnWidth(1.0),
+                                    1: FlexColumnWidth(1.0),
+                                  },
                                   children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    TableRow(
                                       children: [
-                                        IconButton(
-                                          key: const Key(
-                                              'decrement-hours-button'),
-                                          icon: Icon(
-                                            Icons.remove,
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .pricePerHour,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                              ),
+                                            ),
                                           ),
-                                          onPressed: _decrementHours,
                                         ),
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .rentHours(_rentalHours),
-                                          style: TextStyle(
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider.currentTheme
+                                                .secondaryHeaderColor,
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .priceTotal,
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                        IconButton(
-                                          key: const Key(
-                                              'increment-hours-button'),
-                                          icon: Icon(
-                                            Icons.add,
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
                                             color: themeProvider
-                                                .currentTheme.primaryColor,
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              "${_articleData.price}€",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
+                                              ),
+                                            ),
                                           ),
-                                          onPressed: _incrementHours,
+                                        ),
+                                        TableCell(
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            color: themeProvider
+                                                .currentTheme.primaryColor
+                                                .withOpacity(0.8),
+                                            child: Text(
+                                              "${_articleData.price * _rentalHours}€",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: themeProvider
+                                                    .currentTheme
+                                                    .secondaryHeaderColor,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                            const SizedBox(height: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: themeProvider
+                                    .currentTheme
+                                    .inputDecorationTheme
+                                    .floatingLabelStyle!
+                                    .color,
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      "Starting on",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: themeProvider
+                                            .currentTheme.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  GestureDetector(
+                                    onTap: () {
+                                      datePicker.DatePicker.showDateTimePicker(
+                                        context,
+                                        minTime: DateTime.now(),
+                                        maxTime: DateTime.now().add(
+                                          const Duration(days: 30),
+                                        ),
+                                        currentTime:
+                                            _startDate ?? DateTime.now(),
+                                        onConfirm: (date) {
+                                          setState(() {
+                                            _startDate = date;
+                                          });
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        color: themeProvider
+                                                    .currentTheme.brightness ==
+                                                Brightness.light
+                                            ? Colors.white
+                                            : Colors.black12,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
+                                            blurRadius: 2,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_today,
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Expanded(
+                                            child: Text(
+                                              _startDate != null
+                                                  ? DateFormat(
+                                                      'kk:mm dd MMM yyyy',
+                                                    ).format(_startDate!)
+                                                  : 'Now',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: themeProvider
+                                                    .currentTheme.primaryColor,
+                                              ),
+                                            ),
+                                          ),
+                                          if (_startDate != null)
+                                            IgnorePointer(
+                                              ignoring: false,
+                                              child: GestureDetector(
+                                                child: const Icon(
+                                                  Icons.close,
+                                                  color: Colors.red,
+                                                ),
+                                                onTap: () {
+                                                  setState(() {
+                                                    _startDate = null;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Center(
+                                    child: Text(
+                                      "for",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: themeProvider
+                                            .currentTheme.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        key:
+                                            const Key('decrement-hours-button'),
+                                        icon: Icon(
+                                          Icons.remove,
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                        ),
+                                        onPressed: _decrementHours,
+                                      ),
+                                      Text(
+                                        AppLocalizations.of(context)!
+                                            .rentHours(_rentalHours),
+                                        style: TextStyle(
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      IconButton(
+                                        key:
+                                            const Key('increment-hours-button'),
+                                        icon: Icon(
+                                          Icons.add,
+                                          color: themeProvider
+                                              .currentTheme.primaryColor,
+                                        ),
+                                        onPressed: _incrementHours,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
+                        const MyDivider(),
                         const SizedBox(height: 8),
                         if (_articleData.available)
                           SizedBox(

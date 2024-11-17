@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/pop_scope_parent.dart';
+import 'package:risu/components/staggered_list.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/rent/rentals/rentals_list_card.dart';
 import 'package:risu/utils/check_signin.dart';
@@ -20,12 +21,14 @@ class RentalPageState extends State<RentalPage> {
   List<dynamic> rentalsInProgress = [];
   List<dynamic> pastRentals = [];
   bool showRentalsInProgress = true;
+  late bool appbar;
   final LoaderManager _loaderManager = LoaderManager();
 
   @override
   void initState() {
     super.initState();
 
+    appbar = widget.appbar;
     if (widget.testRentals.isEmpty) {
       getRentals();
     } else {
@@ -114,11 +117,13 @@ class RentalPageState extends State<RentalPage> {
 
     return MyPopScope(
       child: Scaffold(
-        appBar: MyAppBar(
-          curveColor: themeProvider.currentTheme.secondaryHeaderColor,
-          showBackButton: false,
-          textTitle: AppLocalizations.of(context)!.myRents,
-        ),
+        appBar: (appbar)
+            ? MyAppBar(
+                curveColor: themeProvider.currentTheme.secondaryHeaderColor,
+                showBackButton: false,
+                textTitle: AppLocalizations.of(context)!.myRents,
+              )
+            : null,
         resizeToAvoidBottomInset: false,
         backgroundColor: themeProvider.currentTheme.colorScheme.surface,
         body: (_loaderManager.getIsLoading())
@@ -130,6 +135,19 @@ class RentalPageState extends State<RentalPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      if (appbar == false) ...[
+                        const SizedBox(height: 30),
+                        Text(
+                          AppLocalizations.of(context)!.myRents,
+                          key: const Key('my-rents-titles'),
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32,
+                            color: themeProvider.currentTheme.primaryColor,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
                       const SizedBox(height: 30),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -240,8 +258,7 @@ class RentalPageState extends State<RentalPage> {
                                   ),
                                 ),
                               )
-                            : ListView.builder(
-                                shrinkWrap: true,
+                            : StaggeredList(
                                 itemCount: showRentalsInProgress
                                     ? rentalsInProgress.length
                                     : rentals.length,

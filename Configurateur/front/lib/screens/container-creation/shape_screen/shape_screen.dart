@@ -5,9 +5,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/alert_dialog.dart';
-import 'package:front/components/custom_app_bar.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/custom_header.dart';
+import 'package:front/components/dialog/help_dialog/help_dialog.dart';
 import 'package:front/components/progress_bar.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
@@ -116,29 +116,50 @@ class ShapeScreenState extends State<ShapeScreen> {
 
     if (isRemoveClicked == false) {
       buttons.add(
-        ElevatedButton(
-          key: const Key('remove-lockers'),
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(30.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              key: const Key('remove-lockers'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  isRemoveClicked = true;
+                });
+              },
+              child: Text(
+                AppLocalizations.of(context)!.removeLocker,
+                style: TextStyle(
+                  fontSize: screenFormat == ScreenFormat.desktop
+                      ? desktopFontSize
+                      : tabletFontSize,
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.primaryColor
+                      : lightTheme.colorScheme.background,
+                ),
+              ),
             ),
-          ),
-          onPressed: () {
-            setState(() {
-              isRemoveClicked = true;
-            });
-          },
-          child: Text(
-            AppLocalizations.of(context)!.removeLocker,
-            style: TextStyle(
-              fontSize: screenFormat == ScreenFormat.desktop
-                  ? desktopFontSize
-                  : tabletFontSize,
-              color: Provider.of<ThemeService>(context).isDark
-                  ? darkTheme.primaryColor
-                  : lightTheme.colorScheme.background,
+            const SizedBox(
+              width: 10.0,
             ),
-          ),
+            IconButton(
+              hoverColor: Colors.transparent,
+              iconSize: 30.0,
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) => HelpDialog(content: 'shape_screen'));
+              },
+              icon: Icon(
+                Icons.help_outline,
+                color: darkTheme.primaryColor,
+              ),
+            ),
+          ],
         ),
       );
     } else {
@@ -197,6 +218,18 @@ class ShapeScreenState extends State<ShapeScreen> {
                     ? desktopFontSize
                     : tabletFontSize,
               ),
+            ),
+          ),
+          const SizedBox(
+            width: 10.0,
+          ),
+          IconButton(
+            hoverColor: Colors.transparent,
+            iconSize: 30.0,
+            onPressed: () {},
+            icon: Icon(
+              Icons.help_outline,
+              color: darkTheme.primaryColor,
             ),
           ),
         ],
@@ -406,6 +439,22 @@ class ShapeScreenState extends State<ShapeScreen> {
               ],
             ),
           ),
+          const SizedBox(
+            height: 50.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ProgressBar(
+                length: 6,
+                progress: 0,
+                previous: AppLocalizations.of(context)!.previous,
+                next: AppLocalizations.of(context)!.next,
+                previousFunc: goPrevious,
+                nextFunc: goNext,
+              ),
+            ],
+          ),
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.65,
             height: MediaQuery.of(context).size.height * 0.85,
@@ -452,7 +501,12 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.remove),
+                            child: Icon(
+                              Icons.remove,
+                              color: Provider.of<ThemeService>(context).isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                            ),
                           ),
                           const SizedBox(width: 10.0),
                           Container(
@@ -492,7 +546,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.add),
+                            child: Icon(Icons.add,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                         ],
                       ),
@@ -532,7 +589,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.remove),
+                            child: Icon(Icons.remove,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                           const SizedBox(width: 10.0),
                           Container(
@@ -572,7 +632,10 @@ class ShapeScreenState extends State<ShapeScreen> {
                                 }
                               });
                             },
-                            child: const Icon(Icons.add),
+                            child: Icon(Icons.add,
+                                color: Provider.of<ThemeService>(context).isDark
+                                    ? darkTheme.primaryColor
+                                    : lightTheme.primaryColor),
                           ),
                         ],
                       ),
@@ -723,22 +786,6 @@ class ShapeScreenState extends State<ShapeScreen> {
           ),
           const SizedBox(
             height: 10.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ProgressBar(
-                length: 6,
-                progress: 0,
-                previous: AppLocalizations.of(context)!.previous,
-                next: AppLocalizations.of(context)!.next,
-                previousFunc: goPrevious,
-                nextFunc: goNext,
-              ),
-              const SizedBox(
-                height: 20,
-              )
-            ],
           ),
         ],
       ),

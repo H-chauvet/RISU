@@ -9,11 +9,8 @@ import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
-import 'package:front/services/http_service.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
-import 'package:front/components/custom_app_bar.dart';
-import 'package:front/components/footer.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -54,7 +51,7 @@ class _ContainerPageState extends State<ContainerPage> {
   void checkToken() async {
     String? token = await storageService.readStorage('token');
     if (token != null) {
-      jwtToken = token!;
+      jwtToken = token;
       fetchContainers();
       fetchItems();
     } else {
@@ -620,6 +617,9 @@ class _ContainerPageState extends State<ContainerPage> {
                 title: Text(
                   AppLocalizations.of(context)!.nameData(item.name),
                   style: TextStyle(
+                    color: Provider.of<ThemeService>(context).isDark
+                        ? darkTheme.primaryColor
+                        : lightTheme.primaryColor,
                     fontSize: screenFormat == ScreenFormat.desktop
                         ? desktopFontSize
                         : tabletBigFontSize,
@@ -630,6 +630,9 @@ class _ContainerPageState extends State<ContainerPage> {
                         AppLocalizations.of(context)!
                             .descriptionData(item.description!),
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -638,6 +641,9 @@ class _ContainerPageState extends State<ContainerPage> {
                     : Text(
                         AppLocalizations.of(context)!.descriptionEmpty,
                         style: TextStyle(
+                          color: Provider.of<ThemeService>(context).isDark
+                              ? darkTheme.primaryColor
+                              : lightTheme.primaryColor,
                           fontSize: screenFormat == ScreenFormat.desktop
                               ? desktopFontSize
                               : tabletBigFontSize,
@@ -649,7 +655,10 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
-                  icon: const Icon(Icons.mode_outlined),
+                  icon: Icon(Icons.mode_outlined,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () async {
                     await showEditPopupName(
                         context, itemName, itemDesc, item.id!, item,
@@ -665,7 +674,10 @@ class _ContainerPageState extends State<ContainerPage> {
                   width: 10,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: Icon(Icons.delete,
+                      color: Provider.of<ThemeService>(context).isDark
+                          ? darkTheme.primaryColor
+                          : lightTheme.primaryColor),
                   onPressed: () => deleteItem(item),
                 ),
               ],
