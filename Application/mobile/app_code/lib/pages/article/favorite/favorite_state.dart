@@ -265,8 +265,12 @@ class FavoriteSate extends State<FavoritePage> {
                                               borderRadius:
                                                   BorderRadius.circular(10.0),
                                             ),
-                                            color: themeProvider
-                                                .currentTheme.cardColor,
+                                            color: context.select(
+                                                (ThemeProvider themeProvider) =>
+                                                    themeProvider
+                                                        .currentTheme
+                                                        .inputDecorationTheme
+                                                        .fillColor),
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.all(20.0),
