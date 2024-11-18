@@ -30,26 +30,35 @@ class FaqPageState extends State<FaqPage> {
         {
           'title_fr': 'Comment rejoindre l\'équipe ?',
           'title_en': 'How to join the team ?',
+          'title_es': '¿Cómo unirse al equipo?',
           'content_fr':
               'Pour rejoindre l\'équipe, il suffit de nous contacter via le formulaire de contact.',
           'content_en':
-              'To join the team, you just have to contact us via the contact form.'
+              'To join the team, you just have to contact us via the contact form.',
+          'content_es':
+              'Para unirse al equipo, solo tienes que contactarnos a través del formulario de contacto.'
         },
         {
           'title_fr': 'Trouver l\'article idéal',
           'title_en': 'Find the perfect article',
+          'title_es': 'Encuentra el artículo perfecto',
           'content_fr':
               'Pour trouver l\'article idéal, il suffit de parcourir les articles dans nos différents conteneurs. Utilisez les filtres pour affiner votre recherche. Ajoutez les articles en favoris pour les retrouver plus facilement.',
           'content_en':
-              'To find the perfect article, just browse the articles in our different containers. Use the filters to refine your search. Add articles to your favorites to find them more easily.'
+              'To find the perfect article, just browse the articles in our different containers. Use the filters to refine your search. Add articles to your favorites to find them more easily.',
+          'content_es':
+              'Para encontrar el artículo perfecto, solo tienes que explorar los artículos en nuestros diferentes contenedores. Usa los filtros para refinar tu búsqueda. Agrega los artículos a tus favoritos para encontrarlos más fácilmente.'
         },
         {
           'title_fr': 'Comment configurer votre compte ?',
           'title_en': 'How to set up your account ?',
+          'title_es': '¿Cómo configurar tu cuenta?',
           'content_fr':
               'Pour configurer votre compte, il suffit de vous rendre dans le menu burger en haut à droite, puis appuyez sur "détails du profil" ou bien, allez dans "Profil", puis "Paaramètres", puis "Voir les détails du profil". Vous pourrez y modifier vos informations personnelles, vos préférences de notifications, votre thème de l\'application et votre langue.',
           'content_en':
-              'To set up your account, just go to the burger menu at the top right, then press "profile details" or, go to "Profile", then "Settings", then "View profile details". You can modify your personal information, your notification preferences, your application theme and your language.'
+              'To set up your account, just go to the burger menu at the top right, then press "profile details" or, go to "Profile", then "Settings", then "View profile details". You can modify your personal information, your notification preferences, your application theme and your language.',
+          'content_es':
+              'Para configurar tu cuenta, solo ve al menú de hamburguesa en la parte superior derecha, luego presiona "detalles del perfil" o, ve a "Perfil", luego "Configuración", y después "Ver detalles del perfil". Podrás modificar tu información personal, tus preferencias de notificaciones, el tema de la aplicación y tu idioma.'
         },
       ];
     });
@@ -80,8 +89,11 @@ class FaqPageState extends State<FaqPage> {
                   const SizedBox(height: 10),
                   Text(
                     key: const Key('faq-title-text'),
-                    AppLocalizations.of(context)!
-                        .faqTitle(userInformation?.firstName ?? ''),
+                    userInformation?.firstName != null &&
+                            userInformation!.firstName!.isNotEmpty
+                        ? AppLocalizations.of(context)!
+                            .faqTitle(userInformation?.firstName ?? '')
+                        : AppLocalizations.of(context)!.faqTitleOffline,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 24,
@@ -116,8 +128,6 @@ class FaqPageState extends State<FaqPage> {
                                       'title_${currentLocale.languageCode}'],
                                   style: TextStyle(
                                     fontSize: 16,
-                                    color:
-                                        themeProvider.currentTheme.primaryColor,
                                   ),
                                 ),
                               ),
