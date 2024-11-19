@@ -480,7 +480,12 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                   createDeeplink(
                       path: 'article/?id=${articleData.id}', context: context);
                 },
-                icon: const Icon(Icons.share),
+                icon: Icon(
+                  Icons.share,
+                  color: context.select((ThemeProvider themeProvider) =>
+                      themeProvider.currentTheme.bottomNavigationBarTheme
+                          .selectedItemColor),
+                ),
               ),
               IconButton(
                 key: const Key('article-button_add-favorite'),
@@ -632,7 +637,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                                   .currentTheme.primaryColor
                                                   .withOpacity(0.8),
                                               child: Text(
-                                                "${AppLocalizations.of(context)!.condition} : ",
+                                                "${AppLocalizations.of(context)!.condition}:",
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
@@ -675,7 +680,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                                               color: themeProvider.currentTheme
                                                   .secondaryHeaderColor,
                                               child: Text(
-                                                "${AppLocalizations.of(context)!.currently}: ",
+                                                "${AppLocalizations.of(context)!.currently}:",
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,
@@ -784,7 +789,7 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
                         const SizedBox(height: 12),
                         articleData.description != ""
                             ? Text(
-                                '${AppLocalizations.of(context)!.description} : ${articleData.description}',
+                                '${AppLocalizations.of(context)!.description}: ${articleData.description}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
