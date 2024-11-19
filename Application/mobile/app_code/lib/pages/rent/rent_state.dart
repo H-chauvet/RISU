@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
-import 'package:risu/components/divider.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/components/outlined_button.dart';
 import 'package:risu/components/pop_scope_parent.dart';
@@ -414,160 +413,173 @@ class RentArticlePageState extends State<RentArticlePage> {
                                             .inputDecorationTheme.fillColor),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)!.startingOn,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: themeProvider
-                                            .currentTheme
-                                            .inputDecorationTheme
-                                            .labelStyle!
-                                            .color,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  GestureDetector(
-                                    onTap: () {
-                                      datePicker.DatePicker.showDateTimePicker(
-                                        context,
-                                        minTime: DateTime.now(),
-                                        maxTime: DateTime.now().add(
-                                          const Duration(days: 30),
-                                        ),
-                                        currentTime:
-                                            _startDate ?? DateTime.now(),
-                                        onConfirm: (date) {
-                                          setState(() {
-                                            _startDate = date;
-                                          });
-                                        },
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.all(8.0),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: themeProvider
-                                                    .currentTheme.brightness ==
-                                                Brightness.light
-                                            ? Colors.white
-                                            : Colors.black12,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
-                                            blurRadius: 2,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.calendar_today,
-                                            color: themeProvider
-                                                .currentTheme.primaryColor,
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              _startDate != null
-                                                  ? DateFormat(
-                                                      'kk:mm dd MMM yyyy',
-                                                    ).format(_startDate!)
-                                                  : AppLocalizations.of(
-                                                          context)!
-                                                      .now,
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: themeProvider
-                                                    .currentTheme.primaryColor,
-                                              ),
-                                            ),
-                                          ),
-                                          if (_startDate != null)
-                                            IgnorePointer(
-                                              ignoring: false,
-                                              child: GestureDetector(
-                                                child: const Icon(
-                                                  Icons.close,
-                                                  color: Colors.red,
-                                                ),
-                                                onTap: () {
-                                                  setState(() {
-                                                    _startDate = null;
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Center(
-                                    child: Text(
-                                      AppLocalizations.of(context)!.forString,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: themeProvider
-                                            .currentTheme
-                                            .inputDecorationTheme
-                                            .labelStyle!
-                                            .color,
-                                      ),
-                                    ),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        key:
-                                            const Key('decrement-hours-button'),
-                                        icon: Icon(
-                                          Icons.remove,
-                                          color: themeProvider
-                                              .currentTheme.primaryColor,
-                                        ),
-                                        onPressed: _decrementHours,
-                                      ),
-                                      Text(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                      child: Text(
                                         AppLocalizations.of(context)!
-                                            .rentHours(_rentalHours),
+                                            .startingOn,
                                         style: TextStyle(
-                                          color: themeProvider
-                                              .currentTheme.primaryColor,
                                           fontSize: 16,
-                                        ),
-                                      ),
-                                      IconButton(
-                                        key:
-                                            const Key('increment-hours-button'),
-                                        icon: Icon(
-                                          Icons.add,
+                                          fontWeight: FontWeight.bold,
                                           color: themeProvider
-                                              .currentTheme.primaryColor,
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
                                         ),
-                                        onPressed: _incrementHours,
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    GestureDetector(
+                                      onTap: () {
+                                        datePicker.DatePicker
+                                            .showDateTimePicker(
+                                          context,
+                                          minTime: DateTime.now(),
+                                          maxTime: DateTime.now().add(
+                                            const Duration(days: 30),
+                                          ),
+                                          currentTime:
+                                              _startDate ?? DateTime.now(),
+                                          onConfirm: (date) {
+                                            setState(() {
+                                              _startDate = date;
+                                            });
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          color: themeProvider.currentTheme
+                                                      .brightness ==
+                                                  Brightness.light
+                                              ? Colors.white
+                                              : themeProvider
+                                                  .currentTheme
+                                                  .inputDecorationTheme
+                                                  .fillColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: themeProvider.currentTheme
+                                                          .brightness ==
+                                                      Brightness.light
+                                                  ? themeProvider
+                                                      .currentTheme.primaryColor
+                                                  : Colors.black,
+                                              blurRadius: 2,
+                                              offset: const Offset(0, 2),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Icon(
+                                              Icons.calendar_today,
+                                              color: themeProvider
+                                                  .currentTheme.primaryColor,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                _startDate != null
+                                                    ? DateFormat(
+                                                        'kk:mm dd MMM yyyy',
+                                                      ).format(_startDate!)
+                                                    : AppLocalizations.of(
+                                                            context)!
+                                                        .now,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: themeProvider
+                                                      .currentTheme
+                                                      .primaryColor,
+                                                ),
+                                              ),
+                                            ),
+                                            if (_startDate != null)
+                                              IgnorePointer(
+                                                ignoring: false,
+                                                child: GestureDetector(
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.red,
+                                                  ),
+                                                  onTap: () {
+                                                    setState(() {
+                                                      _startDate = null;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Center(
+                                      child: Text(
+                                        AppLocalizations.of(context)!.forString,
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: themeProvider
+                                              .currentTheme
+                                              .inputDecorationTheme
+                                              .labelStyle!
+                                              .color,
+                                        ),
+                                      ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        IconButton(
+                                          key: const Key(
+                                              'decrement-hours-button'),
+                                          icon: Icon(
+                                            Icons.remove,
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
+                                          ),
+                                          onPressed: _decrementHours,
+                                        ),
+                                        Text(
+                                          AppLocalizations.of(context)!
+                                              .rentHours(_rentalHours),
+                                          style: TextStyle(
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          key: const Key(
+                                              'increment-hours-button'),
+                                          icon: Icon(
+                                            Icons.add,
+                                            color: themeProvider
+                                                .currentTheme.primaryColor,
+                                          ),
+                                          onPressed: _incrementHours,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
                         ),
-                        const MyDivider(),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         if (_articleData.available)
                           SizedBox(
                             width: double.infinity,
