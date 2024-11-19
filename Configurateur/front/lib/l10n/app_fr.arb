@@ -355,7 +355,6 @@
 	"goodStatus": "Bon",
 	"wornStatus": "Usé",
 	"veryWornStatus": "Très usé",
-
 	"henriPosition": "Chef de projet",
 	"henriDescription": "Chef de projet de l’équipe Risu. Il s’occupe du devéloppement de la partie Web de la solution. Il s’occupe aussi des documents relatifs à l’entreprise et aux rendus exigés.",
 	"hugoPosition": "Développeur mobile",
@@ -370,7 +369,6 @@
 	"tanguyDescription": "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints",
 	"nathanPosition": "Développeur mobile",
 	"nathanDescription": "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints",
-
 	"risuDescription": "Risu révolutionne l'accès aux objets du quotidien grâce à ses conteneurs et casiers connectés...",
 	"risuMembers": "Membres de l’équipe RISU",
 	"solution": "Notre solution",

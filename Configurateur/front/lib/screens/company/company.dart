@@ -263,50 +263,43 @@ class CompanyPageState extends State<CompanyPage> {
         "name": "Henri",
         "companyPosition": AppLocalizations.of(context)!.henriPosition,
         "image": 'assets/Henri.png',
-        "description":
-            AppLocalizations.of(context)!.henriDescription
+        "description": AppLocalizations.of(context)!.henriDescription
       },
       {
         "name": "Hugo",
         "companyPosition": AppLocalizations.of(context)!.hugoPosition,
         "image": 'assets/Hugo.png',
-        "description":
-            AppLocalizations.of(context)!.hugoDescription
+        "description": AppLocalizations.of(context)!.hugoDescription
       },
       {
         "name": "Cédric",
         "companyPosition": AppLocalizations.of(context)!.cedricPosition,
         "image": 'assets/Cédric.png',
-        "description":
-            AppLocalizations.of(context)!.cedricDescription
+        "description": AppLocalizations.of(context)!.cedricDescription
       },
       {
         "name": "Louis",
         "companyPosition": AppLocalizations.of(context)!.louisPosition,
         "image": 'assets/Louis.png',
-        "description":
-            AppLocalizations.of(context)!.louisDescription
+        "description": AppLocalizations.of(context)!.louisDescription
       },
       {
         "name": "Quentin",
         "companyPosition": AppLocalizations.of(context)!.quentinPosition,
         "image": 'assets/Quentin.png',
-        "description":
-            AppLocalizations.of(context)!.quentinDescription
+        "description": AppLocalizations.of(context)!.quentinDescription
       },
       {
         "name": "Tanguy",
         "companyPosition": AppLocalizations.of(context)!.tanguyPosition,
         "image": 'assets/Tanguy.png',
-        "description":
-            AppLocalizations.of(context)!.tanguyDescription
+        "description": AppLocalizations.of(context)!.tanguyDescription
       },
       {
         "name": "Nathan",
         "companyPosition": AppLocalizations.of(context)!.nathanPosition,
         "image": 'assets/Nathan.png',
-        "description":
-            AppLocalizations.of(context)!.nathanDescription
+        "description": AppLocalizations.of(context)!.nathanDescription
       },
     ];
   }
@@ -466,7 +459,8 @@ class CompanyPageState extends State<CompanyPage> {
                         maxWidth: 700,
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.containerAndLockerDescription,
+                        AppLocalizations.of(context)!
+                            .containerAndLockerDescription,
                         style: TextStyle(
                           fontSize: 18,
                           color: Provider.of<ThemeService>(context).isDark
@@ -510,7 +504,8 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            AppLocalizations.of(context)!.personalizationDescription,
+                            AppLocalizations.of(context)!
+                                .personalizationDescription,
                             style: TextStyle(
                               fontSize: 13,
                               color: Provider.of<ThemeService>(context).isDark
@@ -533,7 +528,8 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            AppLocalizations.of(context)!.installationDescription,
+                            AppLocalizations.of(context)!
+                                .installationDescription,
                             style: TextStyle(
                               fontSize: 13,
                               color: Provider.of<ThemeService>(context).isDark
@@ -599,7 +595,8 @@ class CompanyPageState extends State<CompanyPage> {
                             maxWidth: 600,
                           ),
                           child: Text(
-                            AppLocalizations.of(context)!.mobileApplicationDescription,
+                            AppLocalizations.of(context)!
+                                .mobileApplicationDescription,
                             style: TextStyle(
                               fontSize: 18,
                               color: Provider.of<ThemeService>(context).isDark
@@ -627,7 +624,8 @@ class CompanyPageState extends State<CompanyPage> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: AppLocalizations.of(context)!.connectedMap,
+                                text:
+                                    AppLocalizations.of(context)!.connectedMap,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -638,8 +636,8 @@ class CompanyPageState extends State<CompanyPage> {
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    AppLocalizations.of(context)!.connectedMapDescription,
+                                text: AppLocalizations.of(context)!
+                                    .connectedMapDescription,
                                 style: TextStyle(
                                   fontSize: 18,
                                   color:
@@ -672,8 +670,8 @@ class CompanyPageState extends State<CompanyPage> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text:
-                                      AppLocalizations.of(context)!.easyToUseDescription,
+                                  text: AppLocalizations.of(context)!
+                                      .easyToUseDescription,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Provider.of<ThemeService>(context)
@@ -712,7 +710,8 @@ class CompanyPageState extends State<CompanyPage> {
                     maxWidth: 600,
                   ),
                   child: Text(
-                    AppLocalizations.of(context)!.environmentalAndSocialDescription,
+                    AppLocalizations.of(context)!
+                        .environmentalAndSocialDescription,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
@@ -769,7 +768,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.travelReductionDescription,
+                              AppLocalizations.of(context)!
+                                  .travelReductionDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,
@@ -820,7 +820,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.objectSharingDescription,
+                              AppLocalizations.of(context)!
+                                  .objectSharingDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,
@@ -871,7 +872,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!.accessibilityDescription,
+                              AppLocalizations.of(context)!
+                                  .accessibilityDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,
