@@ -86,7 +86,8 @@ class FaqPageState extends State<FaqPage> {
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      color: themeProvider.currentTheme.primaryColor,
+                      color: themeProvider
+                          .currentTheme.inputDecorationTheme.labelStyle?.color,
                     ),
                   ),
                   const SizedBox(height: 30),
