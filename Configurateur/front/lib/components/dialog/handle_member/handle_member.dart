@@ -9,6 +9,7 @@ import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/styles/globalStyle.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 
@@ -112,6 +113,7 @@ class HandleMemberState extends State<HandleMember> {
   /// [Widget] : Build the AlertDialog
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return AlertDialog(
@@ -122,7 +124,7 @@ class HandleMemberState extends State<HandleMember> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Ajouter un membre',
+              AppLocalizations.of(context)!.addMember,
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
@@ -134,7 +136,7 @@ class HandleMemberState extends State<HandleMember> {
               height: 5,
             ),
             Text(
-              "Pour ajouter un membre à votre entreprise, indiquez son adresse mail. Il recevra un mail permettant de créer son compte",
+              AppLocalizations.of(context)!.addMemberInfo,
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopInfoTextFontSize
@@ -145,43 +147,53 @@ class HandleMemberState extends State<HandleMember> {
             const SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    key: const Key('collaboratorContact'),
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      hintText: "Entrez un mail pour inviter le collaborateur",
-                      labelText: 'Mail',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
+            Form(
+              key: formKey,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      key: const Key('collaboratorContact'),
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText:
+                            AppLocalizations.of(context)!.enterMailCollaborator,
+                        labelText: 'Mail',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
                       ),
+                      onChanged: (String? value) {
+                        collaboratorContact = value!;
+                      },
+                      validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                          return AppLocalizations.of(context)!.askCompleteField;
+                        }
+                        if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                          return AppLocalizations.of(context)!.emailNotValid;
+                        }
+                        return null;
+                      },
                     ),
-                    onChanged: (String? value) {
-                      collaboratorContact = value!;
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Veuillez remplir ce champ';
-                      }
-                      return null;
-                    },
                   ),
-                ),
-                IconButton(
-                  key: const Key('send-button'),
-                  onPressed: () => {
-                    if (collaboratorContact != '')
-                      {
-                        addMember(),
-                        collaboratorContact = '',
-                        _controller.text = '',
+                  IconButton(
+                    key: const Key('send-button'),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        // Le formulaire est valide
+                        addMember();
+                        // Réinitialiser le champ
+                        _controller.clear();
+                        setState(() {
+                          collaboratorContact = '';
+                        });
                       }
-                  },
-                  icon: Icon(Icons.send),
-                )
-              ],
+                    },
+                    icon: const Icon(Icons.send),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 20,
@@ -196,7 +208,7 @@ class HandleMemberState extends State<HandleMember> {
               height: 20,
             ),
             Text(
-              'Membres actuelles',
+              AppLocalizations.of(context)!.actualMember,
               style: TextStyle(
                 fontSize: screenFormat == ScreenFormat.desktop
                     ? desktopFontSize
@@ -233,7 +245,7 @@ class HandleMemberState extends State<HandleMember> {
                                   });
                                 }
                               },
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                             )
                     ],
                   );

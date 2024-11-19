@@ -142,7 +142,7 @@ class MyContainerState extends State<MyContainer> {
 
     return Scaffold(
       body: FooterView(
-        footer: Footer(child: const CustomFooter()),
+        footer: Footer(padding: EdgeInsets.zero, child: CustomFooter()),
         children: [
           LandingAppBar(context: context),
           Text(

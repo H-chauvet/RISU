@@ -179,16 +179,6 @@ exports.createFixtures = async () => {
           Notifications: true,
         },
       });
-    const emptyTicket1 = await db.Tickets.create({
-      data: {
-        id: 2,
-        content: "Vous êtes super !",
-        title: "Coucou !",
-        creatorId: "42",
-        assignedId: "",
-        chatUid: "1",
-      },
-    });
   } catch (err) {
     console.error(err.message);
   }

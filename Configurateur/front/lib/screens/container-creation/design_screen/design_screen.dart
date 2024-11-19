@@ -585,6 +585,7 @@ class DesignScreenState extends State<DesignScreen> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

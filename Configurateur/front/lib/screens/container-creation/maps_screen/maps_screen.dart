@@ -163,6 +163,7 @@ class MapsState extends State<MapsScreen> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [
