@@ -68,7 +68,7 @@ class HomePageState extends State<HomePage> {
         ContainerPage(
           onDirectionClicked: (id) {
             setState(() {
-              _currentIndex = 1;
+              _currentIndex = 2;
               containerId = id;
             });
           },
@@ -209,7 +209,7 @@ class HomePageState extends State<HomePage> {
             if (value)
               {
                 setState(() {
-                  _currentIndex = 2;
+                  _currentIndex = 4;
                 }),
                 Navigator.push(
                   context,
@@ -248,7 +248,8 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     if (containerId != null) {
-      _pages[1] = MapPage(
+      int mapIndex = 1 + (userInformation == null ? 0 : 1);
+      _pages[mapIndex] = MapPage(
         containerId: containerId,
       );
     }
