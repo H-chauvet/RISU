@@ -54,7 +54,7 @@ class FaqPageState extends State<FaqPage> {
           'title_en': 'How to set up your account ?',
           'title_es': '¿Cómo configurar tu cuenta?',
           'content_fr':
-              'Pour configurer votre compte, il suffit de vous rendre dans le menu burger en haut à droite, puis appuyez sur "détails du profil" ou bien, allez dans "Profil", puis "Paaramètres", puis "Voir les détails du profil". Vous pourrez y modifier vos informations personnelles, vos préférences de notifications, votre thème de l\'application et votre langue.',
+              'Pour configurer votre compte, il suffit de vous rendre dans le menu burger en haut à droite, puis appuyez sur "détails du profil" ou bien, allez dans "Profil", puis "Paramètres", puis "Voir les détails du profil". Vous pourrez y modifier vos informations personnelles, vos préférences de notifications, votre thème de l\'application et votre langue.',
           'content_en':
               'To set up your account, just go to the burger menu at the top right, then press "profile details" or, go to "Profile", then "Settings", then "View profile details". You can modify your personal information, your notification preferences, your application theme and your language.',
           'content_es':
