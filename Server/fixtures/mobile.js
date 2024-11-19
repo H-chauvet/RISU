@@ -133,17 +133,6 @@ exports.createFixtures = async () => {
               },
             ],
           },
-          locations: {
-            create: {
-              item: {
-                connect: {
-                  id: 1,
-                },
-              },
-              price: 10.0,
-              duration: 20,
-            },
-          },
         },
         include: {
           Notifications: true,
