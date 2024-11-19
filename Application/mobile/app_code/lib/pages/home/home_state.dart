@@ -272,7 +272,7 @@ class HomePageState extends State<HomePage> {
           currentIndex: _currentIndex,
           onTap: (index) async {
             setState(() {
-              if (index == 2 && userInformation == null) {
+              if ((index == 2 || index == 4) && userInformation == null) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
