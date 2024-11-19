@@ -408,11 +408,10 @@ class RentArticlePageState extends State<RentArticlePage> {
                             const SizedBox(height: 16),
                             Container(
                               decoration: BoxDecoration(
-                                color: themeProvider
-                                    .currentTheme
-                                    .inputDecorationTheme
-                                    .floatingLabelStyle!
-                                    .color,
+                                color: context.select(
+                                    (ThemeProvider themeProvider) =>
+                                        themeProvider.currentTheme
+                                            .inputDecorationTheme.fillColor),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               child: Column(
@@ -420,12 +419,15 @@ class RentArticlePageState extends State<RentArticlePage> {
                                 children: [
                                   Center(
                                     child: Text(
-                                      "Starting on",
+                                      AppLocalizations.of(context)!.startingOn,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: themeProvider
-                                            .currentTheme.primaryColor,
+                                            .currentTheme
+                                            .inputDecorationTheme
+                                            .labelStyle!
+                                            .color,
                                       ),
                                     ),
                                   ),
@@ -480,7 +482,9 @@ class RentArticlePageState extends State<RentArticlePage> {
                                                   ? DateFormat(
                                                       'kk:mm dd MMM yyyy',
                                                     ).format(_startDate!)
-                                                  : 'Now',
+                                                  : AppLocalizations.of(
+                                                          context)!
+                                                      .now,
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 16,
@@ -511,12 +515,15 @@ class RentArticlePageState extends State<RentArticlePage> {
                                   const SizedBox(height: 8),
                                   Center(
                                     child: Text(
-                                      "for",
+                                      AppLocalizations.of(context)!.forString,
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: themeProvider
-                                            .currentTheme.primaryColor,
+                                            .currentTheme
+                                            .inputDecorationTheme
+                                            .labelStyle!
+                                            .color,
                                       ),
                                     ),
                                   ),
