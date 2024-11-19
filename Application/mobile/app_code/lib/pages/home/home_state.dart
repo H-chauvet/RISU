@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
-import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
@@ -263,7 +262,6 @@ class HomePageState extends State<HomePage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
         ),
-        endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(
