@@ -56,7 +56,7 @@ class TeamPageState extends State<TeamPage> {
       backgroundColor: context.select((ThemeProvider themeProvider) =>
           themeProvider.currentTheme.colorScheme.surface),
       body: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+        margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
