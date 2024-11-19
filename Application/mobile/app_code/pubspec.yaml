@@ -52,6 +52,7 @@ dependencies:
   app_links:
   firebase_core: ^3.8.0
   firebase_messaging: ^15.1.5
+  flutter_datetime_picker_plus: ^2.2.0
 
 
 dev_dependencies:

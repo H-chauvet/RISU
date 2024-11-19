@@ -41,6 +41,12 @@ model Item_Category {
     items Item[]
 }
 
+enum Status {
+    GOOD
+    WORN
+    VERYWORN
+}
+
 model Item {
     id              Int                       @id @default(autoincrement())
     name            String
@@ -56,6 +62,7 @@ model Item {
     category        String?
     categories      Item_Category[]
     favorite        Favorite_Article_Mobile[]
+    status          Status
 }
 
 model Organization {
@@ -160,7 +167,7 @@ model Location_Mobile {
     user      User_Mobile @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    String
     createdAt DateTime    @default(now())
-    startDate DateTime?   @default(now())
+    startDate DateTime    @default(now())
     duration  Int
     ended     Boolean     @default(false)
     invoice   Bytes?

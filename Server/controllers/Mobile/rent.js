@@ -9,16 +9,28 @@ const { db } = require('../../middleware/database')
  * @param {*} duration of the rent
  * @returns the freshly rented item
  */
-exports.rentItem = (price, itemId, userId, duration) => {
+exports.rentItem = (price, itemId, userId, duration, startDate) => {
   return db.Location_Mobile.create({
       data: {
         price: price,
         itemId: itemId,
         userId: userId,
         duration: duration,
+        ...startDate ? {
+          startDate: startDate
+        } : {},
       }
     })
 }
+
+exports.getAllRentalsForItem = (itemId) => {
+  return db.Location_Mobile.findMany({
+    where: {
+      itemId: itemId
+    },
+  });
+}
+
 
 /**
  * Get rents of the user

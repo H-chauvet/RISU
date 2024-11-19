@@ -21,13 +21,18 @@ void main() {
       id: 0,
       containerId: 1,
       name: 'Ballon',
+      status: Status.GOOD,
       available: true,
       price: 8,
       categories: [],
     );
 
-    await tester.pumpWidget(
-        initPage(ConfirmRentPage(hours: 5, data: data, locationId: 1)));
+    await tester.pumpWidget(initPage(ConfirmRentPage(
+      hours: 5,
+      data: data,
+      startDate: null,
+      locationId: 1,
+    )));
 
     await tester.pumpAndSettle(const Duration(milliseconds: 50));
 
@@ -49,11 +54,16 @@ void main() {
       containerId: 1,
       name: 'Ballon',
       available: true,
+      status: Status.GOOD,
       price: 8,
       categories: [],
     );
-    await tester.pumpWidget(
-        initPage(ConfirmRentPage(hours: 5, data: data, locationId: 1)));
+    await tester.pumpWidget(initPage(ConfirmRentPage(
+      hours: 5,
+      data: data,
+      startDate: null,
+      locationId: 1,
+    )));
     Finder invoiceButton =
         find.byKey(const Key('return_rent-button-receive_invoice'));
 
