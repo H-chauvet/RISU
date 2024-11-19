@@ -63,7 +63,7 @@ class LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       body: FooterView(
-          flex: 10,
+          flex: 8,
           footer: Footer(
             padding: EdgeInsets.zero,
             child: const CustomFooter(),
@@ -346,22 +346,6 @@ class LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Text(
-                            AppLocalizations.of(context)!.logInWith,
-                            style: TextStyle(
-                                color: Provider.of<ThemeService>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletFontSize),
-                          ),
-                          const SizedBox(height: 10),
-                          GoogleLogo(
-                            screenFormat: screenFormat,
-                          ),
                         ],
                       ),
                     ),

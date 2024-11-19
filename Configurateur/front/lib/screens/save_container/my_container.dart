@@ -137,6 +137,7 @@ class MyContainerState extends State<MyContainer> {
   /// [Widget] : Build my containers page
   @override
   Widget build(BuildContext context) {
+    String? noSave = AppLocalizations.of(context)?.noSave;
     ScreenFormat screenFormat = SizeService().getScreenFormat(context);
 
     return Scaffold(
@@ -176,10 +177,10 @@ class MyContainerState extends State<MyContainer> {
                   width: MediaQuery.of(context).size.width * 0.65,
                   height: MediaQuery.of(context).size.height * 0.85,
                   child: displayedContainers.isEmpty
-                      ? const Text(
-                          "Aucune sauvegarde trouvée",
+                      ? Text(
+                          AppLocalizations.of(context)!.noSave,
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             color: Color.fromARGB(255, 211, 11, 11),
                           ),
