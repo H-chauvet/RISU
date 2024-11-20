@@ -43,11 +43,13 @@ class HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _handleUri();
-    _firebaseMessaging = FirebaseMessaging.instance;
-    _firebaseMessaging.getToken().then((String? token) {
-      assert(token != null);
-      print('Push Messaging token: $token');
-    });
+    if (widget.firebase) {
+      _firebaseMessaging = FirebaseMessaging.instance;
+      _firebaseMessaging.getToken().then((String? token) {
+        assert(token != null);
+        print('Push Messaging token: $token');
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
         configProfile(context);
