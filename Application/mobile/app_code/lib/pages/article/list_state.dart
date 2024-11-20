@@ -200,7 +200,12 @@ class ArticleListState extends State<ArticleListPage> {
               createDeeplink(
                   path: 'container/?id=$_containerId', context: context);
             },
-            icon: const Icon(Icons.share),
+            icon: Icon(
+              Icons.share,
+              color: context.select((ThemeProvider themeProvider) =>
+                  themeProvider
+                      .currentTheme.bottomNavigationBarTheme.selectedItemColor),
+            ),
           ),
         ),
         resizeToAvoidBottomInset: false,
