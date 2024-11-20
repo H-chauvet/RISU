@@ -70,6 +70,7 @@ class ConfirmedUserState extends State<ConfirmedUser> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [

@@ -862,6 +862,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

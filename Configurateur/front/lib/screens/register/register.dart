@@ -55,7 +55,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
     return Scaffold(
       body: FooterView(
-        flex: 8,
+        flex: 5,
         footer: Footer(
           padding: EdgeInsets.zero,
           child: CustomFooter(),
@@ -459,23 +459,6 @@ class RegisterScreenState extends State<RegisterScreen> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            Text(
-                              AppLocalizations.of(context)!.registerWith,
-                              style: TextStyle(
-                                color: Provider.of<ThemeService>(context,
-                                            listen: false)
-                                        .isDark
-                                    ? darkTheme.primaryColor
-                                    : lightTheme.primaryColor,
-                                fontSize: screenFormat == ScreenFormat.desktop
-                                    ? desktopFontSize
-                                    : tabletFontSize,
-                              ),
-                            ),
-                            const SizedBox(height: 10),
-                            GoogleLogo(
-                              screenFormat: screenFormat,
-                            ),
                           ],
                         ),
                       ),

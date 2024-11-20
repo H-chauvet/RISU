@@ -64,11 +64,6 @@ void main() {
     expect(find.text("Se connecter"), findsOneWidget);
     expect(find.text("Nouveau sur la plateforme ? "), findsOneWidget);
     expect(find.text("Créer un compte."), findsOneWidget);
-    expect(find.text("Se connecter avec :"), findsOneWidget);
-
-    expect(
-        find.image(const AssetImage("assets/google-logo.png")), findsOneWidget);
-    expect(find.text('Google'), findsOneWidget);
     expect(find.byType(CustomFooter), findsOneWidget);
 
     await tester.enterText(find.byKey(const Key('email')), 'test@gmail.com');

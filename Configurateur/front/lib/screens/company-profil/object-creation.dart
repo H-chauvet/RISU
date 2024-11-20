@@ -248,6 +248,7 @@ class ObjectCreationState extends State<ObjectCreation> {
       body: FooterView(
         flex: 6,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

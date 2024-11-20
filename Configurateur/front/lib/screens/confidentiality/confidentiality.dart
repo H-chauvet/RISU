@@ -23,6 +23,7 @@ class ConfidentialityPage extends StatelessWidget {
       body: FooterView(
         flex: 10,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [
