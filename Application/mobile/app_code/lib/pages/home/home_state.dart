@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -36,11 +37,19 @@ class HomePageState extends State<HomePage> {
   int? containerId;
   late AppLinks _appLinks;
   final LoaderManager _loaderManager = LoaderManager();
+  late FirebaseMessaging _firebaseMessaging;
 
   @override
   void initState() {
     super.initState();
     _handleUri();
+    if (widget.firebase) {
+      _firebaseMessaging = FirebaseMessaging.instance;
+      _firebaseMessaging.getToken().then((String? token) {
+        assert(token != null);
+        print('Push Messaging token: $token');
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
         configProfile(context);

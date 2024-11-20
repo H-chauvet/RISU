@@ -1,8 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+import 'package:risu/firebase_options.dart';
 import 'package:risu/pages/home/home_page.dart';
 import 'package:risu/pages/login/login_refresh_token.dart';
 import 'package:risu/utils/providers/language.dart';
@@ -44,6 +46,10 @@ void main() async {
   if (refreshToken != null && refreshToken != '') {
     loginRefreshToken(refreshToken);
   }
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.android,
+  );
 
   await Future.delayed(const Duration(seconds: 2));
   runApp(

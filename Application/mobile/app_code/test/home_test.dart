@@ -20,7 +20,9 @@ void main() {
   testWidgets('Logged in user should see HomePage',
       (WidgetTester tester) async {
     userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const HomePage()));
+    await tester.pumpWidget(initPage(const HomePage(
+      firebase: false,
+    )));
 
     Finder appBarLogo = find.byKey(const Key('appbar-image_logo'));
     expect(appBarLogo, findsOneWidget);
@@ -35,7 +37,9 @@ void main() {
       'Logged in but without firstName and lastName, cancel the alert dialog',
       (WidgetTester tester) async {
     userInformation = initNullUser();
-    await tester.pumpWidget(initPage(const HomePage()));
+    await tester.pumpWidget(initPage(const HomePage(
+      firebase: false,
+    )));
 
     await tester.pumpAndSettle();
     expect(find.byType(BottomNavBar), findsOneWidget);
@@ -50,7 +54,9 @@ void main() {
       'Logged in but without firstName and lastName, accept the alert dialog',
       (WidgetTester tester) async {
     userInformation = initNullUser();
-    await tester.pumpWidget(initPage(const HomePage()));
+    await tester.pumpWidget(initPage(const HomePage(
+      firebase: false,
+    )));
 
     await tester.pumpAndSettle();
     expect(find.byType(BottomNavBar), findsOneWidget);
@@ -64,7 +70,9 @@ void main() {
   testWidgets('Logged in but want to get out of the app',
       (WidgetTester tester) async {
     userInformation = initExampleUser();
-    await tester.pumpWidget(initPage(const HomePage()));
+    await tester.pumpWidget(initPage(const HomePage(
+      firebase: false,
+    )));
     await tester.pumpAndSettle();
 
     final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));

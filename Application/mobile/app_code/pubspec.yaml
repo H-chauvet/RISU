@@ -50,6 +50,8 @@ dependencies:
   country_flags: ^3.0.0
   carousel_slider: ^5.0.0
   app_links:
+  firebase_core: ^3.8.0
+  firebase_messaging: ^15.1.5
   flutter_datetime_picker_plus: ^2.2.0
 
 
