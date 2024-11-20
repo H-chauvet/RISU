@@ -720,16 +720,17 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                     : Wrap(
                         spacing: 10.0,
                         runSpacing: 8.0,
-                        children: List.generate(
-                          containersList.length,
-                          (index) => ContainerCards(
-                            container: containersList[index],
-                            onDelete: deleteContainer,
-                            page: "/container-profil",
-                            key: ValueKey<String>(
-                                'delete_${containersList[index].id}'),
-                          ),
-                        ),
+                        children: List.generate(containersList.length, (index) {
+                          return containersList[index].city != null
+                              ? ContainerCards(
+                                  container: containersList[index],
+                                  onDelete: deleteContainer,
+                                  page: "/container-profil",
+                                  key: ValueKey<String>(
+                                      'delete_${containersList[index].id}'),
+                                )
+                              : Container();
+                        }),
                       ),
               ],
             ),

@@ -370,7 +370,7 @@ class ShapeScreenState extends State<ShapeScreen> {
             mid = true;
           }
           int index = mid == true ? i - rowToUp : i + rowToUp;
-          containerListTmp[index][j] = '2';
+          containerListTmp[index][j] = '4';
         }
       }
     }
