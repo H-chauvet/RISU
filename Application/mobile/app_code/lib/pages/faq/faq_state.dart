@@ -7,8 +7,8 @@ import 'package:risu/globals.dart';
 import 'package:risu/pages/contact/contact_page.dart';
 import 'package:risu/utils/providers/theme.dart';
 
-import 'faq_page.dart';
 import 'answer_page.dart';
+import 'faq_page.dart';
 
 class FaqPageState extends State<FaqPage> {
   List<dynamic> questions = [];
@@ -81,110 +81,117 @@ class FaqPageState extends State<FaqPage> {
           themeProvider.currentTheme.colorScheme.surface),
       body: (_loaderManager.getIsLoading())
           ? Center(child: _loaderManager.getLoader())
-          : Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Text(
-                    key: const Key('faq-title-text'),
-                    userInformation?.firstName != null &&
-                            userInformation!.firstName!.isNotEmpty
-                        ? AppLocalizations.of(context)!
-                            .faqTitle(userInformation!.firstName!)
-                        : AppLocalizations.of(context)!.faqTitleOffline,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.currentTheme.primaryColor,
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 32,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Text(
+                      key: const Key('faq-title-text'),
+                      userInformation?.firstName != null &&
+                              userInformation!.firstName!.isNotEmpty
+                          ? AppLocalizations.of(context)!
+                              .faqTitle(userInformation!.firstName!)
+                          : AppLocalizations.of(context)!.faqTitleOffline,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.currentTheme.primaryColor,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 30),
-                  ...questions.map((question) {
-                    return GestureDetector(
-                      onTap: () {
+                    const SizedBox(height: 32),
+                    ...questions.map((question) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AnswerPage(
+                                question: question,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Row(
+                              key: Key('faq-question-${question['title_fr']}'),
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.help_outline, size: 24.0),
+                                const SizedBox(width: 8.0),
+                                Expanded(
+                                  child: Text(
+                                    question[
+                                        'title_${currentLocale.languageCode}'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: themeProvider
+                                          .currentTheme
+                                          .inputDecorationTheme
+                                          .labelStyle
+                                          ?.color,
+                                    ),
+                                  ),
+                                ),
+                                const Icon(Icons.chevron_right, size: 24.0),
+                              ],
+                            ),
+                            const Divider(thickness: 1.5),
+                            const SizedBox(height: 24),
+                          ],
+                        ),
+                      );
+                    }),
+                    const SizedBox(height: 32),
+                    Text(
+                      key: const Key('need-to-join-us-text'),
+                      AppLocalizations.of(context)!.needToJoinUs,
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.currentTheme.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      key: const Key('some-questions-faq-text'),
+                      AppLocalizations.of(context)!.someQuestionsFaq,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: themeProvider.currentTheme.inputDecorationTheme
+                            .labelStyle?.color,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    FloatingActionButton.extended(
+                      key: const Key('contact-us-button'),
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AnswerPage(
-                              question: question,
-                            ),
+                            builder: (context) {
+                              return const ContactPage();
+                            },
                           ),
-                        );
+                        ).then((value) => getQuestions());
                       },
-                      child: Column(
-                        children: [
-                          Row(
-                            key: Key('faq-question-${question['title_fr']}'),
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.help_outline, size: 24.0),
-                              const SizedBox(width: 8.0),
-                              Expanded(
-                                child: Text(
-                                  question[
-                                      'title_${currentLocale.languageCode}'],
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8.0),
-                              const Icon(Icons.chevron_right, size: 24.0),
-                            ],
-                          ),
-                          const Divider(
-                            thickness: 1.5,
-                          ),
-                          const SizedBox(height: 30),
-                        ],
+                      backgroundColor:
+                          themeProvider.currentTheme.secondaryHeaderColor,
+                      label: Text(
+                        key: const Key('contact-us-button-text'),
+                        AppLocalizations.of(context)!.contactUs,
+                        style: TextStyle(
+                            color: themeProvider.currentTheme.primaryColor),
                       ),
-                    );
-                  }),
-                  const SizedBox(height: 50),
-                  Text(
-                    key: const Key('need-to-join-us-text'),
-                    AppLocalizations.of(context)!.needToJoinUs,
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: themeProvider.currentTheme.primaryColor,
                     ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    key: const Key('some-questions-faq-text'),
-                    AppLocalizations.of(context)!.someQuestionsFaq,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: themeProvider.currentTheme.primaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  FloatingActionButton.extended(
-                    key: const Key('contact-us-button'),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return const ContactPage();
-                          },
-                        ),
-                      ).then((value) => getQuestions());
-                    },
-                    backgroundColor:
-                        themeProvider.currentTheme.secondaryHeaderColor,
-                    label: Text(
-                      key: const Key('contact-us-button-text'),
-                      AppLocalizations.of(context)!.contactUs,
-                      style: TextStyle(
-                          color: themeProvider.currentTheme.primaryColor),
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
     );

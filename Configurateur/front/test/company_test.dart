@@ -76,7 +76,7 @@ void main() {
             "Nous créons des conteneurs et des casiers connectés grâce à un configurateur 3D avancé. Ce configurateur permet aux particuliers de personnaliser la taille et le design de leurs casiers, facilitant ainsi l'intégration dans divers environnements."),
         findsOneWidget);
     expect(find.text("Avantages"), findsOneWidget);
-    expect(find.text("La Personnalisation:"), findsOneWidget);
+    expect(find.text("La Personnalisation :"), findsOneWidget);
     expect(
         find.text("Modéliser votre conteneur à votre guise"), findsOneWidget);
     expect(find.text("Facilité d'installation :"), findsOneWidget);
@@ -109,6 +109,92 @@ void main() {
     expect(
         find.text(
             "Nos conteneurs et l'application rendent les objets accessibles à tous, renforçant la communauté et soutenant l'économie circulaire."),
+        findsOneWidget);
+  });
+
+  testWidgets('CompanyPage should render without error in english',
+      (WidgetTester tester) async {
+
+    await tester.binding.setSurfaceSize(const Size(5000, 5000));
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeService>(
+            create: (_) => ThemeService(),
+          ),
+        ],
+        child: Sizer(
+          builder: (context, orientation, deviceType) {
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'Roboto'),
+              home: InheritedGoRouter(
+                goRouter: AppRouter.router,
+                child: const CompanyPage(),
+              ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale('en'),
+            );
+          },
+        ),
+      ),
+    );
+
+    expect(find.byType(CompanyPage), findsOneWidget);
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(LandingAppBar), findsOneWidget);
+
+    expect(
+        find.text(
+            "Risu revolutionizes access to everyday objects through its connected containers and lockers..."),
+        findsOneWidget);
+    expect(find.text("RISU Team Members"), findsOneWidget);
+    expect(find.text("Our Solution :"), findsOneWidget);
+    expect(
+        find.text(
+            "At Risu, we believe in sustainable solutions that address environmental and social needs. Our solution is divided into two innovative parts."),
+        findsOneWidget);
+    expect(find.text("Connected Containers and Lockers"), findsOneWidget);
+    expect(
+        find.text(
+            "We create connected containers and lockers using an advanced 3D configurator. This tool allows individuals to personalize the size and design of their lockers, making them adaptable to various environments."),
+        findsOneWidget);
+    expect(find.text("Benefits"), findsOneWidget);
+    expect(find.text("Personalization :"), findsOneWidget);
+    expect(
+        find.text("Model your container as you wish."), findsOneWidget);
+    expect(find.text("Ease of Installation :"), findsOneWidget);
+    expect(
+        find.text(
+            "Place your containers wherever you want thanks to their modular design."),
+        findsOneWidget);
+    expect(find.text("Risu Mobile Application"), findsOneWidget);
+    expect(
+        find.text(
+            "Our mobile application, provided with every container, revolutionizes the way objects are rented and shared. It allows users to locate and rent items in just a few clicks through an interactive map of nearby Risu containers."),
+        findsOneWidget);
+    expect(find.text("Functionality"), findsOneWidget);
+    expect(find.text("Environmental and Social Impact"), findsOneWidget);
+    expect(
+        find.text(
+            "Our Risu solution has been designed to create a positive impact on the environment and society."),
+        findsOneWidget);
+    expect(find.text("Travel Reduction"), findsOneWidget);
+    expect(
+        find.text(
+            "By facilitating access to necessary items, we help reduce the carbon footprint associated with travel."),
+        findsOneWidget);
+    expect(find.text("Object Sharing"), findsOneWidget);
+    expect(
+        find.text(
+            "Promoting renting and sharing reduces excessive production of objects and encourages more responsible consumption."),
+        findsOneWidget);
+    expect(find.text("Accessibility"), findsOneWidget);
+    expect(
+        find.text(
+            "Our containers and application make objects accessible to everyone, strengthening communities and supporting the circular economy."),
         findsOneWidget);
   });
 }

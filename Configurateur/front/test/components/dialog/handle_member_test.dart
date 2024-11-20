@@ -11,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   late MockSharedPreferences sharedPreferences;
@@ -38,13 +39,16 @@ void main() {
                 goRouter: AppRouter.router,
                 child: HandleMember(),
               ),
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: Locale('fr'),
             );
           },
         ),
       ),
     );
 
-    expect(find.text('Membres actuelles'), findsOneWidget);
+    expect(find.text('Membres actuels'), findsOneWidget);
     expect(find.text('Ajouter un membre'), findsOneWidget);
 
     await tester.enterText(

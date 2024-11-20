@@ -62,7 +62,7 @@ void main() {
     await tester.tap(find.byTooltip('Authentification'));
     await tester.pumpAndSettle();
     expect(find.text("Connexion"), findsOneWidget);
-    expect(find.text("Créer un compte."), findsOneWidget);
+    expect(find.text("Inscription"), findsOneWidget);
 
     expect(find.byType(TicketsPage), findsOneWidget);
     expect(

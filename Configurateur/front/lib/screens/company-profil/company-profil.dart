@@ -674,7 +674,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                           openTeamMemberHandling();
                         },
                         child: Text(
-                          "Gérer les membres",
+                          AppLocalizations.of(context)!.manageMembers,
                           style: TextStyle(
                             fontSize: screenFormat == ScreenFormat.desktop
                                 ? desktopFontSize
