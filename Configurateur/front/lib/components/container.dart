@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/services/size_service.dart';
 import 'package:front/services/storage_service.dart';
 import 'package:front/services/theme_service.dart';
@@ -175,7 +176,16 @@ class ContainerCards extends StatelessWidget {
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
                           : lightTheme.primaryColor),
-                  onPressed: () => onDelete(container),
+                  onPressed: () async {
+                    var confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => ConfirmationDialog(),
+                    );
+
+                    if (confirm == true) {
+                      onDelete(container);
+                    }
+                  },
                 ),
                 IconButton(
                   icon: Icon(Icons.chevron_right,

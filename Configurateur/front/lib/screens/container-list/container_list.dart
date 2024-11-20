@@ -11,6 +11,7 @@ import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
 import 'package:front/components/alert_dialog.dart';
 import 'package:front/components/container.dart';
+import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -674,12 +675,20 @@ class _ContainerPageState extends State<ContainerPage> {
                   width: 10,
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete,
-                      color: Provider.of<ThemeService>(context).isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor),
-                  onPressed: () => deleteItem(item),
-                ),
+                    icon: Icon(Icons.delete,
+                        color: Provider.of<ThemeService>(context).isDark
+                            ? darkTheme.primaryColor
+                            : lightTheme.primaryColor),
+                    onPressed: () async {
+                      var confirm = await showDialog<bool>(
+                        context: context,
+                        builder: (context) => ConfirmationDialog(),
+                      );
+
+                      if (confirm == true) {
+                        deleteItem(item);
+                      }
+                    }),
               ],
             ),
           ],

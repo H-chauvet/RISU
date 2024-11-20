@@ -50,8 +50,8 @@ router.get("/:containerId/articleslist", async (req, res) => {
     const isAvailable = req.query.isAvailable === "false" ? false : true;
     const isAscending = req.query.isAscending === "false" ? false : true;
     const sortBy = req.query.sortBy || "price";
-    const min = parseFloat(req.query.min) || 0;
-    const max = parseFloat(req.query.max) || 1000000;
+    const min = req.query.min !== undefined ? parseFloat(req.query.min) : 0;
+    const max = req.query.max !== undefined ? parseFloat(req.query.max) : 1000000;
     const items = await containerCtrl.getItemsWithFilters(
       res,
       parseInt(containerId),
