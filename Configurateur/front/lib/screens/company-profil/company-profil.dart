@@ -131,7 +131,6 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
         containersList = containersData
             .map((data) => ContainerListData.fromJson(data))
             .toList();
-        for (int i = 0; i < containersList.length; i++) {}
       });
     } else {
       showCustomToast(context, response.body, false);
