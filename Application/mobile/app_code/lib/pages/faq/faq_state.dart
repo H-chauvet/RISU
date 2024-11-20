@@ -92,7 +92,7 @@ class FaqPageState extends State<FaqPage> {
                     userInformation?.firstName != null &&
                             userInformation!.firstName!.isNotEmpty
                         ? AppLocalizations.of(context)!
-                            .faqTitle(userInformation?.firstName ?? '')
+                            .faqTitle(userInformation!.firstName!)
                         : AppLocalizations.of(context)!.faqTitleOffline,
                     textAlign: TextAlign.center,
                     style: TextStyle(
