@@ -110,6 +110,7 @@
   "faq": "Preguntas",
   "faqAnswer": "FAQ",
   "faqTitle": "Hola {name}, ¿Cómo podemos ayudarte?",
+  "faqTitleOffline": "Hola, ¿Cómo podemos ayudarte?",
   "favorites": "Favoritos",
   "favoritesListEmpty": "No hay favoritos",
   "fieldRequired": "Este campo es obligatorio.",
