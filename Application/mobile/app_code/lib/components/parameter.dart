@@ -164,7 +164,7 @@ class MyParameter extends StatelessWidget {
   /// This function is called when the user clicks on the parameter.
   Widget correspondingIcon() {
     if (locked) {
-      return const Icon(Icons.engineering_rounded);
+      return const Icon(Icons.lock);
     }
     return const Icon(Icons.chevron_right);
   }

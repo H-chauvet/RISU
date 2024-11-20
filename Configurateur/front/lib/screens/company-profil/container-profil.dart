@@ -9,6 +9,7 @@ import 'package:front/components/custom_toast.dart';
 import 'package:footer/footer.dart';
 import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_footer.dart';
+import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/components/items-information.dart';
 import 'package:front/services/size_service.dart';
@@ -597,7 +598,16 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                         ? darkTheme.primaryColor
                         : lightTheme.primaryColor,
                   ),
-                  onPressed: () => deleteItem(item),
+                  onPressed: () async {
+                    var confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (context) => ConfirmationDialog(),
+                    );
+
+                    if (confirm == true) {
+                      deleteItem(item);
+                    }
+                  },
                 ),
                 const SizedBox(
                   width: 10,

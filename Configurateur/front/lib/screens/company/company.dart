@@ -6,6 +6,7 @@ import 'package:front/components/custom_header.dart';
 import 'package:front/services/theme_service.dart';
 import 'package:front/styles/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TeamMembersGrid extends StatefulWidget {
   final List<Map<String, String>> teamMembers;
@@ -256,57 +257,52 @@ class CompanyPage extends StatefulWidget {
 /// CompanyPageState
 ///
 class CompanyPageState extends State<CompanyPage> {
-  final List<Map<String, String>> teamMembers = [
-    {
-      "name": "Henri",
-      "companyPosition": "Chef de projet",
-      "image": 'assets/Henri.png',
-      "description":
-          "Chef de projet de l’équipe Risu. Il s’occupe du devéloppement de la partie Web de la solution. Il s’occupe aussi des documents relatifs à l’entreprise et aux rendus exigés."
-    },
-    {
-      "name": "Hugo",
-      "companyPosition": "Développeur mobile",
-      "image": 'assets/Hugo.png',
-      "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
-    },
-    {
-      "name": "Cédric",
-      "companyPosition": "Responsable Web",
-      "image": 'assets/Cédric.png',
-      "description":
-          "Responsable et développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints",
-    },
-    {
-      "name": "Louis",
-      "companyPosition": "Développeur web",
-      "image": 'assets/Louis.png',
-      "description":
-          "Développeur full stack pour la partie web. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
-    },
-    {
-      "name": "Quentin",
-      "companyPosition": "Développeur mobile",
-      "image": 'assets/Quentin.png',
-      "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
-    },
-    {
-      "name": "Tanguy",
-      "companyPosition": "Responsable mobile",
-      "image": 'assets/Tanguy.png',
-      "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
-    },
-    {
-      "name": "Nathan",
-      "companyPosition": "Développeur mobile",
-      "image": 'assets/Nathan.png',
-      "description":
-          "Développeur full stack pour la partie mobile. Il s'occupe d'ajouter de nouvelles fonctionnalités, régler de bugs ou encore proposer de nouvelles tâches à réalisées pour les prochains sprints"
-    },
-  ];
+  List<Map<String, String>> getCompanyData(BuildContext context) {
+    return [
+      {
+        "name": "Henri",
+        "companyPosition": AppLocalizations.of(context)!.henriPosition,
+        "image": 'assets/Henri.png',
+        "description": AppLocalizations.of(context)!.henriDescription
+      },
+      {
+        "name": "Hugo",
+        "companyPosition": AppLocalizations.of(context)!.hugoPosition,
+        "image": 'assets/Hugo.png',
+        "description": AppLocalizations.of(context)!.hugoDescription
+      },
+      {
+        "name": "Cédric",
+        "companyPosition": AppLocalizations.of(context)!.cedricPosition,
+        "image": 'assets/Cédric.png',
+        "description": AppLocalizations.of(context)!.cedricDescription
+      },
+      {
+        "name": "Louis",
+        "companyPosition": AppLocalizations.of(context)!.louisPosition,
+        "image": 'assets/Louis.png',
+        "description": AppLocalizations.of(context)!.louisDescription
+      },
+      {
+        "name": "Quentin",
+        "companyPosition": AppLocalizations.of(context)!.quentinPosition,
+        "image": 'assets/Quentin.png',
+        "description": AppLocalizations.of(context)!.quentinDescription
+      },
+      {
+        "name": "Tanguy",
+        "companyPosition": AppLocalizations.of(context)!.tanguyPosition,
+        "image": 'assets/Tanguy.png',
+        "description": AppLocalizations.of(context)!.tanguyDescription
+      },
+      {
+        "name": "Nathan",
+        "companyPosition": AppLocalizations.of(context)!.nathanPosition,
+        "image": 'assets/Nathan.png',
+        "description": AppLocalizations.of(context)!.nathanDescription
+      },
+    ];
+  }
 
   @override
   void initState() {
@@ -315,6 +311,7 @@ class CompanyPageState extends State<CompanyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final teamMembers = getCompanyData(context);
     return Scaffold(
       body: FooterView(
         flex: 10,
@@ -345,7 +342,7 @@ class CompanyPageState extends State<CompanyPage> {
                             maxWidth: 600,
                           ),
                           child: Text(
-                            "Risu révolutionne l'accès aux objets du quotidien grâce à ses conteneurs et casiers connectés...",
+                            AppLocalizations.of(context)!.risuDescription,
                             style: TextStyle(
                               fontSize: 18,
                               color: Provider.of<ThemeService>(context).isDark
@@ -363,7 +360,7 @@ class CompanyPageState extends State<CompanyPage> {
                 Padding(
                   padding: const EdgeInsets.all(30),
                   child: Text(
-                    "Membres de l’équipe RISU",
+                    AppLocalizations.of(context)!.risuMembers,
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.bold,
@@ -386,7 +383,7 @@ class CompanyPageState extends State<CompanyPage> {
                   child: Column(
                     children: [
                       Text(
-                        "Notre Solution",
+                        AppLocalizations.of(context)!.solution,
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
@@ -401,7 +398,7 @@ class CompanyPageState extends State<CompanyPage> {
                           maxWidth: 600,
                         ),
                         child: Text(
-                          "Chez Risu, nous croyons en des solutions durables qui répondent à des besoins environnementaux et sociaux. Notre solution se divise en deux parties innovantes",
+                          AppLocalizations.of(context)!.solutionDescription,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -439,7 +436,7 @@ class CompanyPageState extends State<CompanyPage> {
                       ),
                       const SizedBox(width: 80),
                       Text(
-                        "Conteneurs et Casiers Connectés",
+                        AppLocalizations.of(context)!.containerAndLocker,
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -462,7 +459,8 @@ class CompanyPageState extends State<CompanyPage> {
                         maxWidth: 700,
                       ),
                       child: Text(
-                        "Nous créons des conteneurs et des casiers connectés grâce à un configurateur 3D avancé. Ce configurateur permet aux particuliers de personnaliser la taille et le design de leurs casiers, facilitant ainsi l'intégration dans divers environnements.",
+                        AppLocalizations.of(context)!
+                            .containerAndLockerDescription,
                         style: TextStyle(
                           fontSize: 18,
                           color: Provider.of<ThemeService>(context).isDark
@@ -482,7 +480,7 @@ class CompanyPageState extends State<CompanyPage> {
                       child: Column(
                         children: [
                           Text(
-                            "Avantages",
+                            AppLocalizations.of(context)!.benefits,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -494,7 +492,7 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 15),
                           Text(
-                            "La Personnalisation:",
+                            AppLocalizations.of(context)!.personalization,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
@@ -506,7 +504,8 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            "Modéliser votre conteneur à votre guise",
+                            AppLocalizations.of(context)!
+                                .personalizationDescription,
                             style: TextStyle(
                               fontSize: 13,
                               color: Provider.of<ThemeService>(context).isDark
@@ -517,7 +516,7 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 20),
                           Text(
-                            "Facilité d'installation :",
+                            AppLocalizations.of(context)!.installation,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 13,
@@ -529,7 +528,8 @@ class CompanyPageState extends State<CompanyPage> {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            "Disposez vos conteneurs où vous le souhaitez grâce à une conception modulable.",
+                            AppLocalizations.of(context)!
+                                .installationDescription,
                             style: TextStyle(
                               fontSize: 13,
                               color: Provider.of<ThemeService>(context).isDark
@@ -568,7 +568,7 @@ class CompanyPageState extends State<CompanyPage> {
                       ),
                       const SizedBox(width: 80),
                       Text(
-                        "Application Mobile Risu",
+                        AppLocalizations.of(context)!.mobileApplication,
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -595,7 +595,8 @@ class CompanyPageState extends State<CompanyPage> {
                             maxWidth: 600,
                           ),
                           child: Text(
-                            "Notre application mobile, fournie avec chaque conteneur, révolutionne la manière de louer et de partager des objets. Elle permet de localiser et de louer des objets en quelques clics grâce à une carte interactive des conteneurs Risu disponibles à proximité.",
+                            AppLocalizations.of(context)!
+                                .mobileApplicationDescription,
                             style: TextStyle(
                               fontSize: 18,
                               color: Provider.of<ThemeService>(context).isDark
@@ -607,7 +608,7 @@ class CompanyPageState extends State<CompanyPage> {
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          "Fonctionnalité",
+                          AppLocalizations.of(context)!.functionality,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
@@ -623,7 +624,8 @@ class CompanyPageState extends State<CompanyPage> {
                           text: TextSpan(
                             children: [
                               TextSpan(
-                                text: "Carte connectée: ",
+                                text:
+                                    AppLocalizations.of(context)!.connectedMap,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 18,
@@ -634,8 +636,8 @@ class CompanyPageState extends State<CompanyPage> {
                                 ),
                               ),
                               TextSpan(
-                                text:
-                                    "Trouvez facilement nos conteneneurs proche de vous !",
+                                text: AppLocalizations.of(context)!
+                                    .connectedMapDescription,
                                 style: TextStyle(
                                   fontSize: 18,
                                   color:
@@ -657,7 +659,7 @@ class CompanyPageState extends State<CompanyPage> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: "Simple d’utilisation: ",
+                                  text: AppLocalizations.of(context)!.easyToUse,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
@@ -668,8 +670,8 @@ class CompanyPageState extends State<CompanyPage> {
                                   ),
                                 ),
                                 TextSpan(
-                                  text:
-                                      "Cliquez sur le conteneur proche de vous et louer un des objets en 1 clic",
+                                  text: AppLocalizations.of(context)!
+                                      .easyToUseDescription,
                                   style: TextStyle(
                                     fontSize: 18,
                                     color: Provider.of<ThemeService>(context)
@@ -693,7 +695,7 @@ class CompanyPageState extends State<CompanyPage> {
                 ),
                 const SizedBox(height: 60),
                 Text(
-                  "Impact Environnemental et Social",
+                  AppLocalizations.of(context)!.environmentalAndSocial,
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
@@ -708,7 +710,8 @@ class CompanyPageState extends State<CompanyPage> {
                     maxWidth: 600,
                   ),
                   child: Text(
-                    "Notre solution Risu a été conçue pour avoir un impact positif sur l'environnement et la société",
+                    AppLocalizations.of(context)!
+                        .environmentalAndSocialDescription,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 20,
@@ -747,7 +750,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                               const SizedBox(width: 30),
                               Text(
-                                "Réduction des Déplacements",
+                                AppLocalizations.of(context)!.travelReduction,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -765,7 +768,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              "En facilitant l'accès aux objets nécessaires, nous contribuons à réduire l'empreinte carbone liée aux déplacements.",
+                              AppLocalizations.of(context)!
+                                  .travelReductionDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,
@@ -798,7 +802,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                               const SizedBox(width: 30),
                               Text(
-                                "Partage d'Objets",
+                                AppLocalizations.of(context)!.objectSharing,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -816,7 +820,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              "Favoriser la location et le partage réduit la production excessive d'objets et encourage une consommation plus responsable.",
+                              AppLocalizations.of(context)!
+                                  .objectSharingDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,
@@ -849,7 +854,7 @@ class CompanyPageState extends State<CompanyPage> {
                               ),
                               const SizedBox(width: 30),
                               Text(
-                                "Accessibilité",
+                                AppLocalizations.of(context)!.accessibility,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -867,7 +872,8 @@ class CompanyPageState extends State<CompanyPage> {
                               maxWidth: 450,
                             ),
                             child: Text(
-                              "Nos conteneurs et l'application rendent les objets accessibles à tous, renforçant la communauté et soutenant l'économie circulaire.",
+                              AppLocalizations.of(context)!
+                                  .accessibilityDescription,
                               textAlign: TextAlign.justify,
                               style: TextStyle(
                                 fontSize: 18,

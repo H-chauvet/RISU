@@ -76,19 +76,11 @@ class CustomFooterState extends State<CustomFooter> {
   }
 
   void goToCompany() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/company");
-    }
+    context.go("/company");
   }
 
   void goToFaq() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/faq");
-    }
+    context.go("/faq");
   }
 
   @override

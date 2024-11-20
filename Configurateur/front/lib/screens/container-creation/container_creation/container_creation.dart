@@ -172,13 +172,9 @@ class ContainerCreationState extends State<ContainerCreation> {
         if (widget.containerMapping != null) {
           dynamic decoded = jsonDecode(widget.containerMapping!);
           setState(() {
-            if (loaded == false) {
-              loadLockers(widget.containerMapping!);
-              loaded = true;
-            }
             for (int i = 0; i < decoded.length; i++) {
               for (int j = 0; j < decoded[i].length; j++) {
-                if (decoded[i][j].toString() == '2') {
+                if (decoded[i][j].toString() == '4') {
                   objs[0]
                       .fragments[(decoded[i].length * i) + j]
                       .faces[0]
@@ -235,6 +231,10 @@ class ContainerCreationState extends State<ContainerCreation> {
                       .materialIndex = 4;
                 }
               }
+            }
+            if (loaded == false) {
+              loadLockers(widget.containerMapping!);
+              loaded = true;
             }
           });
         }
@@ -862,6 +862,7 @@ class ContainerCreationState extends State<ContainerCreation> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

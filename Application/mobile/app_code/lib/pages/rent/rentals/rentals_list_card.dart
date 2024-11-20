@@ -62,6 +62,8 @@ class RentalCard extends StatelessWidget {
         margin: const EdgeInsets.only(right: 0.0, left: 0.0, top: 10.0),
         child: Card(
           elevation: 5,
+          color: context.select((ThemeProvider themeProvider) =>
+              themeProvider.currentTheme.inputDecorationTheme.fillColor),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),

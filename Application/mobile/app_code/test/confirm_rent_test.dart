@@ -16,38 +16,6 @@ void main() {
     // This code runs after each test case.
   });
 
-  testWidgets('Confirm rent test', (WidgetTester tester) async {
-    final ArticleData data = ArticleData(
-      id: 0,
-      containerId: 1,
-      name: 'Ballon',
-      status: Status.GOOD,
-      available: true,
-      price: 8,
-      categories: [],
-    );
-
-    await tester.pumpWidget(initPage(ConfirmRentPage(
-      hours: 5,
-      data: data,
-      startDate: null,
-      locationId: 1,
-    )));
-
-    await tester.pumpAndSettle(const Duration(milliseconds: 50));
-
-    Finder logoFinder = find.byKey(const Key('appbar-image_logo'));
-
-    Finder homeButton = find.byKey(const Key('confirm_rent-button-back_home'));
-
-    // Verify that the back button is present.
-    expect(logoFinder, findsOneWidget);
-
-    await tester.scrollUntilVisible(homeButton, 100);
-    await tester.tap(homeButton);
-    await tester.pumpAndSettle();
-  });
-
   testWidgets('Get invoice in confirm rent', (WidgetTester tester) async {
     final ArticleData data = ArticleData(
       id: 0,

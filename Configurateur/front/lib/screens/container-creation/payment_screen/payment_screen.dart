@@ -150,6 +150,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [
