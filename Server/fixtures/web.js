@@ -51,6 +51,7 @@ exports.createFixtures = async () => {
               price: 0.5,
               available: true,
               category: "Plage",
+              description: "Ballon pour jouer au volley",
               status: "GOOD",
             },
             {
@@ -59,6 +60,7 @@ exports.createFixtures = async () => {
               price: 1.0,
               available: true,
               category: "Tennis",
+              description: "Raquette de tennis, taille enfant",
               status: "WORN",
             },
             {
@@ -67,6 +69,7 @@ exports.createFixtures = async () => {
               price: 0.75,
               available: false,
               category: "Foot",
+              description: "Ballon de football taille 7",
               status: "WORN",
             },
           ],

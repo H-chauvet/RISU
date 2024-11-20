@@ -50,6 +50,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }, { id: 2 }],
               },
+              description: "Ballon pour jouer au volley",
               status: "WORN",
             },
             {
@@ -61,6 +62,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }],
               },
+              description: "Raquette de plage avec une balle fournie",
               status: "WORN",
             },
             {
@@ -71,6 +73,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 2 }],
               },
+              description: "Ballon de football pour enfant",
               status: "WORN",
             },
             {
@@ -81,6 +84,7 @@ exports.createFixtures = async () => {
               categories: {
                 connect: [{ id: 1 }],
               },
+              description: "Freesbey taille adulte",
               status: "WORN",
             },
           ],
