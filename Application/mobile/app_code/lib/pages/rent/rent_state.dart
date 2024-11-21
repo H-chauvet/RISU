@@ -254,6 +254,7 @@ class RentArticlePageState extends State<RentArticlePage> {
   /// This function shows an alert dialog to confirm the rent.
   void confirmRent() async {
     await MyAlertDialog.showChoiceAlertDialog(
+      key: const Key('alert_dialog_confirm_rent'),
       context: context,
       title: AppLocalizations.of(context)!.rentConfirmation,
       message: AppLocalizations.of(context)!
