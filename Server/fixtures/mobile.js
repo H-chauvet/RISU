@@ -78,7 +78,7 @@ exports.createFixtures = async () => {
             },
             {
               id: 4,
-              name: "Freesbee",
+              name: "Frisbee",
               price: 1.5,
               available: true,
               categories: {
