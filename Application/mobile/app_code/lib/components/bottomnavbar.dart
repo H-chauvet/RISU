@@ -28,28 +28,24 @@ class BottomNavBar extends StatelessWidget {
         label: AppLocalizations.of(context)!.search,
       ),
     ];
-    if (userInformation != null) {
-      items.add(
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.shopping_basket),
-          label: AppLocalizations.of(context)!.myRents,
-        ),
-      );
-    }
+    items.add(
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.shopping_basket),
+        label: AppLocalizations.of(context)!.myRents,
+      ),
+    );
     items.add(
       BottomNavigationBarItem(
         icon: const Icon(Icons.map),
         label: AppLocalizations.of(context)!.map,
       ),
     );
-    if (userInformation != null) {
-      items.add(
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.favorite),
-          label: AppLocalizations.of(context)!.favorites,
-        ),
-      );
-    }
+    items.add(
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.favorite),
+        label: AppLocalizations.of(context)!.favorites,
+      ),
+    );
     if (userInformation == null) {
       items.add(BottomNavigationBarItem(
         icon: const Icon(Icons.settings),
