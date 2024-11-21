@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/article/article_list_data.dart';
 import 'package:risu/pages/rent/rent_page.dart';
 
@@ -9,6 +10,7 @@ import 'globals.dart';
 void main() {
   group('Test RentArticlePage', () {
     testWidgets('Rent Article Page UI', (WidgetTester tester) async {
+      userInformation = initExampleUser();
       await tester.pumpWidget(
         initPage(
           RentArticlePage(
@@ -60,7 +62,16 @@ void main() {
       // Simulate another user interaction
       await tester.scrollUntilVisible(confirmButtonFinder, 100.0);
       await tester.tap(confirmButtonFinder);
-      await tester.pump();
+      await tester.pumpAndSettle();
+
+      Finder alertDialog = find.byKey(const Key('alert_dialog_confirm_rent'));
+      expect(alertDialog, findsOneWidget);
+
+      Finder confirmButton = find.byKey(const Key('alertdialog-button_ok'));
+      expect(confirmButton, findsOneWidget);
+
+      await tester.tap(confirmButton);
+      await tester.pumpAndSettle();
     });
   });
 }
