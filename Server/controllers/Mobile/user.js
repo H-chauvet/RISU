@@ -66,7 +66,7 @@ exports.sendResetPasswordEmail = async(email, resetToken) => {
     to: email,
     subject: 'Reset Your Password',
     text: "",
-    html: '<p>Please follow the link to reset your password: <a href="https://deeplink-risu.web.app/reset/?token=' +
+    html: '<p>Please follow the link to reset your password: <a href="https://deeplink-risu.firebaseapp.com/reset/?token=' +
       resetToken + '">here</a></p>',
   }
 
