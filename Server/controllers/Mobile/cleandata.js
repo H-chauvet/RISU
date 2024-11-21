@@ -11,7 +11,7 @@ const rentCtrl = require("./rent");
  */
 exports.cleanUserData = async (res, userId, notificationsId) => {
   await favCtrl.cleanUserFavorite(userId);
-  await userCtrl.cleanUserNotifications(res, notificationsId);
+  await userCtrl.cleanUserNotifications(notificationsId);
   await ticketCtrl.cleanMobileUserTickets(res, userId);
   await rentCtrl.returnAllUserRents(userId);
 };
