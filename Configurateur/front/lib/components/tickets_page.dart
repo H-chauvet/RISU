@@ -64,32 +64,34 @@ class TicketsState extends State<TicketsPage> {
 
   Future<bool> createTicket(
       {required String title, String? chatUid, String assignedId = ""}) async {
-    var header = <String, String>{
-      'Authorization': token!,
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Access-Control-Allow-Origin': '*',
-    };
+    if (_message != "") {
+      var header = <String, String>{
+        'Authorization': token!,
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      };
 
-    var body = <String, String>{
-      'content': _message,
-      'title': title,
-      'createdAt': DateTime.now().toString(),
-      'uuid': uuid!,
-      'assignedId': assignedId,
-    };
+      var body = <String, String>{
+        'content': _message,
+        'title': title,
+        'createdAt': DateTime.now().toString(),
+        'uuid': uuid!,
+        'assignedId': assignedId,
+      };
 
-    if (chatUid != null && chatUid.isNotEmpty) {
-      body['chatUid'] = chatUid;
-    }
-    var response = await http.post(
-      Uri.parse('http://$serverIp:3000/api/tickets/create'),
-      headers: header,
-      body: jsonEncode(body),
-    );
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      showCustomToast(context, response.body, false);
+      if (chatUid != null && chatUid.isNotEmpty) {
+        body['chatUid'] = chatUid;
+      }
+      var response = await http.post(
+        Uri.parse('http://$serverIp:3000/api/tickets/create'),
+        headers: header,
+        body: jsonEncode(body),
+      );
+      if (response.statusCode == 201) {
+        return true;
+      } else {
+        showCustomToast(context, response.body, false);
+      }
     }
     return false;
   }

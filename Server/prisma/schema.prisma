@@ -56,7 +56,7 @@ model Item {
     containerId     Int?
     price           Float
     description     String?
-    rating          Float?                    @default(0)
+    rating          Float?                    @default(-1)
     Location_Mobile Location_Mobile[]
     Opinions        Opinions_Mobile[]
     category        String?

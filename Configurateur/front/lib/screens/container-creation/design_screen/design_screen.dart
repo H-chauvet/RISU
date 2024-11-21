@@ -205,7 +205,7 @@ class DesignScreenState extends State<DesignScreen> {
       'id': widget.id,
       'width': widget.width,
       'height': widget.height,
-      'amount': widget.amount,
+      'amount': sumPrice(),
       'lockers': jsonEncode(lockerss),
       'containerMapping': widget.containerMapping,
     };
@@ -585,6 +585,7 @@ class DesignScreenState extends State<DesignScreen> {
       body: FooterView(
         flex: 8,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: const CustomFooter(),
         ),
         children: [

@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+    id 'com.google.gms.google-services'
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
 }
@@ -37,7 +38,7 @@ android {
         namespace "com.example.risu"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -48,6 +49,7 @@ android {
         implementation 'com.android.support:multidex:2.0.1'
         implementation 'com.google.android.gms:play-services-maps:17.0.1'
         implementation 'com.google.android.gms:play-services-location:18.0.0'
+        implementation 'com.google.gms:google-services:4.4.2'
     }
 
     buildTypes {

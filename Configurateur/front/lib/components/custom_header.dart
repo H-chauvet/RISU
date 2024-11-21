@@ -50,11 +50,7 @@ class LandingAppBarState extends State<LandingAppBar> {
   }
 
   void goToCompany() async {
-    if (await storageService.readStorage('token') == '') {
-      context.go("/login");
-    } else {
-      context.go("/company");
-    }
+    context.go("/company");
   }
 
   void goToFeedbacks() async {
@@ -215,7 +211,8 @@ class LandingAppBarState extends State<LandingAppBar> {
                                     leading: Icon(Icons.add,
                                         color: _getIconColor(context)),
                                     title: Text(
-                                      AppLocalizations.of(context)!.register,
+                                      AppLocalizations.of(context)!
+                                          .registerAccount,
                                       style: TextStyle(
                                           color: _getIconColor(context)),
                                     ),
@@ -240,40 +237,42 @@ class LandingAppBarState extends State<LandingAppBar> {
                                   ),
                                 ),
                               );
-                              menuItems.add(
-                                PopupMenuItem<String>(
-                                  value: 'company-profil',
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.business,
-                                      color: _getIconColor(context),
-                                    ),
-                                    title: Text(
-                                      AppLocalizations.of(context)!.companyMy,
-                                      style: TextStyle(
+                              if (userRole != "admin") {
+                                menuItems.add(
+                                  PopupMenuItem<String>(
+                                    value: 'company-profil',
+                                    child: ListTile(
+                                      leading: Icon(
+                                        Icons.business,
                                         color: _getIconColor(context),
+                                      ),
+                                      title: Text(
+                                        AppLocalizations.of(context)!.companyMy,
+                                        style: TextStyle(
+                                          color: _getIconColor(context),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                              menuItems.add(
-                                PopupMenuItem<String>(
-                                  value: 'my-save',
-                                  child: ListTile(
-                                    leading: Icon(
-                                      Icons.save,
-                                      color: _getIconColor(context),
-                                    ),
-                                    title: Text(
-                                      AppLocalizations.of(context)!.saveMy,
-                                      style: TextStyle(
+                                );
+                                menuItems.add(
+                                  PopupMenuItem<String>(
+                                    value: 'my-save',
+                                    child: ListTile(
+                                      leading: Icon(
+                                        Icons.save,
                                         color: _getIconColor(context),
+                                      ),
+                                      title: Text(
+                                        AppLocalizations.of(context)!.saveMy,
+                                        style: TextStyle(
+                                          color: _getIconColor(context),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
+                                );
+                              }
                               if (userRole == "admin") {
                                 menuItems.add(
                                   PopupMenuItem<String>(
@@ -651,7 +650,7 @@ class LandingAppBarState extends State<LandingAppBar> {
                             : lightTheme.primaryColor,
                       ),
                       title: Text(
-                        AppLocalizations.of(context)!.register,
+                        AppLocalizations.of(context)!.registerAccount,
                         style: TextStyle(
                           color:
                               Provider.of<ThemeService>(context, listen: false)
@@ -688,52 +687,56 @@ class LandingAppBarState extends State<LandingAppBar> {
                   ),
                 ),
               );
-              items.add(
-                PopupMenuItem<String>(
-                  value: 'company-profil',
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.business,
-                      color: Provider.of<ThemeService>(context, listen: false)
-                              .isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                    ),
-                    title: Text(
-                      AppLocalizations.of(context)!.companyMy,
-                      style: TextStyle(
+              if (userRole != "admin") {
+                items.add(
+                  PopupMenuItem<String>(
+                    value: 'company-profil',
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.business,
                         color: Provider.of<ThemeService>(context, listen: false)
                                 .isDark
                             ? darkTheme.primaryColor
                             : lightTheme.primaryColor,
                       ),
+                      title: Text(
+                        AppLocalizations.of(context)!.companyMy,
+                        style: TextStyle(
+                          color:
+                              Provider.of<ThemeService>(context, listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              );
-              items.add(
-                PopupMenuItem<String>(
-                  value: 'my-save',
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.save,
-                      color: Provider.of<ThemeService>(context, listen: false)
-                              .isDark
-                          ? darkTheme.primaryColor
-                          : lightTheme.primaryColor,
-                    ),
-                    title: Text(
-                      AppLocalizations.of(context)!.saveMy,
-                      style: TextStyle(
+                );
+                items.add(
+                  PopupMenuItem<String>(
+                    value: 'my-save',
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.save,
                         color: Provider.of<ThemeService>(context, listen: false)
                                 .isDark
                             ? darkTheme.primaryColor
                             : lightTheme.primaryColor,
                       ),
+                      title: Text(
+                        AppLocalizations.of(context)!.saveMy,
+                        style: TextStyle(
+                          color:
+                              Provider.of<ThemeService>(context, listen: false)
+                                      .isDark
+                                  ? darkTheme.primaryColor
+                                  : lightTheme.primaryColor,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              );
+                );
+              }
               if (userRole == "admin") {
                 items.add(
                   PopupMenuItem<String>(

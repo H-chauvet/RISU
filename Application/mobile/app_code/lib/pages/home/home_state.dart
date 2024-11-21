@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_links/app_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:risu/components/alert_dialog.dart';
 import 'package:risu/components/appbar.dart';
 import 'package:risu/components/bottomnavbar.dart';
-import 'package:risu/components/burger_drawer.dart';
 import 'package:risu/components/loader.dart';
 import 'package:risu/globals.dart';
 import 'package:risu/pages/article/details_page.dart';
@@ -37,11 +37,19 @@ class HomePageState extends State<HomePage> {
   int? containerId;
   late AppLinks _appLinks;
   final LoaderManager _loaderManager = LoaderManager();
+  late FirebaseMessaging _firebaseMessaging;
 
   @override
   void initState() {
     super.initState();
     _handleUri();
+    if (widget.firebase) {
+      _firebaseMessaging = FirebaseMessaging.instance;
+      _firebaseMessaging.getToken().then((String? token) {
+        assert(token != null);
+        print('Push Messaging token: $token');
+      });
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!didAskForProfile) {
         configProfile(context);
@@ -68,7 +76,7 @@ class HomePageState extends State<HomePage> {
         ContainerPage(
           onDirectionClicked: (id) {
             setState(() {
-              _currentIndex = 1;
+              _currentIndex = 2;
               containerId = id;
             });
           },
@@ -209,7 +217,7 @@ class HomePageState extends State<HomePage> {
             if (value)
               {
                 setState(() {
-                  _currentIndex = 2;
+                  _currentIndex = 4;
                 }),
                 Navigator.push(
                   context,
@@ -248,7 +256,8 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     if (containerId != null) {
-      _pages[1] = MapPage(
+      int mapIndex = 1 + (userInformation == null ? 0 : 1);
+      _pages[mapIndex] = MapPage(
         containerId: containerId,
       );
     }
@@ -263,7 +272,6 @@ class HomePageState extends State<HomePage> {
               themeProvider.currentTheme.secondaryHeaderColor),
           showBackButton: false,
         ),
-        endDrawer: const BurgerDrawer(),
         body: _pages[_currentIndex],
         bottomNavigationBar: BottomNavBar(
           theme: context.select(
@@ -271,7 +279,7 @@ class HomePageState extends State<HomePage> {
           currentIndex: _currentIndex,
           onTap: (index) async {
             setState(() {
-              if (index == 2 && userInformation == null) {
+              if ((index == 2 || index == 4) && userInformation == null) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
