@@ -26,7 +26,10 @@ import 'package:provider/provider.dart';
 ///
 /// Page who list all the containers and users in the database
 class ContainerPage extends StatefulWidget {
-  const ContainerPage({Key? key}) : super(key: key);
+  ContainerPage({this.fetchContainerFromServer, this.fetchItemFromServer});
+
+  final Future<List<Map<String, dynamic>>> Function()? fetchContainerFromServer;
+  final Future<List<Map<String, dynamic>>> Function()? fetchItemFromServer;
 
   @override
   _ContainerPageState createState() => _ContainerPageState();
@@ -50,14 +53,35 @@ class _ContainerPageState extends State<ContainerPage> {
 
   /// [Function] : Check the token in the storage service
   void checkToken() async {
+    if (widget.fetchContainerFromServer != null) {
+      await fetchData();
+    }
     String? token = await storageService.readStorage('token');
+
     if (token != null) {
       jwtToken = token;
-      fetchContainers();
-      fetchItems();
+      await fetchData();
     } else {
       jwtToken = "";
     }
+  }
+
+  Future<void> fetchData() async {
+    final fetchFunction = widget.fetchContainerFromServer ?? fetchContainers;
+    final data = await fetchFunction();
+    setState(() {
+      containers =
+          data.map((data) => ContainerListData.fromJson(data)).toList();
+    });
+
+    final fetchItemFunction = widget.fetchItemFromServer ?? fetchItems;
+    final itemData = await fetchItemFunction();
+    setState(() {
+      items = itemData.map((data) => ItemList.fromJson(data)).toList();
+      categories =
+          items.map((item) => item.category ?? 'Tous').toSet().toList();
+      categories.sort();
+    });
   }
 
   @override
@@ -68,7 +92,7 @@ class _ContainerPageState extends State<ContainerPage> {
   }
 
   /// [Function] : Get all the containers in the database
-  Future<void> fetchContainers() async {
+  Future<List<dynamic>> fetchContainers() async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/container/listAll'),
       headers: <String, String>{
@@ -78,14 +102,11 @@ class _ContainerPageState extends State<ContainerPage> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> containersData = responseData["container"];
-      setState(() {
-        containers = containersData
-            .map((data) => ContainerListData.fromJson(data))
-            .toList();
-      });
+      return containersData;
     } else {
       showCustomToast(context, response.body, false);
     }
+    return [];
   }
 
   /// [Function] : Delete container
@@ -113,7 +134,7 @@ class _ContainerPageState extends State<ContainerPage> {
   }
 
   /// [Function] : Get all the items in the database
-  Future<void> fetchItems() async {
+  Future<List<dynamic>> fetchItems() async {
     final response = await http.get(
       Uri.parse('http://${serverIp}:3000/api/items/listAll'),
       headers: <String, String>{
@@ -123,15 +144,11 @@ class _ContainerPageState extends State<ContainerPage> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final List<dynamic> itemsData = responseData["item"];
-      setState(() {
-        items = itemsData.map((data) => ItemList.fromJson(data)).toList();
-        categories =
-            items.map((item) => item.category ?? 'Tous').toSet().toList();
-        categories.sort();
-      });
+      return itemsData;
     } else {
       showCustomToast(context, response.body, false);
     }
+    return [];
   }
 
   /// [Function] : Get all the items with the selected category in the database
@@ -275,6 +292,7 @@ class _ContainerPageState extends State<ContainerPage> {
                   children: [
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key("editPopupNewName"),
                       controller: nameController,
                       decoration: InputDecoration(
                         labelText: AppLocalizations.of(context)!.nameNew,
@@ -296,6 +314,7 @@ class _ContainerPageState extends State<ContainerPage> {
                           ),
                         ),
                         Switch(
+                          key: const Key("editPopupSwitch"),
                           value: isAvailable,
                           onChanged: (bool newValue) {
                             setState(() {
@@ -307,6 +326,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key("editPopupPrice"),
                       onChanged: (value) {
                         price = double.tryParse(value) ?? 0.0;
                       },
@@ -316,6 +336,7 @@ class _ContainerPageState extends State<ContainerPage> {
                     ),
                     const SizedBox(height: 10.0),
                     TextField(
+                      key: const Key("editPopupDescription"),
                       controller: descController,
                       decoration: InputDecoration(
                         labelText: AppLocalizations.of(context)!.descriptionNew,
@@ -656,6 +677,7 @@ class _ContainerPageState extends State<ContainerPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  key: Key("editButton_${item.id}"),
                   icon: Icon(Icons.mode_outlined,
                       color: Provider.of<ThemeService>(context).isDark
                           ? darkTheme.primaryColor
@@ -894,6 +916,7 @@ class _ContainerPageState extends State<ContainerPage> {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
+                                                key: const Key("test"),
                                                 AppLocalizations.of(context)!
                                                     .itemAdd,
                                                 style: TextStyle(
