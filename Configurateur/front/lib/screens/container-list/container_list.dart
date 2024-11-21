@@ -26,7 +26,7 @@ import 'package:provider/provider.dart';
 ///
 /// Page who list all the containers and users in the database
 class ContainerPage extends StatefulWidget {
-  ContainerPage({this.fetchContainerFromServer, this.fetchItemFromServer});
+  const ContainerPage({this.fetchContainerFromServer, this.fetchItemFromServer});
 
   final Future<List<Map<String, dynamic>>> Function()? fetchContainerFromServer;
   final Future<List<Map<String, dynamic>>> Function()? fetchItemFromServer;
