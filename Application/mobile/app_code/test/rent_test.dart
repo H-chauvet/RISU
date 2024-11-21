@@ -22,6 +22,7 @@ void main() {
               price: 3,
               status: Status.GOOD,
               categories: [],
+              imagesUrl: [],
             ),
           ),
         ),
