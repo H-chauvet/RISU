@@ -70,7 +70,6 @@ void main() {
     await tester.tap(find.byKey(const Key('cancel-edit-address')));
     await tester.pumpAndSettle();
 
-
     expect(find.text('Aucun objet trouvé.'), findsOneWidget);
     expect(find.text('Ville : Pas de ville associée'), findsOneWidget);
     expect(find.text('Adresse : Aucune adresse'), findsOneWidget);
@@ -123,9 +122,20 @@ void main() {
           saveName: 'saveName');
     });
 
-     state_assign.setState(() {
+    state_assign.setState(() {
       state_assign.items = [
-        ItemList(id: 1, name: "bonsoir", available: true, container: null, createdAt: null, containerId: 1, price: 2, image: null, description: "description", category: null, status: null)
+        ItemList(
+            id: 1,
+            name: "bonsoir",
+            available: true,
+            container: null,
+            createdAt: null,
+            containerId: 1,
+            price: 2,
+            image: null,
+            description: "description",
+            category: null,
+            status: null)
       ];
     });
 
@@ -140,7 +150,6 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
     await tester.tap(find.byKey(const Key('cancel-edit-item')));
     await tester.pump(const Duration(seconds: 3));
-
   });
 }
 
