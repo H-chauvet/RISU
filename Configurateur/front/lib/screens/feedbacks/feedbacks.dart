@@ -88,7 +88,7 @@ class _FeedbacksPageState extends State<FeedbacksPage> {
           flex: 10,
           footer: Footer(
             padding: EdgeInsets.zero,
-            child: const CustomFooter(),
+            child: CustomFooter(),
           ),
           children: [
             Column(

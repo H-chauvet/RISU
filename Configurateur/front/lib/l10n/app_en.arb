@@ -402,5 +402,6 @@
 	"objectSharing": "Object Sharing",
 	"objectSharingDescription": "Promoting renting and sharing reduces excessive production of objects and encourages more responsible consumption.",
 	"accessibility": "Accessibility",
-	"accessibilityDescription": "Our containers and application make objects accessible to everyone, strengthening communities and supporting the circular economy."
+	"accessibilityDescription": "Our containers and application make objects accessible to everyone, strengthening communities and supporting the circular economy.",
+	"handleAddMember": "Invitation has been sent by mail!"
 }

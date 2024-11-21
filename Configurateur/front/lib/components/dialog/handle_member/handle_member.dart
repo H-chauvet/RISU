@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:front/components/custom_toast.dart';
 import 'package:front/components/dialog/confirmation_dialog.dart';
 import 'package:front/components/dialog/handle_member/handle_member_style.dart';
 import 'package:front/network/informations.dart';
@@ -181,9 +182,8 @@ class HandleMemberState extends State<HandleMember> {
                     key: const Key('send-button'),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        // Le formulaire est valide
                         addMember();
-                        // Réinitialiser le champ
+                        showCustomToast(context, AppLocalizations.of(context)!.handleAddMember , true);
                         _controller.clear();
                         setState(() {
                           collaboratorContact = '';

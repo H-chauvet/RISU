@@ -401,5 +401,6 @@
 	"objectSharing": "Partage d'Objets",
 	"objectSharingDescription": "Favoriser la location et le partage réduit la production excessive d'objets et encourage une consommation plus responsable.",
 	"accessibility": "Accessibilité",
-	"accessibilityDescription": "Nos conteneurs et l'application rendent les objets accessibles à tous, renforçant la communauté et soutenant l'économie circulaire."
+	"accessibilityDescription": "Nos conteneurs et l'application rendent les objets accessibles à tous, renforçant la communauté et soutenant l'économie circulaire.",
+	"handleAddMember": "L'invitation a bien été envoyée par mail !"
 }
