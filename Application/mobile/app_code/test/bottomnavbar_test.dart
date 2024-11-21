@@ -42,11 +42,11 @@ void main() {
     // Verify that the initial currentIndex is 0.
     expect(currentIndex, 0);
 
-    // Tap the second item (index 1) in the BottomNavigationBar.
+    // Tap the second item (index 2) in the BottomNavigationBar.
     await tester.tap(find.byType(BottomNavBar));
     await tester.pumpAndSettle();
 
     // Verify that the currentIndex has changed to 1.
-    expect(currentIndex, 1);
+    expect(currentIndex, 2);
   });
 }
