@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:risu/globals.dart';
 import 'package:risu/pages/opinion/opinion_page.dart';
 
 import 'globals.dart';
@@ -317,6 +318,153 @@ void main() {
 
       await tester.tap(addOpinionButtonFinder, warnIfMissed: false);
       await tester.pump();
+    });
+
+    testWidgets('Delete Opinion', (WidgetTester tester) async {
+      const List<dynamic> opinions = [
+        {
+          'userId': "1",
+          'note': '5',
+          'comment': 'Great product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'John',
+          }
+        },
+        {
+          'userId': "2",
+          'note': '4',
+          'comment': 'Good product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'Jane',
+          }
+        }
+      ];
+
+      userInformation = initExampleUser(ID: "2");
+      final testPage = initPage(const OpinionPage(
+        itemId: 1,
+        testOpinions: opinions,
+      ));
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      Finder settingsOpinion =
+          find.byKey(const Key('opinion-settings_button_1'));
+      expect(settingsOpinion, findsOneWidget);
+
+      await tester.tap(settingsOpinion);
+      await tester.pumpAndSettle();
+
+      Finder deleteOpinion = find.byKey(const Key('delete-button'));
+      expect(deleteOpinion, findsOneWidget);
+
+      await tester.tap(deleteOpinion);
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('Update Opinion', (WidgetTester tester) async {
+      const List<dynamic> opinions = [
+        {
+          'userId': "1",
+          'note': '5',
+          'comment': 'Great product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'John',
+          }
+        },
+        {
+          'userId': "2",
+          'note': '4',
+          'comment': 'Good product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'Jane',
+          }
+        }
+      ];
+
+      userInformation = initExampleUser(ID: "2");
+      final testPage = initPage(const OpinionPage(
+        itemId: 1,
+        testOpinions: opinions,
+      ));
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      Finder settingsOpinion =
+          find.byKey(const Key('opinion-settings_button_1'));
+      expect(settingsOpinion, findsOneWidget);
+
+      await tester.tap(settingsOpinion);
+      await tester.pumpAndSettle();
+
+      Finder updateOpinion = find.byKey(const Key('update-button'));
+      expect(updateOpinion, findsOneWidget);
+
+      await tester.tap(updateOpinion);
+      await tester.pumpAndSettle();
+
+      Finder updateOpinionButton =
+          find.byKey(const Key('opinion-button_update'));
+      expect(updateOpinionButton, findsOneWidget);
+
+      await tester.tap(updateOpinionButton);
+      await tester.pumpAndSettle();
+    });
+
+    testWidgets('Add Opinion', (WidgetTester tester) async {
+      const List<dynamic> opinions = [
+        {
+          'userId': "1",
+          'note': '5',
+          'comment': 'Great product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'John',
+          }
+        },
+        {
+          'userId': "2",
+          'note': '4',
+          'comment': 'Good product',
+          'date': '2021-10-10',
+          'user': {
+            'lastName': 'Doe',
+            'firstName': 'Jane',
+          }
+        }
+      ];
+
+      userInformation = initExampleUser(ID: "2");
+      final testPage = initPage(const OpinionPage(
+        itemId: 1,
+        testOpinions: opinions,
+      ));
+      await waitForLoader(tester: tester, testPage: testPage);
+
+      Finder addOpinionButton = find.byKey(const Key('add_opinion-button'));
+      expect(addOpinionButton, findsOneWidget);
+
+      await tester.tap(addOpinionButton);
+      await tester.pumpAndSettle();
+
+      Finder textComment = find.byKey(const Key('opinion-textinput_comment'));
+      expect(textComment, findsOneWidget);
+      await tester.enterText(textComment, 'Great product');
+      await tester.pumpAndSettle();
+
+      Finder addOpinionButtonFinder =
+          find.byKey(const Key('opinion-button_add'));
+      expect(addOpinionButtonFinder, findsOneWidget);
+
+      await tester.tap(addOpinionButtonFinder);
+      await tester.pumpAndSettle();
     });
   });
 }
