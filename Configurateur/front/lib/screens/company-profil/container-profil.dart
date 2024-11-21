@@ -29,22 +29,34 @@ class ContainerProfilPage extends StatefulWidget {
   const ContainerProfilPage({super.key});
 
   @override
-  _ContainerProfilPageState createState() => _ContainerProfilPageState();
+  ContainerProfilPageState createState() => ContainerProfilPageState();
 }
 
 /// CompanyProfilPageState
 ///
-class _ContainerProfilPageState extends State<ContainerProfilPage> {
-  _ContainerProfilPageState();
-  late List<ItemList> items;
+class ContainerProfilPageState extends State<ContainerProfilPage> {
+  ContainerProfilPageState();
+  late List<ItemList> items = [];
   late String itemName = '';
   late String itemDesc = '';
-  late String city;
-  late String address;
-  late String saveName;
-  late String information;
+  late String city = '';
+  late String address = '';
+  late String saveName = '';
+  late String information = '';
   late int containerId;
-  late ContainerListData tmp;
+  late ContainerListData tmp = ContainerListData(
+    id: null,
+    createdAt: null,
+    organization: null,
+    organizationId: null,
+    containerMapping: null,
+    price: null,
+    address: null,
+    city: null,
+    design: null,
+    informations: null,
+    saveName: null,
+  );
   String jwtToken = '';
 
   /// [Function] : get information about the containers
@@ -571,6 +583,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
+                  key: const Key("edit-item"),
                   icon: Icon(
                     Icons.mode_outlined,
                     color: Provider.of<ThemeService>(context).isDark
@@ -661,8 +674,8 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
               child: Column(
                 children: [
                   SizedBox(
-                    width: 500,
-                    height: 200,
+                    // width: 500,
+                    // height: 200,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -775,7 +788,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                                       ),
                                 const SizedBox(width: 5.0),
                                 InkWell(
-                                  key: const Key("edit-city"),
+                                  key: const Key("edit-address"),
                                   onTap: () async {
                                     await showEditPopupAddress(context, address,
                                         (String newAddress) {
@@ -819,6 +832,7 @@ class _ContainerProfilPageState extends State<ContainerProfilPage> {
                     height: 30,
                   ),
                   ElevatedButton(
+                    key: Key("objectCreation"),
                     onPressed: () {
                       storageService.writeStorage(
                         'containerId',
