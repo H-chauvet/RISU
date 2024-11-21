@@ -663,6 +663,7 @@ class CompanyProfilPageState extends State<CompanyProfilPage> {
                       ),
                 isManager
                     ? ElevatedButton(
+                        key: const Key("isManager"),
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 25, vertical: 15),

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:footer/footer.dart';
+import 'package:footer/footer_view.dart';
 import 'package:front/components/custom_app_bar.dart';
+import 'package:front/components/custom_footer.dart';
+import 'package:front/components/custom_header.dart';
 import 'package:front/components/custom_toast.dart';
 import 'package:front/network/informations.dart';
 import 'package:front/services/size_service.dart';
@@ -56,24 +60,46 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
     DateTime lastClicked = DateTime.parse("1969-07-20 20:18:04Z");
     DateTime now = DateTime.now();
     return Scaffold(
-      appBar: CustomAppBar(
-        AppLocalizations.of(context)!.registerComfirmed,
-        context: context,
-      ),
-      body: Center(
-        child: FractionallySizedBox(
-          widthFactor: screenFormat == ScreenFormat.desktop
-              ? desktopWidthFactor
-              : tabletWidthFactor,
-          heightFactor: 0.7,
-          child: Column(
+      body: FooterView(
+        flex: 6,
+        footer: Footer(
+          padding: EdgeInsets.zero,
+          child: CustomFooter(),
+        ),
+        children: [
+          LandingAppBar(context: context),
+          Text(
+            AppLocalizations.of(context)!.registerComfirmed,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: screenFormat == ScreenFormat.desktop
+                  ? desktopBigFontSize
+                  : tabletBigFontSize,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.bold,
+              color: Provider.of<ThemeService>(context).isDark
+                  ? darkTheme.secondaryHeaderColor
+                  : lightTheme.secondaryHeaderColor,
+              shadows: [
+                Shadow(
+                  color: Provider.of<ThemeService>(context).isDark
+                      ? darkTheme.secondaryHeaderColor
+                      : lightTheme.secondaryHeaderColor,
+                  offset: const Offset(0.75, 0.75),
+                  blurRadius: 1.5,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 50),
+          Column(
             children: [
               Text(
                 AppLocalizations.of(context)!.registerMessage,
                 style: TextStyle(
                     fontSize: screenFormat == ScreenFormat.desktop
-                        ? desktopBigFontSize
-                        : tabletBigFontSize),
+                        ? desktopFontSize
+                        : tabletFontSize),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(
@@ -164,7 +190,7 @@ class RegisterConfirmationState extends State<RegisterConfirmation> {
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }

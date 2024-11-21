@@ -22,6 +22,7 @@ void myShowModalBottomSheet(BuildContext context, String title, Widget content,
     context: context,
     builder: (BuildContext context) {
       return Container(
+        key: const Key('bottom_sheet'),
         height: MediaQuery.of(context).size.height * 0.4,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(

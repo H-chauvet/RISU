@@ -135,10 +135,9 @@ class ResetPasswordPageState extends State<ResetPasswordPage> {
                     AppLocalizations.of(context)!.resetPasswordDescription,
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context)
-                          .inputDecorationTheme
-                          .labelStyle!
-                          .color,
+                      color: context.select((ThemeProvider themeProvider) =>
+                          themeProvider.currentTheme.inputDecorationTheme
+                              .labelStyle!.color),
                     ),
                   ),
                   const SizedBox(height: 16),

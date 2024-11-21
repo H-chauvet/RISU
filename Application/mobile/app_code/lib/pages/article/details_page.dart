@@ -14,12 +14,14 @@ class ArticleDetailsPage extends StatefulWidget {
   final int articleId;
   final List<dynamic> similarArticlesData;
   final Map<String, dynamic> testArticleData;
+  final List<dynamic> testOpinionList;
 
   const ArticleDetailsPage({
     super.key,
     required this.articleId,
     this.similarArticlesData = const [],
     this.testArticleData = const {},
+    this.testOpinionList = const [],
   });
 
   @override

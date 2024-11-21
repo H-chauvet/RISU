@@ -21,6 +21,7 @@ import 'package:risu/pages/rent/rentals/rentals_page.dart';
 import 'package:risu/pages/reset_password/reset_password_page.dart';
 import 'package:risu/pages/settings/settings_page.dart';
 import 'package:risu/pages/signup/signup_page.dart';
+import 'package:risu/utils/check_signin.dart';
 import 'package:risu/utils/errors.dart';
 import 'package:risu/utils/providers/theme.dart';
 
@@ -31,7 +32,7 @@ import 'home_page.dart';
 /// This class is the state of the HomePage class
 /// It contains the logic of the HomePage class
 class HomePageState extends State<HomePage> {
-  int _currentIndex = 1;
+  int _currentIndex = 2;
   late List<Widget> _pages;
   bool didAskForProfile = false;
   int? containerId;
@@ -55,38 +56,20 @@ class HomePageState extends State<HomePage> {
         configProfile(context);
       }
     });
-    if (userInformation == null) {
-      _pages = [
-        ContainerPage(
-          onDirectionClicked: (id) {
-            setState(() {
-              _currentIndex = 1;
-              containerId = id;
-            });
-          },
-        ),
-        const MapPage(),
-        const ProfilePage(),
-      ];
-    } else {
-      setState(() {
-        _currentIndex = 2;
-      });
-      _pages = [
-        ContainerPage(
-          onDirectionClicked: (id) {
-            setState(() {
-              _currentIndex = 2;
-              containerId = id;
-            });
-          },
-        ),
-        const RentalPage(appbar: false),
-        const MapPage(),
-        const FavoritePage(appbar: false),
-        const ProfilePage(),
-      ];
-    }
+    _pages = [
+      ContainerPage(
+        onDirectionClicked: (id) {
+          setState(() {
+            _currentIndex = 2;
+            containerId = id;
+          });
+        },
+      ),
+      const RentalPage(appbar: false),
+      const MapPage(),
+      const FavoritePage(appbar: false),
+      const ProfilePage(),
+    ];
   }
 
   Future<void> redirectFromUri(Uri uri, String link) async {
@@ -279,13 +262,18 @@ class HomePageState extends State<HomePage> {
           currentIndex: _currentIndex,
           onTap: (index) async {
             setState(() {
-              if ((index == 2 || index == 4) && userInformation == null) {
+              if (index == 4 && userInformation == null) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) {
                     return const SettingsPage();
                   }),
                 );
+              } else if ((index == 1 || index == 3) &&
+                  userInformation == null) {
+                if (checkSignin(context)) {
+                  _currentIndex = index;
+                }
               } else {
                 _currentIndex = index;
               }

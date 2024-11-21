@@ -59,4 +59,37 @@ void main() {
       testPage.createFavorite(-1);
     },
   );
+
+  testWidgets(
+    'Article with test data',
+    (WidgetTester tester) async {
+      Map<String, dynamic> testData = {
+        "id": -1,
+        "containerId": -1,
+        "name": '',
+        "available": false,
+        "price": 0,
+        "categories": [],
+        "status": "GOOD",
+        "imagesUrl": ['', ''],
+      };
+
+      Map<String, dynamic> testOpinion = {
+        'user': {'firstName': 'Nathan', 'lastName': 'Rousseau'},
+        'note': '5',
+        'comment': 'Test Comment'
+      };
+
+      List<dynamic> testSimilar = [testData];
+
+      final testPage = initPage(ArticleDetailsPage(
+        articleId: -1,
+        testArticleData: testData,
+        similarArticlesData: testSimilar,
+        testOpinionList: [testOpinion],
+      ));
+      await waitForLoader(tester: tester, testPage: testPage);
+      await tester.pumpWidget(testPage);
+    },
+  );
 }

@@ -396,7 +396,7 @@ class OpinionPageState extends State<OpinionPage> {
                     ),
                     MyOutlinedButton(
                       text: AppLocalizations.of(context)!.update,
-                      key: const Key('opinion-button_add'),
+                      key: const Key('opinion-button_update'),
                       onPressed: () {
                         updateOpinion(opinionId, selectedStar, comment);
                         Navigator.of(context).pop();

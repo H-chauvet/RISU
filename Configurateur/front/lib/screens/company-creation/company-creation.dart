@@ -116,8 +116,9 @@ class CompanyCreationPageState extends State<CompanyCreationPage> {
 
     return Scaffold(
       body: FooterView(
-        flex: 10,
+        flex: 6,
         footer: Footer(
+          padding: EdgeInsets.zero,
           child: CustomFooter(),
         ),
         children: [

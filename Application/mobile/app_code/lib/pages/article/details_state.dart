@@ -448,7 +448,13 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
         articleData = ArticleData.fromJson(widget.testArticleData);
       });
     }
-    getOpinions(widget.articleId);
+    if (widget.testOpinionList.isEmpty) {
+      getOpinions(widget.articleId);
+    } else {
+      setState(() {
+        opinionsList = widget.testOpinionList;
+      });
+    }
   }
 
   IconData getCategoryIcon(String categoryName) {
@@ -474,8 +480,10 @@ class ArticleDetailsState extends State<ArticleDetailsPage> {
           showBackButton: false,
           textTitle: AppLocalizations.of(context)!.articleDetails,
           action: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
               IconButton(
+                key: const Key('article-button_share'),
                 onPressed: () {
                   createDeeplink(
                       path: 'article/?id=${articleData.id}', context: context);
