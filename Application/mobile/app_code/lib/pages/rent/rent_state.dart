@@ -293,7 +293,9 @@ class RentArticlePageState extends State<RentArticlePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 8),
-                        loadImageFromURL(_articleData.imagesUrl?[0]),
+                        loadImageFromURL(_articleData.imagesUrl!.isNotEmpty
+                            ? _articleData.imagesUrl![0]
+                            : null),
                         const SizedBox(height: 8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
